@@ -1,0 +1,91 @@
+package antonafanasjew.cosmodog.util;
+
+import java.util.List;
+
+import antonafanasjew.cosmodog.tiledmap.TiledEllipseObject;
+import antonafanasjew.cosmodog.tiledmap.TiledFigureObject;
+import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
+import antonafanasjew.cosmodog.tiledmap.TiledLineObject.Point;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
+import antonafanasjew.cosmodog.tiledmap.TiledPolygonObject;
+import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
+import antonafanasjew.cosmodog.tiledmap.TiledRectObject;
+import antonafanasjew.cosmodog.tiledmap.TiledTileObject;
+import antonafanasjew.cosmodog.topology.PlacedRectangle;
+
+public class CollisionUtils {
+
+	public static boolean intersects(PlacedRectangle r, TiledObject region) {
+		if (region instanceof TiledFigureObject) {
+			return intersects(r, (TiledFigureObject) region);
+		} else if (region instanceof TiledLineObject) {
+			return intersects(r, (TiledLineObject) region);
+		} else if (region instanceof TiledTileObject) {
+			return intersects(r, (TiledTileObject) region);
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean intersects(PlacedRectangle r, TiledFigureObject region) {
+		if (region instanceof TiledRectObject) {
+			return intersects(r, (TiledRectObject) region);
+		} else if (region instanceof TiledEllipseObject) {
+			return intersects(r, (TiledEllipseObject) region);
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean intersects(PlacedRectangle r, TiledLineObject region) {
+		if (region instanceof TiledPolylineObject) {
+			return intersects(r, (TiledPolylineObject) region);
+		} else if (region instanceof TiledPolygonObject) {
+			return intersects(r, (TiledPolygonObject) region);
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean intersects(PlacedRectangle r, TiledRectObject region) {
+		PlacedRectangle regionRectangle = PlacedRectangle.fromAnchorAndSize(region.getX(), region.getY(), region.getWidth(), region.getHeight());
+		return r.intersection(regionRectangle) != null;
+	}
+
+	private static boolean intersects(PlacedRectangle r, TiledEllipseObject region) {
+		throw new RuntimeException("Not implemented");
+	}
+
+	private static boolean intersects(PlacedRectangle r, TiledPolylineObject region) {
+		throw new RuntimeException("Not implemented");
+	}
+
+	/*
+	 * Take care. The intersection relates on the center of the region. If the polygon intrudes the region slightly without crossing its center, it is considered to be non intersecting. 
+	 */
+	private static boolean intersects(PlacedRectangle r, TiledPolygonObject region) {
+
+		Point p = new Point(r.centerX(), r.centerY());
+		
+		List<Point> points = region.getPoints();
+
+		//As described at: http://stackoverflow.com/questions/8721406/how-to-determine-if-a-point-is-inside-a-2d-convex-polygon
+		int i;
+		int j;
+		boolean result = false;
+		for (i = 0, j = points.size() - 1; i < points.size(); j = i++) {
+			if ((points.get(i).y > p.y) != (points.get(j).y > p.y) && (p.x < (points.get(j).x - points.get(i).x) * (p.y - points.get(i).y) / (points.get(j).y - points.get(i).y) + points.get(i).x)) {
+				result = !result;
+			}
+		}
+		
+		return result;
+		
+
+	}
+
+	private static boolean intersects(PlacedRectangle r, TiledTileObject region) {
+		throw new RuntimeException("Not implemented");
+	}
+
+}

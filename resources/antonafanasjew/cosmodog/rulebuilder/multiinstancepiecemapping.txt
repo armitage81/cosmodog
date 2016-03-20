@@ -1,0 +1,2 @@
+ruleName;pieceType;narrativeSequenceId;gameProgressProperty;gameProgressPropertyValue
+INSIGHT01;insight;story.insight.0001.insight01.html;foundinsightnumber;0

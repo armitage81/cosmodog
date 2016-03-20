@@ -1,0 +1,5 @@
+ruleName;regionName;narrativeSequenceId;onlyOnceFlag;gameProgressProperty
+ALISAENTERS;alisaenters;story.main.0002.alisaenters.html;true;alisaenters
+NOBODYTHERE;nobodythere;story.main.0003.nobodythere.html;true;nobodythere
+GHOSTTOWN;ghosttown;story.main.0004.ghosttown.html;true;ghosttown
+ENTERINGCOSMODROM;EnteringCosmodrom;story.optional.0001.enteringcosmodrom.html;true;enteringcosmodrom

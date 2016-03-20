@@ -1,0 +1,3 @@
+collectibleItemId;onMapAnimationId;inventoryAnimationId;descriptionWhenFound;commentWhenFound;active;countable;removeOtherInstancesFromMap
+inventoryitem.dynamite
+inventorytiem.boat

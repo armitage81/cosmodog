@@ -1,0 +1,3 @@
+Export the project as self running jar cosmodog.jar to a directory
+Copy over the folders /data and /natives_windows into this directory.
+Start the application from the folder using the command "java -jar -Djava.library.path=natives_windows cosmodog.jar"

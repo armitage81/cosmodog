@@ -1,0 +1,5 @@
+ruleName;pieceType;narrativeSequenceId;onlyOnceFlag;gameProgressProperty
+FIRSTINFOBIT;infobit;story.items.0001.foundinfobit.html;true;foundfirstinfobit
+FIRSTSUPPLIES;supplies;story.items.0002.foundration.html;true;foundfirstsupplies
+FIRSTVEHICLE;vehicle;story.items.0003.foundvehicle.html;true;foundfirstvehicle
+FIRSTSOULESSENCE;soulessence;story.items.0004.soulessence.html;true;foundfirstsoulessence

@@ -1,0 +1,17 @@
+package antonafanasjew.cosmodog.listener.movement;
+
+import java.io.Serializable;
+
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.model.actors.Actor;
+
+public interface MovementListener extends Serializable {
+
+	void beforeMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
+	void onLeavingTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
+	void onEnteringTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
+	void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
+	void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
+	
+	
+}

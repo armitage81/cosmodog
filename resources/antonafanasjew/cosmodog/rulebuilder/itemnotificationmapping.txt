@@ -1,0 +1,9 @@
+ruleName;pieceType;onlyFirst;gameProgressProperty;description
+INFOBIT_DESCRIPTION;infobit;true;infobitDescription;You found an infobit.<br>Your knowledge increases.<br><br>[Press ENTER]
+SUPPLIES_DESCRIPTION;supplies;true;suppliesDescription;You found a supply ration and ate it.<br>Your hunger is stilled.<br><br>[Press ENTER] 
+VEHICLE_DESCRIPTION;vehicle;true;vehicleDescription; You found a vehicle.<br>Use it to travel faster.<br>Keep an eye on the fuel.<br>Exit the vehicle by pressing<br>SHIFT + arrow key.<br><br>[Press ENTER]
+SOULESSENCE_DESCRIPTION;soulessence;false;soulessenceDescription;You found a jar of the Soul Essence.<br>Your maximal life has increased.<br><br>[Press ENTER]
+MEDIPACK_DESCRIPTION;medipack;true;medipackDescription;You found a medipack and used it.<br>Your health has been restored.<br><br>[Press ENTER]
+ARMOR_DESCRIPTION;armor;false;armorDescription;You found an armor plate.<br>Vehicles will be more durable.<br><br>[Press ENTER]
+BOAT_DESCRIPTION;item.boat;true;boatDescription;You found a boat.<br>You can cross water now.<br><br>[Press ENTER]
+INSIGHT_DESCRIPTION;insight;false;insightDesciption;You found an alien artifact<br><br>[Press ENTER]
