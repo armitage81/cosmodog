@@ -302,7 +302,7 @@ public class Cam implements Serializable {
 	 * @param piece The piece which coordinates the camera will focus on.
 	 * @param padding The minimal allowed distance between the piece and the view bounds. (Normally used to be able to look a bit ahead in players direction) 
 	 */
-	public void focusOnPiece(TiledMap map, float offsetX, float offsetY, Piece piece, int padding) {
+	public void focusOnPiece(TiledMap map, float offsetX, float offsetY, Piece piece, int pd) {
 		
 		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
 		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);
@@ -319,26 +319,8 @@ public class Cam implements Serializable {
 		int camWidth = (int)this.viewCopy().width();
 		int camHeight = (int)this.viewCopy().height();
 		
-		int paddingX = camX + padding;
-		int paddingY = camY + padding;
-		
-		int paddingWidth = camWidth - 2 * padding;
-		int paddingHeight = camHeight - 2 * padding;
-		
-		float newCamX = camX;
-		float newCamY = camY;
-		
-		if (paddingX > pieceX) {
-			newCamX = pieceX - padding;
-		} else if (paddingX + paddingWidth < pieceX + pieceWidth) {
-			newCamX = pieceX + pieceWidth - camWidth + padding;
-		}
-		
-		if (paddingY > pieceY) {
-			newCamY = pieceY - padding;
-		} else if (paddingY + paddingHeight < pieceY + pieceHeight) {
-			newCamY = pieceY + pieceHeight - camHeight + padding;
-		}
+		float newCamX = pieceX + pieceWidth / 2.0f - camWidth / 2.0f;
+		float newCamY = pieceY + pieceHeight / 2.0f - camHeight / 2.0f;
 		
 		try {
 			this.move(newCamX, newCamY);
@@ -346,7 +328,7 @@ public class Cam implements Serializable {
 			//This will never happen as the pieces are always parts of the map
 			//and the cam focuses on them.
 			Log.error("This is a programming error. Coordinates: " + newCamX + "/" + newCamY + " are not supposed to be out of the scene in no case.", e);
-			Log.error(pieceX + "/" + pieceY + "/" + pieceWidth + "/" + pieceHeight + "/" + camWidth + "/" + camHeight + "/" + paddingX + "/" + paddingY + "/" + paddingWidth + "/" + paddingHeight + "/" + newCamX + "/" + newCamY);
+			Log.error(pieceX + "/" + pieceY + "/" + pieceWidth + "/" + pieceHeight + "/" + camWidth + "/" + camHeight + "/" + newCamX + "/" + newCamY);
 			System.exit(1);
 		}
 		

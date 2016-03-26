@@ -28,7 +28,7 @@ public class Constants {
 	public static final int RESOLUTION_HEIGHT = 768;
 	public static final boolean FULLSCREEN = false;
 	
-	public static final int CAM_PADDING = 128;
+	public static final int CAM_PADDING = 256;
 
 	/**
 	 * Dynamic dialogs use this as basis for the text speed.
