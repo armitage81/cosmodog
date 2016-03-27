@@ -135,7 +135,6 @@ public class GameState extends BasicGameState {
 		
 		//Update the global dialog drawing context variable in the application context.
 		ApplicationContext.instance().setDialogBoxDrawingContext(new TileDrawingContext(mapDrawingContext, 1, 5, 0, 4));
-		ApplicationContext.instance().setTutorialBoxDrawingContext(new TileDrawingContext(mapDrawingContext, 1, 5, 0, 0));
 		
 		cloudRenderer = new CloudRenderer(applicationContext.getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
 		
@@ -250,7 +249,6 @@ public class GameState extends BasicGameState {
 		}
 		
 		cosmodogGame.getChronometer().update(n);
-		cosmodogGame.getTutorialStateUpdater().update(n);
 		cosmodogGame.getPlayerStatusNotificationList().update(n);
 		cosmodogGame.getCommentsStateUpdater().update(n);
 		cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
@@ -325,14 +323,6 @@ public class GameState extends BasicGameState {
 		WritingTextBoxState commentTextBoxState = cosmodogGame.getCommentsStateUpdater().getState();
 		if (commentTextBoxState != null) {
 			commentsRenderer.render(gc, g, commentsWritingDrawingContext, commentTextBoxState);
-		}
-		
-		DrawingContext tutorialBoxDrawingContext = ApplicationContext.instance().getTutorialBoxDrawingContext();
-		DrawingContext tutorialWritingDrawingContext = DrawingContextUtils.writingContentDcFromTutorialBoxDc(tutorialBoxDrawingContext);
-		
-		WritingTextBoxState tutorialsTextBoxState = cosmodogGame.getTutorialStateUpdater().getState();
-		if (tutorialsTextBoxState != null) {
-			tutorialsRenderer.render(gc, g, tutorialWritingDrawingContext, tutorialsTextBoxState);
 		}
 		
 		if (cosmodogGame.getWritingTextBoxState() != null) {

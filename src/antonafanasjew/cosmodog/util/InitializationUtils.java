@@ -93,11 +93,6 @@ public class InitializationUtils {
 		WritingTextBox dialogWritingTextBox = new WritingTextBox(dialogWritingDc.w(), dialogWritingDc.h(), 0, 3, 18, 22);
 		cosmodogGame.setCommentsStateUpdater(new WritingTextBoxStateUpdater(3000, dialogWritingTextBox));
 		
-		DrawingContext tutorialBoxDc = ApplicationContext.instance().getTutorialBoxDrawingContext();
-		DrawingContext tutorialWritingDc = DrawingContextUtils.writingContentDcFromTutorialBoxDc(tutorialBoxDc);
-		WritingTextBox tutorialWritingTextBox = new WritingTextBox(tutorialWritingDc.w(), tutorialWritingDc.h(), 0, 3, 10, 15);
-		cosmodogGame.setTutorialStateUpdater(new WritingTextBoxStateUpdater(7000, tutorialWritingTextBox));
-
 		CosmodogMap cosmodogMap = initializeCosmodogMap(tiledMap, customTiledMap);
 		
 		RuleBook ruleBook = initializeRuleBook(game);

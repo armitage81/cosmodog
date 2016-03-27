@@ -54,11 +54,17 @@ import com.google.common.collect.Maps;
  * 
  * This singleton will contain the cosmodog model as well as all external resourses, like animations, sprite sheets, sounds and the tiled map.
  * 
+ * Think of it as a spring context.
+ * 
  */
 public class ApplicationContext {
 
 	private static ApplicationContext instance = null;
 	
+	/**
+	 * Single instance of the application context. Will be initialized with the first call.
+	 * @return The single instance of the application context.
+	 */
 	public static ApplicationContext instance() {
 		if (instance == null) {
 			synchronized(ApplicationContext.class) {
@@ -84,7 +90,6 @@ public class ApplicationContext {
 	
 	//We need this global variable to link the writing text box state to the place where it will be drawn.
 	private DrawingContext dialogBoxDrawingContext = null;
-	private DrawingContext tutorialBoxDrawingContext = null;
 
 	private ApplicationContext() {
 		try {
@@ -94,15 +99,33 @@ public class ApplicationContext {
 		}
 	}
 	
+	/**
+	 * Returns the cosmodog object.
+	 * @return Cosmodog object.
+	 */
 	public Cosmodog getCosmodog() {
 		return cosmodog;
 	}
 	
+	/**
+	 * Sets the cosmodog object.
+	 * @param cosmodog Cosmodog object.
+	 */
 	public void setCosmodog(Cosmodog cosmodog) {
 		this.cosmodog = cosmodog;
 	}
 	
-	//The initialization of the tiled map happens within the getter as a type of lazy loading.
+	
+	/**
+	 * Returns the tiled map. Take note: The tiled map is the initial information about the map.
+	 * It cannot be modified throughout the game. All modifyable parts of the map should be stored in the CosmodogMap object.
+	 * The initialization of the tiled map happens within the getter as a type of lazy loading.
+	 * Take note: The tiled map exists only by historic reasons (and because Slick2D has API calls to draw it). It is missing
+	 * some of the features, though, like particular types of regions. These additional data are stored in the object of the custom
+	 * class CosmodogTiledMap, which replicates the TiledMap data. The mid term goal is to get rid of the TiledMap dependency at all,
+	 * and use only the CosmodogTiledMap class.
+	 * @return Tiled Map as the initial state of the map.
+	 */
 	public TiledMap getTiledMap() {
 		
 		if (this.tiledMap == null) {
@@ -116,6 +139,14 @@ public class ApplicationContext {
 		return tiledMap;
 	}
 	
+	/**
+	 * Returns the custom tiled map object. Take note: The custom tiled map is the initial information about the map.
+	 * It cannot be modified throughout the game. All modifyable parts of the map should be stored in the CosmodogMap object.
+	 * The initialization of the custom tiled map happens within the getter as a type of lazy loading.
+	 * Take note: This object replicates the data in the TiledMap property (see tiledMap). The mid term goal is to get rid of the TiledMap dependency at all,
+	 * and use only the CosmodogTiledMap class.
+	 * @return Custom Tiled Map as the initial state of the map.
+	 */
 	public CustomTiledMap getCustomTiledMap() {
 		if (this.customTiledMap == null) {
 			try {
@@ -127,18 +158,34 @@ public class ApplicationContext {
 		return this.customTiledMap;
 	}
 	
+	/**
+	 * Sets the tiled map.
+	 * @param tiledMap Tiled map.
+	 */
 	public void setTiledMap(TiledMap tiledMap) {
 		this.tiledMap = tiledMap;
 	}
 	
+	/**
+	 * Returns the map of the sound resources.
+	 * @return Sound resources by their IDs.
+	 */
 	public SoundResources getSoundResources() {
 		return soundResources;
 	}
 	
+	/**
+	 * Returns the map of the animations.
+	 * @return Animation resources by their IDs.
+	 */
 	public Animations getAnimations() {
 		return animations;
 	}
 	
+	/**
+	 * Returns the map of sprite sheets.
+	 * @return Sprite sheet resources by their IDs.
+	 */
 	public SpriteSheets getSpriteSheets() {
 		return spriteSheets;
 	}
@@ -249,26 +296,34 @@ public class ApplicationContext {
 		
 	}
 
+	/**
+	 * Returns the dialog box drawing context. 
+	 * @return Dialog box drawing context.
+	 */
 	public DrawingContext getDialogBoxDrawingContext() {
 		return dialogBoxDrawingContext;
 	}
 
+	/**
+	 * Sets the dialog box drawing context.
+	 * @param dialogBoxDrawingContext Dialog box drawing context.
+	 */
 	public void setDialogBoxDrawingContext(DrawingContext dialogBoxDrawingContext) {
 		this.dialogBoxDrawingContext = dialogBoxDrawingContext;
 	}
 	
-	public DrawingContext getTutorialBoxDrawingContext() {
-		return tutorialBoxDrawingContext;
-	}
-
-	public void setTutorialBoxDrawingContext(DrawingContext tutorialBoxDrawingContext) {
-		this.tutorialBoxDrawingContext = tutorialBoxDrawingContext;
-	}
-
+	/**
+	 * Returns the tiled map reader which is responsible for loading the custom tiled map.
+	 * @return Custom tiled map reader.
+	 */
 	public TiledMapReader getTiledMapReader() {
 		return tiledMapReader;
 	}
 
+	/**
+	 * Returns the map of letters by characters defining a kind of system font.
+	 * @return Letters by characters.
+	 */
 	public Map<Character, Letter> getCharacterLetters() {
 		return characterLetters;
 	}

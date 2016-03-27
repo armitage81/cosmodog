@@ -33,7 +33,6 @@ public class CosmodogGame extends CosmodogModel {
 
 	private Chronometer chronometer = new Chronometer();
 
-	private WritingTextBoxStateUpdater tutorialStateUpdater;
 	private WritingTextBoxStateUpdater commentsStateUpdater;
 	
 	private TextFrame textFrame = null;
@@ -101,18 +100,6 @@ public class CosmodogGame extends CosmodogModel {
 		return actionRegistry;
 	}
 
-	/**
-	 * Contains the tutorial messages.
-	 * @return Tutorial messages.
-	 */
-	public WritingTextBoxStateUpdater getTutorialStateUpdater() {
-		return tutorialStateUpdater;
-	}
-
-	public void setTutorialStateUpdater(WritingTextBoxStateUpdater tutorialStateUpdater) {
-		this.tutorialStateUpdater = tutorialStateUpdater;
-	}
-	
 	/**
 	 * Contains comments of the characters in the game that do not interrupt the controls (e.g. Alisa's comments)
 	 * @return State of the comment collection.

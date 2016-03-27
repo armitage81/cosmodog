@@ -35,5 +35,9 @@ public class Constants {
 	 */
 	public static final int DEFAULT_INTERVAL_BETWEEN_DIALOG_LETTERS = 64;
 
+	/**
+	 * Score points that will be added to the game progress after collecting an infobit.
+	 */
+	public static final int SCORE_PER_INFOBIT = 100;
 	
 }

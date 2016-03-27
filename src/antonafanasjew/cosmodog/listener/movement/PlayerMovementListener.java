@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.Tiles;
@@ -37,7 +38,6 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.notifications.Notification;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
-import antonafanasjew.cosmodog.util.PiecesUtils;
 
 import com.google.common.collect.Lists;
 
@@ -107,8 +107,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 						Features.getInstance().featureBoundProcedure(Features.FEATURE_INFOBITS, new Runnable() {
 							@Override
 							public void run() {
-								cosmodogGame.getPlayerStatusNotificationList().add(new Notification("+" + GameProgress.SCORE_PER_INFOBIT, 500));
-								player.getGameProgress().addToScore(GameProgress.SCORE_PER_INFOBIT);
+								cosmodogGame.getPlayerStatusNotificationList().add(new Notification("+" + Constants.SCORE_PER_INFOBIT, 500));
+								player.getGameProgress().addToScore(Constants.SCORE_PER_INFOBIT);
 								player.getGameProgress().addInfobit();
 								applicationContext.getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
 							}
