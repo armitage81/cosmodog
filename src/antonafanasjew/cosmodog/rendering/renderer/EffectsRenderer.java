@@ -5,9 +5,9 @@ import java.util.Set;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
@@ -57,7 +57,7 @@ public class EffectsRenderer extends AbstractRenderer {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Cam cam = cosmodogGame.getCam();
 		
 		int tileWidth = tiledMap.getTileWidth();
@@ -99,7 +99,7 @@ public class EffectsRenderer extends AbstractRenderer {
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ENERGYWALL)) {
     					//Only render, if the energy wall is not passable.
-    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), ApplicationContextUtils.getTiledMap(), piece.getPositionX(), piece.getPositionY());
+    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), ApplicationContextUtils.getCustomTiledMap(), piece.getPositionX(), piece.getPositionY());
     					
     					if (energyWallCollisionStatus.isPassable() == false) {
     						applicationContext.getAnimations().get("energywall").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - 1) * (tileHeight));

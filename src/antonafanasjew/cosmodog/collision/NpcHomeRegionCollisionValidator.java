@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -16,7 +15,7 @@ import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 public class NpcHomeRegionCollisionValidator extends AbstractCollisionValidator {
 
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 
 		CollisionStatus passable = CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
 		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_OUT_OF_HOME_REGION);

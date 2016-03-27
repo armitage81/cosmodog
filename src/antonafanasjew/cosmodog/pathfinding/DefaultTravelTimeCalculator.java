@@ -1,8 +1,7 @@
 package antonafanasjew.cosmodog.pathfinding;
 
-import org.newdawn.slick.tiled.TiledMap;
-
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -10,14 +9,18 @@ import antonafanasjew.cosmodog.globals.Tiles;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
+import antonafanasjew.cosmodog.tiledmap.TiledTile;
 
 public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 
 	@Override
 	protected int calculateTravelTimeInternal(ApplicationContext context, Actor actor, int x, int y) {
 		
-		TiledMap tiledMap = context.getTiledMap();
-		int terrainTypeTileId = tiledMap.getTileId(x, y, Layers.LAYER_META_TERRAINTYPES);
+		CustomTiledMap tiledMap = context.getCustomTiledMap();
+		TiledMapLayer terrainTypesLayer = tiledMap.getMapLayers().get(Layers.LAYER_META_TERRAINTYPES);
+		TiledTile tile = terrainTypesLayer.getTile(x, y);
+		int terrainTypeTileId = tile.getGid();
 		
 		
 		if (actor instanceof Player) {

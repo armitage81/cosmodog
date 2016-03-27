@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.Tiles;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -16,7 +15,7 @@ public class EnergyWallCollisionValidator extends AbstractCollisionValidator {
 
 	
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
 		

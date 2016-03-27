@@ -3,9 +3,9 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.Fonts;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -23,7 +23,7 @@ public class PlayerNotificationRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		

@@ -3,11 +3,13 @@ package antonafanasjew.cosmodog;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
-
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.tiledmap.TiledTile;
 import antonafanasjew.cosmodog.tiledmap.Tileset;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 /**
  * This is a data structure for the initial map information of the game.
@@ -26,6 +28,10 @@ public class CustomTiledMap {
 	private int nextObjectId;
 	private Tileset tileset;
 	private List<TiledMapLayer> mapLayers;
+	
+	private ImmutableMap<String, TiledMapLayer> mapLayersByNames;
+	
+	
 	private Map<String, TiledObjectGroup> objectGroups = Maps.newHashMap();
 	
 	/**
@@ -196,4 +202,37 @@ public class CustomTiledMap {
 		return objectGroups;
 	}
 	
+	/**
+	 * This method should be called after the map has been completely initialized
+	 * and will not be modified any more.
+	 * Here, some cache data will be created to facilitate the access of map data.
+	 */
+	public void afterInitialization() {
+		
+		Map<String, TiledMapLayer> map = Maps.newHashMap();
+		
+		for (TiledMapLayer layer : mapLayers) {
+			map.put(layer.getName(), layer);
+		}
+		
+		this.mapLayersByNames = ImmutableMap.<String, TiledMapLayer>builder().putAll(map).build();
+	}
+	
+	/**
+	 * Returns the cached map layers by name which has been initialized after the afterInitialization method was called.
+	 * Don't use it during the initialization. Don't try to modify it.
+	 * @return Map layers by name. Immutable.
+	 */
+	public Map<String, TiledMapLayer> getMapLayersByNames() {
+		return mapLayersByNames;
+	}
+	
+	/**
+	 * Short cut method to get a tile id from the position and layer.
+	 */
+	public int getTileId(int x, int y, int layerIndex) {
+		TiledMapLayer layer = mapLayers.get(layerIndex);
+		TiledTile tile = layer.getTile(x, y);
+		return tile.getGid();
+	}
 }

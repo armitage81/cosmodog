@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
@@ -180,7 +180,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Cam cam = cosmodogGame.getCam();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		int tileWidth = tiledMap.getTileWidth();
 		
 		float movementOffsetX = 0;

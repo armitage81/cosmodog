@@ -4,9 +4,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -35,7 +35,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		CollisionValidator collisionValidator = cosmodog.getCollisionValidator();
 
 		cosmodogGame.getActionRegistry().update(delta, gc, sbg);

@@ -95,6 +95,7 @@ public class XmlTiledMapReader implements TiledMapReader {
 			map.getObjectGroups().put(objectGroup.getName(), objectGroup);
 		}
 		
+		map.afterInitialization();
 		
 		return map;
 		

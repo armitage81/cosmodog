@@ -10,7 +10,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
-import antonafanasjew.cosmodog.GameProgress;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.globals.Constants;
@@ -249,7 +249,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			public void run() {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
-				TiledMap tiledMap = applicationContext.getTiledMap();
+				CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 				int waterLayerTileId = tiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_WATERPLACES);
 				if (waterLayerTileId == Tiles.WATERPLACE_TILE_ID || waterLayerTileId == Tiles.NEAR_WATERPLACE_TILE_ID) {
 					if (oldThirst > 0) {
@@ -276,7 +276,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			public void run() {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
-				TiledMap tiledMap = applicationContext.getTiledMap();
+				CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 				int collectiblesLayerTileId = tiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
 				if (collectiblesLayerTileId == Tiles.FUEL_TILE_ID) {
 					if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {

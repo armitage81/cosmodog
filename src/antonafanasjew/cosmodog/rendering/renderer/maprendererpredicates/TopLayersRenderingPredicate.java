@@ -28,15 +28,15 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		//We iterate only through covering top layers (and ignore unimportant layers, like electricity cables, towers etc.)
 		for (int i : Layers.COVERING_TOP_LAYERS) {
 			//We check the tile at player position on the covering layer.
-			int topTileId = applicationContext.getTiledMap().getTileId(px, py, i);
+			int topTileId = applicationContext.getCustomTiledMap().getTileId(px, py, i);
 			if (topTileId > 0) {
 				
 				//We find all neighbour ids to mark the region that should be skipped. We start with the player position (not the actual tile we are iterating through)
-				playerCoveringStructure = TileUtils.getConnectedElements(px, py, i, applicationContext.getTiledMap(), new Predicate<TileCoordinates>() {
+				playerCoveringStructure = TileUtils.getConnectedElements(px, py, i, applicationContext.getCustomTiledMap(), new Predicate<TileCoordinates>() {
 					
 					@Override
 					public boolean apply(TileCoordinates tc) {
-						int tileId = applicationContext.getTiledMap().getTileId(tc.getX(), tc.getY(), i);
+						int tileId = applicationContext.getCustomTiledMap().getTileId(tc.getX(), tc.getY(), i);
 						return tileId > 0;
 					}
 				});			

@@ -169,7 +169,7 @@ public class GameState extends BasicGameState {
 		
 		if (cosmodog.getGameLifeCycle().isStartNewGame()) {
 
-			TiledMap tiledMap = applicationContext.getTiledMap();
+			CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 			CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
 			
     		CosmodogGame cosmodogGame;

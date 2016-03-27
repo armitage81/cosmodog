@@ -2,14 +2,13 @@ package antonafanasjew.cosmodog.collision;
 
 import java.util.Map;
 
-import org.newdawn.slick.tiled.TiledMap;
-
-import com.google.common.collect.Maps;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
+
+import com.google.common.collect.Maps;
 
 /**
  * Calculates collision based on the chaussie of an NPC. Use it only for NPC's
@@ -31,7 +30,7 @@ public class ChaussieBasedCollisionValidator extends AbstractCollisionValidator 
 
 	
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
 		NpcActor npcActor = (NpcActor)actor;
 		

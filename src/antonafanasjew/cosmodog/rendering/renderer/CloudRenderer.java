@@ -6,15 +6,14 @@ import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
-import antonafanasjew.cosmodog.topology.Rectangle;
 
 public class CloudRenderer extends AbstractRenderer {
 
@@ -41,7 +40,7 @@ public class CloudRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Cam cam = cosmodogGame.getCam();
 		
 		int tileWidth = tiledMap.getTileWidth();

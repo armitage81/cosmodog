@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -28,7 +27,7 @@ public class GeneralCollisionValidator extends AbstractCollisionValidator {
 	 * on foot. 
 	 */
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
 		Player player = (Player)actor;
 		VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);

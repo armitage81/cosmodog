@@ -4,13 +4,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -34,7 +34,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		TiledMap tiledMap = ApplicationContextUtils.getTiledMap();
+		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		Enemy enemy = (Enemy)actor;
@@ -103,7 +103,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 	private Position nextFreePositionNearbyPlayer(Actor actor, Player player, MovementActionResult playerMovementActionResult, CollisionValidator collisionValidator) {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-		TiledMap map = ApplicationContextUtils.getTiledMap();
+		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
 		
 		//If the player did not move, we take his real coordinates as target.
 		int x = player.getPositionX();

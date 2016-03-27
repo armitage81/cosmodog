@@ -3,9 +3,9 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
@@ -30,7 +30,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		
@@ -146,7 +146,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		return boat != null;
 	}
 	
-	private boolean isWaterTile(TiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean isWaterTile(CustomTiledMap map, Player player, ActorTransition playerTransition) {
 		//int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
 		//return tileId == Tiles.WATER_TILE_ID;
 		
@@ -179,7 +179,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 	}
 	
-	private boolean isHighGrassTile(TiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean isHighGrassTile(CustomTiledMap map, Player player, ActorTransition playerTransition) {
 		boolean retVal = false;
 		if (playerTransition == null) {
 			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);

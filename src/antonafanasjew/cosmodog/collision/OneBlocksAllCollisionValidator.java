@@ -2,8 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import java.util.Iterator;
 
-import org.newdawn.slick.tiled.TiledMap;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
@@ -19,7 +18,7 @@ public class OneBlocksAllCollisionValidator implements CollisionValidator {
 	}
 	
 	@Override
-	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY) {
+	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
 		
 		Iterator<CollisionValidator> it = underlyings.iterator();

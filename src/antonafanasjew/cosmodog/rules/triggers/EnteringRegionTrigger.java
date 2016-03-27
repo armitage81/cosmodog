@@ -36,7 +36,7 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CustomTiledMap customTiledMap = ApplicationContextUtils.getCustomTiledMap();
-		TiledMap tiledMap = ApplicationContextUtils.getTiledMap();
+		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
 		
 		TiledObjectGroup regionsObjectGroup = customTiledMap.getObjectGroups().get(layerName);
 		

@@ -40,8 +40,8 @@ public class Features {
 		getFeatureFlags().put(FEATURE_COLLISION, true);
 		getFeatureFlags().put(FEATURE_MOVEMENT_COSTS, true);
 		getFeatureFlags().put(FEATURE_FUEL, true);
-		getFeatureFlags().put(FEATURE_STORY, true);
-		getFeatureFlags().put(FEATURE_TUTORIAL, true);
+		getFeatureFlags().put(FEATURE_STORY, false);
+		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 	}
 	
 	public boolean featureOn(String feature) {

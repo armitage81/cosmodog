@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -83,7 +82,7 @@ public class InitializationUtils {
 	public static int DYNAMITE_TILE_ID = 198;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
-	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, TiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
 		
 		CosmodogGame cosmodogGame = new CosmodogGame();
 		
@@ -133,9 +132,9 @@ public class InitializationUtils {
 		return cosmodogGame;
 	}
 
-	public static CosmodogMap initializeCosmodogMap(TiledMap tiledMap, CustomTiledMap customTiledMap) throws SlickException, TiledMapIoException {
+	public static CosmodogMap initializeCosmodogMap(CustomTiledMap tiledMap, CustomTiledMap customTiledMap) throws SlickException, TiledMapIoException {
 
-		int collectiblesLayerIndex = tiledMap.getLayerIndex(LAYER_NAME_COLLECTIBLES);
+		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
 		int mapWidth = tiledMap.getWidth();
 		int mapHeight = tiledMap.getHeight();
 
@@ -250,7 +249,7 @@ public class InitializationUtils {
 
 	}
 	
-	private static void initializeTiledMapObjects(TiledMap tiledMap, CosmodogMap cosmodogMap) {
+	private static void initializeTiledMapObjects(CustomTiledMap tiledMap, CosmodogMap cosmodogMap) {
 		/*
 		int objectGroupsCount = tiledMap.getObjectGroupCount();
 		for (int i = 0; i < objectGroupsCount; i++) {
@@ -360,7 +359,7 @@ public class InitializationUtils {
 		return ruleBook;
 	}
 	
-	private static void initializeEnemies(TiledMap tiledMap, CustomTiledMap customTiledMap, CosmodogMap map) {
+	private static void initializeEnemies(CustomTiledMap tiledMap, CustomTiledMap customTiledMap, CosmodogMap map) {
 		Map<UnitType, EnemyFactory> enemyFactories = initializeEnemyFactories();
 		int enemyLayerIndex = Layers.LAYER_META_NPC;
 		

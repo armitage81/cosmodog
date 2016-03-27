@@ -9,9 +9,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
@@ -27,7 +27,7 @@ import com.google.common.collect.Lists;
 
 public class LoadingTransition implements Transition {
 
-	private TiledMap tiledMap = null;
+	private CustomTiledMap tiledMap = null;
 	
 	private DrawingContext mainDrawingContext;
 	private DrawingContext loadingDrawingContext;
@@ -98,7 +98,7 @@ public class LoadingTransition implements Transition {
 		gc.getInput().clearKeyPressedRecord();
 		
 		if (startedLoading == false) {
-			tiledMap = ApplicationContext.instance().getTiledMap();
+			tiledMap = ApplicationContext.instance().getCustomTiledMap();
 			startedLoading = true;
 		}
 

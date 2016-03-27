@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
@@ -10,7 +9,7 @@ public class NpcOnFootCollisionValidator extends AbstractCollisionValidator {
 	private UnequippedWalkerCollisionValidator delegate = new UnequippedWalkerCollisionValidator();
 	
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		return delegate.calculateStatusWithinMap(cosmodogGame, actor, map, tileX, tileY);
 	}
 

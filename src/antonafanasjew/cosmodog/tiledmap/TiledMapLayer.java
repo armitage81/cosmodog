@@ -50,4 +50,8 @@ public class TiledMapLayer {
 		this.opacity = opacity;
 	}
 	
+	public TiledTile getTile(int x, int y) {
+		return this.getData().get(y * getWidth() + x);
+	}
+	
 }

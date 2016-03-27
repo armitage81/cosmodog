@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.util;
 
-import org.newdawn.slick.tiled.TiledMap;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -15,14 +13,9 @@ public class ApplicationContextUtils {
 	public static final Player getPlayer() {
 		return ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer();
 	}
-	
 
 	public static final CosmodogMap getCosmodogMap() {
 		return ApplicationContext.instance().getCosmodog().getCosmodogGame().getMap();
-	}
-	
-	public static final TiledMap getTiledMap() {
-		return ApplicationContext.instance().getTiledMap();
 	}
 	
 	public static final CustomTiledMap getCustomTiledMap() {

@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import org.newdawn.slick.tiled.TiledMap;
 
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
 /**
@@ -45,7 +46,7 @@ public class CollisionStatus {
 	public static final int NO_PASSAGE_REASON_ENERGY_WALL_COSTS = 5;
 	
 	private Actor actor;
-	private TiledMap map;
+	private CustomTiledMap map;
 	private int tileX;
 	private int tileY;
 	
@@ -67,7 +68,7 @@ public class CollisionStatus {
 	 * @param noPassageReason Reason for non passable tile.
 	 * @return A new Collision status object filled with the given parameters.
 	 */
-	public static CollisionStatus instance(Actor actor, TiledMap map, int tileX, int tileY, boolean passable, int noPassageReason) {
+	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, int noPassageReason) {
 		CollisionStatus collisionStatus = new CollisionStatus();
 		collisionStatus.actor = actor;
 		collisionStatus.map = map;
@@ -90,7 +91,7 @@ public class CollisionStatus {
 	 * Returns the tiled map.
 	 * @return Tiled map.
 	 */
-	public TiledMap getMap() {
+	public CustomTiledMap getMap() {
 		return map;
 	}
 

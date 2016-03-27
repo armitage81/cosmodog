@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
@@ -26,6 +25,6 @@ public interface CollisionValidator {
 	 * @param tileY The vertical coordinate of the tile (in tiles, not in pixels)
 	 * @return The collision status object. It contains all information about the tiles as well as the passable/not passable property.
 	 */
-	CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, TiledMap map, int tileX, int tileY);
+	CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY);
 	
 }

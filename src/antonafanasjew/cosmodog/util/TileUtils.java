@@ -2,22 +2,21 @@ package antonafanasjew.cosmodog.util;
 
 import java.util.Set;
 
-import org.newdawn.slick.tiled.TiledMap;
-
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.structures.TileCoordinates;
 
 import com.google.common.collect.Sets;
 
 public class TileUtils {
 
-	public static Set<TileCoordinates> getConnectedElements(int x, int y, int layerIndex, TiledMap tiledMap, com.google.common.base.Predicate<TileCoordinates> predicate) {
+	public static Set<TileCoordinates> getConnectedElements(int x, int y, int layerIndex, CustomTiledMap tiledMap, com.google.common.base.Predicate<TileCoordinates> predicate) {
 		Set<TileCoordinates> markedElements = Sets.newHashSet();
 		Set<TileCoordinates> checkedElements = Sets.newHashSet();
 		processElementAndNeighboursRecursively(new TileCoordinates(x, y, layerIndex), tiledMap, predicate, markedElements, checkedElements);
 		return markedElements;
 	}
 	
-	private static void processElementAndNeighboursRecursively(TileCoordinates e, TiledMap tiledMap, com.google.common.base.Predicate<TileCoordinates> predicate, Set<TileCoordinates> markedElements, Set<TileCoordinates> checkedElements) {
+	private static void processElementAndNeighboursRecursively(TileCoordinates e, CustomTiledMap tiledMap, com.google.common.base.Predicate<TileCoordinates> predicate, Set<TileCoordinates> markedElements, Set<TileCoordinates> checkedElements) {
 
 		checkedElements.add(e);
 

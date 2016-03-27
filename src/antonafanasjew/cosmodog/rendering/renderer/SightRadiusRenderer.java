@@ -3,9 +3,9 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -28,7 +28,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 
 		ApplicationContext applicationContext = ApplicationContext.instance();
-		TiledMap tiledMap = applicationContext.getTiledMap();
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();

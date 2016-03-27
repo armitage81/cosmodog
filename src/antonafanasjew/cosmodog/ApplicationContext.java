@@ -79,7 +79,6 @@ public class ApplicationContext {
 	
 	
 	private Cosmodog cosmodog;
-	private TiledMap tiledMap;
 	private CustomTiledMap customTiledMap;
 	private SoundResources soundResources = new SoundResources();
 	private Animations animations = new Animations();
@@ -115,30 +114,6 @@ public class ApplicationContext {
 		this.cosmodog = cosmodog;
 	}
 	
-	
-	/**
-	 * Returns the tiled map. Take note: The tiled map is the initial information about the map.
-	 * It cannot be modified throughout the game. All modifyable parts of the map should be stored in the CosmodogMap object.
-	 * The initialization of the tiled map happens within the getter as a type of lazy loading.
-	 * Take note: The tiled map exists only by historic reasons (and because Slick2D has API calls to draw it). It is missing
-	 * some of the features, though, like particular types of regions. These additional data are stored in the object of the custom
-	 * class CosmodogTiledMap, which replicates the TiledMap data. The mid term goal is to get rid of the TiledMap dependency at all,
-	 * and use only the CosmodogTiledMap class.
-	 * @return Tiled Map as the initial state of the map.
-	 */
-	public TiledMap getTiledMap() {
-		
-		if (this.tiledMap == null) {
-			try {
-				this.tiledMap = new TiledMap("data/FinalMap.tmx");
-			} catch (SlickException e) {
-				Log.error("Lazy loading of the tiled map has failed: " + e.getLocalizedMessage(), e);
-			}
-		}
-		
-		return tiledMap;
-	}
-	
 	/**
 	 * Returns the custom tiled map object. Take note: The custom tiled map is the initial information about the map.
 	 * It cannot be modified throughout the game. All modifyable parts of the map should be stored in the CosmodogMap object.
@@ -156,14 +131,6 @@ public class ApplicationContext {
 			}
 		}
 		return this.customTiledMap;
-	}
-	
-	/**
-	 * Sets the tiled map.
-	 * @param tiledMap Tiled map.
-	 */
-	public void setTiledMap(TiledMap tiledMap) {
-		this.tiledMap = tiledMap;
 	}
 	
 	/**
