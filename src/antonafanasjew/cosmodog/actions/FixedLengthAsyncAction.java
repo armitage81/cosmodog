@@ -14,14 +14,25 @@ public class FixedLengthAsyncAction extends AbstractAsyncAction {
 
 	private int duration;
 	
+	/**
+	 * Initializes the action with the fixed duration.
+	 * @param duration Fixed duration.
+	 */
 	public FixedLengthAsyncAction(int duration) {
 		this.duration = duration;
 	}
 
+	/**
+	 * Returns the duration of this action.
+	 * @return Duration of the action.
+	 */
 	public int getDuration() {
 		return duration;
 	}
 
+	/**
+	 * Returns true if the past time is greater or equals than the defined duration.
+	 */
 	@Override
 	public boolean hasFinished() {
 		return getPassedTime() >= duration;

@@ -19,6 +19,9 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 /**
  * Represents the complete fight after a turn (with maybe multiple enemies)
+ * 
+ * This action has it's own action registry to maintain the fight phases.
+ * 
  */
 public class FightAction extends VariableLengthAsyncAction {
 
@@ -30,29 +33,37 @@ public class FightAction extends VariableLengthAsyncAction {
 	private AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator;
 	private AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator;
 	
-	
+	/**
+	 * Initialized with the damage calculators for the PC and the enemy.
+	 * @param c1 Player's damage calculator.
+	 * @param c2 Enemy's damage calculator.
+	 */
 	public FightAction(AbstractPlayerAttackDamageCalculator c1, AbstractEnemyAttackDamageCalculator c2) {
 		playerAttackDamageCalculator = c1;
 		enemyAttackDamageCalculator = c2;
 	}
 	
+	/**
+	 * Calculates the complete fight result. Calculates the fight phases based on the fight result and registers them in the internal
+	 * action registry.
+	 */
 	@Override
 	public void onTrigger() {
 		initFightActionResult();
 		initActionPhaseRegistry();
 	}
 
+	/**
+	 * Updates the action registry, causing it to play forward the phase queue.
+	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		actionPhaseRegistry.update(after - before, gc, sbg);
 	}
-	
-	@Override
-	public void onEnd() {
-		// TODO Auto-generated method stub
-		super.onEnd();
-	}
-	
+
+	/**
+	 * Returns true if the fight action registry is empty, meaning that there are no unplayed fight phases.
+	 */
 	@Override
 	public boolean hasFinished() {
 		return !actionPhaseRegistry.isActionRegistered(AsyncActionType.FIGHT);
@@ -87,6 +98,9 @@ public class FightAction extends VariableLengthAsyncAction {
 		}
 	}
 	
+	/*
+	 * Calculates the phase queue based on the fight action result.
+	 */
 	private void initActionPhaseRegistry() {
 		for (FightActionResult.FightPhaseResult phaseResult : fightActionResult) {
 			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));

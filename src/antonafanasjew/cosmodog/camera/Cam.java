@@ -313,9 +313,6 @@ public class Cam implements Serializable {
 		int pieceWidth = zoomedTileWidth;
 		int pieceHeight = zoomedTileHeight;
 		
-		int camX = (int)this.viewCopy().x();
-		int camY = (int)this.viewCopy().y();
-		
 		int camWidth = (int)this.viewCopy().width();
 		int camHeight = (int)this.viewCopy().height();
 		

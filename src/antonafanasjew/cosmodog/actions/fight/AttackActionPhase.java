@@ -17,6 +17,11 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
+/**
+ * This fixed length action phase is initialized with the pre-calculated fight phase attack result
+ * and executes asynchronously the fight phase by modifying the global fight phase trnsition.
+ * This action phase can be used for both attacks - pc and npc.
+ */
 public class AttackActionPhase extends FixedLengthAsyncAction  {
 
 	private static final long serialVersionUID = -3853130683025678558L;
@@ -24,12 +29,18 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 	private FightActionResult.FightPhaseResult fightPhaseResult;
 	private CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
-	
+	/**
+	 * Initialized with the pre-calculated fight action phase result.
+	 * @param fightPhaseResult Result of the fight action phase.
+	 */
 	public AttackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
 		super(fightPhaseResult.isPlayerAttack() ? Constants.PLAYER_ATTACK_ACTION_DURATION : Constants.ENEMY_ATTACK_ACTION_DURATION);
 		this.fightPhaseResult = fightPhaseResult;
 	}
 
+	/**
+	 * Initializes the attack transition depending on the attacker and defender.
+	 */
 	@Override
 	public void onTrigger() {
 		
@@ -54,11 +65,17 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		
 	}
 	
+	/**
+	 * Updates the attack transition depending on the passed time. Sets the completion percentage of the transition.
+	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		cosmodogGame.getFightPhaseTransition().completion = (float)after / (float)getDuration();
 	}
 	
+	/**
+	 * Applies the result of the attack phase and resets the transition.
+	 */
 	@Override
 	public void onEnd() {
 		

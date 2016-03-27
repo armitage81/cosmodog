@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 
 /**
  * A class to maintain current asynchronous actions.
- * Each action type can be registered only once at a tyme.
+ * Each action type has to be stackable or can be registered only once at a time.
  * With each call of the update method, the registry updates all registered
  * actions and unregisters them if they have finished.
  * 
@@ -45,7 +45,7 @@ public class ActionRegistry implements Serializable {
 	}
 	
 	/**
-	 * Indicates whether the action of the given type is registered.
+	 * Indicates whether an action of the given type is registered.
 	 * 
 	 * @param actionType type of the action.
 	 * @return true if action of this type is registered, else otherwise.
@@ -87,6 +87,7 @@ public class ActionRegistry implements Serializable {
 
 	/**
 	 * Returns the registered action of the given type or null.
+	 * In case of stackable actions, the first action in the queue will be returned.
 	 * 
 	 * @param actionType type of the action.
 	 * @return The registered action of the given type or null if none.
@@ -100,6 +101,7 @@ public class ActionRegistry implements Serializable {
 	/**
 	 * Indicates whether the input is blocked. It is the case if at least one action is registered in the registry
 	 * with the type that is blocking input. 
+	 * 
 	 * @return true if input should be blocked, false otherwise.
 	 */
 	public boolean inputBlocked() {

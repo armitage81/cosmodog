@@ -40,6 +40,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+/**
+ * Asynchronous action for movement.
+ * Includes PC's movement and all the NPC's movements.
+ * The action has fixed length.
+ */
 public class MovementAction extends FixedLengthAsyncAction {
 	
 
@@ -49,10 +54,17 @@ public class MovementAction extends FixedLengthAsyncAction {
 	private MovementActionResult playerMovementActionResult = null;
 	private Map<Enemy, MovementActionResult> enemyMovementActionResults = Maps.newHashMap();
 	
+	/**
+	 * Initialized with a fixed duration.
+	 * @param duration Duration of the movement action.
+	 */
 	public MovementAction(int duration) {
 		super(duration);
 	}
 
+	/**
+	 * Calculates movement results. Initializes the movement for PC and NPC's by using their path finder algorithms.
+	 */
 	@Override
 	public void onTrigger() {
 		initMovementActionResults();
@@ -60,7 +72,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 		onTriggerForEnemies();
 	}
 
-	
+	/**
+	 * Updates player's movement transition based on the passed time. Focuses the cam on the player.
+	 * Calculates enemies transitions based on the passed time and their time budgets.
+	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
@@ -69,6 +84,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 	}
 
+	/**
+	 * Resets the PC's transition and does the actual shifting of his position in the game model triggering all the listeners.
+	 * Resets the NPC's transitions. Initializes the fight action.
+	 */
 	@Override
 	public void onEnd() {
 		onEndForPlayer();		
@@ -76,6 +95,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 		fight();
 	}
 
+	/**
+	 * Registers a short waiting action to simulate turn based movement.
+	 */
 	@Override
 	public void afterUnregistration() {
 		//Just a waiter action that does nothing but blocks input.

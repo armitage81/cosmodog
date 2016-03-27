@@ -94,7 +94,9 @@ public abstract class AbstractAsyncAction implements AsyncAction {
 		
 	}
 	
-	
+	/**
+	 * Template method to define the finish condition. Will be implemented in sub classes.
+	 */
 	@Override
 	public abstract boolean hasFinished();
 	
