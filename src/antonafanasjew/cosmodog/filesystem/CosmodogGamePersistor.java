@@ -30,6 +30,7 @@ public class CosmodogGamePersistor {
 	public void saveCosmodogGame(CosmodogGame game, String filePath) throws CosmodogPersistenceException {
 		try {
 			File file = new File(filePath);
+			file.mkdirs();
 			if (file.exists()) {
 				file.delete();
 			}
