@@ -61,5 +61,9 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	 */
 	public static final String SPRITESHEET_INTERFACE = "spritesheet.interface";
 
+	/**
+	 * Sprite sheet ID for: tile set.
+	 */
+	public static final String SPRITESHEET_TILES = "spritesheet.tiles";
 
 }

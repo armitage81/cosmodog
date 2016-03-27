@@ -229,6 +229,9 @@ public class CustomTiledMap {
 	
 	/**
 	 * Short cut method to get a tile id from the position and layer.
+	 * The tile id is the id as it was saved on the map file, which is 0 if 
+	 * the tile is not set, 1 for the tile at the location 0/0 in the sprite sheet etc.
+	 * 
 	 */
 	public int getTileId(int x, int y, int layerIndex) {
 		TiledMapLayer layer = mapLayers.get(layerIndex);

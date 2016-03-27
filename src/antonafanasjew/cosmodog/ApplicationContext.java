@@ -238,6 +238,7 @@ public class ApplicationContext {
 		SpriteSheet alphabethSheet = new SpriteSheet("data/alphabeth.png", 16, 24);
 		SpriteSheet alphabeth2Sheet = new SpriteSheet("data/alphabeth2.png", 16, 16);
 		SpriteSheet interfaceSheet = new SpriteSheet("data/interface.png", 16, 16);
+		SpriteSheet tilesetSheet = new SpriteSheet("data/tiles.png", 16, 16);
 		
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_PLAYER, playerSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_COLLECTIBLE_ITEM_TOOL, collectibleItemToolSheet);
@@ -248,6 +249,7 @@ public class ApplicationContext {
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH, alphabethSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH2, alphabeth2Sheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INTERFACE, interfaceSheet);
+		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES, tilesetSheet);
 		
 		
 		AnimationBuilder builder = new AnimationBuilder();
