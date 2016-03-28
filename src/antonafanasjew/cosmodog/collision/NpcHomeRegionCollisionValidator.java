@@ -12,6 +12,11 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CollisionUtils;
 import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 
+/**
+ * This collision validator will only used for enemies. It will block the passage 
+ * if the tile is not part of the enemies home region as defined in the actor object.
+ * Enemies without a home region will pass this validator for any tile.
+ */
 public class NpcHomeRegionCollisionValidator extends AbstractCollisionValidator {
 
 	@Override

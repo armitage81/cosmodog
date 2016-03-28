@@ -4,6 +4,9 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 
+/**
+ * Abstract class for calculation of damage dealt by the player characters to an enemy. 
+ */
 public abstract class AbstractPlayerAttackDamageCalculator extends AbstractDamageCalculator {
 
 	@Override

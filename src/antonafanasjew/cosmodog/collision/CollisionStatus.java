@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
-
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
@@ -44,6 +42,12 @@ public class CollisionStatus {
 	 * The tile contains an energy wall generator and the costs are higher than the number of collected infobits.
 	 */
 	public static final int NO_PASSAGE_REASON_ENERGY_WALL_COSTS = 5;
+	
+	/**
+	 * The tile is blocked by a vehicle collectible. F.i. another vehicle or enemies cannot pass such tiles.
+	 */
+	public static final int NO_PASSAGE_REASON_BLOCKED_BY_VEHICLE_COLLECTIBLE = 6;
+	
 	
 	private Actor actor;
 	private CustomTiledMap map;

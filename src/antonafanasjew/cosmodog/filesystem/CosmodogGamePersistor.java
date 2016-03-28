@@ -15,6 +15,10 @@ import java.io.OutputStream;
 
 import antonafanasjew.cosmodog.model.CosmodogGame;
 
+/**
+ * Used for serializing and deserializing the cosmodog game state.
+ * Singleton.
+ */
 public class CosmodogGamePersistor {
 
 	private CosmodogGamePersistor() {
@@ -23,10 +27,19 @@ public class CosmodogGamePersistor {
 	
 	private static CosmodogGamePersistor instance = new CosmodogGamePersistor();
 
+	/**
+	 * Returns the singleton instance of the game persistor.
+	 */
 	public static CosmodogGamePersistor instance() {
 		return instance;
 	}
 
+	/**
+	 * Saves the game on disk.
+	 * @param game Cosmodog game state.
+	 * @param filePath Path of the save file on disk.
+	 * @throws CosmodogPersistenceException Thrown if I/O errors occur.
+	 */
 	public void saveCosmodogGame(CosmodogGame game, String filePath) throws CosmodogPersistenceException {
 		try {
 			File file = new File(filePath);
@@ -46,6 +59,12 @@ public class CosmodogGamePersistor {
 		}
 	}
 
+	/**
+	 * Restores a cosmodog game from disk.
+	 * @param filePath Save file on disk.
+	 * @return Cosmodog game as deserialized from a save file.
+	 * @throws CosmodogPersistenceException Thrown if I/O errors occur.
+	 */
 	public CosmodogGame restoreCosmodogGame(String filePath) throws CosmodogPersistenceException {
 		try {
 			File file = new File(filePath);

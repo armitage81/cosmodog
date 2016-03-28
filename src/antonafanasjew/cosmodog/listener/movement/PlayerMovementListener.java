@@ -6,13 +6,13 @@ import java.util.Set;
 
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
-import org.newdawn.slick.tiled.TiledMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -250,8 +250,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
-				int waterLayerTileId = tiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_WATERPLACES);
-				if (waterLayerTileId == Tiles.WATERPLACE_TILE_ID || waterLayerTileId == Tiles.NEAR_WATERPLACE_TILE_ID) {
+				
+				WaterValidator waterValidator = cosmodog.getWaterValidator();
+				
+				boolean hasWaterAccess = waterValidator.waterInReach(player, tiledMap, player.getPositionX(), player.getPositionY());
+				
+				if (hasWaterAccess) {
 					if (oldThirst > 0) {
 						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
 						applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();

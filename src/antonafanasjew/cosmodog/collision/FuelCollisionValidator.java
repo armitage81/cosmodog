@@ -12,7 +12,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 
 /**
- * This validator will pass for players without vehicles and will fail if player has vehicle and it is out of fuel.
+ * This validator will pass for players without vehicles and will fail if player has a vehicle and it is out of fuel.
  * 
  * Take note: This 'collision' validator ignores the actual collisions and only checks for fuel.
  * It's result needs to be logically conjoined with other real collision validators.

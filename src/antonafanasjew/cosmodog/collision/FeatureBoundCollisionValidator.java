@@ -15,6 +15,10 @@ public class FeatureBoundCollisionValidator extends AbstractCollisionValidator {
 
 	private CollisionValidator delegate;
 	
+	/**
+	 * Initialized with the delegate.
+	 * @param delegate The actual collision validator that will be used in case the collision feature is activated.
+	 */
 	public FeatureBoundCollisionValidator(CollisionValidator delegate) {
 		this.delegate = delegate;
 	}

@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.rules.triggers;
 
-import org.newdawn.slick.tiled.TiledMap;
-
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;

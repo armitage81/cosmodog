@@ -13,6 +13,10 @@ public class OneBlocksAllCollisionValidator implements CollisionValidator {
 
 	private Iterable<CollisionValidator> underlyings;
 
+	/**
+	 * Initialized with underlying validators.
+	 * @param underlyings Underlying validators.
+	 */
 	public OneBlocksAllCollisionValidator(Iterable<CollisionValidator> underlyings) {
 		this.underlyings = underlyings;
 	}

@@ -21,6 +21,7 @@ import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
 import antonafanasjew.cosmodog.collision.NpcHomeRegionCollisionValidator;
 import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
+import antonafanasjew.cosmodog.collision.VehicleObstacleCollisionValidator;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
@@ -152,7 +153,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		CollisionValidator c1 = new ChaussieBasedCollisionValidator();
 		CollisionValidator c2 = new InterCharacterCollisionValidator(playerMovementActionResult, enemyMovementActionResults);
 		CollisionValidator c3 = new NpcHomeRegionCollisionValidator();
-		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3));
+		CollisionValidator c4 = new VehicleObstacleCollisionValidator();
+		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4));
 		
 		TravelTimeCalculator travelTimeCalculator = cosmodog.getTravelTimeCalculator();
 		return pathFinder.calculateMovementResult(enemy, planetaryMinutesForMovement, collisionValidator, travelTimeCalculator, playerMovementActionResult);

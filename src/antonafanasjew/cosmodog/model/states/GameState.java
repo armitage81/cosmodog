@@ -9,7 +9,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -59,7 +58,6 @@ import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;

@@ -42,6 +42,11 @@ public class InterCharacterCollisionValidator extends AbstractCollisionValidator
 	private MovementActionResult playerMovementActionResult;
 	private Map<Enemy, MovementActionResult> enemyMovementActionResults;
 	
+	/**
+	 * Initialized with movement results of all actors.
+	 * @param playerMovementActionResult Player movement result.
+	 * @param enemyMovementActionResults Enemies movement results.
+	 */
 	public InterCharacterCollisionValidator(MovementActionResult playerMovementActionResult, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
 		this.playerMovementActionResult = playerMovementActionResult;
 		this.enemyMovementActionResults = enemyMovementActionResults;

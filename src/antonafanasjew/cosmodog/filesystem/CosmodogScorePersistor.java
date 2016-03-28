@@ -15,6 +15,10 @@ import java.io.OutputStream;
 
 import antonafanasjew.cosmodog.model.ScoreList;
 
+/** 
+ * The persistor class for cosmodog scores.
+ * Singleton.
+ */
 public class CosmodogScorePersistor {
 
 	private CosmodogScorePersistor() {
@@ -22,10 +26,19 @@ public class CosmodogScorePersistor {
 	
 	private static CosmodogScorePersistor instance = new CosmodogScorePersistor();
 
+	/**
+	 * Returns the singleton instance.
+	 */
 	public static CosmodogScorePersistor instance() {
 		return instance;
 	}
 	
+	/**
+	 * Saves the score list 
+	 * @param scoreList The score list.
+	 * @param filePath The save file on disk.
+	 * @throws CosmodogPersistenceException Thrown if I/O errors happen.
+	 */
 	public void saveScoreList(ScoreList scoreList, String filePath) throws CosmodogPersistenceException {
 		try {
 			File file = new File(filePath);
@@ -44,6 +57,12 @@ public class CosmodogScorePersistor {
 		}
 	}
 
+	/**
+	 * Restores the score list.
+	 * @param filePath Path of the save file.
+	 * @return Deserialized score list.
+	 * @throws CosmodogPersistenceException Thrown if I/O errors happen.
+	 */
 	public ScoreList restoreScoreList(String filePath) throws CosmodogPersistenceException {
 		try {
 			File file = new File(filePath);

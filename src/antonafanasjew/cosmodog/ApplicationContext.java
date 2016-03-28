@@ -6,10 +6,10 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.collision.CollisionValidator;
+import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
 import antonafanasjew.cosmodog.collision.FeatureBoundCollisionValidator;
 import antonafanasjew.cosmodog.collision.GeneralCollisionValidator;
@@ -186,6 +186,7 @@ public class ApplicationContext {
 		
 		cosmodog.setPathFinder(enemySightBasedDecisionPathFinder);
 		cosmodog.setCollisionValidator(new FeatureBoundCollisionValidator(collisionValidator));
+		cosmodog.setWaterValidator(new DefaultWaterValidator());
 		
 		cosmodog.setTravelTimeCalculator(new DefaultTravelTimeCalculator());
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME, inGameInputHandler);

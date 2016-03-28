@@ -5,6 +5,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 
+/**
+ * Abstract implementation of the input handler to hold the common logic.
+ */
 public abstract class AbstractInputHandler implements InputHandler {
 	
 	@Override

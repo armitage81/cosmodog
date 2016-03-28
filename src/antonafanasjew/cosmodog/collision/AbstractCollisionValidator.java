@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.collision;
 
-import org.newdawn.slick.tiled.TiledMap;
-
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;

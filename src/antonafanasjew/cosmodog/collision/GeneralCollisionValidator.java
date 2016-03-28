@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.collision;
 
+import com.google.common.collect.Lists;
+
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
@@ -15,7 +17,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 public class GeneralCollisionValidator extends AbstractCollisionValidator {
 
 	private UnequippedWalkerCollisionValidator unequippedWalkerCollisionValidator = new UnequippedWalkerCollisionValidator();
-	private VehicleCollisionValidator vehicleCollisionValidator = new VehicleCollisionValidator();
+	private CollisionValidator vehicleCollisionValidator =  new OneBlocksAllCollisionValidator(Lists.newArrayList(new ActorOnWheelsCollisionValidator(), new VehicleObstacleCollisionValidator()));
 	private FuelCollisionValidator fuelCollisionValidator = new FuelCollisionValidator();
 	private BoatCollisionValidator boatCollisionValidator = new BoatCollisionValidator();
 	

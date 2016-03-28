@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model;
 import antonafanasjew.cosmodog.GameLifeCycle;
 import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
+import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
@@ -23,6 +24,7 @@ public class Cosmodog extends CosmodogModel {
     private CosmodogGame cosmodogGame;
     private ScoreList scoreList;
     private CollisionValidator collisionValidator;
+    private WaterValidator waterValidator;
     private SightRadiusCalculator sightRadiusCalculator;
     private TravelTimeCalculator travelTimeCalculator;
     private PathFinder pathFinder;
@@ -102,6 +104,12 @@ public class Cosmodog extends CosmodogModel {
 	}
 	public void setSightRadiusCalculator(SightRadiusCalculator sightRadiusCalculator) {
 		this.sightRadiusCalculator = sightRadiusCalculator;
+	}
+	public WaterValidator getWaterValidator() {
+		return waterValidator;
+	}
+	public void setWaterValidator(WaterValidator waterValidator) {
+		this.waterValidator = waterValidator;
 	}
 	
 }

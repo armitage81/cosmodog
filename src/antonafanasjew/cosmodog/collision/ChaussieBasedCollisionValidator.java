@@ -19,14 +19,14 @@ public class ChaussieBasedCollisionValidator extends AbstractCollisionValidator 
 	private Map<ChaussieType, CollisionValidator> chaussieCollisionValidators = Maps.newHashMap();
 	
 	public ChaussieBasedCollisionValidator() {
-		chaussieCollisionValidators.put(ChaussieType.FEET, new NpcOnFootCollisionValidator());
-		chaussieCollisionValidators.put(ChaussieType.FLYING, new NpcOnWingsCollisionValidator());
-		chaussieCollisionValidators.put(ChaussieType.SWIMMING, new NpcOnBoatCollisionValidator());
-		chaussieCollisionValidators.put(ChaussieType.TRACKS, new NpcOnTracksCollisionValidator());
-		chaussieCollisionValidators.put(ChaussieType.WHEELS, new NpcOnWheelsCollisionValidator());
+		chaussieCollisionValidators.put(ChaussieType.FEET, new ActorOnFootCollisionValidator());
+		chaussieCollisionValidators.put(ChaussieType.FLYING, new ActorOnWingsCollisionValidator());
+		chaussieCollisionValidators.put(ChaussieType.SWIMMING, new ActorOnBoatCollisionValidator());
+		chaussieCollisionValidators.put(ChaussieType.TRACKS, new ActorOnTracksCollisionValidator());
+		chaussieCollisionValidators.put(ChaussieType.WHEELS, new ActorOnWheelsCollisionValidator());
 	}
 	
-	private CollisionValidator defaulCollisionValidator = new NpcOnFootCollisionValidator();
+	private CollisionValidator defaulCollisionValidator = new ActorOnFootCollisionValidator();
 
 	
 	@Override

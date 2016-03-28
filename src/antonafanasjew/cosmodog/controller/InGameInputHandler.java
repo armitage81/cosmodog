@@ -25,6 +25,9 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 
+/**
+ * Standard game controls for movement, zooming.
+ */
 public class InGameInputHandler extends AbstractInputHandler {
 
 	@Override
