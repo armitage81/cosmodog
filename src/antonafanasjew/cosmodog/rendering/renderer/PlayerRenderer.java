@@ -21,6 +21,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
+import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 
 public class PlayerRenderer extends AbstractRenderer {
 
@@ -51,8 +52,9 @@ public class PlayerRenderer extends AbstractRenderer {
 
 		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
 		FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
 		
-		
+		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE) != null;
 		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(tiledMap, player, playerTransition);
 		boolean playerIsInHighGrass = isHighGrassTile(tiledMap, player, playerTransition);
@@ -64,7 +66,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		PlayerAppearanceType playerAppearanceType;
 		
-		if (playerIsOnBoat) {
+		if (playerIsBeingTeleportedAndInvisible) {
+			playerAppearanceType = PlayerAppearanceType.ISTELEPORTING;
+		} else if (playerIsOnBoat) {
 			playerAppearanceType = PlayerAppearanceType.ONBOAT;
 		} else if (playerIsInVehicle) {
 			playerAppearanceType = PlayerAppearanceType.INVEHICLE;

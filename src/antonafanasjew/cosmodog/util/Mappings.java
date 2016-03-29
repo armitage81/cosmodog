@@ -57,6 +57,7 @@ public class Mappings {
 		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.INVEHICLE, "InVehicle");
 		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.ONBOAT, "OnBoat");
 		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.INHIGHGRASS, "InGrass");
+		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.ISTELEPORTING, "Teleporting");
 		
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.ANIMATE, "Animated");
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.INANIMATE, "Inanimated");

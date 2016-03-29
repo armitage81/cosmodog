@@ -71,4 +71,19 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_EXPLOSION = "sound.explosion";
 
+	/**
+	 * Sound for Teleportation start
+	 */
+	public static final String SOUND_TELEPORT_START = "sound.teleport_start";
+	
+	/**
+	 * Sound for: Teleportation transfer.
+	 */
+	public static final String SOUND_TELEPORT_TRANSFER = "sound.teleport_transfer";
+	
+	/**
+	 * Sound for: Teleportation end.
+	 */
+	public static final String SOUND_TELEPORT_END = "sound.teleport_end";
+
 }

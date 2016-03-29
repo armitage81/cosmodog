@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
+import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
@@ -26,6 +27,8 @@ public class CosmodogGame extends CosmodogModel {
 	private ActionRegistry interfaceActionRegistry = new ActionRegistry();
 	
 	private FightPhaseTransition fightPhaseTransition = null;
+	
+	private TeleportationTransition teleportationTransition = new TeleportationTransition();
 	
 	private ActorTransitionRegistry actorTransitionRegistry = new ActorTransitionRegistry();
 
@@ -168,6 +171,10 @@ public class CosmodogGame extends CosmodogModel {
 
 	public void setTextFrame(TextFrame textFrame) {
 		this.textFrame = textFrame;
+	}
+
+	public TeleportationTransition getTeleportationTransition() {
+		return teleportationTransition;
 	}
 
 }

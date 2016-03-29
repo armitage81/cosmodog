@@ -1,18 +1,15 @@
 package antonafanasjew.cosmodog.rules.factories;
 
-import java.util.List;
 import java.util.Map;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
-import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
-import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
-import antonafanasjew.cosmodog.rules.events.GameEvent;
+import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringTeleportTrigger;
-import antonafanasjew.cosmodog.tiledmap.TiledLineObject.Point;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
@@ -49,32 +46,9 @@ public class TeleportRuleFactory implements RuleFactory {
 			
 			TiledPolylineObject teleportConnection = (TiledPolylineObject)teleportConnectionObjects.get(teleportConnectionName);
 			
-			List<Point> teleportConnectionPoints = teleportConnection.getPoints();
-			
-			Point endPoint = teleportConnectionPoints.get(1);
-			
 			EnteringTeleportTrigger trigger = new EnteringTeleportTrigger(teleportConnectionName);
 			
-			RuleAction action = new AbstractRuleAction() {
-				
-				private static final long serialVersionUID = -4287587770311355080L;
-
-				@Override
-				public void execute(GameEvent event) {
-					
-					Player player = ApplicationContextUtils.getPlayer();
-					Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
-					
-					int targetPosX = (int)endPoint.x / tiledMap.getTileWidth();
-					int targetPosY = (int)endPoint.y / tiledMap.getTileHeight();
-					
-					player.setPositionX(targetPosX);
-					player.setPositionY(targetPosY);
-					
-					cam.focusOnPiece(tiledMap, 0, 0, player);
-					
-				}
-			};
+			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.TELEPORTATION, new TeleportationAction(teleportConnection));
 			
 			Rule rule = new Rule("teleport." + teleportConnectionName, trigger, action);
 			

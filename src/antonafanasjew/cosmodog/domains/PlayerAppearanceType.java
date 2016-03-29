@@ -23,5 +23,10 @@ public enum PlayerAppearanceType {
 	/**
 	 * Covered partially by high grass.
 	 */
-	INHIGHGRASS
+	INHIGHGRASS, 
+	
+	/**
+	 * Invisible because of teleportation.
+	 */
+	ISTELEPORTING
 }

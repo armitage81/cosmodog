@@ -6,6 +6,11 @@ package antonafanasjew.cosmodog.actions;
 public enum AsyncActionType {
 	
 	/**
+	 * Action type: Teleportation.
+	 */
+	TELEPORTATION(true, true),
+	
+	/**
 	 * Action type: Movement of the player character and the NPC's
 	 */
 	MOVEMENT(true, false),

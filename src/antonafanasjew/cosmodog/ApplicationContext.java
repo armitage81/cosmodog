@@ -216,6 +216,9 @@ public class ApplicationContext {
 		Sound hit = new Sound("data/sound/hit.wav");
 		Sound explosion = new Sound("data/sound/explosion.wav");
 		Sound powerup = new Sound("data/sound/powerup.wav");
+		Sound teleport_start = new Sound("data/sound/teleport_start.wav");
+		Sound teleport_transfer = new Sound("data/sound/teleport_transferring.wav");
+		Sound teleport_end = new Sound("data/sound/teleport_end.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -228,6 +231,9 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_HIT, hit);
 		this.getSoundResources().put(SoundResources.SOUND_EXPLOSION, explosion);
 		this.getSoundResources().put(SoundResources.SOUND_POWERUP, powerup);
+		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_START, teleport_start);
+		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_TRANSFER, teleport_transfer);
+		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_END, teleport_end);
 
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
