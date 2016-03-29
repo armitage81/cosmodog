@@ -58,6 +58,7 @@ import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
+import antonafanasjew.cosmodog.rules.factories.TeleportRuleFactory;
 import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
@@ -99,8 +100,8 @@ public class InitializationUtils {
 		User user = new User();
 		user.setUserName(userName);
 		
-		Player player = Player.fromPosition(5, 3);
-		//Player player = Player.fromPosition(61, 242);
+		//Player player = Player.fromPosition(5, 3);
+		Player player = Player.fromPosition(9, 247);
 		
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
@@ -302,12 +303,14 @@ public class InitializationUtils {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 		
+		//Add all multiinstance piece collection dialog rules.
 		ruleBuilder = new MultiInstancePieceRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 		
+		//Add all item notification rules.
 		ruleBuilder = new ItemNotificationRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
@@ -315,8 +318,6 @@ public class InitializationUtils {
 		}
 		
 		//Beginning of the game.
-		
-		
 		AsyncAction dialogAsyncAction = new DialogAction(NarrativeSequenceUtils.STORY_MAIN_0001_AFTERLANDING);
 		RuleAction dialogRegisteringAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, dialogAsyncAction);
 		
@@ -355,6 +356,13 @@ public class InitializationUtils {
 			Rule.RULE_PRIORITY_EARLIEST
 		);
 		ruleBook.put(rule.getId(), rule);
+		
+		
+		//Teleport rules
+		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules();
+		ruleBook.putAll(teleportRules);
+		
+		
 		
 		return ruleBook;
 	}

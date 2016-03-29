@@ -227,7 +227,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		cosmodogGame.getActorTransitionRegistry().put(player, playerTransition);
 		
-		cam.focusOnPiece(tiledMap, movementOffsetX, movementOffsetY, player, Cam.DEFAULT_FOCUS_PADDING);
+		cam.focusOnPiece(tiledMap, movementOffsetX, movementOffsetY, player);
 	}
 	
 	private void onUpdateForEnemies(int timePassed) {

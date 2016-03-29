@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
@@ -18,11 +17,6 @@ public class Cam implements Serializable {
 
 	private static final long serialVersionUID = -8932980175152168004L;
 
-	/**
-	 * Default padding while focusing on a piece.
-	 */
-	public static final int DEFAULT_FOCUS_PADDING = Constants.CAM_PADDING;
-	
 	/**
 	 * In-scene camera mode. The view must never leave the border of the scene.
 	 */
@@ -302,7 +296,7 @@ public class Cam implements Serializable {
 	 * @param piece The piece which coordinates the camera will focus on.
 	 * @param padding The minimal allowed distance between the piece and the view bounds. (Normally used to be able to look a bit ahead in players direction) 
 	 */
-	public void focusOnPiece(CustomTiledMap map, float offsetX, float offsetY, Piece piece, int pd) {
+	public void focusOnPiece(CustomTiledMap map, float offsetX, float offsetY, Piece piece) {
 		
 		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
 		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);

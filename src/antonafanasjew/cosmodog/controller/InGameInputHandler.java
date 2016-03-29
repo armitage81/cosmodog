@@ -149,9 +149,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		if (input.isKeyPressed(Input.KEY_Z)) {
 			cam.zoomIn();
-			cam.focusOnPiece(tiledMap, 0, 0, player, Cam.DEFAULT_FOCUS_PADDING);
+			cam.focusOnPiece(tiledMap, 0, 0, player);
 		} else if (input.isKeyPressed(Input.KEY_Y)) {
-			cam.focusOnPiece(tiledMap, 0, 0, player, Cam.DEFAULT_FOCUS_PADDING);
+			cam.focusOnPiece(tiledMap, 0, 0, player);
 			cam.zoomOut();
 		}
 

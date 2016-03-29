@@ -6,6 +6,9 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
+/**
+ * Tiled map layer constants.
+ */
 public class Layers {
 
 	public static final int LAYER_META_OVERRIDEREGIONS_FORGRASSLAYER = 0;
@@ -75,49 +78,8 @@ public class Layers {
 	public static final int LAYER_META_EFFECTS = LAYER_META_GROUNDTYPES + 1;
 	public static final int LAYER_META_NPC = LAYER_META_EFFECTS + 1;
 
-	// public static final int LAYER_BACKGROUND = 2;
-	// public static final int LAYER_BACKGROUND_OBJECTS_MANUAL =
-	// LAYER_BACKGROUND + 1;
-	// public static final int LAYER_BACKGROUND_OBJECTS_PASSABLE =
-	// LAYER_BACKGROUND_OBJECTS_MANUAL + 1;
-	// public static final int LAYER_SWAMP = LAYER_BACKGROUND_OBJECTS_PASSABLE +
-	// 1;
-	// public static final int LAYER_SAND = LAYER_SWAMP + 1;
-	//
-	//
-	// public static final int META_TERRAIN_TYPES = 61 ;
-	//
-	// public static final int META_EFFECTS = META_TERRAIN_TYPES + 1;
-	//
-	// public static final int META_NPC= META_EFFECTS + 1;
-	//
-	//
-	// public static final int WATER_LAYER_ID = 20;
-	//
-	// public static final int FLOWER_TIPS_LAYER_ID = 48;
-	//
-	//
-	// public static final int COLLISION_LAYER_INDEX = 57;
-	// public static final int META_COLLECTIBLES_LAYER_INDEX =
-	// COLLISION_LAYER_INDEX + 1;
-	// public static final int META_WATERPLACE_LAYER_ID =
-	// META_COLLECTIBLES_LAYER_INDEX + 1;
-	// public static final int ALT_WATER_LAYER_ID = META_WATERPLACE_LAYER_ID +
-	// 1;
-	//
-	//
-	// public static final int RUINS_TOP_LAYER_INDEX = 54;
-	// public static final int GEAR_TOP_LAYER_INDEX = 53;
-	// public static final int ROCKS_TOP_LAYER_INDEX = 51;
-	// public static final int FOREST_TOP_LAYER_INDEX = 49;
-	//
-	//
-	// public static final int ROCKS_TOP_OBJECTS_MANUAL_LAYER_INDEX =
-	// ROCKS_TOP_LAYER_INDEX + 1;
-	// public static final int FOREST_TOP_OBJECTS_RANDOM_LAYER_INDEX =
-	// FOREST_TOP_LAYER_INDEX + 1;
 
-	/*
+	/**
 	 * This layers are counting as "covering", that is, their tiles may act as
 	 * 'roofs' and be removed if the player goes under them. This list is not
 	 * equal to the set of layer tiles that will be removed, but it will point
@@ -135,7 +97,7 @@ public class Layers {
 		COVERING_TOP_LAYERS.add(LAYER_FOREST_TOP);
 	};
 
-	/*
+	/**
 	 * If player is covered by a tile from a layer that is counting as
 	 * 'coverable' all tiles on this position will be removed from all layers
 	 * that are referenced by that coverable layer. f.i. ruins_top layer will

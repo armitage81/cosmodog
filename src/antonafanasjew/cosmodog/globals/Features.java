@@ -13,19 +13,58 @@ import com.google.common.collect.Maps;
  */
 public class Features {
 
+	/**
+	 * The hunger feature including hunger, rations.
+	 */
 	public static final String FEATURE_HUNGER = "feature.hunger";
+	
+	/**
+	 * The thirst feature including thirst, water places.
+	 */
 	public static final String FEATURE_THIRST = "feature.thirst";
+	
+	/**
+	 * The infobit feature including infobits, score.
+	 */
 	public static final String FEATURE_INFOBITS = "feature.infobits";
+	
+	/**
+	 * The soul essence feature including soul essence, life increase.
+	 */
 	public static final String FEATURE_SOULESSENCE = "feature.soulessence";
+	
+	/**
+	 * Collision feature including collision validators.
+	 */
 	public static final String FEATURE_COLLISION = "feature.collision";
+	
+	/**
+	 * Movement costs feature including the movement costs and terrain types.
+	 */
 	public static final String FEATURE_MOVEMENT_COSTS = "feature.movementcosts";
+	
+	/**
+	 * Fuel feature including fuel reduction, gas stations.
+	 */
 	public static final String FEATURE_FUEL = "feature.fuel";
+	
+	/**
+	 * Story feature including dialogs, cutscenes.
+	 */
 	public static final String FEATURE_STORY = "feature.story";
+	
+	/**
+	 * Tutorial feature including tutorial text messages.
+	 */
 	public static final String FEATURE_TUTORIAL = "feature.tutorial";
 	
 	
 	private static final Features instance = new Features();
 	
+	/**
+	 * Features object instance.
+	 * @return The singleton instance.
+	 */
 	public static Features getInstance() {
 		return instance;
 	}
@@ -44,19 +83,31 @@ public class Features {
 		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 	}
 	
+	/**
+	 * Indicates whether a given feature is enabled or not.
+	 * @param feature The feature id.
+	 * @return true if the feature is enabled, false otherwise.
+	 */
 	public boolean featureOn(String feature) {
 		return getFeatureFlags().get(feature) != null && getFeatureFlags().get(feature);
 	}
 	
 	/**
 	 * Runs a procedure if the given feature is active.
+	 *
+	 * @param feature The feature id.
+	 * @param procedure The procedure that is bound to the feature.
 	 */
 	public void featureBoundProcedure(String feature, Runnable procedure) {
 		featureBoundProcedure(feature, procedure, null);
 	}
-	
+
 	/**
 	 * Runs a procedure if the given feature is active. Otherwise runs the alternative procedure.
+	 * 
+	 * @param feature The feature id.
+	 * @param procedure The procedure that is bound to the feature.
+	 * @param otherwise The procedure that will be executed in case the feature is not enabled.
 	 */
 	public void featureBoundProcedure(String feature, Runnable procedure, Runnable otherwise) {
 		if (featureOn(feature)) {
@@ -68,6 +119,13 @@ public class Features {
 		}
 	}
 	
+	/**
+	 * Returns a value of the given function if the given feature is enabled, default value otherwise.
+	 * @param feature The feature id.
+	 * @param function The feature bound function whose return value will be returned.
+	 * @param defaultValue Default value that will be returned if the feature is not enabled.
+	 * @return Value of the given function if the given feature is enabled, default value otherwise.
+	 */
 	public <T>T featureBoundFunction(String feature, Callable<T> function, T defaultValue) {
 		try {
 			return featureOn(feature) ? function.call() : defaultValue;
@@ -77,6 +135,10 @@ public class Features {
 		}
 	}
 
+	/**
+	 * Returns the flags for each feature.
+	 * @return Feature activation flags.
+	 */
 	public Map<String, Boolean> getFeatureFlags() {
 		return featureFlags;
 	}

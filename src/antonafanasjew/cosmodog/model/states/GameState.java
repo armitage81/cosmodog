@@ -196,7 +196,7 @@ public class GameState extends BasicGameState {
     		Player player = cosmodogGame.getPlayer();
     		Cam cam = cosmodogGame.getCam();
     		cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
-    		cam.focusOnPiece(tiledMap, 0, 0, player, Cam.DEFAULT_FOCUS_PADDING);
+    		cam.focusOnPiece(tiledMap, 0, 0, player);
 
     		//Check for the rules of the new game event
 			RuleBook ruleBook = cosmodogGame.getRuleBook();

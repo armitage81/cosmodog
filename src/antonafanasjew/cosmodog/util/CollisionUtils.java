@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
 import antonafanasjew.cosmodog.tiledmap.TiledRectObject;
 import antonafanasjew.cosmodog.tiledmap.TiledTileObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class CollisionUtils {
 
@@ -58,6 +59,25 @@ public class CollisionUtils {
 
 	private static boolean intersects(PlacedRectangle r, TiledPolylineObject region) {
 		throw new RuntimeException("Not implemented");
+	}
+	
+	/**
+	 * Returns true if the placed rectangle intersects (actually contains) a position.
+	 * @param r Rectangle
+	 * @param position Point
+	 * @return true if the position is within the rectangle, false otherwise.
+	 */
+	public static boolean intersects(PlacedRectangle r, Position position) {
+		float x1 = r.minX();
+		float x2 = r.maxX();
+		float y1 = r.minY();
+		float y2 = r.maxY();
+		
+		float x = position.getX();
+		float y = position.getY();
+		
+		return x >= x1 && x < x2 && y >= y1 && y < y2;
+		
 	}
 
 	/*
