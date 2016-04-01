@@ -100,8 +100,8 @@ public class InitializationUtils {
 		User user = new User();
 		user.setUserName(userName);
 		
-		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(9, 247);
+		Player player = Player.fromPosition(5, 3);
+		//Player player = Player.fromPosition(9, 247);
 		
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());

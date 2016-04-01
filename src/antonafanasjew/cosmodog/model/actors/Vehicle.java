@@ -8,7 +8,7 @@ public class Vehicle extends Actor {
 	private static final long serialVersionUID = -2970030463088280229L;
 
 	public static final int MAX_POSSIBLE_LIFE = 50;
-	public static final int INITIAL_LIFE = 10;
+	public static final int INITIAL_LIFE = 20;
 	
 	public static final int MAX_FUEL = 3000;
 	

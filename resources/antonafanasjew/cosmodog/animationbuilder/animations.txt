@@ -121,8 +121,20 @@ inventoryItemBackground;data/inventory_items.png;16;16;[1/9/75,2/9/75,3/9/75,4/9
 lifeUnit;data/various_icons.png;16;16;[1/0/75,2/0/75,3/0/75,4/0/75,0/0/2000];true;true
 emptyLifeUnit;data/various_icons.png;16;16;[0/1/10000];true;true
 
-robustnessUnit;data/various_icons.png;16;16;[1/2/75,2/2/75,3/2/75,4/2/75,0/2/2000];true;true
-emptyRobustnessUnit;data/various_icons.png;16;16;[0/3/10000];true;true
+lifePack;data/various_icons.png;16;16;[5/2/75,6/2/75,7/2/75,8/2/75,5/2/2000];true;true
+emptyLifePack;data/various_icons.png;16;16;[0/3/10000];true;true
+
+robustnessUnit;data/various_icons.png;16;16;[5/0/75,6/0/75,7/0/75,8/0/75,5/0/2000];true;true
+emptyRobustnessUnit;data/various_icons.png;16;16;[5/1/10000];true;true
+
+robustnessPack;data/various_icons.png;16;16;[0/2/75,1/2/75,2/2/75,3/2/75,0/2/2000];true;true
+emptyRobustnessPack;data/various_icons.png;16;16;[0/3/10000];true;true
+
+
+foodBar;data/various_icons.png;16;16;[0/4/10000];true;true
+waterBar;data/various_icons.png;16;16;[0/5/10000];true;true
+
+
 
 markFuel;data/markedTile.png;16;16;[0/0/100,1/0/100,2/0/100,3/0/100,4/0/100,3/0/100,2/0/100,1/0/100];true;true
 

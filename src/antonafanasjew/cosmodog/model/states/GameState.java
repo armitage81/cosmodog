@@ -36,7 +36,9 @@ import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
+import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LeftInterfaceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.NpcRenderer;
@@ -47,7 +49,7 @@ import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.rendering.renderer.RightInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.TopInterfaceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WritingRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.BottomLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
@@ -76,6 +78,10 @@ public class GameState extends BasicGameState {
 	private DrawingContext middleColumnDrawingContext;
 	private DrawingContext rightColumnDrawingContext;
 	private DrawingContext topDrawingContext;
+	private DrawingContext lifeDrawingContext;
+	private DrawingContext bottomDrawingContext;
+	private DrawingContext vitalDataDrawingContext;
+	private DrawingContext gameProgressDrawingContext;
 	private DrawingContext mapDrawingContext;
 	private DrawingContext notificationsDrawingContext;
 	
@@ -87,8 +93,9 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer cloudRenderer;
 	private AbstractRenderer birdsRenderer;
 	private Renderer notificationRenderer;
-	private Renderer bottomInterfaceRenderer;
-	private Renderer topInterfaceRenderer;
+	private Renderer vitalDataInterfaceRenderer;
+	private Renderer gameProgressInterfaceRenderer;
+	private Renderer lifeInterfaceRenderer;
 	private AbstractRenderer leftInterfaceRenderer;
 	private Renderer rightInterfaceRenderer;
 	private AbstractRenderer mapRenderer;
@@ -120,10 +127,15 @@ public class GameState extends BasicGameState {
 
 		// leftColumnDrawingContext = new
 		// TileDrawingContext(gameContainerDrawingContext, 5, 1, 0, 0);
-		topDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0);
-		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 1, 1, 7);
+		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0, 1, 8);
 		
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 4, 1);
+		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 6, 0, 0);
+		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
+		
+		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
+		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
+		gameProgressDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 1, 0);
 		
 		notificationsDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 10, 0, 0, 1, 1);
 
@@ -138,7 +150,7 @@ public class GameState extends BasicGameState {
 		
 		birdsRenderer = new BirdsRenderer();
 		
-		topInterfaceRenderer = new TopInterfaceRenderer();
+		lifeInterfaceRenderer = new LifeInterfaceRenderer();
 		leftInterfaceRenderer = new LeftInterfaceRenderer();
 		rightInterfaceRenderer = new RightInterfaceRenderer();
 		
@@ -152,6 +164,8 @@ public class GameState extends BasicGameState {
 		daytimeColorFilterRenderer = new DayTimeFilterRenderer();
 		markedTileRenderer = new MarkedTileRenderer();
 		sightRadiusRenderer = new SightRadiusRenderer();
+		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
+		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
 		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
 		tutorialsRenderer = new WritingRenderer(false, new Color(0, 0, 0, 0.75f));
@@ -311,7 +325,9 @@ public class GameState extends BasicGameState {
 		daytimeColorFilterRenderer.render(gc, g, mapDrawingContext, null);
 		markedTileRenderer.render(gc, g, mapDrawingContext, null);
 		playerNotificationRenderer.render(gc, g, mapDrawingContext);
-		topInterfaceRenderer.render(gc, g, topDrawingContext, null);
+		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
+		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
+		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
 		// leftInterfaceRenderer.render(gc, g, leftColumnDrawingContext);
 		rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
 	

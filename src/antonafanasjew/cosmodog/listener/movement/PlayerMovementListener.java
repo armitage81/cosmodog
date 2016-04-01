@@ -164,7 +164,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 						Features.getInstance().featureBoundProcedure(Features.FEATURE_SOULESSENCE, new Runnable() {
 							@Override
 							public void run() {
-								player.increaseMaxLife(Player.MAX_LIFE_INCREASE, true);
+								player.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
 							}
 						});
 					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_ARMOR)) {
@@ -173,7 +173,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 						for (Piece piece2 : mapPieces) {
 							if (piece2 instanceof Vehicle) {
 								Vehicle vehicle = ((Vehicle)piece2);
-								vehicle.increaseMaxLife(5, true);
+								vehicle.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
 							}
 						}
 						
