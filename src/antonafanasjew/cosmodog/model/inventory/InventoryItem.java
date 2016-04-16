@@ -12,6 +12,8 @@ public abstract class InventoryItem implements Serializable {
 	public static final String INVENTORY_ITEM_FUEL_TANK = "inventoryitem.fueltank";
 	public static final String INVENTORY_ITEM_INSIGHT = "inventoryitem.insight";
 	
+	public static final String INVENTORY_ITEM_ARSENAL = "inventoryitem.arsenal";
+	
 	public static final int INVENTORY_ITEM_INSIGHT_MAX_COUNT = 20;
 	
 	private String inventoryItemType;

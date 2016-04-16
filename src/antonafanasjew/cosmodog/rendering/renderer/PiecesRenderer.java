@@ -3,16 +3,17 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.Map;
 import java.util.Set;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Collectible;
+import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -20,13 +21,22 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.PieceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.SoulEssenceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.SuppliesRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.ToolRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.VehicleRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.WeaponRenderer;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public class PiecesRenderer extends AbstractRenderer {
-
-	private Map<DirectionType, String> vehicleDirection2animationKey = Maps.newHashMap();
 
 	/*
 	 * This flags define which pieces should be rendered. 
@@ -42,10 +52,21 @@ public class PiecesRenderer extends AbstractRenderer {
 		this.northFromPlayer = northFromPlayer;
 		this.southFromPlayer = southFromPlayer;
 		
-		vehicleDirection2animationKey.put(DirectionType.RIGHT, "vehicleRight");
-		vehicleDirection2animationKey.put(DirectionType.DOWN, "vehicleDown");
-		vehicleDirection2animationKey.put(DirectionType.LEFT, "vehicleLeft");
-		vehicleDirection2animationKey.put(DirectionType.UP, "vehicleUp");
+	}
+	
+	private static Map<String, PieceRenderer> pieceRendererMap = Maps.newHashMap();
+	
+	static {
+		pieceRendererMap.put(CollectibleTool.class.getSimpleName(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponRenderer());
+		pieceRendererMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoRenderer());
+		pieceRendererMap.put(Vehicle.class.getSimpleName(), new VehicleRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitRenderer());
 	}
 	
 	@Override
@@ -93,56 +114,45 @@ public class PiecesRenderer extends AbstractRenderer {
 		}
 		
 		for (Piece piece : filteredMapPieces) {
+			
+			String pieceType;
+			
 			if (piece instanceof Collectible) {
+
 				Collectible collectible = (Collectible) piece;
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_INFOBIT)) {
-					Features.getInstance().featureBoundProcedure(Features.FEATURE_INFOBITS, new Runnable() {
-						@Override
-						public void run() {
-							applicationContext.getAnimations().get("infobit").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
-						}
-					});
+				Collectible.CollectibleType collectibleType = collectible.getCollectibleType();
+				
+				if (collectibleType == Collectible.CollectibleType.TOOL) {
+					pieceType = CollectibleTool.class.getSimpleName();
+				} else if (collectibleType == Collectible.CollectibleType.WEAPON) {
+					pieceType = CollectibleWeapon.class.getSimpleName();
+				} else if (collectibleType == Collectible.CollectibleType.AMMO) {
+					pieceType = CollectibleAmmo.class.getSimpleName();
 				}
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_INSIGHT)) {
-					applicationContext.getAnimations().get("insight").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
-				}
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_SUPPLIES)) {
-					Features.getInstance().featureBoundProcedure(Features.FEATURE_HUNGER, new Runnable() {
-						@Override
-						public void run() {
-							applicationContext.getAnimations().get("supplies").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
-						}
-					});
-				}
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_MEDIPACK)) {
-					applicationContext.getAnimations().get("medipack").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
-				}
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_ITEM)) {
-					applicationContext.getAnimations().get("collectibleItemTool").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);						
-				}
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_SOULESSENCE)) {
-					Features.getInstance().featureBoundProcedure(Features.FEATURE_SOULESSENCE, new Runnable() {
-						@Override
-						public void run() {
-							applicationContext.getAnimations().get("soulessence").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
-						}
-					});
-				}
-				if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_ARMOR)) {
-					applicationContext.getAnimations().get("armor").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+				else {
+					
+					CollectibleGoodie goodie = (CollectibleGoodie)collectible;
+					
+					pieceType = goodie.getGoodieType().name();
 				}
 				
 			} else if (piece instanceof Vehicle) {
-				Vehicle vehicle = (Vehicle)piece;
-				DirectionType direction = vehicle.getDirection();
-				String animationKey = vehicleDirection2animationKey.get(direction);
-				Animation vehicleAnimation = applicationContext.getAnimations().get(animationKey);
-				vehicleAnimation.draw((vehicle.getPositionX() - tileNoX) * tileWidth, (vehicle.getPositionY() - tileNoY) * tileHeight);
+				pieceType = Vehicle.class.getSimpleName();
+			} else {
+				pieceType = null;
 			}
+			
+			PieceRenderer pieceRenderer = pieceRendererMap.get(pieceType);
+			
+			if (pieceRenderer != null) {
+				pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
+			}
+			
 		}
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 	}
+
 
 }

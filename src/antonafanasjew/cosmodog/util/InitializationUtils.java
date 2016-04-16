@@ -18,13 +18,16 @@ import antonafanasjew.cosmodog.calendar.listeners.FuelConsumer;
 import antonafanasjew.cosmodog.calendar.listeners.WaterConsumer;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.UnitType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.Tiles;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
-import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleItem;
+import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Effect;
@@ -35,6 +38,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.ResourceWrapperBuilder;
@@ -100,8 +104,8 @@ public class InitializationUtils {
 		User user = new User();
 		user.setUserName(userName);
 		
-		Player player = Player.fromPosition(5, 3);
-		//Player player = Player.fromPosition(9, 247);
+		//Player player = Player.fromPosition(5, 3);
+		Player player = Player.fromPosition(110, 108);
 		
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
@@ -146,37 +150,37 @@ public class InitializationUtils {
 			for (int l = 0; l < mapHeight; l++) {
 				int tileId = tiledMap.getTileId(k, l, collectiblesLayerIndex);
 				if (tileId == INFOBIT_TILE_ID) {
-					Collectible c = new Collectible(Collectible.COLLECTIBLE_TYPE_INFOBIT);
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobit);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
 				if (tileId == INSIGHT_TILE_ID) {
-					Collectible c = new Collectible(Collectible.COLLECTIBLE_TYPE_INSIGHT);
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.insight);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
 				if (tileId == SUPPLIES_TILE_ID) {
-					Collectible c = new Collectible(Collectible.COLLECTIBLE_TYPE_SUPPLIES);
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.supplies);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
 				if (tileId == MEDIPACK_TILE_ID) {
-					Collectible c = new Collectible(Collectible.COLLECTIBLE_TYPE_MEDIPACK);
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.medipack);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
 				if (tileId == SOULESSENCE_TILE_ID) {
-					Collectible c = new Collectible(Collectible.COLLECTIBLE_TYPE_SOULESSENCE);
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.soulessence);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
 				if (tileId == ARMOR_TILE_ID) {
-					Collectible c = new Collectible(Collectible.COLLECTIBLE_TYPE_ARMOR);
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.armor);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
@@ -187,14 +191,14 @@ public class InitializationUtils {
 				}
 				
 				if (tileId == BOAT_TILE_ID) {
-					CollectibleItem c = new CollectibleItem(CollectibleItem.ITEM_TYPE_BOAT);
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.boat);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
 				
 				if (tileId == DYNAMITE_TILE_ID) {
-					CollectibleItem c = new CollectibleItem(CollectibleItem.ITEM_TYPE_DYNAMITE);
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.dynamite);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
@@ -205,6 +209,25 @@ public class InitializationUtils {
 					m.setPositionX(k);
 					m.setPositionY(l);
 					map.getMarkedTilePieces().add(m);
+				}
+				
+				if (Tiles.WEAPONS_TILE_IDS.contains(tileId)) {
+					
+					WeaponType weaponType = Mappings.COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.get(tileId);
+					Weapon weapon = new Weapon(weaponType);
+					CollectibleWeapon collWeapon = new CollectibleWeapon(weapon);
+					collWeapon.setPositionX(k);
+					collWeapon.setPositionY(l);
+					map.getMapPieces().add(collWeapon);
+					
+				}
+				
+				if (Tiles.AMMO_TILE_IDS.contains(tileId)) {
+					WeaponType weaponType = Mappings.COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.get(tileId);
+					CollectibleAmmo collAmmo = new CollectibleAmmo(weaponType);
+					collAmmo.setPositionX(k);
+					collAmmo.setPositionY(l);
+					map.getMapPieces().add(collAmmo);
 				}
 				
 				tileId = tiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);

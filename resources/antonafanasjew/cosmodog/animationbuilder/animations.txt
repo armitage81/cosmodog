@@ -133,6 +133,8 @@ emptyRobustnessPack;data/various_icons.png;16;16;[0/3/10000];true;true
 
 foodBar;data/various_icons.png;16;16;[0/4/10000];true;true
 waterBar;data/various_icons.png;16;16;[0/5/10000];true;true
+lifeBar;data/various_icons.png;16;16;[0/6/10000];true;true
+robustnessBar;data/various_icons.png;16;16;[0/7/10000];true;true
 
 
 
@@ -209,15 +211,29 @@ sightRadiusMarker;data/marker.png;16;16;[0/0/50,0/1/50,0/2/50,0/3/50,1/0/50,1/1/
 sightRadiusAlertedMarker;data/marker.png;16;16;[3/3/1000];true;true
 
 
+title;data/title.png;1920;1028;[0/0/100000];true;true
 
 
 
 
+pistol;data/weapons.png;16;16;[0/0/250,1/0/250,2/0/250,1/0/250];true;true
+shotgun;data/weapons.png;32;16;[0/1/250,1/1/250,2/1/250,1/1/250];true;true
+rifle;data/weapons.png;32;16;[0/2/250,1/2/250,2/2/250,1/2/250];true;true
+machinegun;data/weapons.png;48;16;[0/3/250,1/3/250,2/3/250,1/3/250];true;true
+rpg;data/weapons.png;48;16;[0/4/250,1/4/250,2/4/250,1/4/250];true;true
 
 
+pistolAmmo;data/weapons.png;16;16;[9/0/250,10/0/250,11/0/250,10/0/250];true;true
+shotgunAmmo;data/weapons.png;16;16;[9/1/250,10/1/250,11/1/250,10/1/250];true;true
+rifleAmmo;data/weapons.png;16;16;[9/2/250,10/2/250,11/2/250,10/2/250];true;true
+machinegunAmmo;data/weapons.png;16;16;[9/3/250,10/3/250,11/3/250,10/3/250];true;true
+rpgAmmo;data/weapons.png;16;16;[9/4/250,10/4/250,11/4/250,10/4/250];true;true
 
-
-
+pistolIcon;data/weapons.png;16;16;[1/0/10000];true;true
+shotgunIcon;data/weapons.png;32;16;[1/1/10000];true;true
+rifleIcon;data/weapons.png;32;16;[1/2/10000];true;true
+machinegunIcon;data/weapons.png;48;16;[1/3/10000];true;true
+rpgIcon;data/weapons.png;48;16;[1/4/10000];true;true
 
 
 

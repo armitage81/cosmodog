@@ -40,11 +40,15 @@ public abstract class AbstractResourceWrapperBuilder<ENTITY_TYPE> implements Res
 				retVal.put(rw.getId(), rw);
 			}
 		}
-		
+		afterBuild();
 		return retVal;
 	}
 
 	protected abstract ENTITY_TYPE build(String line);
 
 	protected abstract String resourcePath();
+	
+	protected void afterBuild() {
+		
+	}
 }

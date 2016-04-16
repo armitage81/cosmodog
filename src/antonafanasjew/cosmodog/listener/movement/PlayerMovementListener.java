@@ -13,29 +13,27 @@ import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.pieceinteraction.ComposedPieceInteractionListener;
 import antonafanasjew.cosmodog.listener.pieceinteraction.PieceInteractionListener;
 import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleItem;
+import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.Effect;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
-import antonafanasjew.cosmodog.notifications.Notification;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
 
@@ -51,6 +49,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private List<PieceInteractionListener> pieceInteractionListeners = Lists.newArrayList();
 	private ComposedPieceInteractionListener composedPieceInteractionListener = new ComposedPieceInteractionListener(getPieceInteractionListeners());
 	
+	
 	//This is used to compare players values before and after modification.
 	private int oldThirst = -1;
 	
@@ -61,20 +60,6 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		applyTime(player, x1, y1, x2, y2, applicationContext);
 	}
 	
-	@Override
-	public void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		collectCollectibles(applicationContext);
-		collectWater(applicationContext);
-		collectFuel(applicationContext);
-	}
-	
-	@Override
-	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		
-		checkStarvation(applicationContext);
-		checkDehydration(applicationContext);
-	}
-	
 	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
@@ -82,6 +67,20 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		PlanetaryCalendar calendar = cosmodogGame.getPlanetaryCalendar();
 		calendar.addMinutes(timePassed);
 		
+	}
+	
+	@Override
+	public void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+		collectCollectibles(applicationContext);
+		refillWater(applicationContext);
+		refillFuel(applicationContext);
+	}
+	
+	@Override
+	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+		
+		checkStarvation(applicationContext);
+		checkDehydration(applicationContext);
 	}
 	
 	private void collectCollectibles(ApplicationContext applicationContext) {
@@ -96,150 +95,49 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 		while (it.hasNext()) {
 			Piece piece = it.next();
+			
 			if (piece.getPositionX() == player.getPositionX() && piece.getPositionY() == player.getPositionY()) {
 				
 				composedPieceInteractionListener.beforeInteraction(piece);
 				
+				String pieceType;
+				
 				if (piece instanceof Collectible) {
+					
 					Collectible collectible = (Collectible) piece;
-					it.remove();
-					if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_INFOBIT)) {
-						Features.getInstance().featureBoundProcedure(Features.FEATURE_INFOBITS, new Runnable() {
-							@Override
-							public void run() {
-								cosmodogGame.getPlayerStatusNotificationList().add(new Notification("+" + Constants.SCORE_PER_INFOBIT, 500));
-								player.getGameProgress().addToScore(Constants.SCORE_PER_INFOBIT);
-								player.getGameProgress().addInfobit();
-								applicationContext.getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
-							}
-						});
-					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_INSIGHT)) {
-						
-						InventoryItem item = player.getInventory().get(InventoryItem.INVENTORY_ITEM_INSIGHT);
-						
-						if (item != null) {
-							InsightInventoryItem cosmodogCollectionItem = (InsightInventoryItem)item;
-							cosmodogCollectionItem.increaseNumber();
-						} else {
-							InsightInventoryItem cosmodogCollectionItem = new InsightInventoryItem();
-							cosmodogCollectionItem.setNumber(1);
-							player.getInventory().put(InventoryItem.INVENTORY_ITEM_INSIGHT, cosmodogCollectionItem);
-						}
-						
-						//Now remove the electricity effect from the monolyth.
-						int insightPosX = collectible.getPositionX();
-						int insightPosY = collectible.getPositionY();
-						
-						int effectPosX = insightPosX;
-						int effectPosY = insightPosY - 1;
-						
-						Set<Piece> effectPieces = cosmodogMap.getEffectPieces();
-						Iterator<Piece> effectPiecesIt = effectPieces.iterator();
-						while (effectPiecesIt.hasNext()) {
-							Piece effectPiece = effectPiecesIt.next();
-							if (effectPiece.getPositionX() == effectPosX && effectPiece.getPositionY() == effectPosY) {
-								if (effectPiece instanceof Effect) {
-									Effect effect = (Effect)effectPiece;
-									if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY)) {
-										effectPiecesIt.remove();
-										break;
-									}
-								}
-								
-							}
-						}
-						
-						
-						
-					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_SUPPLIES)) {
-						Features.getInstance().featureBoundProcedure(Features.FEATURE_HUNGER, new Runnable() {
-							@Override
-							public void run() {
-								cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundSupply()), true, false);
-								applicationContext.getSoundResources().get(SoundResources.SOUND_EATEN).play();
-								player.setHunger(0);
-							}
-						});
-					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_SOULESSENCE)) {
-						Features.getInstance().featureBoundProcedure(Features.FEATURE_SOULESSENCE, new Runnable() {
-							@Override
-							public void run() {
-								player.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
-							}
-						});
-					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_ARMOR)) {
-						Set<Piece> mapPieces = cosmodogMap.getMapPieces();
-						
-						for (Piece piece2 : mapPieces) {
-							if (piece2 instanceof Vehicle) {
-								Vehicle vehicle = ((Vehicle)piece2);
-								vehicle.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
-							}
-						}
-						
-						if (player.getInventory().hasVehicle()) {
-							Vehicle vehicle = ((VehicleInventoryItem)(player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE))).getVehicle();
-							vehicle.increaseMaxLife(5, true);
-						}
-						
-					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_MEDIPACK)) {
-						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundMedipack()), true, false);
-						applicationContext.getSoundResources().get(SoundResources.SOUND_EATEN).play();
-						player.setLife(player.getMaxLife());
-					} else if (collectible.getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_ITEM)) {
-						CollectibleItem collectibleItem = (CollectibleItem)collectible;
-						collectItem(collectibleItem, applicationContext);
-					}
+					
+					if (collectible instanceof CollectibleTool) {
+						CollectibleTool collectibleTool = (CollectibleTool)collectible;
+						pieceType = collectibleTool.getToolType().name();
+					} else if (collectible instanceof CollectibleWeapon) {
+						pieceType = CollectibleWeapon.class.getSimpleName();
+					} else if (collectible instanceof CollectibleAmmo) {
+						pieceType = CollectibleAmmo.class.getSimpleName();
+					} else {
+						CollectibleGoodie collectibleGoodie = (CollectibleGoodie)collectible;
+						pieceType = collectibleGoodie.getGoodieType().name();
+					} 
 					
 				} else if (piece instanceof Vehicle) {
-
-					composedPieceInteractionListener.beforeInteraction(piece);
-					
-					VehicleInventoryItem vehicleInventoryItem = new VehicleInventoryItem((Vehicle)piece);
-					
-					if (player.getInventory().get(InventoryItem.INVENTORY_ITEM_FUEL_TANK) != null) {
-						vehicleInventoryItem.getVehicle().setFuel(Vehicle.MAX_FUEL);
-						player.getInventory().remove(InventoryItem.INVENTORY_ITEM_FUEL_TANK);
-					}
-
-					if (vehicleInventoryItem.getVehicle().getFuel() > 0) {
-						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundVehicle()), true, false);
-					} else {
-						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundVehicleWithoutFuel()), true, false);
-					}
-					
-					player.getInventory().put(InventoryItem.INVENTORY_ITEM_VEHICLE, vehicleInventoryItem);
-					it.remove();
-					
-					composedPieceInteractionListener.afterInteraction(piece);
+					pieceType = Vehicle.class.getSimpleName();
+				} else {
+					pieceType = null;
 				}
 				
+				PieceInteraction pieceInteraction = cosmodog.getPieceInteractionMap().get(pieceType);
+				
+				if (pieceInteraction != null) {
+					pieceInteraction.interactWithPiece(piece, applicationContext, cosmodogGame, player);
+				}
+				
+				it.remove();
 				composedPieceInteractionListener.afterInteraction(piece);
 			}
 		}
 	}
 
 
-	private void collectItem(CollectibleItem collectibleItem, ApplicationContext applicationContext) {
-		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		Player player = cosmodog.getCosmodogGame().getPlayer();
-		CosmodogMap cosmodogMap = cosmodog.getCosmodogGame().getMap();
-		
-		if (collectibleItem.getItemType().equals(CollectibleItem.ITEM_TYPE_BOAT)) {
-			cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundBoat()), true, false);
-			player.getInventory().put(InventoryItem.INVENTORY_ITEM_BOAT, new BoatInventoryItem());
-			//PiecesUtils.removeAllCollectibleItems(CollectibleItem.ITEM_TYPE_BOAT, cosmodogMap);
-		}
-		
-		if (collectibleItem.getItemType().equals(CollectibleItem.ITEM_TYPE_DYNAMITE)) {
-			cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundDynamite()), true, false);
-			player.getInventory().put(InventoryItem.INVENTORY_ITEM_DYNAMITE, new DynamiteInventoryItem());
-			//PiecesUtils.removeAllCollectibleItems(CollectibleItem.ITEM_TYPE_DYNAMITE, cosmodogMap);
-		}
-	}
-
-	private void collectWater(ApplicationContext applicationContext) {
+	private void refillWater(ApplicationContext applicationContext) {
 		
 		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
 		
@@ -272,7 +170,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	 * Take care. Fuel meta data is stored on the 'collectibles' layer, but it is not a 
 	 * collectible. It is more a region, like a water place.
 	 */
-	private void collectFuel(ApplicationContext applicationContext) {
+	private void refillFuel(ApplicationContext applicationContext) {
 		
 		Features.getInstance().featureBoundProcedure(Features.FEATURE_FUEL, new Runnable() {
 

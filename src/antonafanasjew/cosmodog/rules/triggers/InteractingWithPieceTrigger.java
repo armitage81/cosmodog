@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.rules.triggers;
 
 import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleItem;
+import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
@@ -36,10 +39,14 @@ public class InteractingWithPieceTrigger extends AbstractRuleTrigger {
 			
 			String collectibleType;
 			
-			if (collectible instanceof CollectibleItem) {
-				collectibleType = ((CollectibleItem)collectible).getItemType();
+			if (collectible instanceof CollectibleTool) {
+				collectibleType = ((CollectibleTool)collectible).getToolType().name();
+			} else if (collectible instanceof CollectibleWeapon) {
+				collectibleType = CollectibleWeapon.class.getSimpleName();
+			} else if (collectible instanceof CollectibleAmmo) {
+				collectibleType = CollectibleAmmo.class.getSimpleName();
 			} else {
-				collectibleType = collectible.getCollectibleType();
+				collectibleType = ((CollectibleGoodie)collectible).getGoodieType().name();
 			}
 			
 			return collectibleType.equals(pieceType);

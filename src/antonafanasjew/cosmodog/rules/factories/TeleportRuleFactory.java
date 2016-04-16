@@ -48,7 +48,7 @@ public class TeleportRuleFactory implements RuleFactory {
 			
 			EnteringTeleportTrigger trigger = new EnteringTeleportTrigger(teleportConnectionName);
 			
-			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.TELEPORTATION, new TeleportationAction(teleportConnection));
+			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection));
 			
 			Rule rule = new Rule("teleport." + teleportConnectionName, trigger, action);
 			

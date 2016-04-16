@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 
@@ -145,7 +146,17 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		}
 		
-
+		if (input.isKeyPressed(Input.KEY_TAB)) {
+			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+			
+			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
+				arsenal.selectPreviousWeaponType();
+			} else {
+				arsenal.selectNextWeaponType();
+			}
+			
+			applicationContext.getSoundResources().get(SoundResources.SOUND_RELOAD).play();
+		}
 
 		if (input.isKeyPressed(Input.KEY_Z)) {
 			cam.zoomIn();

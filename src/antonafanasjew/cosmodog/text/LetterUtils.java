@@ -103,6 +103,10 @@ public class LetterUtils {
 	 * @return List of drawing contexts for each letter in the letter list.
 	 */
 	public static final List<DrawingContext> letterLineDrawingContexts(List<Letter> letters, float letterPadding, DrawingContext parentDrawingContext) {
+		return letterLineDrawingContexts(letters, letterPadding, 1.0f, parentDrawingContext);
+	}
+	
+	public static final List<DrawingContext> letterLineDrawingContexts(List<Letter> letters, float letterPadding, float letterScaleFactor, DrawingContext parentDrawingContext) {
 		
 		List<DrawingContext> retVal = Lists.newArrayList();
 		
@@ -113,13 +117,13 @@ public class LetterUtils {
 			
 			float dcX = accumulatedOffsetX;
 			float dcY = 0;
-			float dcW = letter.getW();
-			float dcH = Letter.LETTER_HEIGHT;
+			float dcW = letter.getW() * letterScaleFactor;
+			float dcH = Letter.LETTER_HEIGHT * letterScaleFactor;
 			
 			DrawingContext dc = new SimpleDrawingContext(parentDrawingContext, dcX, dcY, dcW, dcH);
 			retVal.add(dc);
 			
-			accumulatedOffsetX += (letter.getW() + letterPadding);
+			accumulatedOffsetX += (letter.getW() * letterScaleFactor + letterPadding);
 			
 		}
 		

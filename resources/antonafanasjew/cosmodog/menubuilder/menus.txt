@@ -1,0 +1,6 @@
+menuElement;menuElementLabel;parentMenuId;menuActionBeanId
+mainMenu;N/A;null;null
+mainMenuNew;Start a new game;mainMenu;newGameMenuAction
+mainMenuLoad;Load a saved game;mainMenu;loadGameMenuAction
+mainMenuRecords;Records;mainMenu;showRecordsGameMenuAction
+mainMenuQuit;Quit game;mainMenu;quitGameMenuAction

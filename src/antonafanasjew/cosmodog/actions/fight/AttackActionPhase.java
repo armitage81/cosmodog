@@ -7,13 +7,16 @@ import org.newdawn.slick.util.Log;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
@@ -87,6 +90,12 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		if (fightPhaseResult.isPlayerAttack()) {
 			Log.debug("Enemy has lost " + damage + " life points.");
 			enemy.setLife(enemy.getLife() - damage);
+			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+			WeaponType weaponType = arsenal.getSelectedWeaponType();
+			if (weaponType != null) {
+				Weapon weapon = arsenal.getWeaponsCopy().get(weaponType);
+				weapon.reduceAmmunition(1);
+			}
 		} else {
 			
 			if (player.getInventory().hasVehicle()) {

@@ -91,4 +91,38 @@ public class Tiles {
 	
 	public static final int ENERGY_WALL_GENERATOR_TILE_ID = 2350;
 	
+	
+	public static final int WEAPONS_PISTOL_TILE_ID = 2386;
+	public static final int WEAPONS_SHOTGUN_TILE_ID = 2387;
+	public static final int WEAPONS_RIFLE_TILE_ID = 2388;
+	public static final int WEAPONS_MACHINEGUN_TILE_ID = 2389;
+	public static final int WEAPONS_ROCKETLAUNCHER_TILE_ID = 2390;
+	
+	public static final List<Integer> WEAPONS_TILE_IDS = Lists.newArrayList();
+	
+	static {
+		WEAPONS_TILE_IDS.add(WEAPONS_PISTOL_TILE_ID);
+		WEAPONS_TILE_IDS.add(WEAPONS_SHOTGUN_TILE_ID);
+		WEAPONS_TILE_IDS.add(WEAPONS_RIFLE_TILE_ID);
+		WEAPONS_TILE_IDS.add(WEAPONS_MACHINEGUN_TILE_ID);
+		WEAPONS_TILE_IDS.add(WEAPONS_ROCKETLAUNCHER_TILE_ID);
+	}
+	
+	public static final int AMMO_PISTOL_TILE_ID = 2395;
+	public static final int AMMO_SHOTGUN_TILE_ID = 2396;
+	public static final int AMMO_RIFLE_TILE_ID = 2397;
+	public static final int AMMO_MACHINEGUN_TILE_ID = 2398;
+	public static final int AMMO_ROCKETLAUNCHER_TILE_ID = 2399;
+	
+	public static final List<Integer> AMMO_TILE_IDS = Lists.newArrayList();
+	
+	static {
+		AMMO_TILE_IDS.add(AMMO_PISTOL_TILE_ID);
+		AMMO_TILE_IDS.add(AMMO_SHOTGUN_TILE_ID);
+		AMMO_TILE_IDS.add(AMMO_RIFLE_TILE_ID);
+		AMMO_TILE_IDS.add(AMMO_MACHINEGUN_TILE_ID);
+		AMMO_TILE_IDS.add(AMMO_ROCKETLAUNCHER_TILE_ID);
+	}
+	
+	
 }

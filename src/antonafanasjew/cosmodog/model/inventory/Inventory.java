@@ -4,6 +4,10 @@ import java.util.HashMap;
 
 public class Inventory extends HashMap<String, InventoryItem> {
 	
+	public Inventory() {
+		put(InventoryItem.INVENTORY_ITEM_ARSENAL, new ArsenalInventoryItem());
+	}
+	
 	private static final long serialVersionUID = 2066865979982208629L;
 
 	public boolean hasItem(String itemKey) {

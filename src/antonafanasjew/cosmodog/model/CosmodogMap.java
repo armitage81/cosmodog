@@ -44,7 +44,7 @@ public class CosmodogMap extends CosmodogModel {
 		Set<Piece> infobits = Sets.filter(mapPieces, new Predicate<Piece>() {
 			@Override
 			public boolean apply(Piece piece) {
-				return piece instanceof Collectible && ((Collectible)piece).getCollectibleType().equals(Collectible.COLLECTIBLE_TYPE_INFOBIT);
+				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobit);
 			}
 		});
 		return infobits;

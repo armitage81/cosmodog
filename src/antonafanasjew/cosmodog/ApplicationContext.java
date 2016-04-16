@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog;
 
+import java.util.List;
 import java.util.Map;
 
 import org.newdawn.slick.Animation;
@@ -25,8 +26,28 @@ import antonafanasjew.cosmodog.controller.NoInputInputHandler;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
+import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.User;
+import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.menu.Menu;
+import antonafanasjew.cosmodog.model.menu.MenuAction;
+import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
 import antonafanasjew.cosmodog.pathfinding.DefaultTravelTimeCalculator;
 import antonafanasjew.cosmodog.pathfinding.EnemySightBasedDecitionPathFinder;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
@@ -35,6 +56,7 @@ import antonafanasjew.cosmodog.pathfinding.TowardsPlayerPathFinder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
+import antonafanasjew.cosmodog.resourcehandling.builder.menu.MenuBuilder;
 import antonafanasjew.cosmodog.sight.DayTimeAffectedSightRadiusCalculator;
 import antonafanasjew.cosmodog.sight.DefaultSightRadiusCalculator;
 import antonafanasjew.cosmodog.sight.SightRadiusCalculator;
@@ -86,6 +108,9 @@ public class ApplicationContext {
 	private TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.PATH_TO_TILED_MAP);
 	
 	private Map<Character, Letter> characterLetters = Maps.newHashMap();
+	
+	private Map<String, MenuAction> menuActions = Maps.newHashMap();
+	private Map<String, Menu> menus = Maps.newHashMap();
 	
 	//We need this global variable to link the writing text box state to the place where it will be drawn.
 	private DrawingContext dialogBoxDrawingContext = null;
@@ -199,6 +224,21 @@ public class ApplicationContext {
 		cosmodog.setGamePersistor(CosmodogGamePersistor.instance());
 		cosmodog.setScorePersistor(CosmodogScorePersistor.instance());
 		
+		Map<String, PieceInteraction> pieceInteractionMap = cosmodog.getPieceInteractionMap();
+			
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorInteraction());
+		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitInteraction());
+		pieceInteractionMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponInteraction());
+		pieceInteractionMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.dynamite.name(), new DynamiteInteraction());
+		
+		
 		SightRadiusCalculator sightRadiusCalculator = new DayTimeAffectedSightRadiusCalculator(new DefaultSightRadiusCalculator());
 		cosmodog.setSightRadiusCalculator(sightRadiusCalculator);
 		
@@ -219,6 +259,7 @@ public class ApplicationContext {
 		Sound teleport_start = new Sound("data/sound/teleport_start.wav");
 		Sound teleport_transfer = new Sound("data/sound/teleport_transferring.wav");
 		Sound teleport_end = new Sound("data/sound/teleport_end.wav");
+		Sound reload = new Sound("data/sound/reload.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -234,6 +275,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_START, teleport_start);
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_TRANSFER, teleport_transfer);
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_END, teleport_end);
+		this.getSoundResources().put(SoundResources.SOUND_RELOAD, reload);
 
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
@@ -268,7 +310,17 @@ public class ApplicationContext {
 		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabeth2Sheet);
 		this.characterLetters = letterBuilder.buildLetters();
 		
+		menuActions.put("newGameMenuAction", MenuActionFactory.getStartNewGameMenuAction());
+		menuActions.put("loadGameMenuAction", MenuActionFactory.getLoadSavedGameMenuAction());
+		menuActions.put("showRecordsGameMenuAction", MenuActionFactory.getShowRecordsMenuAction());
+		menuActions.put("quitGameMenuAction", MenuActionFactory.getQuitGameMenuAction());
 		
+		MenuBuilder b = new MenuBuilder(menuActions);
+		b.build();
+		List<Menu> menuList = b.getTopMenus();
+		for (Menu menu : menuList) {
+			menus.put(menu.getId(), menu);
+		}
 		
 	}
 
@@ -302,6 +354,10 @@ public class ApplicationContext {
 	 */
 	public Map<Character, Letter> getCharacterLetters() {
 		return characterLetters;
+	}
+
+	public Map<String, Menu> getMenus() {
+		return menus;
 	}
 
 }

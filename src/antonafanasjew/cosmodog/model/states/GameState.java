@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.decoration.BirdsDecoration;
 import antonafanasjew.cosmodog.rendering.decoration.CloudsDecoration;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.ArsenalInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
@@ -79,6 +80,7 @@ public class GameState extends BasicGameState {
 	private DrawingContext rightColumnDrawingContext;
 	private DrawingContext topDrawingContext;
 	private DrawingContext lifeDrawingContext;
+	private DrawingContext arsenalDrawingContext;
 	private DrawingContext bottomDrawingContext;
 	private DrawingContext vitalDataDrawingContext;
 	private DrawingContext gameProgressDrawingContext;
@@ -108,6 +110,7 @@ public class GameState extends BasicGameState {
 	private Renderer daytimeColorFilterRenderer;
 	private Renderer markedTileRenderer;
 	private AbstractRenderer sightRadiusRenderer;
+	private Renderer arsenalInterfaceRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -129,9 +132,10 @@ public class GameState extends BasicGameState {
 		// TileDrawingContext(gameContainerDrawingContext, 5, 1, 0, 0);
 		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0, 1, 8);
 		
-		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 4, 1);
-		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 6, 0, 0);
+		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
+		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 0);
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
+		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
 		
 		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
@@ -164,6 +168,7 @@ public class GameState extends BasicGameState {
 		daytimeColorFilterRenderer = new DayTimeFilterRenderer();
 		markedTileRenderer = new MarkedTileRenderer();
 		sightRadiusRenderer = new SightRadiusRenderer();
+		arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
@@ -326,10 +331,11 @@ public class GameState extends BasicGameState {
 		markedTileRenderer.render(gc, g, mapDrawingContext, null);
 		playerNotificationRenderer.render(gc, g, mapDrawingContext);
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
+		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
 		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
 		// leftInterfaceRenderer.render(gc, g, leftColumnDrawingContext);
-		rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
+		//rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
 	
 		DrawingContext dialogBoxDrawingContext = ApplicationContext.instance().getDialogBoxDrawingContext();
 		DrawingContext commentsWritingDrawingContext = DrawingContextUtils.writingContentDcFromDialogBoxDc(dialogBoxDrawingContext);

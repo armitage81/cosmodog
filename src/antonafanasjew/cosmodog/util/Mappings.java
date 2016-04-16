@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.domains.NpcActionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
 import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Tiles;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 
@@ -96,5 +97,70 @@ public class Mappings {
 		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_1000_TILE_ID, 1000);
 		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_10000_TILE_ID, 10000);
 	}
+	
+	
+	public static Map<Integer, WeaponType> COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE = Maps.newHashMap();
+	
+	static {
+		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_PISTOL_TILE_ID, WeaponType.PISTOL);
+		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_SHOTGUN_TILE_ID, WeaponType.SHOTGUN);
+		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_RIFLE_TILE_ID, WeaponType.RIFLE);
+		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_MACHINEGUN_TILE_ID, WeaponType.MACHINEGUN);
+		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_ROCKETLAUNCHER_TILE_ID, WeaponType.RPG);
+	}
+	
+	public static Map<WeaponType, String> WEAPON_TYPE_2_ANIMATION_ID = Maps.newHashMap();
+	
+	static {
+		WEAPON_TYPE_2_ANIMATION_ID.put(WeaponType.PISTOL, "pistol");
+		WEAPON_TYPE_2_ANIMATION_ID.put(WeaponType.SHOTGUN, "shotgun");
+		WEAPON_TYPE_2_ANIMATION_ID.put(WeaponType.RIFLE, "rifle");
+		WEAPON_TYPE_2_ANIMATION_ID.put(WeaponType.MACHINEGUN, "machinegun");
+		WEAPON_TYPE_2_ANIMATION_ID.put(WeaponType.RPG, "rpg");
+	}
+	
+	
+	public static Map<Integer, WeaponType> COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE = Maps.newHashMap();
+	
+	static {
+		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_PISTOL_TILE_ID, WeaponType.PISTOL);
+		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_SHOTGUN_TILE_ID, WeaponType.SHOTGUN);
+		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_RIFLE_TILE_ID, WeaponType.RIFLE);
+		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_MACHINEGUN_TILE_ID, WeaponType.MACHINEGUN);
+		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_ROCKETLAUNCHER_TILE_ID, WeaponType.RPG);
+	}
+	
+	public static Map<WeaponType, String> WEAPON_TYPE_2_AMMO_ANIMATION_ID = Maps.newHashMap();
+	
+	static {
+		WEAPON_TYPE_2_AMMO_ANIMATION_ID.put(WeaponType.PISTOL, "pistolAmmo");
+		WEAPON_TYPE_2_AMMO_ANIMATION_ID.put(WeaponType.SHOTGUN, "shotgunAmmo");
+		WEAPON_TYPE_2_AMMO_ANIMATION_ID.put(WeaponType.RIFLE, "rifleAmmo");
+		WEAPON_TYPE_2_AMMO_ANIMATION_ID.put(WeaponType.MACHINEGUN, "machinegunAmmo");
+		WEAPON_TYPE_2_AMMO_ANIMATION_ID.put(WeaponType.RPG, "rpgAmmo");
+	}
+	
+	
+	
+	public static Map<WeaponType, String> WEAPON_TYPE_2_ICON_ANIMATION_ID = Maps.newHashMap();
+	
+	static {
+		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.PISTOL, "pistolIcon");
+		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.SHOTGUN, "shotgunIcon");
+		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.RIFLE, "rifleIcon");
+		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.MACHINEGUN, "machinegunIcon");
+		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.RPG, "rpgIcon");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

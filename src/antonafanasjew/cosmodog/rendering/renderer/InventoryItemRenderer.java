@@ -26,6 +26,15 @@ public class InventoryItemRenderer implements Renderer {
 		
 		InventoryItem item = (InventoryItem)renderingParameter;
 		
+		/*
+		 * 
+		 * ARSENAL IS NOT RENDERED.
+		 * 
+		 * */
+		if (item.getInventoryItemType().equals(InventoryItem.INVENTORY_ITEM_ARSENAL)) {
+			return;
+		}
+		
 		DrawingContext paddedTileContext = new CenteredDrawingContext(drawingContext, drawingContext.w() - 5, drawingContext.h() - 5);
 		
 		String animationId = Mappings.INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.get(item.getInventoryItemType());

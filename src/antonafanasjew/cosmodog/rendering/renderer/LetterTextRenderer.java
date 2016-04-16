@@ -21,12 +21,18 @@ public class LetterTextRenderer implements Renderer {
 	public static class LetterTextRenderingParameter {
 		
 		public static LetterTextRenderingParameter fromText(String text) {
+			return fromTextAndScaleFactor(text, 1.0f);
+		}
+		
+		public static LetterTextRenderingParameter fromTextAndScaleFactor(String text, float scaleFactor) {
 			LetterTextRenderingParameter instance = new LetterTextRenderingParameter();
 			instance.text = text;
+			instance.scaleFactor = scaleFactor;
 			return instance;
 		}
 		
 		public String text;
+		public float scaleFactor;
 	}
 	
 
@@ -35,13 +41,17 @@ public class LetterTextRenderer implements Renderer {
 		LetterTextRenderingParameter param = (LetterTextRenderingParameter)renderingParameter;
 		
 		String text = param.text;
+		float letterScaleFactor = param.scaleFactor; 
+
 		List<Letter> letters = LetterUtils.lettersForText(text, ApplicationContext.instance().getCharacterLetters(), ApplicationContext.instance().getCharacterLetters().get('?'));
-		List<DrawingContext> letterDrawingContexts = LetterUtils.letterLineDrawingContexts(letters, 0, drawingContext);
+		
+		
+		List<DrawingContext> letterDrawingContexts = LetterUtils.letterLineDrawingContexts(letters, 0, letterScaleFactor, drawingContext);
 		
 		for (int i = 0; i < letters.size(); i++) {
 			DrawingContext dc = letterDrawingContexts.get(i);
 			Letter l = letters.get(i);
-			graphics.drawImage(l.getImage(), dc.x(), dc.y());
+			graphics.drawImage(l.getImage().getScaledCopy(letterScaleFactor), dc.x(), dc.y());
 			
 		}
 		

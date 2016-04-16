@@ -1,19 +1,27 @@
 package antonafanasjew.cosmodog.model.states;
 
-import org.newdawn.slick.Color;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.model.menu.Menu;
+import antonafanasjew.cosmodog.model.menu.MenuItem;
+import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
+import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer.MenuRenderingParam;
 
 public class MainMenuState extends BasicGameState {
 
+	private Menu mainMenu;
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// TODO Auto-generated method stub
@@ -22,32 +30,40 @@ public class MainMenuState extends BasicGameState {
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		container.getInput().clearKeyPressedRecord();
+		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
+		mainMenu.setInitialized();
 	}
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
-		if (gc.getInput().isKeyPressed(Input.KEY_1)) {
-			sbg.enterState(CosmodogStarter.GAME_INTRO_STATE_ID, new FadeOutTransition(), new FadeInTransition());
-		} else if (gc.getInput().isKeyPressed(Input.KEY_2)) {
-			sbg.enterState(CosmodogStarter.GAME_STATE_ID, new FadeOutTransition(), new FadeInTransition());
-		} else if (gc.getInput().isKeyPressed(Input.KEY_3)) {
-			sbg.enterState(CosmodogStarter.SCORE_STATE_ID, new FadeOutTransition(), new FadeInTransition());
-		} else if (gc.getInput().isKeyPressed(Input.KEY_4)) {
-			System.exit(0);
-		}
 
+		if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
+			mainMenu.selectNext();
+		} else if(gc.getInput().isKeyPressed(Input.KEY_UP)) {
+			mainMenu.selectPrevious();
+		} else if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			((MenuItem)mainMenu.getSelectedMenuElement()).getMenuAction().execute(sbg);
+		}
+		
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(Color.white);
-		g.drawString("Cosmodog", 100, 100);
-		g.drawString("Press 1 to start the game", 100, 150);
-		g.drawString("Press 2 to load a game", 100, 200);
-		g.drawString("Press 3 to see the records", 100, 250);
-		g.drawString("Press 4 to quit to operating system", 100, 300);
-
+		
+		
+		DrawingContext dc = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
+		DrawingContext menuDc = new TileDrawingContext(dc, 3, 3, 2, 2);
+		
+		
+		Animation titleAnimation = ApplicationContext.instance().getAnimations().get("title");
+		
+		titleAnimation.draw(dc.x(), dc.y(), dc.w(), dc.h());
+		
+		MenuRenderer menuRenderer = new MenuRenderer();
+		MenuRenderingParam param = new MenuRenderingParam();
+		param.menu = mainMenu;
+		menuRenderer.render(gc, g, menuDc, param);
+		
 	}
 
 	@Override

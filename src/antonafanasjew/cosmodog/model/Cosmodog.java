@@ -1,11 +1,27 @@
 package antonafanasjew.cosmodog.model;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.GameLifeCycle;
 import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
+import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
@@ -33,6 +49,7 @@ public class Cosmodog extends CosmodogModel {
 	private CosmodogScorePersistor scorePersistor;
 	private CosmodogGamePersistor gamePersistor;
 	private TileBasedMapFactory tileBasedMapFactory = new TileBasedMapFactory();
+	private Map<String, PieceInteraction> pieceInteractionMap = Maps.newHashMap();
 	
     public User getUser() {
         return user;
@@ -111,5 +128,7 @@ public class Cosmodog extends CosmodogModel {
 	public void setWaterValidator(WaterValidator waterValidator) {
 		this.waterValidator = waterValidator;
 	}
-	
+	public Map<String, PieceInteraction> getPieceInteractionMap() {
+		return pieceInteractionMap;
+	}
 }

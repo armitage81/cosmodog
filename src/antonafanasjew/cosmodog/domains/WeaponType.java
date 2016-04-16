@@ -5,26 +5,40 @@ package antonafanasjew.cosmodog.domains;
  *
  */
 public enum WeaponType {
-
+	
 	/**
-	 * Machine gun.
+	 * Fists. This weapon type won't be rendered in the arsenal.
 	 */
-	MACHINEGUN(1),
+	FISTS(1, 0),
 	
 	/**
 	 * Double gun.
 	 */
-	DOUBLEGUN(3),
+	DOUBLEGUN(3, 20),
 	
 	/**
 	 * Pistol.
 	 */
-	PISTOL(1);
+	PISTOL(10, 10),
+	
+	SHOTGUN(20, 5),
+	
+	RIFLE(30, 20),
+	
+	RPG(50, 3),
+	
+	/**
+	 * Machine gun.
+	 */
+	MACHINEGUN(100, 1)
+	;
 	
 	private int basicDamage;
+	private int maxAmmo;
 	
-	private WeaponType(int basicDamage) {
+	private WeaponType(int basicDamage, int maxAmmo) {
 		this.basicDamage = basicDamage;
+		this.maxAmmo = maxAmmo;
 	}
 
 	/**
@@ -35,4 +49,16 @@ public enum WeaponType {
 		return basicDamage;
 	}
 
+	/**
+	 * Returns the maximal possible ammunition.
+	 * @return maximal ammunition.
+	 */
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
+	public boolean infiniteAmmo() {
+		return this.maxAmmo == 0;
+	}
+	
 }
