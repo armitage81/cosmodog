@@ -51,6 +51,7 @@ import antonafanasjew.cosmodog.rendering.renderer.RightInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.WeaponTooltipRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WritingRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.BottomLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
@@ -79,6 +80,7 @@ public class GameState extends BasicGameState {
 	private DrawingContext middleColumnDrawingContext;
 	private DrawingContext rightColumnDrawingContext;
 	private DrawingContext topDrawingContext;
+	private DrawingContext weaponTooltipsDrawingContext;
 	private DrawingContext lifeDrawingContext;
 	private DrawingContext arsenalDrawingContext;
 	private DrawingContext bottomDrawingContext;
@@ -111,6 +113,7 @@ public class GameState extends BasicGameState {
 	private Renderer markedTileRenderer;
 	private AbstractRenderer sightRadiusRenderer;
 	private Renderer arsenalInterfaceRenderer;
+	private Renderer weaponTooltipRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -136,6 +139,7 @@ public class GameState extends BasicGameState {
 		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 0);
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
 		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
+		weaponTooltipsDrawingContext = new TileDrawingContext(mapDrawingContext, 2, 12, 1, 1, 1, 11);
 		
 		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
@@ -169,6 +173,7 @@ public class GameState extends BasicGameState {
 		markedTileRenderer = new MarkedTileRenderer();
 		sightRadiusRenderer = new SightRadiusRenderer();
 		arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
+		weaponTooltipRenderer = new WeaponTooltipRenderer();
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
@@ -333,6 +338,7 @@ public class GameState extends BasicGameState {
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
 		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
+		weaponTooltipRenderer.render(gc, g, weaponTooltipsDrawingContext, null);
 		// leftInterfaceRenderer.render(gc, g, leftColumnDrawingContext);
 		//rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
 	

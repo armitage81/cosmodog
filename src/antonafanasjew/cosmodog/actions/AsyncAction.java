@@ -58,5 +58,5 @@ public interface AsyncAction extends Serializable {
 	 */
 	void update(int millis, GameContainer gc, StateBasedGame sbg);
 	
-	
+	void cancel();
 }

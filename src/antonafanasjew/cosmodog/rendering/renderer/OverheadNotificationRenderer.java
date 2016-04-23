@@ -13,7 +13,6 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction.OverheadNotificationTransition;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.globals.Fonts;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;

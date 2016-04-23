@@ -29,4 +29,9 @@ public class CommentAction extends AbstractAsyncAction {
 		return true;
 	}
 	
+	@Override
+	public void cancel() {
+		
+	}
+	
 }

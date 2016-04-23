@@ -9,6 +9,7 @@ import org.newdawn.slick.util.Log;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -83,6 +84,11 @@ public class DialogAction extends AbstractAsyncAction {
 	public boolean hasFinished() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		return cosmodogGame.getWritingTextBoxState() == null;
+	}
+	
+	@Override
+	public void cancel() {
+		
 	}
 	
 }

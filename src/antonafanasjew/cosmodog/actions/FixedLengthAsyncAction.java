@@ -35,7 +35,7 @@ public class FixedLengthAsyncAction extends AbstractAsyncAction {
 	 */
 	@Override
 	public boolean hasFinished() {
-		return getPassedTime() >= duration;
+		return isCanceled() || getPassedTime() >= duration;
 	}
 	
 }

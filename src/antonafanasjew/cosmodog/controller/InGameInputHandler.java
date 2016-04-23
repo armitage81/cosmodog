@@ -8,14 +8,17 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.actions.tooltip.WeaponTooltipAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -25,6 +28,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 /**
  * Standard game controls for movement, zooming.
@@ -148,11 +152,25 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		if (input.isKeyPressed(Input.KEY_TAB)) {
 			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+
+			WeaponType previouslySelectedWeaponType = arsenal.getSelectedWeaponType();
 			
 			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
 				arsenal.selectPreviousWeaponType();
 			} else {
 				arsenal.selectNextWeaponType();
+			}
+			
+			WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
+			
+			if (selectedWeaponType != null && !selectedWeaponType.equals(previouslySelectedWeaponType)) {
+				Weapon weapon = arsenal.getWeaponsCopy().get(selectedWeaponType);
+				ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
+				AsyncAction previousTooltipAction = actionRegistry.getRegisteredAction(AsyncActionType.WEAPON_TOOLTIP);
+				if (previousTooltipAction != null) {
+					previousTooltipAction.cancel();
+				}
+				actionRegistry.registerAction(AsyncActionType.WEAPON_TOOLTIP, WeaponTooltipAction.create(10000, weapon));
 			}
 			
 			applicationContext.getSoundResources().get(SoundResources.SOUND_RELOAD).play();

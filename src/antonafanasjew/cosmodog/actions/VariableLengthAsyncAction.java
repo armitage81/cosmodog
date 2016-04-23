@@ -11,5 +11,4 @@ public abstract class VariableLengthAsyncAction extends AbstractAsyncAction {
 
 	private static final long serialVersionUID = -1887040186120949596L;
 
-	
 }

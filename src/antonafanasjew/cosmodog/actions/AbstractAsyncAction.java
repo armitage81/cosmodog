@@ -18,6 +18,8 @@ public abstract class AbstractAsyncAction implements AsyncAction {
 
 	private static final long serialVersionUID = 5748519582133380570L;
 
+	private boolean canceled = false;
+	
 	private int passedTime = 0;
 	
 	
@@ -99,5 +101,18 @@ public abstract class AbstractAsyncAction implements AsyncAction {
 	 */
 	@Override
 	public abstract boolean hasFinished();
+	
+
+	public void cancel() {
+		this.setCanceled(true);
+	}
+
+	public boolean isCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(boolean canceled) {
+		this.canceled = canceled;
+	}
 	
 }

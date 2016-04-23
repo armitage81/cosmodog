@@ -5,6 +5,8 @@ package antonafanasjew.cosmodog.actions;
  */
 public enum AsyncActionType {
 	
+	WEAPON_TOOLTIP(false, true),
+	
 	/**
 	 * Action type: Overhead notification. Indicates an overhead notification for player and NPC. F.i. score or hit points.
 	 */
