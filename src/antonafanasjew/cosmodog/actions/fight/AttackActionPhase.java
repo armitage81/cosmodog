@@ -6,7 +6,9 @@ import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -17,6 +19,7 @@ import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.notifications.Notification;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
@@ -88,6 +91,7 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		int damage = fightPhaseResult.getDamage();
 		
 		if (fightPhaseResult.isPlayerAttack()) {
+			
 			Log.debug("Enemy has lost " + damage + " life points.");
 			enemy.setLife(enemy.getLife() - damage);
 			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);

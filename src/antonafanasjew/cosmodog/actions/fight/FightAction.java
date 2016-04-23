@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.actions.fight;
 
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -9,9 +10,12 @@ import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightActionResult.FightPhaseResult;
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.AbstractPlayerAttackDamageCalculator;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -102,7 +106,18 @@ public class FightAction extends VariableLengthAsyncAction {
 	 * Calculates the phase queue based on the fight action result.
 	 */
 	private void initActionPhaseRegistry() {
+		
+		
+		
+		
 		for (FightActionResult.FightPhaseResult phaseResult : fightActionResult) {
+			
+			Actor defender = phaseResult.isPlayerAttack() ? phaseResult.getEnemy() : phaseResult.getPlayer();
+			Color color = defender == phaseResult.getPlayer() ? Color.red : Color.green;
+			OverheadNotificationAction action = OverheadNotificationAction.create(500, defender, "-" + String.valueOf(phaseResult.getDamage()), color);
+			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+			
 			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
 			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
 				actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new EnemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy()));

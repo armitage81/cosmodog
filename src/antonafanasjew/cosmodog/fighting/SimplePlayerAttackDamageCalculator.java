@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.fighting;
 
+import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -16,19 +17,14 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 	
 	@Override
 	public int playerAttackDamageInternal(Player player, Enemy enemy) {
-		int damageAbsorption = enemy.getArmorType().getDamageAbsorption();
+		
+		ArmorType enemyArmorType = enemy.getArmorType();
 		
 		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
 		
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		
-		int damage = selectedWeaponType == null ? SIMPLE_PLAYER_DAMAGE : selectedWeaponType.getBasicDamage();
-		
-		damage -= damageAbsorption;
-		
-		if (damage < 1) {
-			damage = 1;
-		}
+		int damage = selectedWeaponType == null ? SIMPLE_PLAYER_DAMAGE : selectedWeaponType.getDamage(enemyArmorType);
 		
 		return damage;
 		

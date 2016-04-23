@@ -4,7 +4,6 @@ import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.notifications.NotificationList;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
@@ -40,8 +39,6 @@ public class CosmodogGame extends CosmodogModel {
 	
 	private TextFrame textFrame = null;
 	
-	private NotificationList playerStatusNotificationList = new NotificationList();
-		
 	private RuleBook ruleBook = new RuleBook();
 	
 	
@@ -113,19 +110,6 @@ public class CosmodogGame extends CosmodogModel {
 
 	public void setCommentsStateUpdater(WritingTextBoxStateUpdater commentsStateUpdater) {
 		this.commentsStateUpdater = commentsStateUpdater;
-	}
-	
-	
-	/**
-	 * Contains the over-head text messages (e.g. score points added.) 
-	 * @return List of over-head messages 
-	 */
-	public NotificationList getPlayerStatusNotificationList() {
-		return playerStatusNotificationList;
-	}
-
-	public void setPlayerStatusNotificationList(NotificationList playerStatusNotificationList) {
-		this.playerStatusNotificationList = playerStatusNotificationList;
 	}
 
 	public RuleBook getRuleBook() {

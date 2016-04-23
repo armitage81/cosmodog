@@ -42,7 +42,8 @@ public class InteractingWithPieceTrigger extends AbstractRuleTrigger {
 			if (collectible instanceof CollectibleTool) {
 				collectibleType = ((CollectibleTool)collectible).getToolType().name();
 			} else if (collectible instanceof CollectibleWeapon) {
-				collectibleType = CollectibleWeapon.class.getSimpleName();
+				CollectibleWeapon collectibleWeapon = (CollectibleWeapon)collectible;
+				collectibleType = collectibleWeapon.getWeapon().getWeaponType().name().toLowerCase();
 			} else if (collectible instanceof CollectibleAmmo) {
 				collectibleType = CollectibleAmmo.class.getSimpleName();
 			} else {

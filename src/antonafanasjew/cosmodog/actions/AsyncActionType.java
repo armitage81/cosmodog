@@ -6,6 +6,11 @@ package antonafanasjew.cosmodog.actions;
 public enum AsyncActionType {
 	
 	/**
+	 * Action type: Overhead notification. Indicates an overhead notification for player and NPC. F.i. score or hit points.
+	 */
+	OVERHEAD_NOTIFICATION(false, true),
+	
+	/**
 	 * Action type: Teleportation.
 	 */
 	TELEPORTATION(true, true),

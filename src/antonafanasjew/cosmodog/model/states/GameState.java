@@ -43,8 +43,8 @@ import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.NpcRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.OverheadNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.PlayerNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.rendering.renderer.RightInterfaceRenderer;
@@ -106,7 +106,7 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer northPiecesRenderer;
 	private AbstractRenderer southPiecesRenderer;
 	private AbstractRenderer effectsRenderer;
-	private AbstractRenderer playerNotificationRenderer;
+	private AbstractRenderer overheadNotificationRenderer;
 	private Renderer daytimeColorFilterRenderer;
 	private Renderer markedTileRenderer;
 	private AbstractRenderer sightRadiusRenderer;
@@ -164,7 +164,7 @@ public class GameState extends BasicGameState {
 		northPiecesRenderer = new PiecesRenderer(true, false);
 		southPiecesRenderer = new PiecesRenderer(false, true);
 		effectsRenderer = new EffectsRenderer();
-		playerNotificationRenderer = new PlayerNotificationRenderer();
+		overheadNotificationRenderer = new OverheadNotificationRenderer();
 		daytimeColorFilterRenderer = new DayTimeFilterRenderer();
 		markedTileRenderer = new MarkedTileRenderer();
 		sightRadiusRenderer = new SightRadiusRenderer();
@@ -266,7 +266,6 @@ public class GameState extends BasicGameState {
 		}
 		
 		cosmodogGame.getChronometer().update(n);
-		cosmodogGame.getPlayerStatusNotificationList().update(n);
 		cosmodogGame.getCommentsStateUpdater().update(n);
 		cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
 		
@@ -329,7 +328,7 @@ public class GameState extends BasicGameState {
 
 		daytimeColorFilterRenderer.render(gc, g, mapDrawingContext, null);
 		markedTileRenderer.render(gc, g, mapDrawingContext, null);
-		playerNotificationRenderer.render(gc, g, mapDrawingContext);
+		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
