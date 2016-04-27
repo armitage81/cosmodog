@@ -13,7 +13,6 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Mark;
 import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
 public class MarkedTileRenderer extends AbstractRenderer {
@@ -26,7 +25,6 @@ public class MarkedTileRenderer extends AbstractRenderer {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Cam cam = cosmodogGame.getCam();
-		Player player = cosmodogGame.getPlayer();
 		
 		int tileWidth = tiledMap.getTileWidth();
 		int tileHeight = tiledMap.getTileHeight();

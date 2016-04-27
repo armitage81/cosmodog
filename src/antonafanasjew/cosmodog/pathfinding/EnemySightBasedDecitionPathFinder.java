@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.pathfinding;
 
-import org.newdawn.slick.util.pathfinding.Path;
-
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -44,18 +42,7 @@ public class EnemySightBasedDecitionPathFinder extends AbstractPathFinder {
 		int x = player.getPositionX();
 		int y = player.getPositionY();
 		
-		int targetX = x;
-		int targetY = y;
-		
-		//If the player has moved, we take his movement action result as target.
-		if (playerMovementActionResult != null) {
-			Path path = playerMovementActionResult.getPath();
-			targetX = path.getX(path.getLength() - 1);
-			targetY = path.getY(path.getLength() - 1);
-		}
-		
 		int distanceToPlayer = (int)CosmodogMapUtils.distanceBetweenPositions(Position.fromCoordinates(x, y), Position.fromCoordinates(enemy.getPositionX(), enemy.getPositionY()));
-		//int distanceToPlayerTarget = (int)CosmodogMapUtils.distanceBetweenPositions(Position.fromCoordinates(targetX, targetY), Position.fromCoordinates(enemy.getPositionX(), enemy.getPositionY()));
 		
 		PathFinder relevantPathFinder;
 		

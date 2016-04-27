@@ -11,6 +11,8 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class PlayerLifeListener implements LifeListener {
 
+	private static final long serialVersionUID = -155138251982746987L;
+
 	@Override
 	public void onLifeChange(Actor actorAfterLifeChange, int lifeBeforeChange, int lifeAfterChange) {
 		if (((Player)actorAfterLifeChange).dead()) {

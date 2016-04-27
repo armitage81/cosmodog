@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -34,7 +34,7 @@ public class FuelConsumer extends AbstractPlanetaryCalendarListener {
 				if (player.getInventory().hasVehicle()) {
 					int timeUnits = noOfMinutes / Constants.MINIMAL_TIME_UNIT_IN_MINUTES;				
 
-					VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);
+					VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 					Vehicle vehicle = vehicleInventoryItem.getVehicle();
 
 					vehicle.decreaseFuel(timeUnits);

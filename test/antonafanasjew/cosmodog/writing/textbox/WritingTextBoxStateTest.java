@@ -9,7 +9,6 @@ import org.junit.Test;
 import antonafanasjew.cosmodog.writing.dynamics.TextBlockDynamicsCalculator;
 import antonafanasjew.cosmodog.writing.io.NarrativeSequenceReaderImpl;
 import antonafanasjew.cosmodog.writing.model.NarrativeSequence;
-import antonafanasjew.cosmodog.writing.model.TextBlock;
 import antonafanasjew.cosmodog.writing.model.TextBlockBox;
 import antonafanasjew.cosmodog.writing.model.TextBlockLine;
 

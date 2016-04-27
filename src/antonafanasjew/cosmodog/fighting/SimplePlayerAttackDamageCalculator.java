@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 /**
  * Returns the damage as difference between players constant base damage and the damage absorption from the enemy's armor type.
@@ -20,7 +20,7 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		
 		ArmorType enemyArmorType = enemy.getArmorType();
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 		
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		

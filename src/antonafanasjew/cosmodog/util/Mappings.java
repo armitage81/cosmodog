@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.util;
 
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
@@ -9,20 +11,18 @@ import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Tiles;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
-
-import com.google.common.collect.Maps;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 public class Mappings {
 
-	public static final Map<String, String> INVENTORY_ITEM_TYPE_TO_ANIMATION_ID = Maps.newHashMap();
+	public static final Map<InventoryItemType, String> INVENTORY_ITEM_TYPE_TO_ANIMATION_ID = Maps.newHashMap();
 	
 	static {
-		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItem.INVENTORY_ITEM_FUEL_TANK, "inventoryItemFuel");
-		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItem.INVENTORY_ITEM_INSIGHT, "inventoryItemCosmodog");
-		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItem.INVENTORY_ITEM_BOAT, "inventoryItemBoat");
-		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItem.INVENTORY_ITEM_DYNAMITE, "inventoryItemDynamite");
-		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItem.INVENTORY_ITEM_VEHICLE, "inventoryItemVehicle");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.FUEL_TANK, "inventoryItemFuel");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.INSIGHT, "inventoryItemCosmodog");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.BOAT, "inventoryItemBoat");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DYNAMITE, "inventoryItemDynamite");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.VEHICLE, "inventoryItemVehicle");
 	}
 	
 	public static final Map<Integer, UnitType> ENEMY_TILE_ID_TO_UNIT_TYPE = Maps.newHashMap();

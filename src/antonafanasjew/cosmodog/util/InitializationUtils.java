@@ -38,6 +38,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -374,7 +375,7 @@ public class InitializationUtils {
 		rule = new Rule(
 			Rule.RULE_WINNING,
 			Lists.newArrayList(GameEventEndedTurn.class),
-			new InventoryBasedTrigger(InventoryItem.INVENTORY_ITEM_INSIGHT, InventoryItem.INVENTORY_ITEM_INSIGHT_MAX_COUNT),
+			new InventoryBasedTrigger(InventoryItemType.INSIGHT, InventoryItem.INVENTORY_ITEM_INSIGHT_MAX_COUNT),
 			new WinningAction(game),
 			Rule.RULE_PRIORITY_EARLIEST
 		);

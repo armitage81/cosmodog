@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 
 public class ArmorInteraction extends AbstractPieceInteraction {
@@ -28,7 +28,7 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 		}
 		
 		if (player.getInventory().hasVehicle()) {
-			Vehicle vehicle = ((VehicleInventoryItem)(player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE))).getVehicle();
+			Vehicle vehicle = ((VehicleInventoryItem)(player.getInventory().get(InventoryItemType.VEHICLE))).getVehicle();
 			vehicle.increaseMaxLife(5, true);
 		}		
 	}

@@ -11,17 +11,22 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.globals.Fonts;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 
 public class GameOverState extends BasicGameState {
 
 	private DrawingContext gameContainerDrawingContext;
-	private DrawingContext topContainerDrawingContext;
 	private DrawingContext centerContainerDrawingContext;
+	
+	private DrawingContext centerContainerRow1DrawingContext;
+	private DrawingContext centerContainerRow2DrawingContext;
+	
 	private DrawingContext bottomContainerDrawingContext;
 	
 	@Override
@@ -33,8 +38,11 @@ public class GameOverState extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		topContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
 		centerContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
+		
+		centerContainerRow1DrawingContext = new TileDrawingContext(centerContainerDrawingContext, 1, 5, 0, 0, 1, 4);
+		centerContainerRow2DrawingContext = new TileDrawingContext(centerContainerDrawingContext, 1, 5, 0, 4, 1, 1);
+		
 		bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
 	}
 
@@ -50,10 +58,18 @@ public class GameOverState extends BasicGameState {
 		
 		
 		TextRenderer tr = new TextRenderer(Fonts.GAME_OVER_FONT, true);
-		tr.render(gc, g, centerContainerDrawingContext, "GAME OVER");
+		tr.render(gc, g, centerContainerRow1DrawingContext, "GAME OVER");
+		
+		Player player = ApplicationContextUtils.getCosmodogGame().getPlayer();
+		int score = player.getGameProgress().getGameScore();
+		
+		tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
+		tr.render(gc, g, centerContainerRow2DrawingContext, "Your score: " + score);
+		
 		
 		tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
 		tr.render(gc, g, bottomContainerDrawingContext, "Press Enter to return to the main menu");
+		
 		
 	}
 

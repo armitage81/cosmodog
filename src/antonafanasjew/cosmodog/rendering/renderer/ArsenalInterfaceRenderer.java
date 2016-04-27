@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import java.util.List;
 import java.util.Map;
 
 import org.newdawn.slick.Animation;
@@ -8,21 +7,20 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.Mappings;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class ArsenalInterfaceRenderer implements Renderer {
 
@@ -61,7 +59,7 @@ public class ArsenalInterfaceRenderer implements Renderer {
 		g.fillRect(0, 0, context.w(), context.h());
 		g.translate(-context.x(), -context.y());
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		

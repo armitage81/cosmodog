@@ -10,8 +10,11 @@ public class InsightInventoryItem extends CountableInventoryItem {
 
 	private static final long serialVersionUID = -5819631394123309541L;
 
+	/**
+	 * Constructor. Initializes the insight inventory item.
+	 */
 	public InsightInventoryItem() {
-		super(InventoryItem.INVENTORY_ITEM_INSIGHT);
+		super(InventoryItemType.INSIGHT);
 	}
 
 }

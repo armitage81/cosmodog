@@ -4,7 +4,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import antonafanasjew.cosmodog.Animations;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;

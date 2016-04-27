@@ -1,11 +1,15 @@
 package antonafanasjew.cosmodog.writing.textbox;
 
+import java.io.Serializable;
+
 import antonafanasjew.cosmodog.writing.model.NarrativeSequence;
 
 /**
  * This is a wrapper around a text box state that updates it automatically.
  */
-public class WritingTextBoxStateUpdater {
+public class WritingTextBoxStateUpdater implements Serializable {
+
+	private static final long serialVersionUID = -5731824239719935998L;
 
 	//Holds the time passed since the last box has been fully shown or 0 if no box is fully shown.
 	private long timePassedAfterFullBoxSown = 0;

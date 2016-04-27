@@ -6,7 +6,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.UnicodeFont;
 
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 

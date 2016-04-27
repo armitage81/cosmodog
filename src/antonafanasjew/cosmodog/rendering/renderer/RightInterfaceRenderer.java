@@ -1,22 +1,20 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import antonafanasjew.cosmodog.Animations;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.notifications.NotificationQueue;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.util.Mappings;
 
 public class RightInterfaceRenderer implements Renderer {
 
@@ -45,7 +43,7 @@ public class RightInterfaceRenderer implements Renderer {
 		graphics.translate(-contentContext.x(), -contentContext.y());
 		
 		int i = 0;
-		for (String key : inventory.keySet()) {
+		for (InventoryItemType key : inventory.keySet()) {
 			int column = i % INVENTORY_COLUMNS;
 			int row = i / INVENTORY_COLUMNS;
 			InventoryItem item = inventory.get(key);

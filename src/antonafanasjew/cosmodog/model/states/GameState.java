@@ -11,6 +11,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import com.google.common.collect.Lists;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -38,7 +40,6 @@ import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.LeftInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
@@ -47,7 +48,6 @@ import antonafanasjew.cosmodog.rendering.renderer.OverheadNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
-import antonafanasjew.cosmodog.rendering.renderer.RightInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
@@ -66,8 +66,6 @@ import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
 
-import com.google.common.collect.Lists;
-
 public class GameState extends BasicGameState {
 
 	private boolean firstUpdate;
@@ -76,9 +74,7 @@ public class GameState extends BasicGameState {
 	
 	
 	private DrawingContext gameContainerDrawingContext;
-	// private DrawingContext leftColumnDrawingContext;
 	private DrawingContext middleColumnDrawingContext;
-	private DrawingContext rightColumnDrawingContext;
 	private DrawingContext topDrawingContext;
 	private DrawingContext weaponTooltipsDrawingContext;
 	private DrawingContext lifeDrawingContext;
@@ -87,21 +83,16 @@ public class GameState extends BasicGameState {
 	private DrawingContext vitalDataDrawingContext;
 	private DrawingContext gameProgressDrawingContext;
 	private DrawingContext mapDrawingContext;
-	private DrawingContext notificationsDrawingContext;
 	
-	private DrawingContext tutorialDrawingContext;
 	
 	private CloudsDecoration cloudsDeco;
 	private List<BirdsDecoration> birdsDecos = Lists.newArrayList();
 	
 	private AbstractRenderer cloudRenderer;
 	private AbstractRenderer birdsRenderer;
-	private Renderer notificationRenderer;
 	private Renderer vitalDataInterfaceRenderer;
 	private Renderer gameProgressInterfaceRenderer;
 	private Renderer lifeInterfaceRenderer;
-	private AbstractRenderer leftInterfaceRenderer;
-	private Renderer rightInterfaceRenderer;
 	private AbstractRenderer mapRenderer;
 	private AbstractRenderer playerRenderer;
 	private AbstractRenderer npcRenderer;
@@ -121,7 +112,6 @@ public class GameState extends BasicGameState {
 	
 	private DialogBoxRenderer dialogBoxRenderer;
 	private WritingRenderer commentsRenderer;
-	private WritingRenderer tutorialsRenderer;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -145,12 +135,6 @@ public class GameState extends BasicGameState {
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
 		gameProgressDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 1, 0);
 		
-		notificationsDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 10, 0, 0, 1, 1);
-
-		rightColumnDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 4, 0);
-		
-		tutorialDrawingContext = new CenteredDrawingContext(mapDrawingContext, mapDrawingContext.w() - 20, mapDrawingContext.h() - 20);
-		
 		//Update the global dialog drawing context variable in the application context.
 		ApplicationContext.instance().setDialogBoxDrawingContext(new TileDrawingContext(mapDrawingContext, 1, 5, 0, 4));
 		
@@ -159,8 +143,6 @@ public class GameState extends BasicGameState {
 		birdsRenderer = new BirdsRenderer();
 		
 		lifeInterfaceRenderer = new LifeInterfaceRenderer();
-		leftInterfaceRenderer = new LeftInterfaceRenderer();
-		rightInterfaceRenderer = new RightInterfaceRenderer();
 		
 		mapRenderer = new MapLayerRenderer();
 		playerRenderer = new PlayerRenderer();
@@ -178,7 +160,6 @@ public class GameState extends BasicGameState {
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
 		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
-		tutorialsRenderer = new WritingRenderer(false, new Color(0, 0, 0, 0.75f));
 		dialogBoxRenderer = new DialogBoxRenderer();
 		
 	}

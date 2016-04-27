@@ -9,7 +9,6 @@ import org.newdawn.slick.util.Log;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;

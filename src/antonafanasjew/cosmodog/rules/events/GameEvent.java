@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rules.events;
 
-public interface GameEvent {
+import java.io.Serializable;
+
+public interface GameEvent extends Serializable {
 
 }

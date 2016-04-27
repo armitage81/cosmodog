@@ -7,6 +7,8 @@ import java.util.Set;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import com.google.common.collect.Lists;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -32,12 +34,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
-
-import com.google.common.collect.Lists;
 
 /**
  * Note: this class is not thread-save
@@ -182,12 +182,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				int collectiblesLayerTileId = tiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
 				if (collectiblesLayerTileId == Tiles.FUEL_TILE_ID) {
 					if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
-						VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);
+						VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 						Vehicle vehicle = vehicleItem.getVehicle();
 						vehicle.setFuel(Vehicle.MAX_FUEL);
 					} else {
-						if (player.getInventory().get(InventoryItem.INVENTORY_ITEM_FUEL_TANK) == null) {
-							player.getInventory().put(InventoryItem.INVENTORY_ITEM_FUEL_TANK, new FuelTankInventoryItem());
+						if (player.getInventory().get(InventoryItemType.FUEL_TANK) == null) {
+							player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
 						}
 					}
 				}

@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.writing.textbox;
 
+import java.io.Serializable;
 
-public class WritingTextBox {
+public class WritingTextBox implements Serializable {
+
+	private static final long serialVersionUID = 3738000028816598806L;
 
 	private float boxWidth;
 	private float boxHeight;

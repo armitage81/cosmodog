@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 public class InsightInteraction extends AbstractPieceInteraction {
 
@@ -19,7 +20,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		
-		InventoryItem item = player.getInventory().get(InventoryItem.INVENTORY_ITEM_INSIGHT);
+		InventoryItem item = player.getInventory().get(InventoryItemType.INSIGHT);
 
 		if (item != null) {
 			InsightInventoryItem cosmodogCollectionItem = (InsightInventoryItem) item;
@@ -27,7 +28,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		} else {
 			InsightInventoryItem cosmodogCollectionItem = new InsightInventoryItem();
 			cosmodogCollectionItem.setNumber(1);
-			player.getInventory().put(InventoryItem.INVENTORY_ITEM_INSIGHT, cosmodogCollectionItem);
+			player.getInventory().put(InventoryItemType.INSIGHT, cosmodogCollectionItem);
 		}
 
 		// Now remove the electricity effect from the monolyth.

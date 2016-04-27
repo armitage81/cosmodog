@@ -13,7 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.util.Log;
 
-import antonafanasjew.cosmodog.Animations;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.globals.Features;

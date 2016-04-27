@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rules;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
@@ -11,9 +12,11 @@ import antonafanasjew.cosmodog.rules.events.GameEvent;
  * A rule is an action whose execution is dependent on the event type and the trigger logic.
  * If no eventTypes are given, all will be accepted.
  */
-public class Rule {
+public class Rule implements Serializable {
 	
 	
+	private static final long serialVersionUID = 3076763824308264337L;
+
 	public static final int RULE_PRIORITY_EARLIEST = 0;
 	public static final int RULE_PRIORITY_10 = 10;
 	public static final int RULE_PRIORITY_20 = 20;

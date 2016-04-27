@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.CountableInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -18,11 +19,11 @@ public class InventoryBasedTrigger extends AbstractRuleTrigger {
 	private static final long serialVersionUID = -6139617119100916731L;
 
 	private int numberOfCollectibleInstances;
-	private String collectibleType;
+	private InventoryItemType inventoryItemType;
 	
-	public InventoryBasedTrigger(String collectibleType, int numberOfCollectibleInstances) {
+	public InventoryBasedTrigger(InventoryItemType inventoryItemType, int numberOfCollectibleInstances) {
 		super();
-		this.collectibleType = collectibleType;
+		this.inventoryItemType = inventoryItemType;
 		this.numberOfCollectibleInstances = numberOfCollectibleInstances;
 	}
 
@@ -30,7 +31,7 @@ public class InventoryBasedTrigger extends AbstractRuleTrigger {
 	public boolean accept(GameEvent event) {
 		Player player = ApplicationContextUtils.getPlayer();
 		Inventory inventory = player.getInventory();
-		InventoryItem inventoryItem = inventory.get(collectibleType);
+		InventoryItem inventoryItem = inventory.get(inventoryItemType);
 		
 		int noOfInstances;
 		

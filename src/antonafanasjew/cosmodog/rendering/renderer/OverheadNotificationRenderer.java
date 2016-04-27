@@ -3,7 +3,6 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.List;
 import java.util.Map;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -50,7 +49,6 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 		Actor actor = transition.actor;
 		float completion = transition.completion;
 		String text = transition.text;
-		Color color = transition.color;
 
 		Cam cam = cosmodogGame.getCam();
 		

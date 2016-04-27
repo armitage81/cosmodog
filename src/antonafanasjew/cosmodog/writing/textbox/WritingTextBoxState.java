@@ -1,11 +1,14 @@
 package antonafanasjew.cosmodog.writing.textbox;
 
+import java.io.Serializable;
 import java.util.List;
 
 import antonafanasjew.cosmodog.writing.dynamics.TextBlockDynamicsCalculatorUtils;
 import antonafanasjew.cosmodog.writing.model.TextBlockBox;
 
-public class WritingTextBoxState {
+public class WritingTextBoxState implements Serializable {
+
+	private static final long serialVersionUID = 3777701220147396754L;
 
 	//Content of the text box with the text that is split in lines and pages/boxes
 	private WritingTextBoxContent writingTextBoxContent;

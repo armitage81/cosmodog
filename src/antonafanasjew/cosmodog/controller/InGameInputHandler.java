@@ -26,7 +26,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
@@ -48,7 +48,6 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		cosmodogGame.getActionRegistry().update(delta, gc, sbg);
 		
-		boolean blocked = false;
 		Input input = gc.getInput();
 		
 		boolean inputLeft = input.isKeyDown(Input.KEY_LEFT); 
@@ -60,9 +59,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		if (inputMovement && cosmodogGame.getActionRegistry().inputBlocked() == false) {
 
-			boolean playerWasInVehicle = player.getInventory().hasVehicle();
-			
-			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);
+			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			
 			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {				if (vehicleItem != null) {
 					vehicleItem.setExiting(true);
@@ -104,7 +101,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 						vehicle.setPositionX(player.getPositionX());
 						vehicle.setPositionY(player.getPositionY());
 						cosmodogMap.getMapPieces().add(vehicle);
-						player.getInventory().remove(InventoryItem.INVENTORY_ITEM_VEHICLE);
+						player.getInventory().remove(InventoryItemType.VEHICLE);
 						Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 						if (carmotor.playing()) {
 							carmotor.stop();
@@ -151,7 +148,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		}
 		
 		if (input.isKeyPressed(Input.KEY_TAB)) {
-			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 
 			WeaponType previouslySelectedWeaponType = arsenal.getSelectedWeaponType();
 			

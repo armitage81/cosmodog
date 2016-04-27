@@ -1,13 +1,15 @@
 package antonafanasjew.cosmodog.model.upgrades;
 
+import java.io.Serializable;
 import java.util.List;
 
 import antonafanasjew.cosmodog.domains.WeaponType;
 
 import com.google.common.collect.Lists;
 
-public class Weapon {
+public class Weapon implements Serializable {
 
+	private static final long serialVersionUID = 7316365846677172148L;
 	private WeaponType weaponType;
 	private int ammunition;
 	

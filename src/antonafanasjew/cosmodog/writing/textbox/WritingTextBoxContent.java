@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.writing.textbox;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -14,7 +15,9 @@ import antonafanasjew.cosmodog.writing.model.TextBlockLine;
  * This class provides the information which part of the text to render.
  * 
  */
-public class WritingTextBoxContent {
+public class WritingTextBoxContent implements Serializable {
+
+	private static final long serialVersionUID = -1073079732798666511L;
 
 	private WritingTextBox writingTextBox;
 	private List<TextBlock> text;

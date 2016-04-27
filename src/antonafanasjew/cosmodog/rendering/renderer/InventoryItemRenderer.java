@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -31,7 +32,7 @@ public class InventoryItemRenderer implements Renderer {
 		 * ARSENAL IS NOT RENDERED.
 		 * 
 		 * */
-		if (item.getInventoryItemType().equals(InventoryItem.INVENTORY_ITEM_ARSENAL)) {
+		if (item.getInventoryItemType().equals(InventoryItemType.ARSENAL)) {
 			return;
 		}
 		

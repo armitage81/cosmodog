@@ -6,9 +6,7 @@ import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
-import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -16,10 +14,9 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
-import antonafanasjew.cosmodog.notifications.Notification;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
@@ -94,7 +91,7 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 			
 			Log.debug("Enemy has lost " + damage + " life points.");
 			enemy.setLife(enemy.getLife() - damage);
-			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_ARSENAL);
+			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 			WeaponType weaponType = arsenal.getSelectedWeaponType();
 			if (weaponType != null) {
 				Weapon weapon = arsenal.getWeaponsCopy().get(weaponType);
@@ -103,11 +100,11 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		} else {
 			
 			if (player.getInventory().hasVehicle()) {
-				VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);
+				VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 				Vehicle vehicle = item.getVehicle();
 				vehicle.setLife(vehicle.getLife() - damage);
 				if (vehicle.dead()) {
-					player.getInventory().remove(InventoryItem.INVENTORY_ITEM_VEHICLE);
+					player.getInventory().remove(InventoryItemType.VEHICLE);
 				}
 			} else {
 				Log.debug("Player has lost " + damage + " life points.");

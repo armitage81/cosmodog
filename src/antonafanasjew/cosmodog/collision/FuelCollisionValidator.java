@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 
 /**
@@ -24,7 +24,7 @@ public class FuelCollisionValidator extends AbstractCollisionValidator {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
 		Player player = (Player) actor;
 		if (player.getInventory().hasVehicle()) {
-			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);
+			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			if (!vehicleInventoryItem.isExiting()) {
 				Vehicle vehicle = vehicleInventoryItem.getVehicle();
 				if (vehicle.outOfFuel()) {

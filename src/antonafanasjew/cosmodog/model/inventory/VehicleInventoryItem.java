@@ -13,7 +13,7 @@ public class VehicleInventoryItem extends InventoryItem {
 	private boolean exiting;
 
 	public VehicleInventoryItem(Vehicle vehicle) {
-		super(InventoryItem.INVENTORY_ITEM_VEHICLE);
+		super(InventoryItemType.VEHICLE);
 		this.vehicle = vehicle;
 	}
 	

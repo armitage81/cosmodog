@@ -8,7 +8,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -40,28 +39,15 @@ public class CloudRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
 
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
 
-		float movementOffsetX = 0;
-		float movementOffsetY = 0;
 		
-		int painted = 0;
 		for (PlacedRectangle cloudRectangle : cloudsRectangles) {
 			if (cloudRectangle.minX() * cam.getZoomFactor() >= camX + cam.viewCopy().width()) {
 				continue;
@@ -76,7 +62,6 @@ public class CloudRenderer extends AbstractRenderer {
 				continue;
 			}
 			
-			painted++;
 			graphics.translate(cloudRectangle.centerX() * cam.getZoomFactor() - camX, cloudRectangle.centerY() * cam.getZoomFactor() - camY);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			cloudSpriteSheet.getSprite(0, 1).draw(-cloudRectangle.width() / 2, -cloudRectangle.height() / 2);

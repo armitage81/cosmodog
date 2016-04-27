@@ -16,6 +16,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.Mappings;
@@ -55,7 +56,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
 		
 		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
-		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE) != null;
+		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(tiledMap, player, playerTransition);
 		boolean playerIsInHighGrass = isHighGrassTile(tiledMap, player, playerTransition);
 		
@@ -146,7 +147,7 @@ public class PlayerRenderer extends AbstractRenderer {
 
 
 	private boolean hasBoat(Player player) {
-		InventoryItem boat= player.getInventory().get(InventoryItem.INVENTORY_ITEM_BOAT);
+		InventoryItem boat= player.getInventory().get(InventoryItemType.BOAT);
 		return boat != null;
 	}
 	

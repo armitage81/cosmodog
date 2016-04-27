@@ -49,7 +49,6 @@ public class WeaponTooltipRenderer implements Renderer {
 		}
 		
 		
-		float completion = transition.completion;
 
 		Weapon weapon = transition.weapon;
 		

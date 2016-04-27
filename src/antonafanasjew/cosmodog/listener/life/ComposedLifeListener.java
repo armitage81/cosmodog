@@ -6,6 +6,8 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 
 public class ComposedLifeListener implements LifeListener {
 
+	private static final long serialVersionUID = 7018321554145786513L;
+
 	private Iterable<LifeListener> underlyingLifeListeners;
 	
 	public ComposedLifeListener(Iterable<LifeListener> underlyingLifeListeners) {

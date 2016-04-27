@@ -4,6 +4,8 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 
 public class EnemyLifeListener implements LifeListener {
 
+	private static final long serialVersionUID = 852363621902493141L;
+
 	@Override
 	public void onLifeChange(Actor actorAfterLifeChange, int lifeBeforeChange, int lifeAfterChange) {
 	

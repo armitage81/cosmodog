@@ -7,7 +7,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 
 /**
@@ -32,8 +32,8 @@ public class GeneralCollisionValidator extends AbstractCollisionValidator {
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
 		Player player = (Player)actor;
-		VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_VEHICLE);
-		BoatInventoryItem boatInventoryItem = (BoatInventoryItem)player.getInventory().get(InventoryItem.INVENTORY_ITEM_BOAT);
+		VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
+		BoatInventoryItem boatInventoryItem = (BoatInventoryItem)player.getInventory().get(InventoryItemType.BOAT);
 		boolean vehicleCollision = vehicleInventoryItem != null && !vehicleInventoryItem.isExiting(); 
 		boolean boatCollision = !vehicleCollision && boatInventoryItem != null;
 		if (vehicleCollision) {
