@@ -1,59 +1,81 @@
 package antonafanasjew.cosmodog.actions.notification;
 
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
-import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import com.google.common.collect.Lists;
+
+import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
-public class OverheadNotificationAction extends FixedLengthAsyncAction {
+public class OverheadNotificationAction extends VariableLengthAsyncAction {
 
 	private static final long serialVersionUID = -8697185530449890051L;
 
+	public static final int OVERHEAD_NOTIFICATION_DURATION = 500;
+	
 	public static class OverheadNotificationTransition {
-		public String text;
+		public List<String> texts = Lists.newArrayList();
+		public List<Float> completions = Lists.newArrayList();
+		
 		public Actor actor;
 		public Color color;
-		public float completion;
 	}
 	
 	private OverheadNotificationTransition transition;
 	
-	public static OverheadNotificationAction create(int duration, Actor actor, String text, Color color) {
-		return new OverheadNotificationAction(duration, actor, text, color);
+	public static OverheadNotificationAction create(Actor actor, String text, Color color) {
+		return new OverheadNotificationAction(actor, text, color);
 	}
 	
-	private OverheadNotificationAction(int duration, Actor actor, String text, Color color) {
-		super(duration);
+	private OverheadNotificationAction(Actor actor, String text, Color color) {
 		
 		transition = new OverheadNotificationTransition();
 		transition.actor = actor;
-		transition.text = text;
 		transition.color = color;
+		transition.texts.add(text);
+		transition.completions.add(0.0f);
 		
-	}
-
-	@Override
-	public void onTrigger() {
-		transition.completion = 0.0f;
 	}
 
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		transition.completion = (float)after / (float)getDuration();
-		if (transition.completion > 1.0) {
-			transition.completion = 1.0f;
+		
+		float delta = after - before;
+		float deltaCompletion = delta / OVERHEAD_NOTIFICATION_DURATION;
+		if (deltaCompletion > 1.0f) {
+			deltaCompletion = 1.0f;
 		}
+		
+		List<String> remainingTexts = Lists.newArrayList();
+		List<Float> remainingCompletions = Lists.newArrayList();
+
+		for (int i = 0; i < transition.completions.size(); i++) {
+			float completion = transition.completions.get(i);
+			completion += deltaCompletion;
+			if (completion < 1.0f) {
+				
+				remainingTexts.add(transition.texts.get(i));
+				remainingCompletions.add(completion);
+			
+			}
+		}
+		
+		transition.texts = remainingTexts;
+		transition.completions = remainingCompletions;
+
 	}
 	
-	@Override
-	public void onEnd() {
-		transition = null;
-	}
-
 	public OverheadNotificationTransition getTransition() {
 		return transition;
+	}
+
+	@Override
+	public boolean hasFinished() {
+		return transition != null && transition.texts.size() == 0;
 	}
 
 }

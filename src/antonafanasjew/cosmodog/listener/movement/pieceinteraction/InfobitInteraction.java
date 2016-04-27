@@ -20,8 +20,17 @@ public class InfobitInteraction extends AbstractPieceInteraction {
 			@Override
 			public void run() {
 				
-				OverheadNotificationAction action = OverheadNotificationAction.create(500, player, "+" + Constants.SCORE_PER_INFOBIT, Color.white);
-				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+				String text = "+" + Constants.SCORE_PER_INFOBIT;
+
+				OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
+				
+				if (overheadNotificationAction == null) {
+					OverheadNotificationAction action = OverheadNotificationAction.create(player, text, Color.white);
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+				} else {
+					overheadNotificationAction.getTransition().texts.add(text);
+					overheadNotificationAction.getTransition().completions.add(0.0f);
+				}
 				
 				player.getGameProgress().addToScore(Constants.SCORE_PER_INFOBIT);
 				player.getGameProgress().addInfobit();

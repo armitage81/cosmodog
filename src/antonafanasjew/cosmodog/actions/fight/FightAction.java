@@ -114,9 +114,19 @@ public class FightAction extends VariableLengthAsyncAction {
 			
 			Actor defender = phaseResult.isPlayerAttack() ? phaseResult.getEnemy() : phaseResult.getPlayer();
 			Color color = defender == phaseResult.getPlayer() ? Color.red : Color.green;
-			OverheadNotificationAction action = OverheadNotificationAction.create(500, defender, "-" + String.valueOf(phaseResult.getDamage()), color);
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+			
+			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
+			
+			String text = "-" + String.valueOf(phaseResult.getDamage());
+			if (overheadNotificationAction == null) {
+				OverheadNotificationAction action = OverheadNotificationAction.create(defender, text, color);
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+			} else {
+				overheadNotificationAction.getTransition().texts.add(text);
+				overheadNotificationAction.getTransition().completions.add(0.0f);
+			}
+			
 			
 			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
 			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
