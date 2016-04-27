@@ -254,6 +254,7 @@ public class GameState extends BasicGameState {
 		cosmodogGame.getChronometer().update(n);
 		cosmodogGame.getCommentsStateUpdater().update(n);
 		cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
+		cosmodogGame.getActionRegistry().update(n, gc, sbg);
 		
 		cloudsDeco.update(n);
 		

@@ -100,7 +100,7 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		} else {
 			
 			if (player.getInventory().hasVehicle()) {
-				VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+				VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 				Vehicle vehicle = item.getVehicle();
 				vehicle.setLife(vehicle.getLife() - damage);
 				if (vehicle.dead()) {

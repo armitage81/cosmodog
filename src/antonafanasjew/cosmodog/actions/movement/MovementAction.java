@@ -344,7 +344,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		ActionRegistry ar = game.getActionRegistry();
-		
 		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimpleEnemyAttackDamageCalculator()));
 		
 	}
