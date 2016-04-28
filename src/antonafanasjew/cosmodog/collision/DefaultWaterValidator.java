@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
 /**
@@ -15,7 +15,7 @@ public class DefaultWaterValidator extends AbstractWaterValidator {
 	@Override
 	protected boolean waterInReachInternal(Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		int waterLayerTileId = map.getTileId(actor.getPositionX(), actor.getPositionY(), Layers.LAYER_META_WATERPLACES);
-		return  (waterLayerTileId == Tiles.WATERPLACE_TILE_ID || waterLayerTileId == Tiles.NEAR_WATERPLACE_TILE_ID);
+		return  (TileType.WATERPLACE.getTileId() == waterLayerTileId || TileType.NEAR_WATERPLACE.getTileId() == waterLayerTileId);
 	}
 
 }

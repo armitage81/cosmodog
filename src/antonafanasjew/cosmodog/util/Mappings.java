@@ -10,11 +10,14 @@ import antonafanasjew.cosmodog.domains.PlayerActionType;
 import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 public class Mappings {
 
+	/**
+	 * Map of inventory item types to their animations in the inventory.
+	 */
 	public static final Map<InventoryItemType, String> INVENTORY_ITEM_TYPE_TO_ANIMATION_ID = Maps.newHashMap();
 	
 	static {
@@ -25,12 +28,15 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.VEHICLE, "inventoryItemVehicle");
 	}
 	
-	public static final Map<Integer, UnitType> ENEMY_TILE_ID_TO_UNIT_TYPE = Maps.newHashMap();
+	/**
+	 * Map of enemy tile ids on the map to the type of enemy that should be initialized on map.
+	 */
+	public static final Map<TileType, UnitType> ENEMY_TILE_TYPE_TO_UNIT_TYPE = Maps.newHashMap();
 	
 	static {
-		ENEMY_TILE_ID_TO_UNIT_TYPE.put(Tiles.META_ENEMY_TILE_LIGHTTANK, UnitType.LIGHT_TANK);
-		ENEMY_TILE_ID_TO_UNIT_TYPE.put(Tiles.META_ENEMY_TILE_ROBOT, UnitType.ROBOT);
-		ENEMY_TILE_ID_TO_UNIT_TYPE.put(Tiles.META_ENEMY_TILE_DRONE, UnitType.DRONE);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_LIGHTTANK, UnitType.LIGHT_TANK);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_ROBOT, UnitType.ROBOT);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_DRONE, UnitType.DRONE);
 	}
 	
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
@@ -75,38 +81,38 @@ public class Mappings {
 		return "player" + ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.get(playerAppearanceType) + ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.get(playerActionType) + ANIMATION_KEY_BY_DIRECTION_TYPE.get(directionType);
 	}
 	
-	public static Map<Integer, Integer> ENERGY_WALL_COSTS = Maps.newHashMap();
+	public static Map<TileType, Integer> ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS = Maps.newHashMap();
 	
 	static  {
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_10_TILE_ID, 10);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_20_TILE_ID, 20);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_30_TILE_ID, 30);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_40_TILE_ID, 40);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_50_TILE_ID, 50);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_60_TILE_ID, 60);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_70_TILE_ID, 70);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_80_TILE_ID, 80);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_90_TILE_ID, 90);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_100_TILE_ID, 100);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_150_TILE_ID, 150);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_200_TILE_ID, 200);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_250_TILE_ID, 250);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_300_TILE_ID, 300);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_350_TILE_ID, 350);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_500_TILE_ID, 500);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_1000_TILE_ID, 1000);
-		ENERGY_WALL_COSTS.put(Tiles.ENERGYWALL_EFFECT_10000_TILE_ID, 10000);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_10, 10);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_20, 20);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_30, 30);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_40, 40);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_50, 50);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_60, 60);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_70, 70);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_80, 80);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_90, 90);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_100, 100);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_150, 150);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_200, 200);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_250, 250);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_300, 300);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_350, 350);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_500, 500);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_1000, 1000);
+		ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.put(TileType.ENERGYWALL_EFFECT_10000, 10000);
 	}
 	
 	
-	public static Map<Integer, WeaponType> COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE = Maps.newHashMap();
+	public static Map<TileType, WeaponType> COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE = Maps.newHashMap();
 	
 	static {
-		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_PISTOL_TILE_ID, WeaponType.PISTOL);
-		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_SHOTGUN_TILE_ID, WeaponType.SHOTGUN);
-		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_RIFLE_TILE_ID, WeaponType.RIFLE);
-		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_MACHINEGUN_TILE_ID, WeaponType.MACHINEGUN);
-		COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.put(Tiles.WEAPONS_ROCKETLAUNCHER_TILE_ID, WeaponType.RPG);
+		COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.put(TileType.WEAPONS_PISTOL, WeaponType.PISTOL);
+		COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.put(TileType.WEAPONS_SHOTGUN, WeaponType.SHOTGUN);
+		COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.put(TileType.WEAPONS_RIFLE, WeaponType.RIFLE);
+		COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.put(TileType.WEAPONS_MACHINEGUN, WeaponType.MACHINEGUN);
+		COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.put(TileType.WEAPONS_ROCKETLAUNCHER, WeaponType.RPG);
 	}
 	
 	public static Map<WeaponType, String> WEAPON_TYPE_2_ANIMATION_ID = Maps.newHashMap();
@@ -120,14 +126,14 @@ public class Mappings {
 	}
 	
 	
-	public static Map<Integer, WeaponType> COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE = Maps.newHashMap();
+	public static Map<TileType, WeaponType> COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE = Maps.newHashMap();
 	
 	static {
-		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_PISTOL_TILE_ID, WeaponType.PISTOL);
-		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_SHOTGUN_TILE_ID, WeaponType.SHOTGUN);
-		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_RIFLE_TILE_ID, WeaponType.RIFLE);
-		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_MACHINEGUN_TILE_ID, WeaponType.MACHINEGUN);
-		COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.put(Tiles.AMMO_ROCKETLAUNCHER_TILE_ID, WeaponType.RPG);
+		COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.put(TileType.AMMO_PISTOL, WeaponType.PISTOL);
+		COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.put(TileType.AMMO_SHOTGUN, WeaponType.SHOTGUN);
+		COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.put(TileType.AMMO_RIFLE, WeaponType.RIFLE);
+		COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.put(TileType.AMMO_MACHINEGUN, WeaponType.MACHINEGUN);
+		COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.put(TileType.AMMO_ROCKETLAUNCHER, WeaponType.RPG);
 	}
 	
 	public static Map<WeaponType, String> WEAPON_TYPE_2_AMMO_ANIMATION_ID = Maps.newHashMap();
@@ -152,8 +158,13 @@ public class Mappings {
 		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.RPG, "rpgIcon");
 	}
 	
-	
-	
+	/**
+	 * Normally, each non meta tile has a corresponding tile image in the sprite sheet.
+	 * For some of them, we want to draw a complete animation instead of a static image (f.i. water).
+	 * This map defines such tile ids and corresponding animation ids.
+	 * Tile id references are semantically equivalent to the ids in the Tiles class.
+	 */
+	public static Map<Integer, String> TILE_ID_TO_ANIMATION = Maps.newHashMap();
 	
 	
 	

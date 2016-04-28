@@ -79,6 +79,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 	private void render(CustomTiledMap customTiledMap, int offsetX, int offsetY, int tilePosX, int tilePosY, int layerIndex) {
 		
 		int tileId = customTiledMap.getTileId(tilePosX, tilePosY, layerIndex);
+		
 		int imageIndex = tileId - 1;
 		
 		if (imageIndex >= 0) {

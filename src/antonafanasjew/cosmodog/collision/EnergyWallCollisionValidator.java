@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -21,12 +21,12 @@ public class EnergyWallCollisionValidator extends AbstractCollisionValidator {
 		
 		int roadObjectsTileId = map.getTileId(tileX, tileY, Layers.LAYER_ROADS_OBJECTS_MANUAL);
 		
-		if (Tiles.ENERGY_WALL_GENERATOR_TILE_ID == roadObjectsTileId) {
+		if (TileType.ENERGY_WALL_GENERATOR.getTileId() == roadObjectsTileId) {
 		
 			int energyWallTileId = map.getTileId(tileX, tileY, Layers.LAYER_META_EFFECTS);
 			
 			int collectedInfobits = ((Player)actor).getGameProgress().getInfobits();
-			if (collectedInfobits < Mappings.ENERGY_WALL_COSTS.get(energyWallTileId)) {
+			if (collectedInfobits < Mappings.ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.get(TileType.getByLayerAndTileId(Layers.LAYER_META_EFFECTS, energyWallTileId))) {
 				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_ENERGY_WALL_COSTS);
 			}
 			

@@ -17,7 +17,7 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.pieceinteraction.ComposedPieceInteractionListener;
 import antonafanasjew.cosmodog.listener.pieceinteraction.PieceInteractionListener;
@@ -180,7 +180,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 				int collectiblesLayerTileId = tiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
-				if (collectiblesLayerTileId == Tiles.FUEL_TILE_ID) {
+				if (TileType.FUEL.getTileId() == collectiblesLayerTileId) {
 					if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 						VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 						Vehicle vehicle = vehicleItem.getVehicle();

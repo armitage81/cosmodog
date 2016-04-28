@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
@@ -14,9 +14,9 @@ public class ActorOnWheelsCollisionValidator extends AbstractCollisionValidator 
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
-		boolean collisionTile = tileId == Tiles.COLLISION_TILE_ID;
-		boolean collisionVehicleTile = tileId == Tiles.COLLISION_VEHICLE_TILE_ID;
-		boolean waterTile = tileId == Tiles.WATER_TILE_ID;
+		boolean collisionTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION);
+		boolean collisionVehicleTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_VEHICLE);
+		boolean waterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 		
 		boolean passable = !collisionTile && !collisionVehicleTile && ! waterTile;
 		

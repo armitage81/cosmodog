@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
@@ -18,7 +18,7 @@ public class BoatCollisionValidator extends AbstractCollisionValidator {
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
-		boolean collisionTile = tileId == Tiles.COLLISION_TILE_ID;
+		boolean collisionTile = TileType.COLLISION.getTileId() == tileId;
 		boolean passable = !collisionTile; //Water tile is allowedd
 		return CollisionStatus.instance(actor, map, tileX, tileY, passable, CollisionStatus.NO_PASSAGE_REASON_BLOCKED);
 	}

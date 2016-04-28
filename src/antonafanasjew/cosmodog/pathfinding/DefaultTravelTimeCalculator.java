@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -68,27 +68,27 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 
 	private int costsForActorOnFoot(int terrainTypeTileId) {
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_WATER_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_WATER.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_ON_FOOT;
 		}
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_ROAD_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_ROAD.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_ON_FOOT;
 		}
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_PLAIN_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_PLAIN.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_ON_FOOT;
 		}
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_UNEVEN_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_UNEVEN.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_ON_FOOT;
 		}
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_ROUGH_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_ROUGH.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_ON_FOOT * 2;
 		}
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_BROKEN_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_BROKEN.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_ON_FOOT * 3;
 		}
 		
@@ -97,11 +97,11 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 	}
 	
 	private int costsForActorOnWheels(int terrainTypeTileId) {
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_ROAD_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_ROAD.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_WITH_VEHICLE;
 		}
 		
-		if (terrainTypeTileId == Tiles.TERRAIN_TYPE_PLAIN_TILE_ID) {
+		if (TileType.TERRAIN_TYPE_PLAIN.getTileId() == terrainTypeTileId) {
 			return Constants.DEFAULT_TIME_COSTS_WITH_VEHICLE * 2;
 		}
 		

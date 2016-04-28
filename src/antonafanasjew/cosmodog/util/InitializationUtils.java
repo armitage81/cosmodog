@@ -6,6 +6,9 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -21,7 +24,7 @@ import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
@@ -71,9 +74,6 @@ import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class InitializationUtils {
 
@@ -205,16 +205,16 @@ public class InitializationUtils {
 					map.getMapPieces().add(c);
 				}
 				
-				if (tileId == Tiles.FUEL_TILE_ID) {
+				if (TileType.FUEL.getTileId() == tileId) {
 					Mark m = new Mark(Mark.FUEL_MARK_TYPE);
 					m.setPositionX(k);
 					m.setPositionY(l);
 					map.getMarkedTilePieces().add(m);
 				}
 				
-				if (Tiles.WEAPONS_TILE_IDS.contains(tileId)) {
+				if (TileType.WEAPONS_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId))) {
 					
-					WeaponType weaponType = Mappings.COLLECTIBLE_WEAPON_TILE_ID_2_WEAPON_TYPE.get(tileId);
+					WeaponType weaponType = Mappings.COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.get(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId));
 					Weapon weapon = new Weapon(weaponType);
 					CollectibleWeapon collWeapon = new CollectibleWeapon(weapon);
 					collWeapon.setPositionX(k);
@@ -223,8 +223,8 @@ public class InitializationUtils {
 					
 				}
 				
-				if (Tiles.AMMO_TILE_IDS.contains(tileId)) {
-					WeaponType weaponType = Mappings.COLLECTIBLE_AMMO_TILE_ID_2_WEAPON_TYPE.get(tileId);
+				if (TileType.AMMO_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId))) {
+					WeaponType weaponType = Mappings.COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.get(tileId);
 					CollectibleAmmo collAmmo = new CollectibleAmmo(weaponType);
 					collAmmo.setPositionX(k);
 					collAmmo.setPositionY(l);
@@ -233,28 +233,28 @@ public class InitializationUtils {
 				
 				tileId = tiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);
 				
-				if (tileId == Tiles.FIRE_EFFECT_TILE_ID) {
+				if (TileType.FIRE_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_FIRE);
 					effect.setPositionX(k);
 					effect.setPositionY(l);
 					map.getEffectPieces().add(effect);
 				}
 				
-				if (tileId == Tiles.SMOKE_EFFECT_TILE_ID) {
+				if (TileType.SMOKE_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_SMOKE);
 					effect.setPositionX(k);
 					effect.setPositionY(l);
 					map.getEffectPieces().add(effect);
 				}
 				
-				if (tileId == Tiles.ELECTRICITY_EFFECT_TILE_ID) {
+				if (TileType.ELECTRICITY_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_ELECTRICITY);
 					effect.setPositionX(k);
 					effect.setPositionY(l);
 					map.getEffectPieces().add(effect);
 				}
 				
-				if (Tiles.ENERGY_WALL_TILE_IDS.contains(tileId)) {
+				if (TileType.ENERGY_WALL_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_EFFECTS, tileId))) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_ENERGYWALL);
 					effect.setPositionX(k);
 					effect.setPositionY(l);
@@ -262,8 +262,6 @@ public class InitializationUtils {
 				}
 				
 			}
-			
-			
 			
 		}
 
@@ -403,7 +401,7 @@ public class InitializationUtils {
 				int tileId = tiledMap.getTileId(k, l, enemyLayerIndex);
 				
 				//Will be null in most cases.
-				UnitType unitType = Mappings.ENEMY_TILE_ID_TO_UNIT_TYPE.get(tileId);
+				UnitType unitType = Mappings.ENEMY_TILE_TYPE_TO_UNIT_TYPE.get(TileType.getByLayerAndTileId(Layers.LAYER_META_NPC, tileId));
 						
 				if (unitType != null) {
 					EnemyFactory enemyFactory = enemyFactories.get(unitType);

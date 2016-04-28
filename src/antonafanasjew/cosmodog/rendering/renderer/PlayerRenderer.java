@@ -11,7 +11,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
 import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.Tiles;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -159,13 +159,13 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		if (playerTransition == null) {
 			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLISIONS);
-			retVal = tileId == Tiles.WATER_TILE_ID;
+			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 		} else {
 			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_COLLISIONS);
 			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_COLLISIONS);
 			
-			boolean startTileIdIsWaterTile = startTileId == Tiles.WATER_TILE_ID;
-			boolean targetTileIdIsWaterTile = targetTileId == Tiles.WATER_TILE_ID;
+			boolean startTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, startTileId).equals(TileType.COLLISION_WATER);
+			boolean targetTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, targetTileId).equals(TileType.COLLISION_WATER);
 			
 			if (startTileIdIsWaterTile && targetTileIdIsWaterTile) {
 				retVal = true;
@@ -188,13 +188,13 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean retVal = false;
 		if (playerTransition == null) {
 			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
-			retVal = tileId == Tiles.GROUND_TYPE_PLANTS_TILE_ID;
+			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
 		} else {
 			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
 			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
 			
-			boolean startTileIdIsHighGrassTile = startTileId == Tiles.GROUND_TYPE_PLANTS_TILE_ID;
-			boolean targetTileIdIsHighGrassTile = targetTileId == Tiles.GROUND_TYPE_PLANTS_TILE_ID;
+			boolean startTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, startTileId).equals(TileType.GROUND_TYPE_PLANTS);
+			boolean targetTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, targetTileId).equals(TileType.GROUND_TYPE_PLANTS);
 			
 			
 			if (startTileIdIsHighGrassTile && targetTileIdIsHighGrassTile) {
