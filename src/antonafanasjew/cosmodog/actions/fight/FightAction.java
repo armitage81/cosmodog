@@ -119,14 +119,14 @@ public class FightAction extends VariableLengthAsyncAction {
 			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 			
 			String text = "-" + String.valueOf(phaseResult.getDamage());
-			if (overheadNotificationAction == null) {
-				OverheadNotificationAction action = OverheadNotificationAction.create(defender, text, color);
-				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
-			} else {
-				overheadNotificationAction.getTransition().texts.add(text);
-				overheadNotificationAction.getTransition().completions.add(0.0f);
-			}
 			
+			if (overheadNotificationAction != null) {
+				overheadNotificationAction.cancel();
+				
+			}
+
+			OverheadNotificationAction action = OverheadNotificationAction.create(defender, text, color);
+			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
 			
 			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
 			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
