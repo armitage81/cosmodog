@@ -197,6 +197,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 	}
 	
+	/*
+	 * Player will never really starve. He stays alive with one life point in the worst case.
+	 */
 	private void checkStarvation(ApplicationContext applicationContext) {
 		Features.getInstance().featureBoundProcedure(Features.FEATURE_HUNGER, new Runnable() {
 			@Override
@@ -204,10 +207,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();				
 				if (player.starving()) {
-					player.decreaseLife(1);
-					if (player.dead()) {
-    					cosmodog.getGameLifeCycle().setStartNewGame(true);
-    					CosmodogStarter.instance.enterState(CosmodogStarter.GAME_OVER_STATE_ID, new FadeOutTransition(), new FadeInTransition());
+					if (player.getLife() > 1) {
+						player.decreaseLife(1);
 					}
 				}
 			}
@@ -215,6 +216,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 	}
 	
+	/*
+	 * Player will never really dehydrate. He stays alive with one life point in the worst case.
+	 */
 	private void checkDehydration(ApplicationContext applicationContext) {
 		Features.getInstance().featureBoundProcedure(Features.FEATURE_THIRST, new Runnable() {
 			@Override
@@ -222,11 +226,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				if (player.dehydrating()) {
-					
-					player.decreaseLife(1);
-					if (player.dead()) {
-    					cosmodog.getGameLifeCycle().setStartNewGame(true);
-    					CosmodogStarter.instance.enterState(CosmodogStarter.GAME_OVER_STATE_ID, new FadeOutTransition(), new FadeInTransition());
+					if (player.getLife() > 1) {
+						player.decreaseLife(1);
 					}
 				}
 			}

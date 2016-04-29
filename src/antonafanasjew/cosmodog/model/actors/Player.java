@@ -6,13 +6,13 @@ import antonafanasjew.cosmodog.model.inventory.Inventory;
 
 public class Player extends Actor {
 
-	public static final int MAX_HUNGER = 5000;
-	public static final int MAX_THIRST = 2500;
+	public static final int MAX_HUNGER = 750;
+	public static final int MAX_THIRST = 500;
 	
 	
 	public static final int MAX_POSSIBLE_LIFE = 50;
 	public static final int INITIAL_LIFE = 10;
-	public static final int LIFE_UNITS_IN_LIFEPACK = 10;
+	public static final int LIFE_UNITS_IN_LIFEPACK = 5;
 
 	private static final long serialVersionUID = 2286108151154430847L;
 
