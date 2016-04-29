@@ -236,7 +236,8 @@ machinegunIcon;data/weapons.png;48;16;[1/3/10000];true;true
 rpgIcon;data/weapons.png;48;16;[1/4/10000];true;true
 
 
-
+tile.WATER_CENTER;data/waters.png;16;16;[1/0/250,1/1/250,1/2/250,1/3/250,1/4/250,1/5/250,1/6/250,1/7/250];true;true
+tile.WATER_BORDER_W;data/water.png;16;16;[1/0/500,1/1/500,1/2/500,1/3/500];true;true
 
 
 

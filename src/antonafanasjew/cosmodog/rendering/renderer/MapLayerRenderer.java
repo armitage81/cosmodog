@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -10,10 +11,12 @@ import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
+import antonafanasjew.cosmodog.util.Mappings;
 
 
 
@@ -59,11 +62,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 				for (int ty = tileNoY; ty < tileNoY + tilesH; ty++) {
 					if (tx >= 0 && ty >= 0) {
 						if (rendererPredicate.tileShouldBeRendered(i, tx, ty)) {
-	    					if (i == Layers.LAYER_WATER && cosmodogGame.getChronometer().timeFrameInLoop(2, 500) == 0) {
-	    						render(tiledMap, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, Layers.LAYER_META_ALT_WATER);
-	    					} else {
-	    						render(tiledMap, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
-	    					}
+							render(tiledMap, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
 						}
 					}
 				}
@@ -78,20 +77,32 @@ public class MapLayerRenderer extends AbstractRenderer {
 
 	private void render(CustomTiledMap customTiledMap, int offsetX, int offsetY, int tilePosX, int tilePosY, int layerIndex) {
 		
+		Animation animation = null;
+		
 		int tileId = customTiledMap.getTileId(tilePosX, tilePosY, layerIndex);
-		
-		int imageIndex = tileId - 1;
-		
-		if (imageIndex >= 0) {
-		
-			int imagePosX = imageIndex % 9;
-			int imagePosY = imageIndex / 9;
-			
-			SpriteSheet tilesetSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_TILES);
-			Image tileImage = tilesetSpriteSheet.getSprite(imagePosX, imagePosY);
-			
-			tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
+		TileType tileType = TileType.getByLayerAndTileId(layerIndex, tileId);
+		if (Mappings.TILE_TYPES_TO_BE_ANIMATED.contains(tileType)) {
+			animation = ApplicationContext.instance().getAnimations().get("tile." + tileType.name());
 		}
+		
+		if (animation != null) {
+			animation.draw(offsetX, offsetY, animation.getWidth(), animation.getHeight());
+		} else {
+			int imageIndex = tileId - 1;
+			
+			if (imageIndex >= 0) {
+			
+				int imagePosX = imageIndex % 9;
+				int imagePosY = imageIndex / 9;
+				
+				SpriteSheet tilesetSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_TILES);
+				Image tileImage = tilesetSpriteSheet.getSprite(imagePosX, imagePosY);
+				
+				tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
+			}	
+		}
+		
+		
 	}
 	
 }

@@ -1,7 +1,9 @@
 package antonafanasjew.cosmodog.util;
 
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -161,17 +163,27 @@ public class Mappings {
 	/**
 	 * Normally, each non meta tile has a corresponding tile image in the sprite sheet.
 	 * For some of them, we want to draw a complete animation instead of a static image (f.i. water).
-	 * This map defines such tile ids and corresponding animation ids.
-	 * Tile id references are semantically equivalent to the ids in the Tiles class.
+	 * This list defines such tile types.
+	 * Animation ids will be calculated from the tile type enumeration names, e.g. WATER_CENTER => tile.WATER_CENTER
 	 */
-	public static Map<Integer, String> TILE_ID_TO_ANIMATION = Maps.newHashMap();
+	public static List<TileType> TILE_TYPES_TO_BE_ANIMATED = Lists.newArrayList();
 	
-	
-	
-	
-	
-	
-	
+	static {
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_CENTER);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_W);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_NW);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_N);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_NE);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_E);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_SE);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_S);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_SE);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_N_AND_E);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_N_AND_W);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_S_AND_E);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_S_AND_W);
+		
+	}
 	
 	
 }
