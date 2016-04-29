@@ -236,8 +236,19 @@ machinegunIcon;data/weapons.png;48;16;[1/3/10000];true;true
 rpgIcon;data/weapons.png;48;16;[1/4/10000];true;true
 
 
-tile.WATER_CENTER;data/waters.png;16;16;[1/0/250,1/1/250,1/2/250,1/3/250,1/4/250,1/5/250,1/6/250,1/7/250];true;true
-tile.WATER_BORDER_W;data/water.png;16;16;[1/0/500,1/1/500,1/2/500,1/3/500];true;true
+tile.WATER_CENTER;data/water.png;16;16;[0/0/500,0/1/500,0/2/500,0/1/500];true;true
+tile.WATER_BORDER_W;data/water.png;16;16;[1/0/500,1/1/500,1/2/500,1/1/500];true;true
+tile.WATER_BORDER_NW;data/water.png;16;16;[2/0/500,2/1/500,2/2/500,2/1/500];true;true
+tile.WATER_BORDER_N;data/water.png;16;16;[3/0/500,3/1/500,3/2/500,3/1/500];true;true
+tile.WATER_BORDER_NE;data/water.png;16;16;[4/0/500,4/1/500,4/2/500,4/1/500];true;true
+tile.WATER_BORDER_E;data/water.png;16;16;[5/0/500,5/1/500,5/2/500,5/1/500];true;true
+tile.WATER_BORDER_SE;data/water.png;16;16;[6/0/500,6/1/500,6/2/500,6/1/500];true;true
+tile.WATER_BORDER_S;data/water.png;16;16;[7/0/500,7/1/500,7/2/500,7/1/500];true;true
+tile.WATER_BORDER_SW;data/water.png;16;16;[8/0/500,8/1/500,8/2/500,8/1/500];true;true
+tile.WATER_BORDER_S_AND_E;data/water.png;16;16;[9/0/500,9/1/500,9/2/500,9/1/500];true;true
+tile.WATER_BORDER_S_AND_W;data/water.png;16;16;[10/0/500,10/1/500,10/2/500,10/1/500];true;true
+tile.WATER_BORDER_N_AND_W;data/water.png;16;16;[11/0/500,11/1/500,11/2/500,11/1/500];true;true
+tile.WATER_BORDER_N_AND_E;data/water.png;16;16;[12/0/500,12/1/500,12/2/500,12/1/500];true;true
 
 
 

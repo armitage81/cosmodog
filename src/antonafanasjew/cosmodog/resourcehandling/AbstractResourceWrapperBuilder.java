@@ -28,7 +28,7 @@ public abstract class AbstractResourceWrapperBuilder<ENTITY_TYPE> implements Res
 		String[] lines = text.split(System.getProperty("line.separator"));
 		//We start with 1 to skip the header;
 		for (int i = 1; i < lines.length; i++) {
-			String line = lines[i];
+			String line = lines[i].trim();
 			if (line != null && line.trim().isEmpty() == false) {
 				
 				String entityId = line.split(";")[0];
