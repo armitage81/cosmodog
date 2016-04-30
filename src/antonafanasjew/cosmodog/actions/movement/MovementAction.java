@@ -7,6 +7,10 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
@@ -33,13 +37,11 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 /**
  * Asynchronous action for movement.
@@ -51,7 +53,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	private static final long serialVersionUID = -693412142092974821L;
 
-	private int playerMovementActionCosts = -1;
 	private MovementActionResult playerMovementActionResult = null;
 	private Map<Enemy, MovementActionResult> enemyMovementActionResults = Maps.newHashMap();
 	
@@ -109,36 +110,25 @@ public class MovementAction extends FixedLengthAsyncAction {
 	
 	private void initMovementActionResults() {
 		
+		//Preparing static data.
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
-		int posX = player.getPositionX();
-		int posY = player.getPositionY();
+		//Calculating the target position.
+		Position targetPos = PositionUtils.neighbourPositionInFacingDirection(player);
 		
-		int targetPosX = posX;
-		int targetPosY = posY;
+		//Calculating the future result of the player movement.
+		int playerMovementActionCosts = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, (int)targetPos.getX(), (int)targetPos.getY());
+		this.playerMovementActionResult = MovementActionResult.instance(player.getPositionX(), player.getPositionY(), (int)targetPos.getX(), (int)targetPos.getY(), playerMovementActionCosts);
 		
-		if (player.getDirection() == DirectionType.DOWN) {
-			targetPosY++;
-		} else if (player.getDirection() == DirectionType.UP) {
-			targetPosY--;
-		} else if (player.getDirection() == DirectionType.LEFT) {
-			targetPosX--;
-		} else if (player.getDirection() == DirectionType.RIGHT) {
-			targetPosX++;
-		}
-		
-		playerMovementActionCosts = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, targetPosX, targetPosY);
-		this.playerMovementActionResult = MovementActionResult.instance(posX, posY, targetPosX, targetPosY, playerMovementActionCosts);
-		
-
+		//Preparing the future results of the enemy movements.
 		Set<Enemy> movingEnemies = Sets.newHashSet();
 		movingEnemies.addAll(cosmodogMap.getEnemies());
 		
 		for (Enemy enemy : movingEnemies) {
-			MovementActionResult enemyMovementResult = calculateEnemyMovementResult(enemy, playerMovementActionCosts, playerMovementActionResult, enemyMovementActionResults);
+			MovementActionResult enemyMovementResult = calculateEnemyMovementResult(enemy, playerMovementActionResult, enemyMovementActionResults);
 			if (enemyMovementResult != null) {
 				enemyMovementActionResults.put(enemy, enemyMovementResult);
 			}
@@ -146,18 +136,22 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 	}
 	
-	private MovementActionResult calculateEnemyMovementResult(Enemy enemy, int planetaryMinutesForMovement, MovementActionResult playerMovementActionResult, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
+	private MovementActionResult calculateEnemyMovementResult(Enemy enemy, MovementActionResult playerMovementActionResult, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
+		
+		//Preparing static data.
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		PathFinder pathFinder = cosmodog.getPathFinder();
+		TravelTimeCalculator travelTimeCalculator = cosmodog.getTravelTimeCalculator();
 		
+		//Preparing collision validator for enemies.
 		CollisionValidator c1 = new ChaussieBasedCollisionValidator();
 		CollisionValidator c2 = new InterCharacterCollisionValidator(playerMovementActionResult, enemyMovementActionResults);
 		CollisionValidator c3 = new NpcHomeRegionCollisionValidator();
 		CollisionValidator c4 = new VehicleObstacleCollisionValidator();
 		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4));
 		
-		TravelTimeCalculator travelTimeCalculator = cosmodog.getTravelTimeCalculator();
-		return pathFinder.calculateMovementResult(enemy, planetaryMinutesForMovement, collisionValidator, travelTimeCalculator, playerMovementActionResult);
+		//Using the path finder to calculate the movement result based on the time budget generated from user movement and enemy's time overhead from the previous turns.
+		return pathFinder.calculateMovementResult(enemy, (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep(), collisionValidator, travelTimeCalculator, playerMovementActionResult);
 
 	}
 
@@ -241,7 +235,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Set<Enemy> enemies = map.getEnemies();
 		for (Enemy enemy : enemies) {
 			
-			int timeBudgetForMovement = playerMovementActionCosts;
+			int timeBudgetForMovement = (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep();
 			float spentTimeBudget = actionTimeRatio * timeBudgetForMovement;
 			
 			

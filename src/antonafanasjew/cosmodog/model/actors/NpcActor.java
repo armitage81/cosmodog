@@ -15,6 +15,8 @@ public class NpcActor extends Actor {
 	
 	private ChaussieType chaussieType;
 	
+	private int timeBudgetOverhead;
+	
 	/**
 	 * Returns the speed factor as related to the player.
 	 * As the player is the time trigger, everything else has to use him as reference. 
@@ -50,6 +52,22 @@ public class NpcActor extends Actor {
 
 	public void setHomeRegionName(String homeRegionName) {
 		this.homeRegionName = homeRegionName;
+	}
+
+	/**
+	 * Returns the collected time budget overhead.
+	 * The overhead is being collected if the NPC has some time budget
+	 * but is not able to execute a movement because it requires more time.
+	 * In this case, the remaining time budget will be stored as overhead and
+	 * can be used next turn.
+	 * @return Time budget overhead.
+	 */
+	public int getTimeBudgetOverhead() {
+		return timeBudgetOverhead;
+	}
+
+	public void setTimeBudgetOverhead(int timeBudgetOverhead) {
+		this.timeBudgetOverhead = timeBudgetOverhead;
 	}
 
 }

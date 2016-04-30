@@ -65,6 +65,8 @@ public class MovementActionResult {
 
 	/**
 	 * Costs for the movement in planetary minutes. Each path step has its own costs.
+	 * Take note: As the step zero is the starting point, no costs are saved for it.
+	 * Costs element zero is assigned to the path step one and so forth.
 	 * @return Costs for each step in the path.
 	 */
 	public List<Float> getMovementCostsInPlanetaryMinutes() {
@@ -72,7 +74,7 @@ public class MovementActionResult {
 	}
 
 	/**
-	 * Costs for the first movement step in the path in planetary minutes.
+	 * Costs for the first movement step in the path in planetary minutes. (Step one, not step zero, as step zero is storing the initial position)
 	 * @return Costs for the first step in the path.
 	 */
 	public float getMovementCostsInPlanetaryMinutesForFirstStep() {

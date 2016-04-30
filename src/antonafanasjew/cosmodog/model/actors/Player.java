@@ -6,8 +6,8 @@ import antonafanasjew.cosmodog.model.inventory.Inventory;
 
 public class Player extends Actor {
 
-	public static final int MAX_HUNGER = 750;
-	public static final int MAX_THIRST = 500;
+	public static final int MAX_HUNGER = 1500;
+	public static final int MAX_THIRST = 1000;
 	
 	
 	public static final int MAX_POSSIBLE_LIFE = 50;

@@ -4,13 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
-
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;

@@ -31,43 +31,53 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 	@Override
 	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
 		
-		
+		//Preparing static data.
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
 		Player player = ApplicationContextUtils.getPlayer();
-		
-		Enemy enemy = (Enemy)actor;
-		
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		SightRadiusCalculator sightRadiusCalculator = cosmodog.getSightRadiusCalculator();
 		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
+		TileBasedMapFactory tileBasedMapFactory = cosmodog.getTileBasedMapFactory();
 		
+		
+		Enemy enemy = (Enemy)actor;
+		
+		//Calculating enemy's sight radius and the distance from which the player will be followed if spotted.
+		//The following distance is not the same as the sight radius. Imaging spotting the player on other river side
+		//and the next bridge is far away.
 		int sightRadius = sightRadiusCalculator.calculateSightRadius(enemy, planetaryCalendar);
 		int followDistance = sightRadius * 3;
 		
+		//Calculating the time budget overhead into the general time budget and resetting it for the enemy.
+		costBudget += enemy.getTimeBudgetOverhead();
+		enemy.setTimeBudgetOverhead(0);
 		
-		TileBasedMapFactory tileBasedMapFactory = cosmodog.getTileBasedMapFactory();
+		//Preparing the AStar path finder.
 		TileBasedMap tileBasedMap = tileBasedMapFactory.createTileBasedMap(enemy, applicationContext, tiledMap, collisionValidator, travelTimeCalculator);
 		AStarPathFinder pathFinder = new AStarPathFinder(tileBasedMap, followDistance, false);
 		
-		
-		//Add the actors position as the first step in the path in any case.
+		//Adding the actors position as the first step in the path in any case.
 		Path subPath = new Path();
 		subPath.appendStep(enemy.getPositionX(), enemy.getPositionY());
 		List<Float> costs = Lists.newArrayList();
 		
-		//Select the best match for the target position. It can be null.
+		//Selecting the best match for the target position. It can be null. (See the comment of the method for exact algorithm).
 		Position actorTarget = nextFreePositionNearbyPlayer(actor, player, playerMovementActionResult, collisionValidator);
 		
+		//If there is a target position, calculate the path (if possible)
 		if (actorTarget != null) {
 			
     		Path path = pathFinder.findPath(null, enemy.getPositionX(), enemy.getPositionY(), (int)actorTarget.getX(), (int)actorTarget.getY());
     		
     		if (path != null) {
         		
+    			//Here, we store the costs for the sub path until they exceed the available time budget for the turn.
+    			//The resulting difference (if any) goes to the time budget overhead of the enemy.
         		int accumulatedCosts = 0;
         		
+        		//Starting with 1 as the step 0 is the initial position without any costs.
         		for (int i = 1; i < path.getLength(); i++) {
         			int costsForTile = travelTimeCalculator.calculateTravelTime(applicationContext, enemy, path.getX(i), path.getY(i));
         			if (accumulatedCosts + costsForTile <= costBudget) {
@@ -75,6 +85,9 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
         				subPath.appendStep(path.getX(i), path.getY(i));
         				accumulatedCosts += costsForTile;
         			} else {
+        				//Enemy has some time budget left but it is not enough to move to the next tile,
+        				//so the remaining budget will be stored as overhead for the next turn.
+        				enemy.setTimeBudgetOverhead(costBudget - accumulatedCosts);
         				break;
         			}
         		}
@@ -90,13 +103,14 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 	/*
 	 * Here we calculate the target position for the enemy when it is about to go towards the player.
 	 * Normally, the enemy will try to get to one of the tiles adjacent to player.
-	 * That might not be possible if it they are blocked (by other enemies, or collision obstacles)
+	 * That might not be possible if they are blocked (by other enemies or collision obstacles)
 	 * In such case, the enemy will try the next best position.
 	 * 
 	 * The algorithm to select the target position is as follows:
 	 * 
 	 * Collect all tiles whose positions are at distance of max 2 to the player and which are not blocked.
-	 * Sort the tiles by distance to the player then distance to the enemy. (Distance to the player has sorting priority, in case of equidistance, distance to the enemy decides)
+	 * Sort the tiles by distance to the player then distance to the enemy. 
+	 * (Distance to the player has sorting priority, in case of equidistance, distance to the enemy decides)
 	 * If the resulting list is empty return null, otherwise return the last element in the list.
 	 * 
 	 */
