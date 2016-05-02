@@ -39,6 +39,7 @@ public class Mappings {
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_LIGHTTANK, UnitType.LIGHT_TANK);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_ROBOT, UnitType.ROBOT);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_DRONE, UnitType.DRONE);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_TURRET, UnitType.TURRET);
 	}
 	
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
@@ -51,6 +52,7 @@ public class Mappings {
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.LIGHT_TANK, "Tank");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.ROBOT, "Robot");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.DRONE, "Drone");
+		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.TURRET, "Turret");
 		
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.UP, "Up");
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.DOWN, "Down");

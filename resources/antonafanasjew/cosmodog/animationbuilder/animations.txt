@@ -206,6 +206,29 @@ enemyDroneExplodingLeft;data/enemy_drone.png;16;16;[5/8/25,6/8/25,7/8/25,8/8/25]
 
 
 
+enemyTurretInanimatedDown;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+enemyTurretInanimatedRight;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+enemyTurretInanimatedUp;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+enemyTurretInanimatedLeft;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+
+enemyTurretAnimatedDown;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+enemyTurretAnimatedRight;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+enemyTurretAnimatedUp;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+enemyTurretAnimatedLeft;data/enemy_turret.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300,7/0/300];true;true
+
+enemyTurretShootingDown;data/enemy_turret.png;16;16;[0/2/25,1/2/25,2/2/25,1/2/25];true;true
+enemyTurretShootingRight;data/enemy_turret.png;16;16;[0/1/25,1/1/25,2/1/25,1/1/25];true;true
+enemyTurretShootingUp;data/enemy_turret.png;16;16;[0/4/25,1/4/25,2/4/25,1/4/25];true;true
+enemyTurretShootingLeft;data/enemy_turret.png;16;16;[0/3/25,1/3/25,2/3/25,1/3/25];true;true
+
+enemyTurretExplodingDown;data/enemy_turret.png;16;16;[0/6/300,1/6/300,2/6/300,3/6/300];false;false
+enemyTurretExplodingRight;data/enemy_turret.png;16;16;[0/5/300,1/5/300,2/5/300,3/5/300];false;false
+enemyTurretExplodingUp;data/enemy_turret.png;16;16;[0/8/300,1/8/300,2/8/300,3/8/300];false;false
+enemyTurretExplodingLeft;data/enemy_turret.png;16;16;[0/7/300,1/7/300,2/7/300,3/7/300];false;false
+
+
+
+
 
 sightRadiusMarker;data/marker.png;16;16;[0/0/50,0/1/50,0/2/50,0/3/50,1/0/50,1/1/50,1/2/50,1/3/50,2/0/50,2/1/50,2/2/50,2/3/50,1/3/50,1/2/50,1/1/50,1/0/50,0/3/50,0/2/50,0/1/50];true;true
 sightRadiusAlertedMarker;data/marker.png;16;16;[3/3/1000];true;true

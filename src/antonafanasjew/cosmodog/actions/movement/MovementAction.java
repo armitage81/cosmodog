@@ -26,6 +26,7 @@ import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
 import antonafanasjew.cosmodog.collision.NpcHomeRegionCollisionValidator;
 import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
 import antonafanasjew.cosmodog.collision.VehicleObstacleCollisionValidator;
+import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
@@ -128,9 +129,12 @@ public class MovementAction extends FixedLengthAsyncAction {
 		movingEnemies.addAll(cosmodogMap.getEnemies());
 		
 		for (Enemy enemy : movingEnemies) {
-			MovementActionResult enemyMovementResult = calculateEnemyMovementResult(enemy, playerMovementActionResult, enemyMovementActionResults);
-			if (enemyMovementResult != null) {
-				enemyMovementActionResults.put(enemy, enemyMovementResult);
+			
+			if (enemy.getChaussieType() != ChaussieType.STATIONARY) {
+				MovementActionResult enemyMovementResult = calculateEnemyMovementResult(enemy, playerMovementActionResult, enemyMovementActionResults);
+				if (enemyMovementResult != null) {
+					enemyMovementActionResults.put(enemy, enemyMovementResult);
+				}
 			}
 		}
 		

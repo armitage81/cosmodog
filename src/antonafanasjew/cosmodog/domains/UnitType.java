@@ -18,5 +18,10 @@ public enum UnitType {
 	/**
 	 * Flying drone.
 	 */
-	DRONE
+	DRONE,
+	
+	/**
+	 * Immovable turret
+	 */
+	TURRET
 }

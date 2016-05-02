@@ -28,6 +28,11 @@ public enum ChaussieType {
 	/**
 	 * Swimming.
 	 */
-	SWIMMING;
+	SWIMMING,
+	
+	/**
+	 * Cannot move
+	 */
+	STATIONARY;
 	
 }

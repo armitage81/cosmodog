@@ -105,8 +105,8 @@ public class InitializationUtils {
 		User user = new User();
 		user.setUserName(userName);
 		
-		Player player = Player.fromPosition(5, 3);
-		//Player player = Player.fromPosition(110, 108);
+		//Player player = Player.fromPosition(5, 3);
+		Player player = Player.fromPosition(37,100);
 		
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
@@ -224,7 +224,7 @@ public class InitializationUtils {
 				}
 				
 				if (TileType.AMMO_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId))) {
-					WeaponType weaponType = Mappings.COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.get(tileId);
+					WeaponType weaponType = Mappings.COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.get(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId));
 					CollectibleAmmo collAmmo = new CollectibleAmmo(weaponType);
 					collAmmo.setPositionX(k);
 					collAmmo.setPositionY(l);
