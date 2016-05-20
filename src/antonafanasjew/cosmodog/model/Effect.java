@@ -9,6 +9,7 @@ public class Effect extends Piece {
 	public static final String EFFECT_TYPE_ELECTRICITY = "electricity";
 	public static final String EFFECT_TYPE_BIRDS = "birds";
 	public static final String EFFECT_TYPE_ENERGYWALL = "energywall";
+	public static final String EFFECT_TYPE_TELEPORT = "teleport";
 
 	private String effectType;
 

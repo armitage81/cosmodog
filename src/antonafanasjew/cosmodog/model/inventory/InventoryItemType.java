@@ -7,6 +7,7 @@ public enum InventoryItemType {
 	DYNAMITE,
 	FUEL_TANK,
 	INSIGHT,
-	ARSENAL;
+	ARSENAL,
+	GEIGERZAEHLER;
 	
 }

@@ -4,11 +4,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.newdawn.slick.Color;
+
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Features;
@@ -32,6 +36,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
 
@@ -74,9 +79,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		
 		checkStarvation(applicationContext);
 		checkDehydration(applicationContext);
+		checkRadiation(applicationContext);
 	}
 	
 	private void collectCollectibles(ApplicationContext applicationContext) {
@@ -230,6 +235,21 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		});		
 	}
 
+	private void checkRadiation(ApplicationContext applicationContext) {
+		CustomTiledMap map = applicationContext.getCustomTiledMap();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		Player player = ApplicationContextUtils.getPlayer();
+		
+		int radiationTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
+		
+		if (TileType.RADIATION.getTileId() == radiationTileId) {
+			player.decreaseLife(2);
+			OverheadNotificationAction action = OverheadNotificationAction.create(player, "Radiation: -2", Color.red);
+			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+		}
+		
+	}
+	
 	public List<PieceInteractionListener> getPieceInteractionListeners() {
 		return pieceInteractionListeners;
 	}

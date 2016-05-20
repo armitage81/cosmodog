@@ -40,6 +40,7 @@ public enum TileType {
 	SMOKE_EFFECT(Layers.LAYER_META_EFFECTS, 35),
 	BIRDS_EFFECT(Layers.LAYER_META_EFFECTS, 36),
 	ELECTRICITY_EFFECT(Layers.LAYER_META_EFFECTS, 33),
+	TELEPORT_EFFECT(Layers.LAYER_META_EFFECTS, 30),
 	
 	
 	WATERPLACE(Layers.LAYER_META_WATERPLACES, 30),
@@ -107,6 +108,10 @@ public enum TileType {
 	AMMO_RIFLE(Layers.LAYER_META_COLLECTIBLES, 2397),
 	AMMO_MACHINEGUN(Layers.LAYER_META_COLLECTIBLES, 2398),
 	AMMO_ROCKETLAUNCHER(Layers.LAYER_META_COLLECTIBLES, 2399),
+	
+	RADIATION(Layers.LAYER_META_RADIATION, 29),
+	
+	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.
 	//It can be used to be returned when searching tile types by tile id in case the id does not match any type.
 	UNKNOWN(-1, -1);

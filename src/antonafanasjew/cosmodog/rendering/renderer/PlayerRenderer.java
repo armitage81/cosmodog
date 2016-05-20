@@ -10,11 +10,13 @@ import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
 import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
@@ -90,7 +92,20 @@ public class PlayerRenderer extends AbstractRenderer {
 		}
 		
 		String animationKey = Mappings.playerAnimationId(playerAppearanceType, playerActionType, player.getDirection());
+		
 		Animation playerAnimation = applicationContext.getAnimations().get(animationKey);
+		
+		Animation playerWeaponAnimation = null;
+		
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		WeaponType weaponType = arsenal.getSelectedWeaponType();
+		
+		if (weaponType != WeaponType.FISTS) {
+			String animationPrefix = Mappings.WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.get(weaponType);
+			String weaponAnimationId = animationKey.replace("player", "player" + animationPrefix);
+			playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
+		}
+		
 		
 		float pieceOffsetX = 0;
 		float pieceOffsetY = 0;
@@ -139,6 +154,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+		if (playerWeaponAnimation != null) {
+			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+		}
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

@@ -1,76 +1,73 @@
 package antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.Map;
 
-import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.structures.TileCoordinates;
-import antonafanasjew.cosmodog.util.TileUtils;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
+import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.CollisionUtils;
+import antonafanasjew.cosmodog.util.ObjectGroupUtils;
+import antonafanasjew.cosmodog.util.RegionUtils;
 
 public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 
-	private Set<TileCoordinates> playerCoveringStructure = Sets.newHashSet();
-	
-	public TopLayersRenderingPredicate() {
-		ApplicationContext applicationContext = ApplicationContext.instance();
-		//We need the player position to check if he is covered by a top tile.
-		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
-		Player player = cosmodogGame.getPlayer();
-		int px = player.getPositionX();
-		int py = player.getPositionY();
-		
-		//We iterate only through covering top layers (and ignore unimportant layers, like electricity cables, towers etc.)
-		for (int i : Layers.COVERING_TOP_LAYERS) {
-			//We check the tile at player position on the covering layer.
-			int topTileId = applicationContext.getCustomTiledMap().getTileId(px, py, i);
-			if (topTileId > 0) {
-				
-				//We find all neighbour ids to mark the region that should be skipped. We start with the player position (not the actual tile we are iterating through)
-				playerCoveringStructure = TileUtils.getConnectedElements(px, py, i, applicationContext.getCustomTiledMap(), new Predicate<TileCoordinates>() {
-					
-					@Override
-					public boolean apply(TileCoordinates tc) {
-						int tileId = applicationContext.getCustomTiledMap().getTileId(tc.getX(), tc.getY(), i);
-						return tileId > 0;
-					}
-				});			
-			}
-			
-		}
-	}
-	
+
 	@Override
 	public boolean tileShouldBeRendered(int layerIndex, int tileX, int tileY) {
 		
 		//We can ignore all layers that are not top at this point of time.
 		boolean topLayer = layerIndex > Layers.LAYER_RUINS_TIPS && layerIndex < Layers.LAYER_META_COLLISIONS;
-		if (! topLayer) {
+		if (!topLayer) {
 			return false;
 		}
+
 		
-		//We want to find all top tiles to be skipped while rendering if they are covering the player (f.i. roofs)
-		boolean shouldBeSkipped = false;
-		//We iterate only through covering top layers (and ignore unimportant layers, like electricity cables, towers etc.)
-		for (int i : Layers.COVERING_TOP_LAYERS) {
-			
-			//We skip the tile rendering if it is on the referenced layer and neighbour to the tile covering the player.
-			Collection<Integer> removableLayers = Layers.COVERING_2_REMOVABLE_LAYERS.get(i);
-			if (removableLayers.contains(layerIndex)) {
-				if (playerCoveringStructure.contains(new TileCoordinates(tileX, tileY, i))) {
-					shouldBeSkipped = true;
-				}
+		Player player = ApplicationContextUtils.getPlayer();
+		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
+		
+		//If player is not in one of the roof regions then render any top tile
+		TiledObject roofRegionOverPlayer = roofRegion(player, map);
+		
+		if (roofRegionOverPlayer == null) {
+			return true;
+		}
+		
+		return !tileCoversPlayer(roofRegionOverPlayer, map, tileX, tileY);
+		
+	}
+	
+	private boolean tileCoversPlayer(TiledObject regionOverPlayer, CustomTiledMap map, int tilePosX, int tilePosY) {
+		
+		int x = tilePosX * map.getTileWidth();
+		int y = tilePosY * map.getTileHeight();
+		int w = map.getTileWidth();
+		int h = map.getTileHeight();
+		
+		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h);
+		
+		boolean intersects = CollisionUtils.intersects(r, regionOverPlayer);
+		
+		return intersects;
+	}
+	
+	private TiledObject roofRegion(Player player, CustomTiledMap map) {
+		
+		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_ROOFS).getObjects();
+		
+		for (TiledObject roofRegion : roofRegions.values()) {
+		
+			if (RegionUtils.playerInRegion(player, roofRegion, map.getTileWidth(), map.getTileHeight())) {
+				return roofRegion;
 			}
 			
-		}
 			
+		}
 		
-		return !shouldBeSkipped;
+		return null;
 	}
+	
 
 }

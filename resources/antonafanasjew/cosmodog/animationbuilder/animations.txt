@@ -115,6 +115,7 @@ inventoryItemDynamite;data/inventory_items.png;16;16;[5/0/150];true;true
 inventoryItemVehicle;data/inventory_items.png;16;16;[1/0/150];true;true
 inventoryItemFuel;data/inventory_items.png;16;16;[2/0/150];true;true
 inventoryItemCosmodog;data/inventory_items.png;16;16;[3/0/150];true;true
+inventoryItemGeigerZaehler;data/inventory_items.png;16;16;[6/0/150];true;true
 
 inventoryItemBackground;data/inventory_items.png;16;16;[1/9/75,2/9/75,3/9/75,4/9/75,5/9/75,6/9/75,7/9/75,8/9/75,0/9/3000];true;true
 
@@ -259,6 +260,9 @@ machinegunIcon;data/weapons.png;48;16;[1/3/10000];true;true
 rpgIcon;data/weapons.png;48;16;[1/4/10000];true;true
 
 
+teleportEffect;data/teleporteffect.png;16;16;[0/0/250,1/0/250,2/0/250,0/1/250,1/1/250,2/1/250,0/2/250,1/2/250,2/2/250,0/1/250,1/1/250,2/1/250];true;true
+
+
 tile.WATER_CENTER;data/water.png;16;16;[0/0/500,0/1/500,0/2/500,0/3/500];true;true
 tile.WATER_BORDER_W;data/water.png;16;16;[1/0/1000,1/1/1000];true;true
 tile.WATER_BORDER_NW;data/water.png;16;16;[2/0/1000,2/1/1000];true;true
@@ -281,5 +285,85 @@ tile.WATER_BORDER_N_AND_E;data/water.png;16;16;[12/0/1000,12/1/1000];true;true
 
 
 
+playerPistolDefaultInanimatedRight;data/player_weapon_pistol.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerPistolDefaultInanimatedDown;data/player_weapon_pistol.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerPistolDefaultInanimatedLeft;data/player_weapon_pistol.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerPistolDefaultInanimatedUp;data/player_weapon_pistol.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerPistolDefaultAnimatedRight;data/player_weapon_pistol.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerPistolDefaultAnimatedDown;data/player_weapon_pistol.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerPistolDefaultAnimatedLeft;data/player_weapon_pistol.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerPistolDefaultAnimatedUp;data/player_weapon_pistol.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerPistolDefaultHitRight;data/player_weapon_pistol.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerPistolDefaultHitDown;data/player_weapon_pistol.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerPistolDefaultHitLeft;data/player_weapon_pistol.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerPistolDefaultHitUp;data/player_weapon_pistol.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
 
 
+
+playerShotgunDefaultInanimatedRight;data/player_weapon_shotgun.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerShotgunDefaultInanimatedDown;data/player_weapon_shotgun.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerShotgunDefaultInanimatedLeft;data/player_weapon_shotgun.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerShotgunDefaultInanimatedUp;data/player_weapon_shotgun.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerShotgunDefaultAnimatedRight;data/player_weapon_shotgun.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerShotgunDefaultAnimatedDown;data/player_weapon_shotgun.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerShotgunDefaultAnimatedLeft;data/player_weapon_shotgun.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerShotgunDefaultAnimatedUp;data/player_weapon_shotgun.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerShotgunDefaultHitRight;data/player_weapon_shotgun.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerShotgunDefaultHitDown;data/player_weapon_shotgun.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerShotgunDefaultHitLeft;data/player_weapon_shotgun.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerShotgunDefaultHitUp;data/player_weapon_shotgun.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
+
+playerRifleDefaultInanimatedRight;data/player_weapon_rifle.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerRifleDefaultInanimatedDown;data/player_weapon_rifle.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerRifleDefaultInanimatedLeft;data/player_weapon_rifle.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerRifleDefaultInanimatedUp;data/player_weapon_rifle.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerRifleDefaultAnimatedRight;data/player_weapon_rifle.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerRifleDefaultAnimatedDown;data/player_weapon_rifle.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerRifleDefaultAnimatedLeft;data/player_weapon_rifle.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerRifleDefaultAnimatedUp;data/player_weapon_rifle.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerRifleDefaultHitRight;data/player_weapon_rifle.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerRifleDefaultHitDown;data/player_weapon_rifle.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerRifleDefaultHitLeft;data/player_weapon_rifle.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerRifleDefaultHitUp;data/player_weapon_rifle.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
+
+playerMachinegunDefaultInanimatedRight;data/player_weapon_machinegun.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerMachinegunDefaultInanimatedDown;data/player_weapon_machinegun.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerMachinegunDefaultInanimatedLeft;data/player_weapon_machinegun.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerMachinegunDefaultInanimatedUp;data/player_weapon_machinegun.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerMachinegunDefaultAnimatedRight;data/player_weapon_machinegun.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerMachinegunDefaultAnimatedDown;data/player_weapon_machinegun.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerMachinegunDefaultAnimatedLeft;data/player_weapon_machinegun.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerMachinegunDefaultAnimatedUp;data/player_weapon_machinegun.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerMachinegunDefaultHitRight;data/player_weapon_machinegun.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerMachinegunDefaultHitDown;data/player_weapon_machinegun.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerMachinegunDefaultHitLeft;data/player_weapon_machinegun.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerMachinegunDefaultHitUp;data/player_weapon_machinegun.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
+
+playerRpgDefaultInanimatedRight;data/player_weapon_rpg.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerRpgDefaultInanimatedDown;data/player_weapon_rpg.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerRpgDefaultInanimatedLeft;data/player_weapon_rpg.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerRpgDefaultInanimatedUp;data/player_weapon_rpg.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerRpgDefaultAnimatedRight;data/player_weapon_rpg.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerRpgDefaultAnimatedDown;data/player_weapon_rpg.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerRpgDefaultAnimatedLeft;data/player_weapon_rpg.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerRpgDefaultAnimatedUp;data/player_weapon_rpg.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerRpgDefaultHitRight;data/player_weapon_rpg.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerRpgDefaultHitDown;data/player_weapon_rpg.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerRpgDefaultHitLeft;data/player_weapon_rpg.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerRpgDefaultHitUp;data/player_weapon_rpg.png;16;16;[3/3/25,4/3/25,5/3/25];true;true

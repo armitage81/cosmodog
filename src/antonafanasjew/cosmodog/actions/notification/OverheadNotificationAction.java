@@ -15,7 +15,7 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 
 	private static final long serialVersionUID = -8697185530449890051L;
 
-	public static final int OVERHEAD_NOTIFICATION_DURATION = 500;
+	public static final int OVERHEAD_NOTIFICATION_DURATION = 1000;
 	
 	public static class OverheadNotificationTransition {
 		public List<String> texts = Lists.newArrayList();

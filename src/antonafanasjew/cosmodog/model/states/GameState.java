@@ -11,8 +11,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Lists;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -48,6 +46,7 @@ import antonafanasjew.cosmodog.rendering.renderer.OverheadNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.rendering.renderer.RightInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
@@ -66,6 +65,8 @@ import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
 
+import com.google.common.collect.Lists;
+
 public class GameState extends BasicGameState {
 
 	private boolean firstUpdate;
@@ -76,6 +77,7 @@ public class GameState extends BasicGameState {
 	private DrawingContext gameContainerDrawingContext;
 	private DrawingContext middleColumnDrawingContext;
 	private DrawingContext topDrawingContext;
+	
 	private DrawingContext weaponTooltipsDrawingContext;
 	private DrawingContext lifeDrawingContext;
 	private DrawingContext arsenalDrawingContext;
@@ -83,6 +85,7 @@ public class GameState extends BasicGameState {
 	private DrawingContext vitalDataDrawingContext;
 	private DrawingContext gameProgressDrawingContext;
 	private DrawingContext mapDrawingContext;
+	private DrawingContext rightColumnDrawingContext;
 	
 	
 	private CloudsDecoration cloudsDeco;
@@ -105,6 +108,7 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer sightRadiusRenderer;
 	private Renderer arsenalInterfaceRenderer;
 	private Renderer weaponTooltipRenderer;
+	private Renderer rightInterfaceRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -125,15 +129,20 @@ public class GameState extends BasicGameState {
 		// TileDrawingContext(gameContainerDrawingContext, 5, 1, 0, 0);
 		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0, 1, 8);
 		
-		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
-		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 0);
+		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 4, 1);
+		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 9, 0, 0);
+		
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
 		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
+		
 		weaponTooltipsDrawingContext = new TileDrawingContext(mapDrawingContext, 2, 12, 1, 1, 1, 11);
 		
 		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
 		gameProgressDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 1, 0);
+		
+		
+		rightColumnDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 4, 0);
 		
 		//Update the global dialog drawing context variable in the application context.
 		ApplicationContext.instance().setDialogBoxDrawingContext(new TileDrawingContext(mapDrawingContext, 1, 5, 0, 4));
@@ -158,6 +167,8 @@ public class GameState extends BasicGameState {
 		weaponTooltipRenderer = new WeaponTooltipRenderer();
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
+		
+		rightInterfaceRenderer = new RightInterfaceRenderer();
 		
 		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
 		dialogBoxRenderer = new DialogBoxRenderer();
@@ -268,7 +279,7 @@ public class GameState extends BasicGameState {
 	}
 
 	public static int maxTime = 0;
-	
+
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
@@ -318,11 +329,12 @@ public class GameState extends BasicGameState {
 		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
+		
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
 		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
 		weaponTooltipRenderer.render(gc, g, weaponTooltipsDrawingContext, null);
 		// leftInterfaceRenderer.render(gc, g, leftColumnDrawingContext);
-		//rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
+		rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
 	
 		DrawingContext dialogBoxDrawingContext = ApplicationContext.instance().getDialogBoxDrawingContext();
 		DrawingContext commentsWritingDrawingContext = DrawingContextUtils.writingContentDcFromDialogBoxDc(dialogBoxDrawingContext);

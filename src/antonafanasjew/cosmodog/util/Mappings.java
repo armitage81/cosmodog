@@ -28,6 +28,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.BOAT, "inventoryItemBoat");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DYNAMITE, "inventoryItemDynamite");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.VEHICLE, "inventoryItemVehicle");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.GEIGERZAEHLER, "inventoryItemGeigerZaehler");
 	}
 	
 	/**
@@ -187,5 +188,17 @@ public class Mappings {
 		
 	}
 	
+	/**
+	 * Defines the prefix of the animation id for the weapon animation attached to the player figure (if selected) by the weapon type.
+	 */
+	public static Map<WeaponType, String> WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX = Maps.newHashMap();
+	
+	static {
+		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.PISTOL, "Pistol");
+		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.SHOTGUN, "Shotgun");
+		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.RIFLE, "Rifle");
+		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.MACHINEGUN, "Machinegun");
+		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.RPG, "Rpg");
+	}
 	
 }

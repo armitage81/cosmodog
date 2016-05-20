@@ -40,6 +40,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
@@ -86,6 +87,7 @@ public class InitializationUtils {
 	public static int VEHICLE_TILE_ID = 193;
 	public static int BOAT_TILE_ID = 194;
 	public static int DYNAMITE_TILE_ID = 198;
+	public static int GEIGERZAEHLER_TILE_ID = 207;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
 	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
@@ -106,7 +108,14 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		
 		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(37,100);
+		Player player = Player.fromPosition(88, 121);
+		
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
 		
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
@@ -205,6 +214,13 @@ public class InitializationUtils {
 					map.getMapPieces().add(c);
 				}
 				
+				if (tileId == GEIGERZAEHLER_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.geigerzaehler);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
 				if (TileType.FUEL.getTileId() == tileId) {
 					Mark m = new Mark(Mark.FUEL_MARK_TYPE);
 					m.setPositionX(k);
@@ -232,6 +248,13 @@ public class InitializationUtils {
 				}
 				
 				tileId = tiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);
+				
+				if (TileType.TELEPORT_EFFECT.getTileId() == tileId) {
+					Effect effect = new Effect(Effect.EFFECT_TYPE_TELEPORT);
+					effect.setPositionX(k);
+					effect.setPositionY(l);
+					map.getEffectPieces().add(effect);
+				}
 				
 				if (TileType.FIRE_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_FIRE);

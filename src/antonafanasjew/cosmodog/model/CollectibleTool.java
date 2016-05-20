@@ -4,12 +4,10 @@ public class CollectibleTool extends Collectible {
 
 	private static final long serialVersionUID = 5790400319374924936L;
 
-	public static final String ITEM_TYPE_BOAT = "item.boat";
-	public static final String ITEM_TYPE_DYNAMITE = "item.dynamite";
-	
 	public static enum ToolType {
 		boat,
-		dynamite
+		dynamite,
+		geigerzaehler
 	}
 	
 	private ToolType toolType;

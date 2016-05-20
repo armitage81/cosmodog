@@ -27,7 +27,7 @@ public class EffectsRenderer extends AbstractRenderer {
 
 	public static class EffectsRendererParam {
 		
-		public static EffectsRendererParam FOR_GROUND_EFFECTS = new EffectsRendererParam(Lists.newArrayList(Effect.EFFECT_TYPE_ELECTRICITY));
+		public static EffectsRendererParam FOR_GROUND_EFFECTS = new EffectsRendererParam(Lists.newArrayList(Effect.EFFECT_TYPE_ELECTRICITY, Effect.EFFECT_TYPE_TELEPORT));
 		public static EffectsRendererParam FOR_TOP_EFFECTS = new EffectsRendererParam(Lists.newArrayList(Effect.EFFECT_TYPE_SMOKE, Effect.EFFECT_TYPE_BIRDS, Effect.EFFECT_TYPE_FIRE, Effect.EFFECT_TYPE_ENERGYWALL));
 
 		private List<String> effectTypes;
@@ -87,6 +87,10 @@ public class EffectsRenderer extends AbstractRenderer {
 			if (piece instanceof Effect) {
 				Effect effect = (Effect) piece;
 				if (effectsToRender.contains(effect.getEffectType())) {
+					
+					if (effect.getEffectType().equals(Effect.EFFECT_TYPE_TELEPORT)) {
+    					applicationContext.getAnimations().get("teleportEffect").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+    				}
 					
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_FIRE)) {
     					applicationContext.getAnimations().get("fire").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * (tileHeight - 1));

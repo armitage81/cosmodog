@@ -77,6 +77,7 @@ public class Layers {
 	public static final int LAYER_META_GROUNDTYPES = LAYER_META_TERRAINTYPES + 1;
 	public static final int LAYER_META_EFFECTS = LAYER_META_GROUNDTYPES + 1;
 	public static final int LAYER_META_NPC = LAYER_META_EFFECTS + 1;
+	public static final int LAYER_META_RADIATION = LAYER_META_NPC + 1;
 
 
 	/**

@@ -128,5 +128,9 @@ public class NotificationUtils {
 		String s = ENTERED_VEHICLE_WITHOUT_FUEL_TEXTS.get(enteredVehicleWithoutFuelIndex++ % ENTERED_VEHICLE_WITHOUT_FUEL_TEXTS.size());
 		return Notification.fromTextAndDuration(s, DEFAULT_NOTIFICATION_DURATION);
 	}
+
+	public static Notification foundGeigerzaehler() {
+		return Notification.fromTextAndDuration("Alisa: Some call it the Geiger counter, but I prefer \"The Heart Beat of Broken Atoms\".", DEFAULT_NOTIFICATION_DURATION);
+	}
 	
 }

@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteractio
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
@@ -237,6 +238,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.dynamite.name(), new DynamiteInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
 		
 		
 		SightRadiusCalculator sightRadiusCalculator = new DayTimeAffectedSightRadiusCalculator(new DefaultSightRadiusCalculator());

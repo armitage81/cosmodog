@@ -5,6 +5,7 @@ VEHICLE_DESCRIPTION;vehicle;true;vehicleDescription; You found a vehicle.<br>Use
 SOULESSENCE_DESCRIPTION;soulessence;false;soulessenceDescription;You found a jar of the Soul Essence.<br>Your maximal life has increased.<br><br>[Press ENTER]
 MEDIPACK_DESCRIPTION;medipack;true;medipackDescription;You found a medipack and used it.<br>Your health has been restored.<br><br>[Press ENTER]
 ARMOR_DESCRIPTION;armor;false;armorDescription;You found an armor plate.<br>Vehicles will be more durable.<br><br>[Press ENTER]
-BOAT_DESCRIPTION;item.boat;true;boatDescription;You found a boat.<br>You can cross water now.<br><br>[Press ENTER]
 INSIGHT_DESCRIPTION;insight;false;insightDesciption;You found an alien artifact<br><br>[Press ENTER]
 PISTOL_DESCRIPTION;pistol;true;pistolDescription;You found a pistol.<br>Press TAB to switch the weapons.<br>Keep the ammo in mind.<br><br>[Press ENTER]
+BOAT_DESCRIPTION;boat;true;boatDescription;You found a boat.<br>You can cross water now.<br><br>[Press ENTER]
+GEIGERZAEHLER_DESCRIPTION;geigerzaehler;true;geigerzaehlerDescription;You found a Geiger counter.<br>It indicates radiation.<br>The 'RAD' value shows the number<br>of contaminated adjacent tiles.<br>including your own position.<br><br>[Press ENTER]
