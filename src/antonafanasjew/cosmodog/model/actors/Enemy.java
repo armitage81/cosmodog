@@ -1,8 +1,13 @@
 package antonafanasjew.cosmodog.model.actors;
 
+import java.util.Set;
+
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.sight.Sight;
+
+import com.google.common.collect.Sets;
 
 /**
  * Represents enemy characters.
@@ -15,8 +20,8 @@ public class Enemy extends NpcActor {
 	private WeaponType weaponType;
 	private ArmorType armorType;
 	
-	private int sightRadius;
-
+	private Set<Sight> sights = Sets.newHashSet();
+	
 	public WeaponType getWeaponType() {
 		return weaponType;
 	}
@@ -47,19 +52,11 @@ public class Enemy extends NpcActor {
 	}
 
 	/**
-	 * Returns the orthogonal range from which the enemy sees the player. 
-	 * @return Orthogonal sight radius in tiles.
+	 * Returns a set of sight objects, each of which is representing a sight cone.
+	 * @return Set of sight objects representing enemies range of view.
 	 */
-	public int getSightRadius() {
-		return sightRadius;
+	public Set<Sight> getSights() {
+		return sights;
 	}
 
-	/**
-	 * Sets the sight radius.
-	 * @param sightRadius Orthogonal sight radius in tiles.
-	 */
-	public void setSightRadius(int sightRadius) {
-		this.sightRadius = sightRadius;
-	}
-	
 }

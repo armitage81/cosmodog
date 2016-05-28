@@ -1,10 +1,14 @@
 package antonafanasjew.cosmodog.sight;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Actor;
+
 /**
  * Takes a sight object and the position and direction of a point and 
  * can be used to calculate whether a given point is within or out of sight.
  */
-public class SightCalculator {
+public class VisibilityCalculator {
 
 	private Sight sight;
 	
@@ -14,12 +18,30 @@ public class SightCalculator {
 	private float centerX;
 	private float centerY;
 
-	public SightCalculator() {
+	public VisibilityCalculator() {
 
 	}
 	
-	public SightCalculator(Sight sight, float centerX, float centerY, float actorDirectionAngle) {
+	public static VisibilityCalculator create(Sight sight, Actor actor, int tileWidth, int tileHeight) {
+		
+		float povX = actor.getPositionX() * tileWidth + tileWidth / 2;
+		float povY = actor.getPositionY() * tileHeight + tileHeight / 2;
+		float directionAngle = 0;
+		if (actor.getDirection() == DirectionType.LEFT) {
+			directionAngle = 90;
+		} else if (actor.getDirection() == DirectionType.DOWN) {
+			directionAngle = 180;
+		} else if (actor.getDirection() == DirectionType.RIGHT) {
+			directionAngle = 270;
+		}
+		
+		return new VisibilityCalculator(sight, povX, povY, directionAngle);
+	}
+	
+	public VisibilityCalculator(Sight sight, float centerX, float centerY, float actorDirectionAngle) {
 		this.sight = sight;
+		this.centerX = centerX;
+		this.centerY = centerY;
 		this.actorDirectionAngle = actorDirectionAngle;
 	}
 
@@ -29,6 +51,12 @@ public class SightCalculator {
 
 	public void setActorDirectionAngle(float actorDirectionAngle) {
 		this.actorDirectionAngle = actorDirectionAngle;
+	}
+	
+	public boolean visible(Piece piece, int tileWidth, int tileHeight) {
+		int centerX = piece.getPositionX() * tileWidth + tileWidth / 2;
+		int centerY = piece.getPositionY() * tileHeight + tileHeight / 2;
+		return visible(centerX, centerY);
 	}
 	
 	/**
@@ -136,12 +164,12 @@ public class SightCalculator {
 		
 		float angle = (float)(angleInRad * 180 / Math.PI);
 		
-		if (x < centerX && y > centerX) {
-			angle += 90;
-		} else if (x > centerX && y > centerX) {
-			angle += 180;
-		} else if (x > centerX && y < centerX) {
-			angle += 270;
+		if (x < centerX && y > centerY) {
+			angle = 180 - angle;
+		} else if (x > centerX && y > centerY) {
+			angle = 180 + angle;
+		} else if (x > centerX && y < centerY) {
+			angle = 360 - angle;
 		}
 		
 		

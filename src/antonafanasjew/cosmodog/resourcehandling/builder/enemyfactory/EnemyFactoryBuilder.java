@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.builder.AbstractEnemyFactory;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
+import antonafanasjew.cosmodog.sight.Sight;
 
 
 public class EnemyFactoryBuilder extends AbstractResourceWrapperBuilder<EnemyFactory> {
@@ -22,8 +23,8 @@ public class EnemyFactoryBuilder extends AbstractResourceWrapperBuilder<EnemyFac
 		String weaponType = parts[2];
 		String chaussieType = parts[3];
 		int maxLife = Integer.parseInt(parts[4]);
-		int sightRadius = Integer.parseInt(parts[5]);
-		int speedFactor = Integer.parseInt(parts[6]);
+		int speedFactor = Integer.parseInt(parts[5]);
+		String sights = parts[6].substring(1, parts[6].length() - 1); //result is something, like 16/0/90,16/180/90
 		
 		return new AbstractEnemyFactory() {
 			
@@ -36,8 +37,19 @@ public class EnemyFactoryBuilder extends AbstractResourceWrapperBuilder<EnemyFac
 				enemy.setChaussieType(ChaussieType.valueOf(chaussieType));
 				enemy.setMaxLife(maxLife);
 				enemy.setLife(maxLife);
-				enemy.setSightRadius(sightRadius);
 				enemy.setSpeedFactor(speedFactor);
+				
+				String[] sightElements = sights.split(",");
+				
+				for (String sightElement : sightElements) {
+					String[] sightElementParts = sightElement.split("/");
+					float sightDistance = Float.valueOf(sightElementParts[0]);
+					float sightAngle = Float.valueOf(sightElementParts[1]);
+					float sightAngleRelativeToDirection = Float.valueOf(sightElementParts[2]);
+					Sight sight = new Sight(sightDistance, sightAngle, sightAngleRelativeToDirection);
+					enemy.getSights().add(sight);
+				}
+				
 				enemy.getLifeListeners().add(new EnemyLifeListener());
 				return enemy;
 			}

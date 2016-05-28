@@ -43,7 +43,9 @@ public class Sight {
 		this.angleRelativeToDirection = angleRelativeToDirection;
 	}
 
-
+	public Sight copyWithOtherDistance(float distance) {
+		return new Sight(distance, this.angle, this.angleRelativeToDirection);
+	}
 	
 	
 	

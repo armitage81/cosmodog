@@ -4,7 +4,6 @@ import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
-import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -12,20 +11,21 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
  * This class aggregates all elementar sight radius calculators and construct the complex calculator based
  * on the game properties.
  */
-public class GeneralSightRadiusCalculator implements SightRadiusCalculator {
+public class GeneralSightModifier implements SightModifier {
 
-	SightRadiusCalculator normalSightRadiusCalculator = new DayTimeAffectedSightRadiusCalculator(new DefaultSightRadiusCalculator());
+	
+	SightModifier normalSightModifier = new DayTimeSightModifier(new IdentitySightModifier());
 	
 	@Override
-	public int calculateSightRadius(Enemy enemy, PlanetaryCalendar planetaryCalendar) {
+	public Sight modifySight(Sight sight, PlanetaryCalendar planetaryCalendar) {
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
 		
 		if (playerIsInHighGrassTile(map, player)) {
-			return 1;
+			return sight.copyWithOtherDistance(DEFAULT_SIGHT_DISTANCE);
 		} else {
-			return normalSightRadiusCalculator.calculateSightRadius(enemy, planetaryCalendar);
+			return normalSightModifier.modifySight(sight, planetaryCalendar);
 		}
 		
 	}

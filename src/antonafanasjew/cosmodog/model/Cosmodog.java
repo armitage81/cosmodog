@@ -14,7 +14,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteracti
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
-import antonafanasjew.cosmodog.sight.SightRadiusCalculator;
+import antonafanasjew.cosmodog.sight.SightModifier;
 
 
 /**
@@ -30,7 +30,7 @@ public class Cosmodog extends CosmodogModel {
     private ScoreList scoreList;
     private CollisionValidator collisionValidator;
     private WaterValidator waterValidator;
-    private SightRadiusCalculator sightRadiusCalculator;
+    private SightModifier sightModifier;
     private TravelTimeCalculator travelTimeCalculator;
     private PathFinder pathFinder;
     private GameLifeCycle gameLifeCycle = new GameLifeCycle();
@@ -105,12 +105,7 @@ public class Cosmodog extends CosmodogModel {
 	public TileBasedMapFactory getTileBasedMapFactory() {
 		return tileBasedMapFactory;
 	}
-	public SightRadiusCalculator getSightRadiusCalculator() {
-		return sightRadiusCalculator;
-	}
-	public void setSightRadiusCalculator(SightRadiusCalculator sightRadiusCalculator) {
-		this.sightRadiusCalculator = sightRadiusCalculator;
-	}
+
 	public WaterValidator getWaterValidator() {
 		return waterValidator;
 	}
@@ -119,5 +114,13 @@ public class Cosmodog extends CosmodogModel {
 	}
 	public Map<String, PieceInteraction> getPieceInteractionMap() {
 		return pieceInteractionMap;
+	}
+	
+	public SightModifier getSightModifier() {
+		return sightModifier;
+	}
+	
+	public void setSightModifier(SightModifier sightModifier) {
+		this.sightModifier = sightModifier;
 	}
 }

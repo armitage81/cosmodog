@@ -58,10 +58,8 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.menu.MenuBuilder;
-import antonafanasjew.cosmodog.sight.DayTimeAffectedSightRadiusCalculator;
-import antonafanasjew.cosmodog.sight.DefaultSightRadiusCalculator;
-import antonafanasjew.cosmodog.sight.GeneralSightRadiusCalculator;
-import antonafanasjew.cosmodog.sight.SightRadiusCalculator;
+import antonafanasjew.cosmodog.sight.GeneralSightModifier;
+import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.text.DefaultLetterBuilder;
 import antonafanasjew.cosmodog.text.Letter;
 import antonafanasjew.cosmodog.text.LetterBuilder;
@@ -242,8 +240,8 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
 		
 		
-		SightRadiusCalculator sightRadiusCalculator = new GeneralSightRadiusCalculator();
-		cosmodog.setSightRadiusCalculator(sightRadiusCalculator);
+		SightModifier sightModifier = new GeneralSightModifier();
+		cosmodog.setSightModifier(sightModifier);
 		
 		
 		this.setCosmodog(cosmodog);

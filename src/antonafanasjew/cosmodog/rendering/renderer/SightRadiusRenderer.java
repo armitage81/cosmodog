@@ -1,8 +1,12 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.Set;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+
+import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -12,10 +16,13 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.sight.SightRadiusCalculator;
+import antonafanasjew.cosmodog.sight.Sight;
+import antonafanasjew.cosmodog.sight.SightModifier;
+import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
@@ -54,6 +61,9 @@ public class SightRadiusRenderer extends AbstractRenderer {
 
 		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
 		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+		 
+		Set<Position> sightMarkers = Sets.newHashSet();
+		Set<Position> alertMarkers = Sets.newHashSet();
 		
 		for (Enemy enemy : cosmodogMap.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
 
@@ -109,40 +119,94 @@ public class SightRadiusRenderer extends AbstractRenderer {
 				}
 			}
 			
-			SightRadiusCalculator sightRadiusCalculator = cosmodog.getSightRadiusCalculator();
+			SightModifier sightModifier = cosmodog.getSightModifier();
 			PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
-			int sightRadius = sightRadiusCalculator.calculateSightRadius(enemy, planetaryCalendar);
 			
-			for (int i = enemy.getPositionX() - sightRadius; i <= enemy.getPositionX() + sightRadius; i++) {
-				for (int j = enemy.getPositionY() - sightRadius; j <= enemy.getPositionY() + sightRadius; j++) {
-					int xDistance = enemy.getPositionX() - i;
-					xDistance = xDistance < 0 ? -xDistance : xDistance;
-					int yDistance = enemy.getPositionY() - j;
-					yDistance = yDistance < 0 ? -yDistance : yDistance;
-					int distance = xDistance + yDistance;
+			
+			boolean playerInSightRange = false;
+			
+			Set<Sight> sights = enemy.getSights();
 
-					if (distance <= sightRadius) {
-						int distanceToPlayer = (int) CosmodogMapUtils.distanceBetweenPositions(Position.fromCoordinates(player.getPositionX(), player.getPositionY()), Position.fromCoordinates(enemy.getPositionX(), enemy.getPositionY()));
-
-						Animation sightRadiusMarkerAnimation;
-						if (sightRadius >= distanceToPlayer) {
-							sightRadiusMarkerAnimation = ApplicationContext.instance().getAnimations().get("sightRadiusAlertedMarker");
-						} else {
-							sightRadiusMarkerAnimation = ApplicationContext.instance().getAnimations().get("sightRadiusMarker");
+			for (Sight sight : sights) {
+				Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
+				VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, tileWidth, tileHeight);
+				playerInSightRange = visibilityCalculator.visible(player, tileWidth, tileHeight);
+				if (playerInSightRange) {
+					break;
+				}
+			}
+			
+			for (Sight sight : sights) {
+			
+				Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
+				float sightDistance = modifiedSight.getDistance();
+				int sightDistanceInTiles = (int)(sightDistance / tiledMap.getTileWidth()); //Works only for quadratic tiles.
+				
+				VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, tileWidth, tileHeight);
+				
+				for (int i = enemy.getPositionX() - sightDistanceInTiles; i <= enemy.getPositionX() + sightDistanceInTiles; i++) {
+					for (int j = enemy.getPositionY() - sightDistanceInTiles; j <= enemy.getPositionY() + sightDistanceInTiles; j++) {
+						
+						if (i == enemy.getPositionX() && j == enemy.getPositionY()) {
+							continue;
 						}
 						
-						graphics.translate(x, y);
-						graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
+						if (i < 0 || i >= tiledMap.getWidth() || j < 0 || j >= tiledMap.getHeight()) {
+							continue;
+						}
 						
-						sightRadiusMarkerAnimation.draw((i - tileNoX) * tileWidth + movementOffsetX + fightOffsetX, (j - tileNoY) * tileHeight + movementOffsetY + fightOffsetY);
+						Piece tilePiece = new Piece();
+						tilePiece.setPositionX(i);
+						tilePiece.setPositionY(j);
 						
-						graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-						graphics.translate(-x, -y);
+						boolean tileVisible = visibilityCalculator.visible(tilePiece, tileWidth, tileHeight);
+						
+						if (tileVisible) {
+	
+							if (playerInSightRange) {
+								alertMarkers.add(Position.fromCoordinates(i, j));
+							} else {
+								sightMarkers.add(Position.fromCoordinates(i, j));
+							}
+						}
 					}
 				}
+			
 			}
 
 		}
+		
+		
+		
+		sightMarkers.removeAll(alertMarkers);
+		
+		for (Position alertMarker : alertMarkers) {
+			Animation sightRadiusMarkerAnimation = ApplicationContext.instance().getAnimations().get("sightRadiusAlertedMarker");
+			
+			graphics.translate(x, y);
+			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
+			
+			sightRadiusMarkerAnimation.draw((alertMarker.getX() - tileNoX) * tileWidth, (alertMarker.getY() - tileNoY) * tileHeight);
+			
+			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
+			graphics.translate(-x, -y);
+		}
+		
+		for (Position sightMarker : sightMarkers) {
+			Animation sightRadiusMarkerAnimation = ApplicationContext.instance().getAnimations().get("sightRadiusMarker");
+			
+			graphics.translate(x, y);
+			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
+			
+			sightRadiusMarkerAnimation.draw((sightMarker.getX() - tileNoX) * tileWidth, (sightMarker.getY() - tileNoY) * tileHeight);
+			
+			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
+			graphics.translate(-x, -y);
+		}
+		
+		
+		
+		
 	}
 
 }

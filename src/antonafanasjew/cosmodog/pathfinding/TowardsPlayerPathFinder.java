@@ -12,14 +12,12 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
-import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.sight.SightRadiusCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
@@ -36,19 +34,12 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		SightRadiusCalculator sightRadiusCalculator = cosmodog.getSightRadiusCalculator();
-		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
 		TileBasedMapFactory tileBasedMapFactory = cosmodog.getTileBasedMapFactory();
 		
 		
 		Enemy enemy = (Enemy)actor;
 		
-		//Calculating enemy's sight radius and the distance from which the player will be followed if spotted.
-		//The following distance is not the same as the sight radius. Imaging spotting the player on other river side
-		//and the next bridge is far away.
-		int sightRadius = sightRadiusCalculator.calculateSightRadius(enemy, planetaryCalendar);
-		int followDistance = sightRadius * 3;
+		int followDistance = 25;
 		
 		//Calculating the time budget overhead into the general time budget and resetting it for the enemy.
 		costBudget += enemy.getTimeBudgetOverhead();
