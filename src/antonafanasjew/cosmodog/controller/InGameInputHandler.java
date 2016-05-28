@@ -20,6 +20,7 @@ import antonafanasjew.cosmodog.actions.tooltip.WeaponTooltipAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
+import antonafanasjew.cosmodog.collision.PassageBlocker;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
@@ -147,7 +148,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					
 				} else {
 					
-					if (collisionStatus.getNoPassageReason() == CollisionStatus.NO_PASSAGE_REASON_FUEL_EMPTY) {
+					if (collisionStatus.getPassageBlocker() == PassageBlocker.FUEL_EMPTY) {
 						Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 						if (carmotor.playing()) {
 							carmotor.stop();

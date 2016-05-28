@@ -22,8 +22,8 @@ public class NpcHomeRegionCollisionValidator extends AbstractCollisionValidator 
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 
-		CollisionStatus passable = CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
-		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_OUT_OF_HOME_REGION);
+		CollisionStatus passable = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
+		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.OUT_OF_HOME_REGION);
 		
 		NpcActor npcActor = (NpcActor)actor;
 		String homeRegionName = npcActor.getHomeRegionName();

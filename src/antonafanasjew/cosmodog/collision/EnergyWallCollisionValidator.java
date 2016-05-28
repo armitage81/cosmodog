@@ -17,7 +17,7 @@ public class EnergyWallCollisionValidator extends AbstractCollisionValidator {
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
 		
 		int roadObjectsTileId = map.getTileId(tileX, tileY, Layers.LAYER_ROADS_OBJECTS_MANUAL);
 		
@@ -27,7 +27,8 @@ public class EnergyWallCollisionValidator extends AbstractCollisionValidator {
 			
 			int collectedInfobits = ((Player)actor).getGameProgress().getInfobits();
 			if (collectedInfobits < Mappings.ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.get(TileType.getByLayerAndTileId(Layers.LAYER_META_EFFECTS, energyWallTileId))) {
-				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_ENERGY_WALL_COSTS);
+				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.ENERGY_WALL_COSTS);
+				
 			}
 			
 		}

@@ -40,12 +40,12 @@ public class GeneralCollisionValidator extends AbstractCollisionValidator {
 			CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
 			CollisionStatus vehicleCollisionStatus = vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
 			if (fuelCollisionStatus.isPassable() && vehicleCollisionStatus.isPassable()) {
-				return CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
+				return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
 			} else {
 				if (fuelCollisionStatus.isPassable() == false) {
-					return CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_FUEL_EMPTY);
+					return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.FUEL_EMPTY);
 				} else {
-					return CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_BLOCKED);
+					return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.BLOCKED);
 				}
 			}
 		} else {

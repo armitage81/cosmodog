@@ -26,7 +26,7 @@ public class FeatureBoundCollisionValidator extends AbstractCollisionValidator {
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
 		
-		CollisionStatus defaultCollisionStatus = CollisionStatus.instance(actor, map, tileX, tileY, true, CollisionStatus.NO_PASSAGE_REASON_NO_REASON);
+		CollisionStatus defaultCollisionStatus = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
 		
 		return Features.getInstance().<CollisionStatus>featureBoundFunction(Features.FEATURE_COLLISION, new Callable<CollisionStatus>() {
 

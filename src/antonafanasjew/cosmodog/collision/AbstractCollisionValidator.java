@@ -15,7 +15,8 @@ public abstract class AbstractCollisionValidator implements CollisionValidator {
 	 */
 	@Override
 	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
-		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, CollisionStatus.NO_PASSAGE_REASON_BLOCKED);
+		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.BLOCKED);
+		
 		if (tileX < 0) {
 			return notPassable;
 		}

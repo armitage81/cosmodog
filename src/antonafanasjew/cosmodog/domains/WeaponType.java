@@ -15,7 +15,7 @@ public enum WeaponType {
 	FISTS(5, damageMapFromIntArray(5,5,5,5,5,5), 0),
 	PISTOL(5, damageMapFromIntArray(15,10,10,10,5,5), 10),
 	SHOTGUN(5, damageMapFromIntArray(50,20,15,10,10,5), 5),
-	RIFLE(5, damageMapFromIntArray(40,30,20,15,5,5), 20),
+	RIFLE(5, damageMapFromIntArray(40,30,20,15,5,5), 5),
 	MACHINEGUN(5, damageMapFromIntArray(50,60,30,20,15,10), 1),
 	RPG(5, damageMapFromIntArray(5,5,5,20,50,50), 3),
 

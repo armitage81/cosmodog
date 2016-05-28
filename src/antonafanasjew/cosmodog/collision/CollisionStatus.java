@@ -11,43 +11,6 @@ import antonafanasjew.cosmodog.model.actors.Actor;
  * Additionally, the status gives the information about the obstacle reasonif the passage is not possible. 
  */
 public class CollisionStatus {
-
-	/**
-	 * No obstacles. The tile is passable.
-	 */
-	public static final int NO_PASSAGE_REASON_NO_REASON = 0;
-	
-	/**
-	 * The tile is not passable because it is blocked by obstacles.
-	 */
-	public static final int NO_PASSAGE_REASON_BLOCKED = 1;
-	
-	
-	/**
-	 * The tile is not passable because it is blocked as target by an other character.
-	 */
-	public static final int NO_PASSAGE_REASON_BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER = 3;
-	
-	/**
-	 * The tile is not passable because the vehicle has no fuel.
-	 */
-	public static final int NO_PASSAGE_REASON_FUEL_EMPTY = 2;
-
-	/**
-	 * The tile is out of the home region of an npc.
-	 */
-	public static final int NO_PASSAGE_REASON_OUT_OF_HOME_REGION = 4;
-	
-	/**
-	 * The tile contains an energy wall generator and the costs are higher than the number of collected infobits.
-	 */
-	public static final int NO_PASSAGE_REASON_ENERGY_WALL_COSTS = 5;
-	
-	/**
-	 * The tile is blocked by a vehicle collectible. F.i. another vehicle or enemies cannot pass such tiles.
-	 */
-	public static final int NO_PASSAGE_REASON_BLOCKED_BY_VEHICLE_COLLECTIBLE = 6;
-	
 	
 	private Actor actor;
 	private CustomTiledMap map;
@@ -55,7 +18,7 @@ public class CollisionStatus {
 	private int tileY;
 	
 	private boolean passable;
-	private int noPassageReason = NO_PASSAGE_REASON_NO_REASON;
+	private PassageBlocker passageBlocker = PassageBlocker.PASSABLE;
 	
 	private CollisionStatus () {
 		
@@ -69,17 +32,17 @@ public class CollisionStatus {
 	 * @param tileX horizontal tile number of actors location.
 	 * @param tileY vertical tile number of actors location.
 	 * @param passable true if the tile is passable, false otherwise.
-	 * @param noPassageReason Reason for non passable tile.
+	 * @param passageBlocker Reason for non passable tile.
 	 * @return A new Collision status object filled with the given parameters.
 	 */
-	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, int noPassageReason) {
+	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlocker passageBlocker) {
 		CollisionStatus collisionStatus = new CollisionStatus();
 		collisionStatus.actor = actor;
 		collisionStatus.map = map;
 		collisionStatus.tileX = tileX;
 		collisionStatus.tileY = tileY;
 		collisionStatus.passable = passable;
-		collisionStatus.noPassageReason = noPassageReason;
+		collisionStatus.passageBlocker = passageBlocker;
 		return collisionStatus;
 	}
 	
@@ -124,11 +87,11 @@ public class CollisionStatus {
 	}
 
 	/**
-	 * Returns the reason for the blocked passage.
-	 * @return The reason for blocked tiles.
+	 * Returns the reason for the blocker
+	 * @return Reason object for the blocker.
 	 */
-	public int getNoPassageReason() {
-		return noPassageReason;
+	public PassageBlocker getPassageBlocker() {
+		return passageBlocker;
 	}
-	
+
 }

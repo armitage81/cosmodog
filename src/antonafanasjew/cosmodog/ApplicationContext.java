@@ -60,6 +60,7 @@ import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuil
 import antonafanasjew.cosmodog.resourcehandling.builder.menu.MenuBuilder;
 import antonafanasjew.cosmodog.sight.DayTimeAffectedSightRadiusCalculator;
 import antonafanasjew.cosmodog.sight.DefaultSightRadiusCalculator;
+import antonafanasjew.cosmodog.sight.GeneralSightRadiusCalculator;
 import antonafanasjew.cosmodog.sight.SightRadiusCalculator;
 import antonafanasjew.cosmodog.text.DefaultLetterBuilder;
 import antonafanasjew.cosmodog.text.Letter;
@@ -241,7 +242,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
 		
 		
-		SightRadiusCalculator sightRadiusCalculator = new DayTimeAffectedSightRadiusCalculator(new DefaultSightRadiusCalculator());
+		SightRadiusCalculator sightRadiusCalculator = new GeneralSightRadiusCalculator();
 		cosmodog.setSightRadiusCalculator(sightRadiusCalculator);
 		
 		
