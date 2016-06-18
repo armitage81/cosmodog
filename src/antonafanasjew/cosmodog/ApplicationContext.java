@@ -50,9 +50,9 @@ import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
 import antonafanasjew.cosmodog.pathfinding.DefaultTravelTimeCalculator;
-import antonafanasjew.cosmodog.pathfinding.EnemySightBasedDecitionPathFinder;
+import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
-import antonafanasjew.cosmodog.pathfinding.RandomPathFinder;
+import antonafanasjew.cosmodog.pathfinding.PatrolingPathFinder;
 import antonafanasjew.cosmodog.pathfinding.TowardsPlayerPathFinder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -205,11 +205,11 @@ public class ApplicationContext {
 		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidator(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator())); 
 		
 		PathFinder towardsPlayerPathFinder = new TowardsPlayerPathFinder();
-		PathFinder randomPathFinder = new RandomPathFinder();
+		PathFinder patrolingPathFinder = new PatrolingPathFinder();
 		
-		PathFinder enemySightBasedDecisionPathFinder = new EnemySightBasedDecitionPathFinder(randomPathFinder, towardsPlayerPathFinder);
+		PathFinder enemyAlertBasedDecisionPathFinder = new EnemyAlertBasedDecisionPathFinder(patrolingPathFinder, towardsPlayerPathFinder);
 		
-		cosmodog.setPathFinder(enemySightBasedDecisionPathFinder);
+		cosmodog.setPathFinder(enemyAlertBasedDecisionPathFinder);
 		cosmodog.setCollisionValidator(new FeatureBoundCollisionValidator(collisionValidator));
 		cosmodog.setWaterValidator(new DefaultWaterValidator());
 		

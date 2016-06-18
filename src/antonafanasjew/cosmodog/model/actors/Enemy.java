@@ -14,11 +14,15 @@ import com.google.common.collect.Sets;
  */
 public class Enemy extends NpcActor {
 
+	public static final int MAX_ALERT_LEVEL = 5;
+	
 	private static final long serialVersionUID = -3515008009264002679L;
 
 	private UnitType unitType;
 	private WeaponType weaponType;
 	private ArmorType armorType;
+	
+	private int alertLevel = 0;
 	
 	private Set<Sight> sights = Sets.newHashSet();
 	
@@ -57,6 +61,24 @@ public class Enemy extends NpcActor {
 	 */
 	public Set<Sight> getSights() {
 		return sights;
+	}
+
+	public int getAlertLevel() {
+		return alertLevel;
+	}
+
+	public void setAlertLevel(int alertLevel) {
+		this.alertLevel = alertLevel;
+	}
+	
+	public void increaseAlertLevelToMax() {
+		this.alertLevel = MAX_ALERT_LEVEL;
+	}
+	
+	public void reduceAlertLevel() {
+		if (alertLevel > 0) {
+			alertLevel--;
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightAction;
+import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.ChaussieBasedCollisionValidator;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -38,6 +39,9 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
+import antonafanasjew.cosmodog.sight.Sight;
+import antonafanasjew.cosmodog.sight.SightModifier;
+import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
@@ -318,6 +322,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Player player = ApplicationContextUtils.getPlayer();
 		Set<Enemy> enemies = map.getEnemies();
 		for (Enemy enemy : enemies) {
 						
@@ -334,8 +339,35 @@ public class MovementAction extends FixedLengthAsyncAction {
     				enemy.setDirection(enemyTransition.getTransitionalDirection());
     			}
 			}
+			
+			if (playerInVisibilityRange(enemy, player)) {
+				enemy.increaseAlertLevelToMax();
+			} else {
+				enemy.reduceAlertLevel();
+			}
 		}
 		
+	}
+	
+	private boolean playerInVisibilityRange(Enemy enemy, Player player) {
+		
+		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		CustomTiledMap customTiledMap = ApplicationContextUtils.getCustomTiledMap();
+		SightModifier sightModifier = cosmodog.getSightModifier();
+		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
+		
+		Set<Sight> sights = enemy.getSights();
+		
+		for (Sight sight : sights) {
+			Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
+			VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, customTiledMap.getTileWidth(), customTiledMap.getTileHeight());
+			if (visibilityCalculator.visible(player, customTiledMap.getTileWidth(), customTiledMap.getTileHeight())) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	private void fight() {

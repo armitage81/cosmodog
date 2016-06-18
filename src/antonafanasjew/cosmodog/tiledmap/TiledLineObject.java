@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.tiledmap;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -8,8 +9,10 @@ public abstract class TiledLineObject extends TiledObject {
 
 	private static final long serialVersionUID = -4100680246093467329L;
 
-	public static class Point {
+	public static class Point implements Serializable {
 		
+		private static final long serialVersionUID = 9014114862165386002L;
+
 		public float x;
 		public float y;
 		

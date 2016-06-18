@@ -1,5 +1,10 @@
 package antonafanasjew.cosmodog.model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import org.newdawn.slick.util.Log;
+
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;

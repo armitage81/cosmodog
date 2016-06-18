@@ -1,11 +1,15 @@
 package antonafanasjew.cosmodog.sight;
 
+import java.io.Serializable;
+
 /**
  * Defines a sight "cone" by providing the sight angle, the sight direction as related to the actors direction (both in degree)
  * and the distance.
  *
  */
-public class Sight {
+public class Sight implements Serializable {
+
+	private static final long serialVersionUID = -2174059709810754936L;
 
 	private float distance;
 	

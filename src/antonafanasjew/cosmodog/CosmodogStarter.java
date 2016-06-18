@@ -115,6 +115,7 @@ public class CosmodogStarter extends StateBasedGame {
 		gameContainer.setDisplayMode(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, Constants.FULLSCREEN);
 		gameContainer.setAlwaysRender(true);
 		gameContainer.setTargetFrameRate(30);
+		
 		gameContainer.start();
 	}
 

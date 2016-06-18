@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.pathfinding;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.newdawn.slick.util.pathfinding.Path;
@@ -9,16 +10,28 @@ import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
- * Random path finder for testing. The enemy will move one tile randomly each turn.
+ * Patroling path finder. Actors will randomly change their direction but will prefer to go strait. 
  */
-public class RandomPathFinder extends AbstractPathFinder {
+public class PatrolingPathFinder extends AbstractPathFinder {
+
+	private static final int CHANCE_TO_MOVE_IN_THE_SAME_DIRECTION = 9;
+
+	private static final Map<DirectionType, Integer> DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY = Maps.newHashMap();
+	static {
+		DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.put(DirectionType.DOWN, 0);
+		DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.put(DirectionType.UP, 1);
+		DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.put(DirectionType.LEFT, 2);
+		DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.put(DirectionType.RIGHT, 3);
+	}
 
 	@Override
 	protected MovementActionResult calculateMovementResultInternal(Actor enemy, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
@@ -30,13 +43,30 @@ public class RandomPathFinder extends AbstractPathFinder {
 		int ySteps[] = new int[] {enemy.getPositionY() + 1, enemy.getPositionY() - 1, enemy.getPositionY(), enemy.getPositionY()};
 		
 		
+		int firstIndex;
+		
+		//Before randomly choosing a direction, give a 75% chance to move in the same direction.
 		Random r = new Random();
-		int firstIndex = r.nextInt();
-		if (firstIndex < 0) {
-			firstIndex = - firstIndex;
+		int diceThrow = r.nextInt();
+		if (diceThrow < 0) {
+			diceThrow = - diceThrow;
 		}
 		
-		firstIndex = firstIndex % 4;
+		boolean continueMovingInSameDirection = diceThrow % CHANCE_TO_MOVE_IN_THE_SAME_DIRECTION != 0;
+		
+		if (continueMovingInSameDirection) {
+			firstIndex = DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.get(enemy.getDirection());
+		} else {
+		
+			r = new Random();
+			firstIndex = r.nextInt();
+			if (firstIndex < 0) {
+				firstIndex = - firstIndex;
+			}
+			
+			firstIndex = firstIndex % 4;
+		
+		}
 		
 		int x = -1;
 		int y = -1;
