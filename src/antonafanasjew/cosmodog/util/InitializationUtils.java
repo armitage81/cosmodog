@@ -108,7 +108,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		
 		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(31, 294);
+		Player player = Player.fromPosition(182, 276);
 		
 		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
