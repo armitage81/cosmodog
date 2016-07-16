@@ -6,9 +6,8 @@ import antonafanasjew.cosmodog.model.inventory.Inventory;
 
 public class Player extends Actor {
 
-	public static final int MAX_HUNGER = 1500;
-	public static final int MAX_THIRST = 1000;
-	
+	public static final int INITIAL_MAX_FOOD = 1500;
+	public static final int INITIAL_MAX_WATER = 1000;
 	
 	public static final int MAX_POSSIBLE_LIFE = 50;
 	public static final int INITIAL_LIFE = 10;
@@ -19,8 +18,11 @@ public class Player extends Actor {
 	private GameProgress gameProgress = new GameProgress();
 	private Inventory inventory = new Inventory();
 
-	private int hunger = 0;
-	private int thirst = 0;
+	private int currentMaxFood = INITIAL_MAX_FOOD;
+	private int currentMaxWater = INITIAL_MAX_WATER;
+	
+	private int food = currentMaxFood;
+	private int water = currentMaxWater;
 
 	public static Player fromPosition(int positionX, int positionY) {
 		Player player = new Player();
@@ -40,42 +42,65 @@ public class Player extends Actor {
 		return inventory;
 	}
 
-	public int getHunger() {
-		return hunger;
+	public int getFood() {
+		return food;
 	}
 
-	public void setHunger(int n) {
-		this.hunger = n;
-		if (hunger > MAX_HUNGER) {
-			hunger = MAX_HUNGER;
+	public void setFood(int n) {
+		this.food = n;
+		if (food > currentMaxFood) {
+			food = currentMaxFood;
+		}
+		
+		if (food < 0) {
+			food = 0;
 		}
 	}
 
-	public void increaseHunger(int n) {
-		setHunger(getHunger() + n);
+	public void decreaseFood(int n) {
+		setFood(getFood() - n);
 	}
 
 	public boolean starving() {
-		return hunger >= MAX_HUNGER;
+		return food <= 0;
 	}
 
-	public int getThirst() {
-		return thirst;
+	public int getWater() {
+		return water;
 	}
 
-	public void setThirst(int n) {
-		this.thirst = n;
-		if (thirst >= MAX_THIRST) {
-			thirst = MAX_THIRST;
+	public void setWater(int n) {
+		this.water = n;
+		if (water >= currentMaxWater) {
+			water = currentMaxWater;
+		}
+		if (water < 0) {
+			water = 0;
 		}
 	}
 	
-	public void increaseThirst(int n) {
-		setThirst(getThirst() + n);
+	public int getCurrentMaxFood() {
+		return currentMaxFood;
+	}
+
+	public void setCurrentMaxFood(int currentMaxFood) {
+		this.currentMaxFood = currentMaxFood;
+	}
+
+	public int getCurrentMaxWater() {
+		return currentMaxWater;
+	}
+
+	public void setCurrentMaxWater(int currentMaxWater) {
+		this.currentMaxWater = currentMaxWater;
+	}
+	
+	public void decreaseWater(int n) {
+		setWater(getWater() - n);
 	}
 
 	public boolean dehydrating() {
-		return thirst >= MAX_THIRST;
+		return water <= 0;
 	}
 
 

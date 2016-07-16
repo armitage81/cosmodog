@@ -23,7 +23,7 @@ public class FoodConsumer extends AbstractPlanetaryCalendarListener {
 			public void run() {
 				Player player = ApplicationContextUtils.getPlayer();
 				int timeUnits = noOfMinutes / Constants.MINIMAL_TIME_UNIT_IN_MINUTES;
-				player.increaseHunger(timeUnits);
+				player.decreaseFood(timeUnits);
 			}
 		});
 	}

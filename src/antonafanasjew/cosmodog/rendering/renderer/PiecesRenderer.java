@@ -23,6 +23,8 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.FoodCompartmentRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
@@ -67,6 +69,8 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentRenderer());
 	}
 	
 	@Override

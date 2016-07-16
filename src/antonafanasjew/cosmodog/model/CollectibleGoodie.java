@@ -10,7 +10,9 @@ public class CollectibleGoodie extends Collectible {
 		supplies,
 		medipack,
 		soulessence,
-		armor
+		armor,
+		bottle,
+		foodcompartment
 	}
 	
 	private GoodieType goodieType;

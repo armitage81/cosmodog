@@ -29,7 +29,9 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmentInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
@@ -228,11 +230,13 @@ public class ApplicationContext {
 			
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorInteraction());
-		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentInteraction());
+		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
 		pieceInteractionMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponInteraction());
 		pieceInteractionMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());

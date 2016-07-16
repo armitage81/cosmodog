@@ -24,7 +24,7 @@ public class WaterConsumer extends AbstractPlanetaryCalendarListener {
 				Player player = ApplicationContextUtils.getPlayer();
 				
 				int timeUnits = noOfMinutes / Constants.MINIMAL_TIME_UNIT_IN_MINUTES;				
-				player.increaseThirst(timeUnits);
+				player.decreaseWater(timeUnits);
 			}
 		});
 	}

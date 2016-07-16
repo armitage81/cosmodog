@@ -88,6 +88,8 @@ public class InitializationUtils {
 	public static int BOAT_TILE_ID = 194;
 	public static int DYNAMITE_TILE_ID = 198;
 	public static int GEIGERZAEHLER_TILE_ID = 207;
+	public static int BOTTLE_TILE_ID = 201;
+	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
 	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
@@ -108,7 +110,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		
 		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(182, 276);
+		Player player = Player.fromPosition(253, 149);
 		
 		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
@@ -195,6 +197,21 @@ public class InitializationUtils {
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
+				
+				if (tileId == BOTTLE_TILE_ID) {
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.bottle);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == FOOD_COMPARTMENT_TILE_ID) {
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.foodcompartment);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
 				if (tileId == VEHICLE_TILE_ID) {
 					Vehicle vehicle = Vehicle.fromPosition(k, l);
 					map.getMapPieces().add(vehicle);

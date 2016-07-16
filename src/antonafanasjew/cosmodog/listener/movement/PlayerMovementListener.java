@@ -52,12 +52,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	
 	//This is used to compare players values before and after modification.
-	private int oldThirst = -1;
+	private int oldWater = -1;
 	
 	@Override
 	public void onEnteringTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
-		oldThirst = player.getThirst();
+		oldWater = player.getWater();
 		applyTime(player, x1, y1, x2, y2, applicationContext);
 	}
 	
@@ -155,11 +155,11 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				boolean hasWaterAccess = waterValidator.waterInReach(player, tiledMap, player.getPositionX(), player.getPositionY());
 				
 				if (hasWaterAccess) {
-					if (oldThirst > 0) {
+					if (oldWater < player.getCurrentMaxWater()) {
 						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
 						applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();
 					}
-					player.setThirst(0);
+					player.setWater(player.getCurrentMaxWater());
 				}
 			}
 			

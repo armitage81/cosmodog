@@ -7,8 +7,9 @@ public class CollectibleTool extends Collectible {
 	public static enum ToolType {
 		boat,
 		dynamite,
-		geigerzaehler
+		geigerzaehler	
 	}
+	
 	
 	private ToolType toolType;
 	

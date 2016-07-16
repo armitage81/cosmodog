@@ -9,3 +9,5 @@ INSIGHT_DESCRIPTION;insight;false;insightDesciption;You found an alien artifact<
 PISTOL_DESCRIPTION;pistol;true;pistolDescription;You found a pistol.<br>Press TAB to switch the weapons.<br>Keep the ammo in mind.<br><br>[Press ENTER]
 BOAT_DESCRIPTION;boat;true;boatDescription;You found a boat.<br>You can cross water now.<br><br>[Press ENTER]
 GEIGERZAEHLER_DESCRIPTION;geigerzaehler;true;geigerzaehlerDescription;You found a Geiger counter.<br>It indicates radiation.<br>The 'RAD' value shows the number<br>of contaminated adjacent tiles.<br>including your own position.<br><br>[Press ENTER]
+BOTTLE_DESCRIPTION;bottle;false;bottleDescription;You found a bottle.<br>Your water capacity increases.<br><br>[Press ENTER]
+FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;false;foodcompartmentDescription;You found a food compartment<br>and attached it to your backback.<br>Your supply capacity increases.<br><br>[Press ENTER]
