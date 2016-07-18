@@ -8,6 +8,7 @@ public enum InventoryItemType {
 	FUEL_TANK,
 	INSIGHT,
 	ARSENAL,
-	GEIGERZAEHLER;
+	GEIGERZAEHLER,
+	SUPPLYTRACKER;
 	
 }

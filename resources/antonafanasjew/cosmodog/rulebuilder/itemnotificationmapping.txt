@@ -11,3 +11,4 @@ BOAT_DESCRIPTION;boat;true;boatDescription;You found a boat.<br>You can cross wa
 GEIGERZAEHLER_DESCRIPTION;geigerzaehler;true;geigerzaehlerDescription;You found a Geiger counter.<br>It indicates radiation.<br>The 'RAD' value shows the number<br>of contaminated adjacent tiles.<br>including your own position.<br><br>[Press ENTER]
 BOTTLE_DESCRIPTION;bottle;false;bottleDescription;You found a bottle.<br>Your water capacity increases.<br><br>[Press ENTER]
 FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;false;foodcompartmentDescription;You found a food compartment<br>and attached it to your backback.<br>Your supply capacity increases.<br><br>[Press ENTER]
+SUPPLYTRACKER_DESCRIPTION;supplytracker;false;supplytrackerDescription;You found the supply tracker.<br>It must have fallen<br>from your emergency pod.<br>Use it to track the closest supply box.<br><br>[Press ENTER]

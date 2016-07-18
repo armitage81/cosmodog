@@ -133,4 +133,8 @@ public class NotificationUtils {
 		return Notification.fromTextAndDuration("Alisa: Some call it the Geiger counter, but I prefer \"The Heart Beat of Broken Atoms\".", DEFAULT_NOTIFICATION_DURATION);
 	}
 	
+	public static Notification foundSupplyTracker() {
+		return Notification.fromTextAndDuration("Alisa: Hey, that's the supply tracker. It shows you the direction to the next supply box.", DEFAULT_NOTIFICATION_DURATION);
+	}
+	
 }

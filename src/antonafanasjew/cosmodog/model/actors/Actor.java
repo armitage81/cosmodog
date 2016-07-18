@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.listener.life.LifeListener;
 import antonafanasjew.cosmodog.listener.movement.ComposedMovementListener;
 import antonafanasjew.cosmodog.listener.movement.MovementListener;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.util.PositionUtils;
 
 import com.google.common.collect.Lists;
 
@@ -103,34 +104,10 @@ public abstract class Actor extends Piece {
 	}
 
 	public void lookAtActor(Actor actor) {
-		lookAtTile(actor.getPositionX(), actor.getPositionY());
+		DirectionType dirType = PositionUtils.targetDirection(this, actor);
+		this.setDirection(dirType);
 	}
 	
-	public void lookAtTile(int x, int y) {
-		int diffX = x - this.getPositionX();
-		int diffY = y - this.getPositionY();
-		
-		int diffXAbs = diffX < 0 ? -diffX : diffX;
-		int diffYAbs = diffY < 0 ? -diffY : diffY;
-		
-		boolean horizontal = diffXAbs >= diffYAbs;
-		
-		if (horizontal) {
-			if (diffX >= 0) {
-				this.setDirection(DirectionType.RIGHT);
-			} else {
-				this.setDirection(DirectionType.LEFT);
-			}
-		} else {
-			if (diffY >= 0) {
-				this.setDirection(DirectionType.DOWN);
-			} else {
-				this.setDirection(DirectionType.UP);
-			}			
-		}
-		
-		
-	}
 
 	public DirectionType getDirection() {
 		return direction;

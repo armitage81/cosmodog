@@ -6,9 +6,6 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -35,6 +32,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Effect;
 import antonafanasjew.cosmodog.model.Mark;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -76,6 +74,9 @@ import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 public class InitializationUtils {
 
 	public static int INFOBIT_TILE_ID = 191;
@@ -88,6 +89,7 @@ public class InitializationUtils {
 	public static int BOAT_TILE_ID = 194;
 	public static int DYNAMITE_TILE_ID = 198;
 	public static int GEIGERZAEHLER_TILE_ID = 207;
+	public static int SUPPLYTRACKER_TILE_ID = 3061;
 	public static int BOTTLE_TILE_ID = 201;
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
@@ -123,6 +125,7 @@ public class InitializationUtils {
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
 		player.getMovementListeners().add(playerMovementListener);
 		player.getMovementListeners().add(new RuleBookMovementListener());
+		player.getMovementListeners().add(PlayerMovementCache.getInstance());
 		
 		PlayerLifeListener playerLifeListener = new PlayerLifeListener();
 		player.getLifeListeners().add(playerLifeListener);
@@ -233,6 +236,13 @@ public class InitializationUtils {
 				
 				if (tileId == GEIGERZAEHLER_TILE_ID) {
 					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.geigerzaehler);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == SUPPLYTRACKER_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.supplytracker);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);

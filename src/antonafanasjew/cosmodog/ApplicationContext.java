@@ -39,6 +39,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackIntera
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SupplyTrackerInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
@@ -242,6 +243,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.dynamite.name(), new DynamiteInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.supplytracker.name(), new SupplyTrackerInteraction());
 		
 		
 		SightModifier sightModifier = new GeneralSightModifier();

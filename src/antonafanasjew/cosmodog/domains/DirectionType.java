@@ -8,21 +8,31 @@ public enum DirectionType {
 	/**
 	 * Up/North.
 	 */
-	UP,
+	UP("North"),
 	
 	/**
 	 * Right/East.
 	 */
-	RIGHT,
+	RIGHT("East"),
 	
 	/**
 	 * Down/South.
 	 */
-	DOWN,
+	DOWN("South"),
 	
 	/**
 	 * Left/West.
 	 */
-	LEFT
+	LEFT("West");
 	
+	private String representation;
+	
+	
+	private DirectionType(String representation) {
+		this.representation = representation;
+	}
+	
+	public String getRepresentation() {
+		return representation;
+	}
 }

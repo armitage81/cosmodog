@@ -50,6 +50,16 @@ public class CosmodogMap extends CosmodogModel {
 		return infobits;
 	}
 	
+	public Set<Piece> getSupplies() {
+		Set<Piece> supplies = Sets.filter(mapPieces, new Predicate<Piece>() {
+			@Override
+			public boolean apply(Piece piece) {
+				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
+			}
+		});
+		return supplies;
+	}
+	
 	public Set<Piece> visibleMapPieces(int x, int y, int width, int height, int grace) {
 		Set<Piece> retVal = Sets.newHashSet();
 		for (Piece piece : mapPieces) {

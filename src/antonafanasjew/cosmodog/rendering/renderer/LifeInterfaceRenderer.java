@@ -6,20 +6,25 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.PositionUtils;
 
 public class LifeInterfaceRenderer implements Renderer {
 
@@ -144,7 +149,8 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		TileDrawingContext radiationLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 0, 0);
 		TileDrawingContext radiationValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 1, 0);
-		
+		TileDrawingContext supplyTrackerLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 2, 0);
+		TileDrawingContext supplyTrackerValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 3, 0);
 		
 		LetterTextRenderer.getInstance().render(gameContainer, g, radiationLabelDrawingContext, LetterTextRenderingParameter.fromText("RAD"));
 		
@@ -169,6 +175,25 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		LetterTextRenderer.getInstance().render(gameContainer, g, radiationValueDrawingContext, LetterTextRenderingParameter.fromText(radiationValue));
 		
+		
+		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerLabelDrawingContext, LetterTextRenderingParameter.fromText("BOX"));
+
+		String supplyTrackerValue = "--";
+		
+		SupplyTrackerInventoryItem supplyTracker = (SupplyTrackerInventoryItem)player.getInventory().get(InventoryItemType.SUPPLYTRACKER);
+		
+		if (supplyTracker != null) {
+			
+			Piece closestSupply = PlayerMovementCache.getInstance().getClosestSupply();
+			
+			if (closestSupply != null) {
+				DirectionType dirType = PositionUtils.targetDirection(player, closestSupply);
+				supplyTrackerValue = dirType.getRepresentation().toUpperCase();
+			}
+			
+		}		
+	
+		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerValueDrawingContext, LetterTextRenderingParameter.fromText(supplyTrackerValue));
 		
 	}
 	

@@ -29,6 +29,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DYNAMITE, "inventoryItemDynamite");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.VEHICLE, "inventoryItemVehicle");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.GEIGERZAEHLER, "inventoryItemGeigerZaehler");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SUPPLYTRACKER, "inventoryItemSupplyTracker");
 	}
 	
 	/**
