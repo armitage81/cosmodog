@@ -9,6 +9,7 @@ public enum InventoryItemType {
 	INSIGHT,
 	ARSENAL,
 	GEIGERZAEHLER,
-	SUPPLYTRACKER;
+	SUPPLYTRACKER,
+	BINOCULARS;
 	
 }

@@ -12,3 +12,4 @@ GEIGERZAEHLER_DESCRIPTION;geigerzaehler;true;geigerzaehlerDescription;You found 
 BOTTLE_DESCRIPTION;bottle;false;bottleDescription;You found a bottle.<br>Your water capacity increases.<br><br>[Press ENTER]
 FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;false;foodcompartmentDescription;You found a food compartment<br>and attached it to your backback.<br>Your supply capacity increases.<br><br>[Press ENTER]
 SUPPLYTRACKER_DESCRIPTION;supplytracker;false;supplytrackerDescription;You found the supply tracker.<br>It must have fallen<br>from your emergency pod.<br>Use it to track the closest supply box.<br><br>[Press ENTER]
+BINOCULARS_DESCRIPTION;binoculars;false;binocularsDescription;You found the binoculars.<br>You can see distant things now.<br>Press Y and Z to zoom in and out.<br><br>[Press ENTER]

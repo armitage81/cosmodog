@@ -137,4 +137,8 @@ public class NotificationUtils {
 		return Notification.fromTextAndDuration("Alisa: Hey, that's the supply tracker. It shows you the direction to the next supply box.", DEFAULT_NOTIFICATION_DURATION);
 	}
 	
+	public static Notification foundBinoculars() {
+		return Notification.fromTextAndDuration("Alisa: If everything looks more distant, then you're holding it the other way around.", DEFAULT_NOTIFICATION_DURATION);
+	}
+	
 }

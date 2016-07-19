@@ -33,6 +33,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
@@ -205,14 +206,21 @@ public class InGameInputHandler extends AbstractInputHandler {
 		}
 
 		//Handle zooming
-		if (input.isKeyPressed(Input.KEY_Z)) {
-			cam.zoomIn();
-			cam.focusOnPiece(tiledMap, 0, 0, player);
-		}
 		
-		if (input.isKeyPressed(Input.KEY_Y)) {
-			cam.focusOnPiece(tiledMap, 0, 0, player);
-			cam.zoomOut();
+		InventoryItem binoculars = player.getInventory().get(InventoryItemType.BINOCULARS);
+		
+		if (binoculars != null) {
+		
+			if (input.isKeyPressed(Input.KEY_Z)) {
+				cam.zoomIn();
+				cam.focusOnPiece(tiledMap, 0, 0, player);
+			}
+			
+			if (input.isKeyPressed(Input.KEY_Y)) {
+				cam.focusOnPiece(tiledMap, 0, 0, player);
+				cam.zoomOut();
+			}
+		
 		}
 
 	}

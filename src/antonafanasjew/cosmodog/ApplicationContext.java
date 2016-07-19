@@ -9,6 +9,9 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.util.Log;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
@@ -28,6 +31,7 @@ import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
@@ -69,9 +73,6 @@ import antonafanasjew.cosmodog.text.LetterBuilder;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapReader;
 import antonafanasjew.cosmodog.tiledmap.io.XmlTiledMapReader;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * Note: The application context needs to be instantiated only from a OpenGL bound thread. Do not 
@@ -244,6 +245,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.dynamite.name(), new DynamiteInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.supplytracker.name(), new SupplyTrackerInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.binoculars.name(), new BinocularsInteraction());
 		
 		
 		SightModifier sightModifier = new GeneralSightModifier();

@@ -8,7 +8,8 @@ public class CollectibleTool extends Collectible {
 		boat,
 		dynamite,
 		geigerzaehler,
-		supplytracker;
+		supplytracker,
+		binoculars;
 	}
 	
 	

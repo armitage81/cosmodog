@@ -90,6 +90,7 @@ public class InitializationUtils {
 	public static int DYNAMITE_TILE_ID = 198;
 	public static int GEIGERZAEHLER_TILE_ID = 207;
 	public static int SUPPLYTRACKER_TILE_ID = 3061;
+	public static int BINOCULARS_TILE_ID = 3062;
 	public static int BOTTLE_TILE_ID = 201;
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
@@ -243,6 +244,13 @@ public class InitializationUtils {
 				
 				if (tileId == SUPPLYTRACKER_TILE_ID) {
 					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.supplytracker);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == BINOCULARS_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.binoculars);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);

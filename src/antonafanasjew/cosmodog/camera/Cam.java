@@ -247,7 +247,7 @@ public class Cam implements Serializable {
 	 */
 	private float closerZoomLevel() {
 		float zoomLevel = zoomFactor;
-		if (zoomLevel < 8.0) {
+		if (zoomLevel < 4.0) {
 			zoomLevel *= 2;
 		}
 		return zoomLevel;
@@ -262,7 +262,7 @@ public class Cam implements Serializable {
 	 */
 	private float furtherZoomLevel() {
 		float zoomLevel = zoomFactor;
-		if (zoomLevel > 1.0) {
+		if (zoomLevel > 2.0) {
 			zoomLevel /= 2;
 		}
 		return zoomLevel;
