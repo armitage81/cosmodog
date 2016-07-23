@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
  * Normally, an object of this class is the result of a collision validator.
  * Note, this class doesn't have any validation logic. It just holds the result of collision calculation for a specific tile
  * and the actor trying to enter this tile.
- * Additionally, the status gives the information about the obstacle reasonif the passage is not possible. 
+ * Additionally, the status gives the information about the obstacle reason if the passage is not possible. 
  */
 public class CollisionStatus {
 	
@@ -18,7 +18,7 @@ public class CollisionStatus {
 	private int tileY;
 	
 	private boolean passable;
-	private PassageBlocker passageBlocker = PassageBlocker.PASSABLE;
+	private PassageBlockerDescriptor passageBlockerDescriptor = PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.PASSABLE);
 	
 	private CollisionStatus () {
 		
@@ -35,15 +35,27 @@ public class CollisionStatus {
 	 * @param passageBlocker Reason for non passable tile.
 	 * @return A new Collision status object filled with the given parameters.
 	 */
-	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlocker passageBlocker) {
+	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlockerDescriptor passageBlockerDescriptor) {
 		CollisionStatus collisionStatus = new CollisionStatus();
 		collisionStatus.actor = actor;
 		collisionStatus.map = map;
 		collisionStatus.tileX = tileX;
 		collisionStatus.tileY = tileY;
 		collisionStatus.passable = passable;
-		collisionStatus.passageBlocker = passageBlocker;
+		collisionStatus.passageBlockerDescriptor = passageBlockerDescriptor;
 		return collisionStatus;
+	}
+	
+	/**
+	 * This method is for the backwards compatibility of the existing code that used the passage blocker type instead of the passage blocker descriptor.
+	 * Most of the callers do not need to be changed as this method will convert the passage blocker type into the passage blocker descriptor.
+	 */
+	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlockerType passageBlockerType) {
+		return instance(actor, map, tileX, tileY, passable, PassageBlockerDescriptor.fromPassageBlockerType(passageBlockerType));
+	}
+	
+	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlockerType passageBlockerType, Object paramValue) {
+		return instance(actor, map, tileX, tileY, passable, PassageBlockerDescriptor.fromPassageBlockerTypeAndParameter(passageBlockerType, paramValue));
 	}
 	
 	/**
@@ -90,8 +102,8 @@ public class CollisionStatus {
 	 * Returns the reason for the blocker
 	 * @return Reason object for the blocker.
 	 */
-	public PassageBlocker getPassageBlocker() {
-		return passageBlocker;
+	public PassageBlockerDescriptor getPassageBlockerDescriptor() {
+		return passageBlockerDescriptor;
 	}
 
 }

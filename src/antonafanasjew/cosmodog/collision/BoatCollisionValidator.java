@@ -21,7 +21,7 @@ public class BoatCollisionValidator extends AbstractCollisionValidator {
 		boolean collisionTile = TileType.COLLISION.getTileId() == tileId;
 		boolean passable = !collisionTile; //Water tile is allowedd
 
-		PassageBlocker passageBlocker = passable ? PassageBlocker.PASSABLE : PassageBlocker.BLOCKED;
+		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
 		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
 		
 	}

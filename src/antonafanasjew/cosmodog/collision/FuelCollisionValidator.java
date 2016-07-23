@@ -21,7 +21,7 @@ public class FuelCollisionValidator extends AbstractCollisionValidator {
 
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 		Player player = (Player) actor;
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
@@ -31,7 +31,7 @@ public class FuelCollisionValidator extends AbstractCollisionValidator {
 					retVal = Features.getInstance().featureBoundFunction(Features.FEATURE_FUEL, new Callable<CollisionStatus>() {
 						@Override
 						public CollisionStatus call() throws Exception {
-							return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.FUEL_EMPTY);
+							return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
 						}
 					}, retVal);
 				}

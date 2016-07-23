@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.controller;
 
 import java.util.Set;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -16,11 +17,12 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.tooltip.WeaponTooltipAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
-import antonafanasjew.cosmodog.collision.PassageBlocker;
+import antonafanasjew.cosmodog.collision.PassageBlockerType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
@@ -69,8 +71,6 @@ public class InGameInputHandler extends AbstractInputHandler {
 		boolean inputRight = input.isKeyDown(Input.KEY_RIGHT);
 		boolean inputUp = input.isKeyDown(Input.KEY_UP);
 		boolean inputDown = input.isKeyDown(Input.KEY_DOWN);
-		
-		boolean skipTurn = input.isKeyDown(Input.KEY_ENTER);
 		
 		boolean inputMovement = inputLeft || inputRight || inputUp || inputDown;
 		
@@ -151,7 +151,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					
 				} else {
 					
-					if (collisionStatus.getPassageBlocker() == PassageBlocker.FUEL_EMPTY) {
+					if (collisionStatus.getPassageBlockerDescriptor().getPassageBlockerType() == PassageBlockerType.FUEL_EMPTY) {
 						Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 						if (carmotor.playing()) {
 							carmotor.stop();
@@ -167,6 +167,19 @@ public class InGameInputHandler extends AbstractInputHandler {
 						@Override
 						public void onTrigger() {
 							applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
+							
+							String text = collisionStatus.getPassageBlockerDescriptor().asText();
+							
+							OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
+							
+							if (overheadNotificationAction == null) {
+								OverheadNotificationAction action = OverheadNotificationAction.create(player, text, Color.white);
+								cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+							} else {
+								overheadNotificationAction.getTransition().texts.add(text);
+								overheadNotificationAction.getTransition().completions.add(0.0f);
+							}
+							
 						}
 						
 					};

@@ -16,7 +16,7 @@ public class ActorOnBoatCollisionValidator extends AbstractCollisionValidator {
 		int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
 		boolean waterTile = TileType.COLLISION_WATER.getTileId() == tileId;
 		boolean passable = waterTile;
-		PassageBlocker passageBlocker = passable ? PassageBlocker.PASSABLE : PassageBlocker.PASSABLE;
+		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.PASSABLE;
 		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
 	}
 

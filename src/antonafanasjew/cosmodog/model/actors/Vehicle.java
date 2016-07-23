@@ -10,7 +10,7 @@ public class Vehicle extends Actor {
 	public static final int MAX_POSSIBLE_LIFE = 50;
 	public static final int INITIAL_LIFE = 10;
 	
-	public static final int MAX_FUEL = 3000;
+	public static final int MAX_FUEL = 100;
 	
 	private int fuel = MAX_FUEL;
 	

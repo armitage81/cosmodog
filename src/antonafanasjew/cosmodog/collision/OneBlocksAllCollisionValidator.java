@@ -35,7 +35,7 @@ public class OneBlocksAllCollisionValidator implements CollisionValidator {
 			}
 		}
 			
-		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
+		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 	}
 
 }

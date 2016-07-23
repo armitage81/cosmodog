@@ -19,7 +19,7 @@ public class UnequippedWalkerCollisionValidator extends AbstractCollisionValidat
 		boolean collisionTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION);
 		boolean waterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 		boolean passable = !collisionTile && ! waterTile;
-		PassageBlocker passageBlocker = passable ? PassageBlocker.PASSABLE : PassageBlocker.BLOCKED;
+		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
 		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
 	}
 

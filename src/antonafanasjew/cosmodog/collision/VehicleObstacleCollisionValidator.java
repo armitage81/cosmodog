@@ -19,7 +19,7 @@ public class VehicleObstacleCollisionValidator extends AbstractCollisionValidato
 		Piece piece = cosmodogMap.pieceAtTile(tileX, tileY);
 		boolean vehicleOnTile = piece instanceof Vehicle;
 		boolean resultingPassageFlag = !vehicleOnTile;
-		PassageBlocker passageBlocker = resultingPassageFlag ? PassageBlocker.PASSABLE : PassageBlocker.BLOCKED_BY_VEHICLE_COLLECTIBLE;
+		PassageBlockerType passageBlocker = resultingPassageFlag ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_VEHICLE_COLLECTIBLE;
 		return CollisionStatus.instance(actor, map, tileX, tileY, resultingPassageFlag, passageBlocker);
 	}
 

@@ -20,7 +20,7 @@ public class ActorOnWheelsCollisionValidator extends AbstractCollisionValidator 
 		
 		boolean passable = !collisionTile && !collisionVehicleTile && ! waterTile;
 		
-		PassageBlocker passageBlocker = passable ? PassageBlocker.PASSABLE : PassageBlocker.BLOCKED;
+		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
 		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
 		
 	}

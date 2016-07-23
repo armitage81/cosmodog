@@ -82,10 +82,10 @@ public class InterCharacterCollisionValidator extends AbstractCollisionValidator
 			
 			
 			if (blockedPosX == tileX && blockedPosY == tileY) {
-				return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlocker.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
+				return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
 			}
 		}
-		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlocker.PASSABLE);
+		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 	}
 
 }
