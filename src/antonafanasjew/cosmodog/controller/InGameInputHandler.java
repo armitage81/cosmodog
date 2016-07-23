@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.controller;
 
 import java.util.Set;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -74,7 +73,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		boolean inputMovement = inputLeft || inputRight || inputUp || inputDown;
 		
-		//Handle movement
+		//Handle movement or skip a turn
 		if (inputMovement) {
 
 			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
@@ -170,15 +169,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 							
 							String text = collisionStatus.getPassageBlockerDescriptor().asText();
 							
-							OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
-							
-							if (overheadNotificationAction == null) {
-								OverheadNotificationAction action = OverheadNotificationAction.create(player, text, Color.white);
-								cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
-							} else {
-								overheadNotificationAction.getTransition().texts.add(text);
-								overheadNotificationAction.getTransition().completions.add(0.0f);
-							}
+							OverheadNotificationAction.registerOverheadNotification(cosmodogGame, player, text);
 							
 						}
 						
@@ -187,6 +178,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
 				}
     		}
+    		
 			if (vehicleItem != null) {
 				vehicleItem.setExiting(false);
 			}

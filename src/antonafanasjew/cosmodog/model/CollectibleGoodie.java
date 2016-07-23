@@ -5,14 +5,24 @@ public class CollectibleGoodie extends Collectible {
 	private static final long serialVersionUID = -1914902298661514996L;
 
 	public static enum GoodieType {
-		infobit,
-		insight,
-		supplies,
-		medipack,
-		soulessence,
-		armor,
-		bottle,
-		foodcompartment
+		infobit(100),
+		insight(10000),
+		supplies(200),
+		medipack(200),
+		soulessence(500),
+		armor(500),
+		bottle(1000),
+		foodcompartment(1000);
+
+		private int scorePoints;
+		
+		private GoodieType(int scorePoints) {
+			this.scorePoints = scorePoints;
+		}
+		
+		public int getScorePoints() {
+			return scorePoints;
+		}
 	}
 	
 	private GoodieType goodieType;

@@ -15,7 +15,7 @@ public class Constants {
 	/**
 	 * Milliseconds between another collision notification.
 	 */
-	public static final int INTERVAL_BETWEEN_COLLISION_NOTIFICATION = 1000;
+	public static final int INTERVAL_BETWEEN_COLLISION_NOTIFICATION = 500;
 	
 	/**
 	 * The factor by which the length of the movement action will be defined.
@@ -93,5 +93,10 @@ public class Constants {
 	 * Score points that will be added to the game progress after collecting an infobit.
 	 */
 	public static final int SCORE_PER_INFOBIT = 100;
+
+	/**
+	 * Score points that will be added to the game progress after collecting ammo
+	 */
+	public static final int SCORE_PER_AMMO = 200;
 	
 }

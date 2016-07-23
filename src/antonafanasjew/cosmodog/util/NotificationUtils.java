@@ -13,6 +13,7 @@ public class NotificationUtils {
 	private static final int FOUND_DYNAMITE_TEXT_DURATION = 6000;
 
 	private static final List<String> FOUND_DYNAMITE_TEXTS = Lists.newArrayList();
+	
 	static {
 		FOUND_DYNAMITE_TEXTS.add("Alisa: Dynamite!? Be cautious with it, sweetie, or you will lose an arm... and me with it.");
 	}

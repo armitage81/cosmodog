@@ -45,7 +45,6 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			return;
 		}
 		
-		
 		Actor actor = transition.actor;
 
 		for (int i = 0; i < transition.texts.size(); i++) {

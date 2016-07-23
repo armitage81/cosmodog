@@ -248,6 +248,7 @@ public class GameState extends BasicGameState {
 		Input input = gc.getInput();
 
 		//Blocking interface actions, like text frames or dialog boxes, have their own modal input handling, so handle the input only in case they are not registered.
+		//Also the asyncronous actions from the action registry should be updated only if no blocking interface action is registered.
 		if (cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.BLOCKING_INTERFACE) == null) {
 
 			if (input.isKeyPressed(Input.KEY_0)) {
@@ -259,13 +260,15 @@ public class GameState extends BasicGameState {
     		} else {
     			cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME).handleInput(gc, sbg, n, applicationContext);
     		}
-        		
+
+    		cosmodogGame.getChronometer().update(n);
+    		cosmodogGame.getCommentsStateUpdater().update(n);
+    		cosmodogGame.getActionRegistry().update(n, gc, sbg);
+    		
 		}
 		
-		cosmodogGame.getChronometer().update(n);
-		cosmodogGame.getCommentsStateUpdater().update(n);
 		cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
-		cosmodogGame.getActionRegistry().update(n, gc, sbg);
+
 		
 		cloudsDeco.update(n);
 		

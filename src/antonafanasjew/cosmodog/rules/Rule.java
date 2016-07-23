@@ -34,6 +34,7 @@ public class Rule implements Serializable {
 	public static final String RULE_DIALOG_AFTER_LANDING = "dialog.afterlanding";
 	public static final String RULE_DIALOG_ALISA_ENTERS = "dialog.alisaenters";
 	public static final String RULE_WINNING = "winning";
+	public static final String RULE_SCORE_REWARD = "scorereward";
 	
 	
 	private String id;

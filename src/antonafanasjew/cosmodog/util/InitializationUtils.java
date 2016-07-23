@@ -6,6 +6,9 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -39,7 +42,6 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
@@ -59,6 +61,7 @@ import antonafanasjew.cosmodog.rules.RuleBookMovementListener;
 import antonafanasjew.cosmodog.rules.RuleBookPieceInteractionListener;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
+import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
 import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
@@ -66,7 +69,9 @@ import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
+import antonafanasjew.cosmodog.rules.events.GameEventPieceInteraction;
 import antonafanasjew.cosmodog.rules.factories.TeleportRuleFactory;
+import antonafanasjew.cosmodog.rules.triggers.InteractingWithEveryCollectibleTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
@@ -77,9 +82,6 @@ import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class InitializationUtils {
 
@@ -456,6 +458,15 @@ public class InitializationUtils {
 		);
 		ruleBook.put(rule.getId(), rule);
 		
+		//Score rewards rule
+		rule = new Rule(
+			Rule.RULE_SCORE_REWARD, 
+			Lists.newArrayList(GameEventPieceInteraction.class),
+			new InteractingWithEveryCollectibleTrigger(), 
+			new GetScoreForCollectibleAction(),
+			Rule.RULE_PRIORITY_LATEST
+		);
+		ruleBook.put(rule.getId(), rule);
 		
 		//Teleport rules
 		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules();

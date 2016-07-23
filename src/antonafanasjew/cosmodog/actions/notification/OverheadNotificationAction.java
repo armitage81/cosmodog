@@ -8,8 +8,11 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.google.common.collect.Lists;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Player;
 
 public class OverheadNotificationAction extends VariableLengthAsyncAction {
 
@@ -78,4 +81,16 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		return transition != null && transition.texts.size() == 0;
 	}
 
+	public static void registerOverheadNotification(CosmodogGame cosmodogGame, Player player, String text) {
+		
+		OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
+		
+		if (overheadNotificationAction == null) {
+			OverheadNotificationAction action = OverheadNotificationAction.create(player, text, Color.white);
+			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+		} else {
+			overheadNotificationAction.getTransition().texts.add(text);
+			overheadNotificationAction.getTransition().completions.add(0.0f);
+		}
+	}
 }

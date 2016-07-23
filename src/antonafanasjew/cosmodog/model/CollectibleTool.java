@@ -5,11 +5,22 @@ public class CollectibleTool extends Collectible {
 	private static final long serialVersionUID = 5790400319374924936L;
 
 	public static enum ToolType {
-		boat,
-		dynamite,
-		geigerzaehler,
-		supplytracker,
-		binoculars;
+		boat(5000),
+		dynamite(5000),
+		geigerzaehler(5000),
+		supplytracker(5000),
+		binoculars(5000);
+		
+		private int scorePoints;
+
+		private ToolType(int scorePoints) {
+			this.scorePoints = scorePoints;
+		}
+		
+		public int getScorePoints() {
+			return scorePoints;
+		}
+
 	}
 	
 	
