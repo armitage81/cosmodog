@@ -74,6 +74,7 @@ public class CosmodogGamePersistor {
 			ObjectInput input = new ObjectInputStream(buffer);
 			CosmodogGame game = (CosmodogGame) input.readObject();
 			input.close();
+			game.initTransientFields();
 			return game;
 		} catch (ClassNotFoundException ex) {
 			throw new CosmodogPersistenceException(ex.getMessage(), ex);

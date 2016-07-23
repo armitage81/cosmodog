@@ -70,6 +70,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 		boolean inputUp = input.isKeyDown(Input.KEY_UP);
 		boolean inputDown = input.isKeyDown(Input.KEY_DOWN);
 		
+		boolean skipTurn = input.isKeyDown(Input.KEY_ENTER);
+		
 		boolean inputMovement = inputLeft || inputRight || inputUp || inputDown;
 		
 		//Handle movement

@@ -110,7 +110,9 @@ public class CosmodogStarter extends StateBasedGame {
 
 		Log.setVerbose(false);
 		
+		StateBasedGameHolder.stateBasedGame = instance();
 		AppGameContainer gameContainer = new AppGameContainer(instance());
+		
 		gameContainer.setIcon("data/cosmodog_icon.png");
 		gameContainer.setDisplayMode(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, Constants.FULLSCREEN);
 		gameContainer.setAlwaysRender(true);

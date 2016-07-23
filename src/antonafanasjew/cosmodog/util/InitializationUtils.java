@@ -9,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
+import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.calendar.ComposedPlanetaryCalendarListener;
@@ -70,7 +71,10 @@ import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
+import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
+import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 
@@ -95,9 +99,41 @@ public class InitializationUtils {
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
-	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+		CosmodogMap cosmodogMap = initializeCosmodogMap(tiledMap, customTiledMap);
+		cosmodogGame.setMap(cosmodogMap);
 		
-		CosmodogGame cosmodogGame = new CosmodogGame();
+		User user = new User();
+		user.setUserName(userName);
+		cosmodogGame.setUser(user);
+
+		Player player = Player.fromPosition(5, 3);
+		//Player player = Player.fromPosition(253, 149);
+//		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
+		cosmodogGame.setPlayer(player);
+
+		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
+		planetaryCalendar.setYear(2314);
+		planetaryCalendar.setMonth(1);
+		planetaryCalendar.setDay(27);
+		planetaryCalendar.setHour(12);
+		planetaryCalendar.setMinute(20);
+		cosmodogGame.setPlanetaryCalendar(planetaryCalendar);
+		
+	}
+
+	public static void initializeCosmodogGameTransient(CosmodogGame cosmodogGame) {
+		cosmodogGame.setActionRegistry(new ActionRegistry());
+		cosmodogGame.setInterfaceActionRegistry(new ActionRegistry());
+		cosmodogGame.setTeleportationTransition(new TeleportationTransition());
+		cosmodogGame.setActorTransitionRegistry(new ActorTransitionRegistry());
+		cosmodogGame.setChronometer(new Chronometer());
+		cosmodogGame.setRuleBook(new RuleBook());
 		
 		//We initialize the text box here as we need to refer to it when posting Alisa's comments in the updatable writing state.
 		DrawingContext dialogBoxDc = ApplicationContext.instance().getDialogBoxDrawingContext();
@@ -105,50 +141,33 @@ public class InitializationUtils {
 		WritingTextBox dialogWritingTextBox = new WritingTextBox(dialogWritingDc.w(), dialogWritingDc.h(), 0, 3, 18, 22);
 		cosmodogGame.setCommentsStateUpdater(new WritingTextBoxStateUpdater(3000, dialogWritingTextBox));
 		
-		CosmodogMap cosmodogMap = initializeCosmodogMap(tiledMap, customTiledMap);
+		RuleBook ruleBook = initializeRuleBook();
+		cosmodogGame.setRuleBook(ruleBook);
 		
-		RuleBook ruleBook = initializeRuleBook(game);
-
-		User user = new User();
-		user.setUserName(userName);
-		
-		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(253, 149);
-		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
-		
+		Player player = cosmodogGame.getPlayer();
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
+		player.getMovementListeners().clear();
 		player.getMovementListeners().add(playerMovementListener);
 		player.getMovementListeners().add(new RuleBookMovementListener());
 		player.getMovementListeners().add(PlayerMovementCache.getInstance());
-		
 		PlayerLifeListener playerLifeListener = new PlayerLifeListener();
 		player.getLifeListeners().add(playerLifeListener);
 		
-		cosmodogGame.setMap(cosmodogMap);
-		cosmodogGame.setRuleBook(ruleBook);
-		cosmodogGame.setPlayer(player);
-		cosmodogGame.setUser(user);
-		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
-		planetaryCalendar.setYear(2314);
-		planetaryCalendar.setMonth(1);
-		planetaryCalendar.setDay(27);
-		planetaryCalendar.setHour(12);
-		planetaryCalendar.setMinute(20);
-		
+		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
 		ComposedPlanetaryCalendarListener listener = new ComposedPlanetaryCalendarListener();
 		listener.getUnderlyings().add(new FoodConsumer());
 		listener.getUnderlyings().add(new WaterConsumer());
 		listener.getUnderlyings().add(new FuelConsumer());
 		planetaryCalendar.setListener(listener);
+	}
+	
+	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
 		
-		cosmodogGame.setPlanetaryCalendar(planetaryCalendar);
+		CosmodogGame cosmodogGame = new CosmodogGame();
+		
+		initializeCosmodogGameNonTransient(cosmodogGame, game, tiledMap, customTiledMap, userName);
+		initializeCosmodogGameTransient(cosmodogGame);
 
 		return cosmodogGame;
 	}
@@ -356,7 +375,7 @@ public class InitializationUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static RuleBook initializeRuleBook(StateBasedGame game) {
+	private static RuleBook initializeRuleBook() {
 		RuleBook ruleBook = new RuleBook();
 
 		ResourceWrapperBuilder<Rule> ruleBuilder;
@@ -432,7 +451,7 @@ public class InitializationUtils {
 			Rule.RULE_WINNING,
 			Lists.newArrayList(GameEventEndedTurn.class),
 			new InventoryBasedTrigger(InventoryItemType.INSIGHT, InventoryItem.INVENTORY_ITEM_INSIGHT_MAX_COUNT),
-			new WinningAction(game),
+			new WinningAction(),
 			Rule.RULE_PRIORITY_EARLIEST
 		);
 		ruleBook.put(rule.getId(), rule);

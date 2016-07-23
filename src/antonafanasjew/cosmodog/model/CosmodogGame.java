@@ -1,16 +1,12 @@
 package antonafanasjew.cosmodog.model;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
-import org.newdawn.slick.util.Log;
-
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.timing.Chronometer;
+import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
@@ -26,30 +22,31 @@ public class CosmodogGame extends CosmodogModel {
 
 	private static final long serialVersionUID = 6194313671668632967L;
 
-	private ActionRegistry actionRegistry = new ActionRegistry();
+	private transient ActionRegistry actionRegistry;
 	
-	private ActionRegistry interfaceActionRegistry = new ActionRegistry();
+	private transient ActionRegistry interfaceActionRegistry;
 	
-	private FightPhaseTransition fightPhaseTransition = null;
+	private transient FightPhaseTransition fightPhaseTransition;
 	
-	private TeleportationTransition teleportationTransition = new TeleportationTransition();
+	private transient TeleportationTransition teleportationTransition;
 	
-	private ActorTransitionRegistry actorTransitionRegistry = new ActorTransitionRegistry();
+	private transient ActorTransitionRegistry actorTransitionRegistry;
 
-	private PlanetaryCalendar planetaryCalendar;
+	private transient Chronometer chronometer;
 
-	private Chronometer chronometer = new Chronometer();
+	private transient WritingTextBoxStateUpdater commentsStateUpdater;
+	
+	private transient TextFrame textFrame;
+	
+	private transient RuleBook ruleBook;
+	
+	private transient WritingTextBoxState writingTextBoxState;
 
-	private WritingTextBoxStateUpdater commentsStateUpdater;
 	
-	private TextFrame textFrame = null;
-	
-	private RuleBook ruleBook = new RuleBook();
-	
-	
-	private WritingTextBoxState writingTextBoxState;
 	
 	private User user;
+
+	private PlanetaryCalendar planetaryCalendar;
 
 	private Player player;
 
@@ -57,6 +54,14 @@ public class CosmodogGame extends CosmodogModel {
 
 	private Cam cam;
 
+	/**
+	 * This method should be called after each creation of a CosmodogGame object. It will initialize the non persistent fields
+	 * before or after all persistent fields will be initialized (via deserialization or via the bean initialization at the start of the game)
+	 */
+	public void initTransientFields() {
+		InitializationUtils.initializeCosmodogGameTransient(this);
+	}
+	
 	public User getUser() {
 		return user;
 	}
@@ -165,5 +170,27 @@ public class CosmodogGame extends CosmodogModel {
 	public TeleportationTransition getTeleportationTransition() {
 		return teleportationTransition;
 	}
+
+	public void setActionRegistry(ActionRegistry actionRegistry) {
+		this.actionRegistry = actionRegistry;
+	}
+
+	public void setInterfaceActionRegistry(ActionRegistry interfaceActionRegistry) {
+		this.interfaceActionRegistry = interfaceActionRegistry;
+	}
+
+	public void setTeleportationTransition(TeleportationTransition teleportationTransition) {
+		this.teleportationTransition = teleportationTransition;
+	}
+
+	public void setActorTransitionRegistry(ActorTransitionRegistry actorTransitionRegistry) {
+		this.actorTransitionRegistry = actorTransitionRegistry;
+	}
+
+	public void setChronometer(Chronometer chronometer) {
+		this.chronometer = chronometer;
+	}
+	
+	
 
 }
