@@ -4,14 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.newdawn.slick.Color;
-
-import com.google.common.collect.Lists;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
@@ -39,6 +34,8 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
+
+import com.google.common.collect.Lists;
 
 /**
  * Note: this class is not thread-save
@@ -248,7 +245,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
 				int tileId = customTiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TEMPERATURE);
-				if (TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD) {
+				
+				boolean coldTile = TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD;
+				boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+				boolean hasJacket = player.getInventory().get(InventoryItemType.JACKET) != null;
+				
+				if (coldTile && !inCar && !hasJacket) {
 					OverheadNotificationAction.registerOverheadNotification("You freeze");
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForFrost(1);

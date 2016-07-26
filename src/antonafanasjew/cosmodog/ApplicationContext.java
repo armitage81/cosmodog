@@ -9,9 +9,6 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
@@ -39,6 +36,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmen
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
@@ -73,6 +71,9 @@ import antonafanasjew.cosmodog.text.LetterBuilder;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapReader;
 import antonafanasjew.cosmodog.tiledmap.io.XmlTiledMapReader;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * Note: The application context needs to be instantiated only from a OpenGL bound thread. Do not 
@@ -246,6 +247,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.supplytracker.name(), new SupplyTrackerInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.binoculars.name(), new BinocularsInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.jacket.name(), new JacketInteraction());
 		
 		
 		SightModifier sightModifier = new GeneralSightModifier();

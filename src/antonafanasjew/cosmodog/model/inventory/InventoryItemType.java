@@ -10,6 +10,7 @@ public enum InventoryItemType {
 	ARSENAL,
 	GEIGERZAEHLER,
 	SUPPLYTRACKER,
-	BINOCULARS;
+	BINOCULARS,
+	JACKET;
 	
 }

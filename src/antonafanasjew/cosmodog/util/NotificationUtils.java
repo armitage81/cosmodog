@@ -142,4 +142,8 @@ public class NotificationUtils {
 		return Notification.fromTextAndDuration("Alisa: If everything looks more distant, then you're holding it the other way around.", DEFAULT_NOTIFICATION_DURATION);
 	}
 	
+	public static Notification foundJacket() {
+		return Notification.fromTextAndDuration("Alisa: What a fine coat. I bet you look GREAT in it, sweetie! Also, you won't die in the snow.", DEFAULT_NOTIFICATION_DURATION);
+	}
+	
 }
