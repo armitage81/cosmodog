@@ -67,22 +67,45 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		g.translate(lifeBarDrawingContext.x(), lifeBarDrawingContext.y());
 		
-		float maxLifeBarWidth = lifeBarDrawingContext.w() * player.getMaxLife() / Player.MAX_POSSIBLE_LIFE;
-		float maxLife = player.getMaxLife();
-		float currentLife = player.getLife();
-		float currentLifeBarWidth = currentLife / maxLife * maxLifeBarWidth;
-		float oneLifeUnitBarWidth = maxLifeBarWidth / maxLife;
+		float potentialMaxLife = player.getMaxLife();
+		float potentialLife = player.getLife();
+		
+		float lifeLentForHunger = player.getLifeLentForHunger();
+		float lifeLentForThirst = player.getLifeLentForThirst();
+		float lifeLentForFrost = player.getLifeLentForFrost();
+		
+		float maxLifeBarWidth = lifeBarDrawingContext.w() * potentialMaxLife / Player.MAX_POSSIBLE_LIFE;
+		float currentLifeBarWidth = potentialLife / potentialMaxLife * maxLifeBarWidth;
+		float oneLifeUnitBarWidth = maxLifeBarWidth / potentialMaxLife;
+
+		float hungerLentBarWidth = lifeBarDrawingContext.w() * lifeLentForHunger / Player.MAX_POSSIBLE_LIFE;
+		float thirstLentBarWidth = lifeBarDrawingContext.w() * lifeLentForThirst / Player.MAX_POSSIBLE_LIFE;
+		float frostLentBarWidth = lifeBarDrawingContext.w() * lifeLentForFrost / Player.MAX_POSSIBLE_LIFE;
 		
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, maxLifeBarWidth, lifeBarDrawingContext.h());
 		ApplicationContext.instance().getAnimations().get("lifeBar").draw(0, 0, currentLifeBarWidth, lifeBarDrawingContext.h());
+		
+		float thirstLentBarOffset = currentLifeBarWidth - frostLentBarWidth - hungerLentBarWidth - thirstLentBarWidth ;
+		float hungerLentBarOffset = thirstLentBarOffset + thirstLentBarWidth;
+		float frostLentBarOffset = hungerLentBarOffset + hungerLentBarWidth;
+		
+		g.setColor(Color.blue);
+		g.fillRect(thirstLentBarOffset, 0, thirstLentBarWidth, lifeBarDrawingContext.h());
+		
+		g.setColor(Color.green);
+		g.fillRect(hungerLentBarOffset, 0, hungerLentBarWidth, lifeBarDrawingContext.h());
+		
+		g.setColor(Color.cyan);
+		g.fillRect(frostLentBarOffset, 0, frostLentBarWidth, lifeBarDrawingContext.h());
+		
 		g.setColor(Color.black);
 		g.setLineWidth(2);
 		g.drawRect(0, 0, currentLifeBarWidth, lifeBarDrawingContext.h());
 		
 		g.setColor(new Color(100, 96, 31, 0.10f));
 		g.setLineWidth(1);
-		for (int i = 1; i < player.getMaxLife(); i++) {
+		for (int i = 1; i < potentialMaxLife; i++) {
 			float lineOffsetX = oneLifeUnitBarWidth * i;
 			g.drawLine(lineOffsetX, 0, lineOffsetX, lifeBarDrawingContext.h());
 		}
@@ -113,9 +136,9 @@ public class LifeInterfaceRenderer implements Renderer {
 			
 			g.translate(robustnessBarDrawingContext.x(), robustnessBarDrawingContext.y());
 			
-			float maxRobustnessBarWidth = robustnessBarDrawingContext.w() * vehicle.getMaxLife() / Vehicle.MAX_POSSIBLE_LIFE;
-			float maxRobustness = vehicle.getMaxLife();
-			float currentRobustness = vehicle.getLife();
+			float maxRobustness = vehicle.getActualMaxLife();
+			float maxRobustnessBarWidth = robustnessBarDrawingContext.w() * maxRobustness / Vehicle.MAX_POSSIBLE_LIFE;
+			float currentRobustness = vehicle.getActualLife();
 			float currentRobustnessBarWidth = currentRobustness / maxRobustness * maxRobustnessBarWidth;
 			
 			g.setColor(Color.gray);
@@ -127,7 +150,7 @@ public class LifeInterfaceRenderer implements Renderer {
 			
 			g.setColor(new Color(100, 96, 31, 0.10f));
 			g.setLineWidth(1);
-			for (int i = 1; i < vehicle.getMaxLife(); i++) {
+			for (int i = 1; i < maxRobustness; i++) {
 				float lineOffsetX = oneLifeUnitBarWidth * i;
 				g.drawLine(lineOffsetX, 0, lineOffsetX, robustnessBarDrawingContext.h());
 			}

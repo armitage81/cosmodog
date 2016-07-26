@@ -48,7 +48,7 @@ public class GetScoreForCollectibleAction extends AbstractRuleAction {
 			
 			if (scorePoints > 0) {
 				String text = "+" + scorePoints;
-				OverheadNotificationAction.registerOverheadNotification(cosmodogGame, player, text);
+				OverheadNotificationAction.registerOverheadNotification(text);
 				player.getGameProgress().addToScore(scorePoints);
 			}
 		}

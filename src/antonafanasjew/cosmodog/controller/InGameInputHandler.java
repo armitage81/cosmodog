@@ -169,7 +169,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 							
 							String text = collisionStatus.getPassageBlockerDescriptor().asText();
 							
-							OverheadNotificationAction.registerOverheadNotification(cosmodogGame, player, text);
+							OverheadNotificationAction.registerOverheadNotification(text);
 							
 						}
 						

@@ -81,6 +81,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		checkStarvation(applicationContext);
 		checkDehydration(applicationContext);
+		checkTemperature(applicationContext);
 		checkRadiation(applicationContext);
 	}
 	
@@ -158,8 +159,10 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					if (oldWater < player.getCurrentMaxWater()) {
 						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
 						applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();
+						OverheadNotificationAction.registerOverheadNotification("You drink the water");
 					}
 					player.setWater(player.getCurrentMaxWater());
+					player.setLifeLentForThirst(0);
 				}
 			}
 			
@@ -208,8 +211,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();				
 				if (player.starving()) {
-					if (player.getLife() > 1) {
-						player.decreaseLife(1);
+					OverheadNotificationAction.registerOverheadNotification("You are hungry");
+					if (player.getActualLife() > 1) {
+						player.increaseLifeLentForHunger(1);
 					}
 				}
 			}
@@ -227,25 +231,48 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				if (player.dehydrating()) {
-					if (player.getLife() > 1) {
-						player.decreaseLife(1);
+					OverheadNotificationAction.registerOverheadNotification("You are thirsty");
+					if (player.getActualLife() > 1) {
+						player.increaseLifeLentForThirst(1);
 					}
 				}
 			}
 		});		
 	}
 
+	private void checkTemperature(ApplicationContext applicationContext) {
+		Features.getInstance().featureBoundProcedure(Features.FEATURE_TEMPERATURE, new Runnable() {
+			@Override
+			public void run() {
+				Cosmodog cosmodog = applicationContext.getCosmodog();
+				Player player = cosmodog.getCosmodogGame().getPlayer();
+				CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
+				int tileId = customTiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TEMPERATURE);
+				if (TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD) {
+					OverheadNotificationAction.registerOverheadNotification("You freeze");
+					if (player.getActualLife() > 1) {
+						player.increaseLifeLentForFrost(1);
+					}
+				} else {
+					boolean wasFrozen = player.getLifeLentForFrost() > 0;
+					player.setLifeLentForFrost(0);
+					if (wasFrozen) {
+						OverheadNotificationAction.registerOverheadNotification("You warm up");
+					}
+				}
+			}
+		});	
+	}
+	
 	private void checkRadiation(ApplicationContext applicationContext) {
 		CustomTiledMap map = applicationContext.getCustomTiledMap();
-		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		int radiationTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			player.decreaseLife(2);
-			OverheadNotificationAction action = OverheadNotificationAction.create(player, "Radiation: -2", Color.red);
-			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+			OverheadNotificationAction.registerOverheadNotification("Radiation: -2");
 		}
 		
 	}

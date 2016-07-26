@@ -58,6 +58,10 @@ public class Features {
 	 */
 	public static final String FEATURE_TUTORIAL = "feature.tutorial";
 	
+	/**
+	 * Feature for temperature effects on player.
+	 */
+	public static final String FEATURE_TEMPERATURE = "feature.temperature";
 	
 	private static final Features instance = new Features();
 	
@@ -81,6 +85,7 @@ public class Features {
 		getFeatureFlags().put(FEATURE_FUEL, true);
 		getFeatureFlags().put(FEATURE_STORY, false);
 		getFeatureFlags().put(FEATURE_TUTORIAL, false);
+		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
 	}
 	
 	/**

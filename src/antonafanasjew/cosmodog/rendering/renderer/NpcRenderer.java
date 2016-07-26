@@ -142,7 +142,7 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 			
 			
-			boolean enemyDamaged = enemy.getLife() * 2 < enemy.getMaxLife();
+			boolean enemyDamaged = enemy.getActualLife() * 2 < enemy.getActualMaxLife();
 			
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());

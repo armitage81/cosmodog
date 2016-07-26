@@ -60,7 +60,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 			//We paint each tile individually as 1*1 tile map section to be flexible on skipping and replacing tiles.
 			for (int tx = tileNoX; tx < tileNoX + tilesW; tx++) {
 				for (int ty = tileNoY; ty < tileNoY + tilesH; ty++) {
-					if (tx >= 0 && ty >= 0) {
+					if (tx >= 0 && ty >= 0 && tx < tiledMap.getWidth() && ty < tiledMap.getHeight()) {
 						if (rendererPredicate.tileShouldBeRendered(i, tx, ty)) {
 							render(tiledMap, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
 						}

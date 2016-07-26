@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class OverheadNotificationAction extends VariableLengthAsyncAction {
 
@@ -81,7 +82,10 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		return transition != null && transition.texts.size() == 0;
 	}
 
-	public static void registerOverheadNotification(CosmodogGame cosmodogGame, Player player, String text) {
+	public static void registerOverheadNotification(String text) {
+		
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		Player player = ApplicationContextUtils.getPlayer();
 		
 		OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 		

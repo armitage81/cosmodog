@@ -9,6 +9,9 @@ public class Player extends Actor {
 	public static final int INITIAL_MAX_FOOD = 1500;
 	public static final int INITIAL_MAX_WATER = 1000;
 	
+//	public static final int INITIAL_MAX_FOOD = 50;
+//	public static final int INITIAL_MAX_WATER = 100;
+	
 	public static final int MAX_POSSIBLE_LIFE = 50;
 	public static final int INITIAL_LIFE = 10;
 	public static final int LIFE_UNITS_IN_LIFEPACK = 5;
@@ -23,7 +26,7 @@ public class Player extends Actor {
 	
 	private int food = currentMaxFood;
 	private int water = currentMaxWater;
-
+	
 	public static Player fromPosition(int positionX, int positionY) {
 		Player player = new Player();
 		player.setMaxLife(INITIAL_LIFE);
@@ -102,6 +105,5 @@ public class Player extends Actor {
 	public boolean dehydrating() {
 		return water <= 0;
 	}
-
 
 }

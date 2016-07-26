@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
@@ -20,7 +21,9 @@ public class SuppliesInteraction extends AbstractPieceInteraction {
 				applicationContext.getSoundResources().get(SoundResources.SOUND_EATEN).play();
 				//Do not fill up the food completely but add a normal unit.
 				//If player has a food compartment, he will store more than one food bar.
-				player.setFood(player.getFood() + Player.INITIAL_MAX_FOOD); 
+				player.setFood(player.getFood() + Player.INITIAL_MAX_FOOD);
+				player.setLifeLentForHunger(0);
+				OverheadNotificationAction.registerOverheadNotification("You eat the ration");
 			}
 		});
 	}

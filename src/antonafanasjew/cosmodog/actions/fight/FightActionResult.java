@@ -80,7 +80,7 @@ public class FightActionResult extends ArrayList<FightPhaseResult>{
 		 * @return true if dealt damage is more than enemies life and the player is attacking, false otherwise.
 		 */
 		public boolean enoughDamageToKillEnemy() {
-			return playerAttack && damage >= enemy.getLife();
+			return playerAttack && damage >= enemy.getActualLife();
 		}
 		
 	}
@@ -107,7 +107,7 @@ public class FightActionResult extends ArrayList<FightPhaseResult>{
 	 */
 	public boolean enoughDamageToKillPlayer() {
 		Player player = ApplicationContextUtils.getPlayer();
-		return player.getInventory().hasVehicle() == false && accumulatedDamageForPlayer() >= player.getLife();
+		return player.getInventory().hasVehicle() == false && accumulatedDamageForPlayer() >= player.getActualLife();
 	}
 	
 }
