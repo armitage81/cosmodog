@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledTile;
 
@@ -18,16 +19,23 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 	protected int calculateTravelTimeInternal(ApplicationContext context, Actor actor, int x, int y) {
 		
 		CustomTiledMap tiledMap = context.getCustomTiledMap();
+		
 		TiledMapLayer terrainTypesLayer = tiledMap.getMapLayers().get(Layers.LAYER_META_TERRAINTYPES);
 		TiledTile tile = terrainTypesLayer.getTile(x, y);
 		int terrainTypeTileId = tile.getGid();
 		
 		
 		if (actor instanceof Player) {
-			
+
 			Player player = (Player) actor;
+
+			int tileId = tiledMap.getTileId(x, y, Layers.LAYER_META_GROUNDTYPES);
+			boolean isOnSnowGround = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SNOW);
+			boolean hasSki = player.getInventory().get(InventoryItemType.SKI) != null;
 			
-			if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
+			if (hasSki && isOnSnowGround) {
+				return costsForActorOnSkiInSnow();
+			} else if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 				return costsForActorOnWheels(terrainTypeTileId);
 			} else {
 				return costsForActorOnFoot(terrainTypeTileId);
@@ -55,7 +63,10 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 		}
 	}
 	
-	
+	private int costsForActorOnSkiInSnow() {
+		return Constants.DEFAULT_TIME_COSTS_ON_FOOT;
+	}
+
 	private int costsForActorOnWings(int terrainTypeTileId) {
 		return Constants.DEFAULT_TIME_COSTS_FLYING;
 	}

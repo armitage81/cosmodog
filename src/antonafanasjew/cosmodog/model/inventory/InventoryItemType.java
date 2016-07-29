@@ -11,6 +11,7 @@ public enum InventoryItemType {
 	GEIGERZAEHLER,
 	SUPPLYTRACKER,
 	BINOCULARS,
+	SKI,
 	JACKET;
 	
 }

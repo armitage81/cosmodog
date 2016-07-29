@@ -29,32 +29,41 @@ public class RandomPathFinder extends AbstractPathFinder {
 		int xSteps[] = new int[] {enemy.getPositionX(), enemy.getPositionX(), enemy.getPositionX() - 1, enemy.getPositionX() + 1};
 		int ySteps[] = new int[] {enemy.getPositionY() + 1, enemy.getPositionY() - 1, enemy.getPositionY(), enemy.getPositionY()};
 		
-		
-		Random r = new Random();
-		int firstIndex = r.nextInt();
-		if (firstIndex < 0) {
-			firstIndex = - firstIndex;
-		}
-		
-		firstIndex = firstIndex % 4;
-		
 		int x = -1;
 		int y = -1;
+
 		
-		for (int i = 0; i < 4; i++) {
-			int index = (firstIndex + i) % 4;
-			int xAtIndex = xSteps[index];
-			int yAtIndex = ySteps[index];
+		
+		Random r = new Random();
+		
+		//Move randomly only in 50% of cases. Stay still in remaining cases.
+		boolean shouldMove = r.nextBoolean();
+		
+		if (shouldMove) {
+		
+			int firstIndex = r.nextInt();
+			if (firstIndex < 0) {
+				firstIndex = - firstIndex;
+			}
 			
-			CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, tiledMap, xAtIndex, yAtIndex);
+			firstIndex = firstIndex % 4;
 			
-			if (collisionStatus.isPassable()) {
-				x = xAtIndex;
-				y = yAtIndex;
-				break;
+			
+			
+			for (int i = 0; i < 4; i++) {
+				int index = (firstIndex + i) % 4;
+				int xAtIndex = xSteps[index];
+				int yAtIndex = ySteps[index];
+				
+				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, tiledMap, xAtIndex, yAtIndex);
+				
+				if (collisionStatus.isPassable()) {
+					x = xAtIndex;
+					y = yAtIndex;
+					break;
+				}
 			}
 		}
-		
 		MovementActionResult retVal = null;
 		
 		if (x != -1 && y != -1) {

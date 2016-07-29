@@ -76,6 +76,43 @@ playerTeleportingHitLeft;data/player.png;16;16;[3/6/250];true;true
 playerTeleportingHitUp;data/player.png;16;16;[3/7/250];true;true
 
 
+playerNoFeetInanimatedRight;data/player.png;16;16;[0/16/2000,1/16/300,0/16/2000,1/16/300,0/16/2000,1/16/300,0/16/2000,1/16/300];true;true
+playerNoFeetInanimatedDown;data/player.png;16;16;[0/17/2000,1/17/300,0/17/2000,1/17/300,0/17/2000,1/17/300,0/17/2000,1/17/300];true;true
+playerNoFeetInanimatedLeft;data/player.png;16;16;[0/18/2000,1/18/300,0/18/2000,1/18/300,0/18/2000,1/18/300,0/18/2000,1/18/300];true;true
+playerNoFeetInanimatedUp;data/player.png;16;16;[0/19/2000,1/19/300,0/19/2000,1/19/300,0/19/2000,1/19/300,0/19/2000,1/19/300];true;true
+
+playerNoFeetAnimatedRight;data/player.png;16;16;[0/20/50,1/20/50,2/20/50,1/20/50];true;true
+playerNoFeetAnimatedDown;data/player.png;16;16;[0/21/50,1/21/50,2/21/50,1/21/50];true;true
+playerNoFeetAnimatedLeft;data/player.png;16;16;[0/22/50,1/22/50,2/22/50,1/22/50];true;true
+playerNoFeetAnimatedUp;data/player.png;16;16;[0/23/50,1/23/50,2/23/50,1/23/50];true;true
+
+playerNoFeetHitRight;data/player.png;16;16;[3/16/25,4/16/25,5/16/25];true;true
+playerNoFeetHitDown;data/player.png;16;16;[3/17/25,4/17/25,5/17/25];true;true
+playerNoFeetHitLeft;data/player.png;16;16;[3/18/25,4/18/25,5/18/25];true;true
+playerNoFeetHitUp;data/player.png;16;16;[3/19/25,4/19/25,5/19/25];true;true
+
+
+
+playerOnSkiInanimatedRight;data/player.png;16;16;[0/24/2000,1/24/300,0/24/2000,1/24/300,0/24/2000,1/24/300,0/24/2000,1/24/300];true;true
+playerOnSkiInanimatedDown;data/player.png;16;16;[0/25/2000,1/25/300,0/25/2000,1/25/300,0/25/2000,1/25/300,0/25/2000,1/25/300];true;true
+playerOnSkiInanimatedLeft;data/player.png;16;16;[0/26/2000,1/26/300,0/26/2000,1/26/300,0/26/2000,1/26/300,0/26/2000,1/26/300];true;true
+playerOnSkiInanimatedUp;data/player.png;16;16;[0/27/2000,1/27/300,0/27/2000,1/27/300,0/27/2000,1/27/300,0/27/2000,1/27/300];true;true
+
+playerOnSkiAnimatedRight;data/player.png;16;16;[0/28/50,1/28/50,2/28/50,1/28/50];true;true
+playerOnSkiAnimatedDown;data/player.png;16;16;[0/29/50,1/29/50,2/29/50,1/29/50];true;true
+playerOnSkiAnimatedLeft;data/player.png;16;16;[0/30/50,1/30/50,2/30/50,1/30/50];true;true
+playerOnSkiAnimatedUp;data/player.png;16;16;[0/31/50,1/31/50,2/31/50,1/31/50];true;true
+
+playerOnSkiHitRight;data/player.png;16;16;[3/24/25,4/24/25,5/24/25];true;true
+playerOnSkiHitDown;data/player.png;16;16;[3/25/25,4/25/25,5/25/25];true;true
+playerOnSkiHitLeft;data/player.png;16;16;[3/26/25,4/26/25,5/26/25];true;true
+playerOnSkiHitUp;data/player.png;16;16;[3/27/25,4/27/25,5/27/25];true;true
+
+
+
+
+
+
 
 
 
@@ -119,6 +156,7 @@ inventoryItemCosmodog;data/inventory_items.png;16;16;[3/0/150];true;true
 inventoryItemGeigerZaehler;data/inventory_items.png;16;16;[6/0/150];true;true
 inventoryItemSupplyTracker;data/inventory_items.png;16;16;[7/0/150];true;true
 inventoryItemBinoculars;data/inventory_items.png;16;16;[8/0/150];true;true
+inventoryItemSki;data/inventory_items.png;16;16;[9/0/150];true;true
 inventoryItemJacket;data/inventory_items.png;16;16;[2/1/150];true;true
 
 inventoryItemBackground;data/inventory_items.png;16;16;[1/9/75,2/9/75,3/9/75,4/9/75,5/9/75,6/9/75,7/9/75,8/9/75,0/9/3000];true;true

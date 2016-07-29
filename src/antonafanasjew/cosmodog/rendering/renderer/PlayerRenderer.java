@@ -60,7 +60,13 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(tiledMap, player, playerTransition);
-		boolean playerIsInHighGrass = isHighGrassTile(tiledMap, player, playerTransition);
+		boolean playerIsInHighGrass = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, tiledMap, player, playerTransition);
+		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, tiledMap, player, playerTransition);
+		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
+		
+		boolean playerIsOnSki = playerIsInSnow && playerHasSki;
+		
+		boolean playerIsInRoughTerrain = isRoughTerrain(tiledMap, player, playerTransition);
 		
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
@@ -77,6 +83,10 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerAppearanceType = PlayerAppearanceType.INVEHICLE;
 		} else if (playerIsInHighGrass) {
 			playerAppearanceType = PlayerAppearanceType.INHIGHGRASS;
+		} else if (playerIsOnSki) {
+			playerAppearanceType = PlayerAppearanceType.ONSKI;
+		} else if (playerIsInRoughTerrain) {
+			playerAppearanceType = PlayerAppearanceType.NOFEET;
 		} else {
 			playerAppearanceType = PlayerAppearanceType.DEFAULT;
 		}
@@ -161,8 +171,6 @@ public class PlayerRenderer extends AbstractRenderer {
 		graphics.translate(-x, -y);
 		
 	}
-	
-
 
 	private boolean hasBoat(Player player) {
 		InventoryItem boat= player.getInventory().get(InventoryItemType.BOAT);
@@ -202,17 +210,17 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 	}
 	
-	private boolean isHighGrassTile(CustomTiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean isPlayerOnGroundTypeTile(TileType tileType, CustomTiledMap map, Player player, ActorTransition playerTransition) {
 		boolean retVal = false;
 		if (playerTransition == null) {
 			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
-			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
+			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);
 		} else {
 			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
 			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
 			
-			boolean startTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, startTileId).equals(TileType.GROUND_TYPE_PLANTS);
-			boolean targetTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, targetTileId).equals(TileType.GROUND_TYPE_PLANTS);
+			boolean startTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, startTileId).equals(tileType);
+			boolean targetTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, targetTileId).equals(tileType);
 			
 			
 			if (startTileIdIsHighGrassTile && targetTileIdIsHighGrassTile) {
@@ -231,5 +239,44 @@ public class PlayerRenderer extends AbstractRenderer {
 		return retVal;
 	}
 
+	private boolean isRoughTerrain(CustomTiledMap map, Player player, ActorTransition playerTransition) {
+		boolean retVal = false;
+		if (playerTransition == null) {
+			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TERRAINTYPES);
+			boolean isRoughTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_ROUGH);
+			boolean isUnevenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_UNEVEN);
+			boolean isBrokenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_BROKEN);
+			retVal = isUnevenTerrain || isRoughTerrain || isBrokenTerrain;
+			
+		} else {
+			
+			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_TERRAINTYPES);
+			boolean isStartTileRoughTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, startTileId).equals(TileType.TERRAIN_TYPE_ROUGH);
+			boolean isStartTileUnevenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, startTileId).equals(TileType.TERRAIN_TYPE_UNEVEN);
+			boolean isStartTileBrokenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, startTileId).equals(TileType.TERRAIN_TYPE_BROKEN);
+			boolean startTileIdIsUneven = isStartTileRoughTerrain || isStartTileUnevenTerrain || isStartTileBrokenTerrain;
+			
+			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_TERRAINTYPES);
+			boolean isTargetTileRoughTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, targetTileId).equals(TileType.TERRAIN_TYPE_ROUGH);
+			boolean isTargetTileUnevenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, targetTileId).equals(TileType.TERRAIN_TYPE_UNEVEN);
+			boolean isTargetTileBrokenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, targetTileId).equals(TileType.TERRAIN_TYPE_BROKEN);
+			boolean targetTileIdIsUneven = isTargetTileRoughTerrain || isTargetTileUnevenTerrain || isTargetTileBrokenTerrain;
+			
+			
+			if (startTileIdIsUneven && targetTileIdIsUneven) {
+				retVal = true;
+			} else if (!startTileIdIsUneven && !targetTileIdIsUneven) {
+				retVal = false;
+			} else if (startTileIdIsUneven && !targetTileIdIsUneven) {
+				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
+				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
+			} else if (!startTileIdIsUneven && targetTileIdIsUneven) {
+				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
+				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
+			}
+		}
+		
+		return retVal;
+	}
 	
 }

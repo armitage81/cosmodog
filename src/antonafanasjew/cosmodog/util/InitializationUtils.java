@@ -6,9 +6,6 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -42,8 +39,10 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -83,6 +82,9 @@ import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 public class InitializationUtils {
 
 	public static int INFOBIT_TILE_ID = 191;
@@ -98,6 +100,7 @@ public class InitializationUtils {
 	public static int SUPPLYTRACKER_TILE_ID = 3061;
 	public static int BINOCULARS_TILE_ID = 3062;
 	public static int JACKET_TILE_ID = 3063;
+	public static int SKI_TILE_ID = 3064;
 	public static int BOTTLE_TILE_ID = 201;
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
@@ -110,14 +113,18 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(105, 360);
-//		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+		Player player = Player.fromPosition(5, 3);
+		//Player player = Player.fromPosition(255, 350);
+		for (int i = 0; i < 350; i++) {
+			player.getGameProgress().addInfobit();
+		}
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
+		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
@@ -280,6 +287,13 @@ public class InitializationUtils {
 				
 				if (tileId == JACKET_TILE_ID) {
 					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.jacket);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == SKI_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.ski);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
@@ -527,7 +541,7 @@ public class InitializationUtils {
 					}
 					
 					
-					enemy.setDirection(DirectionType.LEFT);
+					enemy.setDirection(DirectionType.random());
 					
 					map.getEnemies().add(enemy);
 				}

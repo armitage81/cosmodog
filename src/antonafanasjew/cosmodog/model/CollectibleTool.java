@@ -10,7 +10,8 @@ public class CollectibleTool extends Collectible {
 		geigerzaehler(5000),
 		supplytracker(5000),
 		binoculars(5000),
-		jacket(5000);
+		jacket(5000),
+		ski(5000);
 		
 		private int scorePoints;
 

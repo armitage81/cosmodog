@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.domains;
 
+import java.util.Random;
+
 /**
  * Domain for directions.
  */
@@ -34,5 +36,16 @@ public enum DirectionType {
 	
 	public String getRepresentation() {
 		return representation;
+	}
+	
+	public static DirectionType random() {
+		Random r = new Random();
+		int diceThrow = r.nextInt();
+		if (diceThrow < 0) {
+			diceThrow = - diceThrow;
+		}
+		diceThrow %= values().length;
+		
+		return values()[diceThrow];
 	}
 }

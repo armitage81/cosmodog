@@ -39,6 +39,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInterac
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SkiInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SupplyTrackerInteraction;
@@ -248,6 +249,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.supplytracker.name(), new SupplyTrackerInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.binoculars.name(), new BinocularsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.jacket.name(), new JacketInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.ski.name(), new SkiInteraction());
 		
 		
 		SightModifier sightModifier = new GeneralSightModifier();

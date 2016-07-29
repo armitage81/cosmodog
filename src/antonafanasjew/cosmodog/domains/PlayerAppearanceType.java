@@ -28,5 +28,15 @@ public enum PlayerAppearanceType {
 	/**
 	 * Invisible because of teleportation.
 	 */
-	ISTELEPORTING
+	ISTELEPORTING,
+	
+	/**
+	 * sliding on ski.
+	 */
+	ONSKI,
+	
+	/**
+	 * No feet because sunk in rough terrain, e.g. snow, sand, small grass
+	 */
+	NOFEET
 }

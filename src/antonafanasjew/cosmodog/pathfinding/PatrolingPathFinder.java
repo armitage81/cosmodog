@@ -23,7 +23,7 @@ import com.google.common.collect.Maps;
  */
 public class PatrolingPathFinder extends AbstractPathFinder {
 
-	private static final int CHANCE_TO_MOVE_IN_THE_SAME_DIRECTION = 9;
+	private static final int CHANCE_TO_MOVE_IN_THE_SAME_DIRECTION = 5;
 
 	private static final Map<DirectionType, Integer> DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY = Maps.newHashMap();
 	static {
@@ -42,46 +42,51 @@ public class PatrolingPathFinder extends AbstractPathFinder {
 		int xSteps[] = new int[] {enemy.getPositionX(), enemy.getPositionX(), enemy.getPositionX() - 1, enemy.getPositionX() + 1};
 		int ySteps[] = new int[] {enemy.getPositionY() + 1, enemy.getPositionY() - 1, enemy.getPositionY(), enemy.getPositionY()};
 		
+		int x = -1;
+		int y = -1; 
 		
 		int firstIndex;
 		
 		//Before randomly choosing a direction, give a 75% chance to move in the same direction.
 		Random r = new Random();
-		int diceThrow = r.nextInt();
-		if (diceThrow < 0) {
-			diceThrow = - diceThrow;
-		}
 		
-		boolean continueMovingInSameDirection = diceThrow % CHANCE_TO_MOVE_IN_THE_SAME_DIRECTION != 0;
+		boolean shouldMove = r.nextBoolean();
 		
-		if (continueMovingInSameDirection) {
-			firstIndex = DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.get(enemy.getDirection());
-		} else {
+		if (shouldMove) {
 		
-			r = new Random();
-			firstIndex = r.nextInt();
-			if (firstIndex < 0) {
-				firstIndex = - firstIndex;
+			int diceThrow = r.nextInt();
+			if (diceThrow < 0) {
+				diceThrow = - diceThrow;
 			}
 			
-			firstIndex = firstIndex % 4;
-		
-		}
-		
-		int x = -1;
-		int y = -1;
-		
-		for (int i = 0; i < 4; i++) {
-			int index = (firstIndex + i) % 4;
-			int xAtIndex = xSteps[index];
-			int yAtIndex = ySteps[index];
+			boolean continueMovingInSameDirection = diceThrow % CHANCE_TO_MOVE_IN_THE_SAME_DIRECTION != 0;
 			
-			CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, tiledMap, xAtIndex, yAtIndex);
+			if (continueMovingInSameDirection) {
+				firstIndex = DIRECTION_TYPE_TO_INDEX_IN_TARGET_TILE_ARRAY.get(enemy.getDirection());
+			} else {
 			
-			if (collisionStatus.isPassable()) {
-				x = xAtIndex;
-				y = yAtIndex;
-				break;
+				r = new Random();
+				firstIndex = r.nextInt();
+				if (firstIndex < 0) {
+					firstIndex = - firstIndex;
+				}
+				
+				firstIndex = firstIndex % 4;
+			
+			}
+			
+			for (int i = 0; i < 4; i++) {
+				int index = (firstIndex + i) % 4;
+				int xAtIndex = xSteps[index];
+				int yAtIndex = ySteps[index];
+				
+				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, tiledMap, xAtIndex, yAtIndex);
+				
+				if (collisionStatus.isPassable()) {
+					x = xAtIndex;
+					y = yAtIndex;
+					break;
+				}
 			}
 		}
 		

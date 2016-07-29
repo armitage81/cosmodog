@@ -146,4 +146,8 @@ public class NotificationUtils {
 		return Notification.fromTextAndDuration("Alisa: What a fine coat. I bet you look GREAT in it, sweetie! Also, you won't die in the snow.", DEFAULT_NOTIFICATION_DURATION);
 	}
 	
+	public static Notification foundSki() {
+		return Notification.fromTextAndDuration("Alisa: I would prefer a snow mobile but this will do it, as well.", DEFAULT_NOTIFICATION_DURATION);
+	}
+	
 }
