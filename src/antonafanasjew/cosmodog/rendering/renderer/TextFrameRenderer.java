@@ -30,7 +30,6 @@ public class TextFrameRenderer implements Renderer {
 			graphics.fillRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
 			
 			graphics.setColor(Color.black);
-			
 			graphics.drawRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
 
 			

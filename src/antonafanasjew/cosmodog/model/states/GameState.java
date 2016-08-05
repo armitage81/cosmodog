@@ -135,7 +135,7 @@ public class GameState extends BasicGameState {
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
 		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
 		
-		weaponTooltipsDrawingContext = new TileDrawingContext(mapDrawingContext, 2, 12, 1, 1, 1, 11);
+		weaponTooltipsDrawingContext = new TileDrawingContext(mapDrawingContext, 2, 9, 1, 1, 1, 8);
 		
 		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
