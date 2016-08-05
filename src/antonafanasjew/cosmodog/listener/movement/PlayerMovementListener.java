@@ -156,7 +156,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					if (oldWater < player.getCurrentMaxWater()) {
 						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
 						applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();
-						OverheadNotificationAction.registerOverheadNotification("You drink the water");
+						OverheadNotificationAction.registerOverheadNotification(player, "You drink the water");
 					}
 					player.setWater(player.getCurrentMaxWater());
 					player.setLifeLentForThirst(0);
@@ -208,7 +208,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();				
 				if (player.starving()) {
-					OverheadNotificationAction.registerOverheadNotification("You are hungry");
+					OverheadNotificationAction.registerOverheadNotification(player, "You are hungry");
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForHunger(1);
 					}
@@ -228,7 +228,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				if (player.dehydrating()) {
-					OverheadNotificationAction.registerOverheadNotification("You are thirsty");
+					OverheadNotificationAction.registerOverheadNotification(player, "You are thirsty");
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForThirst(1);
 					}
@@ -251,7 +251,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				boolean hasJacket = player.getInventory().get(InventoryItemType.JACKET) != null;
 				
 				if (coldTile && !inCar && !hasJacket) {
-					OverheadNotificationAction.registerOverheadNotification("You freeze");
+					OverheadNotificationAction.registerOverheadNotification(player, "You freeze");
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForFrost(1);
 					}
@@ -259,7 +259,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					boolean wasFrozen = player.getLifeLentForFrost() > 0;
 					player.setLifeLentForFrost(0);
 					if (wasFrozen) {
-						OverheadNotificationAction.registerOverheadNotification("You warm up");
+						OverheadNotificationAction.registerOverheadNotification(player, "You warm up");
 					}
 				}
 			}
@@ -274,7 +274,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			player.decreaseLife(2);
-			OverheadNotificationAction.registerOverheadNotification("Radiation: -2");
+			OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
 		}
 		
 	}

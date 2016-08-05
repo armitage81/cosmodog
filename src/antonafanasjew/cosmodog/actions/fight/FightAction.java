@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.actions.fight;
 
 import java.util.List;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -113,20 +112,19 @@ public class FightAction extends VariableLengthAsyncAction {
 		for (FightActionResult.FightPhaseResult phaseResult : fightActionResult) {
 			
 			Actor defender = phaseResult.isPlayerAttack() ? phaseResult.getEnemy() : phaseResult.getPlayer();
-			Color color = defender == phaseResult.getPlayer() ? Color.red : Color.green;
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 			
 			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 			
-			String text = "-" + String.valueOf(phaseResult.getDamage());
 			
 			if (overheadNotificationAction != null) {
 				overheadNotificationAction.cancel();
 				
 			}
 
-			OverheadNotificationAction action = OverheadNotificationAction.create(defender, text, color);
-			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
+			String text = "-" + String.valueOf(phaseResult.getDamage());
+
+			OverheadNotificationAction.registerOverheadNotification(defender, text);
 			
 			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
 			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {

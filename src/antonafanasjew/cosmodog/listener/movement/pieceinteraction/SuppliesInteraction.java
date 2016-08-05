@@ -23,7 +23,7 @@ public class SuppliesInteraction extends AbstractPieceInteraction {
 				//If player has a food compartment, he will store more than one food bar.
 				player.setFood(player.getFood() + Player.INITIAL_MAX_FOOD);
 				player.setLifeLentForHunger(0);
-				OverheadNotificationAction.registerOverheadNotification("You eat the ration");
+				OverheadNotificationAction.registerOverheadNotification(player, "You eat the ration");
 			}
 		});
 	}

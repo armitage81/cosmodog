@@ -12,7 +12,6 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
-import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class OverheadNotificationAction extends VariableLengthAsyncAction {
@@ -24,10 +23,11 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 	public static class OverheadNotificationTransition {
 		public List<String> texts = Lists.newArrayList();
 		public List<Float> completions = Lists.newArrayList();
+		public List<Actor> actors = Lists.newArrayList();
 		
 		public List<String> bufferedTexts = Lists.newArrayList();
+		public List<Actor> bufferedActors = Lists.newArrayList();
 		
-		public Actor actor;
 		public Color color;
 	}
 	
@@ -40,10 +40,10 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 	private OverheadNotificationAction(Actor actor, String text, Color color) {
 		
 		transition = new OverheadNotificationTransition();
-		transition.actor = actor;
 		transition.color = color;
 		transition.texts.add(text);
 		transition.completions.add(0.0f);
+		transition.actors.add(actor);
 		
 	}
 
@@ -58,7 +58,8 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		
 		List<String> remainingTexts = Lists.newArrayList();
 		List<Float> remainingCompletions = Lists.newArrayList();
-
+		List<Actor> remainingActors = Lists.newArrayList();
+		
 		Float leastCompletion = 1.0f;
 		
 		for (int i = 0; i < transition.completions.size(); i++) {
@@ -68,6 +69,7 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 				
 				remainingTexts.add(transition.texts.get(i));
 				remainingCompletions.add(completion);
+				remainingActors.add(transition.actors.get(i));
 				
 				if (completion < leastCompletion) {
 					leastCompletion = completion;
@@ -78,6 +80,7 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		
 		transition.texts = remainingTexts;
 		transition.completions = remainingCompletions;
+		transition.actors = remainingActors;
 
 		if (transition.bufferedTexts.size() > 0 && leastCompletion >= 0.25) {
 			applyFirstBufferedNotification(transition);
@@ -96,20 +99,26 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 
 	private static void applyFirstBufferedNotification(OverheadNotificationTransition transition) {
 		transition.texts.add(transition.bufferedTexts.remove(0));
+		transition.actors.add(transition.bufferedActors.remove(0));
 		transition.completions.add(0.0f);
 	}
 	
-	public static void registerOverheadNotification(String text) {
+	/**
+	 * To avoid notification overlaps, the registration only adds the text to the buffered text list.
+	 * It is the task of the update method, to add the buffered texts to the transition texts when the time
+	 * comes, that is, when the last notification is already in progress for enough time.
+	 */
+	public static void registerOverheadNotification(Actor actor, String text) {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		Player player = ApplicationContextUtils.getPlayer();
 		
 		OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 		
 		if (overheadNotificationAction == null) {
-			OverheadNotificationAction action = OverheadNotificationAction.create(player, text, Color.white);
+			OverheadNotificationAction action = OverheadNotificationAction.create(actor, text, Color.white);
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
 		} else {
 			overheadNotificationAction.getTransition().bufferedTexts.add(text);
+			overheadNotificationAction.getTransition().bufferedActors.add(actor);
 		}
 	}
 }

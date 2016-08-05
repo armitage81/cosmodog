@@ -45,12 +45,12 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			return;
 		}
 		
-		Actor actor = transition.actor;
 
 		for (int i = 0; i < transition.texts.size(); i++) {
 
 			String text = transition.texts.get(i);
 			float completion = transition.completions.get(i);
+			Actor actor = transition.actors.get(i);
 			
 			Cam cam = cosmodogGame.getCam();
 			

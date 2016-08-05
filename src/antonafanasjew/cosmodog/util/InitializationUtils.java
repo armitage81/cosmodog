@@ -6,6 +6,9 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -42,7 +45,6 @@ import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -82,9 +84,6 @@ import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 public class InitializationUtils {
 
 	public static int INFOBIT_TILE_ID = 191;
@@ -113,8 +112,8 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(5, 3);
-		//Player player = Player.fromPosition(255, 350);
+		//Player player = Player.fromPosition(5, 3);
+		Player player = Player.fromPosition(105, 360);
 		for (int i = 0; i < 350; i++) {
 			player.getGameProgress().addInfobit();
 		}
@@ -124,7 +123,7 @@ public class InitializationUtils {
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
-		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+//		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();

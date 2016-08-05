@@ -6,7 +6,6 @@ import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
-import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
@@ -29,7 +28,6 @@ public class GetScoreForCollectibleAction extends AbstractRuleAction {
 		
 			Collectible collectible = (Collectible)piece;
 			
-			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 			Player player = ApplicationContextUtils.getPlayer();
 			
 			int scorePoints = 0;
@@ -48,7 +46,7 @@ public class GetScoreForCollectibleAction extends AbstractRuleAction {
 			
 			if (scorePoints > 0) {
 				String text = "+" + scorePoints;
-				OverheadNotificationAction.registerOverheadNotification(text);
+				OverheadNotificationAction.registerOverheadNotification(player, text);
 				player.getGameProgress().addToScore(scorePoints);
 			}
 		}
