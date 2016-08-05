@@ -7,6 +7,7 @@ import org.newdawn.slick.util.Log;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -61,6 +62,9 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		fightPhaseTransition.completion = 0.0f;
 		fightPhaseTransition.playerAttack = fightPhaseResult.isPlayerAttack();
 
+		String text = "-" + String.valueOf(fightPhaseResult.getDamage());
+		OverheadNotificationAction.registerOverheadNotification(fightPhaseResult.isPlayerAttack() ? fightPhaseResult.getEnemy() : fightPhaseResult.getPlayer(), text);
+		
 		fightPhaseResult.getPlayer().lookAtActor(fightPhaseResult.getEnemy());
 		fightPhaseResult.getEnemy().lookAtActor(fightPhaseResult.getPlayer());
 		

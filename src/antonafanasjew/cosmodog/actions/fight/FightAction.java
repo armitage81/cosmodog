@@ -122,9 +122,6 @@ public class FightAction extends VariableLengthAsyncAction {
 				
 			}
 
-			String text = "-" + String.valueOf(phaseResult.getDamage());
-
-			OverheadNotificationAction.registerOverheadNotification(defender, text);
 			
 			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
 			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {

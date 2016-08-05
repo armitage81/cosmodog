@@ -45,6 +45,7 @@ import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -123,7 +124,7 @@ public class InitializationUtils {
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
-//		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
