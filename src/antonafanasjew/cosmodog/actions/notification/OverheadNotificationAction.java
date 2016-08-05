@@ -25,6 +25,8 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		public List<String> texts = Lists.newArrayList();
 		public List<Float> completions = Lists.newArrayList();
 		
+		public List<String> bufferedTexts = Lists.newArrayList();
+		
 		public Actor actor;
 		public Color color;
 	}
@@ -57,6 +59,8 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		List<String> remainingTexts = Lists.newArrayList();
 		List<Float> remainingCompletions = Lists.newArrayList();
 
+		Float leastCompletion = 1.0f;
+		
 		for (int i = 0; i < transition.completions.size(); i++) {
 			float completion = transition.completions.get(i);
 			completion += deltaCompletion;
@@ -64,6 +68,10 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 				
 				remainingTexts.add(transition.texts.get(i));
 				remainingCompletions.add(completion);
+				
+				if (completion < leastCompletion) {
+					leastCompletion = completion;
+				}
 			
 			}
 		}
@@ -71,6 +79,10 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		transition.texts = remainingTexts;
 		transition.completions = remainingCompletions;
 
+		if (transition.bufferedTexts.size() > 0 && leastCompletion >= 0.25) {
+			applyFirstBufferedNotification(transition);
+		}
+		
 	}
 	
 	public OverheadNotificationTransition getTransition() {
@@ -82,8 +94,12 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 		return transition != null && transition.texts.size() == 0;
 	}
 
+	private static void applyFirstBufferedNotification(OverheadNotificationTransition transition) {
+		transition.texts.add(transition.bufferedTexts.remove(0));
+		transition.completions.add(0.0f);
+	}
+	
 	public static void registerOverheadNotification(String text) {
-		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = ApplicationContextUtils.getPlayer();
 		
@@ -93,8 +109,7 @@ public class OverheadNotificationAction extends VariableLengthAsyncAction {
 			OverheadNotificationAction action = OverheadNotificationAction.create(player, text, Color.white);
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.OVERHEAD_NOTIFICATION, action);
 		} else {
-			overheadNotificationAction.getTransition().texts.add(text);
-			overheadNotificationAction.getTransition().completions.add(0.0f);
+			overheadNotificationAction.getTransition().bufferedTexts.add(text);
 		}
 	}
 }
