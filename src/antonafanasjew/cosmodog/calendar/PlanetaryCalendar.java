@@ -202,6 +202,19 @@ public class PlanetaryCalendar implements Serializable {
 		sb.append(dateFormat.format(calendar.getTime()));
 		return sb.toString();
 	}
+	
+	public String toTimeString(Locale locale) {
+		
+		StringBuffer sb = new StringBuffer();
+		
+		calendar.set(Calendar.YEAR, 2000);
+		calendar.set(Calendar.DAY_OF_YEAR, 1);
+		calendar.set(Calendar.MINUTE, minute);
+		calendar.set(Calendar.HOUR_OF_DAY, hour);
+		
+		sb.append(dateFormat.format(calendar.getTime()));
+		return sb.toString();
+	}
 
 	/**
 	 * Returns the listener that listeners to the time updates on this calendar.

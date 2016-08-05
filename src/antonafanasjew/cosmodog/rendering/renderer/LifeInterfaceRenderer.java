@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.Locale;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -174,6 +176,8 @@ public class LifeInterfaceRenderer implements Renderer {
 		TileDrawingContext radiationValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 1, 0);
 		TileDrawingContext supplyTrackerLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 2, 0);
 		TileDrawingContext supplyTrackerValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 3, 0);
+		TileDrawingContext planetaryCalendarLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 4, 0);
+		TileDrawingContext planetaryCalendarValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 5, 0);
 		
 		LetterTextRenderer.getInstance().render(gameContainer, g, radiationLabelDrawingContext, LetterTextRenderingParameter.fromText("RAD"));
 		
@@ -217,6 +221,9 @@ public class LifeInterfaceRenderer implements Renderer {
 		}		
 	
 		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerValueDrawingContext, LetterTextRenderingParameter.fromText(supplyTrackerValue));
+		
+		LetterTextRenderer.getInstance().render(gameContainer, g, planetaryCalendarLabelDrawingContext, LetterTextRenderingParameter.fromText("TIME:"));
+		LetterTextRenderer.getInstance().render(gameContainer, g, planetaryCalendarValueDrawingContext, LetterTextRenderingParameter.fromText(cosmodogGame.getPlanetaryCalendar().toTimeString(Locale.getDefault())));
 		
 	}
 	
