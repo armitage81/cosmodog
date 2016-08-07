@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -61,9 +62,15 @@ public class GameIntroState  extends BasicGameState {
 		NarrativeSequence ns = null;
 		try {
 			
-			//ns = r.read("story.items.0002.foundration.html");
-			//ns = r.read("story.main.0002.alisaenters.html");
-			ns = r.read("intro.0001.opening.html");
+			ns = r.read(Features.getInstance().featureBoundFunction(Features.FEATURE_STORY, new Callable<String>() {
+
+				@Override
+				public String call() throws Exception {
+					return "intro.0001.opening.html";
+				}
+				
+			}, "intro.0001.opening.nostory.html"));
+			
 		} catch (IOException e) {
 			Log.error("Error while initializing GameIntroState. Could not read the narrative sequence. " + e.getMessage(), e);
 		}
@@ -81,30 +88,24 @@ public class GameIntroState  extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_STORY, new Runnable() {
-			@Override
-			public void run() {
-				g.setColor(Color.white);
-				g.fillRoundRect(dialogBoxDrawingContext.x(), dialogBoxDrawingContext.y(), dialogBoxDrawingContext.w(), dialogBoxDrawingContext.h(), 5);
-				
-				g.setColor(new Color(0, 0, 205));
-				g.fillRect(dialogBoxContentDrawingContext.x(), dialogBoxContentDrawingContext.y(), dialogBoxContentDrawingContext.w(), dialogBoxContentDrawingContext.h());
-				DrawingContext d = dialogBoxContentDrawingContext; //Just as a shortcut variable
-				
-				if (introTextBoxState.completeBoxDisplayed()) {
-					Animation animation;
-					if (introTextBoxState.hasMoreBoxes()) {
-						animation = ApplicationContext.instance().getAnimations().get("nextDialogBox");
-					} else {
-						animation = ApplicationContext.instance().getAnimations().get("closeDialogBox");
-					}
-					int size = 48;
-					animation.draw(d.x() + d.w() - size, d.y() + d.h() - size, size, size);
-				}
-				wr.render(gc, g, textDrawingContext, introTextBoxState);				
-			}
-		});
+		g.setColor(Color.white);
+		g.fillRoundRect(dialogBoxDrawingContext.x(), dialogBoxDrawingContext.y(), dialogBoxDrawingContext.w(), dialogBoxDrawingContext.h(), 5);
 		
+		g.setColor(new Color(0, 0, 205));
+		g.fillRect(dialogBoxContentDrawingContext.x(), dialogBoxContentDrawingContext.y(), dialogBoxContentDrawingContext.w(), dialogBoxContentDrawingContext.h());
+		DrawingContext d = dialogBoxContentDrawingContext; //Just as a shortcut variable
+		
+		if (introTextBoxState.completeBoxDisplayed()) {
+			Animation animation;
+			if (introTextBoxState.hasMoreBoxes()) {
+				animation = ApplicationContext.instance().getAnimations().get("nextDialogBox");
+			} else {
+				animation = ApplicationContext.instance().getAnimations().get("closeDialogBox");
+			}
+			int size = 48;
+			animation.draw(d.x() + d.w() - size, d.y() + d.h() - size, size, size);
+		}
+		wr.render(gc, g, textDrawingContext, introTextBoxState);				
 		
 		TextRenderer tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
 		tr.render(gc, g, bottomContainerDrawingContext, "Press [Enter]");
@@ -118,33 +119,14 @@ public class GameIntroState  extends BasicGameState {
 			timePassed += delta;
 		}
 		
-		//We run the control handling for the dialog box if the story feature is active, otherwise we run the alternative
-		//control handling.
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_STORY, new Runnable() {
+		introTextBoxState.update(delta);
 
-			@Override
-			public void run() {
-				introTextBoxState.update(delta);
-
-				if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-					introTextBoxState.displayCompleteBoxOrSwitchToNextBoxOrFinish();
-					if (introTextBoxState.isFinish()) {
-						sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
-					}
-				}
+		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			introTextBoxState.displayCompleteBoxOrSwitchToNextBoxOrFinish();
+			if (introTextBoxState.isFinish()) {
+				sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
 			}
-
-		},
-
-		new Runnable() {
-			@Override
-			public void run() {
-				if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-					sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
-				}
-
-			}
-		});
+		}
 		
 	}
 
