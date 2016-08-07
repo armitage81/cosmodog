@@ -113,8 +113,8 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(105, 360);
+		Player player = Player.fromPosition(5, 3);
+		//Player player = Player.fromPosition(105, 360);
 		for (int i = 0; i < 350; i++) {
 			player.getGameProgress().addInfobit();
 		}

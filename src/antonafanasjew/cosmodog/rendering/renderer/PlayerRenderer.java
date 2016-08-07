@@ -24,6 +24,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
+import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 
 public class PlayerRenderer extends AbstractRenderer {
@@ -55,6 +56,7 @@ public class PlayerRenderer extends AbstractRenderer {
 
 		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
 		FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
 		
 		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
@@ -70,6 +72,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
+		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 		boolean playerIsTakingDamage = playerIsFighting && fightPhaseTransition.playerAttack == false;
 
 		
@@ -160,6 +163,36 @@ public class PlayerRenderer extends AbstractRenderer {
 				
 		}
 		
+		if (playerIsAttemptingBlockedPassage) {
+			
+			float completion = movementAttemptTransition.completion;
+
+			float movementAttemptOffset = 0.0f;
+			
+				
+			if (completion > 0.5f) {
+				completion = 1.0f - completion;
+			}
+				
+			movementAttemptOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+				
+			
+			if (player.getDirection() == DirectionType.DOWN) {
+				pieceOffsetY = movementAttemptOffset;
+			}
+			
+			if (player.getDirection() == DirectionType.UP) {
+				pieceOffsetY = -movementAttemptOffset;
+			}
+			
+			if (player.getDirection() == DirectionType.RIGHT) {
+				pieceOffsetX = movementAttemptOffset;
+			}
+			
+			if (player.getDirection() == DirectionType.LEFT) {
+				pieceOffsetX = -movementAttemptOffset;
+			}
+		}
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());

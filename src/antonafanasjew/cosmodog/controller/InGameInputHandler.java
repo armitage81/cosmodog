@@ -39,6 +39,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
 /**
  * Standard game controls for usual actions, like movement, zooming, weapon scrolling.
@@ -175,7 +176,32 @@ public class InGameInputHandler extends AbstractInputHandler {
 						
 					};
 					
+					AsyncAction movementAttemptAction = new FixedLengthAsyncAction(250) {
+
+						private static final long serialVersionUID = 1663061093630885138L;
+						
+						@Override
+						public void onTrigger() {
+							MovementAttemptTransition movementAttemptTransition = new MovementAttemptTransition();
+							cosmodogGame.setMovementAttemptTransition(movementAttemptTransition);
+						}
+						
+						@Override
+						public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
+							float fracture = (float)after / (float)getDuration();
+							fracture = fracture > 1 ? 1 : fracture;
+							cosmodogGame.getMovementAttemptTransition().completion = fracture;
+						}
+						
+						@Override
+						public void onEnd() {
+							cosmodogGame.setMovementAttemptTransition(null);
+						}
+						
+					};
+					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, movementAttemptAction);
 				}
     		}
     		

@@ -72,17 +72,17 @@ public class Constants {
 	/**
 	 * The horizontal resolution of the game window.
 	 */
-	public static final int RESOLUTION_WIDTH = 1024;
+	public static final int RESOLUTION_WIDTH = 1366;
 	
 	/**
 	 * The vertical resolution of the game window.
 	 */
-	public static final int RESOLUTION_HEIGHT = 576;
+	public static final int RESOLUTION_HEIGHT = 768;
 	
 	/**
 	 * Full screen flag.
 	 */
-	public static final boolean FULLSCREEN = false;
+	public static final boolean FULLSCREEN = true;
 	
 	/**
 	 * Dynamic dialogs use this as basis for the text speed.

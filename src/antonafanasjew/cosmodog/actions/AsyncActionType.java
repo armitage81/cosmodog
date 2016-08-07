@@ -33,6 +33,11 @@ public enum AsyncActionType {
 	COLLISION_INDICATOR(false, false),
 	
 	/**
+	 * Modal action to represent a movement attempt when the passage is blocked.
+	 */
+	MOVEMENT_ATTEMPT(true, true),
+	
+	/**
 	 * Action type: Fight. Indicates a fight sequence with multiple enemies. This action will have it's own action registry
 	 * and register phases as asynchronous actions.
 	 */
