@@ -31,11 +31,13 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -78,9 +80,13 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (inputMovement) {
 
 			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
+			PlatformInventoryItem platformItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
 			
 			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {				if (vehicleItem != null) {
 					vehicleItem.setExiting(true);
+				}
+				if (platformItem != null) {
+					platformItem.setExiting(true);
 				}
 			}
 			
@@ -141,6 +147,16 @@ public class InGameInputHandler extends AbstractInputHandler {
 								Sound motordies = applicationContext.getSoundResources().get(SoundResources.SOUND_MOTOR_DIES);
 								motordies.play();
 							}
+						}
+					}
+					
+					if (platformItem != null) {
+						if (platformItem.isExiting()) {
+							Platform platform = platformItem.getPlatform();
+							platform.setPositionX(player.getPositionX());
+							platform.setPositionY(player.getPositionY());
+							cosmodogMap.getMapPieces().add(platform);
+							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
 					
@@ -207,6 +223,10 @@ public class InGameInputHandler extends AbstractInputHandler {
     		
 			if (vehicleItem != null) {
 				vehicleItem.setExiting(false);
+			}
+			
+			if (platformItem != null) {
+				platformItem.setExiting(false);
 			}
 
 		}

@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -69,6 +70,7 @@ public class InventoryItemRenderer implements Renderer {
 			graphics.translate(-fuelViewContext.x(), -fuelViewContext.y());
 			
 		}
+		
 		
 		if (item instanceof InsightInventoryItem) {
 			

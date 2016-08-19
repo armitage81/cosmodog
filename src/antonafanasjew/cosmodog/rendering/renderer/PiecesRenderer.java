@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.Map;
 import java.util.Set;
 
+import org.hamcrest.core.IsSame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -18,6 +19,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -29,6 +31,7 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PieceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.PlatformRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.SoulEssenceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.SuppliesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ToolRenderer;
@@ -63,6 +66,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponRenderer());
 		pieceRendererMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoRenderer());
 		pieceRendererMap.put(Vehicle.class.getSimpleName(), new VehicleRenderer());
+		pieceRendererMap.put(Platform.class.getSimpleName(), new PlatformRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackRenderer());
@@ -112,7 +116,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		
 		for (Piece piece : mapPieces) {
 			boolean isNorthFromPlayer = piece.getPositionY() < player.getPositionY();
-			if ((isNorthFromPlayer && northFromPlayer) || (!isNorthFromPlayer && southFromPlayer)) {
+			if ((isNorthFromPlayer && northFromPlayer) || (!isNorthFromPlayer && (piece instanceof Platform == false) && southFromPlayer) || (northFromPlayer && piece instanceof Platform)) {
 				filteredMapPieces.add(piece);
 			}
 		}
@@ -142,6 +146,8 @@ public class PiecesRenderer extends AbstractRenderer {
 				
 			} else if (piece instanceof Vehicle) {
 				pieceType = Vehicle.class.getSimpleName();
+			} else if (piece instanceof Platform) {
+				pieceType = Platform.class.getSimpleName();
 			} else {
 				pieceType = null;
 			}

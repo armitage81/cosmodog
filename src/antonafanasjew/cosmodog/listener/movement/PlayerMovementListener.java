@@ -26,6 +26,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
@@ -119,6 +120,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					
 				} else if (piece instanceof Vehicle) {
 					pieceType = Vehicle.class.getSimpleName();
+				} else if (piece instanceof Platform){
+					pieceType = Platform.class.getSimpleName();
 				} else {
 					pieceType = null;
 				}

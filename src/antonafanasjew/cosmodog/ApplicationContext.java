@@ -39,6 +39,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInterac
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PlatformInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SkiInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
@@ -51,6 +52,7 @@ import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.User;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuAction;
@@ -241,6 +243,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentInteraction());
 		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
+		pieceInteractionMap.put(Platform.class.getSimpleName(), new PlatformInteraction());
 		pieceInteractionMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponInteraction());
 		pieceInteractionMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());

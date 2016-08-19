@@ -6,9 +6,6 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
@@ -39,6 +36,7 @@ import antonafanasjew.cosmodog.model.Mark;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
@@ -85,6 +83,9 @@ import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 public class InitializationUtils {
 
 	public static int INFOBIT_TILE_ID = 191;
@@ -101,6 +102,7 @@ public class InitializationUtils {
 	public static int BINOCULARS_TILE_ID = 3062;
 	public static int JACKET_TILE_ID = 3063;
 	public static int SKI_TILE_ID = 3064;
+	public static int PLATFORM_TILE_ID = 3065;
 	public static int BOTTLE_TILE_ID = 201;
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
@@ -113,8 +115,8 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(5, 3);
-		//Player player = Player.fromPosition(105, 360);
+		//Player player = Player.fromPosition(5, 3);
+		Player player = Player.fromPosition(207, 336);
 		for (int i = 0; i < 350; i++) {
 			player.getGameProgress().addInfobit();
 		}
@@ -248,6 +250,11 @@ public class InitializationUtils {
 				if (tileId == VEHICLE_TILE_ID) {
 					Vehicle vehicle = Vehicle.fromPosition(k, l);
 					map.getMapPieces().add(vehicle);
+				}
+				
+				if (tileId == PLATFORM_TILE_ID) {
+					Platform platform = Platform.fromPosition(k, l);
+					map.getMapPieces().add(platform);
 				}
 				
 				if (tileId == BOAT_TILE_ID) {

@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
@@ -49,10 +50,11 @@ public class InteractingWithPieceTrigger extends AbstractRuleTrigger {
 			} else {
 				collectibleType = ((CollectibleGoodie)collectible).getGoodieType().name();
 			}
-			
 			return collectibleType.equals(pieceType);
 		} else if (piece instanceof Vehicle) {
 			return pieceType.equals("vehicle");
+		} else if (piece instanceof Platform){
+			return pieceType.equals("platform");
 		} else {
 			//Handle non collectible pieces here.
 			return false;

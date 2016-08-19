@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.model.actors;
 import antonafanasjew.cosmodog.domains.DirectionType;
 
 
-public class Vehicle extends Actor {
+public class Vehicle extends Transport {
 
 	private static final long serialVersionUID = -2970030463088280229L;
 

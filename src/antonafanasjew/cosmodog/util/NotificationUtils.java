@@ -125,6 +125,11 @@ public class NotificationUtils {
 		return Notification.fromTextAndDuration(s, DEFAULT_NOTIFICATION_DURATION);
 	}
 	
+	public static Notification foundPlatform() {
+		String s = "Alisa: Full steam ahead!";
+		return Notification.fromTextAndDuration(s, DEFAULT_NOTIFICATION_DURATION);
+	}
+	
 	public static Notification foundVehicleWithoutFuel() {
 		String s = ENTERED_VEHICLE_WITHOUT_FUEL_TEXTS.get(enteredVehicleWithoutFuelIndex++ % ENTERED_VEHICLE_WITHOUT_FUEL_TEXTS.size());
 		return Notification.fromTextAndDuration(s, DEFAULT_NOTIFICATION_DURATION);

@@ -4,6 +4,8 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import com.badlogic.gdx.Application.ApplicationType;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -19,6 +21,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.Mappings;
@@ -61,6 +64,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
+		boolean playerIsInPlatform = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(tiledMap, player, playerTransition);
 		boolean playerIsInHighGrass = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, tiledMap, player, playerTransition);
 		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, tiledMap, player, playerTransition);
@@ -82,6 +86,8 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerAppearanceType = PlayerAppearanceType.ISTELEPORTING;
 		} else if (playerIsOnBoat) {
 			playerAppearanceType = PlayerAppearanceType.ONBOAT;
+		} else if (playerIsInPlatform) {
+			playerAppearanceType = PlayerAppearanceType.INPLATFORM;
 		} else if (playerIsInVehicle) {
 			playerAppearanceType = PlayerAppearanceType.INVEHICLE;
 		} else if (playerIsInHighGrass) {
@@ -119,10 +125,16 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
 		}
 		
+		float bigAnimationOffsetX = 0;
+		float bigAnimationOffsetY = 0;
 		
 		float pieceOffsetX = 0;
 		float pieceOffsetY = 0;
 		
+		if (playerAppearanceType == PlayerAppearanceType.INPLATFORM) {
+			bigAnimationOffsetX = - 3 * 16;
+			bigAnimationOffsetY = - 3 * 16;
+		}
 		
 		if (playerIsMoving) {
 			pieceOffsetX = tileWidth * playerTransition.getTransitionalOffsetX();
@@ -196,9 +208,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX + bigAnimationOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY + bigAnimationOffsetY);
 		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX + bigAnimationOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY + bigAnimationOffsetY);
 		}
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);

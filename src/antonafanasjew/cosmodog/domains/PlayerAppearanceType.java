@@ -16,6 +16,11 @@ public enum PlayerAppearanceType {
 	INVEHICLE,
 	
 	/**
+	 * Visible as platform.
+	 */
+	INPLATFORM,
+	
+	/**
 	 * Player character on boat sprite.
 	 */
 	ONBOAT, 
