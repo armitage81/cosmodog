@@ -4,8 +4,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import com.badlogic.gdx.Application.ApplicationType;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -17,6 +15,7 @@ import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
@@ -32,6 +31,7 @@ import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 
 public class PlayerRenderer extends AbstractRenderer {
 
+	
 	@Override
 	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 
@@ -66,14 +66,14 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean playerIsInPlatform = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(tiledMap, player, playerTransition);
+		
+		boolean playerIsOnPlatform = PlayerMovementCache.getInstance().isPlayerOnPlatform();
+		
 		boolean playerIsInHighGrass = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, tiledMap, player, playerTransition);
 		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, tiledMap, player, playerTransition);
 		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
-		
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki;
-		
 		boolean playerIsInRoughTerrain = isRoughTerrain(tiledMap, player, playerTransition);
-		
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
@@ -90,6 +90,8 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerAppearanceType = PlayerAppearanceType.INPLATFORM;
 		} else if (playerIsInVehicle) {
 			playerAppearanceType = PlayerAppearanceType.INVEHICLE;
+		} else if (playerIsOnPlatform) {
+			playerAppearanceType = PlayerAppearanceType.DEFAULT;
 		} else if (playerIsInHighGrass) {
 			playerAppearanceType = PlayerAppearanceType.INHIGHGRASS;
 		} else if (playerIsOnSki) {
@@ -125,16 +127,10 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
 		}
 		
-		float bigAnimationOffsetX = 0;
-		float bigAnimationOffsetY = 0;
-		
 		float pieceOffsetX = 0;
 		float pieceOffsetY = 0;
 		
-		if (playerAppearanceType == PlayerAppearanceType.INPLATFORM) {
-			bigAnimationOffsetX = - 3 * 16;
-			bigAnimationOffsetY = - 3 * 16;
-		}
+
 		
 		if (playerIsMoving) {
 			pieceOffsetX = tileWidth * playerTransition.getTransitionalOffsetX();
@@ -208,9 +204,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX + bigAnimationOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY + bigAnimationOffsetY);
+		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
 		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX + bigAnimationOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY + bigAnimationOffsetY);
+			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
 		}
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);

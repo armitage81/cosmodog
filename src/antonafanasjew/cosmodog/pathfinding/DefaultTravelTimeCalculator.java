@@ -10,8 +10,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledTile;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 
@@ -32,14 +34,30 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 			int tileId = tiledMap.getTileId(x, y, Layers.LAYER_META_GROUNDTYPES);
 			boolean isOnSnowGround = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SNOW);
 			boolean hasSki = player.getInventory().get(InventoryItemType.SKI) != null;
+			PlatformInventoryItem platformAsVehicle = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
+			boolean hasVehicleAndNotExitingIt = player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle();
+			boolean hasPlatformAndNotExitingIt = platformAsVehicle != null && platformAsVehicle.isExiting() == false;
+			boolean isOnPlatform = !hasPlatformAndNotExitingIt && CosmodogMapUtils.isTileOnPlatform(x, y);
 			
-			if (hasSki && isOnSnowGround) {
-				return costsForActorOnSkiInSnow();
-			} else if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
-				return costsForActorOnWheels(terrainTypeTileId);
+			if (isOnPlatform) {
+				if (hasVehicleAndNotExitingIt) {
+					return Constants.DEFAULT_TIME_COSTS_WITH_VEHICLE;
+				} else {
+					return Constants.DEFAULT_TIME_COSTS_ON_FOOT;
+				}
 			} else {
-				return costsForActorOnFoot(terrainTypeTileId);
+				if (hasSki && isOnSnowGround) {
+					return costsForActorOnSkiInSnow();
+				} else if (hasVehicleAndNotExitingIt) {
+					return costsForActorOnWheels(terrainTypeTileId);
+				} else if (hasPlatformAndNotExitingIt) {
+					return costsForActorOnPlatform(terrainTypeTileId);
+				} else {
+					return costsForActorOnFoot(terrainTypeTileId);
+				}				
 			}
+			
+
 		} else if (actor instanceof NpcActor){
 			NpcActor npcActor = (NpcActor)actor;
 			ChaussieType chaussieType = npcActor.getChaussieType();
@@ -117,6 +135,10 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 		}
 		
 		return 0;
+	}
+	
+	private int costsForActorOnPlatform(int terrainTypeTileId) {
+		return Constants.DEFAULT_TIME_COSTS_WITH_PLATFORM;
 	}
 
 }

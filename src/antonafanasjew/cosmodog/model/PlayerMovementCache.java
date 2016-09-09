@@ -3,16 +3,20 @@ package antonafanasjew.cosmodog.model;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.comparators.ComparableComparator;
-
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.listener.movement.MovementListenerAdapter;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.PositionUtils;
+import antonafanasjew.cosmodog.util.ObjectGroupUtils;
+import antonafanasjew.cosmodog.util.RegionUtils;
 
 import com.google.common.collect.Lists;
 
@@ -40,13 +44,36 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 	
 	private Piece closestSupply;
+	
+	private boolean playerOnPlatform;
+	
+	private TiledObject roofRegionOverPlayer;
 
 	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		recalculateClosestSupplyPosition(actor, x1, y1, x2, y2, applicationContext);
+		recalculateWhetherPlayerIsOnPlatform(actor);
+		recalculateRoofRegion(actor);
 	}
 	
+	private void recalculateRoofRegion(Actor actor) {
+		
+		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
+		
+		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_ROOFS).getObjects();
+		
+		for (TiledObject roofRegion : roofRegions.values()) {
+		
+			if (RegionUtils.playerInRegion((Player)actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
+				roofRegionOverPlayer = roofRegion;
+				return;
+			}
+		}
+		
+		roofRegionOverPlayer = null;		
+	}
+
 	public Piece getClosestSupply() {
 		return closestSupply;
 	}
@@ -74,6 +101,22 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		closestSupply = piecesSortedByProximity.isEmpty() ? null : piecesSortedByProximity.get(0);
 		
 	}
+
+	private void recalculateWhetherPlayerIsOnPlatform(Actor actor) {
+		setPlayerOnPlatform(CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));
+	}
 	
+	public boolean isPlayerOnPlatform() {
+		return playerOnPlatform;
+	}
+
+	public void setPlayerOnPlatform(boolean playerOnPlatform) {
+		this.playerOnPlatform = playerOnPlatform;
+	}
+
+	public TiledObject getRoofRegionOverPlayer() {
+		return roofRegionOverPlayer;
+	}
+
 }
 

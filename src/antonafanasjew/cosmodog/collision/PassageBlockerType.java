@@ -39,7 +39,12 @@ public enum PassageBlockerType {
 	/**
 	 * The tile is blocked by a vehicle collectible. F.i. another vehicle or enemies cannot pass such tiles.
 	 */
-	BLOCKED_BY_VEHICLE_COLLECTIBLE("Blocked by vehicle");
+	BLOCKED_BY_VEHICLE_COLLECTIBLE("Blocked by vehicle"),
+	
+	/**
+	 * Passage blocked as the target tile has no rails. (Used for the big platform)
+	 */
+	BLOCKED_NO_RAILS("No rails");
 	
 	private String descriptionTemplate;
 	

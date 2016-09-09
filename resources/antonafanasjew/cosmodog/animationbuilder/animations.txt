@@ -34,20 +34,20 @@ playerInVehicleHitUp;data/vehicle.png;16;16;[0/3/500,1/3/500];true;true
 
 
 
-playerInPlatformInanimatedRight;data/platform_basic_horizontal.png;146;112;[0/0/10000];true;true
-playerInPlatformInanimatedDown;data/platform_basic_vertical.png;146;112;[0/0/10000];true;true
-playerInPlatformInanimatedLeft;data/platform_basic_horizontal.png;146;112;[0/0/10000];true;true
-playerInPlatformInanimatedUp;data/platform_basic_vertical.png;146;112;[0/0/10000];true;true
+playerInPlatformInanimatedRight;data/player.png;16;16;[6/0/10000];true;true
+playerInPlatformInanimatedDown;data/player.png;16;16;[6/1/10000];true;true
+playerInPlatformInanimatedLeft;data/player.png;16;16;[6/2/10000];true;true
+playerInPlatformInanimatedUp;data/player.png;16;16;[6/3/10000];true;true
 
-playerInPlatformAnimatedRight;data/platform_basic_horizontal.png;146;112;[0/0/10000];true;true
-playerInPlatformAnimatedDown;data/platform_basic_vertical.png;146;112;[0/0/10000];true;true
-playerInPlatformAnimatedLeft;data/platform_basic_horizontal.png;146;112;[0/0/10000];true;true
-playerInPlatformAnimatedUp;data/platform_basic_vertical.png;146;112;[0/0/10000];true;true
+playerInPlatformAnimatedRight;data/player.png;16;16;[6/4/10000];true;true
+playerInPlatformAnimatedDown;data/player.png;16;16;[6/5/10000];true;true
+playerInPlatformAnimatedLeft;data/player.png;16;16;[6/6/10000];true;true
+playerInPlatformAnimatedUp;data/player.png;16;16;[6/7/10000];true;true
 
-playerInPlatformHitRight;data/platform_basic_horizontal.png;146;112;[0/0/10000];true;true
-playerInPlatformHitDown;data/platform_basic_vertical.png;146;112;[0/0/10000];true;true
-playerInPlatformHitLeft;data/platform_basic_horizontal.png;146;112;[0/0/10000];true;true
-playerInPlatformHitUp;data/platform_basic_vertical.png;146;112;[0/0/10000];true;true
+playerInPlatformHitRight;data/player.png;16;16;[6/0/10000];true;true
+playerInPlatformHitDown;data/player.png;16;16;[6/1/10000];true;true
+playerInPlatformHitLeft;data/player.png;16;16;[6/2/10000];true;true
+playerInPlatformHitUp;data/player.png;16;16;[6/3/10000];true;true
 
 
 

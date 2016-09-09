@@ -13,7 +13,7 @@ import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
 import antonafanasjew.cosmodog.collision.FeatureBoundCollisionValidator;
-import antonafanasjew.cosmodog.collision.GeneralCollisionValidator;
+import antonafanasjew.cosmodog.collision.GeneralCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
 import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
 import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
@@ -210,7 +210,7 @@ public class ApplicationContext {
 		user.setUserName("Armitage");
 		cosmodog.setUser(user);
 		
-		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidator(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator())); 
+		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidatorForPlayer(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator())); 
 		
 		PathFinder towardsPlayerPathFinder = new TowardsPlayerPathFinder();
 		PathFinder patrolingPathFinder = new PatrolingPathFinder();

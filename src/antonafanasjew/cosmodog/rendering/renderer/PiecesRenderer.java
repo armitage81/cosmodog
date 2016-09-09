@@ -3,7 +3,6 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.Map;
 import java.util.Set;
 
-import org.hamcrest.core.IsSame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -23,6 +22,7 @@ import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.PieceRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
@@ -80,6 +80,8 @@ public class PiecesRenderer extends AbstractRenderer {
 	@Override
 	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 		
+		PieceRendererPredicate renderingPredicate = (PieceRendererPredicate)renderingParameter;
+		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
@@ -110,14 +112,16 @@ public class PiecesRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 		
-		Set<Piece> mapPieces = cosmodogMap.visibleMapPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
+		Set<Piece> mapPieces = cosmodogMap.visibleMapPieces(tileNoX, tileNoY, tilesW, tilesH, 5);
 		
 		Set<Piece> filteredMapPieces = Sets.newHashSet();
 		
 		for (Piece piece : mapPieces) {
-			boolean isNorthFromPlayer = piece.getPositionY() < player.getPositionY();
-			if ((isNorthFromPlayer && northFromPlayer) || (!isNorthFromPlayer && (piece instanceof Platform == false) && southFromPlayer) || (northFromPlayer && piece instanceof Platform)) {
-				filteredMapPieces.add(piece);
+			if (renderingPredicate == null || renderingPredicate.pieceShouldBeRendered(piece)) {
+				boolean isNorthFromPlayer = piece.getPositionY() < player.getPositionY();
+				if ((isNorthFromPlayer && northFromPlayer) || (!isNorthFromPlayer && (piece instanceof Platform == false) && southFromPlayer) || (northFromPlayer && piece instanceof Platform)) {
+					filteredMapPieces.add(piece);
+				}
 			}
 		}
 		

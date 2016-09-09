@@ -4,6 +4,8 @@ import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
 
@@ -20,10 +22,12 @@ public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
 	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
 
 		PathFinder relevantPathFinder;
+		Player player = ApplicationContextUtils.getPlayer();
+		boolean playerHasPlatform = player.getInventory().hasPlatform();
 		
 		Enemy enemy = (Enemy)actor;
 	
-		if (enemy.getAlertLevel() > 0) {
+		if (enemy.getAlertLevel() > 0 && !playerHasPlatform) {
 			relevantPathFinder = alertedPathFinder;
 		} else {
 			relevantPathFinder = idlePathFinder;

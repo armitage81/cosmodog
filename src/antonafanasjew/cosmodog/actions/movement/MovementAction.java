@@ -7,10 +7,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
@@ -21,12 +17,8 @@ import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.collision.ChaussieBasedCollisionValidator;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
-import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
-import antonafanasjew.cosmodog.collision.NpcHomeRegionCollisionValidator;
-import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
-import antonafanasjew.cosmodog.collision.VehicleObstacleCollisionValidator;
+import antonafanasjew.cosmodog.collision.GeneralCollisionValidatorForEnemy;
 import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
@@ -35,7 +27,9 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
@@ -44,9 +38,13 @@ import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
+
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 /**
  * Asynchronous action for movement.
@@ -151,12 +149,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		PathFinder pathFinder = cosmodog.getPathFinder();
 		TravelTimeCalculator travelTimeCalculator = cosmodog.getTravelTimeCalculator();
 		
-		//Preparing collision validator for enemies.
-		CollisionValidator c1 = new ChaussieBasedCollisionValidator();
-		CollisionValidator c2 = new InterCharacterCollisionValidator(playerMovementActionResult, enemyMovementActionResults);
-		CollisionValidator c3 = new NpcHomeRegionCollisionValidator();
-		CollisionValidator c4 = new VehicleObstacleCollisionValidator();
-		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4));
+		//Preparing enemy collision validator
+		CollisionValidator collisionValidator = GeneralCollisionValidatorForEnemy.instance(playerMovementActionResult, enemyMovementActionResults);
 		
 		//Using the path finder to calculate the movement result based on the time budget generated from user movement and enemy's time overhead from the previous turns.
 		return pathFinder.calculateMovementResult(enemy, (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep(), collisionValidator, travelTimeCalculator, playerMovementActionResult);
@@ -167,10 +161,36 @@ public class MovementAction extends FixedLengthAsyncAction {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Player player = ApplicationContextUtils.getPlayer();
 		
-		
-		
 		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 
+		} else if (player.getInventory().hasPlatform() && !player.getInventory().exitingPlatform()) {
+
+			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+			int resultX = playerMovementActionResult.getPath().getX(1);
+			int resultY = playerMovementActionResult.getPath().getY(1);
+
+			Set<Enemy> destroyedEnemies = Sets.newHashSet();
+			
+			for (Enemy enemy : enemyMovementActionResults.keySet()) {
+				MovementActionResult enemyMovementActionResult = enemyMovementActionResults.get(enemy);
+				
+				int pathLength = enemyMovementActionResult.getPath().getLength();
+				int enemyX = enemyMovementActionResult.getPath().getX(pathLength - 1);
+				int enemyY = enemyMovementActionResult.getPath().getY(pathLength - 1);
+				
+				if (CosmodogMapUtils.isTileOnPlatform(enemyX, enemyY, resultX, resultY)) {
+					destroyedEnemies.add(enemy);
+				}
+			}
+			
+			for (Enemy enemy : map.getEnemies()) {
+				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPositionX(), enemy.getPositionY(), resultX, resultY)) {
+					destroyedEnemies.add(enemy);
+				}
+			}
+			
+			map.getEnemies().removeAll(destroyedEnemies);
+			
 		} else {
 			applicationContext.getSoundResources().get(SoundResources.SOUND_FOOTSTEPS).play();
 		}
@@ -310,12 +330,27 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		ActorTransitionRegistry actorTransitionRegistry = cosmodogGame.getActorTransitionRegistry();
 		actorTransitionRegistry.remove(player);
-				
+
+		boolean playerInPlatform = player.getInventory().hasPlatform();
+		
+		if (playerInPlatform) {
+			for (Piece piece : cosmodogGame.getMap().getMapPieces()) {
+				if (piece instanceof Platform == false && CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
+					if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
+						piece.setPositionY(piece.getPositionY() + (player.getDirection() == DirectionType.UP ? -1 : 1));
+					} else {
+						piece.setPositionX(piece.getPositionX() + (player.getDirection() == DirectionType.LEFT ? -1 : 1));
+					}
+				}
+			}
+		}
+		
 		if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
 			player.shiftVertical(player.getDirection() == DirectionType.UP ? -1 : 1);
 		} else {
 			player.shiftHorizontal(player.getDirection() == DirectionType.LEFT ? -1 : 1);
 		}
+		
 	}
 	
 	private void onEndForEnemies() {

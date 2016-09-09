@@ -42,6 +42,10 @@ public class Inventory extends HashMap<InventoryItemType, InventoryItem> {
 		return hasItem(InventoryItemType.VEHICLE);
 	}
 	
+	public boolean hasPlatform() {
+		return hasItem(InventoryItemType.PLATFORM);
+	}
+	
 	/**
 	 * The player inventory can have 3 states in regards of the vehicle inventory type:
 	 * 'has', 'has not' and 'exiting'. The last one is indicating that the player is in the
@@ -52,6 +56,10 @@ public class Inventory extends HashMap<InventoryItemType, InventoryItem> {
 	 */
 	public boolean exitingVehicle() {
 		return hasVehicle() && ((VehicleInventoryItem)get(InventoryItemType.VEHICLE)).isExiting();
+	}
+	
+	public boolean exitingPlatform() {
+		return hasPlatform() && ((PlatformInventoryItem)get(InventoryItemType.PLATFORM)).isExiting();
 	}
 	
 }

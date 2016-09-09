@@ -35,6 +35,11 @@ public class Constants {
 	public static final int DEFAULT_TIME_COSTS_WITH_VEHICLE = MINIMAL_TIME_UNIT_IN_MINUTES;
 	
 	/**
+	 * Time costs that the platform has to pay to move on rails.
+	 */
+	public static final int DEFAULT_TIME_COSTS_WITH_PLATFORM = DEFAULT_TIME_COSTS_WITH_VEHICLE;
+	
+	/**
 	 * Time costs that a flying device has to pay to move from one default tile to another. 
 	 */
 	public static final int DEFAULT_TIME_COSTS_FLYING = DEFAULT_TIME_COSTS_WITH_VEHICLE;
@@ -69,15 +74,25 @@ public class Constants {
 	 */
 	public static final int ENEMY_DESTRUCTION_ACTION_DURATION = 500;
 	
+//	/**
+//	 * The horizontal resolution of the game window.
+//	 */
+//	public static final int RESOLUTION_WIDTH = 1920;
+//	
+//	/**
+//	 * The vertical resolution of the game window.
+//	 */
+//	public static final int RESOLUTION_HEIGHT = 1080;
+	
 	/**
 	 * The horizontal resolution of the game window.
 	 */
-	public static final int RESOLUTION_WIDTH = 1920;
+	public static final int RESOLUTION_WIDTH = 1280;
 	
 	/**
 	 * The vertical resolution of the game window.
 	 */
-	public static final int RESOLUTION_HEIGHT = 1080;
+	public static final int RESOLUTION_HEIGHT = 1024;
 	
 	/**
 	 * Full screen flag.

@@ -25,6 +25,14 @@ public class PositionUtils {
 		
 	}
 	
+	public static DirectionType targetDirection(Piece reference, int x, int y) {
+		Piece piece = new Piece();
+		piece.setPositionX(x);
+		piece.setPositionY(y);
+		return targetDirection(reference, piece);
+		
+	}
+	
 	public static DirectionType targetDirection(Piece reference, Piece target) {
 		
 		int refX = reference.getPositionX();

@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.Date;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -61,7 +63,14 @@ public class MapLayerRenderer extends AbstractRenderer {
 			for (int tx = tileNoX; tx < tileNoX + tilesW; tx++) {
 				for (int ty = tileNoY; ty < tileNoY + tilesH; ty++) {
 					if (tx >= 0 && ty >= 0 && tx < tiledMap.getWidth() && ty < tiledMap.getHeight()) {
+						long begin = new Date().getTime();
 						if (rendererPredicate.tileShouldBeRendered(i, tx, ty)) {
+							long end = new Date().getTime();
+							if (end - begin > 200) {
+								System.out.println(end - begin);
+								System.out.println(rendererPredicate.toString());
+								System.out.println(rendererPredicate.getClass());
+							}
 							render(tiledMap, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
 						}
 					}
@@ -101,7 +110,6 @@ public class MapLayerRenderer extends AbstractRenderer {
 				tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
 			}	
 		}
-		
 		
 	}
 	

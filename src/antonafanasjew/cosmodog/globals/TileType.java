@@ -113,10 +113,15 @@ public enum TileType {
 	
 	RADIATION(Layers.LAYER_META_RADIATION, 29),
 	
+	FREE_PLATFORM_PASSAGE(Layers.LAYER_META_PLATFORM_COLLISION, 30),
+	
 	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.
 	//It can be used to be returned when searching tile types by tile id in case the id does not match any type.
 	UNKNOWN(-1, -1);
+	
+	
+	private static final TileType[] VALUES = TileType.values();
 	
 	public static final List<TileType> WEAPONS_TILES = Lists.newArrayList();
 	
@@ -193,7 +198,7 @@ public enum TileType {
 	 * @return The tile type for given ids or UNKNOWN if nothing matches.
 	 */
 	public static TileType getByLayerAndTileId(int layerId, int tileId) {
-		for (TileType tileType : TileType.values()) {
+		for (TileType tileType : VALUES) {
 			if (tileType.getLayerId() == layerId && tileType.getTileId() == tileId) {
 				return tileType;
 			}

@@ -56,6 +56,9 @@ import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.BottomLa
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.TipsLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.TopLayersRenderingPredicate;
+import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.NotOnPlatformPieceRendererPredicate;
+import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.OnPlatformPieceRendererPredicate;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.OccupiedPlatformRenderer;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
@@ -97,10 +100,12 @@ public class GameState extends BasicGameState {
 	private Renderer gameProgressInterfaceRenderer;
 	private Renderer lifeInterfaceRenderer;
 	private AbstractRenderer mapRenderer;
+	private AbstractRenderer platformRenderer;
 	private AbstractRenderer playerRenderer;
 	private AbstractRenderer npcRenderer;
 	private AbstractRenderer northPiecesRenderer;
 	private AbstractRenderer southPiecesRenderer;
+	private AbstractRenderer platformPiecesRenderer;
 	private AbstractRenderer effectsRenderer;
 	private AbstractRenderer overheadNotificationRenderer;
 	private Renderer daytimeColorFilterRenderer;
@@ -154,10 +159,12 @@ public class GameState extends BasicGameState {
 		lifeInterfaceRenderer = new LifeInterfaceRenderer();
 		
 		mapRenderer = new MapLayerRenderer();
+		platformRenderer = new OccupiedPlatformRenderer();
 		playerRenderer = new PlayerRenderer();
 		npcRenderer = new NpcRenderer();
 		northPiecesRenderer = new PiecesRenderer(true, false);
 		southPiecesRenderer = new PiecesRenderer(false, true);
+		platformPiecesRenderer = new PiecesRenderer(true, true);
 		effectsRenderer = new EffectsRenderer();
 		overheadNotificationRenderer = new OverheadNotificationRenderer();
 		daytimeColorFilterRenderer = new DayTimeFilterRenderer();
@@ -172,6 +179,10 @@ public class GameState extends BasicGameState {
 		
 		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
 		dialogBoxRenderer = new DialogBoxRenderer();
+		
+		bottomLayersPredicate = new BottomLayersRenderingPredicate();
+		tipsLayersPredicate = new TipsLayersRenderingPredicate();
+		topsLayersPredicate = new TopLayersRenderingPredicate();
 		
 	}
 
@@ -289,47 +300,60 @@ public class GameState extends BasicGameState {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 
-		//We need to initialize the predicates here as they are depending on the player movement.
-		bottomLayersPredicate = new BottomLayersRenderingPredicate();
-		tipsLayersPredicate = new TipsLayersRenderingPredicate();
-		topsLayersPredicate = new TopLayersRenderingPredicate();
-		
-		
+		//Draw "ground" part of the map
 		mapRenderer.render(gc, g, mapDrawingContext, bottomLayersPredicate);
+		
+		//Draw "tips" part of the map (Tile that would partially cover the player, like high flowers. Take note, it is still drawn underneath the player, as partial coverage is realized via special sprites)
 		mapRenderer.render(gc, g, mapDrawingContext, tipsLayersPredicate);
 		
+		//Draw ground effects.
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_GROUND_EFFECTS);
 		
-		northPiecesRenderer.render(gc, g, mapDrawingContext);
+		//Draw the platform here. Note: This renderer handles the occupied platform. The standalone platform is a normal piece and will be rendered with the piece renderers.
+		platformRenderer.render(gc, g, mapDrawingContext);
 		
-		if (!cosmodogGame.getActionRegistry().isActionRegistered(AsyncActionType.MOVEMENT)) {
-			playerRenderer.render(gc, g, mapDrawingContext);
-		}
+		//Draw pieces that are north from the player and will be covered by his shape. (Ignore pieces that are on the platform)
+		northPiecesRenderer.render(gc, g, mapDrawingContext, new NotOnPlatformPieceRendererPredicate());
 		
+		//Draw the player
+		playerRenderer.render(gc, g, mapDrawingContext);
 		
-		if (cosmodogGame.getActionRegistry().isActionRegistered(AsyncActionType.MOVEMENT)) {
-			playerRenderer.render(gc, g, mapDrawingContext);
-		}
-		
-		
+		//Draw NPC
 		npcRenderer.render(gc, g, mapDrawingContext);
 		
-		southPiecesRenderer.render(gc, g, mapDrawingContext);
+		//Draw pieces that are south from the player and will not be covered by his shape.  (Ignore pieces that are on the platform)
+		southPiecesRenderer.render(gc, g, mapDrawingContext, new NotOnPlatformPieceRendererPredicate());
 		
+		//Draw pieces that are on the platform.
+		platformPiecesRenderer.render(gc, g, mapDrawingContext, new OnPlatformPieceRendererPredicate());
+		
+		//Draw top parts of the map, f.i. roofs, tops of the pillars and trees. They will cover both player and NPC
 		mapRenderer.render(gc, g, mapDrawingContext, topsLayersPredicate);
 		
+		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, mapDrawingContext);
 		
-		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_TOP_EFFECTS);			
+		//Draw top effects.
+		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_TOP_EFFECTS);
+		
+		//Draw clouds.
 		cloudRenderer.render(gc, g, mapDrawingContext, cloudsDeco.getCloudRectangles());
 		
+		//Draw birds.
 		for (BirdsDecoration birdDeco : birdsDecos) {
 			birdsRenderer.render(gc, g, mapDrawingContext, birdDeco);
 		}
 
+		//Draw Daytime mask.
 		daytimeColorFilterRenderer.render(gc, g, mapDrawingContext, null);
+		
+		//Draw marked tiles, e.g. "fuel" sign
 		markedTileRenderer.render(gc, g, mapDrawingContext, null);
+		
+		//Draw overhead notifications, e.g. "blocked" warning.
 		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
+		
+		
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
 		
@@ -355,28 +379,6 @@ public class GameState extends BasicGameState {
 
 		TextFrameRenderer tfr = new TextFrameRenderer();
 		tfr.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
-		
-//		DrawingContext dc = new TileDrawingContext(mapDrawingContext, 3, 3, 0, 0);
-//		//String startMessage = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz";
-//		String startMessage = "Yul'ka-Kozyul'ka!!! Antoshka-Kartoshka!!!";
-//		Map<Character, Letter> letters = ApplicationContext.instance().getCharacterLetters();
-//		Letter defaultLetter = letters.get('?');
-//		List<Letter> lettersForText = LetterUtils.lettersForText(startMessage, letters, defaultLetter);
-//		Rectangle messageBounds = LetterUtils.letterListBounds(lettersForText, 0.0f);
-//		DrawingContext centeredDc = new CenteredDrawingContext(dc, messageBounds.getWidth(), messageBounds.getHeight());
-//		List<DrawingContext> lettersDcs = LetterUtils.letterLineDrawingContexts(lettersForText, 0.0f, centeredDc);
-//		
-//		g.scale(2,2);
-//		
-//		g.fillRect(centeredDc.x(), centeredDc.y(), centeredDc.w(), centeredDc.h());
-//		
-//		for (int i = 0; i < lettersForText.size(); i++) {
-//			Letter letter = lettersForText.get(i);
-//			DrawingContext letterDc = lettersDcs.get(i);
-//			g.drawImage(letter.getImage(), letterDc.x(), letterDc.y());
-//		}
-//		
-//		g.scale(1/2, 1/2);
 		
 	}
 

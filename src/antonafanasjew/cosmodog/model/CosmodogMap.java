@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Platform;
 
 /**
  * Represents the game map as model. Does not contains information about the
@@ -27,6 +28,8 @@ public class CosmodogMap extends CosmodogModel {
 	private Set<Piece> effectPieces = Sets.newHashSet();
 	private Set<Piece> markedTilePieces = Sets.newHashSet();
 
+	private Platform cachedPlatform = null;
+	private boolean platformCacheInitialized = false;
 	
 	public Set<Piece> getMapPieces() {
 		return mapPieces;
@@ -123,4 +126,29 @@ public class CosmodogMap extends CosmodogModel {
 		return retVal;
 	}
 
+	public Platform getCachedPlatform(CosmodogGame cosmodogGame) {
+		
+		if (!platformCacheInitialized) {
+			Set<Piece> pieces = getMapPieces();
+			
+			for (Piece piece : pieces) {
+				if (piece instanceof Platform) {
+					cachedPlatform = (Platform)piece;
+					break;
+				}
+			}
+			
+			platformCacheInitialized = true;
+			
+		}
+
+		return cachedPlatform;
+		
+	}
+	
+	public void clearPlatformCache() {
+		this.platformCacheInitialized = false;
+		this.cachedPlatform = null;
+	}
+	
 }
