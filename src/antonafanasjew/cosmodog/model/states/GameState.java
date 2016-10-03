@@ -51,6 +51,8 @@ import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WeaponTooltipRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.WormAttackRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.WormSnowSparkRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WritingRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.BottomLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
@@ -102,6 +104,8 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer mapRenderer;
 	private AbstractRenderer platformRenderer;
 	private AbstractRenderer playerRenderer;
+	private AbstractRenderer wormAttackRenderer;
+	private AbstractRenderer wormSnowSparkRenderer;
 	private AbstractRenderer npcRenderer;
 	private AbstractRenderer northPiecesRenderer;
 	private AbstractRenderer southPiecesRenderer;
@@ -161,6 +165,8 @@ public class GameState extends BasicGameState {
 		mapRenderer = new MapLayerRenderer();
 		platformRenderer = new OccupiedPlatformRenderer();
 		playerRenderer = new PlayerRenderer();
+		wormAttackRenderer = new WormAttackRenderer();
+		wormSnowSparkRenderer = new WormSnowSparkRenderer();
 		npcRenderer = new NpcRenderer();
 		northPiecesRenderer = new PiecesRenderer(true, false);
 		southPiecesRenderer = new PiecesRenderer(false, true);
@@ -329,6 +335,12 @@ public class GameState extends BasicGameState {
 		
 		//Draw top parts of the map, f.i. roofs, tops of the pillars and trees. They will cover both player and NPC
 		mapRenderer.render(gc, g, mapDrawingContext, topsLayersPredicate);
+		
+		//Draw attacking worm
+		wormAttackRenderer.render(gc, g, mapDrawingContext);
+		
+		//Draw Snow sparks covering the worm.
+		wormSnowSparkRenderer.render(gc, g, mapDrawingContext);
 		
 		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, mapDrawingContext);

@@ -6,6 +6,9 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
+import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
@@ -38,8 +41,33 @@ public class PlayerRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+
+		
+		//Do not render the player if the worm is already eating him ;)
+		WormAttackAction wormAttackAction = (WormAttackAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.WORM_ATTACK);
+		if (wormAttackAction != null) {
+			WormAttackTransition wormAttackTransition = wormAttackAction.getTransition();
+			if (wormAttackTransition != null) {
+				float wormAttackTransitionPercentage = wormAttackTransition.percentage;
+				if (wormAttackTransitionPercentage >= 0.5) {
+					return;
+				}
+			}
+		}
+		
+		
 		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = cosmodogGame.getPlayer();
+		
+		
+		//Do not render the player if he is dead
+		
+		if (player.dead()) {
+			return;
+		}
+		
+		
+		
 		Cam cam = cosmodogGame.getCam();
 		
 		int tileWidth = tiledMap.getTileWidth();

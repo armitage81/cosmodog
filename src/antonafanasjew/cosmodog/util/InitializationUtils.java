@@ -44,6 +44,7 @@ import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -59,6 +60,7 @@ import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.rules.RuleBookMovementListener;
 import antonafanasjew.cosmodog.rules.RuleBookPieceInteractionListener;
+import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
@@ -68,12 +70,18 @@ import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
+import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventPieceInteraction;
 import antonafanasjew.cosmodog.rules.factories.TeleportRuleFactory;
+import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
+import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InteractingWithEveryCollectibleTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
+import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.timing.Chronometer;
@@ -116,7 +124,7 @@ public class InitializationUtils {
 		cosmodogGame.setUser(user);
 
 		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(207, 336);
+		Player player = Player.fromPosition(320, 335);
 		for (int i = 0; i < 350; i++) {
 			player.getGameProgress().addInfobit();
 		}
@@ -127,6 +135,7 @@ public class InitializationUtils {
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
 		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
@@ -501,6 +510,43 @@ public class InitializationUtils {
 		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules();
 		ruleBook.putAll(teleportRules);
 		
+		
+		//Worm delay rules
+		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
+		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroupUtils.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
+		
+		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation.<br>You activate it.<br>The worm will have harder time to locate you.<br><br>[Press ENTER]");
+		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
+		switchOnVentilationAction = BlockAction.block(switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
+		
+		rule = new Rule(
+			Rule.RULE_WORM_DELAY_PHASE2,
+			Lists.newArrayList(GameEventChangedPosition.class),
+			switchOnVentilationTrigger,
+			switchOnVentilationAction,
+			Rule.RULE_PRIORITY_LATEST
+		);
+		ruleBook.put(rule.getId(), rule);
+		
+		
+		
+		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
+		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroupUtils.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
+		
+		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage.<br>You activate it.<br>The worm will have even harder time to locate you.<br><br>[Press ENTER]");
+		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
+		switchOnSewageAction = BlockAction.block(switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
+		
+		rule = new Rule(
+			Rule.RULE_WORM_DELAY_PHASE3,
+			Lists.newArrayList(GameEventChangedPosition.class),
+			switchOnSewageTrigger,
+			switchOnSewageAction,
+			Rule.RULE_PRIORITY_LATEST
+		);
+		ruleBook.put(rule.getId(), rule);
 		
 		
 		return ruleBook;

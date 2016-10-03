@@ -435,3 +435,6 @@ playerRpgDefaultHitRight;data/player_weapon_rpg.png;16;16;[3/0/25,4/0/25,5/0/25]
 playerRpgDefaultHitDown;data/player_weapon_rpg.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
 playerRpgDefaultHitLeft;data/player_weapon_rpg.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
 playerRpgDefaultHitUp;data/player_weapon_rpg.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+wormAttackSnowSpark;data/worm.png;48;16;[0/3/200,0/4/200,0/5/200];true;true
+wormAttack;data/worm.png;48;48;[1/0/10000];true;true

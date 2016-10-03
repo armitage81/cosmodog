@@ -7,11 +7,15 @@ import java.util.Set;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.globals.Objects;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.pieceinteraction.ComposedPieceInteractionListener;
@@ -25,6 +29,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -32,9 +37,13 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
+import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
+import antonafanasjew.cosmodog.util.RegionUtils;
 
 import com.google.common.collect.Lists;
 
@@ -51,21 +60,15 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	//This is used to compare players values before and after modification.
 	private int oldWater = -1;
+	private int oldTurnsWormAlerted = -1;
 	
 	@Override
 	public void onEnteringTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
 		oldWater = player.getWater();
+		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		applyTime(player, x1, y1, x2, y2, applicationContext);
-	}
-	
-	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, x2, y2);
-		PlanetaryCalendar calendar = cosmodogGame.getPlanetaryCalendar();
-		calendar.addMinutes(timePassed);
-		
+		updateWormAlert(player, x1, y1, x2, y2, applicationContext );
 	}
 	
 	@Override
@@ -81,8 +84,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkDehydration(applicationContext);
 		checkTemperature(applicationContext);
 		checkRadiation(applicationContext);
+		checkWorm(applicationContext);
 	}
-	
+
 	private void collectCollectibles(ApplicationContext applicationContext) {
 
 		Cosmodog cosmodog = applicationContext.getCosmodog();
@@ -286,4 +290,62 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		return pieceInteractionListeners;
 	}
 
+	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, x2, y2);
+		PlanetaryCalendar calendar = cosmodogGame.getPlanetaryCalendar();
+		calendar.addMinutes(timePassed);
+		
+	}
+
+	private void updateWormAlert(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
+		TiledObjectGroup wormsObjectGroup = tiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
+		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
+		boolean inWormRegion = RegionUtils.playerInRegion(player, wormsSouthEastObject, tiledMap.getTileWidth(), tiledMap.getTileHeight());
+		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, applicationContext.getCustomTiledMap(), player);
+		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPositionX(), player.getPositionY());
+		boolean inPlatform = player.getInventory().hasPlatform();
+		boolean wormAlerted = inWormRegion && inSnow && !onPlatform && !inPlatform;
+		if (wormAlerted) {
+			player.increaseTurnsWormAlerted();
+		} else {
+			player.resetTurnsWormAlerted();
+		}
+		
+		
+	}
+	
+	private void checkWorm(ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		int turnsWormAlerted = player.getTurnsWormAlerted();
+		if (oldTurnsWormAlerted != turnsWormAlerted) {
+			
+			if (turnsWormAlerted == 0) {
+				String wormAlertText = "Worm departs.";
+				OverheadNotificationAction.registerOverheadNotification(player, wormAlertText);
+			} else {
+			
+				int turnsUntilWormAttack = player.getGameProgress().getTurnsTillWormAppears() - turnsWormAlerted;
+				
+				if (turnsUntilWormAttack > 0) {
+					String wormAlertText = "Worm attack in " + turnsUntilWormAttack + " turns !!!";
+					OverheadNotificationAction.registerOverheadNotification(player, wormAlertText);
+				} else {
+					CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.WORM_ATTACK, new WormAttackAction(5000));
+				}
+			
+			}
+		}
+	}
+	
+	private boolean isPlayerOnGroundTypeTile(TileType tileType, CustomTiledMap map, Player player) {
+		boolean retVal = false;
+		int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+		retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);
+		
+		return retVal;
+	}
 }

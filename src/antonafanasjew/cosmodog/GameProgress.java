@@ -10,7 +10,11 @@ import com.google.common.collect.Maps;
  * Defines the complete game progress from the perspective of the player character.
  */
 public class GameProgress extends CosmodogModel {
-
+	
+	public static final int TURNS_TILL_WORM_APPEARS_PHASE1 = 4;
+	public static final int TURNS_TILL_WORM_APPEARS_PHASE2 = 6;
+	public static final int TURNS_TILL_WORM_APPEARS_PHASE3 = 8;
+	
 	private static final long serialVersionUID = 3139674682745482519L;
 
 	/**
@@ -20,6 +24,9 @@ public class GameProgress extends CosmodogModel {
 
 	private int infobits = 0;
 	private int gameScore;
+	
+	private int turnsTillWormAppears = TURNS_TILL_WORM_APPEARS_PHASE1;
+	
 
 	private Map<String, String> progressProperties = Maps.newHashMap();
 
@@ -68,6 +75,14 @@ public class GameProgress extends CosmodogModel {
 	 */
 	public int getInfobits() {
 		return infobits;
+	}
+
+	public int getTurnsTillWormAppears() {
+		return turnsTillWormAppears;
+	}
+
+	public void setTurnsTillWormAppears(int turnsTillWormAppears) {
+		this.turnsTillWormAppears = turnsTillWormAppears;
 	}
 
 }

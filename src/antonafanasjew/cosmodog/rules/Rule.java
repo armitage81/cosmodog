@@ -36,6 +36,9 @@ public class Rule implements Serializable {
 	public static final String RULE_WINNING = "winning";
 	public static final String RULE_SCORE_REWARD = "scorereward";
 	
+	public static final String RULE_WORM_DELAY_PHASE2 = "WormDelayToPhase2";
+	public static final String RULE_WORM_DELAY_PHASE3 = "WormDelayToPhase3";
+	
 	
 	private String id;
 	private Collection<Class<? extends GameEvent>> eventTypes;

@@ -7,5 +7,6 @@ package antonafanasjew.cosmodog.globals;
 public class ObjectGroups {
 
 	public static final String OBJECT_GROUP_TELEPORT_CONNECTIONS = "TeleportConnections";
+	public static final String OBJECT_GROUP_WORMS = "Worms";
 	
 }

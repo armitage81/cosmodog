@@ -27,6 +27,8 @@ public enum AsyncActionType {
 	 */
 	WAIT(true, false),
 	
+	WORM_ATTACK(true, false),
+	
 	/**
 	 * Action type: Collision indicator. Is used to make intervals between the 'no passage' sounds. Does not block the input.
 	 */
