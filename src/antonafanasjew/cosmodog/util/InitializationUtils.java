@@ -123,19 +123,20 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		//Player player = Player.fromPosition(5, 3);
-		Player player = Player.fromPosition(320, 335);
-		for (int i = 0; i < 350; i++) {
-			player.getGameProgress().addInfobit();
-		}
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+		Player player = Player.fromPosition(5, 3);
+		
+//		Player player = Player.fromPosition(320, 335);
+//		for (int i = 0; i < 350; i++) {
+//			player.getGameProgress().addInfobit();
+//		}
+//		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
-		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
-		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
+//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
+//		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+//		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
