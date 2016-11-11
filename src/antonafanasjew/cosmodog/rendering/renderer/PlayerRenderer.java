@@ -101,7 +101,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, tiledMap, player, playerTransition);
 		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki;
-		boolean playerIsInRoughTerrain = isRoughTerrain(tiledMap, player, playerTransition);
+		boolean playerIsInSoftGroundType = isPlayerOnSoftGroundType(tiledMap, player, playerTransition);
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
@@ -124,7 +124,7 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerAppearanceType = PlayerAppearanceType.INHIGHGRASS;
 		} else if (playerIsOnSki) {
 			playerAppearanceType = PlayerAppearanceType.ONSKI;
-		} else if (playerIsInRoughTerrain) {
+		} else if (playerIsInSoftGroundType) {
 			playerAppearanceType = PlayerAppearanceType.NOFEET;
 		} else {
 			playerAppearanceType = PlayerAppearanceType.DEFAULT;
@@ -308,38 +308,40 @@ public class PlayerRenderer extends AbstractRenderer {
 		return retVal;
 	}
 
-	private boolean isRoughTerrain(CustomTiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean tileIdRepresentsSoftGroundType(int tileId) {
+		return
+		TileType.GROUND_TYPE_SNOW.getTileId() == tileId
+		||
+		TileType.GROUND_TYPE_GRASS.getTileId() == tileId
+		||
+		TileType.GROUND_TYPE_SAND.getTileId() == tileId
+		||
+		TileType.GROUND_TYPE_SWAMP.getTileId() == tileId;
+	}
+	
+	private boolean isPlayerOnSoftGroundType(CustomTiledMap map, Player player, ActorTransition playerTransition) {
 		boolean retVal = false;
 		if (playerTransition == null) {
-			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TERRAINTYPES);
-			boolean isRoughTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_ROUGH);
-			boolean isUnevenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_UNEVEN);
-			boolean isBrokenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_BROKEN);
-			retVal = isUnevenTerrain || isRoughTerrain || isBrokenTerrain;
+			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+			retVal = tileIdRepresentsSoftGroundType(tileId);
 			
 		} else {
 			
-			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_TERRAINTYPES);
-			boolean isStartTileRoughTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, startTileId).equals(TileType.TERRAIN_TYPE_ROUGH);
-			boolean isStartTileUnevenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, startTileId).equals(TileType.TERRAIN_TYPE_UNEVEN);
-			boolean isStartTileBrokenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, startTileId).equals(TileType.TERRAIN_TYPE_BROKEN);
-			boolean startTileIdIsUneven = isStartTileRoughTerrain || isStartTileUnevenTerrain || isStartTileBrokenTerrain;
+			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
+			boolean startTileSoft = tileIdRepresentsSoftGroundType(startTileId);
 			
-			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_TERRAINTYPES);
-			boolean isTargetTileRoughTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, targetTileId).equals(TileType.TERRAIN_TYPE_ROUGH);
-			boolean isTargetTileUnevenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, targetTileId).equals(TileType.TERRAIN_TYPE_UNEVEN);
-			boolean isTargetTileBrokenTerrain = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, targetTileId).equals(TileType.TERRAIN_TYPE_BROKEN);
-			boolean targetTileIdIsUneven = isTargetTileRoughTerrain || isTargetTileUnevenTerrain || isTargetTileBrokenTerrain;
+			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
+			boolean targetTileSoft = tileIdRepresentsSoftGroundType(targetTileId);
 			
 			
-			if (startTileIdIsUneven && targetTileIdIsUneven) {
+			if (startTileSoft && targetTileSoft) {
 				retVal = true;
-			} else if (!startTileIdIsUneven && !targetTileIdIsUneven) {
+			} else if (!startTileSoft && !targetTileSoft) {
 				retVal = false;
-			} else if (startTileIdIsUneven && !targetTileIdIsUneven) {
+			} else if (startTileSoft && !targetTileSoft) {
 				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else if (!startTileIdIsUneven && targetTileIdIsUneven) {
+			} else if (!startTileSoft && targetTileSoft) {
 				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
 			}

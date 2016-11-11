@@ -60,12 +60,18 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	//This is used to compare players values before and after modification.
 	private int oldWater = -1;
+	private int oldFood = -1;
+	private boolean oldDehydrating = false;
+	private boolean oldStarving = false;
 	private int oldTurnsWormAlerted = -1;
 	
 	@Override
 	public void onEnteringTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
 		oldWater = player.getWater();
+		oldFood = player.getFood();
+		oldDehydrating = player.dehydrating();
+		oldStarving = player.starving();
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		applyTime(player, x1, y1, x2, y2, applicationContext);
 		updateWormAlert(player, x1, y1, x2, y2, applicationContext );
@@ -215,7 +221,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();				
 				if (player.starving()) {
-					OverheadNotificationAction.registerOverheadNotification(player, "You are hungry");
+					if (!oldStarving) {
+						OverheadNotificationAction.registerOverheadNotification(player, "You are hungry");
+					}
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForHunger(1);
 					}
@@ -235,7 +243,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				if (player.dehydrating()) {
-					OverheadNotificationAction.registerOverheadNotification(player, "You are thirsty");
+					if (!oldDehydrating) {
+						OverheadNotificationAction.registerOverheadNotification(player, "You are thirsty");
+					}
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForThirst(1);
 					}

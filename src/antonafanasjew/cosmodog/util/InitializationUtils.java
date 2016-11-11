@@ -40,11 +40,8 @@ import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -125,7 +122,8 @@ public class InitializationUtils {
 
 		Player player = Player.fromPosition(5, 3);
 		
-//		Player player = Player.fromPosition(320, 335);
+//		Player player = Player.fromPosition(130, 130);
+		
 //		for (int i = 0; i < 350; i++) {
 //			player.getGameProgress().addInfobit();
 //		}
