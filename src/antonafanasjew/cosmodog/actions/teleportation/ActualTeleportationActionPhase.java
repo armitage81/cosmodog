@@ -5,11 +5,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject.Point;
 import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
@@ -67,20 +67,21 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 	
 	@Override
 	public void onEnd() {
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
+
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		Point endPoint = teleportConnection.getPoints().get(1);
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
 		
-		int targetPosX = (int)endPoint.x / tiledMap.getTileWidth();
-		int targetPosY = (int)endPoint.y / tiledMap.getTileHeight();
+		int targetPosX = (int)endPoint.x / map.getTileWidth();
+		int targetPosY = (int)endPoint.y / map.getTileHeight();
 		
 		player.setPositionX(targetPosX);
 		player.setPositionY(targetPosY);
 		
-		cam.focusOnPiece(tiledMap, 0, 0, player);
+		cam.focusOnPiece(map, 0, 0, player);
 	}
 
 }

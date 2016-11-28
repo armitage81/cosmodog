@@ -2,9 +2,9 @@ package antonafanasjew.cosmodog.collision;
 
 import java.util.concurrent.Callable;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -20,7 +20,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 public class FuelCollisionValidator extends AbstractCollisionValidator {
 
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 		Player player = (Player) actor;
 		if (player.getInventory().hasVehicle()) {

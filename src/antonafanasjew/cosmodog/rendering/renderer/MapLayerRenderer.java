@@ -9,15 +9,16 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 
 
@@ -32,12 +33,13 @@ public class MapLayerRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
 		Cam cam = cosmodogGame.getCam();
 		
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -62,7 +64,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 			//We paint each tile individually as 1*1 tile map section to be flexible on skipping and replacing tiles.
 			for (int tx = tileNoX; tx < tileNoX + tilesW; tx++) {
 				for (int ty = tileNoY; ty < tileNoY + tilesH; ty++) {
-					if (tx >= 0 && ty >= 0 && tx < tiledMap.getWidth() && ty < tiledMap.getHeight()) {
+					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
 						long begin = new Date().getTime();
 						if (rendererPredicate.tileShouldBeRendered(i, tx, ty)) {
 							long end = new Date().getTime();
@@ -71,7 +73,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 								System.out.println(rendererPredicate.toString());
 								System.out.println(rendererPredicate.getClass());
 							}
-							render(tiledMap, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
+							render(map, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
 						}
 					}
 				}
@@ -84,11 +86,11 @@ public class MapLayerRenderer extends AbstractRenderer {
 		
 	}
 
-	private void render(CustomTiledMap customTiledMap, int offsetX, int offsetY, int tilePosX, int tilePosY, int layerIndex) {
+	private void render(CosmodogMap map, int offsetX, int offsetY, int tilePosX, int tilePosY, int layerIndex) {
 		
 		Animation animation = null;
 		
-		int tileId = customTiledMap.getTileId(tilePosX, tilePosY, layerIndex);
+		int tileId = map.getTileId(tilePosX, tilePosY, layerIndex);
 		TileType tileType = TileType.getByLayerAndTileId(layerIndex, tileId);
 		if (Mappings.TILE_TYPES_TO_BE_ANIMATED.contains(tileType)) {
 			animation = ApplicationContext.instance().getAnimations().get("tile." + tileType.name());

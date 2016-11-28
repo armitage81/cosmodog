@@ -6,10 +6,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import com.google.common.collect.Sets;
-
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -25,27 +22,26 @@ import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
+
+import com.google.common.collect.Sets;
 
 public class SightRadiusRenderer extends AbstractRenderer {
 
 	@Override
 	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 
-		ApplicationContext applicationContext = ApplicationContext.instance();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -65,7 +61,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
 		
-		for (Enemy enemy : cosmodogMap.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
+		for (Enemy enemy : map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
 
 			float movementOffsetX = 0;
 			float movementOffsetY = 0;
@@ -140,7 +136,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			
 				Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
 				float sightDistance = modifiedSight.getDistance();
-				int sightDistanceInTiles = (int)(sightDistance / tiledMap.getTileWidth()); //Works only for quadratic tiles.
+				int sightDistanceInTiles = (int)(sightDistance / map.getTileWidth()); //Works only for quadratic tiles.
 				
 				VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, tileWidth, tileHeight);
 				
@@ -151,7 +147,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 							continue;
 						}
 						
-						if (i < 0 || i >= tiledMap.getWidth() || j < 0 || j >= tiledMap.getHeight()) {
+						if (i < 0 || i >= map.getWidth() || j < 0 || j >= map.getHeight()) {
 							continue;
 						}
 						

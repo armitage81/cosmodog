@@ -1,9 +1,9 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
@@ -16,11 +16,13 @@ public class BinocularsInteraction extends AbstractPieceInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
+		
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
 		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundBinoculars()), true, false);
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 		Cam cam = cosmodogGame.getCam();
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
-		cam.focusOnPiece(tiledMap, 0, 0, player);
+		cam.focusOnPiece(map, 0, 0, player);
 		cam.zoomOut();
 	}
 

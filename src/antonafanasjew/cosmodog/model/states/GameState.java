@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -200,20 +201,21 @@ public class GameState extends BasicGameState {
 		
 		if (cosmodog.getGameLifeCycle().isStartNewGame()) {
 
-			CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 			CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
 			
     		CosmodogGame cosmodogGame;
+    		CosmodogMap map;
     		
     		try {
-				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, tiledMap, customTiledMap, "Armitage");
+				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMap, "Armitage");
+				map = cosmodogGame.getMap();
 			} catch (TiledMapIoException e1) {
 				throw new SlickException("Error while reading the cosmodog map", e1);
 			}
     		
     		applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 
-    		Rectangle scene = Rectangle.fromSize((float) (tiledMap.getWidth() * tiledMap.getTileWidth()), (float) (tiledMap.getHeight() * tiledMap.getTileHeight()));
+    		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
 
     		try {
     			cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, mapDrawingContext.x(), mapDrawingContext.y(), mapDrawingContext.w(), mapDrawingContext.h()));
@@ -229,7 +231,7 @@ public class GameState extends BasicGameState {
     		Player player = cosmodogGame.getPlayer();
     		Cam cam = cosmodogGame.getCam();
     		cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
-    		cam.focusOnPiece(tiledMap, 0, 0, player);
+    		cam.focusOnPiece(map, 0, 0, player);
 
     		//Check for the rules of the new game event
 			RuleBook ruleBook = cosmodogGame.getRuleBook();

@@ -8,7 +8,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
@@ -201,11 +200,12 @@ public class MovementAction extends FixedLengthAsyncAction {
 	}
 	
 	private void onUpdateForPlayer(int timePassed) {
-		ApplicationContext applicationContext = ApplicationContext.instance();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
 		Cam cam = cosmodogGame.getCam();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
-		int tileWidth = tiledMap.getTileWidth();
+
+		int tileWidth = map.getTileWidth();
 		
 		float movementOffsetX = 0;
 		float movementOffsetY = 0;
@@ -249,7 +249,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		cosmodogGame.getActorTransitionRegistry().put(player, playerTransition);
 		
-		cam.focusOnPiece(tiledMap, movementOffsetX, movementOffsetY, player);
+		cam.focusOnPiece(map, movementOffsetX, movementOffsetY, player);
 	}
 	
 	private void onUpdateForEnemies(int timePassed) {
@@ -388,7 +388,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CustomTiledMap customTiledMap = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
 		SightModifier sightModifier = cosmodog.getSightModifier();
 		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
 		
@@ -396,8 +397,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		for (Sight sight : sights) {
 			Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
-			VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, customTiledMap.getTileWidth(), customTiledMap.getTileHeight());
-			if (visibilityCalculator.visible(player, customTiledMap.getTileWidth(), customTiledMap.getTileHeight())) {
+			VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, map.getTileWidth(), map.getTileHeight());
+			if (visibilityCalculator.visible(player, map.getTileWidth(), map.getTileHeight())) {
 				return true;
 			}
 		}

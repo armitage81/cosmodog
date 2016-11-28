@@ -112,8 +112,8 @@ public class InitializationUtils {
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
-	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
-		CosmodogMap cosmodogMap = initializeCosmodogMap(tiledMap, customTiledMap);
+	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+		CosmodogMap cosmodogMap = initializeCosmodogMap(customTiledMap);
 		cosmodogGame.setMap(cosmodogMap);
 		
 		User user = new User();
@@ -161,8 +161,7 @@ public class InitializationUtils {
 		WritingTextBox dialogWritingTextBox = new WritingTextBox(dialogWritingDc.w(), dialogWritingDc.h(), 0, 3, 18, 22);
 		cosmodogGame.setCommentsStateUpdater(new WritingTextBoxStateUpdater(3000, dialogWritingTextBox));
 		
-		RuleBook ruleBook = initializeRuleBook();
-		cosmodogGame.setRuleBook(ruleBook);
+		initializeRuleBook(cosmodogGame);
 		
 		Player player = cosmodogGame.getPlayer();
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
@@ -182,28 +181,29 @@ public class InitializationUtils {
 		planetaryCalendar.setListener(listener);
 	}
 	
-	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap tiledMap, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
 		
 		CosmodogGame cosmodogGame = new CosmodogGame();
 		
-		initializeCosmodogGameNonTransient(cosmodogGame, game, tiledMap, customTiledMap, userName);
+		initializeCosmodogGameNonTransient(cosmodogGame, game, customTiledMap, userName);
 		initializeCosmodogGameTransient(cosmodogGame);
 
 		return cosmodogGame;
 	}
 
-	public static CosmodogMap initializeCosmodogMap(CustomTiledMap tiledMap, CustomTiledMap customTiledMap) throws SlickException, TiledMapIoException {
+	public static CosmodogMap initializeCosmodogMap(CustomTiledMap customTiledMap) throws SlickException, TiledMapIoException {
+
+		CosmodogMap map = new CosmodogMap(customTiledMap);
 
 		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
-		int mapWidth = tiledMap.getWidth();
-		int mapHeight = tiledMap.getHeight();
+		int mapWidth = map.getWidth();
+		int mapHeight = map.getHeight();
 
 		
-		CosmodogMap map = new CosmodogMap();
 		
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
-				int tileId = tiledMap.getTileId(k, l, collectiblesLayerIndex);
+				int tileId = map.getTileId(k, l, collectiblesLayerIndex);
 				if (tileId == INFOBIT_TILE_ID) {
 					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobit);
 					c.setPositionX(k);
@@ -340,7 +340,7 @@ public class InitializationUtils {
 					map.getMapPieces().add(collAmmo);
 				}
 				
-				tileId = tiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);
+				tileId = customTiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);
 				
 				if (TileType.TELEPORT_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_TELEPORT);
@@ -381,8 +381,8 @@ public class InitializationUtils {
 			
 		}
 
-		initializeTiledMapObjects(tiledMap, map);
-		initializeEnemies(tiledMap, customTiledMap, map);
+		initializeTiledMapObjects(customTiledMap, map);
+		initializeEnemies(customTiledMap, map);
 		
 		return map;
 
@@ -414,7 +414,7 @@ public class InitializationUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static RuleBook initializeRuleBook() {
+	private static void initializeRuleBook(CosmodogGame cosmodogGame) {
 		RuleBook ruleBook = new RuleBook();
 
 		ResourceWrapperBuilder<Rule> ruleBuilder;
@@ -506,7 +506,7 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 		
 		//Teleport rules
-		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules();
+		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules(cosmodogGame);
 		ruleBook.putAll(teleportRules);
 		
 		
@@ -547,20 +547,20 @@ public class InitializationUtils {
 		);
 		ruleBook.put(rule.getId(), rule);
 		
-		
-		return ruleBook;
+		cosmodogGame.setRuleBook(ruleBook);	
+
 	}
 	
-	private static void initializeEnemies(CustomTiledMap tiledMap, CustomTiledMap customTiledMap, CosmodogMap map) {
+	private static void initializeEnemies(CustomTiledMap customTiledMap, CosmodogMap map) {
 		Map<UnitType, EnemyFactory> enemyFactories = initializeEnemyFactories();
 		int enemyLayerIndex = Layers.LAYER_META_NPC;
 		
-		int mapWidth = tiledMap.getWidth();
-		int mapHeight = tiledMap.getHeight();
+		int mapWidth = customTiledMap.getWidth();
+		int mapHeight = customTiledMap.getHeight();
 
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
-				int tileId = tiledMap.getTileId(k, l, enemyLayerIndex);
+				int tileId = customTiledMap.getTileId(k, l, enemyLayerIndex);
 				
 				//Will be null in most cases.
 				UnitType unitType = Mappings.ENEMY_TILE_TYPE_TO_UNIT_TYPE.get(TileType.getByLayerAndTileId(Layers.LAYER_META_NPC, tileId));
@@ -579,8 +579,8 @@ public class InitializationUtils {
 						
 						int x = k * customTiledMap.getTileWidth();
 						int y = l * customTiledMap.getTileHeight();
-						int w = tiledMap.getTileWidth();
-						int h = tiledMap.getTileHeight();
+						int w = customTiledMap.getTileWidth();
+						int h = customTiledMap.getTileHeight();
 						
 						PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h);
 						

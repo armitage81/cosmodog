@@ -3,8 +3,8 @@ package antonafanasjew.cosmodog.rules.triggers;
 import java.util.List;
 import java.util.Map;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
@@ -43,10 +43,9 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CustomTiledMap customTiledMap = ApplicationContextUtils.getCustomTiledMap();
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		TiledObjectGroup teleportConnectionObjectGroup = customTiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
+		TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 		
 		Map<String, TiledObject> teleportConnectionObjects = teleportConnectionObjectGroup.getObjects();
 
@@ -59,7 +58,7 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		
 		Position teleportStartPosition = Position.fromCoordinates(teleportStartPoint.x, teleportStartPoint.y);
 		
-		return RegionUtils.playerOnPosition(player, teleportStartPosition, tiledMap.getTileWidth(), tiledMap.getTileHeight());
+		return RegionUtils.playerOnPosition(player, teleportStartPosition, map.getTileWidth(), map.getTileHeight());
 		
 	}
 

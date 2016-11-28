@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
@@ -18,6 +17,7 @@ import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
@@ -26,6 +26,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
@@ -56,8 +57,8 @@ public class PlayerRenderer extends AbstractRenderer {
 		}
 		
 		
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = cosmodogGame.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		
 		//Do not render the player if he is dead
@@ -70,8 +71,8 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -93,15 +94,15 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean playerIsInPlatform = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM) != null;
-		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(tiledMap, player, playerTransition);
+		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(map, player, playerTransition);
 		
 		boolean playerIsOnPlatform = PlayerMovementCache.getInstance().isPlayerOnPlatform();
 		
-		boolean playerIsInHighGrass = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, tiledMap, player, playerTransition);
-		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, tiledMap, player, playerTransition);
+		boolean playerIsInHighGrass = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, player, playerTransition);
+		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player, playerTransition);
 		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki;
-		boolean playerIsInSoftGroundType = isPlayerOnSoftGroundType(tiledMap, player, playerTransition);
+		boolean playerIsInSoftGroundType = isPlayerOnSoftGroundType(map, player, playerTransition);
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
@@ -246,7 +247,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		return boat != null;
 	}
 	
-	private boolean isWaterTile(CustomTiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean isWaterTile(CosmodogMap map, Player player, ActorTransition playerTransition) {
 		//int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
 		//return tileId == Tiles.WATER_TILE_ID;
 		
@@ -279,7 +280,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 	}
 	
-	private boolean isPlayerOnGroundTypeTile(TileType tileType, CustomTiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean isPlayerOnGroundTypeTile(TileType tileType, CosmodogMap map, Player player, ActorTransition playerTransition) {
 		boolean retVal = false;
 		if (playerTransition == null) {
 			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
@@ -319,7 +320,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		TileType.GROUND_TYPE_SWAMP.getTileId() == tileId;
 	}
 	
-	private boolean isPlayerOnSoftGroundType(CustomTiledMap map, Player player, ActorTransition playerTransition) {
+	private boolean isPlayerOnSoftGroundType(CosmodogMap map, Player player, ActorTransition playerTransition) {
 		boolean retVal = false;
 		if (playerTransition == null) {
 			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);

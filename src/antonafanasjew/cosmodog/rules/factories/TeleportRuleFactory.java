@@ -2,10 +2,11 @@ package antonafanasjew.cosmodog.rules.factories;
 
 import java.util.Map;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
@@ -13,7 +14,6 @@ import antonafanasjew.cosmodog.rules.triggers.EnteringTeleportTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import com.google.common.collect.Maps;
 
@@ -32,12 +32,14 @@ public class TeleportRuleFactory implements RuleFactory {
 	}
 	
 	@Override
-	public Map<String, Rule> buildRules() {
+	public Map<String, Rule> buildRules(CosmodogGame cosmodogGame) {
 
+		//Do not take the map from the application context at this point as it is not defined there yet.
+		CosmodogMap map = cosmodogGame.getMap();
+		
 		Map<String, Rule> retVal = Maps.newHashMap();
 		
-		final CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
-		TiledObjectGroup teleportConnectionObjectGroup = tiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
+		TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 		
 		
 		Map<String, TiledObject> teleportConnectionObjects = teleportConnectionObjectGroup.getObjects();

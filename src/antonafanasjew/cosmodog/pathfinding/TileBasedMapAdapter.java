@@ -4,24 +4,24 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
 public class TileBasedMapAdapter implements TileBasedMap {
 
 	private Actor actor;
 	private ApplicationContext applicationContext;
-	private CustomTiledMap tiledMap;
 	private CollisionValidator collisionValidator;
 	private TravelTimeCalculator travelTimeCalculator;
+	private CosmodogMap map;
 	
 
-	public TileBasedMapAdapter(Actor actor, ApplicationContext applicationContext, CustomTiledMap tiledMap, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator) {
+	public TileBasedMapAdapter(Actor actor, ApplicationContext applicationContext, CosmodogMap map, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator) {
 		this.actor = actor;
 		this.applicationContext = applicationContext;
-		this.tiledMap = tiledMap;
+		this.map = map;
 		this.collisionValidator = collisionValidator;
 		this.travelTimeCalculator = travelTimeCalculator;
 	}
@@ -29,7 +29,7 @@ public class TileBasedMapAdapter implements TileBasedMap {
 	@Override
 	public boolean blocked(PathFindingContext cx, int x, int y) {
 		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
-		return !collisionValidator.collisionStatus(cosmodogGame, actor, tiledMap, x, y).isPassable();
+		return !collisionValidator.collisionStatus(cosmodogGame, actor, map, x, y).isPassable();
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class TileBasedMapAdapter implements TileBasedMap {
 
 	@Override
 	public int getHeightInTiles() {
-		return tiledMap.getHeight();
+		return map.getHeight();
 	}
 
 	@Override
 	public int getWidthInTiles() {
-		return tiledMap.getWidth();
+		return map.getWidth();
 	}
 
 	@Override

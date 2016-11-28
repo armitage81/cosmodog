@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.collision;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
@@ -33,7 +33,7 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 	 * on foot. 
 	 */
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 		
 		Player player = (Player)actor;
 		VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);

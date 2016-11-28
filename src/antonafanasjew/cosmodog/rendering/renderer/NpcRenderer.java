@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
@@ -26,16 +25,13 @@ public class NpcRenderer extends AbstractRenderer {
 	@Override
 	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 
-		ApplicationContext applicationContext = ApplicationContext.instance();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
-		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -53,7 +49,7 @@ public class NpcRenderer extends AbstractRenderer {
 		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
 		
 		
-		for (Enemy enemy : cosmodogMap.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
+		for (Enemy enemy : map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
 			
 			int enemyPosX = enemy.getPositionX();
 			int enemyPosY = enemy.getPositionY();

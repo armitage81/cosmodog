@@ -1,11 +1,11 @@
 package antonafanasjew.cosmodog.pathfinding;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledTile;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
@@ -20,9 +21,9 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 	@Override
 	protected int calculateTravelTimeInternal(ApplicationContext context, Actor actor, int x, int y) {
 		
-		CustomTiledMap tiledMap = context.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		TiledMapLayer terrainTypesLayer = tiledMap.getMapLayers().get(Layers.LAYER_META_TERRAINTYPES);
+		TiledMapLayer terrainTypesLayer = map.getMapLayers().get(Layers.LAYER_META_TERRAINTYPES);
 		TiledTile tile = terrainTypesLayer.getTile(x, y);
 		int terrainTypeTileId = tile.getGid();
 		
@@ -31,7 +32,7 @@ public class DefaultTravelTimeCalculator extends AbstractTravelTimeCalculator {
 
 			Player player = (Player) actor;
 
-			int tileId = tiledMap.getTileId(x, y, Layers.LAYER_META_GROUNDTYPES);
+			int tileId = map.getTileId(x, y, Layers.LAYER_META_GROUNDTYPES);
 			boolean isOnSnowGround = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SNOW);
 			boolean hasSki = player.getInventory().get(InventoryItemType.SKI) != null;
 			PlatformInventoryItem platformAsVehicle = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);

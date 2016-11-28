@@ -4,9 +4,7 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;

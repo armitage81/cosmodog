@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.model.inventory;
 
 import antonafanasjew.cosmodog.model.actors.Platform;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
 
 /**
  * Wraps a collectible vehicle as an inventory item.

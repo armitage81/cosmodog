@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.collision;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
@@ -14,7 +14,7 @@ public class PlatformAsObstacleForEnemyCollisionValidator extends AbstractCollis
 
 
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 		
 		boolean blocked = false;
 		

@@ -7,13 +7,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction.OverheadNotificationTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
@@ -21,6 +21,7 @@ import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextR
 import antonafanasjew.cosmodog.text.Letter;
 import antonafanasjew.cosmodog.text.LetterUtils;
 import antonafanasjew.cosmodog.topology.Rectangle;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 
 public class OverheadNotificationRenderer extends AbstractRenderer {
@@ -31,7 +32,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 
 		OverheadNotificationAction action = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 		
@@ -54,8 +55,8 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			
 			Cam cam = cosmodogGame.getCam();
 			
-			int tileWidth = tiledMap.getTileWidth();
-			int tileHeight = tiledMap.getTileHeight();
+			int tileWidth = map.getTileWidth();
+			int tileHeight = map.getTileHeight();
 	
 			int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 			int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());

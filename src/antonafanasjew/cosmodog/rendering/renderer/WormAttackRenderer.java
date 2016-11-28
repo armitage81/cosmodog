@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
@@ -15,8 +14,10 @@ import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTran
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class WormAttackRenderer extends AbstractRenderer {
 
@@ -39,14 +40,13 @@ public class WormAttackRenderer extends AbstractRenderer {
 		
 		Animation wormAttackAnimation = applicationContext.getAnimations().get("wormAttack");
 		
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());

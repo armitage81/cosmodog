@@ -6,12 +6,12 @@ import java.util.Random;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -36,7 +36,7 @@ public class PatrolingPathFinder extends AbstractPathFinder {
 	@Override
 	protected MovementActionResult calculateMovementResultInternal(Actor enemy, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		//Throw a number from 0 to 3. Select the according step (up, down, left, right) and cycle through all 4 directions starting with the thrown index till the collision validator accepts it (if not, just do not move).
 		int xSteps[] = new int[] {enemy.getPositionX(), enemy.getPositionX(), enemy.getPositionX() - 1, enemy.getPositionX() + 1};
@@ -80,7 +80,7 @@ public class PatrolingPathFinder extends AbstractPathFinder {
 				int xAtIndex = xSteps[index];
 				int yAtIndex = ySteps[index];
 				
-				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, tiledMap, xAtIndex, yAtIndex);
+				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, xAtIndex, yAtIndex);
 				
 				if (collisionStatus.isPassable()) {
 					x = xAtIndex;

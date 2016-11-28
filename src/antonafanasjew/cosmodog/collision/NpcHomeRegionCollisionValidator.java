@@ -2,13 +2,12 @@ package antonafanasjew.cosmodog.collision;
 
 import org.newdawn.slick.util.Log;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CollisionUtils;
 import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 
@@ -20,7 +19,7 @@ import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 public class NpcHomeRegionCollisionValidator extends AbstractCollisionValidator {
 
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 
 		CollisionStatus passable = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.OUT_OF_HOME_REGION);
@@ -32,8 +31,7 @@ public class NpcHomeRegionCollisionValidator extends AbstractCollisionValidator 
 			return passable;
 		}
 		
-		CustomTiledMap customTiledMap = ApplicationContextUtils.getCustomTiledMap();
-		TiledObject homeRegion = customTiledMap.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_NPC_HOME_REGIONS).getObjects().get(homeRegionName);
+		TiledObject homeRegion = map.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_NPC_HOME_REGIONS).getObjects().get(homeRegionName);
 		
 		if (homeRegion == null) {
 			Log.warn("NPC Actor " + npcActor + " has defined a home region name " + homeRegionName + " that does not exist on the map.");

@@ -1,17 +1,13 @@
 package antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates;
 
-import java.util.Map;
-
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CollisionUtils;
-import antonafanasjew.cosmodog.util.ObjectGroupUtils;
-import antonafanasjew.cosmodog.util.RegionUtils;
 
 public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 
@@ -26,7 +22,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		//No need to calculate the region intersection if the tile is empty anyway.
 		if (map.getTileId(tileX, tileY, layerIndex) == 0) {
@@ -47,7 +43,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		
 	}
 	
-	private boolean tileCoversPlayer(TiledObject regionOverPlayer, CustomTiledMap map, int tilePosX, int tilePosY) {
+	private boolean tileCoversPlayer(TiledObject regionOverPlayer, CosmodogMap map, int tilePosX, int tilePosY) {
 		
 		int x = tilePosX * map.getTileWidth();
 		int y = tilePosY * map.getTileHeight();
@@ -61,7 +57,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		return intersects;
 	}
 	
-	private TiledObject roofRegion(Player player, CustomTiledMap map) {
+	private TiledObject roofRegion(Player player, CosmodogMap map) {
 		return PlayerMovementCache.getInstance().getRoofRegionOverPlayer();
 	}
 	

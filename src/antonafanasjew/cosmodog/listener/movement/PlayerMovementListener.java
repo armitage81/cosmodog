@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
@@ -29,7 +28,6 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -158,12 +156,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			@Override
 			public void run() {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
+				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
-				CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 				
 				WaterValidator waterValidator = cosmodog.getWaterValidator();
 				
-				boolean hasWaterAccess = waterValidator.waterInReach(player, tiledMap, player.getPositionX(), player.getPositionY());
+				boolean hasWaterAccess = waterValidator.waterInReach(player, map, player.getPositionX(), player.getPositionY());
 				
 				if (hasWaterAccess) {
 					if (oldWater < player.getCurrentMaxWater()) {
@@ -191,9 +189,10 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			@Override
 			public void run() {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
+				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 				Player player = cosmodog.getCosmodogGame().getPlayer();
-				CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
-				int collectiblesLayerTileId = tiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
+
+				int collectiblesLayerTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
 				if (TileType.FUEL.getTileId() == collectiblesLayerTileId) {
 					if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 						VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
@@ -259,9 +258,10 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			@Override
 			public void run() {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
+				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+				
 				Player player = cosmodog.getCosmodogGame().getPlayer();
-				CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
-				int tileId = customTiledMap.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TEMPERATURE);
+				int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TEMPERATURE);
 				
 				boolean coldTile = TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD;
 				boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
@@ -284,7 +284,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	}
 	
 	private void checkRadiation(ApplicationContext applicationContext) {
-		CustomTiledMap map = applicationContext.getCustomTiledMap();
+
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		int radiationTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
@@ -310,11 +311,13 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	}
 
 	private void updateWormAlert(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
-		TiledObjectGroup wormsObjectGroup = tiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
+
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		TiledObjectGroup wormsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
 		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
-		boolean inWormRegion = RegionUtils.playerInRegion(player, wormsSouthEastObject, tiledMap.getTileWidth(), tiledMap.getTileHeight());
-		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, applicationContext.getCustomTiledMap(), player);
+		boolean inWormRegion = RegionUtils.playerInRegion(player, wormsSouthEastObject, map.getTileWidth(), map.getTileHeight());
+		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player);
 		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPositionX(), player.getPositionY());
 		boolean inPlatform = player.getInventory().hasPlatform();
 		boolean wormAlerted = inWormRegion && inSnow && !onPlatform && !inPlatform;
@@ -351,7 +354,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		}
 	}
 	
-	private boolean isPlayerOnGroundTypeTile(TileType tileType, CustomTiledMap map, Player player) {
+	private boolean isPlayerOnGroundTypeTile(TileType tileType, CosmodogMap map, Player player) {
 		boolean retVal = false;
 		int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
 		retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);

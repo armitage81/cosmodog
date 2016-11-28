@@ -1,9 +1,9 @@
 package antonafanasjew.cosmodog.sight;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -20,7 +20,7 @@ public class GeneralSightModifier implements SightModifier {
 	public Sight modifySight(Sight sight, PlanetaryCalendar planetaryCalendar) {
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		if (playerIsInHighGrassTile(map, player)) {
 			return sight.copyWithOtherDistance(DEFAULT_SIGHT_DISTANCE);
@@ -30,8 +30,7 @@ public class GeneralSightModifier implements SightModifier {
 		
 	}
 
-	
-	private boolean playerIsInHighGrassTile(CustomTiledMap map, Player player) {
+	private boolean playerIsInHighGrassTile(CosmodogMap map, Player player) {
 		boolean retVal;
 		int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
 		retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);

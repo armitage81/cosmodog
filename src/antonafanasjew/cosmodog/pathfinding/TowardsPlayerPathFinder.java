@@ -10,11 +10,11 @@ import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -32,7 +32,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		//Preparing static data.
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		TileBasedMapFactory tileBasedMapFactory = cosmodog.getTileBasedMapFactory();
 		
@@ -46,7 +46,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		enemy.setTimeBudgetOverhead(0);
 		
 		//Preparing the AStar path finder.
-		TileBasedMap tileBasedMap = tileBasedMapFactory.createTileBasedMap(enemy, applicationContext, tiledMap, collisionValidator, travelTimeCalculator);
+		TileBasedMap tileBasedMap = tileBasedMapFactory.createTileBasedMap(enemy, applicationContext, map, collisionValidator, travelTimeCalculator);
 		AStarPathFinder pathFinder = new AStarPathFinder(tileBasedMap, followDistance, false);
 		
 		//Adding the actors position as the first step in the path in any case.
@@ -108,7 +108,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 	private Position nextFreePositionNearbyPlayer(Actor actor, Player player, MovementActionResult playerMovementActionResult, CollisionValidator collisionValidator) {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		//If the player did not move, we take his real coordinates as target.
 		int x = player.getPositionX();

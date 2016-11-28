@@ -7,12 +7,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -35,7 +35,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = cosmodogGame.getPlayer();
 				
 		g.translate(context.x(), context.y());
@@ -191,7 +191,7 @@ public class LifeInterfaceRenderer implements Renderer {
 			int radiationTiles = 0;
 			for (int i = posX - 1; i <= posX + 1; i++) {
 				for (int j = posY - 1; j <= posY + 1; j++) {
-					int radiationTileId = tiledMap.getTileId(i, j, Layers.LAYER_META_RADIATION);
+					int radiationTileId = map.getTileId(i, j, Layers.LAYER_META_RADIATION);
 					if (TileType.RADIATION.getTileId() == radiationTileId) {
 						radiationTiles++;
 					}

@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.collision;
 
 import java.util.Set;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -24,7 +23,7 @@ public class PlatformAsVehicleCollisionValidator extends AbstractCollisionValida
 	 * This collision validator is for the platform on rails. It checks a separate collision layer.
 	 */
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
 		

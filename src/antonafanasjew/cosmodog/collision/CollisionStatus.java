@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
 /**
@@ -13,7 +13,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public class CollisionStatus {
 	
 	private Actor actor;
-	private CustomTiledMap map;
+	private CosmodogMap map;
 	private int tileX;
 	private int tileY;
 	
@@ -35,7 +35,7 @@ public class CollisionStatus {
 	 * @param passageBlocker Reason for non passable tile.
 	 * @return A new Collision status object filled with the given parameters.
 	 */
-	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlockerDescriptor passageBlockerDescriptor) {
+	public static CollisionStatus instance(Actor actor, CosmodogMap map, int tileX, int tileY, boolean passable, PassageBlockerDescriptor passageBlockerDescriptor) {
 		CollisionStatus collisionStatus = new CollisionStatus();
 		collisionStatus.actor = actor;
 		collisionStatus.map = map;
@@ -50,11 +50,11 @@ public class CollisionStatus {
 	 * This method is for the backwards compatibility of the existing code that used the passage blocker type instead of the passage blocker descriptor.
 	 * Most of the callers do not need to be changed as this method will convert the passage blocker type into the passage blocker descriptor.
 	 */
-	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlockerType passageBlockerType) {
+	public static CollisionStatus instance(Actor actor, CosmodogMap map, int tileX, int tileY, boolean passable, PassageBlockerType passageBlockerType) {
 		return instance(actor, map, tileX, tileY, passable, PassageBlockerDescriptor.fromPassageBlockerType(passageBlockerType));
 	}
 	
-	public static CollisionStatus instance(Actor actor, CustomTiledMap map, int tileX, int tileY, boolean passable, PassageBlockerType passageBlockerType, Object paramValue) {
+	public static CollisionStatus instance(Actor actor, CosmodogMap map, int tileX, int tileY, boolean passable, PassageBlockerType passageBlockerType, Object paramValue) {
 		return instance(actor, map, tileX, tileY, passable, PassageBlockerDescriptor.fromPassageBlockerTypeAndParameter(passageBlockerType, paramValue));
 	}
 	
@@ -68,9 +68,9 @@ public class CollisionStatus {
 
 	/**
 	 * Returns the tiled map.
-	 * @return Tiled map.
+	 * @return map.
 	 */
-	public CustomTiledMap getMap() {
+	public CosmodogMap getMap() {
 		return map;
 	}
 

@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.collision;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -14,7 +13,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 public class VehicleObstacleCollisionValidator extends AbstractCollisionValidator {
 
 	@Override
-	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CustomTiledMap map, int tileX, int tileY) {
+	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		Piece piece = cosmodogMap.pieceAtTile(tileX, tileY);
 		boolean vehicleOnTile = piece instanceof Vehicle;

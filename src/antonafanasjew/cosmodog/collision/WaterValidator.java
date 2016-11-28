@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 
 /**
@@ -17,5 +17,5 @@ public interface WaterValidator {
 	 * @param tileY y coordinate of tiles location.
 	 * @return true if the tile is a water place (f.i. as taken from the meta layers of the tiled map), false otherwise.
 	 */
-	boolean waterInReach(Actor actor, CustomTiledMap map, int tileX, int tileY);
+	boolean waterInReach(Actor actor, CosmodogMap map, int tileX, int tileY);
 }

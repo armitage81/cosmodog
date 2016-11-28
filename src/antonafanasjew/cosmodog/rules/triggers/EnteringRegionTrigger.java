@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.rules.triggers;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
@@ -32,16 +32,16 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 			return false;
 		}
 		
-		Player player = ApplicationContextUtils.getPlayer();
-		CustomTiledMap customTiledMap = ApplicationContextUtils.getCustomTiledMap();
-		CustomTiledMap tiledMap = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		TiledObjectGroup regionsObjectGroup = customTiledMap.getObjectGroups().get(layerName);
+		Player player = ApplicationContextUtils.getPlayer();
+		
+		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get(layerName);
 		
 		TiledObject regionObject = regionsObjectGroup.getObjects().get(regionName);
 		
 		if (regionObject != null) {
-			return RegionUtils.playerInRegion(player, regionObject, tiledMap.getTileWidth(), tiledMap.getTileHeight());
+			return RegionUtils.playerInRegion(player, regionObject, map.getTileWidth(), map.getTileHeight());
 		}
 		
 		return false;

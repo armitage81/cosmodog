@@ -2,21 +2,21 @@ package antonafanasjew.cosmodog.util;
 
 import java.util.Set;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.structures.TileCoordinates;
 
 import com.google.common.collect.Sets;
 
 public class TileUtils {
 
-	public static Set<TileCoordinates> getConnectedElements(int x, int y, int layerIndex, CustomTiledMap tiledMap, com.google.common.base.Predicate<TileCoordinates> predicate) {
+	public static Set<TileCoordinates> getConnectedElements(int x, int y, int layerIndex, CosmodogMap map, com.google.common.base.Predicate<TileCoordinates> predicate) {
 		Set<TileCoordinates> markedElements = Sets.newHashSet();
 		Set<TileCoordinates> checkedElements = Sets.newHashSet();
-		processElementAndNeighboursRecursively(new TileCoordinates(x, y, layerIndex), tiledMap, predicate, markedElements, checkedElements);
+		processElementAndNeighboursRecursively(new TileCoordinates(x, y, layerIndex), map, predicate, markedElements, checkedElements);
 		return markedElements;
 	}
 	
-	private static void processElementAndNeighboursRecursively(TileCoordinates e, CustomTiledMap tiledMap, com.google.common.base.Predicate<TileCoordinates> predicate, Set<TileCoordinates> markedElements, Set<TileCoordinates> checkedElements) {
+	private static void processElementAndNeighboursRecursively(TileCoordinates e, CosmodogMap map, com.google.common.base.Predicate<TileCoordinates> predicate, Set<TileCoordinates> markedElements, Set<TileCoordinates> checkedElements) {
 
 		checkedElements.add(e);
 
@@ -28,19 +28,19 @@ public class TileUtils {
 			int y = e.getY();
 			
 			if (x > 0 && !checkedElements.contains(e.westNeighbour())) {
-				processElementAndNeighboursRecursively(e.westNeighbour(), tiledMap, predicate, markedElements, checkedElements);
+				processElementAndNeighboursRecursively(e.westNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
-			if (x < tiledMap.getWidth() - 1 && !checkedElements.contains(e.eastNeighbour())) {
-				processElementAndNeighboursRecursively(e.eastNeighbour(), tiledMap, predicate, markedElements, checkedElements);
+			if (x < map.getWidth() - 1 && !checkedElements.contains(e.eastNeighbour())) {
+				processElementAndNeighboursRecursively(e.eastNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
 			if (y > 0 && !checkedElements.contains(e.northNeighbour())) {
-				processElementAndNeighboursRecursively(e.northNeighbour(), tiledMap, predicate, markedElements, checkedElements);
+				processElementAndNeighboursRecursively(e.northNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
-			if (y < tiledMap.getHeight() - 1 && !checkedElements.contains(e.southNeighbour())) {
-				processElementAndNeighboursRecursively(e.southNeighbour(), tiledMap, predicate, markedElements, checkedElements);
+			if (y < map.getHeight() - 1 && !checkedElements.contains(e.southNeighbour())) {
+				processElementAndNeighboursRecursively(e.southNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 		}
 	}

@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
@@ -13,8 +12,10 @@ import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTran
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class WormSnowSparkRenderer extends AbstractRenderer {
 
@@ -24,6 +25,7 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		
 		ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
@@ -38,12 +40,11 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 			return;
 		}
 		
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());

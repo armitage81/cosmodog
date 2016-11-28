@@ -6,7 +6,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -22,12 +21,11 @@ public class MarkedTileRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
+		CosmodogMap map = cosmodogGame.getMap();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -47,7 +45,7 @@ public class MarkedTileRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 		
-		Set<Piece> markedPieces = cosmodogMap.visibleMarkedTilePieces(tileNoX, tileNoY, tilesW, tilesH, 2);
+		Set<Piece> markedPieces = map.visibleMarkedTilePieces(tileNoX, tileNoY, tilesW, tilesH, 2);
 		
 		for (Piece piece : markedPieces) {
 			

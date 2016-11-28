@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.listener.movement.MovementListenerAdapter;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -59,7 +58,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	private void recalculateRoofRegion(Actor actor) {
 		
-		CustomTiledMap map = ApplicationContextUtils.getCustomTiledMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_ROOFS).getObjects();
 		

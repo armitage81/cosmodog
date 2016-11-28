@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.newdawn.slick.util.Log;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
@@ -296,7 +296,7 @@ public class Cam implements Serializable {
 	 * @param piece The piece which coordinates the camera will focus on.
 	 * @param padding The minimal allowed distance between the piece and the view bounds. (Normally used to be able to look a bit ahead in players direction) 
 	 */
-	public void focusOnPiece(CustomTiledMap map, float offsetX, float offsetY, Piece piece) {
+	public void focusOnPiece(CosmodogMap map, float offsetX, float offsetY, Piece piece) {
 		
 		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
 		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);

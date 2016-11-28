@@ -7,7 +7,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
@@ -85,13 +84,12 @@ public class PiecesRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
+		CosmodogMap map = cosmodogGame.getMap();
 		Cam cam = cosmodogGame.getCam();
 		Player player = cosmodogGame.getPlayer();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -112,7 +110,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 		
-		Set<Piece> mapPieces = cosmodogMap.visibleMapPieces(tileNoX, tileNoY, tilesW, tilesH, 5);
+		Set<Piece> mapPieces = map.visibleMapPieces(tileNoX, tileNoY, tilesW, tilesH, 5);
 		
 		Set<Piece> filteredMapPieces = Sets.newHashSet();
 		

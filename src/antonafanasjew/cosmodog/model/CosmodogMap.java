@@ -1,12 +1,17 @@
 package antonafanasjew.cosmodog.model;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
+import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
-
-import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.actors.Platform;
 
 /**
  * Represents the game map as model. Does not contains information about the
@@ -23,6 +28,8 @@ public class CosmodogMap extends CosmodogModel {
 
 	private static final long serialVersionUID = -7464038323408300703L;
 
+	private CustomTiledMap customTiledMap;
+	
 	private Set<Enemy> enemies = Sets.newHashSet();
 	private Set<Piece> mapPieces = Sets.newHashSet();
 	private Set<Piece> effectPieces = Sets.newHashSet();
@@ -30,6 +37,10 @@ public class CosmodogMap extends CosmodogModel {
 
 	private Platform cachedPlatform = null;
 	private boolean platformCacheInitialized = false;
+
+	public CosmodogMap(CustomTiledMap customTiledMap) {
+		this.customTiledMap = customTiledMap;
+	}
 	
 	public Set<Piece> getMapPieces() {
 		return mapPieces;
@@ -150,5 +161,32 @@ public class CosmodogMap extends CosmodogModel {
 		this.platformCacheInitialized = false;
 		this.cachedPlatform = null;
 	}
+
+	public int getWidth() {
+		return this.customTiledMap.getWidth();
+	}
 	
+	public int getHeight() {
+		return this.customTiledMap.getHeight();
+	}
+	
+	public int getTileWidth() {
+		return this.customTiledMap.getTileWidth();
+	}
+	
+	public int getTileHeight() {
+		return this.customTiledMap.getTileHeight();
+	}
+
+	public int getTileId(int x, int y, int layerIndex) {
+		return this.customTiledMap.getTileId(x, y, layerIndex);
+	}
+	
+	public Map<String, TiledObjectGroup> getObjectGroups() {
+		return this.customTiledMap.getObjectGroups();
+	}
+	
+	public List<TiledMapLayer> getMapLayers() {
+		return this.customTiledMap.getMapLayers();
+	}
 }

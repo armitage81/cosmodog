@@ -7,7 +7,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
@@ -56,12 +55,11 @@ public class EffectsRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
+		CosmodogMap map = cosmodogGame.getMap();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = tiledMap.getTileWidth();
-		int tileHeight = tiledMap.getTileHeight();
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
 
 		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
 		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
@@ -81,7 +79,7 @@ public class EffectsRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 		
-		Set<Piece> effectPieces = cosmodogMap.visibleEffectPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
+		Set<Piece> effectPieces = map.visibleEffectPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
 		
 		for (Piece piece : effectPieces) {
 			if (piece instanceof Effect) {
@@ -103,7 +101,7 @@ public class EffectsRenderer extends AbstractRenderer {
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ENERGYWALL)) {
     					//Only render, if the energy wall is not passable.
-    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), ApplicationContextUtils.getCustomTiledMap(), piece.getPositionX(), piece.getPositionY());
+    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), map, piece.getPositionX(), piece.getPositionY());
     					
     					if (energyWallCollisionStatus.isPassable() == false) {
     						applicationContext.getAnimations().get("energywall").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - 1) * (tileHeight));

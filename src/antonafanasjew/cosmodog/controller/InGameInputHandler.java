@@ -8,7 +8,6 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
@@ -55,10 +54,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Prepare the globals.
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		CosmodogMap map = cosmodogGame.getMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
-		CustomTiledMap tiledMap = applicationContext.getCustomTiledMap();
 		CollisionValidator collisionValidator = cosmodog.getCollisionValidator();
 
 		//Verify that input is allowed.
@@ -116,7 +114,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     		
     		
     		//First handle the case when an enemy is standing on the target tile. In this case initialize a fight instead of a movement.
-    		Set<Enemy> enemies = cosmodogMap.getEnemies();
+    		Set<Enemy> enemies = map.getEnemies();
     		Enemy targetEnemy = null;
     		for (Enemy enemy : enemies) {
     			if (enemy.getPositionX() == newX && enemy.getPositionY() == newY) {
@@ -130,7 +128,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimpleEnemyAttackDamageCalculator()));
     		} else {
     		
-	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, tiledMap, newX, newY);
+	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newX, newY);
 	    		
 				if (collisionStatus.isPassable()) {
 					
@@ -139,7 +137,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 							Vehicle vehicle = vehicleItem.getVehicle();
 							vehicle.setPositionX(player.getPositionX());
 							vehicle.setPositionY(player.getPositionY());
-							cosmodogMap.getMapPieces().add(vehicle);
+							map.getMapPieces().add(vehicle);
 							player.getInventory().remove(InventoryItemType.VEHICLE);
 							Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 							if (carmotor.playing()) {
@@ -155,7 +153,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 							Platform platform = platformItem.getPlatform();
 							platform.setPositionX(player.getPositionX());
 							platform.setPositionY(player.getPositionY());
-							cosmodogMap.getMapPieces().add(platform);
+							map.getMapPieces().add(platform);
 							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
@@ -266,11 +264,11 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 			if (input.isKeyPressed(Input.KEY_Z)) {
 				cam.zoomIn();
-				cam.focusOnPiece(tiledMap, 0, 0, player);
+				cam.focusOnPiece(map, 0, 0, player);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_Y)) {
-				cam.focusOnPiece(tiledMap, 0, 0, player);
+				cam.focusOnPiece(map, 0, 0, player);
 				cam.zoomOut();
 			}
 		
