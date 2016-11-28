@@ -7,6 +7,8 @@ import java.util.Set;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.mapmodifications.MapModification;
+import antonafanasjew.cosmodog.model.mapmodifications.MapModificationImpl;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 
@@ -28,18 +30,19 @@ public class CosmodogMap extends CosmodogModel {
 
 	private static final long serialVersionUID = -7464038323408300703L;
 
-	private CustomTiledMap customTiledMap;
+	private transient CustomTiledMap customTiledMap;
 	
 	private Set<Enemy> enemies = Sets.newHashSet();
 	private Set<Piece> mapPieces = Sets.newHashSet();
 	private Set<Piece> effectPieces = Sets.newHashSet();
 	private Set<Piece> markedTilePieces = Sets.newHashSet();
-
+	private MapModification mapModification = new MapModificationImpl();
+	
 	private Platform cachedPlatform = null;
 	private boolean platformCacheInitialized = false;
 
 	public CosmodogMap(CustomTiledMap customTiledMap) {
-		this.customTiledMap = customTiledMap;
+		this.setCustomTiledMap(customTiledMap);
 	}
 	
 	public Set<Piece> getMapPieces() {
@@ -163,30 +166,43 @@ public class CosmodogMap extends CosmodogModel {
 	}
 
 	public int getWidth() {
-		return this.customTiledMap.getWidth();
+		return this.getCustomTiledMap().getWidth();
 	}
 	
 	public int getHeight() {
-		return this.customTiledMap.getHeight();
+		return this.getCustomTiledMap().getHeight();
 	}
 	
 	public int getTileWidth() {
-		return this.customTiledMap.getTileWidth();
+		return this.getCustomTiledMap().getTileWidth();
 	}
 	
 	public int getTileHeight() {
-		return this.customTiledMap.getTileHeight();
+		return this.getCustomTiledMap().getTileHeight();
 	}
 
 	public int getTileId(int x, int y, int layerIndex) {
-		return this.customTiledMap.getTileId(x, y, layerIndex);
+		return this.mapModification.getTileId(this.getCustomTiledMap(), x, y, layerIndex);
 	}
 	
 	public Map<String, TiledObjectGroup> getObjectGroups() {
-		return this.customTiledMap.getObjectGroups();
+		return this.getCustomTiledMap().getObjectGroups();
 	}
 	
 	public List<TiledMapLayer> getMapLayers() {
-		return this.customTiledMap.getMapLayers();
+		return this.getCustomTiledMap().getMapLayers();
 	}
+
+	public MapModification getMapModification() {
+		return mapModification;
+	}
+
+	public CustomTiledMap getCustomTiledMap() {
+		return customTiledMap;
+	}
+
+	public void setCustomTiledMap(CustomTiledMap customTiledMap) {
+		this.customTiledMap = customTiledMap;
+	}
+
 }

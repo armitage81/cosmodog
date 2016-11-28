@@ -148,6 +148,8 @@ public class InitializationUtils {
 	}
 
 	public static void initializeCosmodogGameTransient(CosmodogGame cosmodogGame) {
+		
+		cosmodogGame.getMap().setCustomTiledMap(ApplicationContextUtils.getCustomTiledMap());
 		cosmodogGame.setActionRegistry(new ActionRegistry());
 		cosmodogGame.setInterfaceActionRegistry(new ActionRegistry());
 		cosmodogGame.setTeleportationTransition(new TeleportationTransition());
@@ -195,6 +197,9 @@ public class InitializationUtils {
 
 		CosmodogMap map = new CosmodogMap(customTiledMap);
 
+		map.getMapModification().modifyTile(7, 2, Layers.LAYER_WATER, TileType.WATER_CENTER);
+		map.getMapModification().modifyTile(7, 2, Layers.LAYER_META_COLLISIONS, TileType.COLLISION_WATER);
+		
 		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
 		int mapWidth = map.getWidth();
 		int mapHeight = map.getHeight();
