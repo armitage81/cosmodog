@@ -14,6 +14,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
@@ -58,7 +59,9 @@ public class NpcRenderer extends AbstractRenderer {
 			float pieceOffsetY = 0.0f;
 						
 			ActorTransition enemyTransition = cosmodogGame.getActorTransitionRegistry().get(enemy);
-			FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+			
+			
+			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 			
 			
 			boolean enemyIsMoving = enemyTransition != null;

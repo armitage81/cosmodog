@@ -6,11 +6,9 @@ import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -18,24 +16,24 @@ import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
 /**
  * This fixed length action phase is initialized with the pre-calculated fight phase attack result
- * and executes asynchronously the fight phase by modifying the global fight phase trnsition.
+ * and executes asynchronously the fight phase by modifying the global fight phase transition.
  * This action phase can be used for both attacks - pc and npc.
+ * Take note: An action phase is technically the same as a complete action. The difference is in the way
+ * of its registration. An action is registered in the global action registry. An action phase is registered only
+ * in an action itself.
  */
-public class AttackActionPhase extends FixedLengthAsyncAction  {
+public class AttackActionPhase extends AbstractFightActionPhase {
 
 	private static final long serialVersionUID = -3853130683025678558L;
 
 	private FightActionResult.FightPhaseResult fightPhaseResult;
-	private CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
 	/**
 	 * Initialized with the pre-calculated fight action phase result.
-	 * @param fightPhaseResult Result of the fight action phase.
 	 */
 	public AttackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
 		super(fightPhaseResult.isPlayerAttack() ? Constants.PLAYER_ATTACK_ACTION_DURATION : Constants.ENEMY_ATTACK_ACTION_DURATION);
@@ -44,6 +42,8 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 
 	/**
 	 * Initializes the attack transition depending on the attacker and defender.
+	 * Turns the player and the enemy to each other.
+	 * Registers the hit points notification action.
 	 */
 	@Override
 	public void onTrigger() {
@@ -61,6 +61,7 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		fightPhaseTransition.enemy = fightPhaseResult.getEnemy();
 		fightPhaseTransition.completion = 0.0f;
 		fightPhaseTransition.playerAttack = fightPhaseResult.isPlayerAttack();
+		setFightPhaseTransition(fightPhaseTransition);
 
 		String text = "-" + String.valueOf(fightPhaseResult.getDamage());
 		OverheadNotificationAction.registerOverheadNotification(fightPhaseResult.isPlayerAttack() ? fightPhaseResult.getEnemy() : fightPhaseResult.getPlayer(), text);
@@ -68,7 +69,6 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 		fightPhaseResult.getPlayer().lookAtActor(fightPhaseResult.getEnemy());
 		fightPhaseResult.getEnemy().lookAtActor(fightPhaseResult.getPlayer());
 		
-		cosmodogGame.setFightPhaseTransition(fightPhaseTransition);
 		
 	}
 	
@@ -77,7 +77,9 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		cosmodogGame.getFightPhaseTransition().completion = (float)after / (float)getDuration();
+		float newCompletion = (float)after / (float)getDuration();
+		newCompletion = newCompletion > 1.0f ? 1.0f : newCompletion;
+		getFightPhaseTransition().completion = newCompletion;
 	}
 	
 	/**
@@ -116,7 +118,7 @@ public class AttackActionPhase extends FixedLengthAsyncAction  {
 			}
 		}
 		
-		cosmodogGame.setFightPhaseTransition(null);
+		setFightPhaseTransition(null);
 	}
 
 }

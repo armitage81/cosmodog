@@ -28,6 +28,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
@@ -87,7 +88,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		int tileNoY = camY / scaledTileHeight;
 
 		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
-		FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+		
+		FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+		
 		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
 		

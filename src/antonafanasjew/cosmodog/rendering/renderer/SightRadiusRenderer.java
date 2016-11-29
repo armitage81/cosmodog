@@ -7,6 +7,10 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.actions.ActionRegistry;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.FightAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -22,6 +26,7 @@ import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
@@ -67,7 +72,8 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			float movementOffsetY = 0;
 			
 			ActorTransition enemyTransition = cosmodogGame.getActorTransitionRegistry().get(enemy);
-			FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+			
+			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 			
 
 			float fightOffsetX = 0.0f;

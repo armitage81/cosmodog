@@ -8,7 +8,6 @@ import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
-import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
@@ -26,8 +25,6 @@ public class CosmodogGame extends CosmodogModel {
 	private transient ActionRegistry actionRegistry;
 	
 	private transient ActionRegistry interfaceActionRegistry;
-	
-	private transient FightPhaseTransition fightPhaseTransition;
 	
 	private transient MovementAttemptTransition movementAttemptTransition;
 	
@@ -148,14 +145,6 @@ public class CosmodogGame extends CosmodogModel {
 
 	public ActorTransitionRegistry getActorTransitionRegistry() {
 		return actorTransitionRegistry;
-	}
-
-	public FightPhaseTransition getFightPhaseTransition() {
-		return fightPhaseTransition;
-	}
-
-	public void setFightPhaseTransition(FightPhaseTransition fightPhaseTransition) {
-		this.fightPhaseTransition = fightPhaseTransition;
 	}
 
 	public MovementAttemptTransition getMovementAttemptTransition() {

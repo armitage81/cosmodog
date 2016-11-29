@@ -6,13 +6,32 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
+/**
+ * Represents the game action of the attacking worm animation. 
+ *
+ */
 public class WormAttackAction extends FixedLengthAsyncAction {
 
 	private static final long serialVersionUID = 8882906074849186691L;
 
+	/**
+	 * This transition describes the progress of the attacking worm.
+	 * Depending on the percentage of the action duration, it can indicate
+	 * the height of the worm which is moving out of the snow, grabs the player
+	 * and then pulls itself back into the snow.
+	 */
 	public static class WormAttackTransition {
+		
+		/**
+		 * Percentage of the action completion.
+		 */
 		public float percentage = 0.0f;
 		
+		/**
+		 * Indicates the current height of the worm.
+		 * This value can be used to render the worm animation
+		 * at the proper place.
+		 */
 		public float wormHeightPercentage() {
 			
 			if (percentage < 0.2) {
@@ -48,11 +67,17 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 
 	private WormAttackTransition transition;
 	
+	/**
+	 * Initializes the worm attack action with the given duration.
+	 */
 	public WormAttackAction(int duration) {
 		super(duration);
 		transition = new WormAttackTransition();
 	}
 	
+	/**
+	 * Updates the action by modifying the underlying transition.
+	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		float actionPercentage = (float)after / (float)getDuration();
@@ -62,13 +87,18 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 		getTransition().percentage = actionPercentage;
 	}
 	
-	
+	/**
+	 * Concludes the action by nullifying the underlying transition.
+	 */
 	@Override
 	public void onEnd() {
 		transition = null;
 		ApplicationContextUtils.getPlayer().setLife(0);
 	}
 
+	/**
+	 * Returns the underlying transition.
+	 */
 	public WormAttackTransition getTransition() {
 		return transition;
 	}

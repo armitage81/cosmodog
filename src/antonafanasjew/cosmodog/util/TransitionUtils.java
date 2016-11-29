@@ -1,0 +1,27 @@
+package antonafanasjew.cosmodog.util;
+
+import antonafanasjew.cosmodog.actions.ActionRegistry;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.FightAction;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
+
+public class TransitionUtils {
+
+	public static FightPhaseTransition currentFightPhaseTransition() {
+		FightPhaseTransition fightPhaseTransition = null;
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
+		FightAction fightAction = (FightAction)actionRegistry.getRegisteredAction(AsyncActionType.FIGHT);
+		if (fightAction != null) {
+			ActionRegistry fightActionPhaseRegistry = fightAction.getActionPhaseRegistry();
+			AbstractFightActionPhase fightActionPhase = (AbstractFightActionPhase)fightActionPhaseRegistry.getRegisteredAction(AsyncActionType.FIGHT);
+			if (fightActionPhase != null) {
+				fightPhaseTransition = fightActionPhase.getFightPhaseTransition();
+			}
+		}
+		return fightPhaseTransition;
+	}
+	
+}

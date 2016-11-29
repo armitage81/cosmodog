@@ -14,7 +14,6 @@ import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.AbstractPlayerAttackDamageCalculator;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -61,7 +60,7 @@ public class FightAction extends VariableLengthAsyncAction {
 	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		actionPhaseRegistry.update(after - before, gc, sbg);
+		getActionPhaseRegistry().update(after - before, gc, sbg);
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class FightAction extends VariableLengthAsyncAction {
 	 */
 	@Override
 	public boolean hasFinished() {
-		return !actionPhaseRegistry.isActionRegistered(AsyncActionType.FIGHT);
+		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.FIGHT);
 	}
 	
 	/*
@@ -111,7 +110,6 @@ public class FightAction extends VariableLengthAsyncAction {
 		
 		for (FightActionResult.FightPhaseResult phaseResult : fightActionResult) {
 			
-			Actor defender = phaseResult.isPlayerAttack() ? phaseResult.getEnemy() : phaseResult.getPlayer();
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 			
 			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
@@ -123,11 +121,15 @@ public class FightAction extends VariableLengthAsyncAction {
 			}
 
 			
-			actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
+			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
 			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
-				actionPhaseRegistry.registerAction(AsyncActionType.FIGHT, new EnemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy()));
+				getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, new EnemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy()));
 			}
 		}
+	}
+
+	public ActionRegistry getActionPhaseRegistry() {
+		return actionPhaseRegistry;
 	}
 
 }

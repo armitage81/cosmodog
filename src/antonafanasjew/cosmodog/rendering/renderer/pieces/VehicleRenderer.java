@@ -14,6 +14,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
@@ -39,7 +40,9 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		Cam cam = cosmodogGame.getCam();
 
 		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
-		FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+		
+		FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+		
 		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 
 		boolean playerIsMoving = playerTransition != null;

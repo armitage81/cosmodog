@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
@@ -63,7 +64,9 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 			
 			ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
-			FightPhaseTransition fightPhaseTransition = cosmodogGame.getFightPhaseTransition();
+			
+			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+			
 			MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 			
 			boolean playerIsMoving = playerTransition != null;
