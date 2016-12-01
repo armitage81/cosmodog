@@ -295,6 +295,27 @@ enemyTurretExplodingRight;data/enemy_turret.png;16;16;[0/5/300,1/5/300,2/5/300,3
 enemyTurretExplodingUp;data/enemy_turret.png;16;16;[0/8/300,1/8/300,2/8/300,3/8/300];false;false
 enemyTurretExplodingLeft;data/enemy_turret.png;16;16;[0/7/300,1/7/300,2/7/300,3/7/300];false;false
 
+enemyPigratInanimatedDown;data/enemy_pigrat.png;16;16;[0/0/2000,1/0/750,0/0/2000,2/0/750];true;true
+enemyPigratInanimatedRight;data/enemy_pigrat.png;16;16;[0/1/2000,1/1/750,0/1/2000,2/1/750];true;true
+enemyPigratInanimatedLeft;data/enemy_pigrat.png;16;16;[2/2/2000,0/2/750,2/2/2000,1/2/750];true;true
+enemyPigratInanimatedUp;data/enemy_pigrat.png;16;16;[0/3/2000,1/3/750,0/3/2000,2/3/750];true;true
+
+enemyPigratAnimatedDown;data/enemy_pigrat.png;16;16;[4/0/300,5/0/300,4/0/300,6/0/300];true;true
+enemyPigratAnimatedRight;data/enemy_pigrat.png;16;16;[4/1/300,5/1/300,4/1/300,6/1/300];true;true
+enemyPigratAnimatedLeft;data/enemy_pigrat.png;16;16;[6/2/300,4/2/300,6/2/300,5/2/300];true;true
+enemyPigratAnimatedUp;data/enemy_pigrat.png;16;16;[4/3/300,5/3/300,4/3/300,6/3/300];true;true
+
+enemyPigratShootingDown;data/enemy_pigrat.png;16;16;[0/5/300,1/5/300,2/5/300];true;true
+enemyPigratShootingRight;data/enemy_pigrat.png;16;16;[0/6/300,1/6/300,2/6/300];true;true
+enemyPigratShootingLeft;data/enemy_pigrat.png;16;16;[0/7/300,1/7/300,2/7/300];true;true
+enemyPigratShootingUp;data/enemy_pigrat.png;16;16;[0/8/300,1/8/300,2/8/300];true;true
+
+enemyPigratExplodingDown;data/enemy_pigrat.png;16;16;[4/5/300,5/5/300,6/5/300,7/5/300,8/5/300];false;false
+enemyPigratExplodingRight;data/enemy_pigrat.png;16;16;[4/6/300,5/6/300,6/6/300,7/6/300,8/6/300];false;false
+enemyPigratExplodingLeft;data/enemy_pigrat.png;16;16;[4/7/300,5/7/300,6/7/300,7/7/300,8/7/300];false;false
+enemyPigratExplodingUp;data/enemy_pigrat.png;16;16;[4/8/300,5/8/300,6/8/300,7/8/300,8/8/300];false;false
+
+
 
 
 
@@ -330,6 +351,7 @@ rpgIcon;data/weapons.png;48;16;[1/4/10000];true;true
 
 teleportEffect;data/teleporteffect.png;16;16;[0/0/250,1/0/250,2/0/250,0/1/250,1/1/250,2/1/250,0/2/250,1/2/250,2/2/250,0/1/250,1/1/250,2/1/250];true;true
 
+tile.GRASS_OBJECT_FLOWER;data/bees.png;16;16;[0/0/150,1/0/150,2/0/150,3/0/150,4/0/150,0/1/150,1/1/150,2/1/150,3/1/150,4/1/150];true;true
 
 tile.WATER_CENTER;data/water.png;16;16;[0/0/500,0/1/500,0/2/500,0/3/500];true;true
 tile.WATER_BORDER_W;data/water.png;16;16;[1/0/1000,1/1/1000];true;true

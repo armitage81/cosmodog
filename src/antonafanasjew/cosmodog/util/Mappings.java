@@ -46,6 +46,7 @@ public class Mappings {
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_ROBOT, UnitType.ROBOT);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_DRONE, UnitType.DRONE);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_TURRET, UnitType.TURRET);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_PIGRAT, UnitType.PIGRAT);
 	}
 	
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
@@ -59,6 +60,7 @@ public class Mappings {
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.ROBOT, "Robot");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.DRONE, "Drone");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.TURRET, "Turret");
+		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.PIGRAT, "Pigrat");
 		
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.UP, "Up");
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.DOWN, "Down");
@@ -193,6 +195,8 @@ public class Mappings {
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_N_AND_W);
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_S_AND_E);
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_BORDER_S_AND_W);
+		
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.GRASS_OBJECT_FLOWER);
 		
 	}
 	

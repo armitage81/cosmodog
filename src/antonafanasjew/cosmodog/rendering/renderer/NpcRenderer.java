@@ -142,12 +142,12 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			
 			boolean enemyDamaged = enemy.getActualLife() * 2 < enemy.getActualMaxLife();
-			
+			boolean enemyRobotic = enemy.getUnitType().isRobotic();
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			enemyAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY);
 			
-			if (enemyDamaged) {
+			if (enemyDamaged && enemyRobotic) {
 				int smokeOffsetX = 8;
 				int smokeOffseetY = -8;
 				Animation smokeAnimation = ApplicationContext.instance().getAnimations().get("smoke");

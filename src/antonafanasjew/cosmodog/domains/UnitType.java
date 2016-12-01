@@ -5,23 +5,45 @@ package antonafanasjew.cosmodog.domains;
  *
  */
 public enum UnitType {
+	
 	/**
 	 * Light tank.
 	 */
-	LIGHT_TANK,
+	LIGHT_TANK(false, true),
 	
 	/**
 	 * Humanoid robot.
 	 */
-	ROBOT,
+	ROBOT(false, true),
 	
 	/**
 	 * Flying drone.
 	 */
-	DRONE,
+	DRONE(false, true),
 	
 	/**
 	 * Immovable turret
 	 */
-	TURRET
+	TURRET(false, true),
+	
+	/**
+	 * Pig rat from the swamps.
+	 */
+	PIGRAT(true, false);
+	
+	private boolean alive;
+	private boolean robotic;
+	
+	private UnitType(boolean alive, boolean robotic) {
+		this.alive = alive;
+		this.robotic = robotic;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public boolean isRobotic() {
+		return robotic;
+	}
 }
