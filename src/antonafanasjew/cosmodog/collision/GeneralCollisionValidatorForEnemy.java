@@ -21,7 +21,8 @@ public class GeneralCollisionValidatorForEnemy extends AbstractCollisionValidato
 		CollisionValidator c4 = new VehicleObstacleCollisionValidator();
 		CollisionValidator c5 = new PlatformAsObstacleForEnemyCollisionValidator();
 		CollisionValidator c6 = new PlayerInPlatformAsObstacleCollisionValidator(playerMovementActionResult);
-		collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4, c5, c6));
+		CollisionValidator c7 = new DynamicPieceCollisionValidator();
+		collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4, c5, c6, c7));
 	}
 	
 	public static GeneralCollisionValidatorForEnemy instance(MovementActionResult playerMovementActionResult, Map<Enemy, MovementActionResult> enemyMovementActionResults) {

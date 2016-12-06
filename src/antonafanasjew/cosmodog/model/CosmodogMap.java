@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +15,8 @@ import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 /**
@@ -36,6 +40,8 @@ public class CosmodogMap extends CosmodogModel {
 	private Set<Piece> mapPieces = Sets.newHashSet();
 	private Set<Piece> effectPieces = Sets.newHashSet();
 	private Set<Piece> markedTilePieces = Sets.newHashSet();
+	private Multimap<Class<?>, DynamicPiece> dynamicPieces = ArrayListMultimap.create();
+	
 	private MapModification mapModification = new MapModificationImpl();
 	
 	private Platform cachedPlatform = null;
@@ -110,6 +116,46 @@ public class CosmodogMap extends CosmodogModel {
 			}
 		}
 		return retVal;
+	}
+	
+	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(int x, int y, int width, int height, int grace) {
+		
+		Multimap<Class<?>, DynamicPiece> retVal = ArrayListMultimap.create();
+		for (Class<?> key : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> piecesForKey = dynamicPieces.get(key);
+			if (piecesForKey != null) {
+				Iterator<DynamicPiece> it = piecesForKey.iterator();
+				while (it.hasNext()) {
+					DynamicPiece piece = it.next();
+					if (piece.getPositionX() >= x - grace && piece.getPositionX() < x + width + grace) {
+						if (piece.getPositionY() >= y - grace && piece.getPositionY() < y + height + grace) {
+							retVal.put(key, piece);
+						}
+					}
+				}
+				
+			}
+		}
+
+		return retVal;
+	}
+	
+	
+	public DynamicPiece dynamicPieceAtPosition(int x, int y) {
+		for (Class<?> key : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> piecesForKey = dynamicPieces.get(key);
+			if (piecesForKey != null) {
+				Iterator<DynamicPiece> it = piecesForKey.iterator();
+				while (it.hasNext()) {
+					DynamicPiece piece = it.next();
+					if (piece.getPositionX() == x && piece.getPositionY() == y) {
+						return piece;
+					}
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	public Set<Piece> visibleMarkedTilePieces(int x, int y, int width, int height, int grace) {
@@ -203,6 +249,10 @@ public class CosmodogMap extends CosmodogModel {
 
 	public void setCustomTiledMap(CustomTiledMap customTiledMap) {
 		this.customTiledMap = customTiledMap;
+	}
+
+	public Multimap<Class<?>, DynamicPiece> getDynamicPieces() {
+		return dynamicPieces;
 	}
 
 }

@@ -36,6 +36,8 @@ import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicPiecesRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
@@ -97,6 +99,7 @@ public class GameState extends BasicGameState {
 	private CloudsDecoration cloudsDeco;
 	private List<BirdsDecoration> birdsDecos = Lists.newArrayList();
 	
+	private AbstractRenderer dynamicPiecesRenderer;
 	private AbstractRenderer cloudRenderer;
 	private AbstractRenderer birdsRenderer;
 	private Renderer vitalDataInterfaceRenderer;
@@ -156,6 +159,9 @@ public class GameState extends BasicGameState {
 		
 		//Update the global dialog drawing context variable in the application context.
 		ApplicationContext.instance().setDialogBoxDrawingContext(new TileDrawingContext(mapDrawingContext, 1, 5, 0, 4));
+		
+		
+		dynamicPiecesRenderer = new DynamicPiecesRenderer();
 		
 		cloudRenderer = new CloudRenderer(applicationContext.getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
 		
@@ -314,6 +320,9 @@ public class GameState extends BasicGameState {
 		//Draw "tips" part of the map (Tile that would partially cover the player, like high flowers. Take note, it is still drawn underneath the player, as partial coverage is realized via special sprites)
 		mapRenderer.render(gc, g, mapDrawingContext, tipsLayersPredicate);
 		
+		//Draw ground dynamic pieces
+		dynamicPiecesRenderer.render(gc, g, mapDrawingContext, DynamicPiecesRendererParam.BOTTOM);
+		
 		//Draw ground effects.
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_GROUND_EFFECTS);
 		
@@ -346,6 +355,9 @@ public class GameState extends BasicGameState {
 		
 		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, mapDrawingContext);
+		
+		//Draw top dynamic pieces.
+		dynamicPiecesRenderer.render(gc, g, mapDrawingContext, DynamicPiecesRendererParam.TOP);
 		
 		//Draw top effects.
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_TOP_EFFECTS);

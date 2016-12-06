@@ -11,6 +11,7 @@ import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
+import antonafanasjew.cosmodog.collision.DynamicPieceCollisionValidator;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
 import antonafanasjew.cosmodog.collision.FeatureBoundCollisionValidator;
 import antonafanasjew.cosmodog.collision.GeneralCollisionValidatorForPlayer;
@@ -28,6 +29,7 @@ import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AxeInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
@@ -37,7 +39,9 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerI
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MacheteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PickInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PlatformInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SkiInteraction;
@@ -210,7 +214,7 @@ public class ApplicationContext {
 		user.setUserName("Armitage");
 		cosmodog.setUser(user);
 		
-		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidatorForPlayer(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator())); 
+		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidatorForPlayer(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator(), new DynamicPieceCollisionValidator())); 
 		
 		PathFinder towardsPlayerPathFinder = new TowardsPlayerPathFinder();
 		PathFinder patrolingPathFinder = new PatrolingPathFinder();
@@ -253,6 +257,9 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.binoculars.name(), new BinocularsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.jacket.name(), new JacketInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.ski.name(), new SkiInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.pick.name(), new PickInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.machete.name(), new MacheteInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.axe.name(), new AxeInteraction());
 		
 		
 		SightModifier sightModifier = new GeneralSightModifier();

@@ -40,6 +40,10 @@ import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
+import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
+import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
@@ -107,6 +111,11 @@ public class InitializationUtils {
 	public static int BINOCULARS_TILE_ID = 3062;
 	public static int JACKET_TILE_ID = 3063;
 	public static int SKI_TILE_ID = 3064;
+	
+	public static int PICK_TILE_ID = 3066;
+	public static int MACHETE_TILE_ID = 3067;
+	public static int AXE_TILE_ID = 3068;
+	
 	public static int PLATFORM_TILE_ID = 3065;
 	public static int BOTTLE_TILE_ID = 201;
 	public static int FOOD_COMPARTMENT_TILE_ID = 205;
@@ -319,6 +328,27 @@ public class InitializationUtils {
 					map.getMapPieces().add(c);
 				}
 				
+				if (tileId == PICK_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.pick);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == MACHETE_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.machete);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == AXE_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.axe);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
 				if (TileType.FUEL.getTileId() == tileId) {
 					Mark m = new Mark(Mark.FUEL_MARK_TYPE);
 					m.setPositionX(k);
@@ -388,11 +418,45 @@ public class InitializationUtils {
 
 		initializeTiledMapObjects(customTiledMap, map);
 		initializeEnemies(customTiledMap, map);
+		initializeDynamicTiles(customTiledMap, map);
 		
 		return map;
 
 	}
 	
+	private static void initializeDynamicTiles(CustomTiledMap tiledMap, CosmodogMap map) {
+		int dynamicTilesLayerIndex = Layers.LAYER_META_DYNAMIC_PIECES;
+		int mapWidth = tiledMap.getWidth();
+		int mapHeight = tiledMap.getHeight();
+
+		for (int k = 0; k < mapWidth; k++) {
+			for (int l = 0; l < mapHeight; l++) {
+				
+				int tileId = tiledMap.getTileId(k, l, dynamicTilesLayerIndex);
+				
+				if (tileId == TileType.DYNAMIC_PIECE_STONE.getTileId()) {
+					Stone stone = Stone.create(k, l);
+					map.getDynamicPieces().put(Stone.class, stone);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_HARDSTONE.getTileId()) {
+					HardStone hardStone = HardStone.create(k, l);
+					map.getDynamicPieces().put(HardStone.class, hardStone);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_TREE.getTileId()) {
+					Tree tree = Tree.create(k, l);
+					map.getDynamicPieces().put(Tree.class, tree);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_BAMBOO.getTileId()) {
+					Bamboo bamboo = Bamboo.create(k, l);
+					map.getDynamicPieces().put(Bamboo.class, bamboo);
+				}
+			}
+		}
+	}
+
 	private static void initializeTiledMapObjects(CustomTiledMap tiledMap, CosmodogMap cosmodogMap) {
 		/*
 		int objectGroupsCount = tiledMap.getObjectGroupCount();

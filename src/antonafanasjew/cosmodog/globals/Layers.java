@@ -80,6 +80,7 @@ public class Layers {
 	public static final int LAYER_META_RADIATION = LAYER_META_NPC + 1;
 	public static final int LAYER_META_TEMPERATURE = LAYER_META_RADIATION + 1;
 	public static final int LAYER_META_PLATFORM_COLLISION = LAYER_META_TEMPERATURE + 1;
+	public static final int LAYER_META_DYNAMIC_PIECES = LAYER_META_PLATFORM_COLLISION + 1;
 
 
 	/**

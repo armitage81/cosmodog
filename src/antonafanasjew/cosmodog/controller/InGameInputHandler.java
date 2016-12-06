@@ -29,6 +29,7 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -174,6 +175,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 						}
 					}
 					
+					final int finalNewX = newX;
+					final int finalNewY = newY;
+					
 					AsyncAction blockingAction = new FixedLengthAsyncAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION) {
 	
 						private static final long serialVersionUID = 1663061093630885138L;
@@ -194,6 +198,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 						private static final long serialVersionUID = 1663061093630885138L;
 						
+						private boolean interactedWithDynamicPieceAlready = false;
+						
 						@Override
 						public void onTrigger() {
 							MovementAttemptTransition movementAttemptTransition = new MovementAttemptTransition();
@@ -205,6 +211,17 @@ public class InGameInputHandler extends AbstractInputHandler {
 							float fracture = (float)after / (float)getDuration();
 							fracture = fracture > 1 ? 1 : fracture;
 							cosmodogGame.getMovementAttemptTransition().completion = fracture;
+							
+							if (fracture >= 0.5f && interactedWithDynamicPieceAlready == false) {
+								//Now handle the case of interacting with dynamic pieces (e.g. destroying a stone)
+								DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(finalNewX, finalNewY);
+								if (dynamicPiece != null) {
+									dynamicPiece.interact();
+								}
+								interactedWithDynamicPieceAlready = true;
+							}
+							
+							
 						}
 						
 						@Override
@@ -216,6 +233,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, movementAttemptAction);
+					
 				}
     		}
     		

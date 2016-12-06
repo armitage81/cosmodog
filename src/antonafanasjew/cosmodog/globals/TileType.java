@@ -122,6 +122,12 @@ public enum TileType {
 	FREE_PLATFORM_PASSAGE(Layers.LAYER_META_PLATFORM_COLLISION, 30),
 	
 	
+	DYNAMIC_PIECE_STONE(Layers.LAYER_META_DYNAMIC_PIECES, 2110),
+	DYNAMIC_PIECE_HARDSTONE(Layers.LAYER_META_DYNAMIC_PIECES, 2111),
+	DYNAMIC_PIECE_TREE(Layers.LAYER_META_DYNAMIC_PIECES, 2112),
+	DYNAMIC_PIECE_BAMBOO(Layers.LAYER_META_DYNAMIC_PIECES, 2113),
+	
+	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.
 	//It can be used to be returned when searching tile types by tile id in case the id does not match any type.
 	UNKNOWN(-1, -1);

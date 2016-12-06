@@ -104,7 +104,7 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 					completion = 1.0f - completion;
 				}
 
-				movementAttemptOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+				movementAttemptOffset = (tileWidth * cam.getZoomFactor()) / 16.0f * completion;
 
 				if (player.getDirection() == DirectionType.DOWN) {
 					pieceOffsetY = movementAttemptOffset;

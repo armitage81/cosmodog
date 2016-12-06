@@ -13,6 +13,9 @@ public enum InventoryItemType {
 	SUPPLYTRACKER,
 	BINOCULARS,
 	SKI,
-	JACKET;
+	JACKET,
+	PICK,
+	MACHETE,
+	AXE;
 	
 }

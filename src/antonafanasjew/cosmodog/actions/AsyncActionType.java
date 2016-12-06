@@ -55,7 +55,9 @@ public enum AsyncActionType {
 	 * Action type: Non blocking interface. Used for all interface actions that do not block input.
 	 * F.i. Alisa's comments.
 	 */
-	NON_BLOCKING_INTERFACE(false, false);
+	NON_BLOCKING_INTERFACE(false, false),
+	
+	PRESENTING_NEW_TOOL(true, false);
 	
 	private boolean blocksInput;
 	private boolean stackable;

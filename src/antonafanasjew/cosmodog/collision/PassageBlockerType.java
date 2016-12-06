@@ -44,7 +44,12 @@ public enum PassageBlockerType {
 	/**
 	 * Passage blocked as the target tile has no rails. (Used for the big platform)
 	 */
-	BLOCKED_NO_RAILS("No rails");
+	BLOCKED_NO_RAILS("No rails"),
+	
+	/**
+	 * Blocked by (mostly destroyable) obstacle set on the map as dynamic piece.
+	 */
+	BLOCKED_DYNAMIC_PIECE("%s");
 	
 	private String descriptionTemplate;
 	
