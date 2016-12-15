@@ -33,4 +33,10 @@ public class PlatformInventoryItem extends InventoryItem {
 		this.exiting = exiting;
 	}
 	
+	@Override
+	public String description() {
+		return "This huge platform can be used to cross the valley. "
+				+ "Vehicles can be parked and transported on it.";
+	}
+	
 }

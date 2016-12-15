@@ -28,6 +28,11 @@ public enum InputHandlerType {
 	/**
 	 * Text frame controls.
 	 */
-	INPUT_HANDLER_INGAME_TEXTFRAME;
+	INPUT_HANDLER_INGAME_TEXTFRAME,
+	
+	/**
+	 * In game menu controls.
+	 */
+	INPUT_HANDLER_INGAME_MENU;
 	
 }

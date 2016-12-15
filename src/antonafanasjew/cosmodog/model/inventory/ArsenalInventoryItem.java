@@ -156,5 +156,14 @@ public class ArsenalInventoryItem extends InventoryItem implements WeaponAmmunit
 			this.selectFirstAvailableWeaponTypeBackward(0);
 		}
 	}
+
+	@Override
+	public String description() {
+		return "The arsenal contains all weapons that you have found during your journey. "
+				+ "Different weapons have different effects on a specific enemy type. "
+				+ "You can switch weapons with [TAB] and [SHIFT] + [TAB]. "
+				+ "Keep an eye on the ammo. "
+				+ "You can find additional ammo for all types of weapons in all corners of the world.";
+	}
 	
 }

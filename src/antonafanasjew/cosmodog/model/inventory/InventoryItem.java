@@ -12,6 +12,8 @@ public abstract class InventoryItem implements Serializable {
 	
 	public static final int INVENTORY_ITEM_INSIGHT_MAX_COUNT = 20;
 	
+	public static final int INVENTORY_ITEM_SOFTWARE_MAX_COUNT = 16;
+	
 	private InventoryItemType inventoryItemType;
 
 	public InventoryItem(InventoryItemType inventoryItemType) {
@@ -21,5 +23,7 @@ public abstract class InventoryItem implements Serializable {
 	public InventoryItemType getInventoryItemType() {
 		return inventoryItemType;
 	}
+	
+	public abstract String description();
 
 }

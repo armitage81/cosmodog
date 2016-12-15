@@ -21,6 +21,7 @@ import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
 import antonafanasjew.cosmodog.controller.InGameControlInputHandler;
 import antonafanasjew.cosmodog.controller.InGameDialogInputHandler;
 import antonafanasjew.cosmodog.controller.InGameInputHandler;
+import antonafanasjew.cosmodog.controller.InGameMenuInputHandler;
 import antonafanasjew.cosmodog.controller.InGameTextFrameInputHandler;
 import antonafanasjew.cosmodog.controller.InputHandler;
 import antonafanasjew.cosmodog.controller.NoInputInputHandler;
@@ -36,7 +37,9 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteract
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmentInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobankInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobyteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MacheteInteraction;
@@ -45,6 +48,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PickInteractio
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PlatformInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SkiInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoftwareInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SupplyTrackerInteraction;
@@ -207,6 +211,7 @@ public class ApplicationContext {
 		InputHandler debugConsoleInputHandler = new DebugConsoleInputHandler();
 		InputHandler inGameDialogInputHandler = new InGameDialogInputHandler();
 		InputHandler inGameTextFrameInputHandler = new InGameTextFrameInputHandler();
+		InputHandler inGameMenuInputHandler = new InGameMenuInputHandler();
 		InputHandler noInputInputHandler = new NoInputInputHandler();
 		
 		Cosmodog cosmodog = new Cosmodog();
@@ -231,6 +236,7 @@ public class ApplicationContext {
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DEBUGCONSOLE, debugConsoleInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DIALOG, inGameDialogInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_TEXTFRAME, inGameTextFrameInputHandler);
+		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_MENU, inGameMenuInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_NO_INPUT, noInputInputHandler);
 		
 		cosmodog.setGamePersistor(CosmodogGamePersistor.instance());
@@ -243,7 +249,10 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.software.name(), new SoftwareInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobyte.name(), new InfobyteInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobank.name(), new InfobankInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentInteraction());
 		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
@@ -306,6 +315,7 @@ public class ApplicationContext {
 		SpriteSheet infobitsSheet = new SpriteSheet("data/infobits.png", 16, 16);
 		SpriteSheet suppliesSheet = new SpriteSheet("data/supplies.png", 16, 16);
 		SpriteSheet insightSheet = new SpriteSheet("data/insight.png", 16, 16);
+		SpriteSheet softwareSheet = new SpriteSheet("data/software.png", 16, 16);
 		SpriteSheet cloudSheet = new SpriteSheet("data/cloud.png", 240, 240);
 		SpriteSheet alphabethSheet = new SpriteSheet("data/alphabeth.png", 16, 24);
 		SpriteSheet alphabeth2Sheet = new SpriteSheet("data/alphabeth2.png", 16, 16);
@@ -316,6 +326,7 @@ public class ApplicationContext {
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_COLLECTIBLE_ITEM_TOOL, collectibleItemToolSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INFOBITS, infobitsSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INSIGHT, insightSheet);
+		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SOFTWARE, softwareSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SUPPLIES, suppliesSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_CLOUDS, cloudSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH, alphabethSheet);

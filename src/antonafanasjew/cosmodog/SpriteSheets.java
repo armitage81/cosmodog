@@ -31,6 +31,8 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	 */
 	public static final String SPRITESHEET_INSIGHT = "spritesheet.insight";
 	
+	public static final String SPRITESHEET_SOFTWARE = "spritesheet.software";
+	
 	/**
 	 * Sprite sheet ID for: supplies.
 	 */

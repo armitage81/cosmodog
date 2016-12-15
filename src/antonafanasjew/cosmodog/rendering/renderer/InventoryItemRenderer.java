@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -80,6 +81,31 @@ public class InventoryItemRenderer implements Renderer {
 			textBlock.setSpeaker(WritingRendererUtils.SPEAKER_SYSTEM);
 			textBlock.setDisplayType(DynamicsTypes.STAMP.toString());
 			textBlock.setText(String.valueOf(((InsightInventoryItem)item).getNumber()));
+			textBlock.setEndsWithParagraph(true);
+			
+			String text = textBlock.getText();
+			int textLength = text.length();
+			
+			for (int i = 0; i < textLength; i++) {
+				Image letterImage = WritingRendererUtils.letterImageForCharacterAndTextBlock(text.charAt(i), textBlock);
+				DrawingContext dc = new TileDrawingContext(numberViewContext, 2, 1, 2 - textLength + i, 0);
+				
+				graphics.setColor(Color.black);
+				graphics.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
+				letterImage.draw(dc.x(), dc.y(), dc.w(), dc.h());
+			}
+			
+		}
+		
+		if (item instanceof SoftwareInventoryItem) {
+			
+			DrawingContext numberViewContext = new TileDrawingContext(paddedTileContext, 2, 3, 1, 2);
+			numberViewContext = new CenteredDrawingContext(numberViewContext, 3);
+
+			TextBlock textBlock = new TextBlock();
+			textBlock.setSpeaker(WritingRendererUtils.SPEAKER_SYSTEM);
+			textBlock.setDisplayType(DynamicsTypes.STAMP.toString());
+			textBlock.setText(String.valueOf(((SoftwareInventoryItem)item).getNumber()));
 			textBlock.setEndsWithParagraph(true);
 			
 			String text = textBlock.getText();

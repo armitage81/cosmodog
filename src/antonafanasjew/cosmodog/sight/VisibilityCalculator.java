@@ -75,7 +75,7 @@ public class VisibilityCalculator {
 		float distanceFromPointToCenter = distanceFromPointToCenter(x, y);
 		
 		if (distanceFromPointToCenter == 0) {
-			throw new IllegalArgumentException("Given point is equal to point of view.");
+			return false;
 		}
 		
 		if (distanceFromPointToCenter > distance) {

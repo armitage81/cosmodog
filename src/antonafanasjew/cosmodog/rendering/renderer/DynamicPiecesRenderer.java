@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
+import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
@@ -126,6 +127,20 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			String animationIdPrefixIndex = String.valueOf(bamboo.getShapeNumber());
 			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = bamboo.animationSuffixFromState();
+			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			
+		}
+		
+		Collection<DynamicPiece> crates = dynamicPieces.get(Crate.class);
+		
+		for (DynamicPiece piece : crates) {
+			Crate crate = (Crate) piece;
+			
+			String animationIdPrefix = "dynamicPieceCrate";
+			String animationIdPrefixIndex = String.valueOf(crate.getShapeNumber());
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = crate.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
 			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
 			

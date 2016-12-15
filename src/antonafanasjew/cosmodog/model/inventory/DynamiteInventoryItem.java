@@ -15,4 +15,9 @@ public class DynamiteInventoryItem extends InventoryItem {
 		super(InventoryItemType.DYNAMITE);
 	}
 	
+	@Override
+	public String description() {
+		return "???";
+	}
+	
 }

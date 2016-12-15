@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.timing.Chronometer;
@@ -37,6 +38,8 @@ public class CosmodogGame extends CosmodogModel {
 	private transient WritingTextBoxStateUpdater commentsStateUpdater;
 	
 	private transient TextFrame textFrame;
+	
+	private transient InGameMenu inGameMenu;
 	
 	private transient RuleBook ruleBook;
 	
@@ -167,6 +170,15 @@ public class CosmodogGame extends CosmodogModel {
 		this.textFrame = textFrame;
 	}
 
+
+	public InGameMenu getInGameMenu() {
+		return inGameMenu;
+	}
+
+	public void setInGameMenu(InGameMenu inGameMenu) {
+		this.inGameMenu = inGameMenu;
+	}
+	
 	public TeleportationTransition getTeleportationTransition() {
 		return teleportationTransition;
 	}
@@ -190,6 +202,5 @@ public class CosmodogGame extends CosmodogModel {
 	public void setChronometer(Chronometer chronometer) {
 		this.chronometer = chronometer;
 	}
-
 
 }

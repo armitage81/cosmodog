@@ -58,7 +58,7 @@ public class GameProgressInterfaceRenderer implements Renderer {
 		
 		
 		int infobitsCollected = player.getGameProgress().getInfobits();
-		int infobitsRemaining = cosmodogMap.getInfobits().size();
+		int infobitsRemaining = cosmodogMap.getInfobits().size() + cosmodogMap.getInfobytes().size() * 5 + cosmodogMap.getInfobanks().size() * 25;
 		int infobitsAll = infobitsCollected + infobitsRemaining;
 		String infobitsValue = String.valueOf(infobitsCollected) + "/" +String.valueOf(infobitsAll);
 		

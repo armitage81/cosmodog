@@ -13,6 +13,14 @@ public abstract class DynamicPiece extends Piece {
 	 * Executed when the player tries to enter the tile with this piece.
 	 */
 	public abstract void interact();
+	
+	/**
+	 * Implementations should return the information whether the
+	 * dynamic piece is wrapping (making invisible) a potential collectible at the same tile.
+	 * Example: A crate is hiding the collectible as long as it is not in the state 'destroyed'.
+	 */
+	public abstract boolean wrapsCollectible();
 
+	
 	
 }

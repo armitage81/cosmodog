@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.model.inventory;
 /**
  * Describes multi-instance items, like insights (there are 20 of them to collect)
  */
-public class CountableInventoryItem extends InventoryItem {
+public abstract class CountableInventoryItem extends InventoryItem {
 
 	private static final long serialVersionUID = -329618952210291080L;
 
@@ -38,6 +38,5 @@ public class CountableInventoryItem extends InventoryItem {
 	public void increaseNumber() {
 		number++;
 	}
-
 
 }

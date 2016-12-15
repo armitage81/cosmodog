@@ -61,4 +61,9 @@ public class Tree extends DynamicPiece {
 		}
 	}
 
+	@Override
+	public boolean wrapsCollectible() {
+		return state != STATE_DESTROYED;
+	}
+	
 }

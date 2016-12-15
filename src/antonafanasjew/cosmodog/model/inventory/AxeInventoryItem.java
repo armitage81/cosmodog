@@ -15,4 +15,11 @@ public class AxeInventoryItem extends InventoryItem {
 		super(InventoryItemType.AXE);
 	}
 	
+	@Override
+	public String description() {
+		return "An old-fashioned axe that you have found in a military equipement box. "
+				+ "Perhaps, it was supposed to be used by fire fighters. "
+				+ "Use it to remove obstacles. "
+				+ "Works only with dry trees.";
+	}
 }

@@ -68,6 +68,14 @@ public class GameProgress extends CosmodogModel {
 	public void addInfobit() {
 		infobits++;
 	}
+
+	public void addInfobyte() {
+		infobits += 5;
+	}
+	
+	public void addInfobank() {
+		infobits += 25;
+	}
 	
 	/**
 	 * Returns the number of infobits.

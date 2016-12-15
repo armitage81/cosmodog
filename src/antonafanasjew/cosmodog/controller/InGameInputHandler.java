@@ -26,6 +26,8 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
+import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -40,6 +42,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.rules.actions.async.InGameMenuAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
@@ -290,6 +293,12 @@ public class InGameInputHandler extends AbstractInputHandler {
 				cam.zoomOut();
 			}
 		
+		}
+		
+		//Handle in-game menu
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
+			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME)));
 		}
 
 	}

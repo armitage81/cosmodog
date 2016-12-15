@@ -41,6 +41,7 @@ import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicP
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
@@ -49,7 +50,6 @@ import antonafanasjew.cosmodog.rendering.renderer.OverheadNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
-import antonafanasjew.cosmodog.rendering.renderer.RightInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
@@ -93,8 +93,6 @@ public class GameState extends BasicGameState {
 	private DrawingContext vitalDataDrawingContext;
 	private DrawingContext gameProgressDrawingContext;
 	private DrawingContext mapDrawingContext;
-	private DrawingContext rightColumnDrawingContext;
-	
 	
 	private CloudsDecoration cloudsDeco;
 	private List<BirdsDecoration> birdsDecos = Lists.newArrayList();
@@ -121,14 +119,15 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer sightRadiusRenderer;
 	private Renderer arsenalInterfaceRenderer;
 	private Renderer weaponTooltipRenderer;
-	private Renderer rightInterfaceRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
 	private MapLayerRendererPredicate topsLayersPredicate;
 	
-	private DialogBoxRenderer dialogBoxRenderer;
 	private WritingRenderer commentsRenderer;
+	private DialogBoxRenderer dialogBoxRenderer;
+	private TextFrameRenderer textFrameRenderer;
+	private InGameMenuRenderer inGameMenuRenderer;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -142,7 +141,7 @@ public class GameState extends BasicGameState {
 		// TileDrawingContext(gameContainerDrawingContext, 5, 1, 0, 0);
 		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0, 1, 8);
 		
-		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 4, 1);
+		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
 		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 9, 0, 0);
 		
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
@@ -154,9 +153,7 @@ public class GameState extends BasicGameState {
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
 		gameProgressDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 1, 0);
 		
-		
-		rightColumnDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 4, 0);
-		
+				
 		//Update the global dialog drawing context variable in the application context.
 		ApplicationContext.instance().setDialogBoxDrawingContext(new TileDrawingContext(mapDrawingContext, 1, 5, 0, 4));
 		
@@ -188,10 +185,10 @@ public class GameState extends BasicGameState {
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
-		rightInterfaceRenderer = new RightInterfaceRenderer();
-		
 		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
 		dialogBoxRenderer = new DialogBoxRenderer();
+		textFrameRenderer = new TextFrameRenderer();
+		inGameMenuRenderer = new InGameMenuRenderer();
 		
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
 		tipsLayersPredicate = new TipsLayersRenderingPredicate();
@@ -344,6 +341,9 @@ public class GameState extends BasicGameState {
 		//Draw pieces that are on the platform.
 		platformPiecesRenderer.render(gc, g, mapDrawingContext, new OnPlatformPieceRendererPredicate());
 		
+		//Draw top dynamic pieces.
+		dynamicPiecesRenderer.render(gc, g, mapDrawingContext, DynamicPiecesRendererParam.TOP);
+		
 		//Draw top parts of the map, f.i. roofs, tops of the pillars and trees. They will cover both player and NPC
 		mapRenderer.render(gc, g, mapDrawingContext, topsLayersPredicate);
 		
@@ -355,9 +355,6 @@ public class GameState extends BasicGameState {
 		
 		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, mapDrawingContext);
-		
-		//Draw top dynamic pieces.
-		dynamicPiecesRenderer.render(gc, g, mapDrawingContext, DynamicPiecesRendererParam.TOP);
 		
 		//Draw top effects.
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_TOP_EFFECTS);
@@ -387,7 +384,6 @@ public class GameState extends BasicGameState {
 		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
 		weaponTooltipRenderer.render(gc, g, weaponTooltipsDrawingContext, null);
 		// leftInterfaceRenderer.render(gc, g, leftColumnDrawingContext);
-		rightInterfaceRenderer.render(gc, g, rightColumnDrawingContext, null);
 	
 		DrawingContext dialogBoxDrawingContext = ApplicationContext.instance().getDialogBoxDrawingContext();
 		DrawingContext commentsWritingDrawingContext = DrawingContextUtils.writingContentDcFromDialogBoxDc(dialogBoxDrawingContext);
@@ -403,8 +399,9 @@ public class GameState extends BasicGameState {
 			dialogBoxRenderer.render(gc, g, dialogBoxDrawingContext, cosmodogGame.getWritingTextBoxState());
 		}
 
-		TextFrameRenderer tfr = new TextFrameRenderer();
-		tfr.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
+		textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
+		
+		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
 		
 	}
 

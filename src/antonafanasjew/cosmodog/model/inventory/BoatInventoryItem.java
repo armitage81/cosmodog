@@ -15,4 +15,9 @@ public class BoatInventoryItem extends InventoryItem {
 		super(InventoryItemType.BOAT);
 	}
 	
+	@Override
+	public String description() {
+		return "A simple inflatable boat that fits in your back pack. Allows you to cross water.";
+	}
+	
 }

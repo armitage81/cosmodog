@@ -15,4 +15,11 @@ public class GeigerZaehlerInventoryItem extends InventoryItem {
 		super(InventoryItemType.GEIGERZAEHLER);
 	}
 	
+	@Override
+	public String description() {
+		return "This little device is an indicator of radiation. "
+				+ "Once you have stepped close to a radioactive area, it will start to chirp and warn you about the danger. "
+				+ "Read the hints on your interface and find a safe way to avoid being contaminated.";
+	}
+	
 }

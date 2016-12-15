@@ -41,11 +41,22 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
+import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.MacheteInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -98,6 +109,9 @@ import com.google.common.collect.Maps;
 public class InitializationUtils {
 
 	public static int INFOBIT_TILE_ID = 191;
+	public static int INFOBYTE_TILE_ID = 3069;
+	public static int INFOBANK_TILE_ID = 3070;
+	public static int SOFTWARE_TILE_ID = 3071;
 	public static int INSIGHT_TILE_ID = 196;
 	public static int SOULESSENCE_TILE_ID = 197;
 	public static int ARMOR_TILE_ID = 206;
@@ -129,7 +143,9 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(5, 3);
+		Player player = Player.fromPosition(16, 326);
+		player.setMaxLife(50);
+		player.setLife(50);
 		
 //		Player player = Player.fromPosition(130, 130);
 		
@@ -144,6 +160,20 @@ public class InitializationUtils {
 //		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
 //		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
 //		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
+		
+		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
+		player.getInventory().put(InventoryItemType.AXE, new AxeInventoryItem());
+		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+		player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
+		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
+		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+		player.getInventory().put(InventoryItemType.MACHETE, new MacheteInventoryItem());
+		player.getInventory().put(InventoryItemType.PICK, new PickInventoryItem());
+		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
+		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
+		
+		
+		
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
@@ -224,8 +254,26 @@ public class InitializationUtils {
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
+				if (tileId == INFOBYTE_TILE_ID) {
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobyte);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				if (tileId == INFOBANK_TILE_ID) {
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobank);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
 				if (tileId == INSIGHT_TILE_ID) {
 					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.insight);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				if (tileId == SOFTWARE_TILE_ID) {
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.software);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
@@ -452,6 +500,11 @@ public class InitializationUtils {
 				if (tileId == TileType.DYNAMIC_PIECE_BAMBOO.getTileId()) {
 					Bamboo bamboo = Bamboo.create(k, l);
 					map.getDynamicPieces().put(Bamboo.class, bamboo);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {
+					Crate crate = Crate.create(k, l);
+					map.getDynamicPieces().put(Crate.class, crate);
 				}
 			}
 		}

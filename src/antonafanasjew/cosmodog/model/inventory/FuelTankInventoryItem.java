@@ -14,5 +14,10 @@ public class FuelTankInventoryItem extends InventoryItem {
 		super(InventoryItemType.FUEL_TANK);
 	}
 
+	@Override
+	public String description() {
+		return "A canister full with diesel or whatever they use here to fuel their vehicles. You filled it at an abandoned gas station. "
+				+ "You could also have driven inside with the car to fuel it directly.";
+	}
 
 }

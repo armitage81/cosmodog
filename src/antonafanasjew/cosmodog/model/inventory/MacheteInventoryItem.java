@@ -15,4 +15,10 @@ public class MacheteInventoryItem extends InventoryItem {
 		super(InventoryItemType.MACHETE);
 	}
 	
+	@Override
+	public String description() {
+		return "A thick knife with a sturdy grip. It can be useful to cut through the overgrown areas. "
+				+ "Especially effective against bamboo cane.";
+	}
+	
 }

@@ -32,5 +32,15 @@ public class VehicleInventoryItem extends InventoryItem {
 	public void setExiting(boolean exiting) {
 		this.exiting = exiting;
 	}
+
+	@Override
+	public String description() {
+		return "A real vehicle with a combustion engine. You saw one once in a museum but never sat inside one. "
+				+ "Still, the controls are peanuts for a space cargo ship pilot. "
+				+ "Look out for gas stations to refuel the car. "
+				+ "If too late, you still can walk to one of them on foot and take a canister of fuel. "
+				+ "Cars cannot drive in rough terrain but they are still very helpful as they provide protection against "
+				+ "the enemy attacks and speed up your travel.";
+	}
 	
 }

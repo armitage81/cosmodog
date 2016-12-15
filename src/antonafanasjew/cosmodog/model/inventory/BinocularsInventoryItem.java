@@ -15,4 +15,9 @@ public class BinocularsInventoryItem extends InventoryItem {
 		super(InventoryItemType.BINOCULARS);
 	}
 	
+	@Override
+	public String description() {
+		return "These military binoculars are very useful as they let you survey the area farther than your eyes can do. "
+				+ "Press [Z] and [Y] zo zoom in and out.";
+	}
 }

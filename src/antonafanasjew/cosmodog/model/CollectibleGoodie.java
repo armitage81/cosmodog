@@ -6,7 +6,10 @@ public class CollectibleGoodie extends Collectible {
 
 	public static enum GoodieType {
 		infobit(100),
+		infobyte(500),
+		infobank(2500),
 		insight(10000),
+		software(3000),
 		supplies(200),
 		medipack(200),
 		soulessence(500),

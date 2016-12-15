@@ -15,4 +15,9 @@ public class PickInventoryItem extends InventoryItem {
 		super(InventoryItemType.PICK);
 	}
 	
+	@Override
+	public String description() {
+		return "A pick axe. Quite heavy and a bit rusty but still effective for destroying stones in your way.";
+	}
+	
 }

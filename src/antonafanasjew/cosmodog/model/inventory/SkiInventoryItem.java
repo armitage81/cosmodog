@@ -15,4 +15,9 @@ public class SkiInventoryItem extends InventoryItem {
 		super(InventoryItemType.SKI);
 	}
 	
+	@Override
+	public String description() {
+		return "Simple ski equipment including goggles and sticks. "
+				+ "Snow won't be an obstacle any more and you can cross it as if it were plain terrain.";
+	}
 }

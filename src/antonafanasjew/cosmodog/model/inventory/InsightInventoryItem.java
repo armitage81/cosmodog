@@ -17,4 +17,10 @@ public class InsightInventoryItem extends CountableInventoryItem {
 		super(InventoryItemType.INSIGHT);
 	}
 
+	@Override
+	public String description() {
+		return "These mysterious items are immaterial and intangible. They are merely abstract ideas representing your insight in the alien philosophy. "
+				+ "Find all of them to achieve your goal.";
+	}
+	
 }

@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
+import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
@@ -71,6 +72,11 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 					}
 					
 					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				}
+			} else if (dynamicPiece instanceof Crate) {
+				Crate crate = (Crate)dynamicPiece;
+				if (crate.getState() != Crate.STATE_DESTROYED) {
+					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			}
 		}

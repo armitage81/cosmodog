@@ -26,11 +26,14 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.FoodCompartmentRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobankRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobyteRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PieceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PlatformRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.SoftwareRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.SoulEssenceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.SuppliesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ToolRenderer;
@@ -71,7 +74,10 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.software.name(), new SoftwareRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobyte.name(), new InfobyteRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobank.name(), new InfobankRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentRenderer());
 	}
