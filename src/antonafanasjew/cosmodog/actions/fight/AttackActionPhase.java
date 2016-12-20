@@ -7,6 +7,7 @@ import org.newdawn.slick.util.Log;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Enemy;
@@ -16,6 +17,7 @@ import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
 /**
@@ -63,7 +65,18 @@ public class AttackActionPhase extends AbstractFightActionPhase {
 		fightPhaseTransition.playerAttack = fightPhaseResult.isPlayerAttack();
 		setFightPhaseTransition(fightPhaseTransition);
 
-		String text = "-" + String.valueOf(fightPhaseResult.getDamage());
+		String text = String.valueOf(fightPhaseResult.getDamage());
+		
+		DirectionType playerDirection = fightPhaseTransition.player.getDirection();
+		DirectionType enemyDirection = fightPhaseTransition.enemy.getDirection();
+		DirectionType enemyRelatedToPlayerDirection = PositionUtils.targetDirection(fightPhaseTransition.player, fightPhaseTransition.enemy);
+		
+		boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
+		boolean enemyLooksAway = enemyDirection.equals(playerDirection);
+		
+		if (fightPhaseResult.isPlayerAttack() && playerLooksAtEnemy && enemyLooksAway) {
+			text = text + " (x2)";
+		}
 		OverheadNotificationAction.registerOverheadNotification(fightPhaseResult.isPlayerAttack() ? fightPhaseResult.getEnemy() : fightPhaseResult.getPlayer(), text);
 		
 		fightPhaseResult.getPlayer().lookAtActor(fightPhaseResult.getEnemy());

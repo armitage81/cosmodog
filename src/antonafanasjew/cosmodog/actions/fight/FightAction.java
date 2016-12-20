@@ -10,12 +10,17 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightActionResult.FightPhaseResult;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.AbstractPlayerAttackDamageCalculator;
+import antonafanasjew.cosmodog.fighting.DamageCalculator;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
@@ -29,25 +34,33 @@ public class FightAction extends VariableLengthAsyncAction {
 
 	private static final long serialVersionUID = -5197319922966169468L;
 
+	private Enemy targetEnemy;
 	private FightActionResult fightActionResult = new FightActionResult();
 	private ActionRegistry actionPhaseRegistry = new ActionRegistry();
-	
+
 	private AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator;
+	private AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo;
 	private AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator;
+
 	
-	/**
-	 * Initialized with the damage calculators for the PC and the enemy.
-	 * @param c1 Player's damage calculator.
-	 * @param c2 Enemy's damage calculator.
-	 */
-	public FightAction(AbstractPlayerAttackDamageCalculator c1, AbstractEnemyAttackDamageCalculator c2) {
-		playerAttackDamageCalculator = c1;
-		enemyAttackDamageCalculator = c2;
+	public FightAction(AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator, AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo, AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator) {
+		this(null, playerAttackDamageCalculator, playerAttackDamageCalculatorIfNoAmmo, enemyAttackDamageCalculator);
 	}
 	
 	/**
-	 * Calculates the complete fight result. Calculates the fight phases based on the fight result and registers them in the internal
-	 * action registry.
+	 * Initializes the fight action. 
+	 * Target enemy is set if the player initiates the fight. Otherwise the attacker is one or more alerted adjacent enemies and the parameter is null.
+	 */
+	public FightAction(Enemy targetEnemy, AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator, AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo, AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator) {
+		this.targetEnemy = targetEnemy;
+		this.playerAttackDamageCalculator = playerAttackDamageCalculator;
+		this.playerAttackDamageCalculatorIfNoAmmo = playerAttackDamageCalculatorIfNoAmmo;
+		this.enemyAttackDamageCalculator = enemyAttackDamageCalculator;
+	}
+
+	/**
+	 * Calculates the complete fight result. Calculates the fight phases based
+	 * on the fight result and registers them in the internal action registry.
 	 */
 	@Override
 	public void onTrigger() {
@@ -64,65 +77,99 @@ public class FightAction extends VariableLengthAsyncAction {
 	}
 
 	/**
-	 * Returns true if the fight action registry is empty, meaning that there are no unplayed fight phases.
+	 * Returns true if the fight action registry is empty, meaning that there
+	 * are no unplayed fight phases.
 	 */
 	@Override
 	public boolean hasFinished() {
 		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.FIGHT);
 	}
-	
+
 	/*
-	 * Initializes the fight action result by simulating the fights between the player and all adjacent enemies.
+	 * Initializes the fight action result by simulating the fights between the
+	 * player and all adjacent enemies.
 	 */
 	private void initFightActionResult() {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+
+		//As we prepare the fight action result we must consider the ammunition of the selected weapon.
+		//It could be that we have only one shot left but are surrounded by up to 4 enemies.
+		//In such a case, we need to count down the remaining ammunition while preparing the result.
+		//In the case we assume the ammunition to end, the subsequent attacks should be considered as unarmed. 
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
+		Weapon selectedWeapon = arsenal.getWeaponsCopy().get(selectedWeaponType);
+		int remainingAmmo = selectedWeaponType.equals(WeaponType.FISTS) ? 100 : selectedWeapon.getAmmunition();
 		
 		List<Enemy> adjacenEnemies = CosmodogMapUtils.enemiesAdjacentToPlayer(map, player);
+
+		if (targetEnemy != null) {
+			updateFightActionResultForOneEnemy(player, targetEnemy, true, remainingAmmo <= 0);
+			adjacenEnemies.remove(targetEnemy);
+			remainingAmmo--;
+		}
 		
 		for (Enemy enemy : adjacenEnemies) {
-			
-			int playerAttackDamage = playerAttackDamageCalculator.damage(player, enemy);
-			
-			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
-			
-			
-			fightActionResult.add(playerPhaseResult);
-			if (playerPhaseResult.enoughDamageToKillEnemy() == false) {
-				int enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
-				FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
-				fightActionResult.add(enemyPhaseResult);
-			} 
-			
+
+			updateFightActionResultForOneEnemy(player, enemy, false, remainingAmmo <= 0);
+			remainingAmmo--;
 			if (fightActionResult.enoughDamageToKillPlayer()) {
 				break;
 			}
 		}
 	}
-	
+
+	private void updateFightActionResultForOneEnemy(Player player, Enemy enemy, boolean playerIsAttacker, boolean unarmedAttack) {
+		
+		boolean playerHasPlatform = player.getInventory().hasPlatform();
+		
+		if (playerIsAttacker) {
+			 enemy.increaseAlertLevelToMax();
+		}
+		
+		if (enemy.getAlertLevel() > 0 && !playerHasPlatform) {
+
+			DamageCalculator playerDamageCalculator = unarmedAttack ? playerAttackDamageCalculatorIfNoAmmo : playerAttackDamageCalculator;
+			int playerAttackDamage = playerDamageCalculator.damage(player, enemy);
+			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
+
+			int enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
+			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
+
+			if (playerIsAttacker) {
+				fightActionResult.add(playerPhaseResult);
+				if (playerPhaseResult.enoughDamageToKillEnemy() == false) {
+					fightActionResult.add(enemyPhaseResult);
+				}
+			} else {
+				fightActionResult.add(enemyPhaseResult);
+				if (enemyPhaseResult.enoughDamageToKillPlayer() == false) {
+					fightActionResult.add(playerPhaseResult);	
+				}
+			}
+
+		}
+	}
+
 	/*
 	 * Calculates the phase queue based on the fight action result.
 	 */
 	private void initActionPhaseRegistry() {
-		
-		
-		
-		
+
 		for (FightActionResult.FightPhaseResult phaseResult : fightActionResult) {
-			
+
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-			
-			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
-			
-			
+
+			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
+
 			if (overheadNotificationAction != null) {
 				overheadNotificationAction.cancel();
-				
+
 			}
 
-			
 			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
-			if(phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
+			if (phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
 				getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, new EnemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy()));
 			}
 		}

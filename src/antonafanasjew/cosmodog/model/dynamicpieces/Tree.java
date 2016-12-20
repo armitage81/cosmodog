@@ -65,5 +65,6 @@ public class Tree extends DynamicPiece {
 	public boolean wrapsCollectible() {
 		return state != STATE_DESTROYED;
 	}
+
 	
 }

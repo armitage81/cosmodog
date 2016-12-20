@@ -83,6 +83,10 @@ public class FightActionResult extends ArrayList<FightPhaseResult>{
 			return playerAttack && damage >= enemy.getActualLife();
 		}
 		
+		public boolean enoughDamageToKillPlayer() {
+			return !playerAttack && damage >= player.getActualLife();
+		}
+		
 	}
 	
 	

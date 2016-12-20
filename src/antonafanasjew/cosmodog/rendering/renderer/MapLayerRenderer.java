@@ -107,6 +107,11 @@ public class MapLayerRenderer extends AbstractRenderer {
 				int imagePosY = imageIndex / 9;
 				
 				SpriteSheet tilesetSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_TILES);
+				
+				if (imagePosY == 119304984 ) {
+					System.out.println("Yulka Kozyulka");
+				}
+				
 				Image tileImage = tilesetSpriteSheet.getSprite(imagePosX, imagePosY);
 				
 				tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());

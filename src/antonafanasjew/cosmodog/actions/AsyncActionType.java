@@ -29,6 +29,8 @@ public enum AsyncActionType {
 	
 	WORM_ATTACK(true, false),
 	
+	MINE_EXPLOSION(true, false),
+	
 	/**
 	 * Action type: Collision indicator. Is used to make intervals between the 'no passage' sounds. Does not block the input.
 	 */

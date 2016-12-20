@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
+import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -410,7 +411,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		ActionRegistry ar = game.getActionRegistry();
-		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimpleEnemyAttackDamageCalculator()));
+		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), new SimpleEnemyAttackDamageCalculator()));
 		
 	}
 }

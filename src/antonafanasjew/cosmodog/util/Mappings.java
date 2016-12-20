@@ -26,6 +26,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.FUEL_TANK, "inventoryItemFuel");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.INSIGHT, "inventoryItemCosmodog");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SOFTWARE, "inventoryItemSoftware");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.CHART, "inventoryItemChart");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.BOAT, "inventoryItemBoat");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DYNAMITE, "inventoryItemDynamite");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.VEHICLE, "inventoryItemVehicle");
@@ -34,6 +35,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SUPPLYTRACKER, "inventoryItemSupplyTracker");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.BINOCULARS, "inventoryItemBinoculars");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.JACKET, "inventoryItemJacket");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MINEDETECTOR, "inventoryItemMineDetector");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SKI, "inventoryItemSki");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.PICK, "inventoryItemPick");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MACHETE, "inventoryItemMachete");

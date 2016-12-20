@@ -25,6 +25,7 @@ import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.PieceR
 import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.ChartRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.FoodCompartmentRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobankRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
@@ -75,6 +76,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.software.name(), new SoftwareRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.chart.name(), new ChartRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobyte.name(), new InfobyteRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobank.name(), new InfobankRenderer());

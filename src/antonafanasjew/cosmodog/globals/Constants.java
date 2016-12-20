@@ -72,7 +72,7 @@ public class Constants {
 	/**
 	 * The visible duration of the enemy destruction fight action phase transition.
 	 */
-	public static final int ENEMY_DESTRUCTION_ACTION_DURATION = 500;
+	public static final int ENEMY_DESTRUCTION_ACTION_DURATION = 750;
 	
 //	/**
 //	 * The horizontal resolution of the game window.

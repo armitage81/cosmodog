@@ -65,5 +65,6 @@ public class HardStone extends DynamicPiece {
 	public boolean wrapsCollectible() {
 		return state != STATE_DESTROYED;
 	}
+
 	
 }

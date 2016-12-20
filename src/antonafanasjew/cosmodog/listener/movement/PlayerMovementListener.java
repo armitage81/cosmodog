@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.listener.movement;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
@@ -27,13 +29,16 @@ import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
@@ -41,6 +46,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
+import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
 import com.google.common.collect.Lists;
@@ -80,6 +86,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		collectCollectibles(applicationContext);
 		refillWater(applicationContext);
 		refillFuel(applicationContext);
+		detectMines(applicationContext);
 	}
 	
 	@Override
@@ -89,6 +96,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkTemperature(applicationContext);
 		checkRadiation(applicationContext);
 		checkWorm(applicationContext);
+		checkMine(applicationContext);
 	}
 
 	private void collectCollectibles(ApplicationContext applicationContext) {
@@ -207,6 +215,31 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			}
 			
 		});
+		
+	}
+	
+	private void detectMines(ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		MineDetectorInventoryItem mineDetector = (MineDetectorInventoryItem)player.getInventory().get(InventoryItemType.MINEDETECTOR);
+		boolean hasMineDetector = mineDetector != null;
+		
+		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+		
+		for (DynamicPiece piece : mines) {
+			Mine mine =(Mine)piece;
+			if (mine.getState() == Mine.STATE_DEACTIVATED) {
+				continue;
+			}
+			
+			if (mine.getState() == Mine.STATE_DESTROYED) {
+				continue;
+			}
+			
+			boolean mineIsVisible = mineDetector == null ? false : PiecesUtils.distanceBetweenPieces(player, mine) < mineDetector.getDetectionDistance();
+			
+			mine.setState(mineIsVisible ? Mine.STATE_VISIBLE : Mine.STATE_INVISIBLE);
+		}
 		
 	}
 	
@@ -352,6 +385,32 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			
 			}
 		}
+	}
+
+	private void checkMine(ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+		
+		Mine mineUnderPlayer = null;
+		
+		for (DynamicPiece piece : mines) {
+			Mine mine = (Mine)piece;
+			if (mine.getPositionX() == player.getPositionX() && mine.getPositionY() == player.getPositionY()) {
+				mineUnderPlayer = mine;
+				break;
+			}
+		}
+		
+		if (mineUnderPlayer != null) {
+			short mineState = mineUnderPlayer.getState();
+			if (mineState != Mine.STATE_DEACTIVATED && mineState != Mine.STATE_DESTROYED) {
+				mineUnderPlayer.setState(Mine.STATE_DESTROYED);
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new MineExplosionAction(500));
+			}
+		}
+		
 	}
 	
 	private boolean isPlayerOnGroundTypeTile(TileType tileType, CosmodogMap map, Player player) {

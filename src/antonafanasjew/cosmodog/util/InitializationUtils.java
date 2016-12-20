@@ -43,8 +43,10 @@ import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
@@ -112,6 +114,8 @@ public class InitializationUtils {
 	public static int INFOBYTE_TILE_ID = 3069;
 	public static int INFOBANK_TILE_ID = 3070;
 	public static int SOFTWARE_TILE_ID = 3071;
+	public static int CHART_TILE_ID = 3072;
+	public static int MINEDETECTOR_TILE_ID = 3073;
 	public static int INSIGHT_TILE_ID = 196;
 	public static int SOULESSENCE_TILE_ID = 197;
 	public static int ARMOR_TILE_ID = 206;
@@ -143,7 +147,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(16, 326);
+		Player player = Player.fromPosition(182, 72);
 		player.setMaxLife(50);
 		player.setLife(50);
 		
@@ -152,14 +156,14 @@ public class InitializationUtils {
 //		for (int i = 0; i < 350; i++) {
 //			player.getGameProgress().addInfobit();
 //		}
-//		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
-//		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
-//		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
-//		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
+		
+		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE, 1));
+		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN, 1));
+		
+
+		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		
 		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
 		player.getInventory().put(InventoryItemType.AXE, new AxeInventoryItem());
@@ -278,6 +282,14 @@ public class InitializationUtils {
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
 				}
+				
+				if (tileId == CHART_TILE_ID) {
+					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.chart);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
 				if (tileId == SUPPLIES_TILE_ID) {
 					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.supplies);
 					c.setPositionX(k);
@@ -364,6 +376,13 @@ public class InitializationUtils {
 				
 				if (tileId == JACKET_TILE_ID) {
 					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.jacket);
+					c.setPositionX(k);
+					c.setPositionY(l);
+					map.getMapPieces().add(c);
+				}
+				
+				if (tileId == MINEDETECTOR_TILE_ID) {
+					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.minedetector);
 					c.setPositionX(k);
 					c.setPositionY(l);
 					map.getMapPieces().add(c);
@@ -505,6 +524,11 @@ public class InitializationUtils {
 				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {
 					Crate crate = Crate.create(k, l);
 					map.getDynamicPieces().put(Crate.class, crate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_MINE.getTileId()) {
+					Mine mine = Mine.create(k, l);
+					map.getDynamicPieces().put(Mine.class, mine);
 				}
 			}
 		}

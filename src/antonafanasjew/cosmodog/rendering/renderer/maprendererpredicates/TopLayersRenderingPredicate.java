@@ -1,13 +1,20 @@
 package antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CollisionUtils;
+
+import com.google.common.collect.Lists;
 
 public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 
@@ -30,35 +37,61 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		}
 		
 		//If player is not in one of the roof regions then render any top tile
-		TiledObject roofRegionOverPlayer = roofRegion(player, map);
+		Set<TiledObject> roofRegionsOverPlayer = roofRegions(player, map);
 		
-		if (roofRegionOverPlayer == null) {
+		if (roofRegionsOverPlayer.isEmpty()) {
 			return true;
 		}
 		
-		boolean retVal = !tileCoversPlayer(roofRegionOverPlayer, map, tileX, tileY);
+		boolean retVal = !tileCoversPlayer(roofRegionsOverPlayer, map, tileX, tileY, layerIndex);
 		
 		return retVal;
 		
 		
 	}
 	
-	private boolean tileCoversPlayer(TiledObject regionOverPlayer, CosmodogMap map, int tilePosX, int tilePosY) {
+	private boolean tileCoversPlayer(Set<TiledObject> regionsOverPlayer, CosmodogMap map, int tilePosX, int tilePosY, int layerIndex) {
 		
 		int x = tilePosX * map.getTileWidth();
 		int y = tilePosY * map.getTileHeight();
 		int w = map.getTileWidth();
 		int h = map.getTileHeight();
 		
+		TiledMapLayer layer = map.getMapLayers().get(layerIndex);
+		String layerName = layer.getName();
+		
 		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h);
 		
-		boolean intersects = CollisionUtils.intersects(r, regionOverPlayer);
+		boolean intersects = false;
+		
+		for (TiledObject regionOverPlayer : regionsOverPlayer) {
+
+			//Some roof regions specify layers which represent the roofs to avoid clipping all top layers.
+			//In such cases, the region will have a property in form layers=<layerA>,<layerB>. All other layers
+			//need to be rendered.
+			Map<String, String> properties = regionOverPlayer.getProperties();
+			if (properties != null) {
+				String relevantLayersProperty = properties.get("layers");
+				if (relevantLayersProperty != null) {
+					List<String> relevantLayers = Lists.newArrayList(relevantLayersProperty.split(","));
+					if (!relevantLayers.contains(layerName)) {
+						continue;
+					}
+					
+				}
+			}
+			
+			if (CollisionUtils.intersects(r, regionOverPlayer)) {
+				intersects = true;
+				break;
+			}
+		}
 		
 		return intersects;
 	}
 	
-	private TiledObject roofRegion(Player player, CosmodogMap map) {
-		return PlayerMovementCache.getInstance().getRoofRegionOverPlayer();
+	private Set<TiledObject> roofRegions(Player player, CosmodogMap map) {
+		return PlayerMovementCache.getInstance().getRoofRegionsOverPlayer();
 	}
 	
 

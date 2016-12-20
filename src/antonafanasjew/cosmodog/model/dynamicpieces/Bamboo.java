@@ -66,4 +66,5 @@ public class Bamboo extends DynamicPiece {
 		return state != STATE_DESTROYED;
 	}
 
+
 }

@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -91,6 +92,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 		
+		MineExplosionAction mineExplosionAction = (MineExplosionAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
+		
+		
 		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
 		
@@ -109,7 +113,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
-		boolean playerIsTakingDamage = playerIsFighting && fightPhaseTransition.playerAttack == false;
+		boolean playerIsTakingDamage = (playerIsFighting && fightPhaseTransition.playerAttack == false) || mineExplosionAction != null;
 
 		
 		PlayerAppearanceType playerAppearanceType;

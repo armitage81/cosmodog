@@ -154,6 +154,25 @@ public class NpcRenderer extends AbstractRenderer {
 				smokeAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + smokeOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + smokeOffseetY);
 			}
 			
+			if (enemyIsExploding && enemyRobotic) {
+				Animation explosionAnimation = ApplicationContext.instance().getAnimations().get("explosion");
+				float completion = fightPhaseTransition.completion;
+				int animationFrame = (int)(explosionAnimation.getFrameCount() * completion);
+				explosionAnimation.setCurrentFrame(animationFrame);
+				explosionAnimation.draw((enemyPosX - tileNoX) * tileWidth - tileWidth, (enemyPosY - tileNoY) * tileHeight -tileHeight);
+			}
+			
+			if (enemy.getAlertLevel() > 0 && !enemyIsExploding) {
+				float signWidth = 32 / cam.getZoomFactor();
+				float signHeight = 32 / cam.getZoomFactor();
+				float signOffsetX = (tileWidth - signWidth) / 2;
+				float signOffseetY = -8;
+				
+				
+				
+				Animation alertedAnimation = ApplicationContext.instance().getAnimations().get("enemyAlerted");
+				alertedAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY, signWidth, signHeight);
+			}
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-x, -y);

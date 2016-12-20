@@ -45,6 +45,7 @@ import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.MineExplosionRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.NpcRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.OverheadNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
@@ -107,6 +108,7 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer platformRenderer;
 	private AbstractRenderer playerRenderer;
 	private AbstractRenderer wormAttackRenderer;
+	private AbstractRenderer mineExplosionRenderer;
 	private AbstractRenderer wormSnowSparkRenderer;
 	private AbstractRenderer npcRenderer;
 	private AbstractRenderer northPiecesRenderer;
@@ -170,6 +172,7 @@ public class GameState extends BasicGameState {
 		platformRenderer = new OccupiedPlatformRenderer();
 		playerRenderer = new PlayerRenderer();
 		wormAttackRenderer = new WormAttackRenderer();
+		mineExplosionRenderer = new MineExplosionRenderer();
 		wormSnowSparkRenderer = new WormSnowSparkRenderer();
 		npcRenderer = new NpcRenderer();
 		northPiecesRenderer = new PiecesRenderer(true, false);
@@ -314,6 +317,8 @@ public class GameState extends BasicGameState {
 		//Draw "ground" part of the map
 		mapRenderer.render(gc, g, mapDrawingContext, bottomLayersPredicate);
 		
+		
+		
 		//Draw "tips" part of the map (Tile that would partially cover the player, like high flowers. Take note, it is still drawn underneath the player, as partial coverage is realized via special sprites)
 		mapRenderer.render(gc, g, mapDrawingContext, tipsLayersPredicate);
 		
@@ -322,6 +327,9 @@ public class GameState extends BasicGameState {
 		
 		//Draw ground effects.
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_GROUND_EFFECTS);
+
+		//Draw mine explosion
+		mineExplosionRenderer.render(gc, g, mapDrawingContext);
 		
 		//Draw the platform here. Note: This renderer handles the occupied platform. The standalone platform is a normal piece and will be rendered with the piece renderers.
 		platformRenderer.render(gc, g, mapDrawingContext);
@@ -402,6 +410,8 @@ public class GameState extends BasicGameState {
 		textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
 		
 		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
+		
+		
 		
 	}
 

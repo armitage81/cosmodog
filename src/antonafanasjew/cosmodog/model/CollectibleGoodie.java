@@ -10,6 +10,7 @@ public class CollectibleGoodie extends Collectible {
 		infobank(2500),
 		insight(10000),
 		software(3000),
+		chart(500),
 		supplies(200),
 		medipack(200),
 		soulessence(500),

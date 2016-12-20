@@ -25,6 +25,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
+import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
@@ -129,7 +130,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     		if (targetEnemy != null) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
-    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimpleEnemyAttackDamageCalculator()));
+    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(targetEnemy, new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), new SimpleEnemyAttackDamageCalculator()));
     		} else {
     		
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newX, newY);
@@ -298,7 +299,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Handle in-game menu
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.MAP_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME)));
 		}
 
 	}

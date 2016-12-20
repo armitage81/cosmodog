@@ -4,6 +4,9 @@ import antonafanasjew.cosmodog.controller.InputHandler;
 import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryInputHandler;
 import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryInputState;
 import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryRenderer;
+import antonafanasjew.cosmodog.ingamemenu.map.MapInputHandler;
+import antonafanasjew.cosmodog.ingamemenu.map.MapInputState;
+import antonafanasjew.cosmodog.ingamemenu.map.MapRenderer;
 import antonafanasjew.cosmodog.ingamemenu.progress.ProgressInputHandler;
 import antonafanasjew.cosmodog.ingamemenu.progress.ProgressInputState;
 import antonafanasjew.cosmodog.ingamemenu.progress.ProgressRenderer;
@@ -17,9 +20,12 @@ public class InGameMenuFrame {
 	private InGameMenuInputState inputState;
 	
 	private static InventoryInputState inventoryInputState = new InventoryInputState();
+	private static MapInputState mapInputState = new MapInputState();
 	
 	public static final InGameMenuFrame INVENTORY_INGAME_MENU_FRAME = new InGameMenuFrame("Inventory", new InventoryInputHandler(inventoryInputState), new InventoryRenderer(), inventoryInputState);
 	public static final InGameMenuFrame PROGRESS_INGAME_MENU_FRAME = new InGameMenuFrame("Game progress", new ProgressInputHandler(), new ProgressRenderer(), new ProgressInputState());
+	public static final InGameMenuFrame MAP_INGAME_MENU_FRAME = new InGameMenuFrame("Map", new MapInputHandler(mapInputState), new MapRenderer(), mapInputState);
+	
 	
 	private InGameMenuFrame(String title, InputHandler inputHandler, Renderer contentRenderer, InGameMenuInputState inputState) {
 		this.title = title;

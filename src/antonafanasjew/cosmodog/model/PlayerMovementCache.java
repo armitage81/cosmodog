@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * This class holds values that need to be calculated only once per player movement.
@@ -46,17 +47,19 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	private boolean playerOnPlatform;
 	
-	private TiledObject roofRegionOverPlayer;
+	private Set<TiledObject> roofRegionsOverPlayer = Sets.newHashSet();
 
 	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		recalculateClosestSupplyPosition(actor, x1, y1, x2, y2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
-		recalculateRoofRegion(actor);
+		recalculateRoofRegions(actor);
 	}
 	
-	private void recalculateRoofRegion(Actor actor) {
+	private void recalculateRoofRegions(Actor actor) {
+		
+		roofRegionsOverPlayer.clear();
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
@@ -65,12 +68,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		for (TiledObject roofRegion : roofRegions.values()) {
 		
 			if (RegionUtils.playerInRegion((Player)actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
-				roofRegionOverPlayer = roofRegion;
-				return;
+				roofRegionsOverPlayer.add(roofRegion);
 			}
 		}
 		
-		roofRegionOverPlayer = null;		
 	}
 
 	public Piece getClosestSupply() {
@@ -113,8 +114,8 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		this.playerOnPlatform = playerOnPlatform;
 	}
 
-	public TiledObject getRoofRegionOverPlayer() {
-		return roofRegionOverPlayer;
+	public Set<TiledObject> getRoofRegionsOverPlayer() {
+		return roofRegionsOverPlayer;
 	}
 
 }

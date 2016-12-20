@@ -1,11 +1,13 @@
 package antonafanasjew.cosmodog.fighting;
 
 import antonafanasjew.cosmodog.domains.ArmorType;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.util.PositionUtils;
 
 /**
  * Returns the damage as difference between players constant base damage and the damage absorption from the enemy's armor type.
@@ -25,6 +27,19 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		
 		int damage = selectedWeaponType == null ? SIMPLE_PLAYER_DAMAGE : selectedWeaponType.getDamage(enemyArmorType);
+		
+		
+		
+		DirectionType playerDirection = player.getDirection();
+		DirectionType enemyDirection = enemy.getDirection();
+		DirectionType enemyRelatedToPlayerDirection = PositionUtils.targetDirection(player, enemy);
+		
+		boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
+		boolean enemyLooksAway = enemyDirection.equals(playerDirection);
+		
+		if (playerLooksAtEnemy && enemyLooksAway) {
+			damage *= 2;
+		}
 		
 		return damage;
 		

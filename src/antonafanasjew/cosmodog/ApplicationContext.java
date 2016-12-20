@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
@@ -34,6 +35,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AxeInteraction
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ChartInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmentInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
@@ -44,6 +46,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInterac
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MacheteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MineDetectorInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PickInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PlatformInteraction;
@@ -250,6 +253,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.software.name(), new SoftwareInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.chart.name(), new ChartInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobyte.name(), new InfobyteInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobank.name(), new InfobankInteraction());
@@ -265,6 +269,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.supplytracker.name(), new SupplyTrackerInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.binoculars.name(), new BinocularsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.jacket.name(), new JacketInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.minedetector.name(), new MineDetectorInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.ski.name(), new SkiInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.pick.name(), new PickInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.machete.name(), new MacheteInteraction());
@@ -340,6 +345,12 @@ public class ApplicationContext {
 		for (String key : animationResourceWrappers.keySet()) {
 			this.getAnimations().put(key, animationResourceWrappers.get(key).getEntity());
 		}
+		
+		//This big image is not loaded eagerly when initializing animations in the application context.
+		//That causes a delay when opening map for the first time. Initializing the map image explicitly to
+		//avoid this.
+		Image mapImage = getAnimations().get("completechart").getImage(0);
+		mapImage.draw();
 		
 		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabeth2Sheet);
 		this.characterLetters = letterBuilder.buildLetters();

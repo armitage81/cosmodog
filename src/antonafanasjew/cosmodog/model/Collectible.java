@@ -14,7 +14,8 @@ public class Collectible extends Piece {
 		GOODIE,
 		TOOL,
 		WEAPON,
-		AMMO
+		AMMO,
+		KEY
 	}
 	
 

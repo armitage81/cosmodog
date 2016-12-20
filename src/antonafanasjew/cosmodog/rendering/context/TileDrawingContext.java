@@ -20,10 +20,10 @@ public class TileDrawingContext extends AbstractDrawingContext {
 		float tileWidth = parentDrawingContext.w() / (float)noOfColumns;
 		float tileHeight = parentDrawingContext.h() / (float)noOfRows;
 		
-		width = (int)(tileWidth * widthInColumns);
-		height = (int)(tileHeight * heightInRows);
-		relativeX = (int)(tileWidth * column);
-		relativeY = (int)(tileHeight * row);
+		width = (tileWidth * widthInColumns);
+		height = (tileHeight * heightInRows);
+		relativeX = (tileWidth * column);
+		relativeY = (tileHeight * row);
 		
 	}
 	

@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
@@ -20,6 +21,9 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(tileX, tileY);
 		if (dynamicPiece != null) {
+			if (dynamicPiece instanceof Mine) {
+				//Do nothing. Just a place holder to not forget this part in case something changes.
+			}
 			if (dynamicPiece instanceof Stone) {
 				Stone stone = (Stone)dynamicPiece;
 				if (stone.getState() != Stone.STATE_DESTROYED) {
