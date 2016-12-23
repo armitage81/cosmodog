@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.model.CosmodogModel;
 
 import com.google.common.collect.Maps;
@@ -26,6 +27,17 @@ public class GameProgress extends CosmodogModel {
 	private int gameScore;
 	
 	private int turnsTillWormAppears = TURNS_TILL_WORM_APPEARS_PHASE1;
+	
+	//This information is redundand, as the mine deactivation will be stored in the
+	//state of each mine. Still, we can use these information for purposes like game statistics.
+	private Map<QuadrandType, Boolean> minesDeactivationInfo = Maps.newHashMap();
+	
+	{
+		minesDeactivationInfo.put(QuadrandType.NW, Boolean.FALSE);
+		minesDeactivationInfo.put(QuadrandType.NE, Boolean.FALSE);
+		minesDeactivationInfo.put(QuadrandType.SW, Boolean.FALSE);
+		minesDeactivationInfo.put(QuadrandType.SE, Boolean.FALSE);
+	}
 	
 
 	private Map<String, String> progressProperties = Maps.newHashMap();
@@ -93,4 +105,12 @@ public class GameProgress extends CosmodogModel {
 		this.turnsTillWormAppears = turnsTillWormAppears;
 	}
 
+	public Map<QuadrandType, Boolean> getMinesDeactivationInfo() {
+		return minesDeactivationInfo;
+	}
+
+	public void setMinesDeactivationInfo(Map<QuadrandType, Boolean> minesDeactivationInfo) {
+		this.minesDeactivationInfo = minesDeactivationInfo;
+	}
+	
 }

@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.calendar.listeners.FoodConsumer;
 import antonafanasjew.cosmodog.calendar.listeners.FuelConsumer;
 import antonafanasjew.cosmodog.calendar.listeners.WaterConsumer;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Features;
@@ -56,6 +57,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.MacheteInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
@@ -84,6 +86,7 @@ import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
@@ -147,7 +150,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(182, 72);
+		Player player = Player.fromPosition(298, 181);
 		player.setMaxLife(50);
 		player.setLife(50);
 		
@@ -175,6 +178,7 @@ public class InitializationUtils {
 		player.getInventory().put(InventoryItemType.PICK, new PickInventoryItem());
 		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
+		player.getInventory().put(InventoryItemType.MINEDETECTOR, new MineDetectorInventoryItem());
 		
 		
 		
@@ -655,6 +659,26 @@ public class InitializationUtils {
 		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules(cosmodogGame);
 		ruleBook.putAll(teleportRules);
 		
+		//Mine deactivation rules
+		for (QuadrandType quadrandType : QuadrandType.values()) {
+			RuleTrigger deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroupUtils.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines<br>in the quadrand " + quadrandType.getRepresentation() + ".<br>You use it to disarm the mines.<br><br>[Press ENTER]");
+			RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+			RuleAction deactivateMinesAction = new DeactivateMinesAction(quadrandType);
+			deactivateMinesAction = BlockAction.block(deactivateMinesAction, new SetGameProgressPropertyAction("MinesDeactivatedForQuadrand" + quadrandType, "true"), notificationAction);
+			
+			rule = new Rule(
+					deactivateMinesAction.getClass().getSimpleName() + ":" + quadrandType,
+					Lists.newArrayList(GameEventChangedPosition.class),
+					deactivateMinesForQuadrandTrigger,
+					deactivateMinesAction,
+					Rule.RULE_PRIORITY_LATEST
+				);
+				ruleBook.put(rule.getId(), rule);
+			
+		}
+		
 		
 		//Worm delay rules
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
@@ -673,7 +697,6 @@ public class InitializationUtils {
 			Rule.RULE_PRIORITY_LATEST
 		);
 		ruleBook.put(rule.getId(), rule);
-		
 		
 		
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
