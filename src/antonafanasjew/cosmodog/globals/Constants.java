@@ -70,6 +70,11 @@ public class Constants {
 	public static final int ENEMY_ATTACK_ACTION_DURATION = 500;
 	
 	/**
+	 * The visible duration of the ranged enemy attack fight action phase transition.
+	 */
+	public static final int RANGED_ENEMY_ATTACK_ACTION_DURATION = 2000;
+	
+	/**
 	 * The visible duration of the enemy destruction fight action phase transition.
 	 */
 	public static final int ENEMY_DESTRUCTION_ACTION_DURATION = 750;
@@ -87,21 +92,26 @@ public class Constants {
 	/**
 	 * The horizontal resolution of the game window.
 	 */
-	public static final int RESOLUTION_WIDTH = 1280;
+	public static final int RESOLUTION_WIDTH = 1024;
 	
 	/**
 	 * The vertical resolution of the game window.
 	 */
-	public static final int RESOLUTION_HEIGHT = 720;
+	public static final int RESOLUTION_HEIGHT = 768;
 	
 	/**
 	 * Full screen flag.
 	 */
-	public static final boolean FULLSCREEN = true;
+	public static final boolean FULLSCREEN = false;
 	
 	/**
 	 * Dynamic dialogs use this as basis for the text speed.
 	 */
 	public static final int DEFAULT_INTERVAL_BETWEEN_DIALOG_LETTERS = 64;
+
+	/**
+	 * Only enemies that are that close to the player will move and be active.
+	 */
+	public static final int ENEMY_ACTIVATION_DISTANCE = 32;
 
 }

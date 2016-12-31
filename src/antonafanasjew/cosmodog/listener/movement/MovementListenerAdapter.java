@@ -32,4 +32,14 @@ public class MovementListenerAdapter implements MovementListener {
 
 	}
 
+	@Override
+	public void beforeWaiting(Actor actor, ApplicationContext applicationContext) {
+		
+	}
+
+	@Override
+	public void afterWaiting(Actor actor, ApplicationContext applicationContext) {
+		
+	}
+
 }

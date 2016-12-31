@@ -11,7 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
  * Values of objects of this class should be used only for rendering and not affect the model.
  *
  */
-public class ActorTransition {
+public class ActorTransition extends AbstractTransition {
 
 	public static ActorTransition fromActor(Actor actor, int targetPositionX, int targetPositionY) {
 		ActorTransition actorTransition = new ActorTransition();

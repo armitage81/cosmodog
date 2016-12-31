@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.actions.fight;
 
 import java.util.List;
+import java.util.Set;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -23,6 +24,8 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+
+import com.google.common.collect.Sets;
 
 /**
  * Represents the complete fight after a turn (with maybe multiple enemies)
@@ -102,15 +105,20 @@ public class FightAction extends VariableLengthAsyncAction {
 		Weapon selectedWeapon = arsenal.getWeaponsCopy().get(selectedWeaponType);
 		int remainingAmmo = selectedWeaponType.equals(WeaponType.FISTS) ? 100 : selectedWeapon.getAmmunition();
 		
-		List<Enemy> adjacenEnemies = CosmodogMapUtils.enemiesAdjacentToPlayer(map, player);
+		List<Enemy> adjacentEnemies = CosmodogMapUtils.enemiesAdjacentToPlayer(map, player);
+		List<Enemy> adjacentRangedEnemies = CosmodogMapUtils.rangedEnemiesAdjacentToPlayer(map, player);
+		
+		Set<Enemy> attackers = Sets.newHashSet();
+		attackers.addAll(adjacentEnemies);
+		attackers.addAll(adjacentRangedEnemies);
 
 		if (targetEnemy != null) {
 			updateFightActionResultForOneEnemy(player, targetEnemy, true, remainingAmmo <= 0);
-			adjacenEnemies.remove(targetEnemy);
+			attackers.remove(targetEnemy);
 			remainingAmmo--;
 		}
 		
-		for (Enemy enemy : adjacenEnemies) {
+		for (Enemy enemy : attackers) {
 
 			updateFightActionResultForOneEnemy(player, enemy, false, remainingAmmo <= 0);
 			remainingAmmo--;
@@ -144,9 +152,6 @@ public class FightAction extends VariableLengthAsyncAction {
 				}
 			} else {
 				fightActionResult.add(enemyPhaseResult);
-				if (enemyPhaseResult.enoughDamageToKillPlayer() == false) {
-					fightActionResult.add(playerPhaseResult);	
-				}
 			}
 
 		}

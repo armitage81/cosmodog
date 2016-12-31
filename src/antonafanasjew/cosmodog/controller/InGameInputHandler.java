@@ -79,7 +79,17 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		boolean inputMovement = inputLeft || inputRight || inputUp || inputDown;
 		
-		//Handle movement or skip a turn
+		boolean inputSkipTurn = input.isKeyDown(Input.KEY_ENTER);
+		
+		//Handle skip turn
+		if (inputSkipTurn) {
+			int timePassed = Constants.DEFAULT_TIME_COSTS_ON_FOOT;
+			AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, true);
+			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
+		}
+		
+		
+		//Handle movement
 		if (inputMovement) {
 
 			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
@@ -164,7 +174,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					}
 					
 					int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, newX, newY);
-					AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
+					AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, false);
 					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 					

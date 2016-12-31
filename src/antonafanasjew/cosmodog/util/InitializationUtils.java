@@ -150,7 +150,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(298, 181);
+		Player player = Player.fromPosition(5, 3);
 		player.setMaxLife(50);
 		player.setLife(50);
 		

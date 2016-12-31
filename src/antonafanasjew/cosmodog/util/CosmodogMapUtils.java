@@ -3,11 +3,16 @@ package antonafanasjew.cosmodog.util;
 import java.util.List;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.sight.Sight;
+import antonafanasjew.cosmodog.sight.SightModifier;
+import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 
 import com.google.common.collect.Lists;
@@ -36,6 +41,47 @@ public class CosmodogMapUtils {
 		}
 		
 		return retVal;
+	}
+	
+	public static List<Enemy> rangedEnemiesAdjacentToPlayer(CosmodogMap map, Player player) {
+		
+		List<Enemy> retVal = Lists.newArrayList();
+		
+		SightModifier sightModifier = ApplicationContextUtils.getCosmodog().getSightModifier();
+		PlanetaryCalendar planetaryCalendar = ApplicationContextUtils.getCosmodogGame().getPlanetaryCalendar();
+		
+		Set<Enemy> enemies = map.getEnemies();
+		for (Enemy enemy : enemies) {
+		
+			if (enemy.getUnitType().isRangedUnit() == false) {
+				continue;
+			}
+			
+			if (distanceBetweenPositions(enemy, player) > 50) {
+				continue;
+			}
+			
+			boolean playerInSightRange = false;
+			
+			Set<Sight> sights = enemy.getSights();
+
+			for (Sight sight : sights) {
+				Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
+				VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, map.getTileWidth(), map.getTileHeight());
+				playerInSightRange = visibilityCalculator.visible(player, map.getTileWidth(), map.getTileHeight());
+				if (playerInSightRange) {
+					retVal.add(enemy);
+				}
+			}
+		}
+		
+		return retVal;
+	}
+	
+	public static float distanceBetweenPositions(Piece p1, Piece p2) {
+		Position pos1 = Position.fromCoordinates(p1.getPositionX(), p1.getPositionY());
+		Position pos2 = Position.fromCoordinates(p2.getPositionX(), p2.getPositionY());
+		return distanceBetweenPositions(pos1, pos2);
 	}
 	
 	public static float distanceBetweenPositions(Position p1, Position p2) {

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.MapUtils;
+
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
@@ -13,6 +15,9 @@ import antonafanasjew.cosmodog.model.mapmodifications.MapModification;
 import antonafanasjew.cosmodog.model.mapmodifications.MapModificationImpl;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import antonafanasjew.cosmodog.util.PositionUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -194,6 +199,17 @@ public class CosmodogMap extends CosmodogModel {
 		return enemies;
 	}
 
+	public Set<Enemy> nearbyEnemies(int x, int y, int maxDistance) {
+		Set<Enemy> retVal = Sets.newHashSet();
+		for (Enemy enemy : enemies) {
+			float enemyDistance = CosmodogMapUtils.distanceBetweenPositions(Position.fromCoordinates(x, y), Position.fromCoordinates(enemy.getPositionX(), enemy.getPositionY()));
+			if (enemyDistance <= maxDistance) {
+				retVal.add(enemy);
+			}
+		}
+		return retVal;		
+	}
+	
 	public Set<Enemy> visibleEnemies(int x, int y, int width, int height, int grace) {
 		Set<Enemy> retVal = Sets.newHashSet();
 		for (Enemy enemy : enemies) {

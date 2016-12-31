@@ -13,5 +13,8 @@ public interface MovementListener extends Serializable {
 	void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
 	void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext);
 	
+	void beforeWaiting(Actor actor, ApplicationContext applicationContext);
+	void afterWaiting(Actor actor, ApplicationContext applicationContext);
+	
 	
 }

@@ -34,7 +34,12 @@ public abstract class Actor extends Piece {
 	private int lifeLentForThirst;
 	private int lifeLentForHunger;
 	private int lifeLentForFrost;
-
+	
+	public void skipTurn() {
+		composedMovementListener.beforeWaiting(this, ApplicationContext.instance());
+		composedMovementListener.afterWaiting(this, ApplicationContext.instance());
+	}
+	
 	public void shiftHorizontal(int positionOffset) {
 		int x1 = this.getPositionX();
 		int y1 = this.getPositionY();

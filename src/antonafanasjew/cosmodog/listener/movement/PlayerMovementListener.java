@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
@@ -78,8 +79,17 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		oldStarving = player.starving();
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		applyTime(player, x1, y1, x2, y2, applicationContext);
-		updateWormAlert(player, x1, y1, x2, y2, applicationContext );
+		updateWormAlert(player, applicationContext );
 	}
+	
+	@Override
+	public void beforeWaiting(Actor actor, ApplicationContext applicationContext) {
+		Player player = (Player)actor;
+		oldTurnsWormAlerted = player.getTurnsWormAlerted();
+		applyConstantTime(player, Constants.DEFAULT_TIME_COSTS_ON_FOOT, applicationContext);
+		updateWormAlert(player, applicationContext );
+	}
+	
 	
 	@Override
 	public void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
@@ -91,6 +101,20 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+		checkStarvation(applicationContext);
+		checkDehydration(applicationContext);
+		checkTemperature(applicationContext);
+		checkRadiation(applicationContext);
+		checkWorm(applicationContext);
+		checkMine(applicationContext);
+	}
+	
+	@Override
+	public void afterWaiting(Actor actor, ApplicationContext applicationContext) {
+		collectCollectibles(applicationContext);
+		refillWater(applicationContext);
+		refillFuel(applicationContext);
+		detectMines(applicationContext);
 		checkStarvation(applicationContext);
 		checkDehydration(applicationContext);
 		checkTemperature(applicationContext);
@@ -336,14 +360,18 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, x2, y2);
-		PlanetaryCalendar calendar = cosmodogGame.getPlanetaryCalendar();
-		calendar.addMinutes(timePassed);
-		
+		applyConstantTime(player, timePassed, applicationContext);
 	}
 
-	private void updateWormAlert(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	private void applyConstantTime(Player player, int minutes, ApplicationContext applicationContext) {
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		PlanetaryCalendar calendar = cosmodogGame.getPlanetaryCalendar();
+		calendar.addMinutes(minutes);
+	}
+	
+	private void updateWormAlert(Player player, ApplicationContext applicationContext) {
 
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		

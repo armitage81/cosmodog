@@ -7,7 +7,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
  * Represents the transition during the fight.
  *
  */
-public class FightPhaseTransition {
+public class FightPhaseTransition extends AbstractTransition {
 
 	public Player player;
 	

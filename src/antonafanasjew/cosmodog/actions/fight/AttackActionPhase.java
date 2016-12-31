@@ -38,7 +38,7 @@ public class AttackActionPhase extends AbstractFightActionPhase {
 	 * Initialized with the pre-calculated fight action phase result.
 	 */
 	public AttackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
-		super(fightPhaseResult.isPlayerAttack() ? Constants.PLAYER_ATTACK_ACTION_DURATION : Constants.ENEMY_ATTACK_ACTION_DURATION);
+		super(fightPhaseResult.isPlayerAttack() ? Constants.PLAYER_ATTACK_ACTION_DURATION : (fightPhaseResult.getEnemy().getUnitType().isRangedUnit() ? Constants.RANGED_ENEMY_ATTACK_ACTION_DURATION : Constants.ENEMY_ATTACK_ACTION_DURATION));
 		this.fightPhaseResult = fightPhaseResult;
 	}
 

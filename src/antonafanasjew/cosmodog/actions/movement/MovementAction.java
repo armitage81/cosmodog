@@ -58,13 +58,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	private MovementActionResult playerMovementActionResult = null;
 	private Map<Enemy, MovementActionResult> enemyMovementActionResults = Maps.newHashMap();
+
+	private boolean skipTurn;
 	
 	/**
 	 * Initialized with a fixed duration.
 	 * @param duration Duration of the movement action.
 	 */
-	public MovementAction(int duration) {
+	public MovementAction(int duration, boolean skipTurn) {
 		super(duration);
+		this.skipTurn = skipTurn;
 	}
 
 	/**
@@ -118,17 +121,19 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
+		Position playerPosition = Position.fromCoordinates(player.getPositionX(), player.getPositionY());
 		
 		//Calculating the target position.
-		Position targetPos = PositionUtils.neighbourPositionInFacingDirection(player);
+		Position targetPos = skipTurn ? playerPosition : PositionUtils.neighbourPositionInFacingDirection(player);
 		
 		//Calculating the future result of the player movement.
-		int playerMovementActionCosts = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, (int)targetPos.getX(), (int)targetPos.getY());
+		int playerMovementActionCosts = skipTurn ? Constants.DEFAULT_TIME_COSTS_ON_FOOT : cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, (int)targetPos.getX(), (int)targetPos.getY());
 		this.playerMovementActionResult = MovementActionResult.instance(player.getPositionX(), player.getPositionY(), (int)targetPos.getX(), (int)targetPos.getY(), playerMovementActionCosts);
 		
 		//Preparing the future results of the enemy movements.
 		Set<Enemy> movingEnemies = Sets.newHashSet();
-		movingEnemies.addAll(cosmodogMap.getEnemies());
+		
+		movingEnemies.addAll(cosmodogMap.nearbyEnemies(player.getPositionX(), player.getPositionY(), Constants.ENEMY_ACTIVATION_DISTANCE));
 		
 		for (Enemy enemy : movingEnemies) {
 			
@@ -192,7 +197,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 			map.getEnemies().removeAll(destroyedEnemies);
 			
 		} else {
-			applicationContext.getSoundResources().get(SoundResources.SOUND_FOOTSTEPS).play();
+			
+			if (!skipTurn) {
+				applicationContext.getSoundResources().get(SoundResources.SOUND_FOOTSTEPS).play();
+			}
 		}
 	}
 
@@ -201,6 +209,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 	}
 	
 	private void onUpdateForPlayer(int timePassed) {
+		
+		if (skipTurn) {
+			return;
+		}
+		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
@@ -326,12 +339,18 @@ public class MovementAction extends FixedLengthAsyncAction {
 	
 	
 	private void onEndForPlayer() {
+		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		ActorTransitionRegistry actorTransitionRegistry = cosmodogGame.getActorTransitionRegistry();
 		actorTransitionRegistry.remove(player);
 
+		if (skipTurn) {
+			player.skipTurn();
+			return;
+		}
+		
 		boolean playerInPlatform = player.getInventory().hasPlatform();
 		
 		if (playerInPlatform) {
