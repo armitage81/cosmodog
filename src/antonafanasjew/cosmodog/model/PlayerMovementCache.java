@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.listener.movement.MovementListenerAdapter;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -14,7 +15,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
 import com.google.common.collect.Lists;
@@ -63,11 +63,11 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_ROOFS).getObjects();
+		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_ROOFS).getObjects();
 		
 		for (TiledObject roofRegion : roofRegions.values()) {
 		
-			if (RegionUtils.playerInRegion((Player)actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion((Player)actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
 				roofRegionsOverPlayer.add(roofRegion);
 			}
 		}

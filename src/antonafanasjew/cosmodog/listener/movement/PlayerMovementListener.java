@@ -37,6 +37,8 @@ import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
+import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
+import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
@@ -56,6 +58,8 @@ import com.google.common.collect.Lists;
  * Note: this class is not thread-save
  */
 public class PlayerMovementListener extends MovementListenerAdapter {
+
+	private static final int TURNS_BEFORE_DEATH_BY_POISON = 3;
 
 	private static final long serialVersionUID = -1789226092040648128L;
 
@@ -80,6 +84,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		applyTime(player, x1, y1, x2, y2, applicationContext);
 		updateWormAlert(player, applicationContext );
+		updatePoisonCount(player, applicationContext);
 	}
 	
 	@Override
@@ -88,6 +93,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		applyConstantTime(player, Constants.DEFAULT_TIME_COSTS_ON_FOOT, applicationContext);
 		updateWormAlert(player, applicationContext );
+		updatePoisonCount(player, applicationContext);
 	}
 	
 	
@@ -97,6 +103,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		refillWater(applicationContext);
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
+		activatePressureButton(applicationContext);
+		checkDecontamination(applicationContext);
+		checkContamination(applicationContext);
 	}
 	
 	@Override
@@ -107,6 +116,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkRadiation(applicationContext);
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
+		checkContaminationStatus(applicationContext);
 	}
 	
 	@Override
@@ -121,6 +131,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkRadiation(applicationContext);
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
+		checkContaminationStatus(applicationContext);
 	}
 
 	private void collectCollectibles(ApplicationContext applicationContext) {
@@ -267,6 +278,81 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 	}
 	
+	private void activatePressureButton(ApplicationContext applicationContext) {
+		
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Collection<DynamicPiece> buttons = map.getDynamicPieces().get(PressureButton.class);
+		
+		for (DynamicPiece piece : buttons) {
+			PressureButton button = (PressureButton)piece;
+			
+			if (button.getPositionX() == player.getPositionX() && button.getPositionY() == player.getPositionY()) {
+				if (button.getState() == PressureButton.STATE_DEACTIVATED) {
+					button.setState(PressureButton.STATE_ACTIVATED);
+				}
+				break;
+			}
+			
+		}
+	}
+	
+	/**
+	 * Check whether the player should be contaminated. It means only that each next turn, the player will move closer to death unless decontaminated.
+	 */
+	private void checkContamination(ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		DynamicPiece piece = map.dynamicPieceAtPosition(player.getPositionX(), player.getPositionY());
+		if (piece == null || !(piece instanceof Poison)) {
+			return;
+		}
+		
+		Poison poison = (Poison)piece;
+		
+		if (poison.isDeactivated()) {
+			return;
+		}
+		
+		if (player.getInventory().hasVehicle()) {
+			return;
+		}
+		
+		if (player.getInventory().hasItem(InventoryItemType.ANTIDOTE)) {
+			return;
+		}
+		
+		if (!player.isPoisoned()) {
+			String text = "Contaminated!";
+			OverheadNotificationAction.registerOverheadNotification(player, text);
+			text = "Death by poison in " + TURNS_BEFORE_DEATH_BY_POISON + " turns !!!";
+			OverheadNotificationAction.registerOverheadNotification(player, text);
+		}
+		
+		player.contaminate();
+	
+	}
+	
+	/**
+	 * Removes the contamination flag if the player stays on the decontamination stop.
+	 */
+	private void checkDecontamination(ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		boolean onDecontaminationSpot = TileType.DECONTAMINATION_SPOT.getTileId() == map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_GEAR);
+		if (onDecontaminationSpot) {
+			
+			if (player.isPoisoned()) {
+				String text = "Decontaminated";
+				OverheadNotificationAction.registerOverheadNotification(player, text);
+			}
+			
+			player.decontaminate();
+			
+		}
+	
+	}
+	
 	/*
 	 * Player will never really starve. He stays alive with one life point in the worst case.
 	 */
@@ -377,7 +463,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		TiledObjectGroup wormsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
 		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
-		boolean inWormRegion = RegionUtils.playerInRegion(player, wormsSouthEastObject, map.getTileWidth(), map.getTileHeight());
+		boolean inWormRegion = RegionUtils.pieceInRegion(player, wormsSouthEastObject, map.getTileWidth(), map.getTileHeight());
 		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player);
 		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPositionX(), player.getPositionY());
 		boolean inPlatform = player.getInventory().hasPlatform();
@@ -389,6 +475,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		}
 		
 		
+	}
+	
+	private void updatePoisonCount(Player player, ApplicationContext applicationContext) {
+		if (player.isPoisoned()) {
+			player.increaseTurnsPoisoned();
+		}
 	}
 	
 	private void checkWorm(ApplicationContext applicationContext) {
@@ -415,6 +507,22 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		}
 	}
 
+	private void checkContaminationStatus(ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		int turnsPoisoned = player.getTurnsPoisoned();
+		if (turnsPoisoned != 0) {
+			
+			int turnsTillDeath = TURNS_BEFORE_DEATH_BY_POISON - turnsPoisoned;
+			if (turnsTillDeath > 0) {
+				String text = "Death by poison in " + turnsTillDeath + " turns !!!";
+				OverheadNotificationAction.registerOverheadNotification(player, text);
+			} else {
+				ApplicationContextUtils.getPlayer().setLife(0);
+			}
+			
+		}
+	}
+	
 	private void checkMine(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();

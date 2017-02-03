@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.states;
 
 import java.util.List;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -32,6 +33,7 @@ import antonafanasjew.cosmodog.rendering.decoration.BirdsDecoration;
 import antonafanasjew.cosmodog.rendering.decoration.CloudsDecoration;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.ArsenalInterfaceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.ArtilleryGrenadeRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
@@ -109,6 +111,7 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer playerRenderer;
 	private AbstractRenderer wormAttackRenderer;
 	private AbstractRenderer mineExplosionRenderer;
+	private AbstractRenderer artilleryGrenadeRenderer;
 	private AbstractRenderer wormSnowSparkRenderer;
 	private AbstractRenderer npcRenderer;
 	private AbstractRenderer northPiecesRenderer;
@@ -173,6 +176,7 @@ public class GameState extends BasicGameState {
 		playerRenderer = new PlayerRenderer();
 		wormAttackRenderer = new WormAttackRenderer();
 		mineExplosionRenderer = new MineExplosionRenderer();
+		artilleryGrenadeRenderer = new ArtilleryGrenadeRenderer();
 		wormSnowSparkRenderer = new WormSnowSparkRenderer();
 		npcRenderer = new NpcRenderer();
 		northPiecesRenderer = new PiecesRenderer(true, false);
@@ -364,6 +368,9 @@ public class GameState extends BasicGameState {
 		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, mapDrawingContext);
 		
+		//Draw artillery grenades if it is shooting.
+		artilleryGrenadeRenderer.render(gc, g, mapDrawingContext);
+		
 		//Draw top effects.
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_TOP_EFFECTS);
 		
@@ -410,8 +417,7 @@ public class GameState extends BasicGameState {
 		textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
 		
 		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
-		
-		
+				
 		
 	}
 

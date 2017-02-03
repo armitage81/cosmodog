@@ -17,6 +17,7 @@ public enum InventoryItemType {
 	BINOCULARS,
 	SKI,
 	JACKET,
+	ANTIDOTE,
 	MINEDETECTOR,
 	PICK,
 	MACHETE,

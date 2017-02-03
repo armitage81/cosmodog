@@ -24,6 +24,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import antonafanasjew.cosmodog.util.EnemiesUtils;
 
 import com.google.common.collect.Sets;
 
@@ -107,11 +108,14 @@ public class FightAction extends VariableLengthAsyncAction {
 		
 		List<Enemy> adjacentEnemies = CosmodogMapUtils.enemiesAdjacentToPlayer(map, player);
 		List<Enemy> adjacentRangedEnemies = CosmodogMapUtils.rangedEnemiesAdjacentToPlayer(map, player);
+		adjacentEnemies.removeAll(adjacentRangedEnemies);
 		
 		Set<Enemy> attackers = Sets.newHashSet();
 		attackers.addAll(adjacentEnemies);
 		attackers.addAll(adjacentRangedEnemies);
 
+		EnemiesUtils.removeInactiveUnits(attackers);
+		
 		if (targetEnemy != null) {
 			updateFightActionResultForOneEnemy(player, targetEnemy, true, remainingAmmo <= 0);
 			attackers.remove(targetEnemy);
@@ -147,7 +151,7 @@ public class FightAction extends VariableLengthAsyncAction {
 
 			if (playerIsAttacker) {
 				fightActionResult.add(playerPhaseResult);
-				if (playerPhaseResult.enoughDamageToKillEnemy() == false) {
+				if (playerPhaseResult.enoughDamageToKillEnemy() == false && EnemiesUtils.enemyActive(enemy)) {
 					fightActionResult.add(enemyPhaseResult);
 				}
 			} else {
@@ -172,10 +176,15 @@ public class FightAction extends VariableLengthAsyncAction {
 				overheadNotificationAction.cancel();
 
 			}
+			
+			
+			AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(phaseResult);
 
-			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, new AttackActionPhase(phaseResult));
+			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, attackActionPhase);
 			if (phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
-				getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, new EnemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy()));
+				
+				EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy());
+				getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, enemyDestructionActionPhase);
 			}
 		}
 	}

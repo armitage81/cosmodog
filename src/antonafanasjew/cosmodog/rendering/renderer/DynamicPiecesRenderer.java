@@ -15,6 +15,8 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
+import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
+import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -156,6 +158,34 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			String animationIdPrefixIndex = String.valueOf(mine.getShapeNumber());
 			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = mine.animationSuffixFromState();
+			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			
+		}
+		
+		Collection<DynamicPiece> poisons = dynamicPieces.get(Poison.class);
+		
+		for (DynamicPiece piece : poisons) {
+			Poison poison = (Poison) piece;
+			
+			String animationIdPrefix = "dynamicPiecePoison";
+			String animationIdPrefixIndex = String.valueOf(poison.getShapeNumber());
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = poison.animationSuffixFromState();
+			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			
+		}
+		
+		Collection<DynamicPiece> pressureButtons = dynamicPieces.get(PressureButton.class);
+		
+		for (DynamicPiece piece : pressureButtons) {
+			PressureButton pressureButton = (PressureButton) piece;
+			
+			String animationIdPrefix = "dynamicPiecePressureButton";
+			String animationIdPrefixIndex = String.valueOf(pressureButton.getShapeNumber());
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = pressureButton.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
 			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
 			

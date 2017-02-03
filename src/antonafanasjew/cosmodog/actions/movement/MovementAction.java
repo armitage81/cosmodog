@@ -39,6 +39,7 @@ import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
@@ -134,6 +135,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Set<Enemy> movingEnemies = Sets.newHashSet();
 		
 		movingEnemies.addAll(cosmodogMap.nearbyEnemies(player.getPositionX(), player.getPositionY(), Constants.ENEMY_ACTIVATION_DISTANCE));
+		
+		EnemiesUtils.removeInactiveUnits(movingEnemies);
 		
 		for (Enemy enemy : movingEnemies) {
 			

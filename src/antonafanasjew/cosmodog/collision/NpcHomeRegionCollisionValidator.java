@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import org.newdawn.slick.util.Log;
 
+import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
@@ -9,7 +10,6 @@ import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.util.CollisionUtils;
-import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 
 /**
  * This collision validator will only used for enemies. It will block the passage 
@@ -31,7 +31,7 @@ public class NpcHomeRegionCollisionValidator extends AbstractCollisionValidator 
 			return passable;
 		}
 		
-		TiledObject homeRegion = map.getObjectGroups().get(ObjectGroupUtils.OBJECT_GROUP_ID_NPC_HOME_REGIONS).getObjects().get(homeRegionName);
+		TiledObject homeRegion = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_NPC_HOME_REGIONS).getObjects().get(homeRegionName);
 		
 		if (homeRegion == null) {
 			Log.warn("NPC Actor " + npcActor + " has defined a home region name " + homeRegionName + " that does not exist on the map.");

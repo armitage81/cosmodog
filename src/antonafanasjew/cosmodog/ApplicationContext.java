@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AntidoteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AxeInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInteraction;
@@ -70,9 +71,9 @@ import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
 import antonafanasjew.cosmodog.pathfinding.DefaultTravelTimeCalculator;
 import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
+import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedPathFinder;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.PatrolingPathFinder;
-import antonafanasjew.cosmodog.pathfinding.TowardsPlayerPathFinder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
@@ -224,10 +225,10 @@ public class ApplicationContext {
 		
 		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidatorForPlayer(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator(), new DynamicPieceCollisionValidator())); 
 		
-		PathFinder towardsPlayerPathFinder = new TowardsPlayerPathFinder();
+		PathFinder alertedPathFinder = new EnemyTypeSpecificAlertedPathFinder();
 		PathFinder patrolingPathFinder = new PatrolingPathFinder();
 		
-		PathFinder enemyAlertBasedDecisionPathFinder = new EnemyAlertBasedDecisionPathFinder(patrolingPathFinder, towardsPlayerPathFinder);
+		PathFinder enemyAlertBasedDecisionPathFinder = new EnemyAlertBasedDecisionPathFinder(patrolingPathFinder, alertedPathFinder);
 		
 		cosmodog.setPathFinder(enemyAlertBasedDecisionPathFinder);
 		cosmodog.setCollisionValidator(new FeatureBoundCollisionValidator(collisionValidator));
@@ -269,6 +270,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.supplytracker.name(), new SupplyTrackerInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.binoculars.name(), new BinocularsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.jacket.name(), new JacketInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.antidote.name(), new AntidoteInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.minedetector.name(), new MineDetectorInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.ski.name(), new SkiInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.pick.name(), new PickInteraction());

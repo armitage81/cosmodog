@@ -170,7 +170,10 @@ public enum TileType {
 	DYNAMIC_PIECE_BAMBOO(Layers.LAYER_META_DYNAMIC_PIECES, 2113),
 	DYNAMIC_PIECE_CRATE(Layers.LAYER_META_DYNAMIC_PIECES, 2114),
 	DYNAMIC_PIECE_MINE(Layers.LAYER_META_DYNAMIC_PIECES, 2115),
+	DYNAMIC_PIECE_POISON(Layers.LAYER_META_DYNAMIC_PIECES, 2120),
+	DYNAMIC_PIECE_PRESSUREBUTTON(Layers.LAYER_META_DYNAMIC_PIECES, 2119),
 	
+	DECONTAMINATION_SPOT(Layers.LAYER_GEAR, 1399),
 	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.
 	//It can be used to be returned when searching tile types by tile id in case the id does not match any type.

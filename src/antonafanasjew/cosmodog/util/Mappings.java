@@ -35,6 +35,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SUPPLYTRACKER, "inventoryItemSupplyTracker");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.BINOCULARS, "inventoryItemBinoculars");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.JACKET, "inventoryItemJacket");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.ANTIDOTE, "inventoryItemAntidote");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MINEDETECTOR, "inventoryItemMineDetector");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SKI, "inventoryItemSki");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.PICK, "inventoryItemPick");

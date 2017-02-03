@@ -24,6 +24,13 @@ public class Enemy extends NpcActor {
 	
 	private int alertLevel = 0;
 	
+	/*
+	 * If true, this concrete enemy will not be active at night.
+	 * Normally, this property will be taken from the corresponding home region property.
+	 * It is there to simulate units that are 'sleeping' at night.
+	 */
+	private boolean activeAtDayTimeOnly = false;
+	
 	private Set<Sight> sights = Sets.newHashSet();
 	
 	public WeaponType getWeaponType() {
@@ -50,6 +57,14 @@ public class Enemy extends NpcActor {
 		this.unitType = unitType;
 	}
 
+	public boolean isActiveAtDayTimeOnly() {
+		return activeAtDayTimeOnly;
+	}
+
+	public void setActiveAtDayTimeOnly(boolean activeAtDayTimeOnly) {
+		this.activeAtDayTimeOnly = activeAtDayTimeOnly;
+	}
+	
 	@Override
 	public String toString() {
 		return this.unitType + " at (" + getPositionX() + "/" + getPositionY() + ")";

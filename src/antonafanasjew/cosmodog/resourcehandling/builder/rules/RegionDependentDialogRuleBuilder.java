@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.globals.Features;
+import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
@@ -15,7 +16,6 @@ import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
-import antonafanasjew.cosmodog.util.ObjectGroupUtils;
 
 public class RegionDependentDialogRuleBuilder extends AbstractResourceWrapperBuilder<Rule> {
 	
@@ -30,7 +30,7 @@ public class RegionDependentDialogRuleBuilder extends AbstractResourceWrapperBui
 		String gameProgressProperty = values[4];
 		
 		
-		RuleTrigger trigger = new EnteringRegionTrigger(ObjectGroupUtils.OBJECT_GROUP_ID_REGIONS, regionName);
+		RuleTrigger trigger = new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
 		boolean onlyOnce = Boolean.valueOf(onlyOnceFlag);
 		
 		if (onlyOnce) {

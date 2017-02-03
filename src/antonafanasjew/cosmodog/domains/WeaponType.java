@@ -25,7 +25,7 @@ public enum WeaponType {
 	ENEMY_MACHINEGUN(3, 0),
 	ENEMY_TURRET(7, 0),
 	ENEMY_CLAWS(5, 0),
-	ENEMY_ROCKETS(8, 0),
+	ENEMY_ROCKETS(4, 0),
 	
 	;
 	

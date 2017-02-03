@@ -22,8 +22,10 @@ import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
 import com.google.common.collect.Sets;
@@ -62,7 +64,11 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
 		
-		for (Enemy enemy : map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
+		Set<Enemy> enemies = map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2);
+		
+		EnemiesUtils.removeInactiveUnits(enemies);
+				
+		for (Enemy enemy : enemies) {
 
 			float movementOffsetX = 0;
 			float movementOffsetY = 0;
@@ -82,19 +88,17 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			}
 			
 			if (fightPhaseTransition != null) {
-				if (fightPhaseTransition.enemy.equals(enemy)) {
+				if (fightPhaseTransition.getEnemy().equals(enemy)) {
 					
-					float completion = fightPhaseTransition.completion;
+					float completion = fightPhaseTransition.getCompletion();
 					float fightOffset = 0.0f;
 					
-					if (fightPhaseTransition.playerAttack == false) {
+					if (fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition) {
 						
-						if (!fightPhaseTransition.enemyDestruction) {
-							if (completion > 0.5f) {
-								completion = 1.0f - completion;
-							}
-							fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+						if (completion > 0.5f) {
+							completion = 1.0f - completion;
 						}
+						fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
 						
 					}
 					

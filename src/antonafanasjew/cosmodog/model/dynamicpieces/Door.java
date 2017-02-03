@@ -18,8 +18,7 @@ public class Door extends DynamicPiece {
 		menesian,
 		snowLab,
 		defaultBuilding,
-		glasHouse,
-		greenHouse;
+		glasHouse;
 	}
 	
 	public static enum DoorType {

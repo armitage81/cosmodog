@@ -41,7 +41,7 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 		TiledObject regionObject = regionsObjectGroup.getObjects().get(regionName);
 		
 		if (regionObject != null) {
-			return RegionUtils.playerInRegion(player, regionObject, map.getTileWidth(), map.getTileHeight());
+			return RegionUtils.pieceInRegion(player, regionObject, map.getTileWidth(), map.getTileHeight());
 		}
 		
 		return false;

@@ -29,6 +29,10 @@ public class Player extends Actor {
 	
 	private int turnsWormAlerted = 0;
 	
+	private boolean poisoned = false;
+	
+	private int turnsPoisoned = 0;
+	
 	public static Player fromPosition(int positionX, int positionY) {
 		Player player = new Player();
 		player.setMaxLife(INITIAL_LIFE);
@@ -119,5 +123,29 @@ public class Player extends Actor {
 	public void resetTurnsWormAlerted() {
 		this.turnsWormAlerted = 0;
 	}
+	
+	public int getTurnsPoisoned() {
+		return turnsPoisoned;
+	}
 
+	public void increaseTurnsPoisoned() {
+		if (poisoned) {
+			this.turnsPoisoned++;
+		}
+	}
+
+	public void contaminate() {
+		this.poisoned = true;
+	}
+	
+	public void decontaminate() {
+		this.poisoned = false;
+		this.turnsPoisoned = 0;
+	}
+	
+	public boolean isPoisoned() {
+		return poisoned;
+	}
+
+	
 }

@@ -13,9 +13,12 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
+import antonafanasjew.cosmodog.view.transitions.EnemyDestructionFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
 /**
@@ -65,9 +68,9 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			
 			boolean enemyIsMoving = enemyTransition != null;
-			boolean enemyIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemy.equals(enemy);
-			boolean enemyIsShooting = enemyIsFighting && !fightPhaseTransition.enemyDestruction && fightPhaseTransition.playerAttack == false;
-			boolean enemyIsExploding = enemyIsFighting && fightPhaseTransition.enemyDestruction;
+			boolean enemyIsFighting = fightPhaseTransition != null && fightPhaseTransition.getEnemy().equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
+			boolean enemyIsShooting = enemyIsFighting && fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition;
+			boolean enemyIsExploding = enemyIsFighting && fightPhaseTransition instanceof EnemyDestructionFightPhaseTransition;
 
 			NpcActionType enemyActionType;
 			
@@ -99,22 +102,20 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			if (enemyActionType == NpcActionType.SHOOTING) {
 					
-				float completion = fightPhaseTransition.completion;
+				float completion = fightPhaseTransition.getCompletion();
 
 				float fightOffset = 0.0f;
 				
-				if (fightPhaseTransition.playerAttack == false) {
-					
-					if (!fightPhaseTransition.enemyDestruction) {
-
-						if (completion > 0.5f) {
-							completion = 1.0f - completion;
-						}
-						
-						fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+				if (!enemy.getUnitType().isRangedUnit()) {
+				
+					if (completion > 0.5f) {
+						completion = 1.0f - completion;
 					}
 					
+					fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+
 				}
+				
 				
 				if (enemy.getDirection() == DirectionType.DOWN) {
 					pieceOffsetY = fightOffset;
@@ -135,7 +136,7 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 			
 			if (enemyActionType == NpcActionType.EXPLODING) {
-				float completion = fightPhaseTransition.completion;
+				float completion = fightPhaseTransition.getCompletion();
 				int animationFrame = (int)(enemyAnimation.getFrameCount() * completion);
 				enemyAnimation.setCurrentFrame(animationFrame);
 			}
@@ -156,22 +157,29 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			if (enemyIsExploding && enemyRobotic) {
 				Animation explosionAnimation = ApplicationContext.instance().getAnimations().get("explosion");
-				float completion = fightPhaseTransition.completion;
+				float completion = fightPhaseTransition.getCompletion();
 				int animationFrame = (int)(explosionAnimation.getFrameCount() * completion);
 				explosionAnimation.setCurrentFrame(animationFrame);
 				explosionAnimation.draw((enemyPosX - tileNoX) * tileWidth - tileWidth, (enemyPosY - tileNoY) * tileHeight -tileHeight);
 			}
 			
-			if (enemy.getAlertLevel() > 0 && !enemyIsExploding) {
-				float signWidth = 32 / cam.getZoomFactor();
-				float signHeight = 32 / cam.getZoomFactor();
-				float signOffsetX = (tileWidth - signWidth) / 2;
-				float signOffseetY = -8;
-				
-				
-				
-				Animation alertedAnimation = ApplicationContext.instance().getAnimations().get("enemyAlerted");
-				alertedAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY, signWidth, signHeight);
+			//Render enemy overhead markers
+			if (!enemyIsExploding) {
+				if (!EnemiesUtils.enemyActive(enemy)) {
+					float signWidth = 32 / cam.getZoomFactor();
+					float signHeight = 32 / cam.getZoomFactor();
+					float signOffsetX = (tileWidth - signWidth) / 2;
+					float signOffseetY = -8;
+					Animation sleepingAnimation = ApplicationContext.instance().getAnimations().get("enemySleeping");
+					sleepingAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY, signWidth, signHeight);
+				} else if (enemy.getAlertLevel() > 0 && !enemyIsExploding) {
+					float signWidth = 32 / cam.getZoomFactor();
+					float signHeight = 32 / cam.getZoomFactor();
+					float signOffsetX = (tileWidth - signWidth) / 2;
+					float signOffseetY = -8;
+					Animation alertedAnimation = ApplicationContext.instance().getAnimations().get("enemyAlerted");
+					alertedAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY, signWidth, signHeight);
+				}
 			}
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());

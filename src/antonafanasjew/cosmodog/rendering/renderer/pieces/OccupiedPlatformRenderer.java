@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
+import antonafanasjew.cosmodog.view.transitions.impl.PlayerAttackingFightPhaseTransition;
 
 import com.google.common.collect.Maps;
 
@@ -70,7 +71,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 			
 			boolean playerIsMoving = playerTransition != null;
-			boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition.enemyDestruction == false;
+			boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
 			boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 			
 			PlatformInventoryItem item = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
@@ -92,19 +93,16 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			
 			if (playerIsFighting) {
 									
-				float completion = fightPhaseTransition.completion;
+				float completion = fightPhaseTransition.getCompletion();
 
 				float fightOffset = 0.0f;
 				
-				if (fightPhaseTransition.playerAttack) {
+				if (completion > 0.5f) {
+					completion = 1.0f - completion;
+				}
+				
+				fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
 					
-					if (completion > 0.5f) {
-						completion = 1.0f - completion;
-					}
-					
-					fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
-					
-				} 
 				
 				if (player.getDirection() == DirectionType.DOWN) {
 					pieceOffsetY = fightOffset;

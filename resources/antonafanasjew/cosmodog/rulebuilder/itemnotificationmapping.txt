@@ -17,6 +17,7 @@ BOTTLE_DESCRIPTION;bottle;false;bottleDescription;You found a bottle.<br>Your wa
 FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;false;foodcompartmentDescription;You found a food compartment<br>and attached it to your backback.<br>Your supply capacity increases.<br><br>[Press ENTER]
 SUPPLYTRACKER_DESCRIPTION;supplytracker;false;supplytrackerDescription;You found the supply tracker.<br>It must have fallen<br>from your emergency pod.<br>Use it to track the closest supply box.<br><br>[Press ENTER]
 JACKET_DESCRIPTION;jacket;false;jacketDescription;You found a warm jacket.<br>Now you can walk cold regions<br>without freezing.<br><br>[Press ENTER]
+ANTIDOTE_DESCRIPTION;antidote;false;antidoteDescription;You found the antidote.<br>Poison is not a threat anymore.<br><br>[Press ENTER]
 MINEDETECTOR_DESCRIPTION;minedetector;false;minedetectorDescription;You found a mine detector.<br>It will detect nearby mines.<br>Avoid stepping on them.<br><br>[Press ENTER]
 BINOCULARS_DESCRIPTION;binoculars;false;binocularsDescription;You found the binoculars.<br>You can see distant things now.<br>Press Y and Z to zoom in and out.<br><br>[Press ENTER]
 SKI_DESCRIPTION;ski;false;skiDescription;You found the ski.<br>You can cross snow faster now.<br><br>[Press ENTER]
