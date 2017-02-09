@@ -155,7 +155,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(248, 114);
+		Player player = Player.fromPosition(80, 165);
 		player.setMaxLife(50);
 		player.setLife(50);
 
@@ -189,7 +189,7 @@ public class InitializationUtils {
 		planetaryCalendar.setYear(2314);
 		planetaryCalendar.setMonth(1);
 		planetaryCalendar.setDay(27);
-		planetaryCalendar.setHour(8);
+		planetaryCalendar.setHour(17);
 		planetaryCalendar.setMinute(20);
 		cosmodogGame.setPlanetaryCalendar(planetaryCalendar);
 

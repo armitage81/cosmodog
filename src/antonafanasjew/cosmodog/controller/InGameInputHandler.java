@@ -79,14 +79,14 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		boolean inputMovement = inputLeft || inputRight || inputUp || inputDown;
 		
-		boolean inputSkipTurn = input.isKeyDown(Input.KEY_ENTER);
-		
-		//Handle skip turn
-		if (inputSkipTurn) {
-			int timePassed = Constants.DEFAULT_TIME_COSTS_ON_FOOT;
-			AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, true);
-			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
-		}
+//		boolean inputSkipTurn = input.isKeyDown(Input.KEY_ENTER);
+//		
+//		//Handle skip turn
+//		if (inputSkipTurn) {
+//			int timePassed = Constants.DEFAULT_TIME_COSTS_ON_FOOT;
+//			AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, true);
+//			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
+//		}
 		
 		
 		//Handle movement
