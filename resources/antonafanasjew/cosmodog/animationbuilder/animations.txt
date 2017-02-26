@@ -687,6 +687,12 @@ dynamicPieceBamboo4Top2;data/stones.png;32;16;[4/28/10000];true;true
 dynamicPieceBamboo4Top3;data/stones.png;32;16;[4/30/10000];true;true
 
 
+dynamicPieceCrumbledWall0Bottom0;data/stones.png;32;16;[0/33/10000];true;true
+dynamicPieceCrumbledWall0Bottom1;data/stones.png;32;16;[0/35/10000];true;true
+dynamicPieceCrumbledWall0Top0;data/stones.png;32;16;[0/32/10000];true;true
+dynamicPieceCrumbledWall0Top1;data/stones.png;32;16;[0/34/10000];true;true
+
+
 
 
 dynamicPieceCrate0Bottom0;data/containers.png;32;16;[0/1/10000];true;true

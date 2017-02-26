@@ -17,7 +17,7 @@ public class DynamiteInventoryItem extends InventoryItem {
 	
 	@Override
 	public String description() {
-		return "???";
+		return "The dynamite can be used to destroy crumbled rocks and break through underground passages";
 	}
 	
 }

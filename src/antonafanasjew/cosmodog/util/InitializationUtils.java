@@ -44,6 +44,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
+import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
@@ -155,7 +156,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(80, 165);
+		Player player = Player.fromPosition(223, 156);
 		player.setMaxLife(50);
 		player.setLife(50);
 
@@ -530,6 +531,11 @@ public class InitializationUtils {
 				if (tileId == TileType.DYNAMIC_PIECE_BAMBOO.getTileId()) {
 					Bamboo bamboo = Bamboo.create(k, l);
 					map.getDynamicPieces().put(Bamboo.class, bamboo);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL.getTileId()) {
+					CrumbledWall wall = CrumbledWall.create(k, l);
+					map.getDynamicPieces().put(CrumbledWall.class, wall);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {

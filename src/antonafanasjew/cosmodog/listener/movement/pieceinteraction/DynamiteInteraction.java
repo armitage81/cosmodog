@@ -15,7 +15,6 @@ public class DynamiteInteraction extends AbstractPieceInteraction {
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundDynamite()), true, false);
 		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
-		//PiecesUtils.removeAllCollectibleItems(CollectibleItem.ITEM_TYPE_DYNAMITE, cosmodogMap);		
 	}
 
 }

@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
+import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
@@ -80,6 +81,22 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 						Inventory inventory = player.getInventory();
 						if (inventory.get(InventoryItemType.MACHETE) == null) {
 							blockReasonParam = "Machete required";
+						}
+					}
+					
+					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				}
+			} else if (dynamicPiece instanceof CrumbledWall) {
+				CrumbledWall wall = (CrumbledWall)dynamicPiece;
+				if (wall.getState() != CrumbledWall.STATE_DESTROYED) {
+					
+					String blockReasonParam = "";
+					
+					if (actor instanceof Player) {
+						Player player = (Player)actor;
+						Inventory inventory = player.getInventory();
+						if (inventory.get(InventoryItemType.DYNAMITE) == null) {
+							blockReasonParam = "Dynamite required";
 						}
 					}
 					
