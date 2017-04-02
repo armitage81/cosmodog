@@ -22,6 +22,7 @@ public class GameProgress extends CosmodogModel {
 	 * The name of the game property that defines the happening of the 'after landing' event at the beginning of the game.
 	 */
 	public static final String GAME_PROGRESS_PROPERTY_AFTERLANDING = "afterlanding";
+	public static final String GAME_PROGRESS_ALIEN_BASE_GATE_SEQUENCE = "alienbasegatesequence";
 
 	private int infobits = 0;
 	private int gameScore;

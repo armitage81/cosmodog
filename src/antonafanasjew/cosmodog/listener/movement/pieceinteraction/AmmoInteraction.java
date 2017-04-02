@@ -37,7 +37,11 @@ public class AmmoInteraction extends AbstractPieceInteraction {
 			
 		}
 		
-		applicationContext.getSoundResources().get(SoundResources.SOUND_RELOAD).play();		
 	}
 
+	
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_RELOAD;
+	}
 }

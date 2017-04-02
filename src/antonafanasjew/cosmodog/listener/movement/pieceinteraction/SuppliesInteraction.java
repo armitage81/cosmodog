@@ -18,7 +18,6 @@ public class SuppliesInteraction extends AbstractPieceInteraction {
 			@Override
 			public void run() {
 				cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundSupply()), true, false);
-				applicationContext.getSoundResources().get(SoundResources.SOUND_EATEN).play();
 				//Do not fill up the food completely but add a normal unit.
 				//If player has a food compartment, he will store more than one food bar.
 				player.setFood(player.getFood() + Player.INITIAL_MAX_FOOD);
@@ -26,6 +25,11 @@ public class SuppliesInteraction extends AbstractPieceInteraction {
 				OverheadNotificationAction.registerOverheadNotification(player, "You eat the ration");
 			}
 		});
+	}
+	
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_EATEN;
 	}
 
 }

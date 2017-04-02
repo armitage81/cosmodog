@@ -7,10 +7,15 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.model.Collectible;
+import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.DroppedCollectibleFactory;
 import antonafanasjew.cosmodog.view.transitions.EnemyDestructionFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.impl.DefaultEnemyDestructionFightPhaseTransition;
 
@@ -41,6 +46,35 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 	@Override
 	public void onEnd() {
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+		
+		Enemy enemy = getEnemy();
+		
+		InventoryItem item = enemy.getInventoryItem();
+		
+		if (item != null) {
+			Collectible dropped = DroppedCollectibleFactory.createCollectibleFromDroppedItem(item);
+			if (dropped != null) {
+				
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DROPPED_ITEM).play();
+
+				dropped.setPositionX(enemy.getPositionX());
+				dropped.setPositionY(enemy.getPositionY());
+				
+				Piece piece = cosmodogMap.pieceAtTile(enemy.getPositionX(), enemy.getPositionY());
+				if (piece != null && piece instanceof Collectible) {
+					CollectibleComposed newCollectible = new CollectibleComposed();
+					newCollectible.setPositionX(enemy.getPositionX());
+					newCollectible.setPositionY(enemy.getPositionY());
+					newCollectible.addElement((Collectible)piece);
+					newCollectible.addElement(dropped);
+					cosmodogMap.getMapPieces().remove(piece);
+					dropped = newCollectible;
+				}
+				
+				cosmodogMap.getMapPieces().add(dropped);
+			}
+		}
+		
 		cosmodogMap.getEnemies().remove(getEnemy());
 		setFightPhaseTransition(null);
 	}

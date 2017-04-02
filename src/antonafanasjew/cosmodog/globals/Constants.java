@@ -22,7 +22,7 @@ public class Constants {
 	 * It will be multiplied with the number of planetary minutes needed for the action
 	 * to calculate the action movement.
 	 */
-	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 75;
+	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 30;
 	
 	/**
 	 * Minimal unit on the planetary calendar in minutes.

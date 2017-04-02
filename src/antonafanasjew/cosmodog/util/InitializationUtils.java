@@ -12,6 +12,8 @@ import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
+import antonafanasjew.cosmodog.actions.loweringgate.LowerGateAction;
 import antonafanasjew.cosmodog.calendar.ComposedPlanetaryCalendarListener;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.calendar.listeners.FoodConsumer;
@@ -27,24 +29,24 @@ import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
-import antonafanasjew.cosmodog.model.CollectibleAmmo;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
-import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
+import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Effect;
 import antonafanasjew.cosmodog.model.Mark;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorAppearanceType;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
+import antonafanasjew.cosmodog.model.dynamicpieces.Gate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
@@ -55,6 +57,7 @@ import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
@@ -79,7 +82,6 @@ import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.rules.RuleBookMovementListener;
-import antonafanasjew.cosmodog.rules.RuleBookPieceInteractionListener;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
@@ -93,6 +95,8 @@ import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
+import antonafanasjew.cosmodog.rules.actions.pickupitems.PickupKeyAction;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventPieceInteraction;
@@ -104,6 +108,7 @@ import antonafanasjew.cosmodog.rules.triggers.InteractingWithEveryCollectibleTri
 import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
+import antonafanasjew.cosmodog.rules.triggers.logical.OrTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.timing.Chronometer;
@@ -118,34 +123,6 @@ import com.google.common.collect.Maps;
 
 public class InitializationUtils {
 
-	public static int INFOBIT_TILE_ID = 191;
-	public static int INFOBYTE_TILE_ID = 3069;
-	public static int INFOBANK_TILE_ID = 3070;
-	public static int SOFTWARE_TILE_ID = 3071;
-	public static int CHART_TILE_ID = 3072;
-	public static int MINEDETECTOR_TILE_ID = 3073;
-	public static int ANTIDOTE_TILE_ID = 3074;
-	public static int INSIGHT_TILE_ID = 196;
-	public static int SOULESSENCE_TILE_ID = 197;
-	public static int ARMOR_TILE_ID = 206;
-	public static int SUPPLIES_TILE_ID = 190;
-	public static int MEDIPACK_TILE_ID = 192;
-	public static int VEHICLE_TILE_ID = 193;
-	public static int BOAT_TILE_ID = 194;
-	public static int DYNAMITE_TILE_ID = 198;
-	public static int GEIGERZAEHLER_TILE_ID = 207;
-	public static int SUPPLYTRACKER_TILE_ID = 3061;
-	public static int BINOCULARS_TILE_ID = 3062;
-	public static int JACKET_TILE_ID = 3063;
-	public static int SKI_TILE_ID = 3064;
-
-	public static int PICK_TILE_ID = 3066;
-	public static int MACHETE_TILE_ID = 3067;
-	public static int AXE_TILE_ID = 3068;
-
-	public static int PLATFORM_TILE_ID = 3065;
-	public static int BOTTLE_TILE_ID = 201;
-	public static int FOOD_COMPARTMENT_TILE_ID = 205;
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
 	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
@@ -156,7 +133,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(223, 156);
+		Player player = Player.fromPosition(240, 266);
 		player.setMaxLife(50);
 		player.setLife(50);
 
@@ -183,6 +160,7 @@ public class InitializationUtils {
 		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
 		player.getInventory().put(InventoryItemType.MINEDETECTOR, new MineDetectorInventoryItem());
+		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
 
 		cosmodogGame.setPlayer(player);
 
@@ -217,7 +195,6 @@ public class InitializationUtils {
 
 		Player player = cosmodogGame.getPlayer();
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
-		playerMovementListener.getPieceInteractionListeners().add(new RuleBookPieceInteractionListener());
 		player.getMovementListeners().clear();
 		player.getMovementListeners().add(playerMovementListener);
 		player.getMovementListeners().add(new RuleBookMovementListener());
@@ -246,9 +223,19 @@ public class InitializationUtils {
 	public static CosmodogMap initializeCosmodogMap(CustomTiledMap customTiledMap) throws SlickException, TiledMapIoException {
 
 		CosmodogMap map = new CosmodogMap(customTiledMap);
+		
+		initializeEffects(customTiledMap, map);
+		initializeTiledMapObjects(customTiledMap, map);
+		initializeEnemies(customTiledMap, map);
+		initializeDynamicTiles(customTiledMap, map);
+		//This method relies on the enemy initialization, so don't shift it before the enemy initialization method.
+		initializeCollectibles(customTiledMap, map);
 
-		map.getMapModification().modifyTile(7, 2, Layers.LAYER_WATER, TileType.WATER_CENTER);
-		map.getMapModification().modifyTile(7, 2, Layers.LAYER_META_COLLISIONS, TileType.COLLISION_WATER);
+		return map;
+
+	}
+
+	private static void initializeCollectibles(CustomTiledMap customTiledMap, CosmodogMap map) {
 
 		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
 		int mapWidth = map.getWidth();
@@ -257,204 +244,45 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 				int tileId = map.getTileId(k, l, collectiblesLayerIndex);
-				if (tileId == INFOBIT_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobit);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == INFOBYTE_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobyte);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == INFOBANK_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.infobank);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == INSIGHT_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.insight);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == SOFTWARE_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.software);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
 
-				if (tileId == CHART_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.chart);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
+				TileType collectibleTileType = TileType.getByLayerAndTileId(collectiblesLayerIndex, tileId);
 
-				if (tileId == SUPPLIES_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.supplies);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == MEDIPACK_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.medipack);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == SOULESSENCE_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.soulessence);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-				if (tileId == ARMOR_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.armor);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
+				Piece piece = PieceFactory.createPieceFromTileType(collectibleTileType);
 
-				if (tileId == BOTTLE_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.bottle);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
+				if (piece != null) {
 
-				if (tileId == FOOD_COMPARTMENT_TILE_ID) {
-					CollectibleGoodie c = new CollectibleGoodie(CollectibleGoodie.GoodieType.foodcompartment);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
+					piece.setPositionX(k);
+					piece.setPositionY(l);
 
-				if (tileId == VEHICLE_TILE_ID) {
-					Vehicle vehicle = Vehicle.fromPosition(k, l);
-					map.getMapPieces().add(vehicle);
+					if (piece instanceof Mark) {
+						map.getMarkedTilePieces().add(piece);
+					} else {
+						if (piece instanceof Collectible) {
+							Enemy enemy = map.enemyAtTile(k, l);
+							if (enemy != null) {
+								InventoryItem inventoryItem = InventoryItemFactory.createInventoryItem((Collectible)piece);
+								enemy.setInventoryItem(inventoryItem);
+							} else {
+								map.getMapPieces().add(piece);	
+							}
+						} else {
+							map.getMapPieces().add(piece);
+						}
+					}
 				}
+			}
 
-				if (tileId == PLATFORM_TILE_ID) {
-					Platform platform = Platform.fromPosition(k, l);
-					map.getMapPieces().add(platform);
-				}
+		}
+	}
 
-				if (tileId == BOAT_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.boat);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
+	private static void initializeEffects(CustomTiledMap customTiledMap, CosmodogMap map) {
+		int mapWidth = map.getWidth();
+		int mapHeight = map.getHeight();
 
-				if (tileId == DYNAMITE_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.dynamite);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == GEIGERZAEHLER_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.geigerzaehler);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == SUPPLYTRACKER_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.supplytracker);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == BINOCULARS_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.binoculars);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == JACKET_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.jacket);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
+		for (int k = 0; k < mapWidth; k++) {
+			for (int l = 0; l < mapHeight; l++) {
 				
-				if (tileId == ANTIDOTE_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.antidote);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == MINEDETECTOR_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.minedetector);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == SKI_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.ski);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == PICK_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.pick);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == MACHETE_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.machete);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (tileId == AXE_TILE_ID) {
-					CollectibleTool c = new CollectibleTool(CollectibleTool.ToolType.axe);
-					c.setPositionX(k);
-					c.setPositionY(l);
-					map.getMapPieces().add(c);
-				}
-
-				if (TileType.FUEL.getTileId() == tileId) {
-					Mark m = new Mark(Mark.FUEL_MARK_TYPE);
-					m.setPositionX(k);
-					m.setPositionY(l);
-					map.getMarkedTilePieces().add(m);
-				}
-
-				if (TileType.WEAPONS_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId))) {
-
-					WeaponType weaponType = Mappings.COLLECTIBLE_WEAPON_TILE_TYPE_2_WEAPON_TYPE.get(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId));
-					Weapon weapon = new Weapon(weaponType);
-					CollectibleWeapon collWeapon = new CollectibleWeapon(weapon);
-					collWeapon.setPositionX(k);
-					collWeapon.setPositionY(l);
-					map.getMapPieces().add(collWeapon);
-
-				}
-
-				if (TileType.AMMO_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId))) {
-					WeaponType weaponType = Mappings.COLLECTIBLE_AMMO_TILE_TYPE_2_WEAPON_TYPE.get(TileType.getByLayerAndTileId(Layers.LAYER_META_COLLECTIBLES, tileId));
-					CollectibleAmmo collAmmo = new CollectibleAmmo(weaponType);
-					collAmmo.setPositionX(k);
-					collAmmo.setPositionY(l);
-					map.getMapPieces().add(collAmmo);
-				}
-
-				tileId = customTiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);
+				int tileId = customTiledMap.getTileId(k, l, Layers.LAYER_META_EFFECTS);
 
 				if (TileType.TELEPORT_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_TELEPORT);
@@ -494,13 +322,6 @@ public class InitializationUtils {
 			}
 
 		}
-
-		initializeTiledMapObjects(customTiledMap, map);
-		initializeEnemies(customTiledMap, map);
-		initializeDynamicTiles(customTiledMap, map);
-
-		return map;
-
 	}
 
 	private static void initializeDynamicTiles(CustomTiledMap tiledMap, CosmodogMap map) {
@@ -532,12 +353,22 @@ public class InitializationUtils {
 					Bamboo bamboo = Bamboo.create(k, l);
 					map.getDynamicPieces().put(Bamboo.class, bamboo);
 				}
-				
-				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL.getTileId()) {
-					CrumbledWall wall = CrumbledWall.create(k, l);
+
+				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL_MONTAIN.getTileId()) {
+					CrumbledWall wall = CrumbledWall.create(k, l, CrumbledWall.SHAPE_MONTAIN);
 					map.getDynamicPieces().put(CrumbledWall.class, wall);
 				}
 
+				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL_ALIEN_BASE.getTileId()) {
+					CrumbledWall wall = CrumbledWall.create(k, l, CrumbledWall.SHAPE_ALIEN_BASE);
+					map.getDynamicPieces().put(CrumbledWall.class, wall);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_GATE.getTileId()) {
+					Gate gate = Gate.create(k, l);
+					map.getDynamicPieces().put(Gate.class, gate);
+				}
+				
 				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {
 					Crate crate = Crate.create(k, l);
 					map.getDynamicPieces().put(Crate.class, crate);
@@ -547,15 +378,25 @@ public class InitializationUtils {
 					Mine mine = Mine.create(k, l);
 					map.getDynamicPieces().put(Mine.class, mine);
 				}
-				
+
 				if (tileId == TileType.DYNAMIC_PIECE_POISON.getTileId()) {
 					Poison poison = Poison.create(k, l);
 					map.getDynamicPieces().put(Poison.class, poison);
 				}
-				
+
 				if (tileId == TileType.DYNAMIC_PIECE_PRESSUREBUTTON.getTileId()) {
 					PressureButton pressureButton = PressureButton.create(k, l);
 					map.getDynamicPieces().put(PressureButton.class, pressureButton);
+				}
+
+				if (TileType.MIN_ALIEN_DOOR.getTileId() <= tileId && tileId <= TileType.MAX_ALIEN_DOOR.getTileId()) {
+					DoorType doorType = Mappings.TILE_ID_TO_DOOR_TYPE.get(tileId);
+					DoorAppearanceType doorAppearanceType = Mappings.TILE_ID_TO_DOOR_APPEARANCE_TYPE.get(tileId);
+					DirectionType directionType = Mappings.TILE_ID_TO_DOOR_DIRECTION_TYPE.get(tileId);
+					Door door = new Door(directionType, doorType, doorAppearanceType);
+					door.setPositionX(k);
+					door.setPositionY(l);
+					map.getDynamicPieces().put(Door.class, door);
 				}
 			}
 		}
@@ -662,7 +503,7 @@ public class InitializationUtils {
 		// Teleport rules
 		Map<String, Rule> teleportRules = TeleportRuleFactory.getInstance().buildRules(cosmodogGame);
 		ruleBook.putAll(teleportRules);
-		
+
 		// Poison deactivation rules
 		Map<String, Rule> poisonDeactivationRules = PoisonDeactivationRuleFactory.getInstance().buildRules(cosmodogGame);
 		ruleBook.putAll(poisonDeactivationRules);
@@ -704,6 +545,31 @@ public class InitializationUtils {
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE3, Lists.newArrayList(GameEventChangedPosition.class), switchOnSewageTrigger, switchOnSewageAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 
+		//Pickup blue keycard rule.
+		RuleTrigger approachBlueKeyCardTrigger = new GameProgressPropertyTrigger("CollectedBlueKeyCard", "false");
+		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
+		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf.<br>You grap the item.<br>It is a key card for the mess hall.<br><br>[Press ENTER]");
+		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction pickUpBlueKeyCardAction = new PickupKeyAction(DoorType.blueKeycardDoor);
+		pickUpBlueKeyCardAction = BlockAction.block(pickUpBlueKeyCardAction, new SetGameProgressPropertyAction("CollectedBlueKeyCard", "true"), notificationAction);
+		rule = new Rule(Rule.RULE_PICK_UP_BLUE_KEYCARD, Lists.newArrayList(GameEventChangedPosition.class), approachBlueKeyCardTrigger, pickUpBlueKeyCardAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
+		
+		
+		
+		//Open gate rule.
+		RuleTrigger openGateTrigger = OrTrigger.or(
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch1"), 
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch2"),
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch3"),
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch4"),
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch5")
+				);
+		RuleAction updateAlienBaseGateSequenceAction = new UpdateAlienBaseGateSequenceAction();
+		rule = new Rule(Rule.RULE_OPEN_GATE_TO_LAUNCH_POD, Lists.newArrayList(GameEventChangedPosition.class), openGateTrigger, updateAlienBaseGateSequenceAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
+		
+		
 		cosmodogGame.setRuleBook(ruleBook);
 
 	}

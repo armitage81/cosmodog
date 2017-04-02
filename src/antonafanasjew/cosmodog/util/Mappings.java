@@ -10,6 +10,11 @@ import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
+import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorAppearanceType;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 import com.google.common.collect.Lists;
@@ -17,6 +22,193 @@ import com.google.common.collect.Maps;
 
 public class Mappings {
 
+	public static Map<TileType, ToolType> MAP_TILE_TO_TOOL_TYPE = Maps.newHashMap();
+	
+	static {
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.BOAT, ToolType.boat);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.DYNAMITE, ToolType.dynamite);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.GEIGERZAEHLER, ToolType.geigerzaehler);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.SUPPLYTRACKER, ToolType.supplytracker);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.BINOCULARS, ToolType.binoculars);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.JACKET, ToolType.jacket);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.ANTIDOTE, ToolType.antidote);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.MINEDETECTOR, ToolType.minedetector);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.SKI, ToolType.ski);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.PICK, ToolType.pick);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.AXE, ToolType.axe);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.MACHETE, ToolType.machete);
+	}
+	
+	public static Map<TileType, GoodieType> MAP_TILE_TO_GOODIE_TYPE = Maps.newHashMap();
+	
+	static {
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INFOBIT, GoodieType.infobit);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INFOBYTE, GoodieType.infobyte);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INFOBANK, GoodieType.infobank);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INSIGHT, GoodieType.insight);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SOFTWARE, GoodieType.software);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.CHART, GoodieType.chart);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SUPPLIES, GoodieType.supplies);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.MEDIPACK, GoodieType.medipack);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SOULESSENCE, GoodieType.soulessence);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.ARMOR, GoodieType.armor);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.BOTTLE, GoodieType.bottle);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.FOOD_COMPARTMENT, GoodieType.foodcompartment);
+	}
+	
+	public static final Map<Integer, DoorType> TILE_ID_TO_KEY_TYPE = Maps.newHashMap();
+	
+	static {
+		TILE_ID_TO_KEY_TYPE.put(4510, DoorType.redKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4511, DoorType.lilaKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4512, DoorType.blueKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4513, DoorType.cyanKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4514, DoorType.greenKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4515, DoorType.yellowKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4516, DoorType.brownKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4517, DoorType.purpleKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4518, DoorType.darkblueKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4519, DoorType.whiteKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4520, DoorType.yellowKeyDoor);
+		TILE_ID_TO_KEY_TYPE.put(4521, DoorType.greenKeyDoor);
+		TILE_ID_TO_KEY_TYPE.put(4522, DoorType.blueKeyDoor);
+		TILE_ID_TO_KEY_TYPE.put(4523, DoorType.redKeyDoor);
+		TILE_ID_TO_KEY_TYPE.put(4524, DoorType.blackKeyDoor);
+		TILE_ID_TO_KEY_TYPE.put(4525, null);
+		TILE_ID_TO_KEY_TYPE.put(4526, null);
+		TILE_ID_TO_KEY_TYPE.put(4527, null);
+	}
+	
+	public static final Map<Integer, DoorType> TILE_ID_TO_DOOR_TYPE = Maps.newHashMap();
+	
+	static {
+		TILE_ID_TO_DOOR_TYPE.put(4474, DoorType.redKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4475, DoorType.lilaKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4476, DoorType.blueKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4477, DoorType.cyanKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4478, DoorType.greenKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4479, DoorType.yellowKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4480, DoorType.brownKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4481, DoorType.purpleKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4482, DoorType.darkblueKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4483, DoorType.whiteKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4484, DoorType.yellowKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4485, DoorType.greenKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4486, DoorType.blueKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4487, DoorType.redKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4488, DoorType.blackKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4489, null);
+		TILE_ID_TO_DOOR_TYPE.put(4490, null);
+		TILE_ID_TO_DOOR_TYPE.put(4491, null);
+		
+		TILE_ID_TO_DOOR_TYPE.put(4492, DoorType.redKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4493, DoorType.lilaKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4494, DoorType.blueKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4495, DoorType.cyanKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4496, DoorType.greenKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4497, DoorType.yellowKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4498, DoorType.brownKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4499, DoorType.purpleKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4500, DoorType.darkblueKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4501, DoorType.whiteKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4502, DoorType.yellowKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4503, DoorType.greenKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4504, DoorType.blueKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4505, DoorType.redKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4506, DoorType.blackKeyDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4507, null);
+		TILE_ID_TO_DOOR_TYPE.put(4508, null);
+		TILE_ID_TO_DOOR_TYPE.put(4509, null);
+		
+		
+	}
+	
+	public static final Map<Integer, DoorAppearanceType> TILE_ID_TO_DOOR_APPEARANCE_TYPE = Maps.newHashMap();
+
+	static {
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4474, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4475, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4476, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4477, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4478, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4479, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4480, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4481, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4482, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4483, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4484, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4485, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4486, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4487, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4488, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4489, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4490, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4491, DoorAppearanceType.AlienDoor);
+		
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4492, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4493, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4494, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4495, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4496, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4497, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4498, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4499, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4500, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4501, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4502, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4503, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4504, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4505, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4506, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4507, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4508, DoorAppearanceType.AlienDoor);
+		TILE_ID_TO_DOOR_APPEARANCE_TYPE.put(4509, DoorAppearanceType.AlienDoor);
+		
+	}
+	
+	public static final Map<Integer, DirectionType> TILE_ID_TO_DOOR_DIRECTION_TYPE = Maps.newHashMap();
+	
+	static {
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4474, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4475, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4476, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4477, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4478, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4479, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4480, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4481, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4482, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4483, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4484, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4485, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4486, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4487, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4488, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4489, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4490, DirectionType.DOWN);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4491, DirectionType.DOWN);
+		
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4492, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4493, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4494, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4495, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4496, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4497, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4498, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4499, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4500, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4501, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4502, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4503, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4504, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4505, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4506, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4507, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4508, DirectionType.LEFT);
+		TILE_ID_TO_DOOR_DIRECTION_TYPE.put(4509, DirectionType.LEFT);
+		
+	}
+	
 	/**
 	 * Map of inventory item types to their animations in the inventory.
 	 */
@@ -41,6 +233,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.PICK, "inventoryItemPick");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MACHETE, "inventoryItemMachete");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.AXE, "inventoryItemAxe");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.KEY_RING, "inventoryItemKeyRing");
 	}
 	
 	/**
@@ -55,6 +248,8 @@ public class Mappings {
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_TURRET, UnitType.TURRET);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_PIGRAT, UnitType.PIGRAT);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_ARTILLERY, UnitType.ARTILLERY);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_FLOATER, UnitType.FLOATER);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_CONDUCTOR, UnitType.CONDUCTOR);
 	}
 	
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
@@ -70,6 +265,8 @@ public class Mappings {
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.TURRET, "Turret");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.PIGRAT, "Pigrat");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.ARTILLERY, "Artillery");
+		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.FLOATER, "Floater");
+		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.CONDUCTOR, "Conductor");
 		
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.UP, "Up");
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.DOWN, "Down");
@@ -262,6 +459,21 @@ public class Mappings {
 		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.RIFLE, "Rifle");
 		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.MACHINEGUN, "Machinegun");
 		WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.put(WeaponType.RPG, "Rpg");
+	}
+	
+	public static Map<DoorType, String> KEY_TYPE_2_ANIMATION_ID = Maps.newHashMap();
+	
+	static {
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.redKeycardDoor, "dynamicPieceAlienKey0");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.lilaKeycardDoor, "dynamicPieceAlienKey1");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.blueKeycardDoor, "dynamicPieceAlienKey2");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.cyanKeycardDoor, "dynamicPieceAlienKey3");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.greenKeycardDoor, "dynamicPieceAlienKey4");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.yellowKeycardDoor, "dynamicPieceAlienKey5");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.brownKeycardDoor, "dynamicPieceAlienKey6");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.purpleKeycardDoor, "dynamicPieceAlienKey7");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.darkblueKeycardDoor, "dynamicPieceAlienKey8");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.whiteKeycardDoor, "dynamicPieceAlienKey9");
 	}
 	
 }

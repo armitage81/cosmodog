@@ -13,8 +13,12 @@ public class MedipackInteraction extends AbstractPieceInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundMedipack()), true, false);
-		applicationContext.getSoundResources().get(SoundResources.SOUND_EATEN).play();
 		player.setLife(player.getMaxLife());
+	}
+	
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_EATEN;
 	}
 
 }

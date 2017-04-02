@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
@@ -16,6 +17,11 @@ public class SoulEssenceInteraction extends AbstractPieceInteraction {
 				player.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
 			}
 		});		
+	}
+	
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_POWERUP;
 	}
 
 }

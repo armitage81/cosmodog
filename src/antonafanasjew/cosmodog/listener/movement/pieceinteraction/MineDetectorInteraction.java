@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -33,4 +34,9 @@ public class MineDetectorInteraction extends AbstractPieceInteraction {
 		
 	}
 
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_POWERUP;
+	}
+	
 }

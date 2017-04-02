@@ -1,8 +1,5 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
-import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
@@ -16,16 +13,16 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 public class CrumbledWall extends DynamicPiece {
 
 	private static final long serialVersionUID = 5708806596326635656L;
+
+	public static final short SHAPE_MONTAIN = 0;
+	public static final short SHAPE_ALIEN_BASE = 1;
 	
 	public static final short STATE_WHOLE = 0;
 	public static final short STATE_DESTROYED = 1;
 	
 	
-	private static final short NUMBER_OF_SHAPES = 1;
-	private static short shapeLoopCounter = 0;
-	
 	private short state = STATE_WHOLE;
-	private short shapeNumber = (short)((shapeLoopCounter++) % NUMBER_OF_SHAPES);
+	private short shapeNumber;
 	
 	public short getState() {
 		return state;
@@ -35,10 +32,11 @@ public class CrumbledWall extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 	
-	public static CrumbledWall create(int x, int y) {
+	public static CrumbledWall create(int x, int y, short shapeNumber) {
 		CrumbledWall wall = new CrumbledWall();
 		wall.setPositionX(x);
 		wall.setPositionY(y);
+		wall.shapeNumber = shapeNumber;
 		return wall;
 	}
 	
@@ -58,8 +56,6 @@ public class CrumbledWall extends DynamicPiece {
 		if (dynamite != null) {
 			if (state < STATE_DESTROYED) {
 				state++;
-				CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-				
 			}
 		}
 	}
@@ -68,6 +64,5 @@ public class CrumbledWall extends DynamicPiece {
 	public boolean wrapsCollectible() {
 		return state != STATE_DESTROYED;
 	}
-
 
 }

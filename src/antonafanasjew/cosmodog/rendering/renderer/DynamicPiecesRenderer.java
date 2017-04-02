@@ -14,6 +14,8 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door;
+import antonafanasjew.cosmodog.model.dynamicpieces.Gate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
@@ -150,6 +152,20 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			
 		}
 		
+		Collection<DynamicPiece> gates = dynamicPieces.get(Gate.class);
+		
+		for (DynamicPiece piece : gates) {
+			
+			Gate gate = (Gate) piece;
+			
+			String animationIdPrefix = "dynamicPieceGate";
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = gate.animationSuffixFromState();
+			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			
+		}
+		
 		Collection<DynamicPiece> crates = dynamicPieces.get(Crate.class);
 		
 		for (DynamicPiece piece : crates) {
@@ -205,6 +221,23 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
 			
 		}
+		
+		
+		Collection<DynamicPiece> doors = dynamicPieces.get(Door.class);
+		
+		for (DynamicPiece piece : doors) {
+			Door door = (Door) piece;
+			
+			String animationIdPrefix = "dynamicPiece" + door.getDoorAppearanceType() + door.getExitDirectionType().getRepresentation();
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = door.isOpened() ? "Open" : "Closed";
+			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			
+		}
+		
+		
+		
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -26,4 +27,9 @@ public class BinocularsInteraction extends AbstractPieceInteraction {
 		cam.zoomOut();
 	}
 
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_POWERUP;
+	}
+	
 }

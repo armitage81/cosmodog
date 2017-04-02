@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.actors;
 
 import antonafanasjew.cosmodog.domains.ChaussieType;
+import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 
 /**
  * Represents all non player characters, be it friendly or hostile
@@ -16,6 +17,8 @@ public class NpcActor extends Actor {
 	private ChaussieType chaussieType;
 	
 	private int timeBudgetOverhead;
+	
+	private InventoryItem inventoryItem;
 	
 	/**
 	 * Returns the speed factor as related to the player.
@@ -68,6 +71,14 @@ public class NpcActor extends Actor {
 
 	public void setTimeBudgetOverhead(int timeBudgetOverhead) {
 		this.timeBudgetOverhead = timeBudgetOverhead;
+	}
+
+	public InventoryItem getInventoryItem() {
+		return inventoryItem;
+	}
+
+	public void setInventoryItem(InventoryItem inventoryItem) {
+		this.inventoryItem = inventoryItem;
 	}
 
 }

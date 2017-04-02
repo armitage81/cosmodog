@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,7 +12,9 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -26,11 +30,13 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ChartRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.CollectibleComposedRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.FoodCompartmentRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobankRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobyteRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.KeyRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PieceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PlatformRenderer;
@@ -65,9 +71,11 @@ public class PiecesRenderer extends AbstractRenderer {
 	private static Map<String, PieceRenderer> pieceRendererMap = Maps.newHashMap();
 	
 	static {
+		pieceRendererMap.put(CollectibleComposed.class.getSimpleName(), new CollectibleComposedRenderer());
 		pieceRendererMap.put(CollectibleTool.class.getSimpleName(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponRenderer());
 		pieceRendererMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName(), new KeyRenderer());
 		pieceRendererMap.put(Vehicle.class.getSimpleName(), new VehicleRenderer());
 		pieceRendererMap.put(Platform.class.getSimpleName(), new PlatformRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorRenderer());
@@ -133,45 +141,65 @@ public class PiecesRenderer extends AbstractRenderer {
 		
 		for (Piece piece : filteredMapPieces) {
 			
-			String pieceType;
+			Piece element = null;
+			String elementType = null;
 			
-			if (piece instanceof Collectible) {
-
-				Collectible collectible = (Collectible) piece;
-				Collectible.CollectibleType collectibleType = collectible.getCollectibleType();
-				
-				if (collectibleType == Collectible.CollectibleType.TOOL) {
-					pieceType = CollectibleTool.class.getSimpleName();
-				} else if (collectibleType == Collectible.CollectibleType.WEAPON) {
-					pieceType = CollectibleWeapon.class.getSimpleName();
-				} else if (collectibleType == Collectible.CollectibleType.AMMO) {
-					pieceType = CollectibleAmmo.class.getSimpleName();
-				}
-				else {
-					
-					CollectibleGoodie goodie = (CollectibleGoodie)collectible;
-					
-					pieceType = goodie.getGoodieType().name();
-				}
-				
-			} else if (piece instanceof Vehicle) {
-				pieceType = Vehicle.class.getSimpleName();
-			} else if (piece instanceof Platform) {
-				pieceType = Platform.class.getSimpleName();
+			if (piece instanceof CollectibleComposed) {
+				CollectibleComposed cc = (CollectibleComposed)piece;
+				List<Collectible> elements = cc.getElements();
+				int numberOfElementToRender = (int)((new Date().getTime() / 1000) % elements.size());
+				element = elements.get(numberOfElementToRender);
+				elementType = pieceType(element);
 			} else {
-				pieceType = null;
+				element = piece;
+				elementType = pieceType(piece);
 			}
 			
-			PieceRenderer pieceRenderer = pieceRendererMap.get(pieceType);
-			
+			PieceRenderer pieceRenderer = pieceRendererMap.get(elementType);
 			if (pieceRenderer != null) {
-				pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
+				pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, element);
 			}
 			
 		}
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
+	}
+
+	private String pieceType(Piece piece) {
+		String pieceType;
+		if (piece instanceof Collectible) {
+
+			Collectible collectible = (Collectible) piece;
+			Collectible.CollectibleType collectibleType = collectible.getCollectibleType();
+			
+			if (collectibleType == Collectible.CollectibleType.COMPOSED) {
+				pieceType = CollectibleComposed.class.getSimpleName();
+			} else  if (collectibleType == Collectible.CollectibleType.TOOL) {
+				pieceType = CollectibleTool.class.getSimpleName();
+			} else if (collectibleType == Collectible.CollectibleType.WEAPON) {
+				pieceType = CollectibleWeapon.class.getSimpleName();
+			} else if (collectibleType == Collectible.CollectibleType.AMMO) {
+				pieceType = CollectibleAmmo.class.getSimpleName();
+			} else if (collectibleType == Collectible.CollectibleType.KEY) {
+				pieceType = CollectibleKey.class.getSimpleName();
+			}
+			
+			else {
+				
+				CollectibleGoodie goodie = (CollectibleGoodie)collectible;
+				
+				pieceType = goodie.getGoodieType().name();
+			}
+			
+		} else if (piece instanceof Vehicle) {
+			pieceType = Vehicle.class.getSimpleName();
+		} else if (piece instanceof Platform) {
+			pieceType = Platform.class.getSimpleName();
+		} else {
+			pieceType = null;
+		}
+		return pieceType;
 	}
 
 

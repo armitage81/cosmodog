@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
@@ -15,7 +14,6 @@ public class InfobyteInteraction extends AbstractPieceInteraction {
 			@Override
 			public void run() {
 				player.getGameProgress().addInfobyte();
-				applicationContext.getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
 			}
 
 		});		

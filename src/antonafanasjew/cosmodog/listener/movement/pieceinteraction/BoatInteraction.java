@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -18,4 +19,9 @@ public class BoatInteraction extends AbstractPieceInteraction {
 		//PiecesUtils.removeAllCollectibleItems(CollectibleItem.ITEM_TYPE_BOAT, cosmodogMap);		
 	}
 
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_POWERUP;
+	}
+	
 }

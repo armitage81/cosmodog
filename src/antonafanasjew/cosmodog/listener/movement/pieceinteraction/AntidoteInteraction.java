@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -18,4 +19,10 @@ public class AntidoteInteraction extends AbstractPieceInteraction {
 		player.decontaminate();
 	}
 
+	
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_POWERUP;
+	}
+	
 }

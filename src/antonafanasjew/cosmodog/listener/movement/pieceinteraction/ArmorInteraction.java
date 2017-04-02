@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -33,4 +34,9 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 		}		
 	}
 
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_POWERUP;
+	}
+	
 }

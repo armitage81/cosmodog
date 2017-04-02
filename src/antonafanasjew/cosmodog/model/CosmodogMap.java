@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.MapUtils;
-
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
@@ -17,7 +15,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.PositionUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -125,6 +122,16 @@ public class CosmodogMap extends CosmodogModel {
 		for (Piece piece : mapPieces) {
 			if (piece.getPositionX() == x && piece.getPositionY() == y) {
 				retVal = piece;
+			}
+		}
+		return retVal;
+	}
+	
+	public Enemy enemyAtTile(int x, int y) {
+		Enemy retVal = null;
+		for (Enemy enemy : enemies) {
+			if (enemy.getPositionX() == x && enemy.getPositionY() == y) {
+				retVal = enemy;
 			}
 		}
 		return retVal;

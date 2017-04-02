@@ -12,6 +12,11 @@ public class SoundResources extends HashMap<String, Sound> {
 	private static final long serialVersionUID = -2190800514837591016L;
 	
 	/**
+	 * Sound for: Dropped Item.
+	 */
+	public static final String SOUND_DROPPED_ITEM = "sound.droppeditem";
+	
+	/**
 	 * Sound for: Collected infobit.
 	 */
 	public static final String SOUND_COLLECTED = "sound.collected";

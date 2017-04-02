@@ -34,7 +34,14 @@ public enum UnitType {
 	/**
 	 * Wheeled artillery.
 	 */
-	ARTILLERY(false, true, true);
+	ARTILLERY(false, true, true),
+	
+	/**
+	 * Heavy armored floating drone in the alien base
+	 */
+	FLOATER(false, true, false),
+	
+	CONDUCTOR(false, true, true);
 	
 	private boolean alive;
 	private boolean robotic;

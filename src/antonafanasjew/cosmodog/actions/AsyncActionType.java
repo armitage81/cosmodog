@@ -5,6 +5,8 @@ package antonafanasjew.cosmodog.actions;
  */
 public enum AsyncActionType {
 	
+	CUTSCENE(true, true),
+	
 	WEAPON_TOOLTIP(false, true),
 	
 	/**

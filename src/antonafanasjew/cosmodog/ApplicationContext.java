@@ -37,6 +37,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInte
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ChartInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ComposedInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmentInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
@@ -45,6 +46,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInterac
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobyteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.KeyInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MacheteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MineDetectorInteraction;
@@ -59,7 +61,9 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SupplyTrackerI
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -247,7 +251,8 @@ public class ApplicationContext {
 		cosmodog.setScorePersistor(CosmodogScorePersistor.instance());
 		
 		Map<String, PieceInteraction> pieceInteractionMap = cosmodog.getPieceInteractionMap();
-			
+		
+		pieceInteractionMap.put(CollectibleComposed.class.getSimpleName(), new ComposedInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceInteraction());
@@ -264,6 +269,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(Platform.class.getSimpleName(), new PlatformInteraction());
 		pieceInteractionMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponInteraction());
 		pieceInteractionMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoInteraction());
+		pieceInteractionMap.put(CollectibleKey.class.getSimpleName(), new KeyInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.dynamite.name(), new DynamiteInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
@@ -299,6 +305,7 @@ public class ApplicationContext {
 		Sound teleport_transfer = new Sound("data/sound/teleport_transferring.wav");
 		Sound teleport_end = new Sound("data/sound/teleport_end.wav");
 		Sound reload = new Sound("data/sound/reload.wav");
+		Sound droppedItem = new Sound("data/sound/droppeditem.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -315,6 +322,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_TRANSFER, teleport_transfer);
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_END, teleport_end);
 		this.getSoundResources().put(SoundResources.SOUND_RELOAD, reload);
+		this.getSoundResources().put(SoundResources.SOUND_DROPPED_ITEM, droppedItem);
 
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

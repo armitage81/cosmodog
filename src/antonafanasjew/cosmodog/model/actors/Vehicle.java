@@ -14,17 +14,16 @@ public class Vehicle extends Transport {
 	
 	private int fuel = MAX_FUEL;
 	
-	private Vehicle() {
-
+	public Vehicle() {
+		this.setMaxLife(INITIAL_LIFE);
+		this.setLife(INITIAL_LIFE);
+		this.setDirection(DirectionType.DOWN);
 	}
 	
 	public static Vehicle fromPosition(int positionX, int positionY) {
 		Vehicle vehicle = new Vehicle();
 		vehicle.setPositionX(positionX);
 		vehicle.setPositionY(positionY);
-		vehicle.setMaxLife(INITIAL_LIFE);
-		vehicle.setLife(INITIAL_LIFE);
-		vehicle.setDirection(DirectionType.DOWN);
 		return vehicle;
 	}
 

@@ -38,7 +38,11 @@ public class WeaponInteraction extends AbstractPieceInteraction {
 		//Will assign the first available weapon if not selected yet.
 		arsenal.getSelectedWeaponType();
 		
-		applicationContext.getSoundResources().get(SoundResources.SOUND_RELOAD).play();		
 	}
 
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_RELOAD;
+	}
+	
 }

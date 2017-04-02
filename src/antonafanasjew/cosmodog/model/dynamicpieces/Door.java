@@ -15,28 +15,39 @@ public class Door extends DynamicPiece {
 	private static final long serialVersionUID = -3679262029935812988L;
 
 	public static enum DoorAppearanceType {
-		menesian,
-		snowLab,
-		defaultBuilding,
-		glasHouse;
+		Menesian,
+		SnowLab,
+		DefaultBuilding,
+		GlasHouse,
+		AlienDoor;
 	}
 	
 	public static enum DoorType {
-		redKeycardDoor,
-		lilaKeycardDoor,
-		blueKeycardDoor,
-		cyanKeycardDoor,
-		greenKeycardDoor,
-		yellowKeycardDoor,
-		brownKeycardDoor,
-		purpleKeycardDoor,
-		darkblueKeycardDoor,
-		whiteKeycardDoor,
-		yellowKeyDoor,
-		greenKeyDoor,
-		blueKeyDoor,
-		redKeyDoor,
-		blackKeyDoor
+		redKeycardDoor("red keycard"),
+		lilaKeycardDoor("lila keycard"),
+		blueKeycardDoor("blue keycard"),
+		cyanKeycardDoor("cyan keycard"),
+		greenKeycardDoor("green keycard"),
+		yellowKeycardDoor("yellow keycard"),
+		brownKeycardDoor("brown keycard"),
+		purpleKeycardDoor("purple keycard"),
+		darkblueKeycardDoor("darkblue keycard"),
+		whiteKeycardDoor("white keycard"),
+		yellowKeyDoor("yellow key"),
+		greenKeyDoor("green key"),
+		blueKeyDoor("blue key"),
+		redKeyDoor("red key"),
+		
+		blackKeyDoor("black key");
+		private String keyDescription;
+		
+		private DoorType(String keyDescription) {
+			this.keyDescription = keyDescription;
+		}
+		
+		public String getKeyDescription() {
+			return keyDescription;
+		}
 		
 	}
 	
@@ -57,9 +68,11 @@ public class Door extends DynamicPiece {
 			Player player = ApplicationContextUtils.getPlayer();
 			Inventory inventory = player.getInventory();
 			KeyRingInventoryItem keyRing = (KeyRingInventoryItem)inventory.get(InventoryItemType.KEY_RING);
-			Key keyForDoor = keyRing.getKeysCopy().get(this.doorType);
-			if (keyForDoor != null) {
-				opened = true;
+			if (keyRing != null) {
+				Key keyForDoor = keyRing.getKeysCopy().get(this.doorType);
+				if (keyForDoor != null) {
+					opened = true;
+				}
 			}
 		}
 	}
@@ -89,6 +102,10 @@ public class Door extends DynamicPiece {
 	
 	public boolean isOpened() {
 		return opened;
+	}
+	
+	public boolean closed() {
+		return !isOpened();
 	}
 
 	public void setOpened(boolean opened) {

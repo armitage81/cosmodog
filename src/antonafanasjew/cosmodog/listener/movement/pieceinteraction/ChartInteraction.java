@@ -31,8 +31,6 @@ public class ChartInteraction extends AbstractPieceInteraction {
 		
 		item.discoverPiece(chartPiecePositionX, chartPiecePositionY);
 		
-		
-
 	}
 
 }

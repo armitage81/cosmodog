@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -20,11 +19,11 @@ import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.Objects;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
-import antonafanasjew.cosmodog.listener.pieceinteraction.ComposedPieceInteractionListener;
-import antonafanasjew.cosmodog.listener.pieceinteraction.PieceInteractionListener;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
+import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -52,8 +51,6 @@ import antonafanasjew.cosmodog.util.NotificationUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
-import com.google.common.collect.Lists;
-
 /**
  * Note: this class is not thread-save
  */
@@ -63,9 +60,6 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 	private static final long serialVersionUID = -1789226092040648128L;
 
-	private List<PieceInteractionListener> pieceInteractionListeners = Lists.newArrayList();
-	private ComposedPieceInteractionListener composedPieceInteractionListener = new ComposedPieceInteractionListener(getPieceInteractionListeners());
-	
 	
 	//This is used to compare players values before and after modification.
 	private int oldWater = -1;
@@ -149,21 +143,23 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			
 			if (piece.getPositionX() == player.getPositionX() && piece.getPositionY() == player.getPositionY()) {
 				
-				composedPieceInteractionListener.beforeInteraction(piece);
-				
 				String pieceType;
 				
 				if (piece instanceof Collectible) {
 					
 					Collectible collectible = (Collectible) piece;
 					
-					if (collectible instanceof CollectibleTool) {
+					if (collectible instanceof CollectibleComposed) {
+						pieceType = CollectibleComposed.class.getSimpleName();
+					} else if (collectible instanceof CollectibleTool) {
 						CollectibleTool collectibleTool = (CollectibleTool)collectible;
 						pieceType = collectibleTool.getToolType().name();
 					} else if (collectible instanceof CollectibleWeapon) {
 						pieceType = CollectibleWeapon.class.getSimpleName();
 					} else if (collectible instanceof CollectibleAmmo) {
 						pieceType = CollectibleAmmo.class.getSimpleName();
+					} else if (collectible instanceof CollectibleKey) {
+						pieceType = CollectibleKey.class.getSimpleName();
 					} else {
 						CollectibleGoodie collectibleGoodie = (CollectibleGoodie)collectible;
 						pieceType = collectibleGoodie.getGoodieType().name();
@@ -180,11 +176,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				PieceInteraction pieceInteraction = cosmodog.getPieceInteractionMap().get(pieceType);
 				
 				if (pieceInteraction != null) {
+					pieceInteraction.beforeInteraction(piece, applicationContext, cosmodogGame, player);
 					pieceInteraction.interactWithPiece(piece, applicationContext, cosmodogGame, player);
+					pieceInteraction.afterInteraction(piece, applicationContext, cosmodogGame, player);
 				}
 				
 				it.remove();
-				composedPieceInteractionListener.afterInteraction(piece);
 			}
 		}
 	}
@@ -438,10 +435,6 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
 		}
 		
-	}
-	
-	public List<PieceInteractionListener> getPieceInteractionListeners() {
-		return pieceInteractionListeners;
 	}
 
 	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {

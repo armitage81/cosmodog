@@ -126,6 +126,9 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		DirectionType direction = vehicle.getDirection();
 		String animationKey = vehicleDirection2animationKey.get(direction);
 		Animation vehicleAnimation = applicationContext.getAnimations().get(animationKey);
+		if (vehicleAnimation == null) {
+			System.out.println(animationKey);
+		}
 		vehicleAnimation.draw((vehicle.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (vehicle.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
 	}
 

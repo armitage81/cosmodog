@@ -11,6 +11,8 @@ import antonafanasjew.cosmodog.model.actors.Player;
  */
 public interface PieceInteraction {
 
+	void beforeInteraction(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player);
 	void interactWithPiece(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player);
+	void afterInteraction(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player);
 	
 }

@@ -9,11 +9,14 @@ public class Platform extends Transport {
 	private boolean leftCatWalkActivated;
 	private boolean rightCatWalkActivated;
 	
+	public Platform() {
+		this.setDirection(DirectionType.DOWN);
+	}
+	
 	public static Platform fromPosition(int positionX, int positionY) {
 		Platform platform = new Platform();
 		platform.setPositionX(positionX);
 		platform.setPositionY(positionY);
-		platform.setDirection(DirectionType.DOWN);
 		return platform;
 	}
 	

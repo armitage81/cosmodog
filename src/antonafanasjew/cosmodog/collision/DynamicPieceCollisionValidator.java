@@ -8,6 +8,9 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
+import antonafanasjew.cosmodog.model.dynamicpieces.Gate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
@@ -16,6 +19,8 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.KeyRingInventoryItem;
+import antonafanasjew.cosmodog.model.upgrades.Key;
 
 public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 
@@ -102,10 +107,41 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 					
 					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
+			} else if (dynamicPiece instanceof Gate) {
+				Gate gate = (Gate)dynamicPiece;
+				if (!gate.isLowered()) {
+					String blockReasonParam = "Gate is closed";
+					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				}
 			} else if (dynamicPiece instanceof Crate) {
 				Crate crate = (Crate)dynamicPiece;
 				if (crate.getState() != Crate.STATE_DESTROYED) {
 					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				}
+			} else if (dynamicPiece instanceof Door) {
+				Door door = (Door)dynamicPiece;
+				if (door.closed()) {
+					String blockReasonParam = "<swipe>";
+					if (actor instanceof Player) {
+						boolean hasRightKey = false; 
+						Player player = (Player)actor;
+						Inventory inventory = player.getInventory();
+						DoorType doorType = door.getDoorType();
+						if (inventory.get(InventoryItemType.KEY_RING) != null) {
+							KeyRingInventoryItem keyRingInventoryItem = (KeyRingInventoryItem)inventory.get(InventoryItemType.KEY_RING);
+							Key doorKey = keyRingInventoryItem.getKeysCopy().get(doorType);
+							if (doorKey != null) {
+								hasRightKey = true;
+							}
+						}
+						
+						if (!hasRightKey) {
+							blockReasonParam = "Locked with " + doorType.getKeyDescription();
+						}
+						
+					}
+					
+					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			}
 		}

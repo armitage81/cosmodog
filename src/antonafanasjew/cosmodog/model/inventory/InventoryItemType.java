@@ -21,6 +21,8 @@ public enum InventoryItemType {
 	MINEDETECTOR,
 	PICK,
 	MACHETE,
-	AXE;
+	AXE,
+	GOODIE,
+	AMMO;
 	
 }
