@@ -6,6 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
+import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
@@ -23,8 +24,15 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 
 	private static final long serialVersionUID = -3853130683025678558L;
 	
+	private static int enemyDestructionActionDuration(Enemy enemy) {
+		if (enemy.getUnitType().equals(UnitType.GUARDIAN)) {
+			return 8000;
+		}
+		return Constants.ENEMY_DESTRUCTION_ACTION_DURATION;
+	}
+	
 	public DefaultEnemyDestructionActionPhase(Player player, Enemy enemy) {
-		super(Constants.ENEMY_DESTRUCTION_ACTION_DURATION, player, enemy);
+		super(enemyDestructionActionDuration(enemy), player, enemy);
 	}
 
 	@Override

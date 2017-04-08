@@ -22,7 +22,7 @@ public class GameProgressPropertyTrigger extends AbstractRuleTrigger {
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		String actualValue = gameProgress.getProgressProperties().get(gameProgressProperty);
 		
-		boolean nullIsOk = !Boolean.valueOf(value); //In case the value is 'false', a missing property is also ok.
+		boolean nullIsOk = "false".equals(value); //In case the value is 'false', a missing property is also ok.
 		
 		return ((actualValue != null) && actualValue.equals(value)) || (nullIsOk && actualValue == null);
 	}

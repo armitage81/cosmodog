@@ -9,8 +9,11 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
+import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringTeleportTrigger;
+import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
+import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
@@ -48,7 +51,17 @@ public class TeleportRuleFactory implements RuleFactory {
 			
 			TiledPolylineObject teleportConnection = (TiledPolylineObject)teleportConnectionObjects.get(teleportConnectionName);
 			
-			EnteringTeleportTrigger trigger = new EnteringTeleportTrigger(teleportConnectionName);
+			RuleTrigger trigger = new EnteringTeleportTrigger(teleportConnectionName);
+
+			//Some teleports can be activated. This is the way to ignore them until the activation property is set.
+			String conditionPropertyName = teleportConnection.getProperties().get("conditionPropertyName");
+			String conditionPropertyValue = teleportConnection.getProperties().get("conditionPropertyValue");
+			
+			if (conditionPropertyName != null && conditionPropertyValue != null && conditionPropertyName.isEmpty() == false) {
+				GameProgressPropertyTrigger gameProgressPropertyTrigger = new GameProgressPropertyTrigger(conditionPropertyName, conditionPropertyValue);
+				trigger = AndTrigger.and(trigger, gameProgressPropertyTrigger);
+			}
+			
 			
 			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection));
 			

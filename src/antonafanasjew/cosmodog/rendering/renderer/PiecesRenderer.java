@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ChartRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.CognitionRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.CollectibleComposedRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.FoodCompartmentRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobankRenderer;
@@ -83,6 +84,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.cognition.name(), new CognitionRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.software.name(), new SoftwareRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.chart.name(), new ChartRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitRenderer());

@@ -41,7 +41,11 @@ public enum UnitType {
 	 */
 	FLOATER(false, true, false),
 	
-	CONDUCTOR(false, true, true);
+	CONDUCTOR(false, true, true),
+	
+	GUARDIAN(false, false, true),
+	
+	;
 	
 	private boolean alive;
 	private boolean robotic;

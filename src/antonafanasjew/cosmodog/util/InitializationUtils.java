@@ -12,8 +12,6 @@ import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
-import antonafanasjew.cosmodog.actions.loweringgate.LowerGateAction;
 import antonafanasjew.cosmodog.calendar.ComposedPlanetaryCalendarListener;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.calendar.listeners.FoodConsumer;
@@ -41,6 +39,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
+import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door;
@@ -96,6 +95,7 @@ import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseTeleportSequenceAction;
 import antonafanasjew.cosmodog.rules.actions.pickupitems.PickupKeyAction;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
@@ -104,8 +104,8 @@ import antonafanasjew.cosmodog.rules.factories.PoisonDeactivationRuleFactory;
 import antonafanasjew.cosmodog.rules.factories.TeleportRuleFactory;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
+import antonafanasjew.cosmodog.rules.triggers.GameProgressWinningConditionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InteractingWithEveryCollectibleTrigger;
-import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.OrTrigger;
@@ -133,7 +133,7 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(240, 266);
+		Player player = Player.fromPosition(211, 253);
 		player.setMaxLife(50);
 		player.setLife(50);
 
@@ -359,6 +359,11 @@ public class InitializationUtils {
 					map.getDynamicPieces().put(CrumbledWall.class, wall);
 				}
 
+				if (tileId == TileType.DYNAMIC_PIECE_BINARY_INDICATOR_ALIEN_BASE.getTileId()) {
+					BinaryIndicator binaryIndicator = BinaryIndicator.create(k, l);
+					map.getDynamicPieces().put(BinaryIndicator.class, binaryIndicator);
+				}
+				
 				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL_ALIEN_BASE.getTileId()) {
 					CrumbledWall wall = CrumbledWall.create(k, l, CrumbledWall.SHAPE_ALIEN_BASE);
 					map.getDynamicPieces().put(CrumbledWall.class, wall);
@@ -493,7 +498,7 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 
 		// Winning rule
-		rule = new Rule(Rule.RULE_WINNING, Lists.newArrayList(GameEventEndedTurn.class), new InventoryBasedTrigger(InventoryItemType.INSIGHT, InventoryItem.INVENTORY_ITEM_INSIGHT_MAX_COUNT), new WinningAction(), Rule.RULE_PRIORITY_EARLIEST);
+		rule = new Rule(Rule.RULE_WINNING, Lists.newArrayList(GameEventEndedTurn.class), new GameProgressWinningConditionTrigger(), new WinningAction(), Rule.RULE_PRIORITY_EARLIEST);
 		ruleBook.put(rule.getId(), rule);
 
 		// Score rewards rule
@@ -565,8 +570,21 @@ public class InitializationUtils {
 				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch4"),
 				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch5")
 				);
+		
 		RuleAction updateAlienBaseGateSequenceAction = new UpdateAlienBaseGateSequenceAction();
 		rule = new Rule(Rule.RULE_OPEN_GATE_TO_LAUNCH_POD, Lists.newArrayList(GameEventChangedPosition.class), openGateTrigger, updateAlienBaseGateSequenceAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
+		
+		
+		RuleTrigger activateTeleportTrigger = OrTrigger.or(
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole1"), 
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole2"),
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole3"),
+				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole4")
+				);
+		
+		RuleAction updateTeleportSequenceAction = new UpdateAlienBaseTeleportSequenceAction();
+		rule = new Rule(Rule.RULE_ACTIVATE_TELEPORT, Lists.newArrayList(GameEventChangedPosition.class), activateTeleportTrigger, updateTeleportSequenceAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 		
 		

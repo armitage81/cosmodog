@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
+import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door;
@@ -37,8 +38,11 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 			}
 			if (dynamicPiece instanceof PressureButton) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
-			}			
-			if (dynamicPiece instanceof Stone) {
+			}	
+			
+			if (dynamicPiece instanceof BinaryIndicator) {
+				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+			} else if (dynamicPiece instanceof Stone) {
 				Stone stone = (Stone)dynamicPiece;
 				if (stone.getState() != Stone.STATE_DESTROYED) {
 					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");

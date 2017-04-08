@@ -9,6 +9,7 @@ public class CollectibleGoodie extends Collectible {
 		infobyte(500),
 		infobank(2500),
 		insight(10000),
+		cognition(50000),
 		software(3000),
 		chart(500),
 		supplies(200),

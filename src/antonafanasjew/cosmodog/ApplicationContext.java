@@ -37,6 +37,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInte
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ChartInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.CognitionInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ComposedInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmentInteraction;
@@ -258,6 +259,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.cognition.name(), new CognitionInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.software.name(), new SoftwareInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.chart.name(), new ChartInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobit.name(), new InfobitInteraction());

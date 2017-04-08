@@ -58,7 +58,9 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		
 		Position teleportStartPosition = Position.fromCoordinates(teleportStartPoint.x, teleportStartPoint.y);
 		
-		return RegionUtils.playerOnPosition(player, teleportStartPosition, map.getTileWidth(), map.getTileHeight());
+		boolean inRegion = RegionUtils.playerOnPosition(player, teleportStartPosition, map.getTileWidth(), map.getTileHeight());
+		
+		return inRegion;
 		
 	}
 

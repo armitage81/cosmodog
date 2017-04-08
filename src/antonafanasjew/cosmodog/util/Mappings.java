@@ -46,6 +46,7 @@ public class Mappings {
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INFOBYTE, GoodieType.infobyte);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INFOBANK, GoodieType.infobank);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.INSIGHT, GoodieType.insight);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.COGNITION, GoodieType.cognition);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SOFTWARE, GoodieType.software);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.CHART, GoodieType.chart);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SUPPLIES, GoodieType.supplies);
@@ -250,6 +251,7 @@ public class Mappings {
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_ARTILLERY, UnitType.ARTILLERY);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_FLOATER, UnitType.FLOATER);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_CONDUCTOR, UnitType.CONDUCTOR);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_GUARDIAN, UnitType.GUARDIAN);
 	}
 	
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
@@ -267,6 +269,7 @@ public class Mappings {
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.ARTILLERY, "Artillery");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.FLOATER, "Floater");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.CONDUCTOR, "Conductor");
+		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.GUARDIAN, "Guardian");
 		
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.UP, "Up");
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.DOWN, "Down");

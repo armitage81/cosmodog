@@ -23,7 +23,11 @@ public class GameProgress extends CosmodogModel {
 	 */
 	public static final String GAME_PROGRESS_PROPERTY_AFTERLANDING = "afterlanding";
 	public static final String GAME_PROGRESS_ALIEN_BASE_GATE_SEQUENCE = "alienbasegatesequence";
+	public static final String GAME_PROGRESS_ALIEN_BASE_TELEPORT_SEQUENCE = "alienbaseteleportsequence";
 
+	
+	
+	private boolean won = false;
 	private int infobits = 0;
 	private int gameScore;
 	
@@ -112,6 +116,14 @@ public class GameProgress extends CosmodogModel {
 
 	public void setMinesDeactivationInfo(Map<QuadrandType, Boolean> minesDeactivationInfo) {
 		this.minesDeactivationInfo = minesDeactivationInfo;
+	}
+
+	public boolean isWon() {
+		return won;
+	}
+
+	public void setWon(boolean won) {
+		this.won = won;
 	}
 	
 }
