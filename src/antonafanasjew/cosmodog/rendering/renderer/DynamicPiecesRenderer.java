@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.model.dynamicpieces.AlienBaseBlockade;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
@@ -251,7 +252,18 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		}
 		
 		
+		Collection<DynamicPiece> alienBaseBlockades = dynamicPieces.get(AlienBaseBlockade.class);
 		
+		for (DynamicPiece piece : alienBaseBlockades) {
+			AlienBaseBlockade alienBaseBlockade = (AlienBaseBlockade) piece;
+			
+			String animationIdPrefix = "dynamicPieceAlienBaseBlockade";
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = alienBaseBlockade.isOpened() ? "Open" : "Closed";
+			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			
+		}
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);

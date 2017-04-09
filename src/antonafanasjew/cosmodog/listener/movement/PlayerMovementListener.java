@@ -44,6 +44,7 @@ import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
@@ -108,6 +109,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkDehydration(applicationContext);
 		checkTemperature(applicationContext);
 		checkRadiation(applicationContext);
+		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
@@ -123,6 +125,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkDehydration(applicationContext);
 		checkTemperature(applicationContext);
 		checkRadiation(applicationContext);
+		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
@@ -436,7 +439,21 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		}
 		
 	}
+	
+	private void checkElectricity(ApplicationContext applicationContext) {
 
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Player player = ApplicationContextUtils.getPlayer();
+		
+		int electricityTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
+		
+		if (TileType.ELECTRICITY.getTileId() == electricityTileId) {
+			player.decreaseLife(1);
+			OverheadNotificationAction.registerOverheadNotification(player, "Shock: -1");
+		}
+		
+	}
+	
 	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, x2, y2);

@@ -2,8 +2,6 @@ package antonafanasjew.cosmodog.model;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
-
 import antonafanasjew.cosmodog.GameLifeCycle;
 import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -14,7 +12,11 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteracti
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
+import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
+import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.sight.SightModifier;
+
+import com.google.common.collect.Maps;
 
 
 /**
@@ -39,6 +41,25 @@ public class Cosmodog extends CosmodogModel {
 	private CosmodogGamePersistor gamePersistor;
 	private TileBasedMapFactory tileBasedMapFactory = new TileBasedMapFactory();
 	private Map<String, PieceInteraction> pieceInteractionMap = Maps.newHashMap();
+	private PlayerBuilder playerBuilder = new DefaultPlayerBuilder();
+	
+	public Cosmodog() {
+		try {
+			if (System.getProperty("playerBuilder") != null) {
+				String playerBuilderTypeName = System.getProperty("playerBuilder");
+				@SuppressWarnings("rawtypes")
+				Class playerBuilderClass = Class.forName(playerBuilderTypeName);
+				PlayerBuilder playerBuilder = (PlayerBuilder)playerBuilderClass.newInstance();
+				this.playerBuilder = playerBuilder;
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
     public User getUser() {
         return user;
@@ -122,5 +143,8 @@ public class Cosmodog extends CosmodogModel {
 	
 	public void setSightModifier(SightModifier sightModifier) {
 		this.sightModifier = sightModifier;
+	}
+	public PlayerBuilder getPlayerBuilder() {
+		return playerBuilder;
 	}
 }

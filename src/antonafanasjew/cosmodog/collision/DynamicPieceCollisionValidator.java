@@ -1,10 +1,12 @@
 package antonafanasjew.cosmodog.collision;
 
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.dynamicpieces.AlienBaseBlockade;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
@@ -18,6 +20,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.KeyRingInventoryItem;
@@ -145,6 +148,21 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 						
 					}
 					
+					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				} 
+			} else if (dynamicPiece instanceof AlienBaseBlockade) {
+				AlienBaseBlockade alienBaseBlockade = (AlienBaseBlockade)dynamicPiece;
+				if (alienBaseBlockade.closed()) {
+					String blockReasonParam = "Your alien knowledge opens the door.";
+					if (actor instanceof Player) {
+						Player player = (Player) actor;
+						Inventory inventory = player.getInventory();
+						InsightInventoryItem insightInventoryItem = (InsightInventoryItem) inventory.get(InventoryItemType.INSIGHT);
+
+						if (insightInventoryItem != null && insightInventoryItem.getNumber() < Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
+							blockReasonParam = "Requires " +  String.valueOf(Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) + " insights to open.";
+						}
+					}
 					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			}

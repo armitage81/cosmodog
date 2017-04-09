@@ -4,6 +4,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.actions.ActionRegistry;
+import antonafanasjew.cosmodog.actions.AsyncAction;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
+import antonafanasjew.cosmodog.actions.cutscenes.PauseDecoratorAction;
+import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Effect;
@@ -12,6 +20,8 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class InsightInteraction extends AbstractPieceInteraction {
 
@@ -53,6 +63,40 @@ public class InsightInteraction extends AbstractPieceInteraction {
 
 			}
 		}
+		
+		int x = player.getPositionX();
+		int y = player.getPositionY();
+		int l = Layers.LAYER_META_RADIATION;
+		
+		//Now add map modifications to get rid of the electricity fields that cause damage.
+		
+		cosmodogMap.getMapModification().modifyTile(x - 2, y, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x - 1, y, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x + 1, y, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x + 2, y, l, TileType.NO_RADIATION_MARKUP);
+		
+		cosmodogMap.getMapModification().modifyTile(x - 2, y - 1, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x - 1, y - 1, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x + 1, y - 1, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x + 2, y - 1, l, TileType.NO_RADIATION_MARKUP);
+		
+		cosmodogMap.getMapModification().modifyTile(x - 2, y - 2, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x - 1, y - 2, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x + 1, y - 2, l, TileType.NO_RADIATION_MARKUP);
+		cosmodogMap.getMapModification().modifyTile(x + 2, y - 2, l, TileType.NO_RADIATION_MARKUP);
+		
+		//Now check if the alien base door can be opened and notify the player.
+		
+		if (((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
+			AsyncAction asyncAction1 = new PopUpNotificationAction("Something has changed.<br>There is a feeling<br>you did not have before.<br>You peek at the large structure<br>in the center of the valley.<br><br>[Press ENTER]");
+			AsyncAction asyncAction2 = new PopUpNotificationAction("Suddenly, you know.<br>You know about the base.<br>You know how to open it.<br><br>[Press ENTER]");
+			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);
+			asyncAction2 = new CamCenteringDecoratorAction(3000, 238, 238, asyncAction2, ApplicationContextUtils.getCosmodogGame());
+			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
+			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction1);
+			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction2);			
+		}
+		
 	}
 
 }

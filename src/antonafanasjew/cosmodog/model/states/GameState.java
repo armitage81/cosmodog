@@ -74,6 +74,7 @@ import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
+import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
 
 import com.google.common.collect.Lists;
@@ -417,7 +418,6 @@ public class GameState extends BasicGameState {
 		textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
 		
 		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
-				
 		
 	}
 

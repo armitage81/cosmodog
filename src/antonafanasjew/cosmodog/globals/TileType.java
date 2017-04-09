@@ -208,6 +208,7 @@ public enum TileType {
 	AMMO_ROCKETLAUNCHER(Layers.LAYER_META_COLLECTIBLES, 2399),
 	
 	RADIATION(Layers.LAYER_META_RADIATION, 29),
+	ELECTRICITY(Layers.LAYER_META_RADIATION, 32),
 	
 	FREE_PLATFORM_PASSAGE(Layers.LAYER_META_PLATFORM_COLLISION, 30),
 	
@@ -225,12 +226,15 @@ public enum TileType {
 	DYNAMIC_PIECE_CRUMBLED_WALL_ALIEN_BASE(Layers.LAYER_META_DYNAMIC_PIECES, 2122),
 	DYNAMIC_PIECE_GATE(Layers.LAYER_META_DYNAMIC_PIECES, 2123),
 	DYNAMIC_PIECE_BINARY_INDICATOR_ALIEN_BASE(Layers.LAYER_META_DYNAMIC_PIECES, 2124),
+	DYNAMIC_PIECE_ALIEN_BASE_BLOCKADE(Layers.LAYER_META_DYNAMIC_PIECES, 2128),
 	
 	//Doors have different variants, so they are not stored here.
 	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.
 	//It can be used to be returned when searching tile types by tile id in case the id does not match any type.
-	UNKNOWN(-1, -1);
+	UNKNOWN(-1, -1),
+	
+	NO_RADIATION_MARKUP(Layers.LAYER_META_RADIATION, 0);
 	
 	
 	private static final TileType[] VALUES = TileType.values();

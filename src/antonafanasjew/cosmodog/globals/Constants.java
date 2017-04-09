@@ -113,5 +113,11 @@ public class Constants {
 	 * Only enemies that are that close to the player will move and be active.
 	 */
 	public static final int ENEMY_ACTIVATION_DISTANCE = 32;
+	
+	/**
+	 * The main objective of the game is collecting the insight objects to open the entrance into the alien base.
+	 * There are 32 insight objects. This constant defines, how many are enough to open the base.
+	 */
+	public static final int MIN_INSIGHTS_TO_OPEN_ALIEN_BASE = 20;
 
 }

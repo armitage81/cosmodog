@@ -20,7 +20,6 @@ import antonafanasjew.cosmodog.calendar.listeners.WaterConsumer;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
@@ -38,6 +37,7 @@ import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
+import antonafanasjew.cosmodog.model.dynamicpieces.AlienBaseBlockade;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
@@ -52,22 +52,8 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.MacheteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
-import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.ResourceWrapperBuilder;
@@ -133,7 +119,10 @@ public class InitializationUtils {
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
 
-		Player player = Player.fromPosition(211, 253);
+		PlayerBuilder playerBuilder = ApplicationContextUtils.getCosmodog().getPlayerBuilder();
+		Player player = playerBuilder.buildPlayer();
+		
+		/*
 		player.setMaxLife(50);
 		player.setLife(50);
 
@@ -161,7 +150,8 @@ public class InitializationUtils {
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
 		player.getInventory().put(InventoryItemType.MINEDETECTOR, new MineDetectorInventoryItem());
 		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
-
+		*/
+		
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
@@ -392,6 +382,11 @@ public class InitializationUtils {
 				if (tileId == TileType.DYNAMIC_PIECE_PRESSUREBUTTON.getTileId()) {
 					PressureButton pressureButton = PressureButton.create(k, l);
 					map.getDynamicPieces().put(PressureButton.class, pressureButton);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_ALIEN_BASE_BLOCKADE.getTileId()) {
+					AlienBaseBlockade alienBaseBlockade = AlienBaseBlockade.create(k, l);
+					map.getDynamicPieces().put(AlienBaseBlockade.class, alienBaseBlockade);
 				}
 
 				if (TileType.MIN_ALIEN_DOOR.getTileId() <= tileId && tileId <= TileType.MAX_ALIEN_DOOR.getTileId()) {

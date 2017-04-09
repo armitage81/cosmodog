@@ -5,6 +5,11 @@ package antonafanasjew.cosmodog.actions;
  */
 public enum AsyncActionType {
 	
+	/**
+	 * Player is dying
+	 */
+	DYING(true, true),
+	
 	CUTSCENE(true, true),
 	
 	WEAPON_TOOLTIP(false, true),

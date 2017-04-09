@@ -9,6 +9,8 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
+import antonafanasjew.cosmodog.actions.dying.DyingAction;
+import antonafanasjew.cosmodog.actions.dying.DyingAction.DyingTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
@@ -66,12 +68,14 @@ public class PlayerRenderer extends AbstractRenderer {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		
-		//Do not render the player if he is dead
+		DyingAction dyingAction = (DyingAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.DYING);
+		boolean playerIsDying = dyingAction != null;
 		
-		if (player.dead()) {
+		//Do not render the player if he is dead
+		if (player.dead() && !playerIsDying) {
 			return;
 		}
-		
+			
 		
 		
 		Cam cam = cosmodogGame.getCam();
@@ -162,19 +166,38 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerActionType = PlayerActionType.INANIMATE;
 		}
 		
-		String animationKey = Mappings.playerAnimationId(playerAppearanceType, playerActionType, player.getDirection());
+		String animationKey;
+		
+		if (playerIsDying) {
+			animationKey = "playerDying";
+		} else {
+			animationKey = Mappings.playerAnimationId(playerAppearanceType, playerActionType, player.getDirection());
+		}
 		
 		Animation playerAnimation = applicationContext.getAnimations().get(animationKey);
 		
+		if (playerIsDying) {
+			DyingTransition dyingTransition = dyingAction.getTransition();
+			int animationFrameIndex;
+			if (dyingTransition != null) {
+				animationFrameIndex = dyingTransition.animationFrameIndex();
+			} else {
+				animationFrameIndex = playerAnimation.getFrameCount() - 1;
+			}
+			playerAnimation.setCurrentFrame(animationFrameIndex);
+		}
+		
 		Animation playerWeaponAnimation = null;
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
-		WeaponType weaponType = arsenal.getSelectedWeaponType();
-		
-		if (weaponType != WeaponType.FISTS) {
-			String animationPrefix = Mappings.WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.get(weaponType);
-			String weaponAnimationId = animationKey.replace("player", "player" + animationPrefix);
-			playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
+		if (!playerIsDying) {
+			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+			WeaponType weaponType = arsenal.getSelectedWeaponType();
+			
+			if (weaponType != WeaponType.FISTS) {
+				String animationPrefix = Mappings.WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.get(weaponType);
+				String weaponAnimationId = animationKey.replace("player", "player" + animationPrefix);
+				playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
+			}
 		}
 		
 		float pieceOffsetX = 0;
