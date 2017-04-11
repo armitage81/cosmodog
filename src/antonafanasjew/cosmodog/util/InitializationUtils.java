@@ -77,6 +77,7 @@ import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.DamageLastBossAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
@@ -188,8 +189,11 @@ public class InitializationUtils {
 		player.getMovementListeners().clear();
 		player.getMovementListeners().add(playerMovementListener);
 		player.getMovementListeners().add(new RuleBookMovementListener());
+
 		player.getMovementListeners().add(PlayerMovementCache.getInstance());
+		
 		PlayerLifeListener playerLifeListener = new PlayerLifeListener();
+		player.getLifeListeners().clear();
 		player.getLifeListeners().add(playerLifeListener);
 
 		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
@@ -582,6 +586,12 @@ public class InitializationUtils {
 		rule = new Rule(Rule.RULE_ACTIVATE_TELEPORT, Lists.newArrayList(GameEventChangedPosition.class), activateTeleportTrigger, updateTeleportSequenceAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 		
+		
+		
+		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
+		RuleAction damageLastBossAction = new DamageLastBossAction();
+		rule = new Rule(Rule.RULE_DAMAGE_LAST_BOSS, Lists.newArrayList(GameEventChangedPosition.class), damageLastBossTrigger, damageLastBossAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
 		
 		cosmodogGame.setRuleBook(ruleBook);
 

@@ -11,6 +11,14 @@ import com.google.common.collect.Maps;
  */
 public enum WeaponType {
 	
+	/*
+	NONE,
+	CHITIN,
+	LIGHT,
+	MEDIUM,
+	HEAVY,
+	FORTIFIED
+	*/
 		
 	FISTS(5, damageMapFromIntArray(5,5,5,5,5,5), 0),
 	PISTOL(5, damageMapFromIntArray(15,10,10,10,5,5), 10),
@@ -81,7 +89,7 @@ public enum WeaponType {
 	}
 	
 	private static Map<ArmorType, Integer> damageMapFromIntArray(int... numbers) {
-		Preconditions.checkArgument(numbers.length == ArmorType.values().length, "Numbers to not match the number of armor types. Added new one and forgot to adjust damages?");
+		Preconditions.checkArgument(numbers.length == ArmorType.values().length, "Numbers do not match the number of armor types. Added new one and forgot to adjust damages?");
 		
 		Map<ArmorType, Integer> retVal = Maps.newHashMap();
 		

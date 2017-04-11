@@ -120,4 +120,6 @@ public class Constants {
 	 */
 	public static final int MIN_INSIGHTS_TO_OPEN_ALIEN_BASE = 20;
 
+	public static final int NUMBER_OF_SOFTWARE_PIECES_IN_GAME = 16;
+
 }

@@ -41,6 +41,7 @@ public class Rule implements Serializable {
 	public static final String RULE_PICK_UP_BLUE_KEYCARD = "PickUpBlueKeyCard";
 	public static final String RULE_OPEN_GATE_TO_LAUNCH_POD = "OpenGateToLaunchPod";
 	public static final String RULE_ACTIVATE_TELEPORT = "ActivateTeleport";
+	public static final String RULE_DAMAGE_LAST_BOSS = "DamageLastBoss";
 	
 	private String id;
 	private Collection<Class<? extends GameEvent>> eventTypes;

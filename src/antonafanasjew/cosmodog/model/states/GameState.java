@@ -42,6 +42,7 @@ import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicPiecesRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
+import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
@@ -125,6 +126,7 @@ public class GameState extends BasicGameState {
 	private AbstractRenderer sightRadiusRenderer;
 	private Renderer arsenalInterfaceRenderer;
 	private Renderer weaponTooltipRenderer;
+	private Renderer dyingPlayerRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -190,6 +192,7 @@ public class GameState extends BasicGameState {
 		sightRadiusRenderer = new SightRadiusRenderer();
 		arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
 		weaponTooltipRenderer = new WeaponTooltipRenderer();
+		dyingPlayerRenderer = new DyingPlayerRenderer();
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
@@ -399,7 +402,8 @@ public class GameState extends BasicGameState {
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
 		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
 		weaponTooltipRenderer.render(gc, g, weaponTooltipsDrawingContext, null);
-		// leftInterfaceRenderer.render(gc, g, leftColumnDrawingContext);
+
+		dyingPlayerRenderer.render(gc, g, mapDrawingContext, null);
 	
 		DrawingContext dialogBoxDrawingContext = ApplicationContext.instance().getDialogBoxDrawingContext();
 		DrawingContext commentsWritingDrawingContext = DrawingContextUtils.writingContentDcFromDialogBoxDc(dialogBoxDrawingContext);

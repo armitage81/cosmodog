@@ -10,6 +10,9 @@ import org.newdawn.slick.util.Log;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.filesystem.CosmodogPersistenceException;
 import antonafanasjew.cosmodog.model.Cosmodog;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.PathUtils;
 
 /**
@@ -58,7 +61,8 @@ public class InGameControlInputHandler extends AbstractInputHandler {
 					String filePath = PathUtils.gameSaveDir() + "/" + fileName;
 					File f = new File(filePath);
 					if (f.exists()) {
-						applicationContext.getCosmodog().setCosmodogGame(cosmodog.getGamePersistor().restoreCosmodogGame(filePath));
+						CosmodogGame cosmodogGame = cosmodog.getGamePersistor().restoreCosmodogGame(filePath);
+						applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 					}
 				} catch (CosmodogPersistenceException e) {
 					Log.error("Could not restore game", e);

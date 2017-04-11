@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameLifeCycle;
 import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -9,6 +10,7 @@ import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
@@ -72,6 +74,9 @@ public class Cosmodog extends CosmodogModel {
     }
     public void setCosmodogGame(CosmodogGame cosmodogGame) {
         this.cosmodogGame = cosmodogGame;
+		//The cache is updated with every player movement. But it has to be updated at the init time as well.
+		Player player = cosmodogGame.getPlayer(); 
+		PlayerMovementCache.getInstance().afterMovement(player, player.getPositionX(), player.getPositionY(), player.getPositionX(), player.getPositionY(), ApplicationContext.instance());
     }
     public ScoreList getScoreList() {
         return scoreList;

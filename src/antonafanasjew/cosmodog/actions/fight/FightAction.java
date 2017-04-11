@@ -6,9 +6,7 @@ import java.util.Set;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
-import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightActionResult.FightPhaseResult;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
@@ -34,13 +32,12 @@ import com.google.common.collect.Sets;
  * This action has it's own action registry to maintain the fight phases.
  * 
  */
-public class FightAction extends VariableLengthAsyncAction {
+public class FightAction extends PhaseBasedAction {
 
 	private static final long serialVersionUID = -5197319922966169468L;
 
 	private Enemy targetEnemy;
 	private FightActionResult fightActionResult = new FightActionResult();
-	private ActionRegistry actionPhaseRegistry = new ActionRegistry();
 
 	private AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator;
 	private AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo;
@@ -187,10 +184,6 @@ public class FightAction extends VariableLengthAsyncAction {
 				getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, enemyDestructionActionPhase);
 			}
 		}
-	}
-
-	public ActionRegistry getActionPhaseRegistry() {
-		return actionPhaseRegistry;
 	}
 
 }

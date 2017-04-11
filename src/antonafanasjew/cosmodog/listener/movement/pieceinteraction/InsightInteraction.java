@@ -87,7 +87,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		
 		//Now check if the alien base door can be opened and notify the player.
 		
-		if (((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
+		if (item != null && ((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
 			AsyncAction asyncAction1 = new PopUpNotificationAction("Something has changed.<br>There is a feeling<br>you did not have before.<br>You peek at the large structure<br>in the center of the valley.<br><br>[Press ENTER]");
 			AsyncAction asyncAction2 = new PopUpNotificationAction("Suddenly, you know.<br>You know about the base.<br>You know how to open it.<br><br>[Press ENTER]");
 			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);

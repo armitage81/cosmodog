@@ -18,41 +18,25 @@ public class DyingAction extends FixedLengthAsyncAction {
 		
 		public int animationFrameIndex() {
 			
-			int frameIndex = 0;
+			int frameIndex;
 			
 			if (percentage < 0.1f) {
 				frameIndex = 0;
-			}
-			
-			if (percentage >= 0.075f && percentage < 0.15f) {
+			} else if (percentage >= 0.075f && percentage < 0.15f) {
 				frameIndex = 1;
-			}
-			
-			if (percentage >= 0.15f && percentage < 0.225f) {
+			} else if (percentage >= 0.15f && percentage < 0.225f) {
 				frameIndex = 2;
-			}
-			
-			if (percentage >= 0.225f && percentage < 0.3f) {
+			} else if (percentage >= 0.225f && percentage < 0.3f) {
 				frameIndex = 3;
-			}
-			
-			if (percentage >= 0.3f && percentage < 0.375f) {
+			} else if (percentage >= 0.3f && percentage < 0.375f) {
 				frameIndex = 3;
-			}
-			
-			if (percentage >= 0.375f && percentage < 0.45f) {
+			} else if (percentage >= 0.375f && percentage < 0.45f) {
 				frameIndex = 4;
-			}
-			
-			if (percentage >= 0.45f && percentage < 0.525f) {
+			} else if (percentage >= 0.45f && percentage < 0.525f) {
 				frameIndex = 5;
-			}
-			
-			if (percentage >= 0.525f && percentage < 0.7f) {
+			} else if (percentage >= 0.525f && percentage < 0.7f) {
 				frameIndex = 6;
-			}
-			
-			if (percentage >= 0.7f) {
+			} else {
 				frameIndex = 7;
 			}
 			return frameIndex;
