@@ -13,6 +13,8 @@ import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextR
 
 public class MenuRenderer implements Renderer {
 
+	public static final int MAX_MENU_ENTRIES_RENDERED = 7;
+	
 	public static class MenuRenderingParam {
 		public Menu menu;
 	}
@@ -30,26 +32,31 @@ public class MenuRenderer implements Renderer {
 		
 		g.setColor(Color.white);
 		
-		for (int i = 0; i < numberOfElements; i++) {
+		for (int i = 0; i < MAX_MENU_ENTRIES_RENDERED; i++) {
 			
-			DrawingContext itemDc = new TileDrawingContext(dcMenu, 1, numberOfElements, 0, i);
-			
-			MenuElement menuElement = menu.getMenuElements().get(i);
-			
-			LetterTextRenderer.getInstance().render(gameContainer, g, itemDc, LetterTextRenderingParameter.fromTextAndScaleFactor(menuElement.getLabel(), 2f));
-			
-			if (menu.getSelectedMenuElement().equals(menuElement)) {
-				DrawingContext cursorDc = new TileDrawingContext(dcCursor, 1, numberOfElements, 0, i);
-				cursorDc = new CenteredDrawingContext(cursorDc, 30, 30);
+			if (i < numberOfElements) {
+				DrawingContext itemDc = new TileDrawingContext(dcMenu, 1, MAX_MENU_ENTRIES_RENDERED, 0, i);
+						
+				MenuElement menuElement = menu.getMenuElements().get(i);
 				
-				g.translate(cursorDc.x(), cursorDc.y());
+				LetterTextRenderingParameter param = LetterTextRenderingParameter.fromTextAndScaleFactor(menuElement.getLabel(), 2f);
+				param.verAlignment = LetterTextRenderingParameter.VER_ALIGNMENT_CENTER;
+				LetterTextRenderer.getInstance().render(gameContainer, g, itemDc, param);
 				
-				g.setColor(Color.black);
-				
-				g.fillRect(0, 0, 10, 10);
-				
-				g.setColor(Color.white);
-				g.translate(-cursorDc.x(), -cursorDc.y());
+				if (menu.getSelectedMenuElement().equals(menuElement)) {
+					DrawingContext cursorDc = new TileDrawingContext(dcCursor, 1, MAX_MENU_ENTRIES_RENDERED, 0, i);
+					cursorDc = new CenteredDrawingContext(cursorDc, 10, 10);
+					
+					g.translate(cursorDc.x(), cursorDc.y());
+					
+					g.setColor(Color.black);
+					g.setLineWidth(3);
+					
+					g.drawRect(0, 0, 10, 10);
+					
+					g.setColor(Color.white);
+					g.translate(-cursorDc.x(), -cursorDc.y());
+				}
 			}
 			
 		}

@@ -32,7 +32,7 @@ public class Cosmodog extends CosmodogModel {
     private User user;
     private CosmodogGame cosmodogGame;
     private ScoreList scoreList;
-    private CollisionValidator collisionValidator;
+	private CollisionValidator collisionValidator;
     private WaterValidator waterValidator;
     private SightModifier sightModifier;
     private TravelTimeCalculator travelTimeCalculator;
@@ -117,9 +117,11 @@ public class Cosmodog extends CosmodogModel {
 	public CosmodogScorePersistor getScorePersistor() {
 		return scorePersistor;
 	}
+	
 	public void setScorePersistor(CosmodogScorePersistor scorePersistor) {
 		this.scorePersistor = scorePersistor;
 	}
+	
 	public PathFinder getPathFinder() {
 		return pathFinder;
 	}

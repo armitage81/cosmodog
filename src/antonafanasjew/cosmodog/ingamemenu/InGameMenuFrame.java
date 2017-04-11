@@ -7,6 +7,9 @@ import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryRenderer;
 import antonafanasjew.cosmodog.ingamemenu.map.MapInputHandler;
 import antonafanasjew.cosmodog.ingamemenu.map.MapInputState;
 import antonafanasjew.cosmodog.ingamemenu.map.MapRenderer;
+import antonafanasjew.cosmodog.ingamemenu.options.OptionsInputHandler;
+import antonafanasjew.cosmodog.ingamemenu.options.OptionsInputState;
+import antonafanasjew.cosmodog.ingamemenu.options.OptionsRenderer;
 import antonafanasjew.cosmodog.ingamemenu.progress.ProgressInputHandler;
 import antonafanasjew.cosmodog.ingamemenu.progress.ProgressInputState;
 import antonafanasjew.cosmodog.ingamemenu.progress.ProgressRenderer;
@@ -21,10 +24,12 @@ public class InGameMenuFrame {
 	
 	private static InventoryInputState inventoryInputState = new InventoryInputState();
 	private static MapInputState mapInputState = new MapInputState();
+	private static OptionsInputState optionsInputState = new OptionsInputState();
 	
 	public static final InGameMenuFrame INVENTORY_INGAME_MENU_FRAME = new InGameMenuFrame("Inventory", new InventoryInputHandler(inventoryInputState), new InventoryRenderer(), inventoryInputState);
 	public static final InGameMenuFrame PROGRESS_INGAME_MENU_FRAME = new InGameMenuFrame("Game progress", new ProgressInputHandler(), new ProgressRenderer(), new ProgressInputState());
 	public static final InGameMenuFrame MAP_INGAME_MENU_FRAME = new InGameMenuFrame("Map", new MapInputHandler(mapInputState), new MapRenderer(), mapInputState);
+	public static final InGameMenuFrame OPTIONS_INGAME_MENU_FRAME = new InGameMenuFrame("Save and Quit", new OptionsInputHandler(), new OptionsRenderer(), optionsInputState);
 	
 	
 	private InGameMenuFrame(String title, InputHandler inputHandler, Renderer contentRenderer, InGameMenuInputState inputState) {

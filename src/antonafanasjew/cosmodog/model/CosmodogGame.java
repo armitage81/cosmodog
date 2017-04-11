@@ -46,6 +46,7 @@ public class CosmodogGame extends CosmodogModel {
 	private transient WritingTextBoxState writingTextBoxState;
 
 	
+	private String gameName;
 	
 	private User user;
 
@@ -201,6 +202,14 @@ public class CosmodogGame extends CosmodogModel {
 
 	public void setChronometer(Chronometer chronometer) {
 		this.chronometer = chronometer;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 
 }

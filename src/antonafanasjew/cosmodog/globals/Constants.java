@@ -79,16 +79,6 @@ public class Constants {
 	 */
 	public static final int ENEMY_DESTRUCTION_ACTION_DURATION = 750;
 	
-//	/**
-//	 * The horizontal resolution of the game window.
-//	 */
-//	public static final int RESOLUTION_WIDTH = 1920;
-//	
-//	/**
-//	 * The vertical resolution of the game window.
-//	 */
-//	public static final int RESOLUTION_HEIGHT = 1080;
-	
 	/**
 	 * The horizontal resolution of the game window.
 	 */
@@ -98,6 +88,16 @@ public class Constants {
 	 * The vertical resolution of the game window.
 	 */
 	public static final int RESOLUTION_HEIGHT = 720;
+	
+//	/**
+//	 * The horizontal resolution of the game window.
+//	 */
+//	public static final int RESOLUTION_WIDTH = 1280;
+//	
+//	/**
+//	 * The vertical resolution of the game window.
+//	 */
+//	public static final int RESOLUTION_HEIGHT = 720;
 	
 	/**
 	 * Full screen flag.

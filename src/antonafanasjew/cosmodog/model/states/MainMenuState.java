@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.model.menu.Menu;
+import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.model.menu.MenuItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
@@ -42,7 +43,17 @@ public class MainMenuState extends BasicGameState {
 		} else if(gc.getInput().isKeyPressed(Input.KEY_UP)) {
 			mainMenu.selectPrevious();
 		} else if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-			((MenuItem)mainMenu.getSelectedMenuElement()).getMenuAction().execute(sbg);
+			MenuElement menuElement = mainMenu.getSelectedMenuElement();
+			if (menuElement instanceof MenuItem) {
+				((MenuItem)menuElement).getMenuAction().execute(sbg);
+			} else {
+				mainMenu = (Menu)menuElement;
+			}
+		} else if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+			Menu parentMenu = mainMenu.getParentMenu();
+			if (parentMenu != null) {
+				mainMenu = parentMenu;
+			}
 		}
 		
 	}
@@ -52,7 +63,7 @@ public class MainMenuState extends BasicGameState {
 		
 		
 		DrawingContext dc = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		DrawingContext menuDc = new TileDrawingContext(dc, 3, 3, 2, 2);
+		DrawingContext menuDc = new TileDrawingContext(dc, 10, 10, 6, 7, 4, 3);
 		
 		
 		Animation titleAnimation = ApplicationContext.instance().getAnimations().get("title");

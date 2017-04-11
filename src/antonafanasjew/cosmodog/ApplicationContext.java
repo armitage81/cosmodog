@@ -74,6 +74,8 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
+import antonafanasjew.cosmodog.model.menu.MenuLabel;
+import antonafanasjew.cosmodog.model.menu.MenuLabelFactory;
 import antonafanasjew.cosmodog.pathfinding.DefaultTravelTimeCalculator;
 import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
 import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedPathFinder;
@@ -135,6 +137,8 @@ public class ApplicationContext {
 	private Map<Character, Letter> characterLetters = Maps.newHashMap();
 	
 	private Map<String, MenuAction> menuActions = Maps.newHashMap();
+	private Map<String, MenuLabel> menuLabels = Maps.newHashMap();
+	
 	private Map<String, Menu> menus = Maps.newHashMap();
 	
 	//We need this global variable to link the writing text box state to the place where it will be drawn.
@@ -367,12 +371,38 @@ public class ApplicationContext {
 		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabeth2Sheet);
 		this.characterLetters = letterBuilder.buildLetters();
 		
-		menuActions.put("newGameMenuAction", MenuActionFactory.getStartNewGameMenuAction());
-		menuActions.put("loadGameMenuAction", MenuActionFactory.getLoadSavedGameMenuAction());
+		menuActions.put("newGameMenuAction1", MenuActionFactory.getStartNewGameMenuAction(1));
+		menuActions.put("newGameMenuAction2", MenuActionFactory.getStartNewGameMenuAction(2));
+		menuActions.put("newGameMenuAction3", MenuActionFactory.getStartNewGameMenuAction(3));
+		menuActions.put("newGameMenuAction4", MenuActionFactory.getStartNewGameMenuAction(4));
+		menuActions.put("newGameMenuAction5", MenuActionFactory.getStartNewGameMenuAction(5));
+		
+		menuActions.put("loadGameMenuAction1", MenuActionFactory.getLoadSavedGameMenuAction(1));
+		menuActions.put("loadGameMenuAction2", MenuActionFactory.getLoadSavedGameMenuAction(2));
+		menuActions.put("loadGameMenuAction3", MenuActionFactory.getLoadSavedGameMenuAction(3));
+		menuActions.put("loadGameMenuAction4", MenuActionFactory.getLoadSavedGameMenuAction(4));
+		menuActions.put("loadGameMenuAction5", MenuActionFactory.getLoadSavedGameMenuAction(5));
 		menuActions.put("showRecordsGameMenuAction", MenuActionFactory.getShowRecordsMenuAction());
 		menuActions.put("quitGameMenuAction", MenuActionFactory.getQuitGameMenuAction());
 		
-		MenuBuilder b = new MenuBuilder(menuActions);
+		menuLabels.put("startNewGame", MenuLabelFactory.fromText("Start a new game"));
+		
+		menuLabels.put("newGame1", MenuLabelFactory.newGameLabel(1));
+		menuLabels.put("newGame2", MenuLabelFactory.newGameLabel(2));
+		menuLabels.put("newGame3", MenuLabelFactory.newGameLabel(3));
+		menuLabels.put("newGame4", MenuLabelFactory.newGameLabel(4));
+		menuLabels.put("newGame5", MenuLabelFactory.newGameLabel(5));
+		
+		menuLabels.put("loadSavedGame", MenuLabelFactory.fromText("Load a saved game"));
+		menuLabels.put("loadGame1", MenuLabelFactory.loadGameLabel(1));
+		menuLabels.put("loadGame2", MenuLabelFactory.loadGameLabel(2));
+		menuLabels.put("loadGame3", MenuLabelFactory.loadGameLabel(3));
+		menuLabels.put("loadGame4", MenuLabelFactory.loadGameLabel(4));
+		menuLabels.put("loadGame5", MenuLabelFactory.loadGameLabel(5));
+		menuLabels.put("showRecords", MenuLabelFactory.fromText("Show Records"));
+		menuLabels.put("quit", MenuLabelFactory.fromText("Quit"));
+		
+		MenuBuilder b = new MenuBuilder(menuActions, menuLabels);
 		b.build();
 		List<Menu> menuList = b.getTopMenus();
 		for (Menu menu : menuList) {

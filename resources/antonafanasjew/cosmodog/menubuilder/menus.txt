@@ -1,6 +1,16 @@
 menuElement;menuElementLabel;parentMenuId;menuActionBeanId
-mainMenu;N/A;null;null
-mainMenuNew;Start a new game;mainMenu;newGameMenuAction
-mainMenuLoad;Load a saved game;mainMenu;loadGameMenuAction
-mainMenuRecords;Records;mainMenu;showRecordsGameMenuAction
-mainMenuQuit;Quit game;mainMenu;quitGameMenuAction
+mainMenu;null;null;null
+mainMenuNew;startNewGame;mainMenu;null
+mainMenuNewGame1;newGame1;mainMenuNew;newGameMenuAction1
+mainMenuNewGame2;newGame2;mainMenuNew;newGameMenuAction2
+mainMenuNewGame3;newGame3;mainMenuNew;newGameMenuAction3
+mainMenuNewGame4;newGame4;mainMenuNew;newGameMenuAction4
+mainMenuNewGame5;newGame5;mainMenuNew;newGameMenuAction5
+mainMenuLoad;loadSavedGame;mainMenu;null
+mainMenuLoadGame1;loadGame1;mainMenuLoad;loadGameMenuAction1
+mainMenuLoadGame2;loadGame2;mainMenuLoad;loadGameMenuAction2
+mainMenuLoadGame3;loadGame3;mainMenuLoad;loadGameMenuAction3
+mainMenuLoadGame4;loadGame4;mainMenuLoad;loadGameMenuAction4
+mainMenuLoadGame5;loadGame5;mainMenuLoad;loadGameMenuAction5
+mainMenuRecords;showRecords;mainMenu;showRecordsGameMenuAction
+mainMenuQuit;quit;mainMenu;quitGameMenuAction

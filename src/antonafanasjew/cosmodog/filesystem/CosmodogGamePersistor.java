@@ -12,8 +12,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogGameHeader;
 
 /**
  * Used for serializing and deserializing the cosmodog game state.
@@ -52,6 +54,10 @@ public class CosmodogGamePersistor {
 			OutputStream fileStream = new FileOutputStream(file);
 			OutputStream buffer = new BufferedOutputStream(fileStream);
 			ObjectOutput output = new ObjectOutputStream(buffer);
+			
+			CosmodogGameHeader cosmodogGameHeader = new CosmodogGameHeader(game, new Date());
+			
+			output.writeObject(cosmodogGameHeader);
 			output.writeObject(game);
 			output.close();
 		} catch (IOException ex) {
@@ -72,6 +78,8 @@ public class CosmodogGamePersistor {
 			InputStream fileStream = new FileInputStream(file);
 			InputStream buffer = new BufferedInputStream(fileStream);
 			ObjectInput input = new ObjectInputStream(buffer);
+			@SuppressWarnings("unused")
+			CosmodogGameHeader header = (CosmodogGameHeader)input.readObject();
 			CosmodogGame game = (CosmodogGame) input.readObject();
 			input.close();
 			game.initTransientFields();
@@ -83,4 +91,21 @@ public class CosmodogGamePersistor {
 		}
 	}
 
+	public CosmodogGameHeader loadCosmodogGameHeader(String filePath) throws CosmodogPersistenceException {
+		try {
+			File file = new File(filePath);
+			file.mkdirs();
+			InputStream fileStream = new FileInputStream(file);
+			InputStream buffer = new BufferedInputStream(fileStream);
+			ObjectInput input = new ObjectInputStream(buffer);
+			CosmodogGameHeader header = (CosmodogGameHeader)input.readObject();
+			input.close();
+			return header;
+		} catch (ClassNotFoundException ex) {
+			throw new CosmodogPersistenceException(ex.getMessage(), ex);
+		} catch (IOException ex) {
+			throw new CosmodogPersistenceException(ex.getMessage(), ex);
+		}
+	}
+	
 }

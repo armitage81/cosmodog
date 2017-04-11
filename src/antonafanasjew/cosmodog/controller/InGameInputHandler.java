@@ -309,7 +309,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Handle in-game menu
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.MAP_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.MAP_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME, InGameMenuFrame.OPTIONS_INGAME_MENU_FRAME)));
 		}
 
 	}

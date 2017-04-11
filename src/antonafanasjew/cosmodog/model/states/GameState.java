@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.model.states;
 
 import java.util.List;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -38,11 +37,11 @@ import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicPiecesRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
-import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
@@ -75,7 +74,6 @@ import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
-import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
 
 import com.google.common.collect.Lists;
@@ -141,7 +139,7 @@ public class GameState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
 		gc.setVSync(true);
-		gc.setShowFPS(false);
+		gc.setShowFPS(true);
 		
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 
@@ -218,52 +216,53 @@ public class GameState extends BasicGameState {
 			CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
 			
     		CosmodogGame cosmodogGame;
-    		CosmodogMap map;
     		
     		try {
 				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMap, "Armitage");
-				map = cosmodogGame.getMap();
+				cosmodogGame.setGameName(cosmodog.getGameLifeCycle().getGameName());
 			} catch (TiledMapIoException e1) {
 				throw new SlickException("Error while reading the cosmodog map", e1);
 			}
     		
     		applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 
-    		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
-
-    		try {
-    			cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, mapDrawingContext.x(), mapDrawingContext.y(), mapDrawingContext.w(), mapDrawingContext.h()));
-    		} catch (CamPositioningException e) {
-    			Log.error("Camera positioning could not be established", e);
-    		}
-
-    		cloudsDeco = new CloudsDecoration(scene, 1000, 25, 25, 240, 240);
-    		
-    		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 1.5f));
-    		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 2));
-    		
-    		Player player = cosmodogGame.getPlayer();
-    		Cam cam = cosmodogGame.getCam();
-    		cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
-    		cam.focusOnPiece(map, 0, 0, player);
-
-    		//Check for the rules of the new game event
-			RuleBook ruleBook = cosmodogGame.getRuleBook();
-			List<Rule> rulesSortedByPriority = ruleBook.getRulesSortedByPriority();
-			for (Rule rule : rulesSortedByPriority) {
-				rule.apply(new GameEventNewGame());
-			}
-    		
-    		
-    		
-    		firstUpdate = true;
     		
 		}
+		
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		CosmodogMap map = cosmodogGame.getMap();
 		
 		//Do this to consume the key input.
 		container.getInput().isKeyPressed(Input.KEY_RETURN);
 		
+		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
+
+		try {
+			cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, mapDrawingContext.x(), mapDrawingContext.y(), mapDrawingContext.w(), mapDrawingContext.h()));
+		} catch (CamPositioningException e) {
+			Log.error("Camera positioning could not be established", e);
+		}
+
+		cloudsDeco = new CloudsDecoration(scene, 1000, 25, 25, 240, 240);
 		
+		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 1.5f));
+		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 2));
+		
+		Player player = cosmodogGame.getPlayer();
+		Cam cam = cosmodogGame.getCam();
+		cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
+		cam.focusOnPiece(map, 0, 0, player);
+
+		//Check for the rules of the new game event
+		RuleBook ruleBook = cosmodogGame.getRuleBook();
+		List<Rule> rulesSortedByPriority = ruleBook.getRulesSortedByPriority();
+		for (Rule rule : rulesSortedByPriority) {
+			rule.apply(new GameEventNewGame());
+		}
+		
+		
+		
+		firstUpdate = true;
 	}
 	
 	@Override

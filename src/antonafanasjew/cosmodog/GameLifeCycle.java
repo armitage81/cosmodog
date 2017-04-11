@@ -6,6 +6,7 @@ package antonafanasjew.cosmodog;
 public class GameLifeCycle {
 
 	private boolean startNewGame = true;
+	private String gameName;
 
 	/**
 	 * Returns the flag to start new game. This happens when the player character dies or a new game has been started.
@@ -21,5 +22,13 @@ public class GameLifeCycle {
 	 */
 	public void setStartNewGame(boolean startNewGame) {
 		this.startNewGame = startNewGame;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 }

@@ -11,8 +11,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.filesystem.CosmodogPersistenceException;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.model.PlayerMovementCache;
-import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PathUtils;
 
 /**
@@ -28,45 +27,25 @@ public class InGameControlInputHandler extends AbstractInputHandler {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		
 		if (input.isKeyDown(Input.KEY_LCONTROL) && input.isKeyDown(Input.KEY_S)) {
-			String fileName = null;
-			boolean saveNow = false;
-			if (input.isKeyPressed(Input.KEY_1)) {
-				fileName = "1.sav";
-				saveNow = true;
-			} else if (input.isKeyPressed(Input.KEY_2)) {
-				fileName = "2.sav";
-				saveNow = true;
-			}
-			if (saveNow) {
-				try {
-					cosmodog.getGamePersistor().saveCosmodogGame(applicationContext.getCosmodog().getCosmodogGame(), PathUtils.gameSaveDir() + "/" + fileName);
-				} catch (CosmodogPersistenceException e) {
-					Log.error("Could not save game", e);
-				}
+			try {
+				CosmodogGame game = applicationContext.getCosmodog().getCosmodogGame();
+				cosmodog.getGamePersistor().saveCosmodogGame(game, PathUtils.gameSaveDir() + "/" + game.getGameName() + ".sav");
+			} catch (CosmodogPersistenceException e) {
+				Log.error("Could not save game", e);
 			}
 		}
 		
 		if (input.isKeyDown(Input.KEY_LCONTROL) && input.isKeyDown(Input.KEY_L)) {
-			String fileName = null;
-			boolean restoreNow = false;
-			if (input.isKeyPressed(Input.KEY_1)) {
-				fileName = "1.sav";
-				restoreNow = true;
-			} else if (input.isKeyPressed(Input.KEY_2)) {
-				fileName = "2.sav";
-				restoreNow = true;
-			}
-			if (restoreNow) {
-				try {
-					String filePath = PathUtils.gameSaveDir() + "/" + fileName;
-					File f = new File(filePath);
-					if (f.exists()) {
-						CosmodogGame cosmodogGame = cosmodog.getGamePersistor().restoreCosmodogGame(filePath);
-						applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
-					}
-				} catch (CosmodogPersistenceException e) {
-					Log.error("Could not restore game", e);
+			try {
+				CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+				String filePath = PathUtils.gameSaveDir() + "/" + game.getGameName() + ".sav";
+				File f = new File(filePath);
+				if (f.exists()) {
+					CosmodogGame cosmodogGame = cosmodog.getGamePersistor().restoreCosmodogGame(filePath);
+					applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 				}
+			} catch (CosmodogPersistenceException e) {
+				Log.error("Could not restore game", e);
 			}
 		}
 		
