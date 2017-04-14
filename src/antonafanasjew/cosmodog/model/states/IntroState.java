@@ -1,5 +1,8 @@
 package antonafanasjew.cosmodog.model.states;
 
+import java.util.Date;
+
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -9,12 +12,14 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
-import antonafanasjew.cosmodog.globals.Fonts;
+import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 
 public class IntroState extends BasicGameState {
@@ -50,12 +55,23 @@ public class IntroState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		TextRenderer tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
-		tr.render(gc, g, topContainerDrawingContext, "Armitage presents");
 		
-		tr.render(gc, g, centerContainerDrawingContext, "Cosmodog");
+		Animation logo = ApplicationContext.instance().getAnimations().get("logo");
+		DrawingContext dc = new CenteredDrawingContext(centerContainerDrawingContext, 640, 192);
+		logo.draw(dc.x(), dc.y(), dc.w(), dc.h());
 		
-		tr.render(gc, g, bottomContainerDrawingContext, "Press [Enter]");
+		Date date = new Date();
+		long timestamp = date.getTime();
+		timestamp = timestamp / 500;
+		
+		if (timestamp % 2 == 0) {
+			LetterTextRenderingParameter param = LetterTextRenderingParameter.fromText("Press [Enter]");
+			param.scaleFactor = 2.0f;
+			param.horAlignment = LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER;
+			param.verAlignment = LetterTextRenderingParameter.VER_ALIGNMENT_CENTER;
+			LetterTextRenderer.getInstance().render(gc, g, bottomContainerDrawingContext, param);
+		}
+		
 
 	}
 

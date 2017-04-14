@@ -96,4 +96,19 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_RELOAD = "sound.reload";
 
+	/**
+	 * Step on the pressure plate.
+	 */
+	public static final String SOUND_PRESSURE_PLATE = "sound.pressureplate";
+
+	/**
+	 * Drain poison.
+	 */
+	public static final String SOUND_DRAIN_POISON = "sound.drainpoison";
+
+	/**
+	 * Artillery shots when enemy is attacking.
+	 */
+	public static final String SOUND_ARTILLERY_SHOTS = "sound.artilleryshots";
+
 }

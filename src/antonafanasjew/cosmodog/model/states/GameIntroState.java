@@ -47,7 +47,10 @@ public class GameIntroState  extends BasicGameState {
 	private WritingTextBoxState introTextBoxState;
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		
+		timePassed = 0;
+		
 		wr = new WritingRenderer();
 		
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
@@ -81,8 +84,8 @@ public class GameIntroState  extends BasicGameState {
 	}
 	
 	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		timePassed = 0;
+	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
 	}
 
 	@Override

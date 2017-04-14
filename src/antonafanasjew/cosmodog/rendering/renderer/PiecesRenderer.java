@@ -21,6 +21,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -159,7 +160,10 @@ public class PiecesRenderer extends AbstractRenderer {
 			
 			PieceRenderer pieceRenderer = pieceRendererMap.get(elementType);
 			if (pieceRenderer != null) {
-				pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, element);
+				Enemy enemyOnTile = map.enemyAtTile(piece.getPositionX(), piece.getPositionY());
+				if (enemyOnTile == null) {
+					pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, element);
+				}
 			}
 			
 		}

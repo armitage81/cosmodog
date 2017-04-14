@@ -423,7 +423,9 @@ sightRadiusMarker;data/marker.png;16;16;[0/0/50,0/1/50,0/2/50,0/3/50,1/0/50,1/1/
 sightRadiusAlertedMarker;data/marker.png;16;16;[3/3/1000];true;true
 
 
-title;data/title.png;1920;1028;[0/0/100000];true;true
+title;data/title.png;320;180;[0/0/100000];true;true
+
+logo;data/logo.png;160;48;[0/0/100000];true;true
 
 
 

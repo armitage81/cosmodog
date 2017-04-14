@@ -4,6 +4,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
@@ -29,6 +31,7 @@ public class PoisonDeactivationStartActionPhase extends FixedLengthAsyncAction {
 		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
 		initialCamX = cam.viewCopy().minX();
 		initialCamY = cam.viewCopy().minY();
+		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PRESSURE_PLATE).play();
 	}
 	
 	@Override

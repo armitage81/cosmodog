@@ -6,11 +6,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.dying.DyingAction;
+import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.FightActionResult;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -56,6 +57,8 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 	@Override
 	public void onEnd() {
 		
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		
 		Player player = getFightPhaseResult().getPlayer();
 		
 		int damage = getFightPhaseResult().getDamage();
@@ -65,6 +68,7 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 			Vehicle vehicle = item.getVehicle();
 			vehicle.setLife(vehicle.getLife() - damage);
 			if (vehicle.dead()) {
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new MineExplosionAction(500));
 				player.getInventory().remove(InventoryItemType.VEHICLE);
 			}
 		} else {

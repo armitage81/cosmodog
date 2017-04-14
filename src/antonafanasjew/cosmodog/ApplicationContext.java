@@ -312,6 +312,9 @@ public class ApplicationContext {
 		Sound teleport_end = new Sound("data/sound/teleport_end.wav");
 		Sound reload = new Sound("data/sound/reload.wav");
 		Sound droppedItem = new Sound("data/sound/droppeditem.wav");
+		Sound pressurePlate = new Sound("data/sound/pressureplate.wav");
+		Sound drainPoison = new Sound("data/sound/drainpoison.wav");
+		Sound artilleryShots = new Sound("data/sound/artilleryshots.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -329,6 +332,9 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_END, teleport_end);
 		this.getSoundResources().put(SoundResources.SOUND_RELOAD, reload);
 		this.getSoundResources().put(SoundResources.SOUND_DROPPED_ITEM, droppedItem);
+		this.getSoundResources().put(SoundResources.SOUND_PRESSURE_PLATE, pressurePlate);
+		this.getSoundResources().put(SoundResources.SOUND_DRAIN_POISON, drainPoison);
+		this.getSoundResources().put(SoundResources.SOUND_ARTILLERY_SHOTS, artilleryShots);
 
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

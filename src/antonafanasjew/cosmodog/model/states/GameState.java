@@ -139,7 +139,8 @@ public class GameState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
 		gc.setVSync(true);
-		gc.setShowFPS(true);
+		gc.setShowFPS(false);
+
 		
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 

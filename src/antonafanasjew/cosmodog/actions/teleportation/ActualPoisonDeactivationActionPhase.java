@@ -6,6 +6,8 @@ import java.util.Map;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -35,7 +37,6 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 	@Override
 	public void onTrigger() {
 		
-	
 	}
 	
 	@Override
@@ -45,40 +46,48 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 			return;
 		}
 		
-		executedAction = true;
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		Point endPoint = poisonSwitchConnection.getPoints().get(1);
-		PlacedRectangle rectangleAroundEndPoint = PlacedRectangle.fromAnchorAndSize(endPoint.x, endPoint.y, 1, 1);
 		
+		if (!executedAction) {
+			
+			executedAction = true;
 
-		TiledObjectGroup poisonsRegionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_REGIONS);
-		
-		Map<String, TiledObject> poisonRegionObjects = poisonsRegionsObjectGroup.getObjects();
-		
-		TiledObject relevantPoisonRegion = null;
-		
-		for (String poisonRegionName : poisonRegionObjects.keySet()) {
-			TiledObject poisonRegion = poisonRegionObjects.get(poisonRegionName);
-			if (CollisionUtils.intersects(rectangleAroundEndPoint, poisonRegion)) {
-				relevantPoisonRegion = poisonRegion;
-				break;
-			}
-		}
-		
-		if (relevantPoisonRegion != null) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DRAIN_POISON).play();
 			
-			Collection<DynamicPiece> poisons = map.getDynamicPieces().get(Poison.class);
+			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 			
-			for (DynamicPiece piece : poisons) {
-				Poison poison = (Poison)piece;
-				if (RegionUtils.pieceInRegion(poison, relevantPoisonRegion, map.getTileWidth(), map.getTileHeight())) {
-					poison.setState(Poison.STATE_DEACTIVATED);
+			Point endPoint = poisonSwitchConnection.getPoints().get(1);
+			PlacedRectangle rectangleAroundEndPoint = PlacedRectangle.fromAnchorAndSize(endPoint.x, endPoint.y, 1, 1);
+			
+	
+			TiledObjectGroup poisonsRegionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_REGIONS);
+			
+			Map<String, TiledObject> poisonRegionObjects = poisonsRegionsObjectGroup.getObjects();
+			
+			TiledObject relevantPoisonRegion = null;
+			
+			for (String poisonRegionName : poisonRegionObjects.keySet()) {
+				TiledObject poisonRegion = poisonRegionObjects.get(poisonRegionName);
+				if (CollisionUtils.intersects(rectangleAroundEndPoint, poisonRegion)) {
+					relevantPoisonRegion = poisonRegion;
+					break;
 				}
 			}
-		}
+			
+			if (relevantPoisonRegion != null) {
+				
+				Collection<DynamicPiece> poisons = map.getDynamicPieces().get(Poison.class);
+				
+				for (DynamicPiece piece : poisons) {
+					Poison poison = (Poison)piece;
+					if (RegionUtils.pieceInRegion(poison, relevantPoisonRegion, map.getTileWidth(), map.getTileHeight())) {
+						poison.setState(Poison.STATE_DEACTIVATED);
+					}
+				}
+			}
 		
+		}
 		
 	}
 	

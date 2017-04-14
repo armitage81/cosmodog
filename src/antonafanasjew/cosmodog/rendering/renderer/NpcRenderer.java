@@ -204,10 +204,10 @@ public class NpcRenderer extends AbstractRenderer {
 					Animation sleepingAnimation = ApplicationContext.instance().getAnimations().get("enemySleeping");
 					sleepingAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
 				} else if (enemy.getAlertLevel() > 0 && !enemyIsExploding) {
-					float signWidth = 32 / cam.getZoomFactor();
-					float signHeight = 32 / cam.getZoomFactor();
+					float signWidth = 8;
+					float signHeight = 8;
 					float signOffsetX = (tileWidth - signWidth) / 2;
-					float signOffseetY = -8;
+					float signOffseetY = -signHeight;
 					Animation alertedAnimation = ApplicationContext.instance().getAnimations().get("enemyAlerted");
 					alertedAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
 				}
