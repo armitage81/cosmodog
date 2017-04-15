@@ -1,7 +1,11 @@
 package antonafanasjew.cosmodog.globals;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 
 /**
@@ -236,6 +240,44 @@ public enum TileType {
 	
 	NO_RADIATION_MARKUP(Layers.LAYER_META_RADIATION, 0);
 	
+	static class LayerAndTile {
+		
+		public int layerId;
+		public int tileId;
+		
+		public static LayerAndTile fromIds(int layerId, int tileId) {
+			LayerAndTile retVal = new LayerAndTile();
+			retVal.layerId = layerId;
+			retVal.tileId = tileId;
+			return retVal;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + layerId;
+			result = prime * result + tileId;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			LayerAndTile other = (LayerAndTile) obj;
+			if (layerId != other.layerId)
+				return false;
+			if (tileId != other.tileId)
+				return false;
+			return true;
+		}
+		
+	}
 	
 	private static final TileType[] VALUES = TileType.values();
 	
@@ -307,6 +349,8 @@ public enum TileType {
 		return layerId;
 	}
 	
+	private static Cache<LayerAndTile, TileType> tileTypePerLayerAndTileIdCache = CacheBuilder.newBuilder().build();
+	
 	/**
 	 * Returns the tile type for given layer id and the tile id.
 	 * @param layerId Layer id.
@@ -314,12 +358,28 @@ public enum TileType {
 	 * @return The tile type for given ids or UNKNOWN if nothing matches.
 	 */
 	public static TileType getByLayerAndTileId(int layerId, int tileId) {
-		for (TileType tileType : VALUES) {
-			if (tileType.getLayerId() == layerId && tileType.getTileId() == tileId) {
-				return tileType;
-			}
+		
+		LayerAndTile layerAndTile = LayerAndTile.fromIds(layerId, tileId);
+		
+		try {
+			TileType tileType = tileTypePerLayerAndTileIdCache.get(layerAndTile, new Callable<TileType>() {
+	
+				@Override
+				public TileType call() {
+						for (TileType tileType : VALUES) {
+							if (tileType.getLayerId() == layerId && tileType.getTileId() == tileId) {
+								return tileType;
+							}
+						}
+						return TileType.UNKNOWN;
+				}
+				
+			});
+			return tileType;
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
 		}
-		return TileType.UNKNOWN;
+		
 	}
 	
 }

@@ -1,12 +1,15 @@
 package antonafanasjew.cosmodog.model;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.listener.movement.MovementListenerAdapter;
 import antonafanasjew.cosmodog.model.actors.Actor;
@@ -17,7 +20,10 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 /**
@@ -49,12 +55,74 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	private Set<TiledObject> roofRegionsOverPlayer = Sets.newHashSet();
 
+	private Map<Position, DynamicPiece> dynamicPieces = Maps.newHashMap();
+	private Multimap<Class<?>, DynamicPiece> visibleDynamicPieces = ArrayListMultimap.create();
 	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		recalculateClosestSupplyPosition(actor, x1, y1, x2, y2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
 		recalculateRoofRegions(actor);
+		recalculateDynamicPieces();
+		recalculateVisibleDynamicPieces();
+	}
+	
+	private void recalculateDynamicPieces() {
+	
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		dynamicPieces.clear();
+		for (Class<?> key : map.getDynamicPieces().keySet()) {
+			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
+			if (piecesForKey != null) {
+				Iterator<DynamicPiece> it = piecesForKey.iterator();
+				while (it.hasNext()) {
+					DynamicPiece piece = it.next();
+					Position position = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
+					dynamicPieces.put(position, piece);
+				}
+			}
+		}
+	}
+
+	private void recalculateVisibleDynamicPieces() {
+		
+		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Cam cam = game.getCam();
+
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
+		
+		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
+		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+
+		int camX = (int) cam.viewCopy().x();
+		int camY = (int) cam.viewCopy().y();
+		
+		
+		int tileNoX = camX / scaledTileWidth;
+		int tileNoY = camY / scaledTileHeight;
+		
+		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
+		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+		
+		
+		visibleDynamicPieces.clear();
+		for (Class<?> key : map.getDynamicPieces().keySet()) {
+			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
+			if (piecesForKey != null) {
+				Iterator<DynamicPiece> it = piecesForKey.iterator();
+				while (it.hasNext()) {
+					DynamicPiece piece = it.next();
+					if (piece.getPositionX() >= (tileNoX - 2) && piece.getPositionX() < (tileNoX + tilesW + 2)) {
+						if (piece.getPositionY() >= (tileNoY - 2) && piece.getPositionY() < (tileNoY + tilesH + 2)) {
+							visibleDynamicPieces.put(key, piece);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	private void recalculateRoofRegions(Actor actor) {
@@ -118,5 +186,12 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		return roofRegionsOverPlayer;
 	}
 
+	public Map<Position, DynamicPiece> getDynamicPieces() {
+		return dynamicPieces;
+	}
+	
+	public Multimap<Class<?>, DynamicPiece> getVisibleDynamicPieces() {
+		return visibleDynamicPieces;
+	}
 }
 

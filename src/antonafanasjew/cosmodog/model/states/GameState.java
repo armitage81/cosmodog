@@ -221,6 +221,15 @@ public class GameState extends BasicGameState {
     		try {
 				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMap, "Armitage");
 				cosmodogGame.setGameName(cosmodog.getGameLifeCycle().getGameName());
+				CosmodogMap map = cosmodogGame.getMap();		
+				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
+
+				try {
+					cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, mapDrawingContext.x(), mapDrawingContext.y(), mapDrawingContext.w(), mapDrawingContext.h()));
+				} catch (CamPositioningException e) {
+					Log.error("Camera positioning could not be established", e);
+				}
+				
 			} catch (TiledMapIoException e1) {
 				throw new SlickException("Error while reading the cosmodog map", e1);
 			}

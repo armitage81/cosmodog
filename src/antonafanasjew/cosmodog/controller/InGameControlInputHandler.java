@@ -25,6 +25,11 @@ public class InGameControlInputHandler extends AbstractInputHandler {
 		Input input = gc.getInput();
 		
 		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		
+		if (cosmodogGame.getActionRegistry().inputBlocked()) {
+			return;
+		}
 		
 		if (input.isKeyDown(Input.KEY_LCONTROL) && input.isKeyDown(Input.KEY_S)) {
 			try {
@@ -41,7 +46,7 @@ public class InGameControlInputHandler extends AbstractInputHandler {
 				String filePath = PathUtils.gameSaveDir() + "/" + game.getGameName() + ".sav";
 				File f = new File(filePath);
 				if (f.exists()) {
-					CosmodogGame cosmodogGame = cosmodog.getGamePersistor().restoreCosmodogGame(filePath);
+					cosmodogGame = cosmodog.getGamePersistor().restoreCosmodogGame(filePath);
 					applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 				}
 			} catch (CosmodogPersistenceException e) {

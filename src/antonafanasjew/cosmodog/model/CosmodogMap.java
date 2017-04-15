@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.model;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,43 +149,12 @@ public class CosmodogMap extends CosmodogModel {
 	}
 	
 	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(int x, int y, int width, int height, int grace) {
-		
-		Multimap<Class<?>, DynamicPiece> retVal = ArrayListMultimap.create();
-		for (Class<?> key : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> piecesForKey = dynamicPieces.get(key);
-			if (piecesForKey != null) {
-				Iterator<DynamicPiece> it = piecesForKey.iterator();
-				while (it.hasNext()) {
-					DynamicPiece piece = it.next();
-					if (piece.getPositionX() >= x - grace && piece.getPositionX() < x + width + grace) {
-						if (piece.getPositionY() >= y - grace && piece.getPositionY() < y + height + grace) {
-							retVal.put(key, piece);
-						}
-					}
-				}
-				
-			}
-		}
-
-		return retVal;
+		return PlayerMovementCache.getInstance().getVisibleDynamicPieces();
 	}
 	
 	
 	public DynamicPiece dynamicPieceAtPosition(int x, int y) {
-		for (Class<?> key : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> piecesForKey = dynamicPieces.get(key);
-			if (piecesForKey != null) {
-				Iterator<DynamicPiece> it = piecesForKey.iterator();
-				while (it.hasNext()) {
-					DynamicPiece piece = it.next();
-					if (piece.getPositionX() == x && piece.getPositionY() == y) {
-						return piece;
-					}
-				}
-			}
-		}
-		
-		return null;
+		return PlayerMovementCache.getInstance().getDynamicPieces().get(Position.fromCoordinates(x, y));
 	}
 	
 	public Set<Piece> visibleMarkedTilePieces(int x, int y, int width, int height, int grace) {

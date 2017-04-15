@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.util;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
@@ -10,15 +10,14 @@ import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.TileType;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorAppearanceType;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 public class Mappings {
 
@@ -388,7 +387,7 @@ public class Mappings {
 	 * This list defines such tile types.
 	 * Animation ids will be calculated from the tile type enumeration names, e.g. WATER_CENTER => tile.WATER_CENTER
 	 */
-	public static List<TileType> TILE_TYPES_TO_BE_ANIMATED = Lists.newArrayList();
+	public static Set<TileType> TILE_TYPES_TO_BE_ANIMATED = Sets.newHashSet();
 	
 	static {
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.WATER_CENTER);
