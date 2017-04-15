@@ -77,11 +77,11 @@ public class MenuBuilder extends AbstractResourceWrapperBuilder<MenuElement> {
 		if (isLeaf) {
 			
 			MenuAction menuAction = menuActionsById.get(actionId);
-			retVal = new MenuItem(id, parentMenu, label.labelText(), menuAction);
+			retVal = new MenuItem(id, parentMenu, label, menuAction);
 			
 		} else {
 			
-			Menu menu = new Menu(id, parentMenu, label.labelText());
+			Menu menu = new Menu(id, parentMenu, label);
 			
 			if (parentMenu == null) {
 				topMenus.add(menu);

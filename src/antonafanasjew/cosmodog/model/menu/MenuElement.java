@@ -4,9 +4,9 @@ public abstract class MenuElement {
 
 	private String id;
 	private Menu parentMenu;
-	private String label;
+	private MenuLabel label;
 	
-	public MenuElement(String id, Menu parentMenu, String label) {
+	public MenuElement(String id, Menu parentMenu, MenuLabel label) {
 		this.id = id;
 		this.parentMenu = parentMenu;
 		this.label = label;
@@ -16,7 +16,7 @@ public abstract class MenuElement {
 		return parentMenu;
 	}
 
-	public String getLabel() {
+	public MenuLabel getLabel() {
 		return label;
 	}
 

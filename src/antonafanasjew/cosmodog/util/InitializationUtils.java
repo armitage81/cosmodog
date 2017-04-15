@@ -15,7 +15,6 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.calendar.ComposedPlanetaryCalendarListener;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.calendar.listeners.FoodConsumer;
-import antonafanasjew.cosmodog.calendar.listeners.FuelConsumer;
 import antonafanasjew.cosmodog.calendar.listeners.WaterConsumer;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
@@ -200,7 +199,6 @@ public class InitializationUtils {
 		ComposedPlanetaryCalendarListener listener = new ComposedPlanetaryCalendarListener();
 		listener.getUnderlyings().add(new FoodConsumer());
 		listener.getUnderlyings().add(new WaterConsumer());
-		listener.getUnderlyings().add(new FuelConsumer());
 		planetaryCalendar.setListener(listener);
 	}
 

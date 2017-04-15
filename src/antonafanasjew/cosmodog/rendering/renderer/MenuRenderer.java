@@ -1,8 +1,12 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
@@ -11,12 +15,27 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
+/**
+ *
+ * This renderer uses a cache to hold the menu labels. Reason is: Some labels are based on the game state so they are
+ * calculated by loading the game save header. It would be too costly to do it every time, hence the cache.
+ * The cache has to be reset every time a game state changes. It is enough to reset the cache every time the menu game state is entered.
+ */
 public class MenuRenderer implements Renderer {
 
 	public static final int MAX_MENU_ENTRIES_RENDERED = 7;
 	
 	public static class MenuRenderingParam {
 		public Menu menu;
+	}
+	
+	private Cache<MenuElement, String> menuLabelCache = CacheBuilder.newBuilder().maximumSize(100).build();
+	
+	public void resetMenuLabelCache() {
+		menuLabelCache.invalidateAll();
 	}
 	
 	@Override
@@ -38,8 +57,22 @@ public class MenuRenderer implements Renderer {
 				DrawingContext itemDc = new TileDrawingContext(dcMenu, 1, MAX_MENU_ENTRIES_RENDERED, 0, i);
 						
 				MenuElement menuElement = menu.getMenuElements().get(i);
+
+				String labelText;
 				
-				LetterTextRenderingParameter param = LetterTextRenderingParameter.fromTextAndScaleFactor(menuElement.getLabel(), 2f);
+				try {
+					labelText = menuLabelCache.get(menuElement, new Callable<String>() {
+						@Override
+						public String call() throws Exception {
+							return menuElement.getLabel().labelText();
+						}
+					});
+				} catch (ExecutionException e) {
+					labelText = "<ERROR>";
+					Log.error(e.getLocalizedMessage(), e);
+				}
+				
+				LetterTextRenderingParameter param = LetterTextRenderingParameter.fromTextAndScaleFactor(labelText, 2f);
 				param.verAlignment = LetterTextRenderingParameter.VER_ALIGNMENT_CENTER;
 				LetterTextRenderer.getInstance().render(gameContainer, g, itemDc, param);
 				

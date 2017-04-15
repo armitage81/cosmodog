@@ -149,7 +149,7 @@ public class GameState extends BasicGameState {
 		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0, 1, 8);
 		
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
-		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 9, 0, 0);
+		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 7, 0, 0);
 		
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
 		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);

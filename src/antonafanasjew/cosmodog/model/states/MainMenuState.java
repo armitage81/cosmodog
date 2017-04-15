@@ -22,6 +22,8 @@ import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer.MenuRenderingPara
 public class MainMenuState extends BasicGameState {
 
 	private Menu mainMenu;
+	private MenuRenderer menuRenderer = new MenuRenderer();
+	private MenuRenderingParam param = new MenuRenderingParam();
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -33,6 +35,7 @@ public class MainMenuState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
 		mainMenu.setInitialized();
+		menuRenderer.resetMenuLabelCache();
 	}
 	
 	@Override
@@ -70,8 +73,6 @@ public class MainMenuState extends BasicGameState {
 		
 		titleAnimation.draw(dc.x(), dc.y(), dc.w(), dc.h());
 		
-		MenuRenderer menuRenderer = new MenuRenderer();
-		MenuRenderingParam param = new MenuRenderingParam();
 		param.menu = mainMenu;
 		menuRenderer.render(gc, g, menuDc, param);
 		

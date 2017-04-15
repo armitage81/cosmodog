@@ -6,6 +6,7 @@ import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
@@ -42,6 +43,7 @@ import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
@@ -80,6 +82,19 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		applyTime(player, x1, y1, x2, y2, applicationContext);
 		updateWormAlert(player, applicationContext );
 		updatePoisonCount(player, applicationContext);
+		if (x1 != x2 || y1 != y2) {
+			updateFuel(applicationContext);
+		}
+		
+	}
+
+	private void updateFuel(ApplicationContext appCx) {
+		Player player = appCx.getCosmodog().getCosmodogGame().getPlayer();
+		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
+			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
+			Vehicle vehicle = vehicleInventoryItem.getVehicle();
+			vehicle.decreaseFuel(1);
+		}
 	}
 	
 	@Override
@@ -237,15 +252,26 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 				int collectiblesLayerTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
 				if (TileType.FUEL.getTileId() == collectiblesLayerTileId) {
+					String notificationText = null;
 					if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 						VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 						Vehicle vehicle = vehicleItem.getVehicle();
-						vehicle.setFuel(Vehicle.MAX_FUEL);
+						if (vehicle.getFuel() < Vehicle.MAX_FUEL) {
+							vehicle.setFuel(Vehicle.MAX_FUEL);
+							notificationText = "You refueled the car.<br><br>[Press ENTER]";
+						}
 					} else {
 						if (player.getInventory().get(InventoryItemType.FUEL_TANK) == null) {
 							player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
+							notificationText = "You took a fuel tank.<br><br>[Press ENTER]";
 						}
 					}
+					
+					if (notificationText != null) {
+						ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
+						actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(notificationText));
+					}
+					
 				}
 			}
 			

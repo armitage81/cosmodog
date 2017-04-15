@@ -47,13 +47,16 @@ public class LifeInterfaceRenderer implements Renderer {
 
 		
 		
-		DrawingContext lifeDrawingContext = new TileDrawingContext(context, 1, 3, 0, 0);
+		DrawingContext lifeDrawingContext = new TileDrawingContext(context, 1, 4, 0, 0);
 		lifeDrawingContext = new CenteredDrawingContext(lifeDrawingContext, 2);
 		
-		DrawingContext robustnessDrawingContext = new TileDrawingContext(context, 1, 3, 0, 1);
+		DrawingContext robustnessDrawingContext = new TileDrawingContext(context, 1, 4, 0, 1);
 		robustnessDrawingContext = new CenteredDrawingContext(robustnessDrawingContext, 2);
 		
-		DrawingContext environmentDataDrawingContext = new TileDrawingContext(context, 1, 3, 0, 2);
+		DrawingContext fuelDrawingContext = new TileDrawingContext(context, 1, 4, 0, 2);
+		fuelDrawingContext = new CenteredDrawingContext(fuelDrawingContext, 2);
+		
+		DrawingContext environmentDataDrawingContext = new TileDrawingContext(context, 1, 4, 0, 3);
 		environmentDataDrawingContext = new CenteredDrawingContext(environmentDataDrawingContext, 2);
 		
 		
@@ -166,6 +169,52 @@ public class LifeInterfaceRenderer implements Renderer {
 			g.translate(-robustnessBarDrawingContext.x(), -robustnessBarDrawingContext.y());
 		
 		}
+		
+		
+		//RENDERING FUEL ROW
+		
+		if (vehicleInventoryItem != null) {
+		
+			Vehicle vehicle = vehicleInventoryItem.getVehicle();
+			
+			TileDrawingContext fuelLabelDrawingContext = new TileDrawingContext(fuelDrawingContext, 10, 1, 0, 0, 3, 1);
+			TileDrawingContext fuelBarDrawingContext = new TileDrawingContext(fuelDrawingContext, 10, 1, 3, 0, 7, 1);
+			
+			LetterTextRenderer.getInstance().render(gameContainer, g, fuelLabelDrawingContext, LetterTextRenderingParameter.fromText("FUEL"));
+			
+			
+			g.translate(fuelBarDrawingContext.x(), fuelBarDrawingContext.y());
+			
+			float maxFuel = Vehicle.MAX_FUEL;
+			float maxFuelBarWidth = fuelBarDrawingContext.w();
+			float currentFuel = vehicle.getFuel();
+			float currentFuelBarWidth = currentFuel / maxFuel * maxFuelBarWidth;
+			
+			g.setColor(Color.gray);
+			g.fillRect(0, 0, maxFuelBarWidth, fuelBarDrawingContext.h());
+			
+			ApplicationContext.instance().getAnimations().get("fuelBar").draw(0, 0, currentFuelBarWidth, fuelBarDrawingContext.h());
+			g.setColor(Color.black);
+			g.setLineWidth(2);
+			g.drawRect(0, 0, currentFuelBarWidth, fuelBarDrawingContext.h());
+			
+			g.setColor(new Color(100, 96, 31, 0.10f));
+			g.setLineWidth(1);
+			for (int i = 1; i < maxFuel; i++) {
+				float lineOffsetX = oneLifeUnitBarWidth * i;
+				g.drawLine(lineOffsetX, 0, lineOffsetX, fuelBarDrawingContext.h());
+			}
+			
+			
+			g.setColor(Color.black);
+			g.setLineWidth(2);
+			g.drawRect(0, 0, maxFuelBarWidth, fuelBarDrawingContext.h());
+			
+			
+			g.translate(-fuelBarDrawingContext.x(), -fuelBarDrawingContext.y());
+		
+		}
+		
 		
 		
 		//RENDERING ENVIRONMENT DATA ROW

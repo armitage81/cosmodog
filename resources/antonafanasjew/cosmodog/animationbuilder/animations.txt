@@ -224,6 +224,7 @@ foodBar;data/various_icons.png;16;16;[0/4/10000];true;true
 waterBar;data/various_icons.png;16;16;[0/5/10000];true;true
 lifeBar;data/various_icons.png;16;16;[0/6/10000];true;true
 robustnessBar;data/various_icons.png;16;16;[0/7/10000];true;true
+fuelBar;data/various_icons.png;16;16;[0/8/10000];true;true
 
 
 

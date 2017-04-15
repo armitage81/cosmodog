@@ -10,7 +10,7 @@ public class Menu extends MenuElement {
 	
 	private MenuElement selectedMenuElement;
 
-	public Menu(String id, Menu parentMenu, String label) {
+	public Menu(String id, Menu parentMenu, MenuLabel label) {
 		super(id, parentMenu, label);
 	}
 	
