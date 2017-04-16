@@ -9,9 +9,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction;
 import antonafanasjew.cosmodog.calendar.ComposedPlanetaryCalendarListener;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.calendar.listeners.FoodConsumer;
@@ -71,6 +73,7 @@ import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
+import antonafanasjew.cosmodog.rules.actions.SysoutAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
 import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
@@ -78,6 +81,7 @@ import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DamageLastBossAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.FoundSecretAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
@@ -96,6 +100,7 @@ import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.OrTrigger;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
+import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
@@ -590,6 +595,21 @@ public class InitializationUtils {
 		RuleAction damageLastBossAction = new DamageLastBossAction();
 		rule = new Rule(Rule.RULE_DAMAGE_LAST_BOSS, Lists.newArrayList(GameEventChangedPosition.class), damageLastBossTrigger, damageLastBossAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
+		
+		
+		CosmodogMap map = cosmodogGame.getMap();
+		TiledObjectGroup secretsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_SECRETS);
+		Map<String, TiledObject> secretObjects = secretsObjectGroup.getObjects();
+		for (String secretObjectKey : secretObjects.keySet()) {
+			RuleTrigger secretEntranceTrigger = new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_SECRETS, secretObjectKey);
+			secretEntranceTrigger = AndTrigger.and(secretEntranceTrigger, new GameProgressPropertyTrigger("SecretCollected." + secretObjectKey, "false")); 
+			
+			RuleAction action = new SetGameProgressPropertyAction("SecretCollected." + secretObjectKey, "true");
+			asyncAction = new OnScreenNotificationAction("Secret found", 3000, SoundResources.SOUND_SECRET_FOUND);
+			action = BlockAction.block(new AsyncActionRegistrationRuleAction(AsyncActionType.ONSCREEN_NOTIFICATION, asyncAction, false), action);
+			rule = new Rule(Rule.RULE_FOUND_SECRET + "." + secretObjectKey, Lists.newArrayList(GameEventChangedPosition.class), secretEntranceTrigger, action, Rule.RULE_PRIORITY_LATEST);
+			ruleBook.put(rule.getId(), rule);
+		}
 		
 		cosmodogGame.setRuleBook(ruleBook);
 

@@ -49,6 +49,7 @@ import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MineExplosionRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.NpcRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.OnScreenNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.OverheadNotificationRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PlayerRenderer;
@@ -125,6 +126,7 @@ public class GameState extends BasicGameState {
 	private Renderer arsenalInterfaceRenderer;
 	private Renderer weaponTooltipRenderer;
 	private Renderer dyingPlayerRenderer;
+	private AbstractRenderer onScreenNotificationRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -203,6 +205,8 @@ public class GameState extends BasicGameState {
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
 		tipsLayersPredicate = new TipsLayersRenderingPredicate();
 		topsLayersPredicate = new TopLayersRenderingPredicate();
+		
+		onScreenNotificationRenderer = new OnScreenNotificationRenderer();
 		
 	}
 
@@ -404,6 +408,8 @@ public class GameState extends BasicGameState {
 		//Draw overhead notifications, e.g. "blocked" warning.
 		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
 		
+		//Draws onscreen notifications
+		onScreenNotificationRenderer.render(gc, g, mapDrawingContext);
 		
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);

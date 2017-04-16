@@ -8,6 +8,7 @@ public class ObjectGroups {
 
 	public static final String OBJECT_GROUP_TELEPORT_CONNECTIONS = "TeleportConnections";
 	public static final String OBJECT_GROUP_WORMS = "Worms";
+	public static final String OBJECT_GROUP_SECRETS = "Secrets";
 	
 	public static final String OBJECT_GROUP_ID_REGIONS = "TriggerRegions";
 	public static final String OBJECT_GROUP_ID_NPC_HOME_REGIONS = "NpcHomeRegions";

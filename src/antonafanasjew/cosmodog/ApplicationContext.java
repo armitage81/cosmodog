@@ -315,6 +315,7 @@ public class ApplicationContext {
 		Sound pressurePlate = new Sound("data/sound/pressureplate.wav");
 		Sound drainPoison = new Sound("data/sound/drainpoison.wav");
 		Sound artilleryShots = new Sound("data/sound/artilleryshots.wav");
+		Sound secretFound = new Sound("data/sound/secretfound.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -335,6 +336,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_PRESSURE_PLATE, pressurePlate);
 		this.getSoundResources().put(SoundResources.SOUND_DRAIN_POISON, drainPoison);
 		this.getSoundResources().put(SoundResources.SOUND_ARTILLERY_SHOTS, artilleryShots);
+		this.getSoundResources().put(SoundResources.SOUND_SECRET_FOUND, secretFound);
 
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

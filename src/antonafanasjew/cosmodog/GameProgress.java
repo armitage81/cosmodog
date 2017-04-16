@@ -11,6 +11,8 @@ import com.google.common.collect.Maps;
  * Defines the complete game progress from the perspective of the player character.
  */
 public class GameProgress extends CosmodogModel {
+
+	public static final int NUMBER_OF_SECRETS_IN_GAME = 120;
 	
 	public static final int TURNS_TILL_WORM_APPEARS_PHASE1 = 4;
 	public static final int TURNS_TILL_WORM_APPEARS_PHASE2 = 6;
@@ -30,6 +32,8 @@ public class GameProgress extends CosmodogModel {
 	private boolean won = false;
 	private int infobits = 0;
 	private int gameScore;
+	
+	private int numberOfFoundSecrets = 0;
 	
 	private int turnsTillWormAppears = TURNS_TILL_WORM_APPEARS_PHASE1;
 	
@@ -125,5 +129,19 @@ public class GameProgress extends CosmodogModel {
 	public void setWon(boolean won) {
 		this.won = won;
 	}
+
+	public int getNumberOfFoundSecrets() {
+		return numberOfFoundSecrets;
+	}
+	
+	public void setNumberOfFoundSecrets(int numberOfFoundSecrets) {
+		this.numberOfFoundSecrets = numberOfFoundSecrets;
+	}
+	
+	public void increaseNumberOfFoundSecrets() {
+		this.numberOfFoundSecrets += 1;
+	}
+	
+	
 	
 }

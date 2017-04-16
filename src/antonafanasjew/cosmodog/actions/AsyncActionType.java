@@ -20,6 +20,11 @@ public enum AsyncActionType {
 	OVERHEAD_NOTIFICATION(false, true),
 	
 	/**
+	 * Action type: Onscreen notification. It is a text that is smacked on screen without blocking the input.
+	 */
+	ONSCREEN_NOTIFICATION(false, true),
+	
+	/**
 	 * Action type: Teleportation.
 	 */
 	TELEPORTATION(true, true),

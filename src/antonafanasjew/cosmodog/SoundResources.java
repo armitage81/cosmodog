@@ -111,4 +111,9 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_ARTILLERY_SHOTS = "sound.artilleryshots";
 
+	/**
+	 * Secret found jingle.
+	 */
+	public static final String SOUND_SECRET_FOUND = "sound.secretfound";
+
 }
