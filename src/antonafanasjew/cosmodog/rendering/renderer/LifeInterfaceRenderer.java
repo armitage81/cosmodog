@@ -23,6 +23,7 @@ import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -30,6 +31,8 @@ import antonafanasjew.cosmodog.util.PositionUtils;
 
 public class LifeInterfaceRenderer implements Renderer {
 
+	private static final float LABEL_WIDTH = 70;
+	
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
 		ApplicationContext applicationContext = ApplicationContext.instance();
@@ -64,8 +67,9 @@ public class LifeInterfaceRenderer implements Renderer {
 		//RENDERING LIFE ROW
 		
 		
-		TileDrawingContext lifeLabelDrawingContext = new TileDrawingContext(lifeDrawingContext, 10, 1, 0, 0, 3, 1);
-		TileDrawingContext lifeBarDrawingContext = new TileDrawingContext(lifeDrawingContext, 10, 1, 3, 0, 7, 1);
+		
+		SimpleDrawingContext lifeLabelDrawingContext = new SimpleDrawingContext(lifeDrawingContext, 0, 0, LABEL_WIDTH, lifeDrawingContext.h());
+		SimpleDrawingContext lifeBarDrawingContext = new SimpleDrawingContext(lifeDrawingContext, LABEL_WIDTH, 0, lifeDrawingContext.w() - LABEL_WIDTH, lifeDrawingContext.h());
 
 		LetterTextRenderer.getInstance().render(gameContainer, g, lifeLabelDrawingContext, LetterTextRenderingParameter.fromText("LIFE"));
 				
@@ -133,8 +137,8 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
 			
-			TileDrawingContext robustnessLabelDrawingContext = new TileDrawingContext(robustnessDrawingContext, 10, 1, 0, 0, 3, 1);
-			TileDrawingContext robustnessBarDrawingContext = new TileDrawingContext(robustnessDrawingContext, 10, 1, 3, 0, 7, 1);
+			SimpleDrawingContext robustnessLabelDrawingContext = new SimpleDrawingContext(robustnessDrawingContext, 0, 0, LABEL_WIDTH, robustnessDrawingContext.h());
+			SimpleDrawingContext robustnessBarDrawingContext = new SimpleDrawingContext(robustnessDrawingContext, LABEL_WIDTH, 0, robustnessDrawingContext.w() - LABEL_WIDTH, robustnessDrawingContext.h());
 			
 			LetterTextRenderer.getInstance().render(gameContainer, g, robustnessLabelDrawingContext, LetterTextRenderingParameter.fromText("ARMOR"));
 			
@@ -177,8 +181,8 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
 			
-			TileDrawingContext fuelLabelDrawingContext = new TileDrawingContext(fuelDrawingContext, 10, 1, 0, 0, 3, 1);
-			TileDrawingContext fuelBarDrawingContext = new TileDrawingContext(fuelDrawingContext, 10, 1, 3, 0, 7, 1);
+			SimpleDrawingContext fuelLabelDrawingContext = new SimpleDrawingContext(fuelDrawingContext, 0, 0, LABEL_WIDTH, fuelDrawingContext.h());
+			SimpleDrawingContext fuelBarDrawingContext = new SimpleDrawingContext(fuelDrawingContext, LABEL_WIDTH, 0, fuelDrawingContext.w() - LABEL_WIDTH, fuelDrawingContext.h());
 			
 			LetterTextRenderer.getInstance().render(gameContainer, g, fuelLabelDrawingContext, LetterTextRenderingParameter.fromText("FUEL"));
 			

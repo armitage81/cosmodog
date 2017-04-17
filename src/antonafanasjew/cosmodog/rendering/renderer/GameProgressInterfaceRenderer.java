@@ -5,10 +5,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
@@ -70,9 +73,18 @@ public class GameProgressInterfaceRenderer implements Renderer {
 		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol0Row1Label, LetterTextRenderingParameter.fromText("SCORE"));
 		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol0Row1Value, LetterTextRenderingParameter.fromText(scoreValue));
 		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol1Row0Label, LetterTextRenderingParameter.fromText("SECRETS"));
-		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol1Row0Value, LetterTextRenderingParameter.fromText("???"));
+		String secretsText = player.getGameProgress().getNumberOfFoundSecrets() + "/" + GameProgress.NUMBER_OF_SECRETS_IN_GAME;
+		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol1Row0Value, LetterTextRenderingParameter.fromText(secretsText));
 		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol1Row1Label, LetterTextRenderingParameter.fromText("ARTIFACTS"));
-		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol1Row1Value, LetterTextRenderingParameter.fromText("???"));
+		String artifactsText;
+		InsightInventoryItem insightInventoryItem = (InsightInventoryItem)player.getInventory().get(InventoryItemType.INSIGHT);
+		if (insightInventoryItem == null) {
+			artifactsText = "0/32";
+		} else {
+			artifactsText = insightInventoryItem.getNumber() + "/32";
+		}
+		
+		LetterTextRenderer.getInstance().render(gameContainer, g, cxCol1Row1Value, LetterTextRenderingParameter.fromText(artifactsText));
 		
 		
 //		DrawingContext thirstDrawingContext = new TileDrawingContext(context, 1, 2, 0, 0);

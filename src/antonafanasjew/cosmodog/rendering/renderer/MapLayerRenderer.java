@@ -65,9 +65,9 @@ public class MapLayerRenderer extends AbstractRenderer {
 			for (int tx = tileNoX; tx < tileNoX + tilesW; tx++) {
 				for (int ty = tileNoY; ty < tileNoY + tilesH; ty++) {
 					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
-						long begin = new Date().getTime();
+						long begin = System.currentTimeMillis();
 						if (rendererPredicate.tileShouldBeRendered(i, tx, ty)) {
-							long end = new Date().getTime();
+							long end = System.currentTimeMillis();
 							if (end - begin > 200) {
 								System.out.println(end - begin);
 								System.out.println(rendererPredicate.toString());

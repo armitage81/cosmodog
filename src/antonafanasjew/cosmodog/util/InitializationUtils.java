@@ -64,6 +64,7 @@ import antonafanasjew.cosmodog.resourcehandling.builder.rules.MultiInstancePiece
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.PieceRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentCommentRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentDialogRuleBuilder;
+import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleBook;
@@ -87,6 +88,7 @@ import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToD
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseTeleportSequenceAction;
 import antonafanasjew.cosmodog.rules.actions.pickupitems.PickupKeyAction;
+import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventPieceInteraction;
@@ -606,7 +608,17 @@ public class InitializationUtils {
 			
 			RuleAction action = new SetGameProgressPropertyAction("SecretCollected." + secretObjectKey, "true");
 			asyncAction = new OnScreenNotificationAction("Secret found", 3000, SoundResources.SOUND_SECRET_FOUND);
-			action = BlockAction.block(new AsyncActionRegistrationRuleAction(AsyncActionType.ONSCREEN_NOTIFICATION, asyncAction, false), action);
+			RuleAction updateGameProgress = new AbstractRuleAction() {
+				
+				private static final long serialVersionUID = 3465808157964130895L;
+
+				@Override
+				public void execute(GameEvent event) {
+					Player player = ApplicationContextUtils.getPlayer();
+					player.getGameProgress().increaseNumberOfFoundSecrets();
+				}
+			};
+			action = BlockAction.block(new AsyncActionRegistrationRuleAction(AsyncActionType.ONSCREEN_NOTIFICATION, asyncAction, false), updateGameProgress, action);
 			rule = new Rule(Rule.RULE_FOUND_SECRET + "." + secretObjectKey, Lists.newArrayList(GameEventChangedPosition.class), secretEntranceTrigger, action, Rule.RULE_PRIORITY_LATEST);
 			ruleBook.put(rule.getId(), rule);
 		}

@@ -60,8 +60,7 @@ public class IntroState extends BasicGameState {
 		DrawingContext dc = new CenteredDrawingContext(centerContainerDrawingContext, 640, 192);
 		logo.draw(dc.x(), dc.y(), dc.w(), dc.h());
 		
-		Date date = new Date();
-		long timestamp = date.getTime();
+		long timestamp = System.currentTimeMillis();
 		timestamp = timestamp / 500;
 		
 		if (timestamp % 2 == 0) {

@@ -150,7 +150,7 @@ public class PiecesRenderer extends AbstractRenderer {
 			if (piece instanceof CollectibleComposed) {
 				CollectibleComposed cc = (CollectibleComposed)piece;
 				List<Collectible> elements = cc.getElements();
-				int numberOfElementToRender = (int)((new Date().getTime() / 1000) % elements.size());
+				int numberOfElementToRender = (int)((System.currentTimeMillis() / 1000) % elements.size());
 				element = elements.get(numberOfElementToRender);
 				elementType = pieceType(element);
 			} else {
