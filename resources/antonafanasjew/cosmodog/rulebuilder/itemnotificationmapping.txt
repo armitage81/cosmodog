@@ -1,4 +1,7 @@
 ruleName;pieceType;onlyFirst;gameProgressProperty;description
+PICK_DESCRIPTION;pick;true;pickDescription;You found a pick axe.<br>It can be used<br>to destroy the gray stones.<br><br>[Press ENTER]
+AXE_DESCRIPTION;axe;true;axeDescription;You found an axe.<br>It can be used<br>to destroy dry trees.<br><br>[Press ENTER]
+MACHETE_DESCRIPTION;machete;true;macheteDescription;You found a machete.<br>It can be used<br>to destroy the bamboo stems.<br><br>[Press ENTER]
 INFOBIT_DESCRIPTION;infobit;true;infobitDescription;You found an infobit.<br>Your knowledge increases.<br><br>[Press ENTER]
 INFOBYTE_DESCRIPTION;infobyte;true;infobyteDescription;You found an infobyte.<br>It's worth five infobits.<br><br>[Press ENTER]
 INFOBANK_DESCRIPTION;infobank;true;infobankDescription;You found an infobank.<br>It's worth twenty five infobits.<br><br>[Press ENTER]

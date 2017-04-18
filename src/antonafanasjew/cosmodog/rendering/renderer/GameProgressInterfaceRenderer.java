@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -61,7 +62,7 @@ public class GameProgressInterfaceRenderer implements Renderer {
 		
 		
 		int infobitsCollected = player.getGameProgress().getInfobits();
-		int infobitsRemaining = cosmodogMap.getInfobits().size() + cosmodogMap.getInfobytes().size() * 5 + cosmodogMap.getInfobanks().size() * 25;
+		int infobitsRemaining = PlayerMovementCache.getInstance().getNumberInfobitsInGame();
 		int infobitsAll = infobitsCollected + infobitsRemaining;
 		String infobitsValue = String.valueOf(infobitsCollected) + "/" +String.valueOf(infobitsAll);
 		

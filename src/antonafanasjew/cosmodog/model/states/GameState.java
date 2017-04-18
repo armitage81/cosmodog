@@ -234,6 +234,11 @@ public class GameState extends BasicGameState {
 					Log.error("Camera positioning could not be established", e);
 				}
 				
+				Player player = cosmodogGame.getPlayer();
+				Cam cam = cosmodogGame.getCam();
+				cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
+				cam.focusOnPiece(map, 0, 0, player);
+				
 			} catch (TiledMapIoException e1) {
 				throw new SlickException("Error while reading the cosmodog map", e1);
 			}
@@ -250,22 +255,11 @@ public class GameState extends BasicGameState {
 		container.getInput().isKeyPressed(Input.KEY_RETURN);
 		
 		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
-
-		try {
-			cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, mapDrawingContext.x(), mapDrawingContext.y(), mapDrawingContext.w(), mapDrawingContext.h()));
-		} catch (CamPositioningException e) {
-			Log.error("Camera positioning could not be established", e);
-		}
-
 		cloudsDeco = new CloudsDecoration(scene, 1000, 25, 25, 240, 240);
-		
+		birdsDecos.clear();
 		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 1.5f));
 		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 2));
 		
-		Player player = cosmodogGame.getPlayer();
-		Cam cam = cosmodogGame.getCam();
-		cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
-		cam.focusOnPiece(map, 0, 0, player);
 
 		//Check for the rules of the new game event
 		RuleBook ruleBook = cosmodogGame.getRuleBook();

@@ -163,7 +163,7 @@ public class ArsenalInventoryItem extends InventoryItem implements WeaponAmmunit
 				+ "Different weapons have different effects on a specific enemy type. "
 				+ "You can switch weapons with [TAB] and [SHIFT] + [TAB]. "
 				+ "Keep an eye on the ammo. "
-				+ "You can find additional ammo for all types of weapons in all corners of the world.";
+				+ "You can find additional ammo for all types of weapons in all corners of the valley.";
 	}
 	
 }

@@ -22,9 +22,10 @@ public class AlienBaseBlockade extends DynamicPiece {
 			Inventory inventory = player.getInventory();
 			
 			InsightInventoryItem insight = (InsightInventoryItem)inventory.get(InventoryItemType.INSIGHT);
-			
-			if (insight.getNumber() >= Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
-				opened = true;
+			if (insight != null) {
+				if (insight.getNumber() >= Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
+					opened = true;
+				}
 			}
 		}
 	}

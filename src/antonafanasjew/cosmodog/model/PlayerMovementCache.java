@@ -12,8 +12,12 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.listener.movement.MovementListenerAdapter;
+import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -54,6 +58,9 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private boolean playerOnPlatform;
 	
 	private Set<TiledObject> roofRegionsOverPlayer = Sets.newHashSet();
+	
+	private int numberInfobitsInGame;
+	
 
 	private Map<Position, DynamicPiece> dynamicPieces = Maps.newHashMap();
 	private Multimap<Class<?>, DynamicPiece> visibleDynamicPieces = ArrayListMultimap.create();
@@ -65,6 +72,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		recalculateRoofRegions(actor);
 		recalculateDynamicPieces();
 		recalculateVisibleDynamicPieces();
+		recalculateInfobitsInGame();
 	}
 	
 	private void recalculateDynamicPieces() {
@@ -170,8 +178,38 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		
 	}
 
+	
 	private void recalculateWhetherPlayerIsOnPlatform(Actor actor) {
 		setPlayerOnPlatform(CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));
+	}
+
+	private void recalculateInfobitsInGame() {
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		int noInfobits = map.getInfobits().size();
+		int noInfoBytes = map.getInfobytes().size();
+		int noInfobanks = map.getInfobanks().size();
+		
+		int inInventories = 0;
+		
+		Set<Enemy> enemies = map.getEnemies();
+		for (Enemy enemy : enemies) {
+			InventoryItem item = enemy.getInventoryItem();
+			if (item instanceof GoodieInventoryItem) {
+				GoodieInventoryItem goodie = (GoodieInventoryItem)item;
+				GoodieType goodieType = goodie.getGoodieType();
+				if (goodieType == GoodieType.infobit) {
+					inInventories += 1;
+				}
+				if (goodieType == GoodieType.infobyte) {
+					inInventories += 5;
+				}
+				if (goodieType == GoodieType.infobank) {
+					inInventories += 25;
+				}
+			}
+		}
+		
+		numberInfobitsInGame = inInventories + noInfobits + (5 * noInfoBytes) + (25 * noInfobanks);
 	}
 	
 	public boolean isPlayerOnPlatform() {
@@ -192,6 +230,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	public Multimap<Class<?>, DynamicPiece> getVisibleDynamicPieces() {
 		return visibleDynamicPieces;
+	}
+	
+	public int getNumberInfobitsInGame() {
+		return numberInfobitsInGame;
 	}
 }
 
