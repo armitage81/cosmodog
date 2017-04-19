@@ -10,9 +10,9 @@ import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
-import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -21,7 +21,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
@@ -29,6 +29,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.RenderingUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
@@ -100,11 +101,11 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		boolean playerIsOnPlatform = PlayerMovementCache.getInstance().isPlayerOnPlatform();
 		
-		boolean playerIsInHighGrass = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, player, playerTransition);
-		boolean playerIsInSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player, playerTransition);
+		boolean playerIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, player, playerTransition);
+		boolean playerIsInSnow = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player, playerTransition);
 		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki;
-		boolean playerIsInSoftGroundType = isPlayerOnSoftGroundType(map, player, playerTransition);
+		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerTransition);
 		boolean playerIsMoving = playerTransition != null;
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
@@ -122,26 +123,26 @@ public class PlayerRenderer extends AbstractRenderer {
 		}
 
 		
-		PlayerAppearanceType playerAppearanceType;
+		ActorAppearanceType playerAppearanceType;
 		
 		if (playerIsBeingTeleportedAndInvisible) {
-			playerAppearanceType = PlayerAppearanceType.ISTELEPORTING;
+			playerAppearanceType = ActorAppearanceType.ISTELEPORTING;
 		} else if (playerIsOnBoat) {
-			playerAppearanceType = PlayerAppearanceType.ONBOAT;
+			playerAppearanceType = ActorAppearanceType.ONBOAT;
 		} else if (playerIsInPlatform) {
-			playerAppearanceType = PlayerAppearanceType.INPLATFORM;
+			playerAppearanceType = ActorAppearanceType.INPLATFORM;
 		} else if (playerIsInVehicle) {
-			playerAppearanceType = PlayerAppearanceType.INVEHICLE;
+			playerAppearanceType = ActorAppearanceType.INVEHICLE;
 		} else if (playerIsOnPlatform) {
-			playerAppearanceType = PlayerAppearanceType.DEFAULT;
+			playerAppearanceType = ActorAppearanceType.DEFAULT;
 		} else if (playerIsInHighGrass) {
-			playerAppearanceType = PlayerAppearanceType.INHIGHGRASS;
+			playerAppearanceType = ActorAppearanceType.INHIGHGRASS;
 		} else if (playerIsOnSki) {
-			playerAppearanceType = PlayerAppearanceType.ONSKI;
+			playerAppearanceType = ActorAppearanceType.ONSKI;
 		} else if (playerIsInSoftGroundType) {
-			playerAppearanceType = PlayerAppearanceType.NOFEET;
+			playerAppearanceType = ActorAppearanceType.NOFEET;
 		} else {
-			playerAppearanceType = PlayerAppearanceType.DEFAULT;
+			playerAppearanceType = ActorAppearanceType.DEFAULT;
 		}
 		
 		PlayerActionType playerActionType;
@@ -163,7 +164,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		Animation playerWeaponAnimation = null;
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 		WeaponType weaponType = arsenal.getSelectedWeaponType();
 		
 		if (weaponType != WeaponType.FISTS) {
@@ -292,75 +293,10 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 	}
 	
-	private boolean isPlayerOnGroundTypeTile(TileType tileType, CosmodogMap map, Player player, ActorTransition playerTransition) {
-		boolean retVal = false;
-		if (playerTransition == null) {
-			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
-			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);
-		} else {
-			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
-			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
-			
-			boolean startTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, startTileId).equals(tileType);
-			boolean targetTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, targetTileId).equals(tileType);
-			
-			
-			if (startTileIdIsHighGrassTile && targetTileIdIsHighGrassTile) {
-				retVal = true;
-			} else if (!startTileIdIsHighGrassTile && !targetTileIdIsHighGrassTile) {
-				retVal = false;
-			} else if (startTileIdIsHighGrassTile && !targetTileIdIsHighGrassTile) {
-				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
-				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else if (!startTileIdIsHighGrassTile && targetTileIdIsHighGrassTile) {
-				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
-				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
-			}
-		}
-		
-		return retVal;
-	}
 
-	private boolean tileIdRepresentsSoftGroundType(int tileId) {
-		return
-		TileType.GROUND_TYPE_SNOW.getTileId() == tileId
-		||
-		TileType.GROUND_TYPE_GRASS.getTileId() == tileId
-		||
-		TileType.GROUND_TYPE_SAND.getTileId() == tileId
-		||
-		TileType.GROUND_TYPE_SWAMP.getTileId() == tileId;
-	}
+
 	
-	private boolean isPlayerOnSoftGroundType(CosmodogMap map, Player player, ActorTransition playerTransition) {
-		boolean retVal = false;
-		if (playerTransition == null) {
-			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
-			retVal = tileIdRepresentsSoftGroundType(tileId);
-			
-		} else {
-			
-			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
-			boolean startTileSoft = tileIdRepresentsSoftGroundType(startTileId);
-			
-			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
-			boolean targetTileSoft = tileIdRepresentsSoftGroundType(targetTileId);
-			
-			
-			if (startTileSoft && targetTileSoft) {
-				retVal = true;
-			} else if (!startTileSoft && !targetTileSoft) {
-				retVal = false;
-			} else if (startTileSoft && !targetTileSoft) {
-				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
-				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else if (!startTileSoft && targetTileSoft) {
-				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
-				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
-			}
-		}
-		
-		return retVal;
-	}
+	
+	
 	
 }

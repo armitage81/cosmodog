@@ -42,4 +42,14 @@ public class MovementListenerAdapter implements MovementListener {
 		
 	}
 
+	@Override
+	public void beforeFight(Actor actor, ApplicationContext applicationContext) {
+		
+	}
+
+	@Override
+	public void afterFight(Actor actor, ApplicationContext applicationContext) {
+		
+	}
+
 }

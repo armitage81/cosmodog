@@ -16,5 +16,8 @@ public interface MovementListener extends Serializable {
 	void beforeWaiting(Actor actor, ApplicationContext applicationContext);
 	void afterWaiting(Actor actor, ApplicationContext applicationContext);
 	
+	void beforeFight(Actor actor, ApplicationContext applicationContext);
+	void afterFight(Actor actor, ApplicationContext applicationContext);
+	
 	
 }

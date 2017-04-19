@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.domains;
 /**
  * Domain for player appearance types. Usually used to render the player character in an appropriate way. 
  */
-public enum PlayerAppearanceType {
+public enum ActorAppearanceType {
 	
 	/**
 	 * Normal appearance as a player character sprite.

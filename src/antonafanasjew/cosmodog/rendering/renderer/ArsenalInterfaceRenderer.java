@@ -14,7 +14,7 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
@@ -59,7 +59,7 @@ public class ArsenalInterfaceRenderer implements Renderer {
 		g.fillRect(0, 0, context.w(), context.h());
 		g.translate(-context.x(), -context.y());
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		

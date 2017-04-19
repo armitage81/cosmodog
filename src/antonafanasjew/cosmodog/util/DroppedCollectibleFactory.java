@@ -1,17 +1,14 @@
 package antonafanasjew.cosmodog.util;
 
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.model.inventory.AmmoInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AntidoteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
@@ -27,7 +24,6 @@ import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Key;
-import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 public class DroppedCollectibleFactory {
 
@@ -36,11 +32,6 @@ public class DroppedCollectibleFactory {
 		
 		if (item instanceof GoodieInventoryItem) {
 			retVal = new CollectibleGoodie(((GoodieInventoryItem)item).getGoodieType());
-		} else if (item instanceof ArsenalInventoryItem) {
-			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)item;
-			WeaponType weaponType = arsenal.getWeaponsCopy().keySet().iterator().next();
-			Weapon weapon = arsenal.getWeaponsCopy().get(weaponType);
-			retVal = new CollectibleWeapon(weapon);
 		} else if (item instanceof AmmoInventoryItem) {
 			retVal = new CollectibleAmmo(((AmmoInventoryItem)item).getWeaponType());
 		} else if (item instanceof KeyRingInventoryItem) {

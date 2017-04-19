@@ -106,6 +106,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
@@ -137,7 +138,7 @@ public class InitializationUtils {
 			player.getGameProgress().addInfobit();
 		}
 
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem) player.getInventory().get(InventoryItemType.ARSENAL);
+		ArsenalInventoryItem arsenal = player.getArsenal();
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE, 1));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN, 1));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG, 1));
@@ -262,10 +263,10 @@ public class InitializationUtils {
 								InventoryItem inventoryItem = InventoryItemFactory.createInventoryItem((Collectible)piece);
 								enemy.setInventoryItem(inventoryItem);
 							} else {
-								map.getMapPieces().add(piece);	
+								map.getMapPieces().put(Position.fromPiece(piece), piece);	
 							}
 						} else {
-							map.getMapPieces().add(piece);
+							map.getMapPieces().put(Position.fromPiece(piece), piece);
 						}
 					}
 				}
@@ -535,7 +536,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
 		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
 
-		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation.<br>You activate it.<br>The worm will have harder time to locate you.<br><br>[Press ENTER]");
+		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel<br>for the ventilation.<br>You activate it.<br>The worm will have harder time<br>to locate you.<br><br>[Press ENTER]");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
 		switchOnVentilationAction = BlockAction.block(switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
@@ -546,7 +547,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
 		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
 
-		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage.<br>You activate it.<br>The worm will have even harder time to locate you.<br><br>[Press ENTER]");
+		asyncAction = new PopUpNotificationAction("This is the control panel<br>for the sewage.<br>You activate it.<br>The worm will have even harder time<br>to locate you.<br><br>[Press ENTER]");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
 		switchOnSewageAction = BlockAction.block(switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);

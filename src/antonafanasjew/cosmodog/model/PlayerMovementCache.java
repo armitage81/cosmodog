@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -38,6 +39,8 @@ import com.google.common.collect.Sets;
  */
 public class PlayerMovementCache extends MovementListenerAdapter {
 
+	public static final int CACHE_RANGE = 50;
+	
 	private static final long serialVersionUID = 3422584256506346853L;
 	
 	private static PlayerMovementCache instance = null;
@@ -65,6 +68,8 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private Map<Position, DynamicPiece> dynamicPieces = Maps.newHashMap();
 	private Multimap<Class<?>, DynamicPiece> visibleDynamicPieces = ArrayListMultimap.create();
 	
+	private Set<Enemy> enemiesInRange = Sets.newHashSet();
+	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		recalculateClosestSupplyPosition(actor, x1, y1, x2, y2, applicationContext);
@@ -73,8 +78,29 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		recalculateDynamicPieces();
 		recalculateVisibleDynamicPieces();
 		recalculateInfobitsInGame();
+		recalculateEnemiesInRange();
 	}
 	
+	@Override
+	public void afterFight(Actor actor, ApplicationContext applicationContext) {
+		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+	}
+
+	private void recalculateEnemiesInRange() {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		enemiesInRange.clear();
+		
+		Set<Enemy> enemies = map.getEnemies();
+		for (Enemy enemy : enemies) {
+			float distance = PiecesUtils.distanceBetweenPieces(player, enemy);
+			if (distance < CACHE_RANGE) {
+				enemiesInRange.add(enemy);
+			}
+		}
+	}
+
 	private void recalculateDynamicPieces() {
 	
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
@@ -156,7 +182,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	private void recalculateClosestSupplyPosition(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
-		Set<Piece> pieces = map.getSupplies();
+		Collection<Piece> pieces = map.getSupplies().values();
 		List<Piece> piecesSortedByProximity = Lists.newArrayList(pieces);
 		Collections.sort(piecesSortedByProximity, new Comparator<Piece>() {
 
@@ -235,5 +261,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	public int getNumberInfobitsInGame() {
 		return numberInfobitsInGame;
 	}
+	
+	public Set<Enemy> getEnemiesInRange() {
+		return enemiesInRange;
+	}
+	
 }
 

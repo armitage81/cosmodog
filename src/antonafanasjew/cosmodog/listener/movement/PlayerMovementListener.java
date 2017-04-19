@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -46,7 +45,6 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
-import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
@@ -153,7 +151,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		Player player = cosmodog.getCosmodogGame().getPlayer();
 		CosmodogMap cosmodogMap = cosmodog.getCosmodogGame().getMap();
 		
-		Set<Piece> pieces = cosmodogMap.getMapPieces();
+		Collection<Piece> pieces = cosmodogMap.getMapPieces().values();
 		Iterator<Piece> it = pieces.iterator();
 
 		while (it.hasNext()) {

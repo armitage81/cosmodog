@@ -8,21 +8,26 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
 import antonafanasjew.cosmodog.domains.UnitType;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.RenderingUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyDestructionFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
+import antonafanasjew.cosmodog.view.transitions.impl.PlayerAttackingFightPhaseTransition;
 
 import com.google.common.collect.Maps;
 
@@ -81,6 +86,9 @@ public class NpcRenderer extends AbstractRenderer {
 			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 			
 			
+			boolean enemyIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, enemy, enemyTransition);
+			boolean enemyIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, enemy, enemyTransition);
+			
 			boolean enemyIsMoving = enemyTransition != null;
 			boolean enemyIsFighting = fightPhaseTransition != null && fightPhaseTransition.getEnemy().equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
 			boolean enemyIsShooting = enemyIsFighting && fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition;
@@ -97,6 +105,15 @@ public class NpcRenderer extends AbstractRenderer {
 			} else {
 				enemyActionType = NpcActionType.INANIMATE;
 			}
+
+			ActorAppearanceType enemyAppearanceType = ActorAppearanceType.DEFAULT;
+			
+			if (enemyIsInHighGrass) {
+				enemyAppearanceType = ActorAppearanceType.INHIGHGRASS;
+			} else if (enemyIsInSoftGroundType) {
+				enemyAppearanceType = ActorAppearanceType.NOFEET;
+			}
+			
 			
 			DirectionType enemyDirection = enemy.getDirection();
 			
@@ -104,7 +121,7 @@ public class NpcRenderer extends AbstractRenderer {
 				enemyDirection = enemyTransition.getTransitionalDirection();				
 			}
 			
-			String animationId = Mappings.npcAnimationId(enemy.getUnitType(), enemyDirection, enemyActionType);
+			String animationId = Mappings.npcAnimationId(enemy.getUnitType(), enemyDirection, enemyActionType, enemyAppearanceType);
 			Animation enemyAnimation = ApplicationContext.instance().getAnimations().get(animationId);
 			
 			

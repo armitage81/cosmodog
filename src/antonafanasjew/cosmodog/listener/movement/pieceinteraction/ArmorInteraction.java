@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
-import java.util.Set;
+import java.util.Collection;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -19,7 +19,7 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 		
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		
-		Set<Piece> mapPieces = cosmodogMap.getMapPieces();
+		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().values();
 		
 		for (Piece piece2 : mapPieces) {
 			if (piece2 instanceof Vehicle) {

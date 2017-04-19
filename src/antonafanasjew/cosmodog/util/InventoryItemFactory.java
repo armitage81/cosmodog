@@ -6,10 +6,8 @@ import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.inventory.AmmoInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AntidoteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
@@ -25,7 +23,6 @@ import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Key;
-import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 public class InventoryItemFactory {
 
@@ -34,8 +31,6 @@ public class InventoryItemFactory {
 			return createInventoryItemFromGoodie((CollectibleGoodie)collectible);
 		} else if (collectible instanceof CollectibleTool) {
 			return createInventoryItemFromTool((CollectibleTool)collectible);
-		} else if (collectible instanceof CollectibleWeapon) {
-			return createInventoryItemFromWeapon((CollectibleWeapon)collectible);
 		} else if (collectible instanceof CollectibleAmmo) {
 			return createInventoryItemFromAmmo((CollectibleAmmo)collectible);
 		} else if (collectible instanceof CollectibleKey) {
@@ -79,13 +74,6 @@ public class InventoryItemFactory {
 		} else {
 			return null;
 		}
-	}
-	
-	private static InventoryItem createInventoryItemFromWeapon(CollectibleWeapon collectibleWeapon) {
-		Weapon weapon = collectibleWeapon.getWeapon();
-		ArsenalInventoryItem arsenal = new ArsenalInventoryItem();		
-		arsenal.addWeaponToArsenal(weapon);
-		return arsenal;
 	}
 	
 	private static InventoryItem createInventoryItemFromAmmo(CollectibleAmmo collectibleAmmo) {

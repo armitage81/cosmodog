@@ -79,4 +79,22 @@ public class ComposedMovementListener implements MovementListener {
 		}	
 	}
 
+	@Override
+	public void beforeFight(Actor actor, ApplicationContext applicationContext) {
+		Iterator<MovementListener> it = underlyingMovementListeners.iterator();
+		while (it.hasNext()) {
+			MovementListener l = it.next();
+			l.beforeFight(actor, applicationContext);
+		}	
+	}
+
+	@Override
+	public void afterFight(Actor actor, ApplicationContext applicationContext) {
+		Iterator<MovementListener> it = underlyingMovementListeners.iterator();
+		while (it.hasNext()) {
+			MovementListener l = it.next();
+			l.afterFight(actor, applicationContext);
+		}
+	}
+
 }

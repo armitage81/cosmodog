@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.topology;
 
 import java.io.Serializable;
 
+import antonafanasjew.cosmodog.model.Piece;
+
 /**
  * 2D Position of a point
  */
@@ -16,6 +18,13 @@ public class Position implements Serializable {
 		Position position = new Position();
 		position.x = x;
 		position.y = y;
+		return position;
+	}
+	
+	public static Position fromPiece(Piece piece) {
+		Position position = new Position();
+		position.x = piece.getPositionX();
+		position.y = piece.getPositionY();
 		return position;
 	}
 	

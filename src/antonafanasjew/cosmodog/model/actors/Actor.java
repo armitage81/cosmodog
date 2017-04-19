@@ -40,6 +40,14 @@ public abstract class Actor extends Piece {
 		composedMovementListener.afterWaiting(this, ApplicationContext.instance());
 	}
 	
+	public void beginFight() {
+		composedMovementListener.beforeFight(this, ApplicationContext.instance());
+	}
+	
+	public void endFight() {
+		composedMovementListener.afterFight(this, ApplicationContext.instance());
+	}
+	
 	public void shiftHorizontal(int positionOffset) {
 		int x1 = this.getPositionX();
 		int y1 = this.getPositionY();

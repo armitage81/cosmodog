@@ -170,7 +170,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
-
+			if (!skipTurn) {
+				applicationContext.getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
+			}
 		} else if (player.getInventory().hasPlatform() && !player.getInventory().exitingPlatform()) {
 
 			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
@@ -357,7 +359,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		boolean playerInPlatform = player.getInventory().hasPlatform();
 		
 		if (playerInPlatform) {
-			for (Piece piece : cosmodogGame.getMap().getMapPieces()) {
+			for (Piece piece : cosmodogGame.getMap().getMapPieces().values()) {
 				if (piece instanceof Platform == false && CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
 					if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
 						piece.setPositionY(piece.getPositionY() + (player.getDirection() == DirectionType.UP ? -1 : 1));

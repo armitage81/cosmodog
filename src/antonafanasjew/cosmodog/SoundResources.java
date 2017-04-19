@@ -116,4 +116,14 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_SECRET_FOUND = "sound.secretfound";
 
+	/**
+	 * Short engine sound to indicate car movement.
+	 */
+	public static final String SOUND_CAR_MOVES = "sound.carmoves";
+
+	/**
+	 * Entering car.
+	 */
+	public static final String SOUND_CAR_DOOR = "sound.cardoor";
+
 }

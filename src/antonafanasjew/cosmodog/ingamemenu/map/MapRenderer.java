@@ -59,14 +59,18 @@ public class MapRenderer implements Renderer {
 		}
 		*/
 		
+		int mapPieceColumns = ChartInventoryItem.CHART_PIECE_NUMBER_X;
+		int mapPieceRows = ChartInventoryItem.CHART_PIECE_NUMBER_Y;
+		
 		Image mapImage = ApplicationContext.instance().getAnimations().get("completechart").getImage(0);
 		
 		DrawingContext contentContext = new CenteredDrawingContext(drawingContext, drawingContext.w() - 10, drawingContext.h() - 10);
 		
 		DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(contentContext);
 		DrawingContext descriptionDrawingContext = descriptionDrawingContext(contentContext);
-		DrawingContext coordinatesDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 4, 0, 0);
-		DrawingContext hintsDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 4, 0, 1, 1, 3);
+		DrawingContext coordinatesDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 0);
+		DrawingContext hintsDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 1, 1, 2);
+		DrawingContext fullMapDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 3, 1, 3);
 		
 		MapInputState mapInputState = (MapInputState)renderingParameter;
 		
@@ -78,23 +82,24 @@ public class MapRenderer implements Renderer {
 		ChartInventoryItem chartInventoryItem = (ChartInventoryItem)player.getInventory().get(InventoryItemType.CHART);
 		
 		boolean chartPieceDiscovered = chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(mapVisibleAreaX, mapVisibleAreaY);
+
+		float mapAreaContextLength = mapAreaDrawingContext.w() < mapAreaDrawingContext.h() ? mapAreaDrawingContext.w() : mapAreaDrawingContext.h();
+		DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
 		
 		if (chartPieceDiscovered) {
 		
-			int mapPieceColumns = ChartInventoryItem.CHART_PIECE_NUMBER_X;
-			int mapPieceRows = ChartInventoryItem.CHART_PIECE_NUMBER_Y;
-			
 			float pieceWidth = mapImage.getWidth() / (float)mapPieceColumns;
 			float pieceHeight = mapImage.getHeight() / (float)mapPieceRows;
 			
 			float offsetX = pieceWidth * mapVisibleAreaX;
 			float offsetY = pieceHeight * mapVisibleAreaY;
 			
-			float mapAreaContextLength = mapAreaDrawingContext.w() < mapAreaDrawingContext.h() ? mapAreaDrawingContext.w() : mapAreaDrawingContext.h();
-			DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
+
 			
 			graphics.drawImage(mapImage, mapAreaQuadraticDrawingContext.x(), mapAreaQuadraticDrawingContext.y(), mapAreaQuadraticDrawingContext.x() + mapAreaQuadraticDrawingContext.w(), mapAreaQuadraticDrawingContext.y() + mapAreaQuadraticDrawingContext.h(), offsetX, offsetY, offsetX + pieceWidth, offsetY + pieceHeight);
 		
+		} else {
+			LetterTextRenderer.getInstance().render(gameContainer, graphics, mapAreaQuadraticDrawingContext, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment("No map data.", 3.0f, LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
 		}
 		
 		
@@ -113,6 +118,11 @@ public class MapRenderer implements Renderer {
 		graphics.setColor(Color.white);
 		graphics.drawRoundRect(0, 0, hintsDrawingContext.w(), hintsDrawingContext.h(), 5);
 		graphics.translate(-hintsDrawingContext.x(), -hintsDrawingContext.y());
+		
+		graphics.translate(fullMapDrawingContext.x(), fullMapDrawingContext.y());
+		graphics.setColor(Color.white);
+		graphics.drawRoundRect(0, 0, fullMapDrawingContext.w(), fullMapDrawingContext.h(), 5);
+		graphics.translate(-fullMapDrawingContext.x(), -fullMapDrawingContext.y());
 		
 		coordinatesDrawingContext = new CenteredDrawingContext(coordinatesDrawingContext, 20);
 		
@@ -147,6 +157,38 @@ public class MapRenderer implements Renderer {
 			LetterTextRenderer.getInstance().render(gameContainer, graphics, lineDc, LetterTextRenderingParameter.fromTextAndScaleFactor(textLines.get(i), 2f));
 		}
 		
+		
+		DrawingContext fullMapGridDc = new CenteredDrawingContext(fullMapDrawingContext, 20);
+		
+		float gridW = fullMapGridDc.w() / mapPieceColumns;
+		float gridH = fullMapGridDc.h() / mapPieceRows;
+		
+		graphics.translate(fullMapGridDc.x(), fullMapGridDc.y());
+		
+		for (int i = 0; i < mapPieceColumns; i++) {
+			for (int j = 0; j < mapPieceRows; j++) {
+				float x = gridW * i;
+				float y = gridH * j;
+				boolean currentSelection = (i == mapVisibleAreaX) && (j == mapVisibleAreaY);
+				boolean discovered = chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(i, j);
+				if (discovered) {
+					graphics.setColor(Color.blue);
+				} else {
+					graphics.setColor(Color.red);
+				}
+				graphics.fillRect(x, y, gridW, gridH);
+				graphics.setColor(Color.white);
+				graphics.drawRect(x, y, gridW, gridH);
+				
+				long timestamp = System.currentTimeMillis();
+				if (currentSelection && (timestamp / 250) % 2 == 0) {
+					graphics.setColor(Color.orange);
+					graphics.fillRect(x, y, gridW, gridH);
+				}
+			}
+		}
+		
+		graphics.translate(-fullMapGridDc.x(), -fullMapGridDc.y());
 		
 	}
 	

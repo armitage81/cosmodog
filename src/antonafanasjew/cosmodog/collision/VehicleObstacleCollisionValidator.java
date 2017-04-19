@@ -12,6 +12,8 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
  */
 public class VehicleObstacleCollisionValidator extends AbstractCollisionValidator {
 
+	public static int N = 0;
+	
 	@Override
 	protected CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();

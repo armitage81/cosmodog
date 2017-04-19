@@ -15,6 +15,7 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.DroppedCollectibleFactory;
 import antonafanasjew.cosmodog.view.transitions.EnemyDestructionFightPhaseTransition;
@@ -79,7 +80,7 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 					dropped = newCollectible;
 				}
 				
-				cosmodogMap.getMapPieces().add(dropped);
+				cosmodogMap.getMapPieces().put(Position.fromPiece(dropped), dropped);
 			}
 		}
 		

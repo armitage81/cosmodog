@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,7 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
@@ -37,7 +39,7 @@ public class CosmodogMap extends CosmodogModel {
 	private transient CustomTiledMap customTiledMap;
 	
 	private Set<Enemy> enemies = Sets.newHashSet();
-	private Set<Piece> mapPieces = Sets.newHashSet();
+	private Map<Position, Piece> mapPieces = Maps.newHashMap();
 	private Set<Piece> effectPieces = Sets.newHashSet();
 	private Set<Piece> markedTilePieces = Sets.newHashSet();
 	private Multimap<Class<?>, DynamicPiece> dynamicPieces = ArrayListMultimap.create();
@@ -51,7 +53,7 @@ public class CosmodogMap extends CosmodogModel {
 		this.setCustomTiledMap(customTiledMap);
 	}
 	
-	public Set<Piece> getMapPieces() {
+	public Map<Position, Piece> getMapPieces() {
 		return mapPieces;
 	}
 	
@@ -63,8 +65,8 @@ public class CosmodogMap extends CosmodogModel {
 		return markedTilePieces;
 	}
 	
-	public Set<Piece> getInfobits() {
-		Set<Piece> infobits = Sets.filter(mapPieces, new Predicate<Piece>() {
+	public Map<Position, Piece> getInfobits() {
+		Map<Position, Piece> infobits = Maps.filterValues(mapPieces, new Predicate<Piece>() {
 			@Override
 			public boolean apply(Piece piece) {
 				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobit);
@@ -73,8 +75,8 @@ public class CosmodogMap extends CosmodogModel {
 		return infobits;
 	}
 	
-	public Set<Piece> getInfobytes() {
-		Set<Piece> infobytes = Sets.filter(mapPieces, new Predicate<Piece>() {
+	public Map<Position, Piece> getInfobytes() {
+		Map<Position, Piece> infobytes = Maps.filterValues(mapPieces, new Predicate<Piece>() {
 			@Override
 			public boolean apply(Piece piece) {
 				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobyte);
@@ -83,8 +85,8 @@ public class CosmodogMap extends CosmodogModel {
 		return infobytes;
 	}
 	
-	public Set<Piece> getInfobanks() {
-		Set<Piece> infobanks = Sets.filter(mapPieces, new Predicate<Piece>() {
+	public Map<Position, Piece> getInfobanks() {
+		Map<Position, Piece> infobanks = Maps.filterValues(mapPieces, new Predicate<Piece>() {
 			@Override
 			public boolean apply(Piece piece) {
 				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobank);
@@ -93,8 +95,8 @@ public class CosmodogMap extends CosmodogModel {
 		return infobanks;
 	}
 	
-	public Set<Piece> getSupplies() {
-		Set<Piece> supplies = Sets.filter(mapPieces, new Predicate<Piece>() {
+	public Map<Position, Piece> getSupplies() {
+		Map<Position, Piece> supplies = Maps.filterValues(mapPieces, new Predicate<Piece>() {
 			@Override
 			public boolean apply(Piece piece) {
 				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
@@ -103,12 +105,12 @@ public class CosmodogMap extends CosmodogModel {
 		return supplies;
 	}
 	
-	public Set<Piece> visibleMapPieces(int x, int y, int width, int height, int grace) {
-		Set<Piece> retVal = Sets.newHashSet();
-		for (Piece piece : mapPieces) {
-			if (piece.getPositionX() >= x - grace && piece.getPositionX() < x + width + grace) {
-				if (piece.getPositionY() >= y - grace && piece.getPositionY() < y + height + grace) {
-					retVal.add(piece);
+	public Map<Position, Piece> visibleMapPieces(int x, int y, int width, int height, int grace) {
+		Map<Position, Piece> retVal = Maps.newHashMap();
+		for (Position position : mapPieces.keySet()) {
+			if (position.getX() >= x - grace && position.getX() < x + width + grace) {
+				if (position.getY() >= y - grace && position.getY() < y + height + grace) {
+					retVal.put(position, mapPieces.get(position));
 				}
 			}
 		}
@@ -116,13 +118,7 @@ public class CosmodogMap extends CosmodogModel {
 	}
 	
 	public Piece pieceAtTile(int x, int y) {
-		Piece retVal = null;
-		for (Piece piece : mapPieces) {
-			if (piece.getPositionX() == x && piece.getPositionY() == y) {
-				retVal = piece;
-			}
-		}
-		return retVal;
+		return mapPieces.get(Position.fromCoordinates(x, y));
 	}
 	
 	public Enemy enemyAtTile(int x, int y) {
@@ -173,6 +169,10 @@ public class CosmodogMap extends CosmodogModel {
 		return enemies;
 	}
 
+	public Set<Enemy> getEnemiesInRange() {
+		return PlayerMovementCache.getInstance().getEnemiesInRange();
+	}
+	
 	public Set<Enemy> nearbyEnemies(int x, int y, int maxDistance) {
 		Set<Enemy> retVal = Sets.newHashSet();
 		for (Enemy enemy : enemies) {
@@ -199,7 +199,7 @@ public class CosmodogMap extends CosmodogModel {
 	public Platform getCachedPlatform(CosmodogGame cosmodogGame) {
 		
 		if (!platformCacheInitialized) {
-			Set<Piece> pieces = getMapPieces();
+			Collection<Piece> pieces = getMapPieces().values();
 			
 			for (Piece piece : pieces) {
 				if (piece instanceof Platform) {

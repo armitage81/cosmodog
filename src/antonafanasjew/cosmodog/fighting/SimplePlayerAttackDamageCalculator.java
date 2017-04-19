@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
@@ -22,7 +22,7 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		
 		ArmorType enemyArmorType = enemy.getArmorType();
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 		
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		

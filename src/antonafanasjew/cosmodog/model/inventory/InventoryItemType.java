@@ -10,7 +10,6 @@ public enum InventoryItemType {
 	INSIGHT,
 	SOFTWARE,
 	CHART,
-	ARSENAL,
 	KEY_RING,
 	GEIGERZAEHLER,
 	SUPPLYTRACKER,

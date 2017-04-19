@@ -17,7 +17,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -65,6 +65,10 @@ public class FightAction extends PhaseBasedAction {
 	 */
 	@Override
 	public void onTrigger() {
+		
+		Player player = ApplicationContextUtils.getPlayer();
+		player.beginFight();
+		
 		initFightActionResult();
 		initActionPhaseRegistry();
 	}
@@ -77,6 +81,12 @@ public class FightAction extends PhaseBasedAction {
 		getActionPhaseRegistry().update(after - before, gc, sbg);
 	}
 
+	@Override
+	public void onEnd() {
+		Player player = ApplicationContextUtils.getPlayer();
+		player.endFight();
+	}
+	
 	/**
 	 * Returns true if the fight action registry is empty, meaning that there
 	 * are no unplayed fight phases.
@@ -98,7 +108,7 @@ public class FightAction extends PhaseBasedAction {
 		//It could be that we have only one shot left but are surrounded by up to 4 enemies.
 		//In such a case, we need to count down the remaining ammunition while preparing the result.
 		//In the case we assume the ammunition to end, the subsequent attacks should be considered as unarmed. 
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		Weapon selectedWeapon = arsenal.getWeaponsCopy().get(selectedWeaponType);
 		int remainingAmmo = selectedWeaponType.equals(WeaponType.FISTS) ? 100 : selectedWeapon.getAmmunition();

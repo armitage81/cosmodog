@@ -6,7 +6,7 @@ import java.util.Set;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
-import antonafanasjew.cosmodog.domains.PlayerAppearanceType;
+import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -256,7 +256,7 @@ public class Mappings {
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
 	private static final Map<DirectionType, String> ANIMATION_KEY_BY_DIRECTION_TYPE = Maps.newHashMap();
 	private static final Map<NpcActionType, String> ANIMATION_KEY_BY_NPC_ACTION_TYPE = Maps.newHashMap();
-	private static final Map<PlayerAppearanceType, String> ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE = Maps.newHashMap();
+	private static final Map<ActorAppearanceType, String> ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE = Maps.newHashMap();
 	private static final Map<PlayerActionType, String> ANIMATION_KEY_BY_PLAYER_ACTION_TYPE = Maps.newHashMap();
 	
 	static {
@@ -280,14 +280,14 @@ public class Mappings {
 		ANIMATION_KEY_BY_NPC_ACTION_TYPE.put(NpcActionType.SHOOTING, "Shooting");
 		ANIMATION_KEY_BY_NPC_ACTION_TYPE.put(NpcActionType.EXPLODING, "Exploding");
 		
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.DEFAULT, "Default");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.INVEHICLE, "InVehicle");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.INPLATFORM, "InPlatform");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.ONBOAT, "OnBoat");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.INHIGHGRASS, "InGrass");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.ISTELEPORTING, "Teleporting");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.NOFEET, "NoFeet");
-		ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.put(PlayerAppearanceType.ONSKI, "OnSki");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.DEFAULT, "Default");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.INVEHICLE, "InVehicle");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.INPLATFORM, "InPlatform");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.ONBOAT, "OnBoat");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.INHIGHGRASS, "InGrass");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.ISTELEPORTING, "Teleporting");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.NOFEET, "NoFeet");
+		ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.put(ActorAppearanceType.ONSKI, "OnSki");
 		
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.ANIMATE, "Animated");
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.INANIMATE, "Inanimated");
@@ -296,12 +296,12 @@ public class Mappings {
 		
 	}
 	
-	public static String npcAnimationId(UnitType unitType, DirectionType directionType, NpcActionType actionType) {
-		return "enemy" + ANIMATION_KEY_BY_UNIT_TYPE.get(unitType) + ANIMATION_KEY_BY_NPC_ACTION_TYPE.get(actionType) + ANIMATION_KEY_BY_DIRECTION_TYPE.get(directionType);
+	public static String npcAnimationId(UnitType unitType, DirectionType directionType, NpcActionType actionType, ActorAppearanceType appearanceType) {
+		return "enemy" + ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.get(appearanceType) + ANIMATION_KEY_BY_UNIT_TYPE.get(unitType) + ANIMATION_KEY_BY_NPC_ACTION_TYPE.get(actionType) + ANIMATION_KEY_BY_DIRECTION_TYPE.get(directionType);
 	}
 	
-	public static String playerAnimationId(PlayerAppearanceType playerAppearanceType, PlayerActionType playerActionType, DirectionType directionType) {
-		return "player" + ANIMATION_KEY_BY_PLAYER_APPEARANCE_TYPE.get(playerAppearanceType) + ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.get(playerActionType) + ANIMATION_KEY_BY_DIRECTION_TYPE.get(directionType);
+	public static String playerAnimationId(ActorAppearanceType playerAppearanceType, PlayerActionType playerActionType, DirectionType directionType) {
+		return "player" + ANIMATION_KEY_BY_ACTOR_APPEARANCE_TYPE.get(playerAppearanceType) + ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.get(playerActionType) + ANIMATION_KEY_BY_DIRECTION_TYPE.get(directionType);
 	}
 	
 	public static Map<TileType, Integer> ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS = Maps.newHashMap();

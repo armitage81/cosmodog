@@ -8,13 +8,6 @@ import java.util.HashMap;
  */
 public class Inventory extends HashMap<InventoryItemType, InventoryItem> {
 	
-	/**
-	 * Constructor. Initializes arsenal as the only inventory item type.
-	 */
-	public Inventory() {
-		put(InventoryItemType.ARSENAL, new ArsenalInventoryItem());
-	}
-	
 	private static final long serialVersionUID = 2066865979982208629L;
 
 	/**

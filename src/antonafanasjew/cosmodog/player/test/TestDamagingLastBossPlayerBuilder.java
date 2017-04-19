@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.player.test;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
@@ -32,7 +32,7 @@ public class TestDamagingLastBossPlayerBuilder extends AbstractPlayerBuilder {
 			
 		}
 		
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem) player.getInventory().get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE, 1));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN, 1));
 		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG, 1));

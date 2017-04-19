@@ -13,7 +13,7 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.PositionUtils;
@@ -73,7 +73,7 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		int damage = getFightPhaseResult().getDamage();
 		
 		enemy.setLife(enemy.getLife() - damage);
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 		WeaponType weaponType = arsenal.getSelectedWeaponType();
 		if (weaponType != null) {
 			Weapon weapon = arsenal.getWeaponsCopy().get(weaponType);

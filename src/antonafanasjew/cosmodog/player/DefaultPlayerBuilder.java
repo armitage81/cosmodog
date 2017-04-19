@@ -6,8 +6,10 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
-		player.setPositionX(264);
-		player.setPositionY(25);
+		player.setPositionX(140);
+		player.setPositionY(58);
+		player.setMaxLife(200);
+		player.setLife(200);
 	}
 
 }

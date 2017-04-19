@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.inventory;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,11 @@ import antonafanasjew.cosmodog.model.upgrades.WeaponAmmunitionListener;
  * As opposite to the other items, the arsenal is just a container
  * for weapons.
  */
-public class ArsenalInventoryItem extends InventoryItem implements WeaponAmmunitionListener {
+public class Arsenal implements WeaponAmmunitionListener, Serializable {
 
 	
-	private static final long serialVersionUID = -1043098798358662237L;
+	private static final long serialVersionUID = 7890272006234765988L;
 
-	
 	private Map<WeaponType, Weapon> weapons = Maps.newHashMap();
 	
 	private List<WeaponType> weaponsOrder = Lists.newArrayList(WeaponType.FISTS, WeaponType.PISTOL, WeaponType.SHOTGUN, WeaponType.RIFLE, WeaponType.MACHINEGUN, WeaponType.RPG);
@@ -30,8 +30,7 @@ public class ArsenalInventoryItem extends InventoryItem implements WeaponAmmunit
 	/**
 	 * Constructor. Initializes the arsenal with the dummy weapon 'Fists'
 	 */
-	public ArsenalInventoryItem() {
-		super(InventoryItemType.ARSENAL);
+	public Arsenal() {
 		this.weapons.put(WeaponType.FISTS, new Weapon(WeaponType.FISTS));
 	}
 
@@ -155,15 +154,6 @@ public class ArsenalInventoryItem extends InventoryItem implements WeaponAmmunit
 		if (weapon.getWeaponType().infiniteAmmo() == false && weapon.getAmmunition() <= 0) {
 			this.selectFirstAvailableWeaponTypeBackward(0);
 		}
-	}
-
-	@Override
-	public String description() {
-		return "The arsenal contains all weapons that you have found during your journey. "
-				+ "Different weapons have different effects on a specific enemy type. "
-				+ "You can switch weapons with [TAB] and [SHIFT] + [TAB]. "
-				+ "Keep an eye on the ammo. "
-				+ "You can find additional ammo for all types of weapons in all corners of the valley.";
 	}
 	
 }

@@ -9,9 +9,7 @@ import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.Inventory;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 public class AmmoInteraction extends AbstractPieceInteraction {
@@ -23,8 +21,7 @@ public class AmmoInteraction extends AbstractPieceInteraction {
 		
 		WeaponType weaponType = collectibleAmmo.getWeaponType();
 		
-		Inventory inventory = player.getInventory();
-		ArsenalInventoryItem arsenal = (ArsenalInventoryItem)inventory.get(InventoryItemType.ARSENAL);
+		Arsenal arsenal = player.getArsenal();
 		Map<WeaponType, Weapon> owningWeapons = arsenal.getWeaponsCopy();
 		
 		Weapon weapon = owningWeapons.get(weaponType);

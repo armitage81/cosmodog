@@ -37,13 +37,14 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.ArsenalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rules.actions.async.InGameMenuAction;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
@@ -152,7 +153,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 							Vehicle vehicle = vehicleItem.getVehicle();
 							vehicle.setPositionX(player.getPositionX());
 							vehicle.setPositionY(player.getPositionY());
-							map.getMapPieces().add(vehicle);
+							map.getMapPieces().put(Position.fromPiece(vehicle), vehicle);
 							player.getInventory().remove(InventoryItemType.VEHICLE);
 							Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 							if (carmotor.playing()) {
@@ -168,7 +169,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 							Platform platform = platformItem.getPlatform();
 							platform.setPositionX(player.getPositionX());
 							platform.setPositionY(player.getPositionY());
-							map.getMapPieces().add(platform);
+							map.getMapPieces().put(Position.fromPiece(platform), platform);
 							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
@@ -263,7 +264,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		//Handle weapon scrolling
 		if (input.isKeyPressed(Input.KEY_TAB)) {
-			ArsenalInventoryItem arsenal = (ArsenalInventoryItem)player.getInventory().get(InventoryItemType.ARSENAL);
+			Arsenal arsenal = player.getArsenal();
 
 			WeaponType previouslySelectedWeaponType = arsenal.getSelectedWeaponType();
 			

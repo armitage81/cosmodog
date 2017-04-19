@@ -37,7 +37,7 @@ public class PlatformAsVehicleCollisionValidator extends AbstractCollisionValida
 			}
 		}
 		//Check blocking vehicles. The platform is blocked only if the vehicle is not on the platform, but would be after platform movement.
-		for (Piece piece : cosmodogMap.getMapPieces()) {
+		for (Piece piece : cosmodogMap.getMapPieces().values()) {
 			if (piece instanceof Vehicle) {
 				if (PiecesUtils.distanceBetweenPieces(piece, actor) <= 10) {
 					if (CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), tileX, tileY)) {
