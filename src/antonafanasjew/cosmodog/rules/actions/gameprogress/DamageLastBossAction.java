@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -39,6 +41,7 @@ public class DamageLastBossAction extends AbstractRuleAction {
 		if (bossDestroyed) {
 			OverheadNotificationAction.registerOverheadNotification(player, "The guardian is already destroyed");
 		} else {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 			SoftwareInventoryItem software = (SoftwareInventoryItem)player.getInventory().get(InventoryItemType.SOFTWARE);
 			if (software == null || software.getNumber() < Constants.NUMBER_OF_SOFTWARE_PIECES_IN_GAME) {
 				OverheadNotificationAction.registerOverheadNotification(player, "Needs " + String.valueOf(Constants.NUMBER_OF_SOFTWARE_PIECES_IN_GAME) + " software chips.");	

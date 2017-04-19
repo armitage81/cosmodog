@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -39,6 +41,8 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		if (CORRECT_SEQUENCE.equals(currentSequence)) { //Sequence was entered successfully already, do not bother with the action.
 			return;
 		}
+		
+		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();

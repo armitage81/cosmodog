@@ -2,7 +2,9 @@ package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
 import java.util.Collection;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -32,6 +34,8 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 
 		initIfNecessary();
 
+		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
+		
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		gameProgress.getMinesDeactivationInfo().put(quadrandType, Boolean.TRUE);
 

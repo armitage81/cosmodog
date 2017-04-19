@@ -126,4 +126,19 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_CAR_DOOR = "sound.cardoor";
 
+	/**
+	 * Keyboard sound when approaching a console.
+	 */
+	public static final String SOUND_CONSOLE = "sound.console";
+
+	/**
+	 * Growl of the worm that is eating the player character.
+	 */
+	public static final String SOUND_WORM_GROWL = "sound.wormgrowl";
+
+	/**
+	 * Earthquake before the worm appears.
+	 */
+	public static final String SOUND_EARTHQUAKE = "sound.earthquake";
+
 }

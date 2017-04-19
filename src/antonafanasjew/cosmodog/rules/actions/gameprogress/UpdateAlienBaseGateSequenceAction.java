@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -11,6 +13,7 @@ import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
+import antonafanasjew.cosmodog.rules.PlaySoundRuleAction;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
@@ -23,7 +26,7 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 
 	@Override
 	public void execute(GameEvent event) {
-
+		
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		String value = gameProgress.getProgressProperties().get(GameProgress.GAME_PROGRESS_ALIEN_BASE_GATE_SEQUENCE);
 		int currentSequenceNumber = value == null ? -1 : Integer.valueOf(value);
@@ -31,6 +34,8 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 		if (currentSequenceNumber >= 5) { //Sequence was entered successfully already, do not bother with the action.
 			return;
 		}
+		
+		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();

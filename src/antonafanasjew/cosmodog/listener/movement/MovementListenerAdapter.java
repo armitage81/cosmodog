@@ -52,4 +52,14 @@ public class MovementListenerAdapter implements MovementListener {
 		
 	}
 
+	@Override
+	public void beforeTeleportation(Actor actor, ApplicationContext applicationContext) {
+		
+	}
+
+	@Override
+	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
+		
+	}
+
 }

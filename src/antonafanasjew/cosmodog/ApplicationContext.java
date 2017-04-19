@@ -318,6 +318,9 @@ public class ApplicationContext {
 		Sound secretFound = new Sound("data/sound/secretfound.wav");
 		Sound carMoves = new Sound("data/sound/carmoves.wav");
 		Sound carDoor = new Sound("data/sound/cardoor.wav");
+		Sound console = new Sound("data/sound/console.wav");
+		Sound wormGrowl = new Sound("data/sound/wormgrowl.wav");
+		Sound earthquake = new Sound("data/sound/earthquake.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -341,6 +344,9 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_FOUND, secretFound);
 		this.getSoundResources().put(SoundResources.SOUND_CAR_MOVES, carMoves);
 		this.getSoundResources().put(SoundResources.SOUND_CAR_DOOR, carDoor);
+		this.getSoundResources().put(SoundResources.SOUND_CONSOLE, console);
+		this.getSoundResources().put(SoundResources.SOUND_WORM_GROWL, wormGrowl);
+		this.getSoundResources().put(SoundResources.SOUND_EARTHQUAKE, earthquake);
 
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

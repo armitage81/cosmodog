@@ -65,6 +65,7 @@ import antonafanasjew.cosmodog.resourcehandling.builder.rules.PieceRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentCommentRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentDialogRuleBuilder;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
+import antonafanasjew.cosmodog.rules.PlaySoundRuleAction;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleBook;
@@ -539,7 +540,7 @@ public class InitializationUtils {
 		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel<br>for the ventilation.<br>You activate it.<br>The worm will have harder time<br>to locate you.<br><br>[Press ENTER]");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
-		switchOnVentilationAction = BlockAction.block(switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
+		switchOnVentilationAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
 
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE2, Lists.newArrayList(GameEventChangedPosition.class), switchOnVentilationTrigger, switchOnVentilationAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
@@ -550,7 +551,7 @@ public class InitializationUtils {
 		asyncAction = new PopUpNotificationAction("This is the control panel<br>for the sewage.<br>You activate it.<br>The worm will have even harder time<br>to locate you.<br><br>[Press ENTER]");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
-		switchOnSewageAction = BlockAction.block(switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
+		switchOnSewageAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
 
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE3, Lists.newArrayList(GameEventChangedPosition.class), switchOnSewageTrigger, switchOnSewageAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);

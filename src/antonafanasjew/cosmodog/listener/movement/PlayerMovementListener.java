@@ -143,6 +143,14 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
 	}
+	
+	@Override
+	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
+		collectCollectibles(applicationContext);
+		refillWater(applicationContext);
+		refillFuel(applicationContext);
+		detectMines(applicationContext);
+	}
 
 	private void collectCollectibles(ApplicationContext applicationContext) {
 
@@ -458,8 +466,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		int radiationTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
-			player.decreaseLife(2);
-			OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
+			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) == null) {
+				player.decreaseLife(2);
+				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
+			} else {
+				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: Suppressed by suit");
+			}
 		}
 		
 	}

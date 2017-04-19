@@ -97,4 +97,22 @@ public class ComposedMovementListener implements MovementListener {
 		}
 	}
 
+	@Override
+	public void beforeTeleportation(Actor actor, ApplicationContext applicationContext) {
+		Iterator<MovementListener> it = underlyingMovementListeners.iterator();
+		while (it.hasNext()) {
+			MovementListener l = it.next();
+			l.beforeTeleportation(actor, applicationContext);
+		}
+	}
+
+	@Override
+	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
+		Iterator<MovementListener> it = underlyingMovementListeners.iterator();
+		while (it.hasNext()) {
+			MovementListener l = it.next();
+			l.afterTeleportation(actor, applicationContext);
+		}		
+	}
+
 }

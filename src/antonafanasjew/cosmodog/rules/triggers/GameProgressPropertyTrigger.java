@@ -11,10 +11,16 @@ public class GameProgressPropertyTrigger extends AbstractRuleTrigger {
 
 	private String gameProgressProperty;
 	private String value;
-
+	private String valueForNull;
+	
 	public GameProgressPropertyTrigger(String gameProgressProperty, String value) {
+		this(gameProgressProperty, value, "false");
+	}
+	
+	public GameProgressPropertyTrigger(String gameProgressProperty, String value, String valueForNull) {
 		this.gameProgressProperty = gameProgressProperty;
 		this.value = value;
+		this.valueForNull = valueForNull;
 	}
 
 	@Override
@@ -22,9 +28,11 @@ public class GameProgressPropertyTrigger extends AbstractRuleTrigger {
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		String actualValue = gameProgress.getProgressProperties().get(gameProgressProperty);
 		
-		boolean nullIsOk = "false".equals(value); //In case the value is 'false', a missing property is also ok.
+		if (actualValue == null) {
+			actualValue = valueForNull;
+		}
 		
-		return ((actualValue != null) && actualValue.equals(value)) || (nullIsOk && actualValue == null);
+		return actualValue.equals(value);
 	}
 
 }

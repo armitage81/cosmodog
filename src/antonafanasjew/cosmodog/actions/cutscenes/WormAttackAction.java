@@ -3,6 +3,8 @@ package antonafanasjew.cosmodog.actions.cutscenes;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -14,6 +16,10 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 
 	private static final long serialVersionUID = 8882906074849186691L;
 
+	private boolean triggeredEarthquake = false;
+	private boolean triggeredWorm = false;
+	private boolean triggeredExitEarthquake = false;
+	
 	/**
 	 * This transition describes the progress of the attacking worm.
 	 * Depending on the percentage of the action duration, it can indicate
@@ -84,7 +90,23 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 		if (actionPercentage > 1.0f) {
 			actionPercentage = 1.0f;
 		}
+				
 		getTransition().percentage = actionPercentage;
+		
+		if (!triggeredEarthquake) {
+			triggeredEarthquake = true;
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EARTHQUAKE).play();
+		}
+		
+		if (!triggeredExitEarthquake && actionPercentage > 0.6) {
+			triggeredExitEarthquake= true;
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EARTHQUAKE).play();
+		}
+		
+		if (transition.wormHeightPercentage() > 0 && triggeredWorm == false) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_WORM_GROWL).play();
+			triggeredWorm = true;
+		}
 	}
 	
 	/**

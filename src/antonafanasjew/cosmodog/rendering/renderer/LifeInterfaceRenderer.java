@@ -226,7 +226,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		
 		TileDrawingContext radiationLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 0, 0);
-		TileDrawingContext radiationValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 1, 0);
+		DrawingContext radiationValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 1, 0);
 		TileDrawingContext supplyTrackerLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 2, 0);
 		TileDrawingContext supplyTrackerValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 3, 0);
 		TileDrawingContext planetaryCalendarLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 4, 0);
@@ -234,27 +234,52 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		LetterTextRenderer.getInstance().render(gameContainer, g, radiationLabelDrawingContext, LetterTextRenderingParameter.fromText("RAD"));
 		
-		String radiationValue;
-		GeigerZaehlerInventoryItem geigerZaehler = (GeigerZaehlerInventoryItem)player.getInventory().get(InventoryItemType.GEIGERZAEHLER);
-		if (geigerZaehler == null) {
-			radiationValue = "--";
-		} else {
-			int posX = player.getPositionX();
-			int posY = player.getPositionY();
-			int radiationTiles = 0;
-			for (int i = posX - 1; i <= posX + 1; i++) {
-				for (int j = posY - 1; j <= posY + 1; j++) {
-					int radiationTileId = map.getTileId(i, j, Layers.LAYER_META_RADIATION);
-					if (TileType.RADIATION.getTileId() == radiationTileId) {
-						radiationTiles++;
-					}
+		radiationValueDrawingContext = new CenteredDrawingContext(radiationValueDrawingContext, 15, 15);
+		
+		boolean[][] radiationInfos = new boolean[3][3];
+		int posX = player.getPositionX();
+		int posY = player.getPositionY();
+		int xMin = posX - 1;
+		int xMax = posX + 1;
+		int yMin = posY - 1;
+		int yMax = posY + 1;
+		for (int i = xMin; i <= xMax; i++) {
+			for (int j = yMin; j <= yMax; j++) {
+				radiationInfos[i - xMin][j - yMin] = false;
+				int radiationTileId = map.getTileId(i, j, Layers.LAYER_META_RADIATION);
+				if (TileType.RADIATION.getTileId() == radiationTileId) {
+					radiationInfos[i - xMin][j - yMin] = true;
 				}
 			}
-			radiationValue = String.valueOf(radiationTiles);
 		}
 		
-		LetterTextRenderer.getInstance().render(gameContainer, g, radiationValueDrawingContext, LetterTextRenderingParameter.fromText(radiationValue));
+		GeigerZaehlerInventoryItem geigerZaehler = (GeigerZaehlerInventoryItem)player.getInventory().get(InventoryItemType.GEIGERZAEHLER);
 		
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				Color color;
+				if (geigerZaehler == null) {
+					color = Color.gray;
+				} else {
+					if (radiationInfos[i][j] == true) {
+						long timestamp = System.currentTimeMillis();
+						if ((timestamp / 250) % 2 == 0) {
+							color = Color.red;
+						} else {
+							color = Color.white;
+						}
+					} else {
+						color = Color.green;	
+					}
+				}
+				g.setColor(color);
+				TileDrawingContext tileDc = new TileDrawingContext(radiationValueDrawingContext, 3, 3, i, j);
+				g.fillRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
+				g.setColor(Color.white);
+				g.setLineWidth(1);
+				g.drawRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
+			}
+		}
 		
 		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerLabelDrawingContext, LetterTextRenderingParameter.fromText("BOX"));
 

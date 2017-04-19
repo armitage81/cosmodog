@@ -195,6 +195,7 @@ inventoryItemCosmodog;data/inventory_items.png;16;16;[3/0/150];true;true
 inventoryItemSoftware;data/software.png;16;16;[0/0/150];true;true
 inventoryItemChart;data/map.png;16;16;[0/0/200];true;true
 inventoryItemGeigerZaehler;data/inventory_items.png;16;16;[6/0/150];true;true
+inventoryItemRadioactiveSuit;data/inventory_items.png;16;16;[1/1/150];true;true
 inventoryItemSupplyTracker;data/inventory_items.png;16;16;[7/0/150];true;true
 inventoryItemBinoculars;data/inventory_items.png;16;16;[8/0/150];true;true
 inventoryItemSki;data/inventory_items.png;16;16;[9/0/150];true;true
@@ -943,6 +944,23 @@ playerPistolDefaultHitLeft;data/player_weapon_pistol.png;16;16;[3/2/25,4/2/25,5/
 playerPistolDefaultHitUp;data/player_weapon_pistol.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
 
 
+playerPistolNoFeetInanimatedRight;data/player_weapon_pistol.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerPistolNoFeetInanimatedDown;data/player_weapon_pistol.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerPistolNoFeetInanimatedLeft;data/player_weapon_pistol.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerPistolNoFeetInanimatedUp;data/player_weapon_pistol.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerPistolNoFeetAnimatedRight;data/player_weapon_pistol.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerPistolNoFeetAnimatedDown;data/player_weapon_pistol.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerPistolNoFeetAnimatedLeft;data/player_weapon_pistol.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerPistolNoFeetAnimatedUp;data/player_weapon_pistol.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerPistolNoFeetHitRight;data/player_weapon_pistol.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerPistolNoFeetHitDown;data/player_weapon_pistol.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerPistolNoFeetHitLeft;data/player_weapon_pistol.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerPistolNoFeetHitUp;data/player_weapon_pistol.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
+
 
 playerShotgunDefaultInanimatedRight;data/player_weapon_shotgun.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
 playerShotgunDefaultInanimatedDown;data/player_weapon_shotgun.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
@@ -961,6 +979,22 @@ playerShotgunDefaultHitUp;data/player_weapon_shotgun.png;16;16;[3/3/25,4/3/25,5/
 
 
 
+playerShotgunNoFeetInanimatedRight;data/player_weapon_shotgun.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerShotgunNoFeetInanimatedDown;data/player_weapon_shotgun.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerShotgunNoFeetInanimatedLeft;data/player_weapon_shotgun.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerShotgunNoFeetInanimatedUp;data/player_weapon_shotgun.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerShotgunNoFeetAnimatedRight;data/player_weapon_shotgun.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerShotgunNoFeetAnimatedDown;data/player_weapon_shotgun.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerShotgunNoFeetAnimatedLeft;data/player_weapon_shotgun.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerShotgunNoFeetAnimatedUp;data/player_weapon_shotgun.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerShotgunNoFeetHitRight;data/player_weapon_shotgun.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerShotgunNoFeetHitDown;data/player_weapon_shotgun.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerShotgunNoFeetHitLeft;data/player_weapon_shotgun.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerShotgunNoFeetHitUp;data/player_weapon_shotgun.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
 playerRifleDefaultInanimatedRight;data/player_weapon_rifle.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
 playerRifleDefaultInanimatedDown;data/player_weapon_rifle.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
 playerRifleDefaultInanimatedLeft;data/player_weapon_rifle.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
@@ -975,6 +1009,22 @@ playerRifleDefaultHitRight;data/player_weapon_rifle.png;16;16;[3/0/25,4/0/25,5/0
 playerRifleDefaultHitDown;data/player_weapon_rifle.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
 playerRifleDefaultHitLeft;data/player_weapon_rifle.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
 playerRifleDefaultHitUp;data/player_weapon_rifle.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
+playerRifleNoFeetInanimatedRight;data/player_weapon_rifle.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerRifleNoFeetInanimatedDown;data/player_weapon_rifle.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerRifleNoFeetInanimatedLeft;data/player_weapon_rifle.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerRifleNoFeetInanimatedUp;data/player_weapon_rifle.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerRifleNoFeetAnimatedRight;data/player_weapon_rifle.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerRifleNoFeetAnimatedDown;data/player_weapon_rifle.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerRifleNoFeetAnimatedLeft;data/player_weapon_rifle.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerRifleNoFeetAnimatedUp;data/player_weapon_rifle.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerRifleNoFeetHitRight;data/player_weapon_rifle.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerRifleNoFeetHitDown;data/player_weapon_rifle.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerRifleNoFeetHitLeft;data/player_weapon_rifle.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerRifleNoFeetHitUp;data/player_weapon_rifle.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
 
 
 
@@ -994,6 +1044,21 @@ playerMachinegunDefaultHitLeft;data/player_weapon_machinegun.png;16;16;[3/2/25,4
 playerMachinegunDefaultHitUp;data/player_weapon_machinegun.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
 
 
+playerMachinegunNoFeetInanimatedRight;data/player_weapon_machinegun.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerMachinegunNoFeetInanimatedDown;data/player_weapon_machinegun.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerMachinegunNoFeetInanimatedLeft;data/player_weapon_machinegun.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerMachinegunNoFeetInanimatedUp;data/player_weapon_machinegun.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerMachinegunNoFeetAnimatedRight;data/player_weapon_machinegun.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerMachinegunNoFeetAnimatedDown;data/player_weapon_machinegun.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerMachinegunNoFeetAnimatedLeft;data/player_weapon_machinegun.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerMachinegunNoFeetAnimatedUp;data/player_weapon_machinegun.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerMachinegunNoFeetHitRight;data/player_weapon_machinegun.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerMachinegunNoFeetHitDown;data/player_weapon_machinegun.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerMachinegunNoFeetHitLeft;data/player_weapon_machinegun.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerMachinegunNoFeetHitUp;data/player_weapon_machinegun.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
 
 playerRpgDefaultInanimatedRight;data/player_weapon_rpg.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
 playerRpgDefaultInanimatedDown;data/player_weapon_rpg.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
@@ -1009,6 +1074,23 @@ playerRpgDefaultHitRight;data/player_weapon_rpg.png;16;16;[3/0/25,4/0/25,5/0/25]
 playerRpgDefaultHitDown;data/player_weapon_rpg.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
 playerRpgDefaultHitLeft;data/player_weapon_rpg.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
 playerRpgDefaultHitUp;data/player_weapon_rpg.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
+
+playerRpgNoFeetInanimatedRight;data/player_weapon_rpg.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true
+playerRpgNoFeetInanimatedDown;data/player_weapon_rpg.png;16;16;[0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300,0/1/2000,1/1/300];true;true
+playerRpgNoFeetInanimatedLeft;data/player_weapon_rpg.png;16;16;[0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300,0/2/2000,1/2/300];true;true
+playerRpgNoFeetInanimatedUp;data/player_weapon_rpg.png;16;16;[0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300,0/3/2000,1/3/300];true;true
+
+playerRpgNoFeetAnimatedRight;data/player_weapon_rpg.png;16;16;[0/4/50,1/4/50,2/4/50,1/4/50];true;true
+playerRpgNoFeetAnimatedDown;data/player_weapon_rpg.png;16;16;[0/5/50,1/5/50,2/5/50,1/5/50];true;true
+playerRpgNoFeetAnimatedLeft;data/player_weapon_rpg.png;16;16;[0/6/50,1/6/50,2/6/50,1/6/50];true;true
+playerRpgNoFeetAnimatedUp;data/player_weapon_rpg.png;16;16;[0/7/50,1/7/50,2/7/50,1/7/50];true;true
+
+playerRpgNoFeetHitRight;data/player_weapon_rpg.png;16;16;[3/0/25,4/0/25,5/0/25];true;true
+playerRpgNoFeetHitDown;data/player_weapon_rpg.png;16;16;[3/1/25,4/1/25,5/1/25];true;true
+playerRpgNoFeetHitLeft;data/player_weapon_rpg.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
+playerRpgNoFeetHitUp;data/player_weapon_rpg.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
+
 
 wormAttackSnowSpark;data/worm.png;48;16;[0/3/200,0/4/200,0/5/200];true;true
 wormAttack;data/worm.png;48;48;[1/0/10000];true;true

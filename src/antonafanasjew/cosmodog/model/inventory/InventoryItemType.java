@@ -22,6 +22,7 @@ public enum InventoryItemType {
 	MACHETE,
 	AXE,
 	GOODIE,
-	AMMO;
+	AMMO, 
+	RADIOACTIVESUIT;
 	
 }

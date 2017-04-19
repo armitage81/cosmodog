@@ -22,23 +22,27 @@ public class ItemNotificationRuleBuilder extends AbstractResourceWrapperBuilder<
 		
 		String ruleName = values[0];
 		String pieceName = values[1];
-		boolean onlyFirstTime = Boolean.valueOf(values[2]);
+		String ifGameProgressPropertyValueIs = values[2];
 		String gameProgressProperty = values[3];
 		String description = values[4];
 			
 		RuleTrigger trigger = new InteractingWithPieceTrigger(pieceName);
 		
-		if (onlyFirstTime) {
-			RuleTrigger onlyOnceTrigger = new GameProgressPropertyTrigger(gameProgressProperty, "false");
-			trigger = AndTrigger.and(onlyOnceTrigger, trigger);
+		boolean valueIsAny = ifGameProgressPropertyValueIs.equalsIgnoreCase("ANY");
+		
+		if (!valueIsAny) {
+			RuleTrigger specificValueTrigger = new GameProgressPropertyTrigger(gameProgressProperty, ifGameProgressPropertyValueIs, "0");
+			trigger = AndTrigger.and(specificValueTrigger, trigger);
 		}
 		
 		
 		AsyncAction asyncAction = new PopUpNotificationAction(description);
 		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		
-		if (onlyFirstTime) {
-			RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, "true");
+		if (!valueIsAny) {
+			int value = Integer.valueOf(ifGameProgressPropertyValueIs);
+			value = value + 1;
+			RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, String.valueOf(value));
 			action = BlockAction.block(action, setPropertyAction);
 		}
 				

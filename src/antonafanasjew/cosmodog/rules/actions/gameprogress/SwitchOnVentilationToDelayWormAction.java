@@ -13,7 +13,7 @@ public class SwitchOnVentilationToDelayWormAction extends AbstractRuleAction {
 	private static final long serialVersionUID = 8620572862854412890L;
 
 	@Override
-	public void execute(GameEvent event) {	
+	public void execute(GameEvent event) {			
 		ApplicationContextUtils.getGameProgress().setTurnsTillWormAppears(GameProgress.TURNS_TILL_WORM_APPEARS_PHASE2);
 	}
 

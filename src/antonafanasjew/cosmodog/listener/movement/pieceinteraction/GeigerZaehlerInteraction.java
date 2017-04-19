@@ -7,15 +7,18 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
+import antonafanasjew.cosmodog.model.inventory.RadioactiveSuitInventoryItem;
 
 public class GeigerZaehlerInteraction extends AbstractPieceInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
-		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundGeigerzaehler()), true, false);
-		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
+		GeigerZaehlerInventoryItem geigerCounter = (GeigerZaehlerInventoryItem)player.getInventory().get(InventoryItemType.GEIGERZAEHLER);
+		if (geigerCounter == null) {
+			player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
+		} else {
+			player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
+		}
 	}
 	
 	@Override
