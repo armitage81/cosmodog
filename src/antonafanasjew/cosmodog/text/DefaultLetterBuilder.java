@@ -71,7 +71,7 @@ public class DefaultLetterBuilder implements LetterBuilder {
 		LETTER_WIDTHS.put(index++, 8.0f); //L
 		LETTER_WIDTHS.put(index++, 11.0f); //M
 		LETTER_WIDTHS.put(index++, 10.0f); //N
-		LETTER_WIDTHS.put(index++, 11.0f); //O
+		LETTER_WIDTHS.put(index++, 9.0f); //O
 		LETTER_WIDTHS.put(index++, 8.0f); //P
 		LETTER_WIDTHS.put(index++, 11.0f); //Q
 		LETTER_WIDTHS.put(index++, 8.0f); //R

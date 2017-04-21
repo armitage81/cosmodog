@@ -325,7 +325,7 @@ public class GameState extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		
+
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 
@@ -431,6 +431,8 @@ public class GameState extends BasicGameState {
 		textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
 		
 		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
+		
+
 		
 	}
 
