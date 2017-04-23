@@ -21,6 +21,26 @@ import com.google.common.collect.Sets;
 
 public class Mappings {
 
+	public static Map<WeaponType, String> WEAPON_TYPE_TO_PIECE_TYPE = Maps.newHashMap();
+	
+	static {
+		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.PISTOL, "pistol");
+		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.SHOTGUN, "shotgun");
+		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.RIFLE, "rifle");
+		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.MACHINEGUN, "machinegun");
+		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.RPG, "rpg");
+	}
+	
+	public static Map<WeaponType, String> WEAPON_TYPE_TO_AMMO_PIECE_TYPE = Maps.newHashMap();
+	
+	static {
+		WEAPON_TYPE_TO_AMMO_PIECE_TYPE.put(WeaponType.PISTOL, "CollectibleAmmo_pistol");
+		WEAPON_TYPE_TO_AMMO_PIECE_TYPE.put(WeaponType.SHOTGUN, "CollectibleAmmo_shotgun");
+		WEAPON_TYPE_TO_AMMO_PIECE_TYPE.put(WeaponType.RIFLE, "CollectibleAmmo_rifle");
+		WEAPON_TYPE_TO_AMMO_PIECE_TYPE.put(WeaponType.MACHINEGUN, "CollectibleAmmo_machinegun");
+		WEAPON_TYPE_TO_AMMO_PIECE_TYPE.put(WeaponType.RPG, "CollectibleAmmo_rpg");
+	}
+	
 	public static Map<TileType, String> MAP_TILE_TO_LOG_SERIES = Maps.newHashMap();
 	
 	static {

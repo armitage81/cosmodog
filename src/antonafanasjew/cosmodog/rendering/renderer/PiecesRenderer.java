@@ -10,6 +10,8 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
@@ -26,6 +28,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.PieceRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
@@ -76,11 +79,51 @@ public class PiecesRenderer extends AbstractRenderer {
 	private static Map<String, PieceRenderer> pieceRendererMap = Maps.newHashMap();
 	
 	static {
+		
 		pieceRendererMap.put(CollectibleComposed.class.getSimpleName(), new CollectibleComposedRenderer());
-		pieceRendererMap.put(CollectibleTool.class.getSimpleName(), new ToolRenderer());
-		pieceRendererMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponRenderer());
-		pieceRendererMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoRenderer());
-		pieceRendererMap.put(CollectibleKey.class.getSimpleName(), new KeyRenderer());
+		
+		pieceRendererMap.put(CollectibleTool.ToolType.antidote.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.axe.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.binoculars.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.boat.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.dynamite.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.jacket.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.machete.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.minedetector.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.pick.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.ski.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.supplytracker.name(), new ToolRenderer());
+		
+		pieceRendererMap.put("pistol", new WeaponRenderer());
+		pieceRendererMap.put("shotgun", new WeaponRenderer());
+		pieceRendererMap.put("rifle", new WeaponRenderer());
+		pieceRendererMap.put("machinegun", new WeaponRenderer());
+		pieceRendererMap.put("rpg", new WeaponRenderer());
+		pieceRendererMap.put("CollectibleAmmo_pistol", new AmmoRenderer());
+		pieceRendererMap.put("CollectibleAmmo_shotgun", new AmmoRenderer());
+		pieceRendererMap.put("CollectibleAmmo_rifle", new AmmoRenderer());
+		pieceRendererMap.put("CollectibleAmmo_machinegun", new AmmoRenderer());
+		pieceRendererMap.put("CollectibleAmmo_rpg", new AmmoRenderer());
+
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.blackKeyDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.blueKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.blueKeyDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.brownKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.cyanKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.darkblueKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.greenKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.greenKeyDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.lilaKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.purpleKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.redKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.redKeyDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.whiteKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.yellowKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.yellowKeyDoor, new KeyRenderer());
+		
+		
+		
 		pieceRendererMap.put(CollectibleLog.class.getSimpleName(), new LogRenderer());
 		pieceRendererMap.put(Vehicle.class.getSimpleName(), new VehicleRenderer());
 		pieceRendererMap.put(Platform.class.getSimpleName(), new PlatformRenderer());

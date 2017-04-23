@@ -1,49 +1,61 @@
-ruleName;pieceType;ifGameProgressPropertyValueIs;gameProgressProperty;description
-PICK_DESCRIPTION;pick;0;pickDescription;You found a pick axe. It can be used to destroy the gray stones.
-AXE_DESCRIPTION;axe;0;axeDescription;You found an axe. It can be used to destroy dry trees.
-MACHETE_DESCRIPTION;machete;0;macheteDescription;You found a machete. It can be used to destroy the bamboo stems.
-INFOBIT_DESCRIPTION;infobit;0;infobitDescription;You found an infobit. Your knowledge increases.
-INFOBYTE_DESCRIPTION;infobyte;0;infobyteDescription;You found an infobyte. It's worth five infobits.
-INFOBANK_DESCRIPTION;infobank;0;infobankDescription;You found an infobank. It's worth twenty five infobits.
-SUPPLIES_DESCRIPTION;supplies;0;suppliesDescription;You found a supply ration and ate it. Your hunger is stilled. 
-VEHICLE_DESCRIPTION;vehicle;0;vehicleDescription; You found a vehicle. Use it to travel faster. Keep an eye on the fuel. Exit the vehicle by pressing [SHIFT] + [arrow key].
-SOULESSENCE_DESCRIPTION;soulessence;ANY;soulessenceDescription;You found the jar of Soul Essence. Your maximal life has increased.
-MEDIPACK_DESCRIPTION;medipack;0;medipackDescription;You found a medipack and used it. Your health has been restored.
-ARMOR_DESCRIPTION;armor;ANY;armorDescription;You found an armor plate. Vehicles will be more durable.
-INSIGHT_DESCRIPTION;insight;ANY;insightDesciption;You found an alien artifact.
-SOFTWARE_DESCRIPTION;software;ANY;softwareDesciption;You found a software chip from the data center.
-CHART_DESCRIPTION;chart;ANY;chartDesciption;You found a map of this area. It can be viewed in the menu on the map screen.
-PISTOL_DESCRIPTION;pistol;0;pistolDescription;You found a pistol. Press [TAB] to switch weapons. Collect ammo to reload.
-SHOTGUN_DESCRIPTION;shotgun;0;shotgunDescription;You found a shotgun. It's efficient against unarmored enemies. Press [TAB] to switch weapons. Collect ammo to reload.
-RIFLE_DESCRIPTION;rifle;0;rifleDescription;You found an assault rifle. It's efficiency is higher for lower armor. Press [TAB] to switch weapons. Collect ammo to reload.
-MACHINEGUN_DESCRIPTION;machinegun;0;machinegunDescription;You found a machine gun. It's devastating against medium and heavy armor. Press [TAB] to switch weapons. Collect ammo to reload.
-RPG_DESCRIPTION;rpg;0;rpgDescription;You found an RPG. It can kill fortified targets in one hit. Press [TAB] to switch weapons. Collect ammo to reload.
-PISTOL_AMMO_DESCRIPTION;CollectibleAmmo_pistol;0;pistolAmmoDescription;You found pistol ammunition.
-SHOTGUN_AMMO_DESCRIPTION;CollectibleAmmo_shotgun;0;shotgunAmmoDescription;You found shotgun ammunition.
-RIFLE_AMMO_DESCRIPTION;CollectibleAmmo_rifle;0;rifleAmmoDescription;You found assault rifle ammunition.
-MACHINEGUN_AMMO_DESCRIPTION;CollectibleAmmo_machinegun;0;machinegunAmmoDescription;You found machine gun ammunition.
-RPG_AMMO_DESCRIPTION;CollectibleAmmo_rpg;0;rpgAmmoDescription;You found RPG ammunition.
-BOAT_DESCRIPTION;boat;0;boatDescription;You found a boat. You can cross water now.
-GEIGERZAEHLER_DESCRIPTION;geigerzaehler;0;geigerzaehlerDescription;You found a Geiger counter. It indicates radiation. The 'RAD' value shows the number of contaminated adjacent tiles including your own position.
-GEIGERZAEHLER_DESCRIPTION2;geigerzaehler;1;geigerzaehlerDescription;You found the radiation suit. It will protect you from radioactive rays.
-BOTTLE_DESCRIPTION;bottle;ANY;bottleDescription;You found a bottle. Your water capacity increases.
-FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;ANY;foodcompartmentDescription;You found a food compartment and attached it to your backback. Your supply capacity increases.
-SUPPLYTRACKER_DESCRIPTION;supplytracker;ANY;supplytrackerDescription;You found the supply tracker. It must have fallen from your emergency pod. Use it to track the closest supply box.
-JACKET_DESCRIPTION;jacket;ANY;jacketDescription;You found a warm jacket. Now you can walk cold regions without freezing.
-ANTIDOTE_DESCRIPTION;antidote;ANY;antidoteDescription;You found the antidote. Poison is not a threat anymore.
-MINEDETECTOR_DESCRIPTION;minedetector;ANY;minedetectorDescription;You found a mine detector. It will detect nearby mines. Avoid stepping on them.
-BINOCULARS_DESCRIPTION;binoculars;ANY;binocularsDescription;You found the binoculars. You can see distant things now. Press Y and Z to zoom in and out.
-SKI_DESCRIPTION;ski;ANY;skiDescription;You found the ski. You can cross snow faster now.
-RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters.
-LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage.
-CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room.
-GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermasters keycard.
-YELLOW_KEYCARD_DESCRIPTION;CollectibleKey_yellowKeycardDoor;0;CollectibleKey_yellowKeycardDoor;You found the key card to the expedition wing.
-BROWN_KEYCARD_DESCRIPTION;CollectibleKey_brownKeycardDoor;0;CollectibleKey_brownKeycardDoor;You found the key card to the hangar.
-PURPLE_KEYCARD_DESCRIPTION;CollectibleKey_purpleKeycardDoor;0;CollectibleKey_purpleKeycardDoor;You found captains key card.
-DARKBLUE_KEYCARD_DESCRIPTION;CollectibleKey_darkblueKeycardDoor;0;CollectibleKey_darkblueKeycardDoor;You found the key card of the keeper of traditions.
-WHITE_KEYCARD_DESCRIPTION;CollectibleKey_whiteKeycardDoor;0;CollectibleKey_whiteKeycardDoor;You found the expedition chiefs keycard.
-YELLOW_KEY_DESCRIPTION;CollectibleKey_yellowKeyDoor;0;CollectibleKey_yellowKeyDoor;You found the yellow key. It will open some doors.
-GREEN_KEY_DESCRIPTION;CollectibleKey_greenKeyDoor;0;CollectibleKey_greenKeyDoor;You found the green key. It will open some doors.
-BLUE_KEY_DESCRIPTION;CollectibleKey_blueKeyDoor;0;CollectibleKey_blueKeyDoor;You found the blue key. It will open some doors.
-RED_KEY_DESCRIPTION;CollectibleKey_redKeyDoor;0;CollectibleKey_redKeyDoor;You found the red key. It will open some doors.
+ruleName;pieceType;ifGameProgressPropertyValueIs;gameProgressProperty;description;priority
+PICK_DESCRIPTION;pick;0;pickDescription;You found a pick axe. It can be used to destroy the gray stones.;40
+AXE_DESCRIPTION;axe;0;axeDescription;You found an axe. It can be used to destroy dry trees.;40
+MACHETE_DESCRIPTION;machete;0;macheteDescription;You found a machete. It can be used to destroy the bamboo stems.;40
+INFOBIT_DESCRIPTION;infobit;0;infobitDescription;You found an infobit. Your knowledge increases.;40
+INFOBYTE_DESCRIPTION;infobyte;0;infobyteDescription;You found an infobyte. It's worth five infobits.;40
+INFOBANK_DESCRIPTION;infobank;0;infobankDescription;You found an infobank. It's worth twenty five infobits.;40
+SUPPLIES_DESCRIPTION;supplies;0;suppliesDescription;You found a supply ration and ate it. Your hunger is stilled. ;40
+VEHICLE_DESCRIPTION;vehicle;0;vehicleDescription; You found a vehicle. Use it to travel faster. Keep an eye on the fuel. Exit the vehicle by pressing [SHIFT] + [arrow key].;40
+SOULESSENCE_DESCRIPTION;soulessence;ANY;soulessenceDescription;You found the jar of Soul Essence. Your maximal life has increased.;40
+MEDIPACK_DESCRIPTION;medipack;0;medipackDescription;You found a medipack and used it. Your health has been restored.;40
+ARMOR_DESCRIPTION;armor;ANY;armorDescription;You found an armor plate. Vehicles will be more durable.;40
+INSIGHT_DESCRIPTION;insight;ANY;insightDesciption;You found an alien artifact.;40
+SOFTWARE_DESCRIPTION;software;ANY;softwareDesciption;You found a software chip from the data center.;40
+CHART_DESCRIPTION;chart;ANY;chartDesciption;You found a map of this area. It can be viewed in the menu on the map screen.;40
+PISTOL_DESCRIPTION;pistol;0;pistolDescription;You found a pistol. Press [TAB] to switch weapons. Collect ammo to reload.;40
+SHOTGUN_DESCRIPTION;shotgun;0;shotgunDescription;You found a shotgun. It's efficient against unarmored enemies. Press [TAB] to switch weapons. Collect ammo to reload.;40
+RIFLE_DESCRIPTION;rifle;0;rifleDescription;You found an assault rifle. It's efficiency is higher for lower armor. Press [TAB] to switch weapons. Collect ammo to reload.;40
+MACHINEGUN_DESCRIPTION;machinegun;0;machinegunDescription;You found a machine gun. It's devastating against medium and heavy armor. Press [TAB] to switch weapons. Collect ammo to reload.;40
+RPG_DESCRIPTION;rpg;0;rpgDescription;You found an RPG. It can kill fortified targets in one hit. Press [TAB] to switch weapons. Collect ammo to reload.;40
+PISTOL_DESCRIPTION2;pistol;1;pistolDescription;You found another pistol. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
+SHOTGUN_DESCRIPTION2;shotgun;1;shotgunDescription;You found another shotgun. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
+RIFLE_DESCRIPTION2;rifle;1;rifleDescription;You found another assault rifle. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
+MACHINEGUN_DESCRIPTION2;machinegun;1;machinegunDescription;You found another machine gun. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
+RPG_DESCRIPTION2;rpg;1;rpgDescription;You found another RPG. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
+PISTOL_DESCRIPTION3;pistol;2;pistolDescription;You found another pistol. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
+SHOTGUN_DESCRIPTION3;shotgun;2;shotgunDescription;You found another shotgun. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
+RIFLE_DESCRIPTION3;rifle;2;rifleDescription;You found another assault rifle. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
+MACHINEGUN_DESCRIPTION3;machinegun;2;machinegunDescription;You found another machine gun. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
+RPG_DESCRIPTION3;rpg;2;rpgDescription;You found another RPG. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
+PISTOL_AMMO_DESCRIPTION;CollectibleAmmo_pistol;0;pistolAmmoDescription;You found pistol ammunition.;40
+SHOTGUN_AMMO_DESCRIPTION;CollectibleAmmo_shotgun;0;shotgunAmmoDescription;You found shotgun ammunition.;40
+RIFLE_AMMO_DESCRIPTION;CollectibleAmmo_rifle;0;rifleAmmoDescription;You found assault rifle ammunition.;40
+MACHINEGUN_AMMO_DESCRIPTION;CollectibleAmmo_machinegun;0;machinegunAmmoDescription;You found machine gun ammunition.;40
+RPG_AMMO_DESCRIPTION;CollectibleAmmo_rpg;0;rpgAmmoDescription;You found RPG ammunition.;40
+BOAT_DESCRIPTION;boat;0;boatDescription;You found a boat. You can cross water now.;40
+GEIGERZAEHLER_DESCRIPTION;geigerzaehler;0;geigerzaehlerDescription;You found a Geiger counter. It indicates radiation. The 'RAD' value shows the number of contaminated adjacent tiles including your own position.;40
+GEIGERZAEHLER_DESCRIPTION2;geigerzaehler;1;geigerzaehlerDescription;You found the radiation suit. It will protect you from radioactive rays.;39
+BOTTLE_DESCRIPTION;bottle;ANY;bottleDescription;You found a bottle. Your water capacity increases.;40
+FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;ANY;foodcompartmentDescription;You found a food compartment and attached it to your backback. Your supply capacity increases.;40
+SUPPLYTRACKER_DESCRIPTION;supplytracker;ANY;supplytrackerDescription;You found the supply tracker. It must have fallen from your emergency pod. Use it to track the closest supply box.;40
+JACKET_DESCRIPTION;jacket;ANY;jacketDescription;You found a warm jacket. Now you can walk cold regions without freezing.;40
+ANTIDOTE_DESCRIPTION;antidote;ANY;antidoteDescription;You found the antidote. Poison is not a threat anymore.;40
+MINEDETECTOR_DESCRIPTION;minedetector;ANY;minedetectorDescription;You found a mine detector. It will detect nearby mines. Avoid stepping on them.;40
+BINOCULARS_DESCRIPTION;binoculars;ANY;binocularsDescription;You found the binoculars. You can see distant things now. Press Y and Z to zoom in and out.;40
+SKI_DESCRIPTION;ski;ANY;skiDescription;You found the ski. You can cross snow faster now.;40
+DYNAMITE_DESCRIPTION;dynamite;0;dynamiteDescription;You found the dynamite. Weak structures can be destroyed with it.;40
+RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters.;40
+BLUE_KEYCARD_DESCRIPTION;CollectibleKey_blueKeycardDoor;0;CollectibleKey_blueKeycardDoor;You found the key card for the mess hall.;40
+LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage.;40
+CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room.;40
+GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermasters keycard.;40
+YELLOW_KEYCARD_DESCRIPTION;CollectibleKey_yellowKeycardDoor;0;CollectibleKey_yellowKeycardDoor;You found the key card to the expedition wing.;40
+BROWN_KEYCARD_DESCRIPTION;CollectibleKey_brownKeycardDoor;0;CollectibleKey_brownKeycardDoor;You found the key card to the hangar.;40
+PURPLE_KEYCARD_DESCRIPTION;CollectibleKey_purpleKeycardDoor;0;CollectibleKey_purpleKeycardDoor;You found captains key card.;40
+DARKBLUE_KEYCARD_DESCRIPTION;CollectibleKey_darkblueKeycardDoor;0;CollectibleKey_darkblueKeycardDoor;You found the key card of the keeper of traditions.;40
+WHITE_KEYCARD_DESCRIPTION;CollectibleKey_whiteKeycardDoor;0;CollectibleKey_whiteKeycardDoor;You found the expedition chiefs keycard.;40
+YELLOW_KEY_DESCRIPTION;CollectibleKey_yellowKeyDoor;0;CollectibleKey_yellowKeyDoor;You found the yellow key. It will open some doors.;40
+GREEN_KEY_DESCRIPTION;CollectibleKey_greenKeyDoor;0;CollectibleKey_greenKeyDoor;You found the green key. It will open some doors.;40
+BLUE_KEY_DESCRIPTION;CollectibleKey_blueKeyDoor;0;CollectibleKey_blueKeyDoor;You found the blue key. It will open some doors.;40
+RED_KEY_DESCRIPTION;CollectibleKey_redKeyDoor;0;CollectibleKey_redKeyDoor;You found the red key. It will open some doors.;40

@@ -4,19 +4,19 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
-import antonafanasjew.cosmodog.model.actors.Platform;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleLog;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.topology.Position;
 
 public class PiecesUtils {
@@ -55,13 +55,15 @@ public class PiecesUtils {
 			if (collectibleType == Collectible.CollectibleType.COMPOSED) {
 				pieceType = CollectibleComposed.class.getSimpleName();
 			} else  if (collectibleType == Collectible.CollectibleType.TOOL) {
-				pieceType = CollectibleTool.class.getSimpleName();
+				pieceType = ((CollectibleTool)collectible).getToolType().name();
 			} else if (collectibleType == Collectible.CollectibleType.WEAPON) {
-				pieceType = CollectibleWeapon.class.getSimpleName();
+				CollectibleWeapon collWeapon = (CollectibleWeapon)piece;
+				pieceType = Mappings.WEAPON_TYPE_TO_PIECE_TYPE.get(collWeapon.getWeapon().getWeaponType());
 			} else if (collectibleType == Collectible.CollectibleType.AMMO) {
-				pieceType = CollectibleAmmo.class.getSimpleName();
+				CollectibleAmmo collAmmo = (CollectibleAmmo)piece;
+				pieceType = Mappings.WEAPON_TYPE_TO_AMMO_PIECE_TYPE.get(collAmmo.getWeaponType());
 			} else if (collectibleType == Collectible.CollectibleType.KEY) {
-				pieceType = CollectibleKey.class.getSimpleName();
+				pieceType = CollectibleKey.class.getSimpleName() + "_" + ((CollectibleKey)piece).getKey().getDoorType().name();
 			} else if (collectibleType == Collectible.CollectibleType.LOG) {
 				pieceType = CollectibleLog.class.getSimpleName();
 			}

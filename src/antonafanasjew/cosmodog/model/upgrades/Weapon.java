@@ -12,6 +12,7 @@ public class Weapon implements Serializable {
 	private static final long serialVersionUID = 7316365846677172148L;
 	private WeaponType weaponType;
 	private int ammunition;
+	private int maxAmmunition; //Normally, this value is defined by the weapon type. But it also can be increased by the weapon upgrade (if found a second instance of the same weapon)
 	
 	private List<WeaponAmmunitionListener> listeners = Lists.newArrayList();
 	
@@ -23,6 +24,7 @@ public class Weapon implements Serializable {
 		super();
 		this.weaponType = weaponType;
 		this.ammunition = ammunition;
+		this.maxAmmunition = this.weaponType.getMaxAmmo();
 	}
 
 	public WeaponType getWeaponType() {
@@ -67,6 +69,15 @@ public class Weapon implements Serializable {
 
 	public void addListener(WeaponAmmunitionListener listener) {
 		this.listeners.add(listener);
+	}
+	
+	public int getMaxAmmunition() {
+		return maxAmmunition;
+	}
+	
+	public void upgrade() {
+		this.maxAmmunition = this.maxAmmunition + 1;
+		setAmmunition(this.maxAmmunition);
 	}
 	
 }

@@ -37,8 +37,8 @@ public class Door extends DynamicPiece {
 		greenKeyDoor("green key"),
 		blueKeyDoor("blue key"),
 		redKeyDoor("red key"),
-		
 		blackKeyDoor("black key");
+		
 		private String keyDescription;
 		
 		private DoorType(String keyDescription) {

@@ -24,7 +24,7 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 		for (Piece piece2 : mapPieces) {
 			if (piece2 instanceof Vehicle) {
 				Vehicle vehicle = ((Vehicle)piece2);
-				vehicle.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
+				vehicle.increaseMaxLife(Player.ROBUSTNESS_UNITS_IN_ARMORPACK, true);
 			}
 		}
 		

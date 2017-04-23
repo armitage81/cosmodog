@@ -25,6 +25,7 @@ public class ItemNotificationRuleBuilder extends AbstractResourceWrapperBuilder<
 		String ifGameProgressPropertyValueIs = values[2];
 		String gameProgressProperty = values[3];
 		String description = values[4];
+		short priority = Short.valueOf(values[5]);
 			
 		RuleTrigger trigger = new InteractingWithPieceTrigger(pieceName);
 		
@@ -46,7 +47,7 @@ public class ItemNotificationRuleBuilder extends AbstractResourceWrapperBuilder<
 			action = BlockAction.block(action, setPropertyAction);
 		}
 				
-		Rule rule = new Rule(ruleName, trigger, action, Rule.RULE_PRIORITY_40);
+		Rule rule = new Rule(ruleName, trigger, action, priority);
 		return rule;
 	}
 	

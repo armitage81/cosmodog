@@ -27,7 +27,7 @@ public class AmmoInteraction extends AbstractPieceInteraction {
 		Weapon weapon = owningWeapons.get(weaponType);
 		
 		if (weapon != null) {
-			weapon.setAmmunition(weapon.getWeaponType().getMaxAmmo());
+			weapon.setAmmunition(weapon.getMaxAmmunition());
 			
 			//Will assign the first available weapon if not selected yet.
 			arsenal.getSelectedWeaponType();

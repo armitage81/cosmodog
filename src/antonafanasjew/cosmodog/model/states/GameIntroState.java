@@ -1,10 +1,5 @@
 package antonafanasjew.cosmodog.model.states;
 
-import java.io.IOException;
-import java.util.concurrent.Callable;
-
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -12,75 +7,38 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.util.Log;
 
-import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
-import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.globals.Fonts;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.WritingRenderer;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
-import antonafanasjew.cosmodog.writing.io.NarrativeSequenceReaderImpl;
-import antonafanasjew.cosmodog.writing.model.NarrativeSequence;
-import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
-import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxContent;
-import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class GameIntroState  extends BasicGameState {
 
-	private WritingRenderer wr;
-	
-	private DrawingContext gameContainerDrawingContext;
-	private DrawingContext centerContainerDrawingContext;
-	private DrawingContext dialogBoxDrawingContext;
-	private DrawingContext dialogBoxContentDrawingContext;
-	private DrawingContext textDrawingContext;
-	private DrawingContext bottomContainerDrawingContext;
-	
-	private int timePassed;
-	
-	private WritingTextBoxState introTextBoxState;
+	private static final String TEXT = "It's been three years since you were hired by the Archeological Institute of Vera as a pilot transporting the scientists to remote corners of the galaxy "
+			+ "in search of a mysterious alien race."
+			+ " <p> "
+			+ "Finally, a hint of some ancient monolyths has brought you to Phaeton. This planet has a bad reputation among the colonists. "
+			+ "Everyone knows Phaeton from the stories about insane rebellions, extinct settlements and mass suicides. "
+			+ "Under these circumstances, The Star Union would never give a landing permission to a civilian so you don't even try. "
+			+ "Archeologists are used to operate under semi-legal conditions."
+			+ " <p> "
+			+ "Upon reaching the Phaetons orbit, your ship Cosmodog is hit by a missile fired from an automated guardian satellite. "
+			+ "You manage to reach the escape pod before the ship is destroyed."
+			+ " <p> "
+			+ "You land on the surface of the planet as a lone survivor. There is no way back. "
+			+ " <p> "
+			+ "Find 20 alien monolyths, reveal the mystery around the aliens and escape the planet.";
+
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
-		timePassed = 0;
 		
-		wr = new WritingRenderer();
-		
-		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		centerContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 1, 1, 8);
-		dialogBoxDrawingContext = new CenteredDrawingContext(centerContainerDrawingContext, 100);
-		dialogBoxContentDrawingContext = new CenteredDrawingContext(dialogBoxDrawingContext, 10);
-		textDrawingContext = new CenteredDrawingContext(dialogBoxContentDrawingContext, 10);
-		bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9);
-		
-		
-		NarrativeSequenceReaderImpl r = new NarrativeSequenceReaderImpl();
-		NarrativeSequence ns = null;
-		try {
-			
-			ns = r.read(Features.getInstance().featureBoundFunction(Features.FEATURE_STORY, new Callable<String>() {
-
-				@Override
-				public String call() throws Exception {
-					return "intro.0001.opening.html";
-				}
-				
-			}, "intro.0001.opening.nostory.html"));
-			
-		} catch (IOException e) {
-			Log.error("Error while initializing GameIntroState. Could not read the narrative sequence. " + e.getMessage(), e);
-		}
-		
-		WritingTextBox textBox = new WritingTextBox(textDrawingContext.w(), textDrawingContext.h(), 0, 5, 20, 30);
-		WritingTextBoxContent textBoxContent = new WritingTextBoxContent(textBox, ns.getTextBlocks());
-		introTextBoxState = new WritingTextBoxState(textBoxContent);
 	}
 	
 	@Override
@@ -91,44 +49,27 @@ public class GameIntroState  extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		g.setColor(Color.white);
-		g.fillRoundRect(dialogBoxDrawingContext.x(), dialogBoxDrawingContext.y(), dialogBoxDrawingContext.w(), dialogBoxDrawingContext.h(), 5);
+		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		
-		g.setColor(new Color(0, 0, 205));
-		g.fillRect(dialogBoxContentDrawingContext.x(), dialogBoxContentDrawingContext.y(), dialogBoxContentDrawingContext.w(), dialogBoxContentDrawingContext.h());
-		DrawingContext d = dialogBoxContentDrawingContext; //Just as a shortcut variable
+		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
 		
-		if (introTextBoxState.completeBoxDisplayed()) {
-			Animation animation;
-			if (introTextBoxState.hasMoreBoxes()) {
-				animation = ApplicationContext.instance().getAnimations().get("nextDialogBox");
-			} else {
-				animation = ApplicationContext.instance().getAnimations().get("closeDialogBox");
-			}
-			int size = 48;
-			animation.draw(d.x() + d.w() - size, d.y() + d.h() - size, size, size);
+		DrawingContext introTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
+		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
+		
+		TextBookRendererUtils.renderTextPage(gc, g, introTextDc, TEXT, FontType.IntroText);
+		
+		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
+		if (renderBlinkingHint) {
+			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface);
 		}
-		wr.render(gc, g, textDrawingContext, introTextBoxState);				
-		
-		TextRenderer tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
-		tr.render(gc, g, bottomContainerDrawingContext, "Press [Enter]");
 		
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		
-		if (timePassed < 300 * 1000) {
-			timePassed += delta;
-		}
-		
-		introTextBoxState.update(delta);
-
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-			introTextBoxState.displayCompleteBoxOrSwitchToNextBoxOrFinish();
-			if (introTextBoxState.isFinish()) {
-				sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
-			}
+			sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
 		}
 		
 	}

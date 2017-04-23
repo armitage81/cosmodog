@@ -7,9 +7,11 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.DeathByRadiationAction;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.actions.wait.WaitAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Constants;
@@ -432,6 +434,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	private void checkRadiation(ApplicationContext applicationContext) {
 
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
@@ -439,8 +442,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) == null) {
-				player.decreaseLife(2);
 				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
+				if (player.getLife() > 2) {
+					player.decreaseLife(2);
+				} else {
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.DEATH_BY_RADIATION, new DeathByRadiationAction(1000));
+				}
 			} else {
 				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: Suppressed by suit");
 			}

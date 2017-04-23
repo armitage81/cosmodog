@@ -43,6 +43,8 @@ public enum AsyncActionType {
 	
 	MINE_EXPLOSION(true, false),
 	
+	DEATH_BY_RADIATION(true, false),
+	
 	/**
 	 * Action type: Collision indicator. Is used to make intervals between the 'no passage' sounds. Does not block the input.
 	 */
@@ -99,3 +101,5 @@ public enum AsyncActionType {
 	}
 	
 }
+
+

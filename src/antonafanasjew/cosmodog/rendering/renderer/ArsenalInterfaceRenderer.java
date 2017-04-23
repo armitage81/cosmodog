@@ -103,7 +103,7 @@ public class ArsenalInterfaceRenderer implements Renderer {
 				
 				animation.draw(weaponDc.x(), weaponDc.y(), weaponDc.w(), weaponDc.h());
 				
-				float currentVsMaxAmmoRatio = weapon.getAmmunition() / (float)weaponType.getMaxAmmo();
+				float currentVsMaxAmmoRatio = weapon.getAmmunition() / (float)weapon.getMaxAmmunition();
 				
 				g.setColor(Color.red);
 				g.fillRect(iconDc.x(), iconDc.y() + iconDc.h() - 10, iconDc.w() * currentVsMaxAmmoRatio, 10);

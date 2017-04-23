@@ -10,8 +10,6 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
-import antonafanasjew.cosmodog.model.inventory.Inventory;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 public class WeaponInteraction extends AbstractPieceInteraction {
@@ -31,7 +29,7 @@ public class WeaponInteraction extends AbstractPieceInteraction {
 		if (weapon == null) {
 			arsenal.addWeaponToArsenal(newWeapon);
 		} else {
-			weapon.setAmmunition(weapon.getWeaponType().getMaxAmmo());
+			weapon.upgrade();
 		}
 		
 		//Will assign the first available weapon if not selected yet.
