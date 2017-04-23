@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.util.InitializationUtils;
@@ -38,6 +39,8 @@ public class CosmodogGame extends CosmodogModel {
 	private transient WritingTextBoxStateUpdater commentsStateUpdater;
 	
 	private transient TextFrame textFrame;
+	
+	private transient GameLog openGameLog;
 	
 	private transient InGameMenu inGameMenu;
 	
@@ -171,7 +174,14 @@ public class CosmodogGame extends CosmodogModel {
 		this.textFrame = textFrame;
 	}
 
-
+	public GameLog getOpenGameLog() {
+		return openGameLog;
+	}
+	
+	public void setOpenGameLog(GameLog openGameLog) {
+		this.openGameLog = openGameLog;
+	}
+	
 	public InGameMenu getInGameMenu() {
 		return inGameMenu;
 	}

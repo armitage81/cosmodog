@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
 import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
 import antonafanasjew.cosmodog.controller.InGameControlInputHandler;
 import antonafanasjew.cosmodog.controller.InGameDialogInputHandler;
+import antonafanasjew.cosmodog.controller.InGameGameLogInputHandler;
 import antonafanasjew.cosmodog.controller.InGameInputHandler;
 import antonafanasjew.cosmodog.controller.InGameMenuInputHandler;
 import antonafanasjew.cosmodog.controller.InGameTextFrameInputHandler;
@@ -48,6 +50,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobyteIntera
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.KeyInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.LogInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MacheteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MineDetectorInteraction;
@@ -65,12 +68,14 @@ import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
+import antonafanasjew.cosmodog.model.CollectibleLog;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
@@ -85,6 +90,8 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.menu.MenuBuilder;
+import antonafanasjew.cosmodog.resourcehandling.gamelogs.GameLogBuilder;
+import antonafanasjew.cosmodog.resourcehandling.gamelogs.GameLogBuilderImpl;
 import antonafanasjew.cosmodog.sight.GeneralSightModifier;
 import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.text.DefaultLetterBuilder;
@@ -129,6 +136,7 @@ public class ApplicationContext {
 	
 	private Cosmodog cosmodog;
 	private CustomTiledMap customTiledMap;
+	private GameLogs gameLogs = new GameLogs();
 	private SoundResources soundResources = new SoundResources();
 	private Animations animations = new Animations();
 	private SpriteSheets spriteSheets = new SpriteSheets();
@@ -224,6 +232,7 @@ public class ApplicationContext {
 		InputHandler debugConsoleInputHandler = new DebugConsoleInputHandler();
 		InputHandler inGameDialogInputHandler = new InGameDialogInputHandler();
 		InputHandler inGameTextFrameInputHandler = new InGameTextFrameInputHandler();
+		InputHandler inGameGameLogInputHandler = new InGameGameLogInputHandler();
 		InputHandler inGameMenuInputHandler = new InGameMenuInputHandler();
 		InputHandler noInputInputHandler = new NoInputInputHandler();
 		
@@ -249,6 +258,7 @@ public class ApplicationContext {
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DEBUGCONSOLE, debugConsoleInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DIALOG, inGameDialogInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_TEXTFRAME, inGameTextFrameInputHandler);
+		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_GAMELOG, inGameGameLogInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_MENU, inGameMenuInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_NO_INPUT, noInputInputHandler);
 		
@@ -276,6 +286,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponInteraction());
 		pieceInteractionMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoInteraction());
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName(), new KeyInteraction());
+		pieceInteractionMap.put(CollectibleLog.class.getSimpleName(), new LogInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.boat.name(), new BoatInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.dynamite.name(), new DynamiteInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.geigerzaehler.name(), new GeigerZaehlerInteraction());
@@ -427,6 +438,13 @@ public class ApplicationContext {
 			menus.put(menu.getId(), menu);
 		}
 		
+		GameLogBuilder gameLogBuilder = new GameLogBuilderImpl();
+		try {
+			this.gameLogs = gameLogBuilder.buildGameLogs("data/writing/gamelogs");
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load game logs.", e);
+		}
+		
 	}
 
 	/**
@@ -465,4 +483,8 @@ public class ApplicationContext {
 		return menus;
 	}
 
+	public GameLogs getGameLogs() {
+		return gameLogs;
+	}
+	
 }

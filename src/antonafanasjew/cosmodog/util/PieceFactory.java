@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
+import antonafanasjew.cosmodog.model.CollectibleLog;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Mark;
@@ -15,6 +16,7 @@ import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
+import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.upgrades.Key;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
@@ -68,6 +70,19 @@ public class PieceFactory {
 			CollectibleKey collectibleKey = new CollectibleKey(key);
 			piece = collectibleKey;
 		}
+		
+		
+		if (TileType.LOG_CARD_0.getTileId() <= tileType.getTileId() && tileType.getTileId() <= TileType.LOG_CARD_35.getTileId()) {
+			CollectibleLog collectibleLog = new CollectibleLog(GameLogs.SPECIFIC_LOGS_SERIES, Mappings.MAP_TILE_TO_UNSORTED_LOG_ID.get(tileType));
+			piece = collectibleLog;
+		}
+		
+		if (TileType.LOG_CARD_SERIES_0.getTileId() <= tileType.getTileId() && tileType.getTileId() <= TileType.LOG_CARD_SERIES_17.getTileId()) {
+			CollectibleLog collectibleLog = new CollectibleLog(Mappings.MAP_TILE_TO_LOG_SERIES.get(tileType), "<irrelevant>");
+			piece = collectibleLog;
+		}
+		
+		
 		
 		if (TileType.FUEL.getTileId() == tileType.getTileId()) {
 			Mark m = new Mark(Mark.FUEL_MARK_TYPE);

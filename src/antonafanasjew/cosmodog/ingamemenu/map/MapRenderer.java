@@ -1,26 +1,21 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
-import java.util.Date;
-import java.util.List;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
-import antonafanasjew.cosmodog.text.Letter;
-import antonafanasjew.cosmodog.text.LetterUtils;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MapRenderer implements Renderer {
 
@@ -99,7 +94,10 @@ public class MapRenderer implements Renderer {
 			graphics.drawImage(mapImage, mapAreaQuadraticDrawingContext.x(), mapAreaQuadraticDrawingContext.y(), mapAreaQuadraticDrawingContext.x() + mapAreaQuadraticDrawingContext.w(), mapAreaQuadraticDrawingContext.y() + mapAreaQuadraticDrawingContext.h(), offsetX, offsetY, offsetX + pieceWidth, offsetY + pieceHeight);
 		
 		} else {
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, mapAreaQuadraticDrawingContext, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment("No map data.", 3.0f, LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
+			
+			String text = "No map data.";
+			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, mapAreaQuadraticDrawingContext, text, FontType.InGameMenuInterface);
+			
 		}
 		
 		
@@ -131,32 +129,14 @@ public class MapRenderer implements Renderer {
 			mapPieceDescription.append(" (Uncharted)");
 		}
 		
-		List<String> textLines = LetterUtils.splitTextForTextBoxWidth(mapPieceDescription.toString(), 2f, coordinatesDrawingContext.w());
-
-		float lineHeight = Letter.LETTER_HEIGHT * 2f;
-		
-		int lines = (int)(coordinatesDrawingContext.h() / lineHeight);
-		
-		for (int i = 0; i < textLines.size(); i++) {
-			DrawingContext lineDc = new TileDrawingContext(coordinatesDrawingContext, 1, lines, 0, i);
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, lineDc, LetterTextRenderingParameter.fromTextAndScaleFactor(textLines.get(i), 2f));
-		}
+		String text = mapPieceDescription.toString();
+		TextBookRendererUtils.renderTextPage(gameContainer, graphics, coordinatesDrawingContext, text, FontType.InGameMenuInterface);
 		
 		
 		hintsDrawingContext = new CenteredDrawingContext(hintsDrawingContext, 20);
 		
-		String hints = "Use arrow keys to scroll through the map. Find map pieces to chart the map.";
-		textLines = LetterUtils.splitTextForTextBoxWidth(hints, 2f, hintsDrawingContext.w());
-
-		lineHeight = Letter.LETTER_HEIGHT * 2f;
-		
-		lines = (int)(hintsDrawingContext.h() / lineHeight);
-		
-		for (int i = 0; i < textLines.size(); i++) {
-			DrawingContext lineDc = new TileDrawingContext(hintsDrawingContext, 1, lines, 0, i);
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, lineDc, LetterTextRenderingParameter.fromTextAndScaleFactor(textLines.get(i), 2f));
-		}
-		
+		text = "Use arrow keys to scroll through the map. Find map pieces to chart the map.";
+		TextBookRendererUtils.renderTextPage(gameContainer, graphics, hintsDrawingContext, text, FontType.InGameMenuInterface);
 		
 		DrawingContext fullMapGridDc = new CenteredDrawingContext(fullMapDrawingContext, 20);
 		

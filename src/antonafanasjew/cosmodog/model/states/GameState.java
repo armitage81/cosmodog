@@ -20,10 +20,12 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
@@ -42,6 +44,7 @@ import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicPiecesRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
+import antonafanasjew.cosmodog.rendering.renderer.GameLogRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
@@ -68,8 +71,10 @@ import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.TopLayer
 import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.NotOnPlatformPieceRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.OnPlatformPieceRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.OccupiedPlatformRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.TextBookRendererParameter;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleBook;
+import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
@@ -135,6 +140,7 @@ public class GameState extends BasicGameState {
 	private WritingRenderer commentsRenderer;
 	private DialogBoxRenderer dialogBoxRenderer;
 	private TextFrameRenderer textFrameRenderer;
+	private GameLogRenderer gameLogRenderer;
 	private InGameMenuRenderer inGameMenuRenderer;
 	
 	@Override
@@ -200,6 +206,7 @@ public class GameState extends BasicGameState {
 		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
 		dialogBoxRenderer = new DialogBoxRenderer();
 		textFrameRenderer = new TextFrameRenderer();
+		gameLogRenderer = new GameLogRenderer();
 		inGameMenuRenderer = new InGameMenuRenderer();
 		
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
@@ -215,7 +222,6 @@ public class GameState extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 
 		Cosmodog cosmodog = applicationContext.getCosmodog();
-		
 		if (cosmodog.getGameLifeCycle().isStartNewGame()) {
 
 			CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
@@ -267,8 +273,6 @@ public class GameState extends BasicGameState {
 		for (Rule rule : rulesSortedByPriority) {
 			rule.apply(new GameEventNewGame());
 		}
-		
-		
 		
 		firstUpdate = true;
 	}
@@ -428,7 +432,15 @@ public class GameState extends BasicGameState {
 			dialogBoxRenderer.render(gc, g, dialogBoxDrawingContext, cosmodogGame.getWritingTextBoxState());
 		}
 
-		textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 250, 150), null);
+		if (cosmodogGame.getTextFrame() != null) {
+			String text = cosmodogGame.getTextFrame().getText();
+			TextBookRendererParameter param = TextBookRendererParameter.instance(text, FontType.PopUp, TextBookRendererParameter.ALIGN_CENTER, TextBookRendererParameter.ALIGN_CENTER, 0);
+			textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 400, 300), param);
+		}
+		
+		if (cosmodogGame.getOpenGameLog() != null) {
+			gameLogRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 800, 500), null);
+		}
 		
 		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
 		

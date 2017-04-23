@@ -21,6 +21,71 @@ import com.google.common.collect.Sets;
 
 public class Mappings {
 
+	public static Map<TileType, String> MAP_TILE_TO_LOG_SERIES = Maps.newHashMap();
+	
+	static {
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_0, "luckyquarterkiller");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_1, "Series002");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_2, "Series003");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_3, "Series004");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_4, "Series005");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_5, "Series006");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_6, "Series007");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_7, "Series008");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_8, "Series009");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_9, "Series010");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_10, "Series011");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_11, "Series012");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_12, "Series013");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_13, "Series014");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_14, "Series015");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_15, "Series016");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_16, "Series017");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_17, "Series018");
+	}
+	
+	public static Map<TileType, String> MAP_TILE_TO_UNSORTED_LOG_ID = Maps.newHashMap();
+	
+	static {
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_0, "cornerstones");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_1, "randomjoke");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_2, "tobedefined003");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_3, "tobedefined004");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_4, "tobedefined005");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_5, "tobedefined006");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_6, "tobedefined007");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_7, "tobedefined008");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_8, "tobedefined009");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_9, "tobedefined010");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_10, "tobedefined011");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_11, "tobedefined012");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_12, "tobedefined013");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_13, "tobedefined014");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_14, "tobedefined015");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_15, "tobedefined016");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_16, "tobedefined017");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_17, "tobedefined018");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_18, "tobedefined019");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_19, "tobedefined020");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_20, "tobedefined021");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_21, "tobedefined022");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_22, "tobedefined023");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_23, "tobedefined024");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_24, "tobedefined025");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_25, "tobedefined026");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_26, "tobedefined027");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_27, "tobedefined028");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_28, "tobedefined029");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_29, "tobedefined030");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_30, "tobedefined031");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_31, "tobedefined032");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_32, "tobedefined033");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_33, "tobedefined034");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_34, "tobedefined035");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_35, "tobedefined036");
+		
+	}
+	
 	public static Map<TileType, ToolType> MAP_TILE_TO_TOOL_TYPE = Maps.newHashMap();
 	
 	static {

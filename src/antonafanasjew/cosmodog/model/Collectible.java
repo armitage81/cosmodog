@@ -10,6 +10,7 @@ public class Collectible extends Piece {
 		WEAPON,
 		AMMO,
 		KEY,
+		LOG,
 		COMPOSED
 	}
 	

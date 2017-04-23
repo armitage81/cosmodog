@@ -167,35 +167,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			
 			if (piece.getPositionX() == player.getPositionX() && piece.getPositionY() == player.getPositionY()) {
 				
-				String pieceType;
-				
-				if (piece instanceof Collectible) {
-					
-					Collectible collectible = (Collectible) piece;
-					
-					if (collectible instanceof CollectibleComposed) {
-						pieceType = CollectibleComposed.class.getSimpleName();
-					} else if (collectible instanceof CollectibleTool) {
-						CollectibleTool collectibleTool = (CollectibleTool)collectible;
-						pieceType = collectibleTool.getToolType().name();
-					} else if (collectible instanceof CollectibleWeapon) {
-						pieceType = CollectibleWeapon.class.getSimpleName();
-					} else if (collectible instanceof CollectibleAmmo) {
-						pieceType = CollectibleAmmo.class.getSimpleName();
-					} else if (collectible instanceof CollectibleKey) {
-						pieceType = CollectibleKey.class.getSimpleName();
-					} else {
-						CollectibleGoodie collectibleGoodie = (CollectibleGoodie)collectible;
-						pieceType = collectibleGoodie.getGoodieType().name();
-					} 
-					
-				} else if (piece instanceof Vehicle) {
-					pieceType = Vehicle.class.getSimpleName();
-				} else if (piece instanceof Platform){
-					pieceType = Platform.class.getSimpleName();
-				} else {
-					pieceType = null;
-				}
+				String pieceType = PiecesUtils.pieceType(piece);
 				
 				PieceInteraction pieceInteraction = cosmodog.getPieceInteractionMap().get(pieceType);
 				
@@ -264,12 +236,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 						Vehicle vehicle = vehicleItem.getVehicle();
 						if (vehicle.getFuel() < Vehicle.MAX_FUEL) {
 							vehicle.setFuel(Vehicle.MAX_FUEL);
-							notificationText = "You refueled the car.<br><br>[Press ENTER]";
+							notificationText = "You refueled the car.";
 						}
 					} else {
 						if (player.getInventory().get(InventoryItemType.FUEL_TANK) == null) {
 							player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
-							notificationText = "You took a fuel tank.<br><br>[Press ENTER]";
+							notificationText = "You took a fuel tank.";
 						}
 					}
 					

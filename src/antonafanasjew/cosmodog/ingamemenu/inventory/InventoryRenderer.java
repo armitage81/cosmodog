@@ -1,13 +1,13 @@
 package antonafanasjew.cosmodog.ingamemenu.inventory;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -19,17 +19,15 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.InventoryItemRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
-import antonafanasjew.cosmodog.text.Letter;
-import antonafanasjew.cosmodog.text.LetterUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class InventoryRenderer implements Renderer {
 
 	public static final int NUMBER_OF_VISIBLE_MESSAGES = NotificationQueue.MAX_MESSAGES_BEFORE_REMOVAL;
 	public static final int INVENTORY_COLUMNS = 10;
 	public static final int INVENTORY_ROWS = 8;
+
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext context, Object renderingParameter) {
@@ -93,17 +91,11 @@ public class InventoryRenderer implements Renderer {
 
 		descriptionDrawingContext = new CenteredDrawingContext(descriptionDrawingContext, 20);
 		
-		String itemDescription = selectedItem == null ? "" : selectedItem.description();
-		List<String> textLines = LetterUtils.splitTextForTextBoxWidth(itemDescription, 2f, descriptionDrawingContext.w());
-
-		float lineHeight = Letter.LETTER_HEIGHT * 2f;
 		
-		int lines = (int)(descriptionDrawingContext.h() / lineHeight);
+		String text = selectedItem == null ? "" : selectedItem.description();
+		TextBookRendererUtils.renderTextPage(gameContainer, graphics, descriptionDrawingContext, text, FontType.InventoryDescription);
 		
-		for (int i = 0; i < textLines.size(); i++) {
-			DrawingContext lineDc = new TileDrawingContext(descriptionDrawingContext, 1, lines, 0, i);
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, lineDc, LetterTextRenderingParameter.fromTextAndScaleFactor(textLines.get(i), 2f));
-		}
+				
 	}
 	
 	private DrawingContext itemsDrawingContext(DrawingContext mainDc) {

@@ -29,7 +29,10 @@ public enum InputHandlerType {
 	 * Text frame controls.
 	 */
 	INPUT_HANDLER_INGAME_TEXTFRAME,
-	
+	/**
+	 * Game Log controls.
+	 */
+	INPUT_HANDLER_INGAME_GAMELOG,
 	/**
 	 * In game menu controls.
 	 */

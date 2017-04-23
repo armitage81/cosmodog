@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer.textbook;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.UnicodeFont;
@@ -37,6 +38,20 @@ public class TextBookRenderer implements Renderer {
 		
 	}
 	
+	
+	public static TextBookRenderer instance = null;
+	
+	public static TextBookRenderer getInstance() {
+		if (instance == null) {
+			instance = new TextBookRenderer();
+		}
+		return instance;
+	}
+	
+	private TextBookRenderer() {
+
+	}
+	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 		
@@ -53,7 +68,7 @@ public class TextBookRenderer implements Renderer {
 		int linesInPage = pageText.size();
 		float lineHeight = font.getLineHeight();
 		int maxNumberOfLinesInPage = (int)c.getHeight() / (int)lineHeight;
-		float usedUpVerticalSpace = lineHeight * maxNumberOfLinesInPage;
+		float usedUpVerticalSpace = lineHeight * linesInPage;
 		float remainingVerticalSpace = c.getHeight() - usedUpVerticalSpace;
 		
 		float verticalOffset = (param.verticalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.verticalAlignment == TextBookRendererParameter.ALIGN_END ? remainingVerticalSpace : remainingVerticalSpace / 2));
@@ -63,10 +78,12 @@ public class TextBookRenderer implements Renderer {
 			String line = pageText.get(i);
 			float lineWidth = font.getWidth(line);
 			float remainingWidth = c.getWidth() - lineWidth;
-			float horizontalOffset = (param.horizontalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.horizontalAlignment == TextBookRendererParameter.ALIGN_END ? remainingWidth : remainingWidth / 2));
+			float horizontalOffset = (param.horizontalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.horizontalAlignment == TextBookRendererParameter.ALIGN_END ? remainingWidth : remainingWidth / 2f));
 			
 			TileDrawingContext lineDc = new TileDrawingContext(drawingContext, 1, maxNumberOfLinesInPage, 0, i);
 			graphics.translate(horizontalOffset, verticalOffset);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			font.drawString(lineDc.x(), lineDc.y(), line);
 			graphics.translate(-horizontalOffset, -verticalOffset);
 		}

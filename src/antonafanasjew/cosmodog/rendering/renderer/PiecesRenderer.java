@@ -15,6 +15,7 @@ import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
+import antonafanasjew.cosmodog.model.CollectibleLog;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -39,6 +40,7 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobyteRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.KeyRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.pieces.LogRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PieceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.PlatformRenderer;
@@ -48,6 +50,7 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.SuppliesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.ToolRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.VehicleRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.WeaponRenderer;
+import antonafanasjew.cosmodog.util.PiecesUtils;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -78,6 +81,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleWeapon.class.getSimpleName(), new WeaponRenderer());
 		pieceRendererMap.put(CollectibleAmmo.class.getSimpleName(), new AmmoRenderer());
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName(), new KeyRenderer());
+		pieceRendererMap.put(CollectibleLog.class.getSimpleName(), new LogRenderer());
 		pieceRendererMap.put(Vehicle.class.getSimpleName(), new VehicleRenderer());
 		pieceRendererMap.put(Platform.class.getSimpleName(), new PlatformRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorRenderer());
@@ -152,10 +156,10 @@ public class PiecesRenderer extends AbstractRenderer {
 				List<Collectible> elements = cc.getElements();
 				int numberOfElementToRender = (int)((System.currentTimeMillis() / 1000) % elements.size());
 				element = elements.get(numberOfElementToRender);
-				elementType = pieceType(element);
+				elementType = PiecesUtils.pieceType(element);
 			} else {
 				element = piece;
-				elementType = pieceType(piece);
+				elementType = PiecesUtils.pieceType(piece);
 			}
 			
 			PieceRenderer pieceRenderer = pieceRendererMap.get(elementType);
@@ -171,42 +175,5 @@ public class PiecesRenderer extends AbstractRenderer {
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 	}
-
-	private String pieceType(Piece piece) {
-		String pieceType;
-		if (piece instanceof Collectible) {
-
-			Collectible collectible = (Collectible) piece;
-			Collectible.CollectibleType collectibleType = collectible.getCollectibleType();
-			
-			if (collectibleType == Collectible.CollectibleType.COMPOSED) {
-				pieceType = CollectibleComposed.class.getSimpleName();
-			} else  if (collectibleType == Collectible.CollectibleType.TOOL) {
-				pieceType = CollectibleTool.class.getSimpleName();
-			} else if (collectibleType == Collectible.CollectibleType.WEAPON) {
-				pieceType = CollectibleWeapon.class.getSimpleName();
-			} else if (collectibleType == Collectible.CollectibleType.AMMO) {
-				pieceType = CollectibleAmmo.class.getSimpleName();
-			} else if (collectibleType == Collectible.CollectibleType.KEY) {
-				pieceType = CollectibleKey.class.getSimpleName();
-			}
-			
-			else {
-				
-				CollectibleGoodie goodie = (CollectibleGoodie)collectible;
-				
-				pieceType = goodie.getGoodieType().name();
-			}
-			
-		} else if (piece instanceof Vehicle) {
-			pieceType = Vehicle.class.getSimpleName();
-		} else if (piece instanceof Platform) {
-			pieceType = Platform.class.getSimpleName();
-		} else {
-			pieceType = null;
-		}
-		return pieceType;
-	}
-
 
 }

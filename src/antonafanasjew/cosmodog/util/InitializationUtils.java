@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.globals.Features;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -53,6 +54,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -75,7 +77,6 @@ import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
-import antonafanasjew.cosmodog.rules.actions.SysoutAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
 import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
@@ -83,7 +84,6 @@ import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DamageLastBossAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
-import antonafanasjew.cosmodog.rules.actions.gameprogress.FoundSecretAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
@@ -121,6 +121,7 @@ public class InitializationUtils {
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
 	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+		
 		CosmodogMap cosmodogMap = initializeCosmodogMap(customTiledMap);
 		cosmodogGame.setMap(cosmodogMap);
 
@@ -209,10 +210,14 @@ public class InitializationUtils {
 		listener.getUnderlyings().add(new FoodConsumer());
 		listener.getUnderlyings().add(new WaterConsumer());
 		planetaryCalendar.setListener(listener);
+		
 	}
 
 	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
 
+		//We just have to initialize this heavy-weight enum to avoid lazy loading with delays in game.
+		@SuppressWarnings("unused")
+		FontType fontType = FontType.GameLog;
 		CosmodogGame cosmodogGame = new CosmodogGame();
 
 		initializeCosmodogGameNonTransient(cosmodogGame, game, customTiledMap, userName);
@@ -523,7 +528,7 @@ public class InitializationUtils {
 		for (QuadrandType quadrandType : QuadrandType.values()) {
 			RuleTrigger deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
-			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines<br>in the quadrand " + quadrandType.getRepresentation() + ".<br>You use it to disarm the mines.<br><br>[Press ENTER]");
+			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ".");
 			RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 			RuleAction deactivateMinesAction = new DeactivateMinesAction(quadrandType);
 			deactivateMinesAction = BlockAction.block(deactivateMinesAction, new SetGameProgressPropertyAction("MinesDeactivatedForQuadrand" + quadrandType, "true"), notificationAction);
@@ -537,7 +542,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
 		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
 
-		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel<br>for the ventilation.<br>You activate it.<br>The worm will have harder time<br>to locate you.<br><br>[Press ENTER]");
+		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will have harder time to locate you.");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
 		switchOnVentilationAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
@@ -548,7 +553,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
 		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
 
-		asyncAction = new PopUpNotificationAction("This is the control panel<br>for the sewage.<br>You activate it.<br>The worm will have even harder time<br>to locate you.<br><br>[Press ENTER]");
+		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will have even harder time to locate you.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
 		switchOnSewageAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
@@ -559,7 +564,7 @@ public class InitializationUtils {
 		//Pickup blue keycard rule.
 		RuleTrigger approachBlueKeyCardTrigger = new GameProgressPropertyTrigger("CollectedBlueKeyCard", "false");
 		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
-		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf.<br>You grap the item.<br>It is a key card for the mess hall.<br><br>[Press ENTER]");
+		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf. You grap the item. It is a key card for the mess hall.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction pickUpBlueKeyCardAction = new PickupKeyAction(DoorType.blueKeycardDoor);
 		pickUpBlueKeyCardAction = BlockAction.block(pickUpBlueKeyCardAction, new SetGameProgressPropertyAction("CollectedBlueKeyCard", "true"), notificationAction);

@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
+import antonafanasjew.cosmodog.model.inventory.LogPlayer;
 
 public class Player extends Actor {
 
@@ -22,6 +23,7 @@ public class Player extends Actor {
 	private GameProgress gameProgress = new GameProgress();
 	private Inventory inventory = new Inventory();
 	private Arsenal arsenal = new Arsenal();
+	private LogPlayer logPlayer = new LogPlayer();
 
 	private int currentMaxFood = INITIAL_MAX_FOOD;
 	private int currentMaxWater = INITIAL_MAX_WATER;
@@ -153,5 +155,8 @@ public class Player extends Actor {
 		return poisoned;
 	}
 
+	public LogPlayer getLogPlayer() {
+		return logPlayer;
+	}
 	
 }

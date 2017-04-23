@@ -4,13 +4,16 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.TextBookRendererParameter;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class InGameMenuRenderer implements Renderer {
 
@@ -48,10 +51,10 @@ public class InGameMenuRenderer implements Renderer {
 			graphics.drawRoundRect(footerDc.x(), footerDc.y(), footerDc.w(), footerDc.h(), 5);
 			
 			String headerText = currentMenuFrame.getTitle();
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, headerDc, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(headerText, 2f, LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
+			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, headerDc, headerText, FontType.InGameMenuInterface);
 			
 			String footerText = "[ESC] to close. [TAB] to switch.";
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, footerDc, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(footerText, 2f, LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
+			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, footerDc, footerText, FontType.InGameMenuInterface);
 			
 			Renderer contentRenderer = currentMenuFrame.getContentRenderer();
 			contentRenderer.render(gameContainer, graphics, contentDc, currentMenuFrame.getInputState());

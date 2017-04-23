@@ -43,7 +43,7 @@ public class TextPageConstraints {
 		
 		for (int i = 0; i < words.size(); i++) {
 			String word = words.get(i);
-			if (!word.equals("<br>") && !word.equals("<p>")) {
+			if (!word.equals("<br>") && !word.equals("<p>") && !word.equals("<div>")) {
 				thisLine = thisLine + word + " ";
 			}
 			lineWidth = font.getWidth(thisLine);
@@ -53,9 +53,14 @@ public class TextPageConstraints {
 					allLines.add(thisLine);
 					thisLine = "";
 					lineWidth = 0;
-				} else if (word.equals("<p>")) {
+				} else if (word.equals("<p>") && thisLine.isEmpty() == false) {
 					allLines.add(thisLine);
-					allLines.add("<p>");
+					allLines.add("");
+					thisLine = "";
+					lineWidth = 0;
+				} else if (word.equals("<div>")) {
+					allLines.add(thisLine);
+					allLines.add("<div>");
 					thisLine = "";
 					lineWidth = 0;
 				} else if (lineWidth + font.getWidth(nextWord) > this.width) {
@@ -83,12 +88,12 @@ public class TextPageConstraints {
 			if ((currentPage.size() + 1) * font.getLineHeight() > this.height) {
 				pages.add(currentPage);
 				currentPage = Lists.newArrayList();
-			} else if (line.equals("<p>")) {
+			} else if (line.equals("<div>")) {
 				pages.add(currentPage);
 				currentPage = Lists.newArrayList();
 			}
 			
-			if (!line.equals("<p>")) {
+			if (!line.equals("<div>")) {
 				currentPage.add(line);
 			}
 		}
