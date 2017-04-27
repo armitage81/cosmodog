@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.model.menu.MenuItem;
@@ -34,6 +35,7 @@ public class MainMenuState extends BasicGameState {
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		container.getInput().clearKeyPressedRecord();
 		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
 		mainMenu.setInitialized();
 		menuRenderer.resetMenuLabelCache();
@@ -44,19 +46,24 @@ public class MainMenuState extends BasicGameState {
 
 		if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
 			mainMenu.selectNext();
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_MOVE).play();
 		} else if(gc.getInput().isKeyPressed(Input.KEY_UP)) {
 			mainMenu.selectPrevious();
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_MOVE).play();
 		} else if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			MenuElement menuElement = mainMenu.getSelectedMenuElement();
 			if (menuElement instanceof MenuItem) {
 				((MenuItem)menuElement).getMenuAction().execute(sbg);
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
 			} else {
 				mainMenu = (Menu)menuElement;
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SUB).play();
 			}
 		} else if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
 			Menu parentMenu = mainMenu.getParentMenu();
 			if (parentMenu != null) {
 				mainMenu = parentMenu;
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_BACK).play();
 			}
 		}
 		

@@ -8,10 +8,8 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 	protected void updatePlayer(Player player) {
 //		player.setMaxLife(100);
 //		player.setLife(100);
-//		player.setPositionX(6);
-//		player.setPositionY(58);
-		player.setPositionX(270);
-		player.setPositionY(95);
+		player.setPositionX(50);
+		player.setPositionY(31);
 	}
 
 }

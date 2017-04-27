@@ -40,6 +40,7 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.EnemiesUtils;
+import antonafanasjew.cosmodog.util.FootstepUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
@@ -206,9 +207,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 			map.getEnemies().removeAll(destroyedEnemies);
 			
 		} else {
-			
 			if (!skipTurn) {
-				applicationContext.getSoundResources().get(SoundResources.SOUND_FOOTSTEPS).play();
+				int resultX = playerMovementActionResult.getPath().getX(1);
+				int resultY = playerMovementActionResult.getPath().getY(1);
+				String footStepsSoundType = FootstepUtils.footStepsSoundType(resultX, resultY);
+				applicationContext.getSoundResources().get(footStepsSoundType).play();
 			}
 		}
 	}

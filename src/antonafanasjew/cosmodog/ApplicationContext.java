@@ -337,7 +337,6 @@ public class ApplicationContext {
 		Sound drunk = new Sound("data/sound/drunk.wav");
 		Sound carstart = new Sound("data/sound/carstart.wav");
 		Sound noway = new Sound("data/sound/noway.wav");
-		Sound footsteps = new Sound("data/sound/footsteps.wav");
 		Sound carmotor = new Sound("data/sound/carmotor.wav");
 		Sound motordies = new Sound("data/sound/motordies.wav");
 		Sound hit = new Sound("data/sound/hit.wav");
@@ -380,12 +379,27 @@ public class ApplicationContext {
 		
 		Sound poisoned = new Sound("data/sound/poisoned.wav");
 		
+		Sound menu_sub = new Sound("data/sound/menu_sub.wav");
+		Sound menu_back = new Sound("data/sound/menu_back.wav");
+		Sound menu_select = new Sound("data/sound/menu_select.wav");
+		Sound menu_move = new Sound("data/sound/menu_move.wav");
+		
+		
+		
+		Sound footsteps = new Sound("data/sound/footsteps.wav");
+		Sound footstepsHighGrass = new Sound("data/sound/footsteps_highgrass.wav");
+		Sound footstepsGrass = new Sound("data/sound/footsteps_grass.wav");
+		Sound footstepsSnow = new Sound("data/sound/footsteps_snow.wav");
+		Sound footstepsSand = new Sound("data/sound/footsteps_sand.wav");
+		Sound footstepsRoad = new Sound("data/sound/footsteps_road.wav");
+		Sound footstepsWater = new Sound("data/sound/footsteps_water.wav");
+		
+		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
 		this.getSoundResources().put(SoundResources.SOUND_DRUNK, drunk);
 		this.getSoundResources().put(SoundResources.SOUND_CARSTART, carstart);
 		this.getSoundResources().put(SoundResources.SOUND_NOWAY, noway);
-		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS, footsteps);
 		this.getSoundResources().put(SoundResources.SOUND_CARMOTOR, carmotor);
 		this.getSoundResources().put(SoundResources.SOUND_MOTOR_DIES, motordies);
 		this.getSoundResources().put(SoundResources.SOUND_HIT, hit);
@@ -429,6 +443,21 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_OPENING_ALIEN_DOOR, openingaliendoor);
 		
 		this.getSoundResources().put(SoundResources.SOUND_POISONED, poisoned);
+		
+		this.getSoundResources().put(SoundResources.SOUND_MENU_SUB, menu_sub);
+		this.getSoundResources().put(SoundResources.SOUND_MENU_BACK, menu_back);
+		this.getSoundResources().put(SoundResources.SOUND_MENU_SELECT, menu_select);
+		this.getSoundResources().put(SoundResources.SOUND_MENU_MOVE, menu_move);
+		
+		
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS, footsteps);
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_HIGH_GRASS, footstepsHighGrass);
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_GRASS, footstepsGrass);
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_ROAD, footstepsRoad);
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_SAND, footstepsSand);
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_SNOW, footstepsSnow);
+		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_WATER, footstepsWater);
+		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
 		SpriteSheet collectibleItemToolSheet = new SpriteSheet("data/collectible_tool.png", 16, 16);

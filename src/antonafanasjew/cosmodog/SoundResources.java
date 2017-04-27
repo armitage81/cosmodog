@@ -50,6 +50,12 @@ public class SoundResources extends HashMap<String, Sound> {
 	 * Sound for: Foot steps.
 	 */
 	public static final String SOUND_FOOTSTEPS = "sound.footsteps";
+	public static final String SOUND_FOOTSTEPS_WATER = "sound.footsteps.water";
+	public static final String SOUND_FOOTSTEPS_HIGH_GRASS = "sound.footsteps.highgrass";
+	public static final String SOUND_FOOTSTEPS_SNOW = "sound.footsteps.snow";
+	public static final String SOUND_FOOTSTEPS_SAND = "sound.footsteps.sand";
+	public static final String SOUND_FOOTSTEPS_GRASS = "sound.footsteps.grass";
+	public static final String SOUND_FOOTSTEPS_ROAD = "sound.footsteps.road";
 	
 	/**
 	 * Sound for: Car motor.
@@ -170,5 +176,10 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_OPENING_ALIEN_DOOR = "sound.openingaliendoor";
 
 	public static final String SOUND_POISONED = "sound.poisoned";
+
+	public static final String SOUND_MENU_SUB = "sound.menu_sub";
+	public static final String SOUND_MENU_BACK = "sound.menu_back";
+	public static final String SOUND_MENU_SELECT = "sound.menu_select";
+	public static final String SOUND_MENU_MOVE = "sound.menu_move";
 
 }
