@@ -74,6 +74,7 @@ import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuAction;
@@ -136,6 +137,7 @@ public class ApplicationContext {
 	private Cosmodog cosmodog;
 	private CustomTiledMap customTiledMap;
 	private GameLogs gameLogs = new GameLogs();
+	private Map<String, GameLog> gameTexts = Maps.newHashMap();
 	private SoundResources soundResources = new SoundResources();
 	private Animations animations = new Animations();
 	private SpriteSheets spriteSheets = new SpriteSheets();
@@ -355,6 +357,28 @@ public class ApplicationContext {
 		Sound console = new Sound("data/sound/console.wav");
 		Sound wormGrowl = new Sound("data/sound/wormgrowl.wav");
 		Sound earthquake = new Sound("data/sound/earthquake.wav");
+		Sound breakcrate1 = new Sound("data/sound/breakcrate1.wav");
+		Sound breakcrate2 = new Sound("data/sound/breakcrate2.wav");
+		Sound breakcrate3 = new Sound("data/sound/breakcrate3.wav");
+		
+		Sound breakstone1 = new Sound("data/sound/breakstone1.wav");
+		Sound breakstone2 = new Sound("data/sound/breakstone2.wav");
+		Sound breakstone3 = new Sound("data/sound/breakstone3.wav");
+		Sound breakhardstone1 = new Sound("data/sound/breakhardstone1.wav");
+		Sound breakhardstone2 = new Sound("data/sound/breakhardstone2.wav");
+		Sound breakhardstone3 = new Sound("data/sound/breakhardstone3.wav");
+		Sound cuttingtree1 = new Sound("data/sound/cuttingtree1.wav");
+		Sound cuttingtree2 = new Sound("data/sound/cuttingtree2.wav");
+		Sound cuttingtree3 = new Sound("data/sound/cuttingtree3.wav");
+		
+		Sound cuttingbamboo1 = new Sound("data/sound/cutbamboo1.wav");
+		Sound cuttingbamboo2 = new Sound("data/sound/cutbamboo2.wav");
+		Sound cuttingbamboo3 = new Sound("data/sound/cutbamboo3.wav");
+		
+		Sound lockedaliendoor = new Sound("data/sound/lockedaliendoor.wav");
+		Sound openingaliendoor = new Sound("data/sound/openingaliendoor.wav");
+		
+		Sound poisoned = new Sound("data/sound/poisoned.wav");
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -381,7 +405,30 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_CONSOLE, console);
 		this.getSoundResources().put(SoundResources.SOUND_WORM_GROWL, wormGrowl);
 		this.getSoundResources().put(SoundResources.SOUND_EARTHQUAKE, earthquake);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_CRATE1, breakcrate1);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_CRATE2, breakcrate2);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_CRATE3, breakcrate3);
+		
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_STONE1, breakstone1);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_STONE2, breakstone2);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_STONE3, breakstone3);
+		
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_HARDSTONE1, breakhardstone1);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_HARDSTONE2, breakhardstone2);
+		this.getSoundResources().put(SoundResources.SOUND_BREAK_HARDSTONE3, breakhardstone3);
+		
+		this.getSoundResources().put(SoundResources.SOUND_CUT_TREE1, cuttingtree1);
+		this.getSoundResources().put(SoundResources.SOUND_CUT_TREE2, cuttingtree2);
+		this.getSoundResources().put(SoundResources.SOUND_CUT_TREE3, cuttingtree3);
 
+		this.getSoundResources().put(SoundResources.SOUND_CUT_BAMBOO1, cuttingbamboo1);
+		this.getSoundResources().put(SoundResources.SOUND_CUT_BAMBOO2, cuttingbamboo2);
+		this.getSoundResources().put(SoundResources.SOUND_CUT_BAMBOO3, cuttingbamboo3);
+		
+		this.getSoundResources().put(SoundResources.SOUND_LOCKED_ALIEN_DOOR, lockedaliendoor);
+		this.getSoundResources().put(SoundResources.SOUND_OPENING_ALIEN_DOOR, openingaliendoor);
+		
+		this.getSoundResources().put(SoundResources.SOUND_POISONED, poisoned);
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
 		SpriteSheet collectibleItemToolSheet = new SpriteSheet("data/collectible_tool.png", 16, 16);
@@ -464,6 +511,11 @@ public class ApplicationContext {
 		GameLogBuilder gameLogBuilder = new GameLogBuilderImpl();
 		try {
 			this.gameLogs = gameLogBuilder.buildGameLogs("data/writing/gamelogs");
+			this.gameTexts.put("outro1", gameLogBuilder.buildGameLog("data/writing/outro/outro1"));
+			this.gameTexts.put("outro2", gameLogBuilder.buildGameLog("data/writing/outro/outro2"));
+			this.gameTexts.put("outro3", gameLogBuilder.buildGameLog("data/writing/outro/outro3"));
+			this.gameTexts.put("outrohint", gameLogBuilder.buildGameLog("data/writing/outro/outrohint"));
+			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("data/writing/credits/credits"));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not load game logs.", e);
 		}
@@ -508,6 +560,10 @@ public class ApplicationContext {
 
 	public GameLogs getGameLogs() {
 		return gameLogs;
+	}
+
+	public Map<String, GameLog> getGameTexts() {
+		return gameTexts;
 	}
 	
 }

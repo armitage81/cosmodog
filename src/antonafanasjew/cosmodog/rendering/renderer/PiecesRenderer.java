@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.awt.AlphaComposite;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -10,16 +11,12 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
 import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleAmmo;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleLog;
 import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -208,7 +205,12 @@ public class PiecesRenderer extends AbstractRenderer {
 			PieceRenderer pieceRenderer = pieceRendererMap.get(elementType);
 			if (pieceRenderer != null) {
 				Enemy enemyOnTile = map.enemyAtTile(piece.getPositionX(), piece.getPositionY());
-				if (enemyOnTile == null) {
+				boolean playerOnTile = player.getPositionX() == piece.getPositionX() && player.getPositionY() == piece.getPositionY();
+				if (enemyOnTile == null && !playerOnTile) {
+
+					if (!piece.interactive(piece, applicationContext, cosmodogGame, player)) {
+
+					}
 					pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, element);
 				}
 			}

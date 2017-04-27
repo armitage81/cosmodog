@@ -54,7 +54,6 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
-import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -66,6 +65,7 @@ import antonafanasjew.cosmodog.resourcehandling.builder.rules.MultiInstancePiece
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.PieceRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentCommentRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentDialogRuleBuilder;
+import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentPopupRuleBuilder;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.PlaySoundRuleAction;
 import antonafanasjew.cosmodog.rules.Rule;
@@ -462,6 +462,14 @@ public class InitializationUtils {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 
+		// Add all region dependent popup rules (e.g. tutorial messages)
+		
+		ruleBuilder = new RegionDependentPopupRuleBuilder();
+		ruleResourceWrappers = ruleBuilder.build();
+		for (String s : ruleResourceWrappers.keySet()) {
+			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
+		}
+		
 		// Add all pieces related dialog rules.
 		ruleBuilder = new PieceRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();

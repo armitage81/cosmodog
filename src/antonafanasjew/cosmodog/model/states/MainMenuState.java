@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.model.menu.MenuItem;
+import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
@@ -66,12 +67,20 @@ public class MainMenuState extends BasicGameState {
 		
 		
 		DrawingContext dc = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
+		
+		DrawingContext logoDc = new TileDrawingContext(dc, 1, 3, 0, 1);
+		
 		DrawingContext menuDc = new TileDrawingContext(dc, 10, 10, 6, 7, 4, 3);
 		
 		
 		Animation titleAnimation = ApplicationContext.instance().getAnimations().get("title");
 		
 		titleAnimation.draw(dc.x(), dc.y(), dc.w(), dc.h());
+		
+		Animation logo = ApplicationContext.instance().getAnimations().get("logo");
+		logoDc = new CenteredDrawingContext(logoDc, 640, 192);
+		logo.draw(logoDc.x(), logoDc.y(), logoDc.w(), logoDc.h());
+		
 		
 		param.menu = mainMenu;
 		menuRenderer.render(gc, g, menuDc, param);

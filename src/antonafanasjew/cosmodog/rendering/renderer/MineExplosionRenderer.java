@@ -9,6 +9,7 @@ import org.newdawn.slick.Image;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.ExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction.MineExplosionTransition;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -30,19 +31,30 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		
 		
 		ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-		MineExplosionAction mineExplosionAction = (MineExplosionAction)actionRegistry.getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
-		if (mineExplosionAction == null) {
+		Object action = actionRegistry.getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
+				
+		if (action == null) {
 			return;
 		}
 		
-		MineExplosionTransition mineExplosionTransition = mineExplosionAction.getTransition();
+		
+		MineExplosionTransition explosionTransition;
+		
+		//Yes, it's dirty. Refactor it. Mine explosion action should just reuse explosion action.
+		if (action instanceof MineExplosionAction) {
+			explosionTransition = ((MineExplosionAction)action).getTransition();
+		} else {
+			explosionTransition = ((ExplosionAction)action).getTransition();
+		}
 		
 		
 		Animation mineExplosionAnimation = applicationContext.getAnimations().get("explosion");
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		Player player = cosmodogGame.getPlayer();
+		int posX = explosionTransition.positionX;
+		int posY = explosionTransition.positionY;
+		
 		Cam cam = cosmodogGame.getCam();
 		
 		int tileWidth = map.getTileWidth();
@@ -65,13 +77,13 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		float offsetY = -((mineExplosionAnimation.getHeight() - tileHeight) / 2.0f);
 		
 		float percentagePerFrame = 1f / mineExplosionAnimation.getFrameCount();
-		int currentImageIndex = (int)(mineExplosionTransition.percentage / percentagePerFrame);
+		int currentImageIndex = (int)(explosionTransition.percentage / percentagePerFrame);
 		
 		Image image = mineExplosionAnimation.getImage(currentImageIndex);
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		image.draw((player.getPositionX() - tileNoX) * tileWidth + offsetX, (player.getPositionY() - tileNoY) * tileHeight + offsetY);
+		image.draw((posX - tileNoX) * tileWidth + offsetX, (posY - tileNoY) * tileHeight + offsetY);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
+import java.util.List;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -9,40 +11,79 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
-import antonafanasjew.cosmodog.globals.Fonts;
+import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
+
+import com.google.common.collect.Lists;
 
 public class OutroState extends BasicGameState {
 
-	private DrawingContext gameContainerDrawingContext;
-	private DrawingContext topContainerDrawingContext;
-	private DrawingContext centerContainerDrawingContext;
-	private DrawingContext bottomContainerDrawingContext;
+	private List<String> texts = Lists.newArrayList();
+	private int page;
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.updateScoreList();
+		
+		page = 0;
+		texts.clear();
+		
+		String outro1 = ApplicationContext.instance().getGameTexts().get("outro1").getLogText();
+		String outro2 = ApplicationContext.instance().getGameTexts().get("outro2").getLogText();
+		String outro3 = ApplicationContext.instance().getGameTexts().get("outro3").getLogText();
+		String outrohint = ApplicationContext.instance().getGameTexts().get("outrohint").getLogText();
+		
+		int noOfInsights = 0;
+		Player player = ApplicationContextUtils.getPlayer();
+		Object uncastedInsight = player.getInventory().get(InventoryItemType.INSIGHT);
+		if (uncastedInsight != null) {
+			InsightInventoryItem insight = (InsightInventoryItem)uncastedInsight;
+			noOfInsights = insight.getNumber();
+		}
+		
+		if (noOfInsights < 25) {
+			texts.add(outro1);
+			texts.add(outrohint);
+		} else if (noOfInsights < 32) {
+			texts.add(outro1);
+			texts.add(outro2);
+			texts.add(outrohint);
+		} else {
+			texts.add(outro1);
+			texts.add(outro2);
+			texts.add(outro3);
+		}
+		texts.add("The End");
+		
+		
 	}
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		topContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
-		centerContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
-		bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
-		
+
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-			sbg.enterState(CosmodogStarter.CREDITS_STATE_ID, new FadeOutTransition(), new FadeInTransition());
+			if (page < texts.size() - 1) {
+				page++;
+			} else {
+				sbg.enterState(CosmodogStarter.CREDITS_STATE_ID, new FadeOutTransition(), new FadeInTransition());
+			}
 		}
 
 	}
@@ -50,14 +91,25 @@ public class OutroState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		TextRenderer tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
-		tr.render(gc, g, topContainerDrawingContext, "Congratulations");
+		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		
-		tr = new TextRenderer(Fonts.GAME_WON_FONT, true);
-		tr.render(gc, g, centerContainerDrawingContext, "YOU WON!!!");
+		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
 		
-		tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
-		tr.render(gc, g, bottomContainerDrawingContext, "Press [Enter]");
+		DrawingContext introTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
+		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
+		
+		boolean endLabel = page == texts.size() - 1 ? true : false;
+		
+		if (endLabel) {
+			TextBookRendererUtils.renderCenteredLabel(gc, g, introTextDc, texts.get(page), FontType.EndLabel);
+		} else {
+			TextBookRendererUtils.renderTextPage(gc, g, introTextDc, texts.get(page), FontType.OutroText);
+		}
+		
+		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
+		if (renderBlinkingHint) {
+			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface);
+		}
 
 	}
 

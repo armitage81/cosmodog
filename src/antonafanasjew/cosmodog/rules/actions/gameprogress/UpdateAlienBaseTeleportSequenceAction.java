@@ -22,6 +22,7 @@ import antonafanasjew.cosmodog.util.RegionUtils;
 public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 
 	private static final String CORRECT_SEQUENCE = "131322143";
+	//private static final String CORRECT_SEQUENCE = "1";
 	private static final int SEQUENCE_LENGTH = CORRECT_SEQUENCE.length();
 	
 	private static final String CONSOLE1_TEXT = "Gravity impuls";

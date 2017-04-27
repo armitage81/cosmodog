@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
@@ -56,7 +58,23 @@ public class HardStone extends DynamicPiece {
 		InventoryItem pick = inventory.get(InventoryItemType.PICK);
 		if (pick != null) {
 			if (state < STATE_DESTROYED) {
+				
+				
+				if (state == STATE_WHOLE) {
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_HARDSTONE1).play();
+				} else if (state == STATE_DAMAGED) {
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_HARDSTONE2).play();
+				} else if (state == STATE_BADLY_DAMAGED) {
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_HARDSTONE2).play();
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_HARDSTONE3).play();
+				}
+				
+				
 				state++;
+			}
+		} else {
+			if (state < STATE_DESTROYED) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
 			}
 		}
 	}

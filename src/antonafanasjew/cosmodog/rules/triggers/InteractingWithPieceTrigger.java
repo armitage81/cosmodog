@@ -27,6 +27,7 @@ public class InteractingWithPieceTrigger extends AbstractRuleTrigger {
 		}
 		
 		GameEventPieceInteraction pieceInteractionGameEvent = (GameEventPieceInteraction)event;
+		
 		Piece piece = pieceInteractionGameEvent.getPiece();
 		
 		String eventPieceType = PiecesUtils.pieceType(piece);

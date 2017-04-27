@@ -11,7 +11,6 @@ import antonafanasjew.cosmodog.actions.cutscenes.DeathByRadiationAction;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
-import antonafanasjew.cosmodog.actions.wait.WaitAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Constants;
@@ -21,20 +20,12 @@ import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.Objects;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
-import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleAmmo;
-import antonafanasjew.cosmodog.model.CollectibleComposed;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
-import antonafanasjew.cosmodog.model.CollectibleKey;
-import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
-import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
@@ -69,6 +60,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private int oldFood = -1;
 	private boolean oldDehydrating = false;
 	private boolean oldStarving = false;
+	private boolean oldFreezing = false;
 	private int oldTurnsWormAlerted = -1;
 	
 	@Override
@@ -174,12 +166,16 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				PieceInteraction pieceInteraction = cosmodog.getPieceInteractionMap().get(pieceType);
 				
 				if (pieceInteraction != null) {
-					pieceInteraction.beforeInteraction(piece, applicationContext, cosmodogGame, player);
-					pieceInteraction.interactWithPiece(piece, applicationContext, cosmodogGame, player);
-					pieceInteraction.afterInteraction(piece, applicationContext, cosmodogGame, player);
+					
+					if (piece.interactive(piece, applicationContext, cosmodogGame, player)) {
+						pieceInteraction.beforeInteraction(piece, applicationContext, cosmodogGame, player);
+						pieceInteraction.interactWithPiece(piece, applicationContext, cosmodogGame, player);
+						pieceInteraction.afterInteraction(piece, applicationContext, cosmodogGame, player);
+						it.remove();
+					}
+					
 				}
 				
-				it.remove();
 			}
 		}
 	}
@@ -248,6 +244,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					}
 					
 					if (notificationText != null) {
+						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
 						ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
 						actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(notificationText));
 					}
@@ -333,6 +330,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			OverheadNotificationAction.registerOverheadNotification(player, text);
 			text = "Death by poison in " + TURNS_BEFORE_DEATH_BY_POISON + " turns !!!";
 			OverheadNotificationAction.registerOverheadNotification(player, text);
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_POISONED).play();
 		}
 		
 		player.contaminate();
@@ -416,13 +414,16 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
 				boolean hasJacket = player.getInventory().get(InventoryItemType.JACKET) != null;
 				
+				boolean wasFrozen = player.getLifeLentForFrost() > 0;
+
 				if (coldTile && !inCar && !hasJacket) {
-					OverheadNotificationAction.registerOverheadNotification(player, "You freeze");
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForFrost(1);
 					}
+					if (!wasFrozen) {
+						OverheadNotificationAction.registerOverheadNotification(player, "You freeze");
+					}
 				} else {
-					boolean wasFrozen = player.getLifeLentForFrost() > 0;
 					player.setLifeLentForFrost(0);
 					if (wasFrozen) {
 						OverheadNotificationAction.registerOverheadNotification(player, "You warm up");

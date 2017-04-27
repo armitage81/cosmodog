@@ -1,6 +1,9 @@
 package antonafanasjew.cosmodog.model;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.Arsenal;
 
 public class CollectibleAmmo extends Collectible {
 
@@ -22,5 +25,19 @@ public class CollectibleAmmo extends Collectible {
 		this.weaponType = weaponType;
 	}
 
+	@Override
+	public boolean interactive(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
+		
+		boolean interactive = true;
+		
+		CollectibleAmmo ammo = (CollectibleAmmo)piece;
+		WeaponType weaponType = ammo.getWeaponType();
+		Arsenal arsenal = player.getArsenal();
+		if (arsenal.getWeaponsCopy().get(weaponType) == null) {
+			interactive = false;
+		}
+		
+		return interactive;
+	}
 
 }

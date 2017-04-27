@@ -68,7 +68,7 @@ public class Mappings {
 	
 	static {
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_0, "cornerstones");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_1, "randomjoke");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_1, "wormwarning");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_2, "tobedefined003");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_3, "tobedefined004");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_4, "tobedefined005");

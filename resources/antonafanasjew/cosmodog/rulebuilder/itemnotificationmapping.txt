@@ -13,22 +13,22 @@ ARMOR_DESCRIPTION;armor;ANY;armorDescription;You found an armor plate. Vehicles 
 INSIGHT_DESCRIPTION;insight;ANY;insightDesciption;You found an alien artifact.;40
 SOFTWARE_DESCRIPTION;software;ANY;softwareDesciption;You found a software chip from the data center.;40
 CHART_DESCRIPTION;chart;ANY;chartDesciption;You found a map of this area. It can be viewed in the menu on the map screen.;40
-PISTOL_DESCRIPTION;pistol;0;pistolDescription;You found a pistol. Press [TAB] to switch weapons. Collect ammo to reload.;40
+PISTOL_DESCRIPTION;pistol;0;pistolDescription;You found a handgun. Press [TAB] to switch weapons. Collect ammo to reload.;40
 SHOTGUN_DESCRIPTION;shotgun;0;shotgunDescription;You found a shotgun. It's efficient against unarmored enemies. Press [TAB] to switch weapons. Collect ammo to reload.;40
 RIFLE_DESCRIPTION;rifle;0;rifleDescription;You found an assault rifle. It's efficiency is higher for lower armor. Press [TAB] to switch weapons. Collect ammo to reload.;40
 MACHINEGUN_DESCRIPTION;machinegun;0;machinegunDescription;You found a machine gun. It's devastating against medium and heavy armor. Press [TAB] to switch weapons. Collect ammo to reload.;40
 RPG_DESCRIPTION;rpg;0;rpgDescription;You found an RPG. It can kill fortified targets in one hit. Press [TAB] to switch weapons. Collect ammo to reload.;40
-PISTOL_DESCRIPTION2;pistol;1;pistolDescription;You found another pistol. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
+PISTOL_DESCRIPTION2;pistol;1;pistolDescription;You found another handgun. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
 SHOTGUN_DESCRIPTION2;shotgun;1;shotgunDescription;You found another shotgun. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
 RIFLE_DESCRIPTION2;rifle;1;rifleDescription;You found another assault rifle. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
 MACHINEGUN_DESCRIPTION2;machinegun;1;machinegunDescription;You found another machine gun. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
 RPG_DESCRIPTION2;rpg;1;rpgDescription;You found another RPG. You manage to reuse its parts to upgrade the ammunition capacity by one.;39
-PISTOL_DESCRIPTION3;pistol;2;pistolDescription;You found another pistol. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
+PISTOL_DESCRIPTION3;pistol;2;pistolDescription;You found another handgun. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
 SHOTGUN_DESCRIPTION3;shotgun;2;shotgunDescription;You found another shotgun. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
 RIFLE_DESCRIPTION3;rifle;2;rifleDescription;You found another assault rifle. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
 MACHINEGUN_DESCRIPTION3;machinegun;2;machinegunDescription;You found another machine gun. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
 RPG_DESCRIPTION3;rpg;2;rpgDescription;You found another RPG. You manage to reuse its parts to upgrade the ammunition capacity by one.;38
-PISTOL_AMMO_DESCRIPTION;CollectibleAmmo_pistol;0;pistolAmmoDescription;You found pistol ammunition.;40
+PISTOL_AMMO_DESCRIPTION;CollectibleAmmo_pistol;0;pistolAmmoDescription;You found handgun ammunition.;40
 SHOTGUN_AMMO_DESCRIPTION;CollectibleAmmo_shotgun;0;shotgunAmmoDescription;You found shotgun ammunition.;40
 RIFLE_AMMO_DESCRIPTION;CollectibleAmmo_rifle;0;rifleAmmoDescription;You found assault rifle ammunition.;40
 MACHINEGUN_AMMO_DESCRIPTION;CollectibleAmmo_machinegun;0;machinegunAmmoDescription;You found machine gun ammunition.;40

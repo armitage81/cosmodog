@@ -8,12 +8,14 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.Log;
 
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -72,11 +74,12 @@ public class MenuRenderer implements Renderer {
 					Log.error(e.getLocalizedMessage(), e);
 				}
 				
-				LetterTextRenderingParameter param = LetterTextRenderingParameter.fromTextAndScaleFactor(labelText, 2f);
-				param.verAlignment = LetterTextRenderingParameter.VER_ALIGNMENT_CENTER;
-				LetterTextRenderer.getInstance().render(gameContainer, g, itemDc, param);
+				boolean renderSelected = true;
 				
 				if (menu.getSelectedMenuElement().equals(menuElement)) {
+					
+					renderSelected = System.currentTimeMillis() / 100 % 2 == 0;
+					
 					DrawingContext cursorDc = new TileDrawingContext(dcCursor, 1, MAX_MENU_ENTRIES_RENDERED, 0, i);
 					cursorDc = new CenteredDrawingContext(cursorDc, 10, 10);
 					
@@ -89,6 +92,10 @@ public class MenuRenderer implements Renderer {
 					
 					g.setColor(Color.white);
 					g.translate(-cursorDc.x(), -cursorDc.y());
+				}
+				
+				if (renderSelected) {
+					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, itemDc, labelText, FontType.MainMenu);
 				}
 			}
 			

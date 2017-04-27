@@ -15,6 +15,11 @@ public class TextBookRendererUtils {
 		TextBookRenderer.getInstance().render(gc, g, dc, param);
 	}
 	
+	public static void renderVerticallyCenteredLabel(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType) {
+		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_CENTER, 0);
+		TextBookRenderer.getInstance().render(gc, g, dc, param);
+	}
+	
 	public static void renderTextPage(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType) {
 		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_START, 0);
 		TextBookRenderer.getInstance().render(gc, g, dc, param);

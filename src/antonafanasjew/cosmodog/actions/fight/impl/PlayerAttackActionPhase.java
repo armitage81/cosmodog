@@ -14,7 +14,6 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.AttackingFightPhaseTransition;
@@ -47,8 +46,10 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		
 		boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
 		boolean enemyLooksAway = enemyDirection.equals(playerDirection);
+		Enemy enemy = fightPhaseTransition.getEnemy();
+		boolean criticalHitsAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
 		
-		if (playerLooksAtEnemy && enemyLooksAway) {
+		if (playerLooksAtEnemy && enemyLooksAway && criticalHitsAllowed) {
 			text = text + " (x2)";
 		}
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), text);

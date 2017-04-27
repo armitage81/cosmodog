@@ -26,6 +26,7 @@ public class SwitchingIndicatorAction extends FixedLengthAsyncAction {
 	private static final long serialVersionUID = -8462906572353901070L;
 
 	private String regionName;
+	private boolean switchedAlready = false;
 	
 	private Set<BinaryIndicator> indicatorsInRegion = Sets.newHashSet();
 	private boolean onNotOff;
@@ -65,10 +66,13 @@ public class SwitchingIndicatorAction extends FixedLengthAsyncAction {
 		
 		for (BinaryIndicator binaryIndicator : indicatorsInRegion) {
 			
-			if (actionPercentage >= 0.5) {
-				binaryIndicator.setState(onNotOff ? BinaryIndicator.STATE_TRUE : BinaryIndicator.STATE_FALSE);
+			if (!switchedAlready) {
+				if (actionPercentage >= 0.5) {
+					binaryIndicator.setState(onNotOff ? BinaryIndicator.STATE_TRUE : BinaryIndicator.STATE_FALSE);
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_FOUND).play();
+					switchedAlready = true;
+				}
 			}
-			
 		}
 	}
 

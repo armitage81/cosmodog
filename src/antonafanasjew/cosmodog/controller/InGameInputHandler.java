@@ -199,7 +199,12 @@ public class InGameInputHandler extends AbstractInputHandler {
 						
 						@Override
 						public void onTrigger() {
-							applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
+							
+							
+							DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(finalNewX, finalNewY); 
+							if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
+								applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
+							}
 							
 							String text = collisionStatus.getPassageBlockerDescriptor().asText();
 							
@@ -229,6 +234,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 							
 							if (fracture >= 0.5f && interactedWithDynamicPieceAlready == false) {
 								//Now handle the case of interacting with dynamic pieces (e.g. destroying a stone)
+								//BTW, this part is not entirely correct, as interaction with dynamic pieces will happen only in 
+								//case if they are blocking passage (e.g. not destroyed stones)
+								//But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
 								DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(finalNewX, finalNewY);
 								if (dynamicPiece != null) {
 									dynamicPiece.interact();

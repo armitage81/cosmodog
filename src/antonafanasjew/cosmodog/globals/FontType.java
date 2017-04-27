@@ -11,7 +11,11 @@ import org.newdawn.slick.font.effects.ColorEffect;
 
 public enum FontType {
 
-	IntroText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, false, false, Color.white)),
+	MainMenu(createUnicodeFont(new Font("Courier New", Font.PLAIN, 26), 26, true, false, Color.red)),
+	IntroText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, true, false, Color.white)),
+	OutroText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, true, false, Color.white)),
+	EndLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)),
+	CreditsText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, false, false, Color.white)),
 	GameLog(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, false, false, Color.white)),
 	GameLogHeader(createUnicodeFont(new Font("Courier New", Font.BOLD, 24), 24, true, false, Color.white)),
 	PopUp(createUnicodeFont(new Font("Courier New", Font.PLAIN, 24), 24, false, false, Color.white)),

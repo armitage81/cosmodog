@@ -175,6 +175,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 			}
 		} else if (player.getInventory().hasPlatform() && !player.getInventory().exitingPlatform()) {
 
+			if (!skipTurn) {
+				applicationContext.getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
+			}
+			
 			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 			int resultX = playerMovementActionResult.getPath().getX(1);
 			int resultY = playerMovementActionResult.getPath().getY(1);

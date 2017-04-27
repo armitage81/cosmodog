@@ -88,7 +88,11 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 		
-		MineExplosionAction mineExplosionAction = (MineExplosionAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
+		Object action = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
+		MineExplosionAction mineExplosionAction = null;
+		if (action instanceof MineExplosionAction) {
+			mineExplosionAction = (MineExplosionAction)action;
+		}
 		
 		
 		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();

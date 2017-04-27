@@ -159,7 +159,7 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 						Inventory inventory = player.getInventory();
 						InsightInventoryItem insightInventoryItem = (InsightInventoryItem) inventory.get(InventoryItemType.INSIGHT);
 
-						if (insightInventoryItem != null && insightInventoryItem.getNumber() < Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
+						if (insightInventoryItem == null || insightInventoryItem.getNumber() < Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
 							blockReasonParam = "Requires " +  String.valueOf(Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) + " insights to open.";
 						}
 					}

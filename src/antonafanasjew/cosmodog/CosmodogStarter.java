@@ -114,10 +114,18 @@ public class CosmodogStarter extends StateBasedGame {
 		AppGameContainer gameContainer = new AppGameContainer(instance());
 		
 		gameContainer.setIcon("data/cosmodog_icon.png");
-		gameContainer.setDisplayMode(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, Constants.FULLSCREEN);
+		
+		boolean fullScreen = Constants.FULLSCREEN;
+		if (System.getProperty("cosmodog.fullscreen") != null) {
+			fullScreen = Boolean.valueOf(System.getProperty("cosmodog.fullscreen"));
+		}
+		
+		gameContainer.setDisplayMode(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, fullScreen);
 		gameContainer.setAlwaysRender(true);
 		gameContainer.setTargetFrameRate(60);
-		//gameContainer.setMouseGrabbed(true);
+		if (fullScreen) {
+			gameContainer.setMouseGrabbed(true);
+		}
 		
 		gameContainer.start();
 	}
@@ -127,10 +135,10 @@ public class CosmodogStarter extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
+		this.addState(new GameState());
 		this.addState(new IntroState());
 		this.addState(new MainMenuState());
 		this.addState(new ScoreState());
-		this.addState(new GameState());
 		this.addState(new GameMenuState());
 		this.addState(new GameOverState());
 		this.addState(new CutsceneState());

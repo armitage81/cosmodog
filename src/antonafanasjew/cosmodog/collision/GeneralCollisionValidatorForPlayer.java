@@ -19,7 +19,7 @@ import com.google.common.collect.Lists;
 public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	private CollisionValidator unequippedWalkerCollisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new UnequippedWalkerCollisionValidator()));
-	private CollisionValidator vehicleCollisionValidator =  new OneBlocksAllCollisionValidator(Lists.newArrayList(new ActorOnWheelsCollisionValidator(), new VehicleObstacleCollisionValidator()));
+	private CollisionValidator vehicleCollisionValidator =  new OneBlocksAllCollisionValidator(Lists.newArrayList(new ActorOnWheelsCollisionValidator(), new VehicleObstacleCollisionValidator(), new NonInteractivePieceCollisionValidator()));
 	private FuelCollisionValidator fuelCollisionValidator = new FuelCollisionValidator();
 	private BoatCollisionValidator boatCollisionValidator = new BoatCollisionValidator();
 	private PlatformAsVehicleCollisionValidator platformAsVehicleCollisionValidator = new PlatformAsVehicleCollisionValidator();

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Platform;
@@ -21,4 +22,10 @@ public class PlatformInteraction extends AbstractPieceInteraction {
 		player.getInventory().put(InventoryItemType.PLATFORM, platformInventoryItem);
 	}
 
+	
+	@Override
+	public String soundResource() {
+		return SoundResources.SOUND_CAR_DOOR;
+	}
+	
 }

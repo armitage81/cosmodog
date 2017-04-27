@@ -3,7 +3,6 @@ package antonafanasjew.cosmodog.model.states;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -16,8 +15,6 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 
 public class IntroState extends BasicGameState {
@@ -27,8 +24,12 @@ public class IntroState extends BasicGameState {
 	private DrawingContext centerContainerDrawingContext;
 	private DrawingContext bottomContainerDrawingContext;
 	
+	private long initialTimestamp;
+	private long timestamp;
+	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		initialTimestamp = System.currentTimeMillis();
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.loadScoreList();
 	}
@@ -46,7 +47,9 @@ public class IntroState extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
 		
-		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+		timestamp = System.currentTimeMillis();
+		
+		if (timestamp - initialTimestamp > 3000) {
 			sbg.enterState(CosmodogStarter.MAIN_MENU_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		}
 		
@@ -58,21 +61,9 @@ public class IntroState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		Animation logo = ApplicationContext.instance().getAnimations().get("logo");
+		Animation logo = ApplicationContext.instance().getAnimations().get("trancescendent");
 		DrawingContext dc = new CenteredDrawingContext(centerContainerDrawingContext, 640, 192);
 		logo.draw(dc.x(), dc.y(), dc.w(), dc.h());
-		
-		long timestamp = System.currentTimeMillis();
-		timestamp = timestamp / 500;
-		
-		if (timestamp % 2 == 0) {
-			LetterTextRenderingParameter param = LetterTextRenderingParameter.fromText("Press [Enter]");
-			param.scaleFactor = 2.0f;
-			param.horAlignment = LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER;
-			param.verAlignment = LetterTextRenderingParameter.VER_ALIGNMENT_CENTER;
-			LetterTextRenderer.getInstance().render(gc, g, bottomContainerDrawingContext, param);
-		}
-
 		
 	}
 

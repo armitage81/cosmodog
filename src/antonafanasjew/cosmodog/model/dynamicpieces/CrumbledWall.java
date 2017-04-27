@@ -1,5 +1,10 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.cutscenes.ExplosionAction;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
@@ -50,12 +55,18 @@ public class CrumbledWall extends DynamicPiece {
 
 	@Override
 	public void interact() {
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = ApplicationContextUtils.getPlayer();
 		Inventory inventory = player.getInventory();
 		InventoryItem dynamite = inventory.get(InventoryItemType.DYNAMITE);
 		if (dynamite != null) {
 			if (state < STATE_DESTROYED) {
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, getPositionX(), getPositionY()));
 				state++;
+			}
+		} else {
+			if (state < STATE_DESTROYED) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
 			}
 		}
 	}

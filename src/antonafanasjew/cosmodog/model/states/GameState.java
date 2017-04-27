@@ -25,13 +25,11 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.decoration.BirdsDecoration;
-import antonafanasjew.cosmodog.rendering.decoration.CloudsDecoration;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.ArsenalInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.ArtilleryGrenadeRenderer;
@@ -60,10 +58,8 @@ import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.WeaponTooltipRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WormAttackRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WormSnowSparkRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.WritingRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.BottomLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.TipsLayersRenderingPredicate;
@@ -74,13 +70,10 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.OccupiedPlatformRendere
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.TextBookRendererParameter;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleBook;
-import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
-import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
-import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxState;
 
 import com.google.common.collect.Lists;
 
@@ -95,7 +88,6 @@ public class GameState extends BasicGameState {
 	private DrawingContext middleColumnDrawingContext;
 	private DrawingContext topDrawingContext;
 	
-	private DrawingContext weaponTooltipsDrawingContext;
 	private DrawingContext lifeDrawingContext;
 	private DrawingContext arsenalDrawingContext;
 	private DrawingContext bottomDrawingContext;
@@ -103,7 +95,6 @@ public class GameState extends BasicGameState {
 	private DrawingContext gameProgressDrawingContext;
 	private DrawingContext mapDrawingContext;
 	
-	private CloudsDecoration cloudsDeco;
 	private List<BirdsDecoration> birdsDecos = Lists.newArrayList();
 	
 	private AbstractRenderer dynamicPiecesRenderer;
@@ -129,7 +120,6 @@ public class GameState extends BasicGameState {
 	private Renderer markedTileRenderer;
 	private AbstractRenderer sightRadiusRenderer;
 	private Renderer arsenalInterfaceRenderer;
-	private Renderer weaponTooltipRenderer;
 	private Renderer dyingPlayerRenderer;
 	private AbstractRenderer onScreenNotificationRenderer;
 	
@@ -137,7 +127,6 @@ public class GameState extends BasicGameState {
 	private MapLayerRendererPredicate tipsLayersPredicate;
 	private MapLayerRendererPredicate topsLayersPredicate;
 	
-	private WritingRenderer commentsRenderer;
 	private DialogBoxRenderer dialogBoxRenderer;
 	private TextFrameRenderer textFrameRenderer;
 	private GameLogRenderer gameLogRenderer;
@@ -161,8 +150,6 @@ public class GameState extends BasicGameState {
 		
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
 		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
-		
-		weaponTooltipsDrawingContext = new TileDrawingContext(mapDrawingContext, 2, 9, 1, 1, 1, 8);
 		
 		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
 		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
@@ -198,12 +185,10 @@ public class GameState extends BasicGameState {
 		markedTileRenderer = new MarkedTileRenderer();
 		sightRadiusRenderer = new SightRadiusRenderer();
 		arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
-		weaponTooltipRenderer = new WeaponTooltipRenderer();
 		dyingPlayerRenderer = new DyingPlayerRenderer();
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
-		commentsRenderer = new WritingRenderer(false, new Color(0, 0, 1, 0.5f));
 		dialogBoxRenderer = new DialogBoxRenderer();
 		textFrameRenderer = new TextFrameRenderer();
 		gameLogRenderer = new GameLogRenderer();
@@ -261,11 +246,6 @@ public class GameState extends BasicGameState {
 		container.getInput().isKeyPressed(Input.KEY_RETURN);
 		
 		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
-		cloudsDeco = new CloudsDecoration(scene, 1000, 25, 25, 240, 240);
-		birdsDecos.clear();
-		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 1.5f));
-		birdsDecos.add(new BirdsDecoration(cosmodogGame.getCam(), 2, 20, 100f, 2));
-		
 
 		//Check for the rules of the new game event
 		RuleBook ruleBook = cosmodogGame.getRuleBook();
@@ -307,19 +287,12 @@ public class GameState extends BasicGameState {
 
     		cosmodogGame.getChronometer().update(n);
     		cosmodogGame.getCommentsStateUpdater().update(n);
-    		cosmodogGame.getActionRegistry().update(n, gc, sbg);
     		
 		}
 		
+		cosmodogGame.getActionRegistry().update(n, gc, sbg);
 		cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
-
 		
-		cloudsDeco.update(n);
-		
-		for (BirdsDecoration birdsDeco : birdsDecos) {
-			birdsDeco.update(n);
-		}
-
 		//After processing a loop, clear the record of pressed buttons.
 		input.clearKeyPressedRecord();
 		
@@ -390,12 +363,10 @@ public class GameState extends BasicGameState {
 		effectsRenderer.render(gc, g, mapDrawingContext, EffectsRendererParam.FOR_TOP_EFFECTS);
 		
 		//Draw clouds.
-		cloudRenderer.render(gc, g, mapDrawingContext, cloudsDeco.getCloudRectangles());
+		cloudRenderer.render(gc, g, mapDrawingContext);
 		
 		//Draw birds.
-		for (BirdsDecoration birdDeco : birdsDecos) {
-			birdsRenderer.render(gc, g, mapDrawingContext, birdDeco);
-		}
+		birdsRenderer.render(gc, g, mapDrawingContext);
 
 		//Draw Daytime mask.
 		daytimeColorFilterRenderer.render(gc, g, mapDrawingContext, null);
@@ -406,26 +377,17 @@ public class GameState extends BasicGameState {
 		//Draw overhead notifications, e.g. "blocked" warning.
 		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
 		
-		//Draws onscreen notifications
-		onScreenNotificationRenderer.render(gc, g, mapDrawingContext);
 		
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
 		
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
 		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
-		weaponTooltipRenderer.render(gc, g, weaponTooltipsDrawingContext, null);
 
 		dyingPlayerRenderer.render(gc, g, mapDrawingContext, null);
 	
 		DrawingContext dialogBoxDrawingContext = ApplicationContext.instance().getDialogBoxDrawingContext();
-		DrawingContext commentsWritingDrawingContext = DrawingContextUtils.writingContentDcFromDialogBoxDc(dialogBoxDrawingContext);
-		
-		WritingTextBoxState commentTextBoxState = cosmodogGame.getCommentsStateUpdater().getState();
-		if (commentTextBoxState != null) {
-			commentsRenderer.render(gc, g, commentsWritingDrawingContext, commentTextBoxState);
-		}
-		
+				
 		if (cosmodogGame.getWritingTextBoxState() != null) {
 			g.setColor(new Color(0,0,0,0.75f));
 			g.fillRect(0, 0, gameContainerDrawingContext.w(), gameContainerDrawingContext.h());
@@ -441,6 +403,9 @@ public class GameState extends BasicGameState {
 		if (cosmodogGame.getOpenGameLog() != null) {
 			gameLogRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 800, 500), null);
 		}
+		
+		//Draws onscreen notifications
+		onScreenNotificationRenderer.render(gc, g, mapDrawingContext);
 		
 		inGameMenuRenderer.render(gc, g, mapDrawingContext, null);
 		

@@ -1,56 +1,85 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.Set;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.decoration.BirdsDecoration;
-import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.topology.Rectangle;
+import antonafanasjew.cosmodog.topology.Vector;
+import antonafanasjew.particlepattern.model.Particle;
+import antonafanasjew.particlepattern.model.ParticlePattern;
 
 public class BirdsRenderer extends AbstractRenderer {
-
-	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics g, DrawingContext drawingContext, Object renderingParameter) {
-
-		BirdsDecoration birdsDecoration = (BirdsDecoration)renderingParameter;
 		
-		Position position = birdsDecoration.getCurrentBirdsPosition();
-		float flightHeightFactor = birdsDecoration.getFlightHeightFactor();
+	@Override
+	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+		
+		ApplicationContext applicationContext = ApplicationContext.instance();
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		Cam cam = cosmodogGame.getCam();
+		Animation a = applicationContext.getAnimations().get("birds");
+		
+		BirdsDecoration birdsDecoration = BirdsDecoration.instance();
+		
+		/*
+		 * 	This is complicated, so read carefully.
+		 * 
+		 *	When zooming, we actually increase the size of the scene while keeping the size of the cam and moving the cam to keep the ratio.
+		 *	Example: Cam center is exactly in the middle of a 1000 * 1000 scene. Cam size is 100 * 100 and it's center is at 500/500. Now zoom x2. The scene is now 2000 * 2000. 
+		 *  The cam size is still 100 * 100, but its center is now at 1000/1000.
+		 *  
+		 *  This is problematic for the offset calculator algorithm as it is based on the cam offset. In our example, the cam offset has changed because of the zoom, even if 
+		 *  there was no change in terms of the offset calculator. Imagine a particle, like a tiny cloud, which is shown in the center of the screen. When zooming out, the cloud
+		 *  still has to be there even if, technically, its offset should be recalculated because the cams offset is halfed now.
+		 *  
+		 *  Hence we cannot base the offset calculator on the cam offset. Instead, we are assuming the unzoomed offset. So in the example above, the offset calculator is still assuming
+		 *  the cam offset of 500/500.
+		 *  
+		 *  
+		 *  A second problem is positioning of particles related to the cam. Imagine two clouds close to each other. Now zoom in. The distance between the clouds will be bigger.
+		 *  This is not handled by the offset calculator. We have to zoom the particle surface accordingly and recalculate the particle offsets related to the surface by adding the zoom factor.
+		 *     
+		 */
+		
+		PlacedRectangle view = cam.viewCopy();
+		Vector newCenter = new Vector(view.centerX() / cam.getZoomFactor(), view.centerY() / cam.getZoomFactor());
+		Vector newMin = newCenter.add(-view.width() / 2, -view.height() / 2);
+		view = PlacedRectangle.fromAnchorAndSize(newMin.getX(), newMin.getY(), view.width(), view.height());
+		
+		ParticlePattern currentPattern = birdsDecoration.particlePatternForPlaceAndTime(view);
 
-		if (position != null) {
-
-			ApplicationContext applicationContext = ApplicationContext.instance();
-			Cosmodog cosmodog = applicationContext.getCosmodog();
-			CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-
-			float zoomFactor = cosmodogGame.getCam().getZoomFactor() * flightHeightFactor;
-
-			Animation a = applicationContext.getAnimations().get("birds");
-
-			float birdsX = position.getX();
-			float birdsY = position.getY();
-			float birdsXCenter = birdsX + a.getWidth() / 2;
-			float birdsYCenter = birdsY + a.getHeight() / 2;
-
-			// System.out.println("GC: " + gc.getWidth() + "/" +
-			// gc.getHeight());
-			// System.out.println("MC: " + mapDrawingContext.w() + "/" +
-			// mapDrawingContext.h());
-			// System.out.println("MC_OFFSET: " + mapDrawingContext.x() + "/" +
-			// mapDrawingContext.y());
-			// System.out.println("Birds: " + birdsX + "/" + birdsY);
-
-			g.translate(birdsXCenter, birdsYCenter);
-			g.scale(zoomFactor, zoomFactor);
-			a.draw(-a.getWidth() / 2, -a.getHeight() / 2);
-			g.scale(1 / zoomFactor, 1 / zoomFactor);
-			g.translate(-birdsXCenter, -birdsYCenter);
-
+		Set<Particle> particles = currentPattern.particlesSet();
+		
+		//Note: particles are defined related to the particle pattern, but we draw related to the cam size. 
+		//Hence we need to translate the difference first.
+		
+		Rectangle particlePatternSurface = birdsDecoration.getParticlePatternSurface();
+		particlePatternSurface = Rectangle.fromSize(particlePatternSurface.getWidth() * cam.getZoomFactor(), particlePatternSurface.getHeight() * cam.getZoomFactor());
+		
+		float centerOffsetX = -(particlePatternSurface.getWidth() - cam.viewCopy().width()) / 2f;
+		float centerOffsetY = -(particlePatternSurface.getHeight() - cam.viewCopy().height()) / 2f;
+		
+		Vector particlePatternSurfaceOffsetRelatedToCam = new Vector(centerOffsetX, centerOffsetY);
+		
+		graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
+		
+		for (Particle particle : particles) {
+			a.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), a.getWidth() * cam.getZoomFactor(), a.getHeight() * cam.getZoomFactor());
+			
 		}
+		
+		graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
+		
 	}
 
 }

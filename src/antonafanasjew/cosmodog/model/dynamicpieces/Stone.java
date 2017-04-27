@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 
 /**
@@ -49,6 +51,16 @@ public class Stone extends DynamicPiece {
 	@Override
 	public void interact() {
 		if (state < STATE_DESTROYED) {
+			
+			if (state == STATE_WHOLE) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_STONE1).play();
+			} else if (state == STATE_DAMAGED) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_STONE2).play();
+			} else if (state == STATE_BADLY_DAMAGED) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_STONE2).play();
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BREAK_STONE3).play();
+			}
+			
 			state++;
 		}
 	}

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.util;
 
 import java.io.File;
+import java.util.Date;
 
 import org.newdawn.slick.util.Log;
 
@@ -12,7 +13,6 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.ScoreEntry;
 import antonafanasjew.cosmodog.model.ScoreList;
-import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Player;
 
 public class GameFlowUtils {
@@ -23,12 +23,11 @@ public class GameFlowUtils {
 	 */
 	public static void updateScoreList() {
 		Cosmodog cosmodog = ApplicationContext.instance().getCosmodog();
-		User user = cosmodog.getUser();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		Player player = cosmodogGame.getPlayer();
 		GameProgress gameProgress = player.getGameProgress();
 		int lastGameScore = gameProgress.getGameScore();
-		ScoreEntry scoreEntry = new ScoreEntry(user.getUserName(), lastGameScore);
+		ScoreEntry scoreEntry = new ScoreEntry(new Date(), lastGameScore);
 		ScoreList scoreList = cosmodog.getScoreList();
 		scoreList.addNewScoreEntry(scoreEntry);
 		try {

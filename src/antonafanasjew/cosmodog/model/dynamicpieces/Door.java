@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -74,6 +76,13 @@ public class Door extends DynamicPiece {
 					opened = true;
 				}
 			}
+			
+			if (!opened) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_LOCKED_ALIEN_DOOR).play();
+			} else {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_OPENING_ALIEN_DOOR).play();
+			}
+			
 		}
 	}
 

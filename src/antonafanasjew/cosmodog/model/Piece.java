@@ -1,5 +1,8 @@
 package antonafanasjew.cosmodog.model;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.model.actors.Player;
+
 /**
  * Represents a piece on the map. It could be an item, an actor or the player.
  */
@@ -26,4 +29,8 @@ public class Piece extends CosmodogModel {
 		this.positionY = positionY;
 	}
 
+	public boolean interactive(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
+		return true;
+	}
+	
 }

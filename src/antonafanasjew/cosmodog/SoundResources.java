@@ -141,4 +141,34 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_EARTHQUAKE = "sound.earthquake";
 
+	/**
+	 * Break crate
+	 */
+	public static final String SOUND_BREAK_CRATE1 = "sound.breakcrate1";
+
+	public static final String SOUND_BREAK_CRATE2 = "sound.breakcrate2";
+
+	public static final String SOUND_BREAK_CRATE3 = "sound.breakcrate3";
+
+	public static final String SOUND_BREAK_STONE1 = "sound.breakstone1";
+	public static final String SOUND_BREAK_STONE2 = "sound.breakstone2";
+	public static final String SOUND_BREAK_STONE3 = "sound.breakstone3";
+
+	public static final String SOUND_BREAK_HARDSTONE1 = "sound.breakhardstone1";
+	public static final String SOUND_BREAK_HARDSTONE2 = "sound.breakhardstone2";
+	public static final String SOUND_BREAK_HARDSTONE3 = "sound.breakhardstone3";
+
+	public static final String SOUND_CUT_TREE1 = "sound.cuttingtree1";
+	public static final String SOUND_CUT_TREE2 = "sound.cuttingtree2";
+	public static final String SOUND_CUT_TREE3 = "sound.cuttingtree3";
+
+	public static final String SOUND_CUT_BAMBOO1 = "sound.cuttingbamboo1";
+	public static final String SOUND_CUT_BAMBOO2 = "sound.cuttingbamboo2";
+	public static final String SOUND_CUT_BAMBOO3 = "sound.cuttingbamboo3";
+
+	public static final String SOUND_LOCKED_ALIEN_DOOR = "sound.lockedaliendoor";
+	public static final String SOUND_OPENING_ALIEN_DOOR = "sound.openingaliendoor";
+
+	public static final String SOUND_POISONED = "sound.poisoned";
+
 }

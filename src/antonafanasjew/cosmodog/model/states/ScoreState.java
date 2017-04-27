@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
+import java.text.SimpleDateFormat;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,6 +20,8 @@ import antonafanasjew.cosmodog.model.ScoreList;
 
 public class ScoreState extends BasicGameState {
 
+	private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// TODO Auto-generated method stub
@@ -51,7 +55,7 @@ public class ScoreState extends BasicGameState {
 			int verticalOffset = 100;
 			for (int i = 0; i < scoreList.size(); i++) {
 				ScoreEntry scoreEntry = scoreList.get(i);
-				String s = scoreEntry.getUserName() + ": " + scoreEntry.getScore();
+				String s = SDF.format(scoreEntry.getDate())  + ": " + scoreEntry.getScore();
 				g.drawString(s, 100, verticalOffset);
 				verticalOffset += 25;
 			}

@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model;
 
+import java.util.Date;
+
 /**
  * Represents an entry in the score list. 
  * Can have data for user, score points, date etc.
@@ -8,11 +10,11 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
 
     private static final long serialVersionUID = 675564499573109328L;
     
-    private String userName;
+    private Date date;
 	private int score;
     
-    public ScoreEntry(String userName, int score) {
-    	this.userName = userName;
+    public ScoreEntry(Date date, int score) {
+    	this.date = date;
     	this.score = score;
     }
     
@@ -27,7 +29,7 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + score;
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		return result;
 	}
 
@@ -42,10 +44,10 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
 		ScoreEntry other = (ScoreEntry) obj;
 		if (score != other.score)
 			return false;
-		if (userName == null) {
-			if (other.userName != null)
+		if (date == null) {
+			if (other.date != null)
 				return false;
-		} else if (!userName.equals(other.userName))
+		} else if (!date.equals(other.date))
 			return false;
 		return true;
 	}
@@ -67,12 +69,12 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
 		return 0;
 	}
 
-	public String getUserName() {
-		return userName;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setDate(Date date) {
+		this.date = date;
 	}
     
     

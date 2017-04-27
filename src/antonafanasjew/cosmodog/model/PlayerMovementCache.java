@@ -126,42 +126,49 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	private void recalculateVisibleDynamicPieces() {
 		
-		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+		//Unfortunately, this cache does not make sense, as it focuses at the pieces next to the player,
+		//but in case of a camera flight over the field, every piece should be visible.
+		//Commented the logic and showing all pieces instead to avoid the problem.
+		//This has a bad impact on performance and should be tackled.
+		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		Cam cam = game.getCam();
 
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-		
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		visibleDynamicPieces = map.getDynamicPieces();
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-		
-		
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
-		
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
-		
-		
-		visibleDynamicPieces.clear();
-		for (Class<?> key : map.getDynamicPieces().keySet()) {
-			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
-			if (piecesForKey != null) {
-				Iterator<DynamicPiece> it = piecesForKey.iterator();
-				while (it.hasNext()) {
-					DynamicPiece piece = it.next();
-					if (piece.getPositionX() >= (tileNoX - 2) && piece.getPositionX() < (tileNoX + tilesW + 2)) {
-						if (piece.getPositionY() >= (tileNoY - 2) && piece.getPositionY() < (tileNoY + tilesH + 2)) {
-							visibleDynamicPieces.put(key, piece);
-						}
-					}
-				}
-			}
-		}
+//		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+//		Cam cam = game.getCam();
+//		int tileWidth = map.getTileWidth();
+//		int tileHeight = map.getTileHeight();
+//		
+//		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
+//		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+//
+//		int camX = (int) cam.viewCopy().x();
+//		int camY = (int) cam.viewCopy().y();
+//		
+//		
+//		int tileNoX = camX / scaledTileWidth;
+//		int tileNoY = camY / scaledTileHeight;
+//		
+//		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
+//		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+//		
+//		
+//		visibleDynamicPieces.clear();
+//		for (Class<?> key : map.getDynamicPieces().keySet()) {
+//			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
+//			if (piecesForKey != null) {
+//				Iterator<DynamicPiece> it = piecesForKey.iterator();
+//				while (it.hasNext()) {
+//					DynamicPiece piece = it.next();
+//					if (piece.getPositionX() >= (tileNoX - 2) && piece.getPositionX() < (tileNoX + tilesW + 2)) {
+//						if (piece.getPositionY() >= (tileNoY - 2) && piece.getPositionY() < (tileNoY + tilesH + 2)) {
+//							visibleDynamicPieces.put(key, piece);
+//						}
+//					}
+//				}
+//			}
+//		}
 	}
 	
 	private void recalculateRoofRegions(Actor actor) {

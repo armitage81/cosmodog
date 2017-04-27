@@ -6,7 +6,6 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
 /**
@@ -36,8 +35,10 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		
 		boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
 		boolean enemyLooksAway = enemyDirection.equals(playerDirection);
+		//Disallow critical hits for the ranged and stationary units as they always see the player if he approaches.
+		boolean criticalHitsAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
 		
-		if (playerLooksAtEnemy && enemyLooksAway) {
+		if (playerLooksAtEnemy && enemyLooksAway && criticalHitsAllowed) {
 			damage *= 2;
 		}
 		

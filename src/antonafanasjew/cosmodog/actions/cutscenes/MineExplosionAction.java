@@ -17,6 +17,8 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 	
 	public static class MineExplosionTransition {
 
+		public int positionX;
+		public int positionY;
 		public float percentage = 0.0f;
 
 	}
@@ -25,7 +27,10 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 	
 	public MineExplosionAction(int duration) {
 		super(duration);
+		Player player = ApplicationContextUtils.getPlayer();
 		this.transition = new MineExplosionTransition();
+		this.transition.positionX = player.getPositionX();
+		this.transition.positionY = player.getPositionY();
 	}
 
 	public MineExplosionTransition getTransition() {

@@ -8,6 +8,9 @@ import java.util.Set;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -65,13 +68,21 @@ public class ActionRegistry implements Serializable {
 		
 		Set<AsyncActionType> keysCopy = Sets.newHashSet();
 		keysCopy.addAll(actions.keySet());
-				
+
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		boolean interfaceBlocked = cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.BLOCKING_INTERFACE) != null;
+		
 		for (AsyncActionType key : keysCopy) {
+
+			if (interfaceBlocked && key.isBlockableByInterface()) {
+				continue;
+			}
 			
 			List<AsyncAction> actionsWithType = actions.get(key);
 			
 			if (actionsWithType.isEmpty() == false) {
 				AsyncAction firstActionWithType = actionsWithType.get(0);
+				
 				//Take care: In case of stackable actions we ignore the remaining time for the next action here
 				//but this should be fine as long as the update method intervals are short enough.
 				firstActionWithType.update(millis, gc, sbg); 

@@ -32,7 +32,7 @@ public class GameIntroState  extends BasicGameState {
 			+ " <p> "
 			+ "You land on the surface of the planet as a lone survivor. There is no way back. "
 			+ " <p> "
-			+ "Find 20 alien monolyths, reveal the mystery around the aliens and escape the planet.";
+			+ "Reveal the mystery around the aliens and escape the planet.";
 
 	
 	@Override

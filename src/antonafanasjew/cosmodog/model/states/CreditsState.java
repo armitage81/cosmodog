@@ -10,14 +10,22 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
+import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
+import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class CreditsState extends BasicGameState {
 
+	private String credits;
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// TODO Auto-generated method stub
-
+		credits = ApplicationContext.instance().getGameTexts().get("credits").getLogText();
 	}
 	
 	@Override
@@ -35,11 +43,20 @@ public class CreditsState extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(Color.white);
-		g.drawString("Credits", 100, 100);
-		g.drawString("Designed and implemented by Anton Afanasjew", 100, 150);
-		g.drawString("Press Enter to return to the main menu", 100, 200);
-
+		
+		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
+		
+		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
+		
+		DrawingContext creditsTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
+		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
+		
+		TextBookRendererUtils.renderCenteredLabel(gc, g, creditsTextDc, credits, FontType.CreditsText);
+		
+		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
+		if (renderBlinkingHint) {
+			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface);
+		}
 	}
 
 	@Override

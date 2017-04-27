@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 
 /**
@@ -44,7 +46,9 @@ public class Gate extends DynamicPiece {
 
 	@Override
 	public void interact() {
-		
+		if (state != STATE_LOWERED) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
+		}
 	}
 
 	@Override

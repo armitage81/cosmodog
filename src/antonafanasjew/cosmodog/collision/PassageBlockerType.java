@@ -16,6 +16,8 @@ public enum PassageBlockerType {
 	 */
 	BLOCKED("Blocked"),
 	
+	BLOCKED_BY_INACTIVE_PIECE("Blocked"),
+	
 	/**
 	 * The tile is not passable because it is blocked as target by an other character.
 	 */

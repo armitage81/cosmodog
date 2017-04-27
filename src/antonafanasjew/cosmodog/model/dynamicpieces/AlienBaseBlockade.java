@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -27,6 +29,13 @@ public class AlienBaseBlockade extends DynamicPiece {
 					opened = true;
 				}
 			}
+			
+			if (!opened) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_LOCKED_ALIEN_DOOR).play();
+			} else {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_OPENING_ALIEN_DOOR).play();
+			}
+			
 		}
 	}
 
