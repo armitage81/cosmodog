@@ -236,6 +236,12 @@ public class GameState extends BasicGameState {
     		
     		applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 
+    		//Check for the rules of the new game event
+    		RuleBook ruleBook = cosmodogGame.getRuleBook();
+    		List<Rule> rulesSortedByPriority = ruleBook.getRulesSortedByPriority();
+    		for (Rule rule : rulesSortedByPriority) {
+    			rule.apply(new GameEventNewGame());
+    		}
     		
 		}
 		
@@ -247,13 +253,6 @@ public class GameState extends BasicGameState {
 		
 		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
 
-		//Check for the rules of the new game event
-		RuleBook ruleBook = cosmodogGame.getRuleBook();
-		List<Rule> rulesSortedByPriority = ruleBook.getRulesSortedByPriority();
-		for (Rule rule : rulesSortedByPriority) {
-			rule.apply(new GameEventNewGame());
-		}
-		
 		firstUpdate = true;
 	}
 	

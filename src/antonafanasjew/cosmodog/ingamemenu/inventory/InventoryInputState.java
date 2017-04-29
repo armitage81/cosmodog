@@ -41,6 +41,12 @@ public class InventoryInputState implements InGameMenuInputState {
 	public void setSelectionY(int selectionY) {
 		this.selectionY = selectionY;
 	}
+
+	@Override
+	public void initializeState() {
+		selectionX = 0;
+		selectionY = 0;
+	}
 	
 	
 	

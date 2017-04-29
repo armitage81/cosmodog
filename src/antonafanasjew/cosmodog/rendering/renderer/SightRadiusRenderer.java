@@ -68,8 +68,12 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		
 		EnemiesUtils.removeInactiveUnits(enemies);
 				
+		String playerRoofRegion;
+		
 		for (Enemy enemy : enemies) {
 
+			String enemyRoofRegion;
+			
 			float movementOffsetX = 0;
 			float movementOffsetY = 0;
 			

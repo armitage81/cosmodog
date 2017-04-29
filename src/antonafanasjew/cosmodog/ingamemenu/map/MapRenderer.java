@@ -7,6 +7,7 @@ import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -93,14 +94,32 @@ public class MapRenderer implements Renderer {
 			
 			graphics.drawImage(mapImage, mapAreaQuadraticDrawingContext.x(), mapAreaQuadraticDrawingContext.y(), mapAreaQuadraticDrawingContext.x() + mapAreaQuadraticDrawingContext.w(), mapAreaQuadraticDrawingContext.y() + mapAreaQuadraticDrawingContext.h(), offsetX, offsetY, offsetX + pieceWidth, offsetY + pieceHeight);
 		
-		} else {
-			
-			String text = "No map data.";
-			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, mapAreaQuadraticDrawingContext, text, FontType.InGameMenuInterface);
-			
 		}
 		
+		//Render players position in the selected chart piece.
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		int mapWidth = map.getWidth();
+		int mapHeight = map.getHeight();
+		int posX = player.getPositionX();
+		int posY = player.getPositionY();
 		
+		int chartPieceWidth = mapWidth / ChartInventoryItem.CHART_PIECE_NUMBER_X;
+		int chartPieceHeight = mapHeight / ChartInventoryItem.CHART_PIECE_NUMBER_Y;
+		
+		if (mapVisibleAreaX == posX / chartPieceWidth && mapVisibleAreaY == posY / chartPieceHeight) {
+			int posInChartPieceX = posX - (chartPieceWidth * mapVisibleAreaX);
+			int posInChartPieceY = posY - (chartPieceHeight * mapVisibleAreaY);
+			
+			TileDrawingContext playerPositionDrawingContext = new TileDrawingContext(mapAreaQuadraticDrawingContext, chartPieceWidth, chartPieceHeight, posInChartPieceX, posInChartPieceY);
+			
+			long timestamp = System.currentTimeMillis();
+			if ((timestamp / 100) % 2 == 0) {
+				graphics.setColor(Color.orange);
+			} else {
+				graphics.setColor(Color.red);
+			}
+			graphics.fillRect(playerPositionDrawingContext.x(), playerPositionDrawingContext.y(), playerPositionDrawingContext.w(), playerPositionDrawingContext.h());
+		}
 		
 		graphics.translate(mapAreaDrawingContext.x(), mapAreaDrawingContext.y());
 		graphics.setColor(Color.white);

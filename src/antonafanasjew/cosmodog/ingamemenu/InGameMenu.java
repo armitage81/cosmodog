@@ -19,6 +19,7 @@ public class InGameMenu {
 	public InGameMenu(int startIndex, InGameMenuFrame... inGameMenuFrames) {
 		Preconditions.checkState(startIndex < inGameMenuFrames.length);
 		for (InGameMenuFrame inGameMenuFrame : inGameMenuFrames) {
+			inGameMenuFrame.getInputState().initializeState();
 			this.getMenuFrames().add(inGameMenuFrame);
 		}
 		this.startMenuFrameIndex = startIndex;

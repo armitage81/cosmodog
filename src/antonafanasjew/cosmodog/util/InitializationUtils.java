@@ -536,7 +536,7 @@ public class InitializationUtils {
 		for (QuadrandType quadrandType : QuadrandType.values()) {
 			RuleTrigger deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
-			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ".");
+			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". You deactivate the mines.");
 			RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 			RuleAction deactivateMinesAction = new DeactivateMinesAction(quadrandType);
 			deactivateMinesAction = BlockAction.block(deactivateMinesAction, new SetGameProgressPropertyAction("MinesDeactivatedForQuadrand" + quadrandType, "true"), notificationAction);

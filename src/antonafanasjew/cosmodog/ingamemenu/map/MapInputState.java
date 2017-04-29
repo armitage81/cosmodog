@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuInputState;
+import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class MapInputState implements InGameMenuInputState {
 
@@ -43,6 +46,23 @@ public class MapInputState implements InGameMenuInputState {
 	}
 	public void setSelectionY(int selectionY) {
 		this.selectionY = selectionY;
+	}
+
+	@Override
+	public void initializeState() {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		int mapWidth = map.getWidth();
+		int mapHeight = map.getHeight();
+		int posX = player.getPositionX();
+		int posY = player.getPositionY();
+		
+		int chartPieceWidth = mapWidth / ChartInventoryItem.CHART_PIECE_NUMBER_X;
+		int chartPieceHeight = mapHeight / ChartInventoryItem.CHART_PIECE_NUMBER_Y;
+		
+		selectionX = posX / chartPieceWidth;
+		selectionY = posY / chartPieceHeight;
+		
 	}
 	
 }

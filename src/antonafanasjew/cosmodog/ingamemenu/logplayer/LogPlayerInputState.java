@@ -67,4 +67,11 @@ public class LogPlayerInputState implements InGameMenuInputState {
 	public int getSeriesNumber() {
 		return seriesNumber;
 	}
+
+
+	@Override
+	public void initializeState() {
+		seriesNumber = 0;
+		logNumber = 0;
+	}
 }

@@ -92,7 +92,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 			AsyncAction asyncAction2 = new PopUpNotificationAction("Suddenly, you know. <br> You know about the base. <br> You know how to open it.");
 			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);
 			asyncAction2 = new CamCenteringDecoratorAction(3000, 238, 238, asyncAction2, ApplicationContextUtils.getCosmodogGame());
-			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
+			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction1);
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction2);			
 		}

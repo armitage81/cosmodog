@@ -63,7 +63,7 @@ public class TeleportRuleFactory implements RuleFactory {
 			}
 			
 			
-			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection));
+			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection), false);
 			
 			Rule rule = new Rule("teleport." + teleportConnectionName, trigger, action);
 			
