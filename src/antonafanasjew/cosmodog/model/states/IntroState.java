@@ -11,6 +11,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
@@ -32,6 +33,7 @@ public class IntroState extends BasicGameState {
 		initialTimestamp = System.currentTimeMillis();
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.loadScoreList();
+		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_LOGO).play();
 	}
 	
 	@Override
@@ -49,7 +51,7 @@ public class IntroState extends BasicGameState {
 		
 		timestamp = System.currentTimeMillis();
 		
-		if (timestamp - initialTimestamp > 3000) {
+		if (timestamp - initialTimestamp > 5000) {
 			sbg.enterState(CosmodogStarter.MAIN_MENU_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		}
 		

@@ -84,7 +84,7 @@ public class Features {
 		getFeatureFlags().put(FEATURE_MOVEMENT_COSTS, true);
 		getFeatureFlags().put(FEATURE_FUEL, true);
 		getFeatureFlags().put(FEATURE_STORY, false);
-		getFeatureFlags().put(FEATURE_TUTORIAL, true);
+		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
 	}
 	

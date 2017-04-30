@@ -15,6 +15,7 @@ public class SoulEssenceInteraction extends AbstractPieceInteraction {
 			@Override
 			public void run() {
 				player.increaseMaxLife(Player.LIFE_UNITS_IN_LIFEPACK, true);
+				player.getGameProgress().increaseSoulEssenses();
 			}
 		});		
 	}

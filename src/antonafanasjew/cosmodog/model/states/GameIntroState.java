@@ -8,7 +8,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.MusicResources;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -37,8 +40,7 @@ public class GameIntroState  extends BasicGameState {
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		
-		
+		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_INTRO).loop();
 	}
 	
 	@Override
@@ -69,6 +71,7 @@ public class GameIntroState  extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
 			sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
 		}
 		

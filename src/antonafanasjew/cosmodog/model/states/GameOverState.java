@@ -9,7 +9,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.Fonts;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -18,6 +21,7 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class GameOverState extends BasicGameState {
 
@@ -49,6 +53,7 @@ public class GameOverState extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
 			sbg.enterState(CosmodogStarter.MAIN_MENU_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		}
 	}
@@ -56,19 +61,18 @@ public class GameOverState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		
-		TextRenderer tr = new TextRenderer(Fonts.GAME_OVER_FONT, true);
-		tr.render(gc, g, centerContainerRow1DrawingContext, "GAME OVER");
+		TextBookRendererUtils.renderCenteredLabel(gc, g, centerContainerRow1DrawingContext, "GAME OVER", FontType.GameOver);
 		
 		Player player = ApplicationContextUtils.getCosmodogGame().getPlayer();
-		int score = player.getGameProgress().getGameScore();
+		long score = player.getGameProgress().getGameScore();
 		
-		tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
-		tr.render(gc, g, centerContainerRow2DrawingContext, "Your score: " + score);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, centerContainerRow2DrawingContext, "Your score: " + score, FontType.GameOverScore);
 		
 		
-		tr = new TextRenderer(Fonts.DEFAULT_FONT, true);
-		tr.render(gc, g, bottomContainerDrawingContext, "Press Enter to return to the main menu");
+		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
+		if (renderBlinkingHint) {
+			TextBookRendererUtils.renderCenteredLabel(gc, g, bottomContainerDrawingContext, "Press [ENTER]", FontType.PopUpInterface);
+		}
 		
 		
 	}

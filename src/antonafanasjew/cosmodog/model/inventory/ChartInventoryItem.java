@@ -45,6 +45,7 @@ public class ChartInventoryItem extends CountableInventoryItem {
 		Preconditions.checkState(x < CHART_PIECE_NUMBER_X);
 		Preconditions.checkState(y < CHART_PIECE_NUMBER_Y);
 		int index = y * CHART_PIECE_NUMBER_Y + x;
+		this.increaseNumber();
 		return discoveredCharts.set(index, Boolean.TRUE);
 	}
 	

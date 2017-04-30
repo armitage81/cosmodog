@@ -131,37 +131,7 @@ public class InitializationUtils {
 
 		PlayerBuilder playerBuilder = ApplicationContextUtils.getCosmodog().getPlayerBuilder();
 		Player player = playerBuilder.buildPlayer();
-		
-		/*
-		player.setMaxLife(50);
-		player.setLife(50);
-
-		for (int i = 0; i < 999; i++) {
-			player.getGameProgress().addInfobit();
-		}
-
-		ArsenalInventoryItem arsenal = player.getArsenal();
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE, 1));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN, 1));
-		arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG, 1));
-
-		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
-		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
-
-		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
-		player.getInventory().put(InventoryItemType.AXE, new AxeInventoryItem());
-		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-		player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
-		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
-		player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
-		player.getInventory().put(InventoryItemType.MACHETE, new MacheteInventoryItem());
-		player.getInventory().put(InventoryItemType.PICK, new PickInventoryItem());
-		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
-		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
-		player.getInventory().put(InventoryItemType.MINEDETECTOR, new MineDetectorInventoryItem());
-		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
-		*/
-		
+				
 		cosmodogGame.setPlayer(player);
 
 		PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();

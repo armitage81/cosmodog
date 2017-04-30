@@ -33,8 +33,7 @@ public class Platform extends Transport {
 		this.rightCatWalkActivated = rightCatWalkActivated;
 	}
 	
-	
-	
+
 	
 
 }

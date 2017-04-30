@@ -14,6 +14,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.ScoreEntry;
 import antonafanasjew.cosmodog.model.ScoreList;
@@ -36,6 +37,7 @@ public class ScoreState extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
 			sbg.enterState(CosmodogStarter.MAIN_MENU_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		}
 

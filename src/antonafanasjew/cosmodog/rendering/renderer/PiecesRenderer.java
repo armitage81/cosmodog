@@ -205,8 +205,10 @@ public class PiecesRenderer extends AbstractRenderer {
 			PieceRenderer pieceRenderer = pieceRendererMap.get(elementType);
 			if (pieceRenderer != null) {
 				Enemy enemyOnTile = map.enemyAtTile(piece.getPositionX(), piece.getPositionY());
-				boolean playerOnTile = player.getPositionX() == piece.getPositionX() && player.getPositionY() == piece.getPositionY();
-				if (enemyOnTile == null && !playerOnTile) {
+				boolean enemyIsOnTile = enemyOnTile != null;
+				boolean playerIsOnTile = player.getPositionX() == piece.getPositionX() && player.getPositionY() == piece.getPositionY();
+				boolean shouldRender = (piece instanceof Vehicle) || (piece instanceof Platform) || (!enemyIsOnTile && !playerIsOnTile);
+				if (shouldRender) {
 
 					if (!piece.interactive(piece, applicationContext, cosmodogGame, player)) {
 

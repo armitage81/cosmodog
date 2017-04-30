@@ -40,6 +40,7 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 		BoatInventoryItem boatInventoryItem = (BoatInventoryItem)player.getInventory().get(InventoryItemType.BOAT);
 		PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
 		
+		boolean exitingPlatformCollision = platformInventoryItem != null && platformInventoryItem.isExiting();
 		boolean platformAsVehicleCollision = platformInventoryItem != null && !platformInventoryItem.isExiting();
 		
 		//To check whether the player can move outside the platform, he or the target need to be on the platform.
@@ -49,32 +50,36 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 
 		boolean boatCollision = !vehicleCollision && boatInventoryItem != null;
 
-		//Player is on the platform but not using it.
-		if (platformAsObstacleCollision) {
-			if (vehicleCollision) {
-				return platformAsObstacleForCarCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-			} else {
-				return platformAsObstacleOnFootCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-			}
-		} else if (vehicleCollision) {
-			CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-			CollisionStatus vehicleCollisionStatus = vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-			if (fuelCollisionStatus.isPassable() && vehicleCollisionStatus.isPassable()) {
-				return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
-			} else {
-				if (fuelCollisionStatus.isPassable() == false) {
-					return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
-				} else {
-					return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED);
-				}
-			}
-		} else if (platformAsVehicleCollision) {
-			return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+		if (exitingPlatformCollision) {
+			return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 		} else {
-			if (boatCollision) {
-				return boatCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			//Player is on the platform but not using it.
+			if (platformAsObstacleCollision) {
+				if (vehicleCollision) {
+					return platformAsObstacleForCarCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				} else {
+					return platformAsObstacleOnFootCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				}
+			} else if (vehicleCollision) {
+				CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				CollisionStatus vehicleCollisionStatus = vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				if (fuelCollisionStatus.isPassable() && vehicleCollisionStatus.isPassable()) {
+					return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+				} else {
+					if (fuelCollisionStatus.isPassable() == false) {
+						return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
+					} else {
+						return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED);
+					}
+				}
+			} else if (platformAsVehicleCollision) {
+				return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
 			} else {
-				return unequippedWalkerCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				if (boatCollision) {
+					return boatCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				} else {
+					return unequippedWalkerCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				}
 			}
 		}
 	}

@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.PiecesUtils;
@@ -139,6 +140,17 @@ public class PlatformAsObstacleForPlayerCollisionValidator extends AbstractColli
 		boolean blocked = false;
 		
 		Platform platform = cosmodogGame.getMap().getCachedPlatform(cosmodogGame);
+
+//		//Take care: If exiting, platforms position is not updated. At this point of time, it is still an inventory item.
+//		//So its position is still the one that was when the player entered it.
+//		//Always return unblocked passage in such cases.
+//		if (actor instanceof Player) {
+//			Player player = (Player)actor;
+//			PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
+//			if (platformInventoryItem != null && platformInventoryItem.isExiting()) {
+//				
+//			}
+//		}
 		
 		if (platform != null) { //It is null, if collected, that is if the player is sitting inside of it. 
 		

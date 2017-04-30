@@ -11,25 +11,24 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
     private static final long serialVersionUID = 675564499573109328L;
     
     private Date date;
-	private int score;
+	private long score;
     
-    public ScoreEntry(Date date, int score) {
+    public ScoreEntry(Date date, long score) {
     	this.date = date;
     	this.score = score;
     }
     
-    public int getScore() {
+    public long getScore() {
 		return score;
 	}
-
 
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + score;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + (int) (score ^ (score >>> 32));
 		return result;
 	}
 
@@ -42,12 +41,12 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
 		if (getClass() != obj.getClass())
 			return false;
 		ScoreEntry other = (ScoreEntry) obj;
-		if (score != other.score)
-			return false;
 		if (date == null) {
 			if (other.date != null)
 				return false;
 		} else if (!date.equals(other.date))
+			return false;
+		if (score != other.score)
 			return false;
 		return true;
 	}

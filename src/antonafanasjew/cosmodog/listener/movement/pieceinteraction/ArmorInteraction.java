@@ -32,6 +32,8 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 			Vehicle vehicle = ((VehicleInventoryItem)(player.getInventory().get(InventoryItemType.VEHICLE))).getVehicle();
 			vehicle.increaseMaxLife(5, true);
 		}		
+		
+		player.getGameProgress().increaseArmors();
 	}
 
 	@Override

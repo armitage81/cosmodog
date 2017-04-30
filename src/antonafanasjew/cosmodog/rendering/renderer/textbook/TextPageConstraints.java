@@ -49,6 +49,7 @@ public class TextPageConstraints {
 			lineWidth = font.getWidth(thisLine);
 			if (i < lastWordIndex) {
 				String nextWord = words.get(i + 1);
+				int nextWordLength = font.getWidth(nextWord);
 				if (word.equals("<br>") && thisLine.isEmpty() == false) {
 					allLines.add(thisLine);
 					thisLine = "";
@@ -63,8 +64,8 @@ public class TextPageConstraints {
 					allLines.add("<div>");
 					thisLine = "";
 					lineWidth = 0;
-				} else if (lineWidth + font.getWidth(nextWord) > this.width) {
-					allLines.add(thisLine);
+				} else if (lineWidth + nextWordLength > this.width) {
+					allLines.add(thisLine.trim());
 					thisLine = "";
 					lineWidth = 0;
 				}

@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.listener.life;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.dying.DyingAction;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -17,6 +19,7 @@ public class PlayerLifeListener implements LifeListener {
 			Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 			cosmodog.getGameLifeCycle().setStartNewGame(true);
 			ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.DYING, new DyingAction(5000));
+			ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_GAME_OVER).play();
 		}
 	}
 

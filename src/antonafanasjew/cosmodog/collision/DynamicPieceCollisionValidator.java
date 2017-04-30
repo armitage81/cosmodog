@@ -143,7 +143,7 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 						}
 						
 						if (!hasRightKey) {
-							blockReasonParam = "Locked with " + doorType.getKeyDescription();
+							blockReasonParam = "Requires " + doorType.getKeyDescription();
 						}
 						
 					}

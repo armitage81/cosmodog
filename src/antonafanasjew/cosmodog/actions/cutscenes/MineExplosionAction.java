@@ -5,10 +5,15 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class MineExplosionAction extends FixedLengthAsyncAction {
@@ -57,7 +62,22 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 	@Override
 	public void onEnd() {
 		transition = null;
-		ApplicationContextUtils.getPlayer().decreaseLife(Mine.DAMAGE_TO_PLAYER);
+		
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		
+		if (player.getInventory().hasVehicle()) {
+			VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
+			Vehicle vehicle = item.getVehicle();
+			vehicle.setLife(vehicle.getLife() - Mine.DAMAGE_TO_PLAYER);
+			if (vehicle.dead()) {
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPositionX(), player.getPositionY()));
+				player.getInventory().remove(InventoryItemType.VEHICLE);
+			}
+		} else {
+			player.decreaseLife(Mine.DAMAGE_TO_PLAYER);
+		}
+		
 	}
 	
 

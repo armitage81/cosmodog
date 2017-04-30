@@ -31,7 +31,9 @@ public class GameProgress extends CosmodogModel {
 	
 	private boolean won = false;
 	private int infobits = 0;
-	private int gameScore;
+	private int armors = 0;
+	private int soulEssences = 0;
+	private long gameScore;
 	
 	private int numberOfFoundSecrets = 0;
 	
@@ -55,7 +57,7 @@ public class GameProgress extends CosmodogModel {
 	 * Returns the current game score.
 	 * @return Game score.
 	 */
-	public int getGameScore() {
+	public long getGameScore() {
 		return gameScore;
 	}
 
@@ -142,6 +144,29 @@ public class GameProgress extends CosmodogModel {
 		this.numberOfFoundSecrets += 1;
 	}
 	
+	public int getArmors() {
+		return armors;
+	}
+	
+	public void setArmors(int armors) {
+		this.armors = armors;
+	}
+	
+	public int getSoulEssences() {
+		return soulEssences;
+	}
+	
+	public void setSoulEssences(int soulEssences) {
+		this.soulEssences = soulEssences;
+	}
+
+	public void increaseArmors() {
+		this.armors++;
+	}
+	
+	public void increaseSoulEssenses() {
+		this.soulEssences++;
+	}
 	
 	
 }

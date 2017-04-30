@@ -28,7 +28,7 @@ import com.google.common.cache.CacheBuilder;
  */
 public class MenuRenderer implements Renderer {
 
-	public static final int MAX_MENU_ENTRIES_RENDERED = 7;
+	public static final int MAX_MENU_ENTRIES_RENDERED = 4;
 	
 	public static class MenuRenderingParam {
 		public Menu menu;

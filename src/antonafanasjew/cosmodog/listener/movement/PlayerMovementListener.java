@@ -239,7 +239,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					} else {
 						if (player.getInventory().get(InventoryItemType.FUEL_TANK) == null) {
 							player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
-							notificationText = "You took a fuel tank.";
+							notificationText = "You took a fuel canister.";
 						}
 					}
 					

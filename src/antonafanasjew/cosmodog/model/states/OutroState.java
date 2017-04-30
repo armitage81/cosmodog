@@ -13,6 +13,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
@@ -79,6 +80,7 @@ public class OutroState extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
 			if (page < texts.size() - 1) {
 				page++;
 			} else {

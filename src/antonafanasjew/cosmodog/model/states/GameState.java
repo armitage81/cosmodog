@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.model.states;
 
-import java.util.List;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -15,6 +13,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.InputHandlerType;
+import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -27,9 +26,9 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.QuadraticDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.decoration.BirdsDecoration;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.ArsenalInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.ArtilleryGrenadeRenderer;
@@ -43,7 +42,7 @@ import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicP
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.GameLogRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.GameProgressInterfaceRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.GeigerCounterViewRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
@@ -68,14 +67,11 @@ import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.NotOnP
 import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.OnPlatformPieceRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.OccupiedPlatformRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.TextBookRendererParameter;
-import antonafanasjew.cosmodog.rules.Rule;
-import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
+import antonafanasjew.cosmodog.util.GameEventUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
-
-import com.google.common.collect.Lists;
 
 public class GameState extends BasicGameState {
 
@@ -87,21 +83,18 @@ public class GameState extends BasicGameState {
 	private DrawingContext gameContainerDrawingContext;
 	private DrawingContext middleColumnDrawingContext;
 	private DrawingContext topDrawingContext;
+	private DrawingContext geigerCounterDrawingContext;
 	
 	private DrawingContext lifeDrawingContext;
 	private DrawingContext arsenalDrawingContext;
 	private DrawingContext bottomDrawingContext;
 	private DrawingContext vitalDataDrawingContext;
-	private DrawingContext gameProgressDrawingContext;
 	private DrawingContext mapDrawingContext;
-	
-	private List<BirdsDecoration> birdsDecos = Lists.newArrayList();
 	
 	private AbstractRenderer dynamicPiecesRenderer;
 	private AbstractRenderer cloudRenderer;
 	private AbstractRenderer birdsRenderer;
 	private Renderer vitalDataInterfaceRenderer;
-	private Renderer gameProgressInterfaceRenderer;
 	private Renderer lifeInterfaceRenderer;
 	private AbstractRenderer mapRenderer;
 	private AbstractRenderer platformRenderer;
@@ -131,6 +124,7 @@ public class GameState extends BasicGameState {
 	private TextFrameRenderer textFrameRenderer;
 	private GameLogRenderer gameLogRenderer;
 	private InGameMenuRenderer inGameMenuRenderer;
+	private GeigerCounterViewRenderer geigerCounterViewRenderer;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -148,12 +142,20 @@ public class GameState extends BasicGameState {
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
 		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 7, 0, 0);
 		
+		//we want it to be just under the top bar but quadratic and still most left.
+		geigerCounterDrawingContext = new TileDrawingContext(mapDrawingContext, 7, 7, 0, 1);
+		float x = geigerCounterDrawingContext.x();
+		float y = geigerCounterDrawingContext.y();
+		geigerCounterDrawingContext = new QuadraticDrawingContext(geigerCounterDrawingContext);
+		float w = geigerCounterDrawingContext.w();
+		float h = geigerCounterDrawingContext.w() + 30;
+		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, x, y, w, h);
+		
 		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
 		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
 		
 		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
-		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 0, 0);
-		gameProgressDrawingContext = new TileDrawingContext(bottomDrawingContext, 2, 1, 1, 0);
+		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 1, 1, 0, 0);
 		
 				
 		//Update the global dialog drawing context variable in the application context.
@@ -187,12 +189,12 @@ public class GameState extends BasicGameState {
 		arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
 		dyingPlayerRenderer = new DyingPlayerRenderer();
 		vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
-		gameProgressInterfaceRenderer = new GameProgressInterfaceRenderer();
 		
 		dialogBoxRenderer = new DialogBoxRenderer();
 		textFrameRenderer = new TextFrameRenderer();
 		gameLogRenderer = new GameLogRenderer();
 		inGameMenuRenderer = new InGameMenuRenderer();
+		geigerCounterViewRenderer = new GeigerCounterViewRenderer();
 		
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
 		tipsLayersPredicate = new TipsLayersRenderingPredicate();
@@ -237,22 +239,12 @@ public class GameState extends BasicGameState {
     		applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 
     		//Check for the rules of the new game event
-    		RuleBook ruleBook = cosmodogGame.getRuleBook();
-    		List<Rule> rulesSortedByPriority = ruleBook.getRulesSortedByPriority();
-    		for (Rule rule : rulesSortedByPriority) {
-    			rule.apply(new GameEventNewGame());
-    		}
+    		GameEventUtils.throwEvent(new GameEventNewGame());
     		
 		}
 		
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = cosmodogGame.getMap();
+		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_IN_GAME1).loop();
 		
-		//Do this to consume the key input.
-		container.getInput().isKeyPressed(Input.KEY_RETURN);
-		
-		Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
-
 		firstUpdate = true;
 	}
 	
@@ -381,8 +373,10 @@ public class GameState extends BasicGameState {
 		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
 		
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
-		gameProgressInterfaceRenderer.render(gc, g, gameProgressDrawingContext, null);
 
+		
+		geigerCounterViewRenderer.render(gc, g, geigerCounterDrawingContext, null);
+		
 		dyingPlayerRenderer.render(gc, g, mapDrawingContext, null);
 	
 		DrawingContext dialogBoxDrawingContext = ApplicationContext.instance().getDialogBoxDrawingContext();

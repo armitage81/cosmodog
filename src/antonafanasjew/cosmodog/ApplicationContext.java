@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
@@ -138,6 +139,8 @@ public class ApplicationContext {
 	private CustomTiledMap customTiledMap;
 	private GameLogs gameLogs = new GameLogs();
 	private Map<String, GameLog> gameTexts = Maps.newHashMap();
+	
+	private MusicResources musicResources = new MusicResources();
 	private SoundResources soundResources = new SoundResources();
 	private Animations animations = new Animations();
 	private SpriteSheets spriteSheets = new SpriteSheets();
@@ -332,6 +335,31 @@ public class ApplicationContext {
 		
 		this.setCosmodog(cosmodog);
 		
+		Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.wav");
+		Music musicInGame4 = new Music("data/music/EG_DangerZone_Loop.wav");
+		Music musicInGame5 = new Music("data/music/EG_Despair_Loop.wav");
+		Music musicInGame2 = new Music("data/music/EG_Dreamworld_Loop.wav");
+		Music musicInGame3 = new Music("data/music/EG_RayofHope_Loop.wav");
+		Music musicInGame1 = new Music("data/music/EG_Unknown_Loop.wav");
+		Music musicGameOver = new Music("data/music/EG_Negative_Stinger.wav");
+		Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.wav");
+		Music musicIntro = new Music("data/music/EG_DangerZone_Loop.wav");
+		
+		
+		
+		
+
+		this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
+		
+		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME1, musicInGame1);
+		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME2, musicInGame2);
+		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME3, musicInGame3);
+		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME4, musicInGame4);
+		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME5, musicInGame5);
+		this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
+		this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
+		this.getMusicResources().put(MusicResources.MUSIC_INTRO, musicIntro);
+		
 		Sound collected = new Sound("data/sound/collected.wav");
 		Sound eaten = new Sound("data/sound/eaten.wav");
 		Sound drunk = new Sound("data/sound/drunk.wav");
@@ -342,6 +370,7 @@ public class ApplicationContext {
 		Sound hit = new Sound("data/sound/hit.wav");
 		Sound explosion = new Sound("data/sound/explosion.wav");
 		Sound powerup = new Sound("data/sound/powerup.wav");
+		Sound popup = new Sound("data/sound/popup.wav");
 		Sound teleport_start = new Sound("data/sound/teleport_start.wav");
 		Sound teleport_transfer = new Sound("data/sound/teleport_transferring.wav");
 		Sound teleport_end = new Sound("data/sound/teleport_end.wav");
@@ -405,6 +434,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_HIT, hit);
 		this.getSoundResources().put(SoundResources.SOUND_EXPLOSION, explosion);
 		this.getSoundResources().put(SoundResources.SOUND_POWERUP, powerup);
+		this.getSoundResources().put(SoundResources.SOUND_POPUP, popup);
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_START, teleport_start);
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_TRANSFER, teleport_transfer);
 		this.getSoundResources().put(SoundResources.SOUND_TELEPORT_END, teleport_end);
@@ -545,6 +575,7 @@ public class ApplicationContext {
 			this.gameTexts.put("outro3", gameLogBuilder.buildGameLog("data/writing/outro/outro3"));
 			this.gameTexts.put("outrohint", gameLogBuilder.buildGameLog("data/writing/outro/outrohint"));
 			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("data/writing/credits/credits"));
+			this.gameTexts.put("references", gameLogBuilder.buildGameLog("data/writing/references/references"));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not load game logs.", e);
 		}
@@ -593,6 +624,10 @@ public class ApplicationContext {
 
 	public Map<String, GameLog> getGameTexts() {
 		return gameTexts;
+	}
+
+	public MusicResources getMusicResources() {
+		return musicResources;
 	}
 	
 }

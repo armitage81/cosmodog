@@ -121,5 +121,17 @@ public class Constants {
 	public static final int MIN_INSIGHTS_TO_OPEN_ALIEN_BASE = 20;
 
 	public static final int NUMBER_OF_SOFTWARE_PIECES_IN_GAME = 16;
+	
+	public static final int NUMBER_OF_ARMOR_PIECES_IN_GAME = 9;
+	
+	public static final int NUMBER_OF_SOULESSENSE_PIECES_IN_GAME = 18;
+	
+	public static final int NUMBER_OF_INFOBITS_IN_GAME = 6000;
+	
+	public static final int NUMBER_OF_SECRETS_IN_GAME = 120;
+	
+	public static final int NUMBER_OF_INSIGHTS_IN_GAME = 32;
+	
+	public static final int NUMBER_OF_CHARTS_IN_GAME = 64;
 
 }

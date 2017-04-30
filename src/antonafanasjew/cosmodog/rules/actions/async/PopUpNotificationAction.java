@@ -26,6 +26,7 @@ public class PopUpNotificationAction extends AbstractAsyncAction {
 	public void onTrigger() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		cosmodogGame.setTextFrame(new TextFrame(output));
+		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_POPUP).play();
 	}
 
 	@Override

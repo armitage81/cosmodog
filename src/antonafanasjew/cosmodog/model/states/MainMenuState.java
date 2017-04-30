@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -10,7 +11,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.model.menu.MenuItem;
@@ -20,6 +23,7 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer.MenuRenderingParam;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MainMenuState extends BasicGameState {
 
@@ -34,11 +38,18 @@ public class MainMenuState extends BasicGameState {
 	}
 
 	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		super.leave(container, game);
+		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU).stop();
+	}
+	
+	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		container.getInput().clearKeyPressedRecord();
 		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
 		mainMenu.setInitialized();
 		menuRenderer.resetMenuLabelCache();
+		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU).loop();
 	}
 	
 	@Override
@@ -77,7 +88,9 @@ public class MainMenuState extends BasicGameState {
 		
 		DrawingContext logoDc = new TileDrawingContext(dc, 1, 3, 0, 1);
 		
-		DrawingContext menuDc = new TileDrawingContext(dc, 10, 10, 6, 7, 4, 3);
+		DrawingContext menuDc = new TileDrawingContext(dc, 10, 10, 6, 7, 4, 2);
+		
+		DrawingContext referencesDc = new TileDrawingContext(dc, 10, 10, 0, 9, 10, 1);
 		
 		
 		Animation titleAnimation = ApplicationContext.instance().getAnimations().get("title");
@@ -88,9 +101,14 @@ public class MainMenuState extends BasicGameState {
 		logoDc = new CenteredDrawingContext(logoDc, 640, 192);
 		logo.draw(logoDc.x(), logoDc.y(), logoDc.w(), logoDc.h());
 		
-		
 		param.menu = mainMenu;
 		menuRenderer.render(gc, g, menuDc, param);
+		
+		
+		
+		
+		String text = ApplicationContext.instance().getGameTexts().get("references").getLogText();
+		TextBookRendererUtils.renderCenteredLabel(gc, g, referencesDc, text, FontType.References);
 		
 	}
 

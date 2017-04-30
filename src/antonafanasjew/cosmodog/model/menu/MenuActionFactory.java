@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.filesystem.CosmodogPersistenceException;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PathUtils;
 
@@ -41,7 +42,7 @@ public class MenuActionFactory {
 						CosmodogGame cosmodogGame = appCx.getCosmodog().getGamePersistor().restoreCosmodogGame(filePath);
 						appCx.getCosmodog().getGameLifeCycle().setStartNewGame(false);
 						appCx.getCosmodog().setCosmodogGame(cosmodogGame);
-						sbg.enterState(CosmodogStarter.GAME_STATE_ID, new FadeOutTransition(), new FadeInTransition());				
+						sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
 					}
 				} catch (CosmodogPersistenceException e) {
 					Log.error("Could not restore game", e);

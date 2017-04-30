@@ -78,7 +78,7 @@ public class TextBookRenderer implements Renderer {
 			String line = pageText.get(i);
 			float lineWidth = font.getWidth(line);
 			float remainingWidth = c.getWidth() - lineWidth;
-			float horizontalOffset = (param.horizontalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.horizontalAlignment == TextBookRendererParameter.ALIGN_END ? remainingWidth : remainingWidth / 2f));
+			float horizontalOffset = (param.horizontalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.horizontalAlignment == TextBookRendererParameter.ALIGN_END ? remainingWidth : (remainingWidth / 2f)));
 			
 			TileDrawingContext lineDc = new TileDrawingContext(drawingContext, 1, maxNumberOfLinesInPage, 0, i);
 			graphics.translate(horizontalOffset, verticalOffset);

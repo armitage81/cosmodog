@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -16,7 +17,6 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.EnemiesUtils;
@@ -27,7 +27,6 @@ import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyDestructionFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.PlayerAttackingFightPhaseTransition;
 
 import com.google.common.collect.Maps;
 
@@ -72,7 +71,9 @@ public class NpcRenderer extends AbstractRenderer {
 		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
 		
 		
-		for (Enemy enemy : map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2)) {
+		Set<Enemy> enemies = map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2);
+		
+		for (Enemy enemy : enemies) {
 			
 			int enemyPosX = enemy.getPositionX();
 			int enemyPosY = enemy.getPositionY();
@@ -210,7 +211,103 @@ public class NpcRenderer extends AbstractRenderer {
 				explosionAnimation.setCurrentFrame(animationFrame);
 				explosionAnimation.draw((enemyPosX - tileNoX) * tileWidth - tileWidth, (enemyPosY - tileNoY) * tileHeight -tileHeight);
 			}
+						
+			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
+			graphics.translate(-x, -y);
 			
+			
+		}
+		
+
+		//This is another rendering loop to render the overhead markers over the enemies.
+		for (Enemy enemy : enemies) {
+			
+			int enemyPosX = enemy.getPositionX();
+			int enemyPosY = enemy.getPositionY();
+			
+			float pieceOffsetX = 0.0f;
+			float pieceOffsetY = 0.0f;
+						
+			ActorTransition enemyTransition = cosmodogGame.getActorTransitionRegistry().get(enemy);
+			
+			
+			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+			
+			
+			boolean enemyIsMoving = enemyTransition != null;
+			boolean enemyIsFighting = fightPhaseTransition != null && fightPhaseTransition.getEnemy().equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
+			boolean enemyIsShooting = enemyIsFighting && fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition;
+			boolean enemyIsExploding = enemyIsFighting && fightPhaseTransition instanceof EnemyDestructionFightPhaseTransition;
+
+			NpcActionType enemyActionType;
+			
+			if (enemyIsMoving) {
+				enemyActionType = NpcActionType.ANIMATE;
+			} else if (enemyIsShooting) {
+				enemyActionType = NpcActionType.SHOOTING;
+			} else if (enemyIsExploding) {
+				enemyActionType = NpcActionType.EXPLODING;	
+			} else {
+				enemyActionType = NpcActionType.INANIMATE;
+			}
+						
+			if (enemyActionType == NpcActionType.ANIMATE) {
+				enemyPosX = enemyTransition.getTransitionalPosX();
+				enemyPosY = enemyTransition.getTransitionalPosY();
+				pieceOffsetX = tileWidth * enemyTransition.getTransitionalOffsetX();
+				pieceOffsetY = tileHeight * enemyTransition.getTransitionalOffsetY();
+			} 
+			
+			if (enemyActionType == NpcActionType.SHOOTING) {
+					
+				float completion = fightPhaseTransition.getCompletion();
+
+				float fightOffset = 0.0f;
+				
+				if (!enemy.getUnitType().isRangedUnit()) {
+				
+					if (completion > 0.5f) {
+						completion = 1.0f - completion;
+					}
+					
+					fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+
+				}
+				
+				
+				if (enemy.getDirection() == DirectionType.DOWN) {
+					pieceOffsetY = fightOffset;
+				}
+				
+				if (enemy.getDirection() == DirectionType.UP) {
+					pieceOffsetY = -fightOffset;
+				}
+				
+				if (enemy.getDirection() == DirectionType.RIGHT) {
+					pieceOffsetX = fightOffset;
+				}
+				
+				if (enemy.getDirection() == DirectionType.LEFT) {
+					pieceOffsetX = -fightOffset;
+				}
+						
+			}
+						
+			
+			graphics.translate(x, y);
+			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
+			
+			float animationSizeCorrectionOffsetX = 0.0f;
+			float animationSizeCorrectionOffsetY = 0.0f;
+			
+			if (ENEMY_TYPE_2_X_OFFSET.get(enemy.getUnitType()) != null) {
+				animationSizeCorrectionOffsetX = ENEMY_TYPE_2_X_OFFSET.get(enemy.getUnitType()) * tileWidth;
+			}
+			
+			if (ENEMY_TYPE_2_Y_OFFSET.get(enemy.getUnitType()) != null) {
+				animationSizeCorrectionOffsetY = ENEMY_TYPE_2_Y_OFFSET.get(enemy.getUnitType()) * tileHeight;
+			}
+		
 			//Render enemy overhead markers
 			if (!enemyIsExploding) {
 				if (!EnemiesUtils.enemyActive(enemy)) {
@@ -234,10 +331,7 @@ public class NpcRenderer extends AbstractRenderer {
 			graphics.translate(-x, -y);
 			
 			
-		}
-		
-
-				
+		}	
 		
 
 		

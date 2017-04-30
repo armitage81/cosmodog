@@ -10,7 +10,7 @@ public class CosmodogGameHeader extends CosmodogModel {
 
 
 	private String gameName;
-	private int score;
+	private long score;
 	private Date lastSave;
 
 	public CosmodogGameHeader(CosmodogGame cosmodogGame, Date date) {
@@ -24,7 +24,7 @@ public class CosmodogGameHeader extends CosmodogModel {
 		return gameName;
 	}
 	
-	public int getScore() {
+	public long getScore() {
 		return score;
 	}
 	

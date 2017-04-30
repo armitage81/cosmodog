@@ -76,6 +76,8 @@ public class SoundResources extends HashMap<String, Sound> {
 	 * Sound for: Collected power up. 
 	 */
 	public static final String SOUND_POWERUP = "sound.powerup";
+	
+	public static final String SOUND_POPUP = "sound.popup";
 
 	/**
 	 * Sound for: Explosion.
