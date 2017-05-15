@@ -5,19 +5,22 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 /**
  * Renders bars for water and food.
  */
 public class VitalDataInterfaceRenderer implements Renderer {
 
+	private static final float LABEL_WIDTH = 70;
 
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
@@ -40,11 +43,11 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		DrawingContext hungerDrawingContext = new TileDrawingContext(context, 1, 2, 0, 1);
 		hungerDrawingContext = new CenteredDrawingContext(hungerDrawingContext, 2);
 		
-		TileDrawingContext thirstLabelDrawingContext = new TileDrawingContext(thirstDrawingContext, 10, 1, 0, 0, 3, 1);
-		TileDrawingContext thirstBarsDrawingContext = new TileDrawingContext(thirstDrawingContext, 10, 1, 3, 0, 7, 1);
+		SimpleDrawingContext thirstLabelDrawingContext = new SimpleDrawingContext(thirstDrawingContext, 0, 0, LABEL_WIDTH, thirstDrawingContext.h());
+		SimpleDrawingContext thirstBarsDrawingContext = new SimpleDrawingContext(thirstDrawingContext, LABEL_WIDTH, 0, thirstDrawingContext.w() - LABEL_WIDTH, thirstDrawingContext.h());
 		
 		
-		LetterTextRenderer.getInstance().render(gameContainer, g, thirstLabelDrawingContext, LetterTextRenderingParameter.fromText("WATER"));
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, thirstLabelDrawingContext, "WATER", FontType.Hud, 0);
 		
 		
 		
@@ -86,10 +89,11 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		
 		
 		
-		TileDrawingContext hungerLabelDrawingContext = new TileDrawingContext(hungerDrawingContext, 10, 1, 0, 0, 3, 1);
-		TileDrawingContext hungerBarsDrawingContext = new TileDrawingContext(hungerDrawingContext, 10, 1, 3, 0, 7, 1);
+		SimpleDrawingContext hungerLabelDrawingContext = new SimpleDrawingContext(hungerDrawingContext, 0, 0, LABEL_WIDTH, hungerDrawingContext.h());
+		SimpleDrawingContext hungerBarsDrawingContext = new SimpleDrawingContext(hungerDrawingContext, LABEL_WIDTH, 0, hungerDrawingContext.w() - LABEL_WIDTH, hungerDrawingContext.h());
 		
-		LetterTextRenderer.getInstance().render(gameContainer, g, hungerLabelDrawingContext, LetterTextRenderingParameter.fromText("FOOD"));
+		
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, hungerLabelDrawingContext, "FOOD", FontType.Hud, 0);
 		
 		int noOfFoodBars = player.getCurrentMaxFood() / Player.INITIAL_MAX_FOOD;
 		int noOfFullFoodBars = player.getFood() / Player.INITIAL_MAX_FOOD;

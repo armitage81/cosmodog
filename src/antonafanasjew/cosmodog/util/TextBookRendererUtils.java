@@ -10,18 +10,18 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.Text
 
 public class TextBookRendererUtils {
 	
-	public static void renderCenteredLabel(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType) {
-		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_CENTER, TextBookRendererParameter.ALIGN_CENTER, 0);
+	public static void renderCenteredLabel(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType, int page) {
+		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_CENTER, TextBookRendererParameter.ALIGN_CENTER, page);
 		TextBookRenderer.getInstance().render(gc, g, dc, param);
 	}
 	
-	public static void renderVerticallyCenteredLabel(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType) {
-		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_CENTER, 0);
+	public static void renderVerticallyCenteredLabel(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType, int page) {
+		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_CENTER, page);
 		TextBookRenderer.getInstance().render(gc, g, dc, param);
 	}
 	
-	public static void renderTextPage(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType) {
-		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_START, 0);
+	public static void renderTextPage(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType, int page) {
+		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_START, page);
 		TextBookRenderer.getInstance().render(gc, g, dc, param);
 	}
 	

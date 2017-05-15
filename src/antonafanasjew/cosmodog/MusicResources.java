@@ -17,7 +17,7 @@ public class MusicResources extends HashMap<String, Music> {
 	public static final String MUSIC_IN_GAME5 = "music.ingame5";
 	public static final String MUSIC_GAME_OVER = "music.gameover";
 	public static final String MUSIC_LOGO = "music.logo";
-	public static final String MUSIC_INTRO = "music.intro";
+	public static final String MUSIC_CUTSCENE = "music.cutscene";
 	
 
 }

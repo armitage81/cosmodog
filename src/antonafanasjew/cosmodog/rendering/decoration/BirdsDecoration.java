@@ -15,7 +15,7 @@ public class BirdsDecoration {
 	
 	private LinearMovementFunction movementFunction;
 	private ParticlePattern particlePattern;
-	private Rectangle particlePatternSurface = Rectangle.fromSize(2560, 1440);
+	private Rectangle particlePatternSurface = Rectangle.fromSize(3840, 2160);
 	private OffsetCalculator offsetCalculator;
 	
 	public static BirdsDecoration instance() {
@@ -28,7 +28,7 @@ public class BirdsDecoration {
 	private BirdsDecoration() {
 		initialTimestamp = System.currentTimeMillis();
 		movementFunction = new LinearMovementFunction(-1, 10);
-		particlePattern = new GridParticlePatternBuilder(1280, 720).build(particlePatternSurface);
+		particlePattern = new GridParticlePatternBuilder(1920, 1080).build(particlePatternSurface);
 		offsetCalculator = new OffsetCalculator();
 		offsetCalculator.setMovementOffsetFunction(movementFunction);
 		offsetCalculator.setParticlePattern(particlePattern);

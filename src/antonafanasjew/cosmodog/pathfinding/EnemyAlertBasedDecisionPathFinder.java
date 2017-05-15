@@ -19,7 +19,7 @@ public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
 
 
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
 
 		PathFinder relevantPathFinder;
 		Player player = ApplicationContextUtils.getPlayer();
@@ -34,7 +34,7 @@ public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
 		}
 
 		
-		return relevantPathFinder.calculateMovementResult(actor, costBudget, collisionValidator, travelTimeCalculator, playerMovementActionResult);
+		return relevantPathFinder.calculateMovementResult(actor, costBudget, collisionValidator, playerMovementActionResult);
 		
 	}
 

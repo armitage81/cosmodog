@@ -1,18 +1,25 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.imageout.ImageOut;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -20,40 +27,39 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MapRenderer implements Renderer {
 
+//	private Image mapCache = null;
+	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 		
 		
-		//Keep this block as you will need it to regenerate the map if it changes.
-		
-		/*
-		if (mapCache == null) {
-			try {
-				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-				mapCache = new Image(map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
-				Graphics mapCacheGraphics = mapCache.getGraphics();
-				//This context starts with 0/0 as it relates to the map image graphics.
-				DrawingContext mapDrawingContext = new SimpleDrawingContext(null, 0, 0, (float)mapCache.getWidth(), (float)mapCache.getHeight());
-				
-				for (int i = 0; i < Layers.LAYER_META_COLLISIONS; i++) {
-					for (int tx = 0; tx < map.getWidth(); tx++) {
-						for (int ty = 0; ty < map.getHeight(); ty++) {
-							TileDrawingContext tileDc = new TileDrawingContext(mapDrawingContext, map.getWidth(), map.getHeight(), tx, ty);
-							if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
-								render(map, tileDc, mapCacheGraphics, tx, ty, i);
-							}
-						}
-					}
-					
-				}
-				
-				ImageOut.write(mapCache, "c:/temp/map.png");
-				
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
-		*/
+//		//Keep this block as you will need it to regenerate the map if it changes.
+//		if (mapCache == null) {
+//			try {
+//				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+//				mapCache = new Image(map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
+//				Graphics mapCacheGraphics = mapCache.getGraphics();
+//				//This context starts with 0/0 as it relates to the map image graphics.
+//				DrawingContext mapDrawingContext = new SimpleDrawingContext(null, 0, 0, (float)mapCache.getWidth(), (float)mapCache.getHeight());
+//				
+//				for (int i = 0; i < Layers.LAYER_META_COLLISIONS; i++) {
+//					for (int tx = 0; tx < map.getWidth(); tx++) {
+//						for (int ty = 0; ty < map.getHeight(); ty++) {
+//							TileDrawingContext tileDc = new TileDrawingContext(mapDrawingContext, map.getWidth(), map.getHeight(), tx, ty);
+//							if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
+//								render(map, tileDc, mapCacheGraphics, tx, ty, i);
+//							}
+//						}
+//					}
+//					
+//				}
+//				
+//				ImageOut.write(mapCache, "c:/temp/map.png");
+//				
+//			} catch (SlickException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		
 		int mapPieceColumns = ChartInventoryItem.CHART_PIECE_NUMBER_X;
 		int mapPieceRows = ChartInventoryItem.CHART_PIECE_NUMBER_Y;
@@ -122,22 +128,22 @@ public class MapRenderer implements Renderer {
 		}
 		
 		graphics.translate(mapAreaDrawingContext.x(), mapAreaDrawingContext.y());
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.orange);
 		graphics.drawRoundRect(0, 0, mapAreaDrawingContext.w(), mapAreaDrawingContext.h(), 5);
 		graphics.translate(-mapAreaDrawingContext.x(), -mapAreaDrawingContext.y());
 		
 		graphics.translate(coordinatesDrawingContext.x(), coordinatesDrawingContext.y());
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.orange);
 		graphics.drawRoundRect(0, 0, coordinatesDrawingContext.w(), coordinatesDrawingContext.h(), 5);
 		graphics.translate(-coordinatesDrawingContext.x(), -coordinatesDrawingContext.y());
 		
 		graphics.translate(hintsDrawingContext.x(), hintsDrawingContext.y());
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.orange);
 		graphics.drawRoundRect(0, 0, hintsDrawingContext.w(), hintsDrawingContext.h(), 5);
 		graphics.translate(-hintsDrawingContext.x(), -hintsDrawingContext.y());
 		
 		graphics.translate(fullMapDrawingContext.x(), fullMapDrawingContext.y());
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.orange);
 		graphics.drawRoundRect(0, 0, fullMapDrawingContext.w(), fullMapDrawingContext.h(), 5);
 		graphics.translate(-fullMapDrawingContext.x(), -fullMapDrawingContext.y());
 		
@@ -149,13 +155,13 @@ public class MapRenderer implements Renderer {
 		}
 		
 		String text = mapPieceDescription.toString();
-		TextBookRendererUtils.renderTextPage(gameContainer, graphics, coordinatesDrawingContext, text, FontType.InGameMenuInterface);
+		TextBookRendererUtils.renderTextPage(gameContainer, graphics, coordinatesDrawingContext, text, FontType.InGameMenuInterface, 0);
 		
 		
 		hintsDrawingContext = new CenteredDrawingContext(hintsDrawingContext, 20);
 		
 		text = "Use arrow keys to scroll through the map. Find map pieces to chart the map.";
-		TextBookRendererUtils.renderTextPage(gameContainer, graphics, hintsDrawingContext, text, FontType.InGameMenuInterface);
+		TextBookRendererUtils.renderTextPage(gameContainer, graphics, hintsDrawingContext, text, FontType.InGameMenuInterface, 0);
 		
 		DrawingContext fullMapGridDc = new CenteredDrawingContext(fullMapDrawingContext, 20);
 		
@@ -176,7 +182,7 @@ public class MapRenderer implements Renderer {
 					graphics.setColor(Color.red);
 				}
 				graphics.fillRect(x, y, gridW, gridH);
-				graphics.setColor(Color.white);
+				graphics.setColor(Color.orange);
 				graphics.drawRect(x, y, gridW, gridH);
 				
 				long timestamp = System.currentTimeMillis();

@@ -9,8 +9,8 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 
 public class TileBasedMapFactory {
 
-	TileBasedMap createTileBasedMap(Actor actor, ApplicationContext applicationContext, CosmodogMap map, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator) {
-		TileBasedMap retVal = new TileBasedMapAdapter(actor, applicationContext, map, collisionValidator, travelTimeCalculator);
+	TileBasedMap createTileBasedMap(Actor actor, ApplicationContext applicationContext, CosmodogMap map, CollisionValidator collisionValidator) {
+		TileBasedMap retVal = new TileBasedMapAdapter(actor, applicationContext, map, collisionValidator);
 		return retVal;
 	}
 	

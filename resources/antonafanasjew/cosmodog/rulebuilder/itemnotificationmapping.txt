@@ -43,7 +43,7 @@ JACKET_DESCRIPTION;jacket;ANY;jacketDescription;You found a warm jacket. Now you
 ANTIDOTE_DESCRIPTION;antidote;ANY;antidoteDescription;You found the antidote. Poison is not a threat anymore.;40
 MINEDETECTOR_DESCRIPTION;minedetector;ANY;minedetectorDescription;You found a mine detector. It will detect nearby mines. Avoid stepping on them.;40
 BINOCULARS_DESCRIPTION;binoculars;ANY;binocularsDescription;You found the binoculars. You can see distant things now. Press Y and Z to zoom in and out.;40
-SKI_DESCRIPTION;ski;ANY;skiDescription;You found the ski. You can cross snow faster now.;40
+SKI_DESCRIPTION;ski;ANY;skiDescription;You found the ski. Now you can cross snow.;40
 DYNAMITE_DESCRIPTION;dynamite;0;dynamiteDescription;You found the dynamite. Weak structures can be destroyed with it.;40
 RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters.;40
 BLUE_KEYCARD_DESCRIPTION;CollectibleKey_blueKeycardDoor;0;CollectibleKey_blueKeycardDoor;You found the key card for the mess hall.;40

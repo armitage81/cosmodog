@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class GameLogAction extends AbstractAsyncAction {
@@ -24,7 +25,7 @@ public class GameLogAction extends AbstractAsyncAction {
 	@Override
 	public void onTrigger() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		cosmodogGame.setOpenGameLog(gameLog);
+		cosmodogGame.setOpenGameLog(new GameLogState(gameLog));
 	}
 
 	@Override

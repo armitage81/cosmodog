@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.fighting;
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.PositionUtils;
@@ -13,6 +14,10 @@ public class SimplePlayerAttackDamageCalculatorUnarmed extends AbstractPlayerAtt
 	
 	@Override
 	public int playerAttackDamageInternal(Player player, Enemy enemy) {
+		
+		if (Features.getInstance().featureOn(Features.FEATURE_GODFISTS)) {
+			return 1000;
+		}
 		
 		ArmorType enemyArmorType = enemy.getArmorType();
 		

@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory;
 
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.ChaussieType;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.listener.life.EnemyLifeListener;

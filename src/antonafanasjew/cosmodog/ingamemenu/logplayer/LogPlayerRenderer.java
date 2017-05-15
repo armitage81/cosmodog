@@ -86,18 +86,30 @@ public class LogPlayerRenderer implements Renderer {
 					
 					if (found) {
 						logHeader = gameLog.getHeader();
+						
+						if (logPlayerInputState.getPages() > 1) {
+							logHeader = logHeader + " (Page " + (logPlayerInputState.getCurrentPage() + 1) + "/" + logPlayerInputState.getPages() + ")";
+						}
+						
 						logContent = gameLog.getLogText();
 					}
 					
-					DrawingContext authorDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 0);
+					DrawingContext headerDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 0);
+					headerDrawingContext = new CenteredDrawingContext(headerDrawingContext, 15);
+
+					DrawingContext titleDrawingContext = new TileDrawingContext(headerDrawingContext, 1, 2, 0, 0);
+					DrawingContext controlsHintDrawingContext = new TileDrawingContext(headerDrawingContext, 1, 2, 0, 1);
+					
 					DrawingContext textDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 5);
 					DrawingContext pressEnterDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 6, 1, 1);
 					
-					authorDrawingContext = new CenteredDrawingContext(authorDrawingContext, 15);
 					textDrawingContext = new CenteredDrawingContext(textDrawingContext, 15); 
 					
-					TextBookRendererUtils.renderTextPage(gameContainer, graphics, authorDrawingContext, logHeader, FontType.GameLogHeader);
-					TextBookRendererUtils.renderTextPage(gameContainer, graphics, textDrawingContext, logContent, FontType.GameLog);
+					TextBookRendererUtils.renderTextPage(gameContainer, graphics, titleDrawingContext, logHeader, FontType.GameLogHeader, 0);
+					if (logPlayerInputState.getPages() > 1) {
+						TextBookRendererUtils.renderTextPage(gameContainer, graphics, controlsHintDrawingContext, "Press [ENTER] to turn page.", FontType.GameLogControlsHint, 0);
+					}
+					TextBookRendererUtils.renderTextPage(gameContainer, graphics, textDrawingContext, logContent, FontType.GameLog, logPlayerInputState.getCurrentPage());
 					
 				}
 				

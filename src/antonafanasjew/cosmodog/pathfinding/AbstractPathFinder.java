@@ -10,10 +10,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public abstract class AbstractPathFinder implements PathFinder {
 
 	@Override
-	public MovementActionResult calculateMovementResult(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
-		return calculateMovementResultInternal(actor, costBudget, collisionValidator, travelTimeCalculator, playerMovementActionResult);
+	public MovementActionResult calculateMovementResult(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
+		return calculateMovementResultInternal(actor, costBudget, collisionValidator, playerMovementActionResult);
 	}	
 
-	protected abstract MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult);
+	protected abstract MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult);
 
 }

@@ -7,6 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class InGameGameLogInputHandler extends AbstractInputHandler {
@@ -20,7 +21,12 @@ public class InGameGameLogInputHandler extends AbstractInputHandler {
 
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
-			cosmodogGame.setOpenGameLog(null);
+			GameLogState openGameLog = cosmodogGame.getOpenGameLog();
+			if (openGameLog.onLastPage()) {
+				cosmodogGame.setOpenGameLog(null);
+			} else {
+				openGameLog.nextPage();
+			}
 		}	
 
 		input.clearKeyPressedRecord();

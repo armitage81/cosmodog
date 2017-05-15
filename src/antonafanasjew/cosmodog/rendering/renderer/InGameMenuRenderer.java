@@ -26,6 +26,9 @@ public class InGameMenuRenderer implements Renderer {
 		
 		if (inGameMenu != null) {
 			
+			//Stop ambient sounds.
+			ApplicationContextUtils.getCosmodogGame().getAmbientSoundRegistry().clear();
+			
 			InGameMenuFrame currentMenuFrame = inGameMenu.currentMenuFrame();
 			
 			graphics.setColor(new Color(0.0f, 0.0f, 0.0f));
@@ -43,7 +46,7 @@ public class InGameMenuRenderer implements Renderer {
 			DrawingContext footerDc = new TileDrawingContext(drawingContext, 1, 10, 0, 9);
 			footerDc = new CenteredDrawingContext(footerDc, 5);
 			
-			graphics.setColor(Color.white);
+			graphics.setColor(Color.orange);
 			graphics.drawRoundRect(headerDc.x(), headerDc.y(), headerDc.w(), headerDc.h(), 5);
 			
 			graphics.drawRoundRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h(), 5);
@@ -51,10 +54,10 @@ public class InGameMenuRenderer implements Renderer {
 			graphics.drawRoundRect(footerDc.x(), footerDc.y(), footerDc.w(), footerDc.h(), 5);
 			
 			String headerText = currentMenuFrame.getTitle();
-			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, headerDc, headerText, FontType.InGameMenuInterface);
+			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, headerDc, headerText, FontType.InGameMenuInterface, 0);
 			
 			String footerText = "[ESC] to close. [TAB] to switch.";
-			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, footerDc, footerText, FontType.InGameMenuInterface);
+			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, footerDc, footerText, FontType.InGameMenuInterface, 0);
 			
 			Renderer contentRenderer = currentMenuFrame.getContentRenderer();
 			contentRenderer.render(gameContainer, graphics, contentDc, currentMenuFrame.getInputState());

@@ -27,7 +27,7 @@ public class MenuLabelFactory {
 				if (f.exists()) {
 					try {
 						CosmodogGameHeader header = gamePersistor.loadCosmodogGameHeader(filePath);
-						return "Delete: " + DATE_FORMAT.format(header.getLastSave());
+						return "Overwrite: " + DATE_FORMAT.format(header.getLastSave());
 					} catch (CosmodogPersistenceException e) {
 						Log.error("Could not load game");
 						return "<ERROR>";

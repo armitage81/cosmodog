@@ -71,31 +71,62 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		oldDehydrating = player.dehydrating();
 		oldStarving = player.starving();
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
-		applyTime(player, x1, y1, x2, y2, applicationContext);
+		addTime();
 		updateWormAlert(player, applicationContext );
 		updatePoisonCount(player, applicationContext);
-		if (x1 != x2 || y1 != y2) {
-			updateFuel(applicationContext);
-		}
+		updateWater(x1, y1, x2, y2);
+		updateFood(x1, y1, x2, y2);
+		updateFuel(x1, y1, x2, y2);
 		
 	}
 
-	private void updateFuel(ApplicationContext appCx) {
-		Player player = appCx.getCosmodog().getCosmodogGame().getPlayer();
+	private void updateFuel(int x1, int y1, int x2, int y2) {
+		
+		ApplicationContext appCx = ApplicationContext.instance();
+		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		Player player = ApplicationContextUtils.getPlayer();
 		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
-			vehicle.decreaseFuel(1);
+			int fuelCosts = cosmodog.getFuelConsumer().turnCosts(x1, y1, x2, y2, player, map, appCx);
+			vehicle.decreaseFuel(fuelCosts);
 		}
+	}
+	
+	private void updateWater(int x1, int y1, int x2, int y2) {
+		
+		ApplicationContext appCx = ApplicationContext.instance();
+		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		Player player = ApplicationContextUtils.getPlayer();
+		int waterCosts = cosmodog.getWaterConsumer().turnCosts(x1, y1, x2, y2, player, map, appCx);
+		player.decreaseWater(waterCosts);
+	}
+	
+	private void updateFood(int x1, int y1, int x2, int y2) {
+		
+		ApplicationContext appCx = ApplicationContext.instance();
+		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		Player player = ApplicationContextUtils.getPlayer();
+		int foodCosts = cosmodog.getFoodConsumer().turnCosts(x1, y1, x2, y2, player, map, appCx);
+		player.decreaseFood(foodCosts);
 	}
 	
 	@Override
 	public void beforeWaiting(Actor actor, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
-		applyConstantTime(player, Constants.DEFAULT_TIME_COSTS_ON_FOOT, applicationContext);
+		addTime();
 		updateWormAlert(player, applicationContext );
 		updatePoisonCount(player, applicationContext);
+		updateWater(actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY());
+		updateFood(actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY());
+		updateFuel(actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY());
 	}
 	
 	
@@ -184,31 +215,23 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void refillWater(ApplicationContext applicationContext) {
 		
 		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Player player = cosmodog.getCosmodogGame().getPlayer();
 		
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_THIRST, new Runnable() {
-
-			@Override
-			public void run() {
-				Cosmodog cosmodog = applicationContext.getCosmodog();
-				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-				Player player = cosmodog.getCosmodogGame().getPlayer();
-				
-				WaterValidator waterValidator = cosmodog.getWaterValidator();
-				
-				boolean hasWaterAccess = waterValidator.waterInReach(player, map, player.getPositionX(), player.getPositionY());
-				
-				if (hasWaterAccess) {
-					if (oldWater < player.getCurrentMaxWater()) {
-						cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
-						applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();
-						OverheadNotificationAction.registerOverheadNotification(player, "You drink the water");
-					}
-					player.setWater(player.getCurrentMaxWater());
-					player.setLifeLentForThirst(0);
-				}
+		WaterValidator waterValidator = cosmodog.getWaterValidator();
+		
+		boolean hasWaterAccess = waterValidator.waterInReach(player, map, player.getPositionX(), player.getPositionY());
+		
+		if (hasWaterAccess) {
+			if (oldWater < player.getCurrentMaxWater()) {
+				cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
+				applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();
+				OverheadNotificationAction.registerOverheadNotification(player, "You drink the water");
 			}
-			
-		});
+			player.setWater(player.getCurrentMaxWater());
+			player.setLifeLentForThirst(0);
+		}
 	}
 	
 
@@ -218,41 +241,34 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	 */
 	private void refillFuel(ApplicationContext applicationContext) {
 		
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_FUEL, new Runnable() {
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Player player = cosmodog.getCosmodogGame().getPlayer();
 
-			@Override
-			public void run() {
-				Cosmodog cosmodog = applicationContext.getCosmodog();
-				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-				Player player = cosmodog.getCosmodogGame().getPlayer();
-
-				int collectiblesLayerTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
-				if (TileType.FUEL.getTileId() == collectiblesLayerTileId) {
-					String notificationText = null;
-					if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
-						VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
-						Vehicle vehicle = vehicleItem.getVehicle();
-						if (vehicle.getFuel() < Vehicle.MAX_FUEL) {
-							vehicle.setFuel(Vehicle.MAX_FUEL);
-							notificationText = "You refueled the car.";
-						}
-					} else {
-						if (player.getInventory().get(InventoryItemType.FUEL_TANK) == null) {
-							player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
-							notificationText = "You took a fuel canister.";
-						}
-					}
-					
-					if (notificationText != null) {
-						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
-						ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
-						actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(notificationText));
-					}
-					
+		int collectiblesLayerTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
+		if (TileType.FUEL.getTileId() == collectiblesLayerTileId) {
+			String notificationText = null;
+			if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
+				VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
+				Vehicle vehicle = vehicleItem.getVehicle();
+				if (vehicle.getFuel() < Vehicle.MAX_FUEL) {
+					vehicle.setFuel(Vehicle.MAX_FUEL);
+					notificationText = "You refueled the car.";
+				}
+			} else {
+				if (player.getInventory().get(InventoryItemType.FUEL_TANK) == null) {
+					player.getInventory().put(InventoryItemType.FUEL_TANK, new FuelTankInventoryItem());
+					notificationText = "You took a fuel canister.";
 				}
 			}
 			
-		});
+			if (notificationText != null) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
+				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
+				actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(notificationText));
+			}
+			
+		}
 		
 	}
 	
@@ -260,7 +276,6 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		MineDetectorInventoryItem mineDetector = (MineDetectorInventoryItem)player.getInventory().get(InventoryItemType.MINEDETECTOR);
-		boolean hasMineDetector = mineDetector != null;
 		
 		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
 		
@@ -361,43 +376,32 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	 * Player will never really starve. He stays alive with one life point in the worst case.
 	 */
 	private void checkStarvation(ApplicationContext applicationContext) {
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_HUNGER, new Runnable() {
-			@Override
-			public void run() {
-				Cosmodog cosmodog = applicationContext.getCosmodog();
-				Player player = cosmodog.getCosmodogGame().getPlayer();				
-				if (player.starving()) {
-					if (!oldStarving) {
-						OverheadNotificationAction.registerOverheadNotification(player, "You are hungry");
-					}
-					if (player.getActualLife() > 1) {
-						player.increaseLifeLentForHunger(1);
-					}
-				}
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		Player player = cosmodog.getCosmodogGame().getPlayer();
+		if (player.starving()) {
+			if (!oldStarving) {
+				OverheadNotificationAction.registerOverheadNotification(player, "You are hungry");
 			}
-		});
-		
+			if (player.getActualLife() > 1) {
+				player.increaseLifeLentForHunger(1);
+			}
+		}
 	}
 	
 	/*
 	 * Player will never really dehydrate. He stays alive with one life point in the worst case.
 	 */
 	private void checkDehydration(ApplicationContext applicationContext) {
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_THIRST, new Runnable() {
-			@Override
-			public void run() {
-				Cosmodog cosmodog = applicationContext.getCosmodog();
-				Player player = cosmodog.getCosmodogGame().getPlayer();
-				if (player.dehydrating()) {
-					if (!oldDehydrating) {
-						OverheadNotificationAction.registerOverheadNotification(player, "You are thirsty");
-					}
-					if (player.getActualLife() > 1) {
-						player.increaseLifeLentForThirst(1);
-					}
-				}
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		Player player = cosmodog.getCosmodogGame().getPlayer();
+		if (player.dehydrating()) {
+			if (!oldDehydrating) {
+				OverheadNotificationAction.registerOverheadNotification(player, "You are thirsty");
 			}
-		});		
+			if (player.getActualLife() > 1) {
+				player.increaseLifeLentForThirst(1);
+			}
+		}
 	}
 
 	private void checkTemperature(ApplicationContext applicationContext) {
@@ -443,11 +447,13 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) == null) {
-				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
-				if (player.getLife() > 2) {
-					player.decreaseLife(2);
-				} else {
-					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.DEATH_BY_RADIATION, new DeathByRadiationAction(1000));
+				if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
+					OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
+					if (player.getLife() > 2) {
+						player.decreaseLife(2);
+					} else {
+						cosmodogGame.getActionRegistry().registerAction(AsyncActionType.DEATH_BY_RADIATION, new DeathByRadiationAction(1000));
+					}
 				}
 			} else {
 				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: Suppressed by suit");
@@ -464,25 +470,19 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		int electricityTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
 		
 		if (TileType.ELECTRICITY.getTileId() == electricityTileId) {
-			player.decreaseLife(1);
-			OverheadNotificationAction.registerOverheadNotification(player, "Shock: -1");
+			if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
+				player.decreaseLife(1);
+				OverheadNotificationAction.registerOverheadNotification(player, "Shock: -1");
+			}
 		}
 		
 	}
 	
-	private void applyTime(Player player, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		Cosmodog cosmodog = applicationContext.getCosmodog();
-		int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, x2, y2);
-		applyConstantTime(player, timePassed, applicationContext);
+	private void addTime() {
+		PlanetaryCalendar calendar = ApplicationContextUtils.getCosmodogGame().getPlanetaryCalendar();
+		calendar.addMinutes(Constants.MINUTES_PER_TURN);
 	}
 
-	private void applyConstantTime(Player player, int minutes, ApplicationContext applicationContext) {
-		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		PlanetaryCalendar calendar = cosmodogGame.getPlanetaryCalendar();
-		calendar.addMinutes(minutes);
-	}
-	
 	private void updateWormAlert(Player player, ApplicationContext applicationContext) {
 
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();

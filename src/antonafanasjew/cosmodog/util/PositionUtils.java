@@ -64,5 +64,44 @@ public class PositionUtils {
 		}
 	}
 	
+	public static float exactTargetDirection(Piece reference, Piece target) {
+		
+		int refX = reference.getPositionX();
+		int refY = reference.getPositionY();
+		
+		int x = target.getPositionX();
+		int y = target.getPositionY();
+		
+		float diffX = x - refX;
+		float diffY = y - refY;
+		
+		float absDiffX = Math.abs(diffX);
+		float absDiffY = Math.abs(diffY);
+		
+		float retVal;
+		
+		if (absDiffY == 0) {
+			retVal = (float)Math.PI / 2;
+		} else {
+			float tan = absDiffX / absDiffY;
+			retVal = (float)Math.atan(tan);
+		}
+		
+		if (diffX >= 0 && diffY >= 0) {
+			retVal = (float)(Math.PI - retVal);
+		}
+		
+		if (diffX < 0 && diffY >= 0) {
+			retVal = (float)(Math.PI + retVal);
+		}
+		
+		if (diffX < 0 && diffY < 0) {
+			retVal = (float)(2 * Math.PI - retVal);
+		}
+		
+		
+		return retVal;
+	}
+	
 	
 }

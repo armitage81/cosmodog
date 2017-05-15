@@ -29,8 +29,8 @@ public class GeigerCounterViewRenderer implements Renderer {
 		
 		if (geigerZaehler != null) {
 		
-			DrawingContext labelDc = new SimpleDrawingContext(drawingContext, 0, 0, drawingContext.w(), 30);
-			DrawingContext viewDc = new SimpleDrawingContext(drawingContext, 0, 30, drawingContext.w(), drawingContext.h() - 30);
+			DrawingContext labelDc = new SimpleDrawingContext(null, 32, 406, 124, 35);
+			DrawingContext viewDc = drawingContext;
 			
 			boolean dangerIsClose = false;
 			
@@ -52,16 +52,11 @@ public class GeigerCounterViewRenderer implements Renderer {
 				}
 			}
 			
+			long timestamp = System.currentTimeMillis();
 			if (dangerIsClose) {
 
-				g.setColor(Color.yellow);
-				g.fillRect(labelDc.x(), labelDc.y(), labelDc.w(), labelDc.h());
-				g.setColor(Color.white);
-				g.drawRect(labelDc.x(), labelDc.y(), labelDc.w(), labelDc.h());
-				
-				long timestamp = System.currentTimeMillis();
 				if ((timestamp / 250) % 2 == 0) {
-					TextBookRendererUtils.renderCenteredLabel(gameContainer, g, labelDc, "RADIATION!", FontType.RadiationLabel);
+					TextBookRendererUtils.renderCenteredLabel(gameContainer, g, labelDc, "RADIATION!", FontType.RadiationLabelDanger, 0);
 				}
 				
 				for (int i = 0; i < 3; i++) {
@@ -84,6 +79,8 @@ public class GeigerCounterViewRenderer implements Renderer {
 						g.drawRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
 					}
 				}
+			} else {
+				TextBookRendererUtils.renderCenteredLabel(gameContainer, g, labelDc, "No radiation", FontType.RadiationLabelSafe, 0);
 			}
 		
 		}

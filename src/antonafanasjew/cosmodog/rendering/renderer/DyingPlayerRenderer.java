@@ -39,6 +39,9 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 			return;
 		}
 		
+		//Stop ambient sounds
+		ApplicationContextUtils.getCosmodogGame().getAmbientSoundRegistry().clear();
+		
 		graphics.setColor(Color.black);
 		graphics.fillRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
 		

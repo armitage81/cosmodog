@@ -10,7 +10,7 @@ public class NpcActor extends Actor {
 	
 	private static final long serialVersionUID = -7670644820503474045L;
 	
-	private float speedFactor;
+	private int speedFactor;
 	
 	private String homeRegionName;
 	
@@ -29,7 +29,7 @@ public class NpcActor extends Actor {
 	 * 
 	 * @return The speed factor related to the player. 
 	 */
-	public float getSpeedFactor() {
+	public int getSpeedFactor() {
 		return speedFactor;
 	}
 
@@ -37,7 +37,7 @@ public class NpcActor extends Actor {
 	 * Sets the speed factor as related to the player. 0.5 means half so fast as the player, 2.0 means double as fast as the player.
 	 * @param speedFactor The speed factor. Recommended values are 0,0.25,0.5,1,2,4,8
 	 */
-	public void setSpeedFactor(float speedFactor) {
+	public void setSpeedFactor(int speedFactor) {
 		this.speedFactor = speedFactor;
 	}
 	

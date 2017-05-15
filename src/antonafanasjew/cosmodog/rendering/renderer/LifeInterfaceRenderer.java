@@ -5,9 +5,11 @@ import java.util.Locale;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -27,7 +29,9 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class LifeInterfaceRenderer implements Renderer {
 
@@ -40,29 +44,20 @@ public class LifeInterfaceRenderer implements Renderer {
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = cosmodogGame.getPlayer();
-				
-		g.translate(context.x(), context.y());
-		g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.75f));
-		g.fillRect(0, 0, context.w(), context.h());
-		g.translate(-context.x(), -context.y());
 		
-		context = new CenteredDrawingContext(context, 1);
-
-		
-		
-		DrawingContext lifeDrawingContext = new TileDrawingContext(context, 1, 4, 0, 0);
+		DrawingContext lifeDrawingContext = new TileDrawingContext(context, 1, 3, 0, 0);
 		lifeDrawingContext = new CenteredDrawingContext(lifeDrawingContext, 2);
 		
-		DrawingContext robustnessDrawingContext = new TileDrawingContext(context, 1, 4, 0, 1);
+		DrawingContext robustnessDrawingContext = new TileDrawingContext(context, 1, 3, 0, 1);
 		robustnessDrawingContext = new CenteredDrawingContext(robustnessDrawingContext, 2);
 		
-		DrawingContext fuelDrawingContext = new TileDrawingContext(context, 1, 4, 0, 2);
+		DrawingContext fuelDrawingContext = new TileDrawingContext(context, 1, 3, 0, 2);
 		fuelDrawingContext = new CenteredDrawingContext(fuelDrawingContext, 2);
 		
-		DrawingContext environmentDataDrawingContext = new TileDrawingContext(context, 1, 4, 0, 3);
-		environmentDataDrawingContext = new CenteredDrawingContext(environmentDataDrawingContext, 2);
+//		DrawingContext environmentDataDrawingContext = new TileDrawingContext(context, 1, 4, 0, 0);
+//		environmentDataDrawingContext = new CenteredDrawingContext(environmentDataDrawingContext, 2);
 		
-		
+		long timestamp = System.currentTimeMillis();
 		
 		//RENDERING LIFE ROW
 		
@@ -71,7 +66,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		SimpleDrawingContext lifeLabelDrawingContext = new SimpleDrawingContext(lifeDrawingContext, 0, 0, LABEL_WIDTH, lifeDrawingContext.h());
 		SimpleDrawingContext lifeBarDrawingContext = new SimpleDrawingContext(lifeDrawingContext, LABEL_WIDTH, 0, lifeDrawingContext.w() - LABEL_WIDTH, lifeDrawingContext.h());
 
-		LetterTextRenderer.getInstance().render(gameContainer, g, lifeLabelDrawingContext, LetterTextRenderingParameter.fromText("LIFE"));
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, lifeLabelDrawingContext, "LIFE", FontType.Hud, 0);
 				
 		
 		g.translate(lifeBarDrawingContext.x(), lifeBarDrawingContext.y());
@@ -84,7 +79,8 @@ public class LifeInterfaceRenderer implements Renderer {
 		float lifeLentForFrost = player.getLifeLentForFrost();
 		
 		float maxLifeBarWidth = lifeBarDrawingContext.w() * potentialMaxLife / Player.MAX_POSSIBLE_LIFE;
-		float currentLifeBarWidth = potentialLife / potentialMaxLife * maxLifeBarWidth;
+		float lifeRatio = potentialLife / potentialMaxLife;
+		float currentLifeBarWidth = lifeRatio * maxLifeBarWidth;
 		float oneLifeUnitBarWidth = maxLifeBarWidth / potentialMaxLife;
 
 		float hungerLentBarWidth = lifeBarDrawingContext.w() * lifeLentForHunger / Player.MAX_POSSIBLE_LIFE;
@@ -93,6 +89,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, maxLifeBarWidth, lifeBarDrawingContext.h());
+		
 		ApplicationContext.instance().getAnimations().get("lifeBar").draw(0, 0, currentLifeBarWidth, lifeBarDrawingContext.h());
 		
 		float thirstLentBarOffset = currentLifeBarWidth - frostLentBarWidth - hungerLentBarWidth - thirstLentBarWidth ;
@@ -140,7 +137,7 @@ public class LifeInterfaceRenderer implements Renderer {
 			SimpleDrawingContext robustnessLabelDrawingContext = new SimpleDrawingContext(robustnessDrawingContext, 0, 0, LABEL_WIDTH, robustnessDrawingContext.h());
 			SimpleDrawingContext robustnessBarDrawingContext = new SimpleDrawingContext(robustnessDrawingContext, LABEL_WIDTH, 0, robustnessDrawingContext.w() - LABEL_WIDTH, robustnessDrawingContext.h());
 			
-			LetterTextRenderer.getInstance().render(gameContainer, g, robustnessLabelDrawingContext, LetterTextRenderingParameter.fromText("ARMOR"));
+			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, robustnessLabelDrawingContext, "ARMOR", FontType.Hud, 0);
 			
 			
 			g.translate(robustnessBarDrawingContext.x(), robustnessBarDrawingContext.y());
@@ -179,18 +176,25 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		if (vehicleInventoryItem != null) {
 		
+			
+			
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
 			
 			SimpleDrawingContext fuelLabelDrawingContext = new SimpleDrawingContext(fuelDrawingContext, 0, 0, LABEL_WIDTH, fuelDrawingContext.h());
 			SimpleDrawingContext fuelBarDrawingContext = new SimpleDrawingContext(fuelDrawingContext, LABEL_WIDTH, 0, fuelDrawingContext.w() - LABEL_WIDTH, fuelDrawingContext.h());
 			
-			LetterTextRenderer.getInstance().render(gameContainer, g, fuelLabelDrawingContext, LetterTextRenderingParameter.fromText("FUEL"));
+			
+			
+			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, fuelLabelDrawingContext, "FUEL", FontType.Hud, 0);
 			
 			
 			g.translate(fuelBarDrawingContext.x(), fuelBarDrawingContext.y());
 			
 			float maxFuel = Vehicle.MAX_FUEL;
 			float maxFuelBarWidth = fuelBarDrawingContext.w();
+			
+			float oneFuelUnitBarWidth = maxFuelBarWidth / maxFuel;
+			
 			float currentFuel = vehicle.getFuel();
 			float currentFuelBarWidth = currentFuel / maxFuel * maxFuelBarWidth;
 			
@@ -205,7 +209,7 @@ public class LifeInterfaceRenderer implements Renderer {
 			g.setColor(new Color(100, 96, 31, 0.10f));
 			g.setLineWidth(1);
 			for (int i = 1; i < maxFuel; i++) {
-				float lineOffsetX = oneLifeUnitBarWidth * i;
+				float lineOffsetX = oneFuelUnitBarWidth * i;
 				g.drawLine(lineOffsetX, 0, lineOffsetX, fuelBarDrawingContext.h());
 			}
 			
@@ -225,62 +229,10 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		
 		
-		TileDrawingContext radiationLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 0, 0);
-		DrawingContext radiationValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 1, 0);
-		TileDrawingContext supplyTrackerLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 2, 0);
-		TileDrawingContext supplyTrackerValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 3, 0);
-		TileDrawingContext planetaryCalendarLabelDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 4, 0);
-		TileDrawingContext planetaryCalendarValueDrawingContext = new TileDrawingContext(environmentDataDrawingContext, 8, 1, 5, 0);
+//		DrawingContext planetaryCalendarLabelDrawingContext = new SimpleDrawingContext(environmentDataDrawingContext, 0, 0, LABEL_WIDTH, environmentDataDrawingContext.h());
+//		DrawingContext planetaryCalendarValueDrawingContext = new SimpleDrawingContext(environmentDataDrawingContext, LABEL_WIDTH, 0, LABEL_WIDTH, environmentDataDrawingContext.h());
 		
-		LetterTextRenderer.getInstance().render(gameContainer, g, radiationLabelDrawingContext, LetterTextRenderingParameter.fromText("RAD"));
-		
-		radiationValueDrawingContext = new CenteredDrawingContext(radiationValueDrawingContext, 15, 15);
-		
-		boolean[][] radiationInfos = new boolean[3][3];
-		int posX = player.getPositionX();
-		int posY = player.getPositionY();
-		int xMin = posX - 1;
-		int xMax = posX + 1;
-		int yMin = posY - 1;
-		int yMax = posY + 1;
-		for (int i = xMin; i <= xMax; i++) {
-			for (int j = yMin; j <= yMax; j++) {
-				radiationInfos[i - xMin][j - yMin] = false;
-				int radiationTileId = map.getTileId(i, j, Layers.LAYER_META_RADIATION);
-				if (TileType.RADIATION.getTileId() == radiationTileId) {
-					radiationInfos[i - xMin][j - yMin] = true;
-				}
-			}
-		}
-		
-		GeigerZaehlerInventoryItem geigerZaehler = (GeigerZaehlerInventoryItem)player.getInventory().get(InventoryItemType.GEIGERZAEHLER);
-		
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				Color color;
-				if (geigerZaehler == null) {
-					color = Color.gray;
-				} else {
-					if (radiationInfos[i][j] == true) {
-						long timestamp = System.currentTimeMillis();
-						if ((timestamp / 250) % 2 == 0) {
-							color = Color.red;
-						} else {
-							color = Color.white;
-						}
-					} else {
-						color = Color.green;	
-					}
-				}
-				g.setColor(color);
-				TileDrawingContext tileDc = new TileDrawingContext(radiationValueDrawingContext, 3, 3, i, j);
-				g.fillRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
-				g.setColor(Color.white);
-				g.setLineWidth(1);
-				g.drawRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
-			}
-		}
-		
+		/*
 		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerLabelDrawingContext, LetterTextRenderingParameter.fromText("BOX"));
 
 		String supplyTrackerValue = "--";
@@ -297,11 +249,34 @@ public class LifeInterfaceRenderer implements Renderer {
 			}
 			
 		}		
-	
 		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerValueDrawingContext, LetterTextRenderingParameter.fromText(supplyTrackerValue));
+		*/
 		
-		LetterTextRenderer.getInstance().render(gameContainer, g, planetaryCalendarLabelDrawingContext, LetterTextRenderingParameter.fromText("TIME:"));
-		LetterTextRenderer.getInstance().render(gameContainer, g, planetaryCalendarValueDrawingContext, LetterTextRenderingParameter.fromText(cosmodogGame.getPlanetaryCalendar().toTimeString(Locale.getDefault())));
+		
+//		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, planetaryCalendarLabelDrawingContext, "TIME", FontType.Hud, 0);
+//		
+//		String timeText = cosmodogGame.getPlanetaryCalendar().toTimeString(Locale.getDefault());
+//		if (timestamp / 500 % 2 == 0) {
+//			timeText = timeText.replace(':', ' ');
+//		}
+//		
+//		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, planetaryCalendarValueDrawingContext, timeText, FontType.HudTime, 0);
+		
+		
+		//This will print the direction of the next most interesting piece on the map for debug and test purposes.
+		/*
+		Piece closestPieceInterestingForDebugging = PlayerMovementCache.getInstance().getClosestPieceInterestingForDebugging();
+		
+		if (closestPieceInterestingForDebugging != null) {
+			DrawingContext c = new SimpleDrawingContext(null, 0, 0, gameContainer.getWidth(), gameContainer.getHeight());
+			DirectionType dirType = PositionUtils.targetDirection(player, closestPieceInterestingForDebugging);
+			String value = dirType.getRepresentation().toUpperCase();
+			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, c, value, FontType.GameOver);
+		}
+		*/
+		
+		
+		
 		
 	}
 	

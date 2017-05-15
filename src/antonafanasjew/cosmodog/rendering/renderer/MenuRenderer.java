@@ -95,7 +95,7 @@ public class MenuRenderer implements Renderer {
 				}
 				
 				if (renderSelected) {
-					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, itemDc, labelText, FontType.MainMenu);
+					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, itemDc, labelText, FontType.MainMenu, 0);
 				}
 			}
 			

@@ -5,6 +5,7 @@ import java.util.List;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuInputState;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 
 public class LogPlayerInputState implements InGameMenuInputState {
@@ -13,6 +14,9 @@ public class LogPlayerInputState implements InGameMenuInputState {
 	
 	private int seriesNumber = 0;
 	private int logNumber = 0;
+	
+	private int pages;
+	private int currentPage;
 
 	public LogPlayerInputState() {
 		gameLogs = ApplicationContext.instance().getGameLogs();
@@ -24,6 +28,7 @@ public class LogPlayerInputState implements InGameMenuInputState {
 		if (logNumber < 0) {
 			logNumber = 0;
 		}
+		recalculatePages();
 	}
 	
 	public void up() {
@@ -36,6 +41,7 @@ public class LogPlayerInputState implements InGameMenuInputState {
 		if (logNumber >= logsForSeries.size()) {
 			logNumber = logsForSeries.size() - 1;
 		}
+		recalculatePages();
 	}
 	
 	public void right() {
@@ -45,6 +51,7 @@ public class LogPlayerInputState implements InGameMenuInputState {
 		if (logNumber >= logsForSeries.size()) {
 			logNumber = logsForSeries.size() - 1;
 		}
+		recalculatePages();
 	}
 	
 	public void down() {
@@ -57,6 +64,15 @@ public class LogPlayerInputState implements InGameMenuInputState {
 		List<GameLog> logsForSeries = gameLogs.getGameLogsForSeries(seriesForNumber);
 		if (logNumber >= logsForSeries.size()) {
 			logNumber = logsForSeries.size() - 1;
+		}
+		recalculatePages();
+	}
+	
+	public void rotatePage() {
+		if (currentPage < pages - 1) {
+			currentPage++;
+		} else {
+			currentPage = 0;
 		}
 	}
 	
@@ -73,5 +89,25 @@ public class LogPlayerInputState implements InGameMenuInputState {
 	public void initializeState() {
 		seriesNumber = 0;
 		logNumber = 0;
+		recalculatePages();
+	}
+	
+	private void recalculatePages() {
+		String seriesName = gameLogs.getSeriesNames().get(seriesNumber);
+		List<GameLog> gameLogsForSeries = gameLogs.getGameLogsForSeries(seriesName);
+		GameLog gameLog = gameLogsForSeries.get(logNumber);
+		GameLogState gameLogState = new GameLogState(gameLog);
+		this.pages = gameLogState.getPages();
+		this.currentPage = gameLogState.getCurrentPage();
+	}
+
+	
+	
+	public int getPages() {
+		return pages;
+	}
+	
+	public int getCurrentPage() {
+		return currentPage;
 	}
 }

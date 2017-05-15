@@ -47,7 +47,7 @@ public class InventoryRenderer implements Renderer {
 		DrawingContext itemsDrawingContext = itemsDrawingContext(contentContext);
 		
 		graphics.translate(itemsDrawingContext.x(), itemsDrawingContext.y());
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.orange);
 		graphics.drawRoundRect(0, 0, itemsDrawingContext.w(), itemsDrawingContext.h(), 5);
 		graphics.translate(-itemsDrawingContext.x(), -itemsDrawingContext.y());
 		
@@ -76,7 +76,7 @@ public class InventoryRenderer implements Renderer {
 			
 			if (column == selectionX && row == selectionY) {
 				selectedItem = item;
-				graphics.setColor(Color.white);
+				graphics.setColor(Color.orange);
 				graphics.drawRect(tiledDrawingContext.x(), tiledDrawingContext.y(), tiledDrawingContext.w(), tiledDrawingContext.h());
 			}
 
@@ -85,7 +85,7 @@ public class InventoryRenderer implements Renderer {
 		DrawingContext descriptionDrawingContext = descriptionDrawingContext(contentContext);
 		
 		graphics.translate(descriptionDrawingContext.x(), descriptionDrawingContext.y());
-		graphics.setColor(Color.white);
+		graphics.setColor(Color.orange);
 		graphics.drawRoundRect(0, 0, descriptionDrawingContext.w(), descriptionDrawingContext.h(), 5);
 		graphics.translate(-descriptionDrawingContext.x(), -descriptionDrawingContext.y());
 
@@ -93,7 +93,7 @@ public class InventoryRenderer implements Renderer {
 		
 		
 		String text = selectedItem == null ? "" : selectedItem.description();
-		TextBookRendererUtils.renderTextPage(gameContainer, graphics, descriptionDrawingContext, text, FontType.InventoryDescription);
+		TextBookRendererUtils.renderTextPage(gameContainer, graphics, descriptionDrawingContext, text, FontType.InventoryDescription, 0);
 		
 				
 	}

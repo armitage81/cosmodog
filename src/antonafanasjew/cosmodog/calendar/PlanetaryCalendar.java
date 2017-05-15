@@ -52,8 +52,6 @@ public class PlanetaryCalendar implements Serializable {
 	 */
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 	
-	private PlanetaryCalendarListener listener;
-	
 	private int year = 0;
 	private int day = 0;
 	private int hour = 0;
@@ -176,9 +174,6 @@ public class PlanetaryCalendar implements Serializable {
 		long oldTime = getTimeInMinutes();
 		long newTime = oldTime + minutes;
 		setTimeInMinutes(newTime);
-		if (listener != null) {
-			listener.timePassed(oldTime, minutes);
-		}
 	}
 	
 	/**
@@ -214,22 +209,6 @@ public class PlanetaryCalendar implements Serializable {
 		
 		sb.append(dateFormat.format(calendar.getTime()));
 		return sb.toString();
-	}
-
-	/**
-	 * Returns the listener that listeners to the time updates on this calendar.
-	 * @return Listener. Can be null.
-	 */
-	public PlanetaryCalendarListener getListener() {
-		return listener;
-	}
-	
-	/**
-	 * Sets the listener that will be listening on the time updates on this calendar.
-	 * @param listener Listener to be set.
-	 */
-	public void setListener(PlanetaryCalendarListener listener) {
-		this.listener = listener;
 	}
 
 	/**

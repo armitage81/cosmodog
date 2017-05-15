@@ -4,8 +4,8 @@ TUTORIAL.RADIATION;tutorial.radiation;[---TUTORIAL---] <p> Some places are conta
 TUTORIAL.MEDKIT;tutorial.medkit;[---TUTORIAL---] <p> You took some radioactive damage. Use this medkit to heal.;true;readTutorialMedkit
 TUTORIAL.INFOBIT;tutorial.infobit;[---TUTORIAL---] <p> Infobits represent knowledge you gain about Phaeton. Collect as many as you can.;true;readTutorialInfobit
 TUTORIAL.SUPPLIES;tutorial.supplies;[---TUTORIAL---] <p> Your constitution will suffer by lack of food. Collect supply rations to regain strength.;true;readTutorialSupplies
-TUTORIAL.WATER;tutorial.water;[---TUTORIAL---] <p> Thirst is the permanent threat for a survivor. Approach water to drink it.;true;readTutorialWater
+TUTORIAL.WATER;tutorial.water;[---TUTORIAL---] <p> Thirst is permanent threat for a survivor. Approach water to drink it.;true;readTutorialWater
 TUTORIAL.CRATES;tutorial.crates;[---TUTORIAL---] <p> Destroy crates by running into them. Sometimes, they hold useful items.;true;readTutorialCrates
-TUTORIAL.CAR;tutorial.car;[---TUTORIAL---] <p> Enter the car to drive it. It allows you to travel faster and gives you some protection. Refuel cars at gas stations.;true;readTutorialCar
+TUTORIAL.CAR;tutorial.car;[---TUTORIAL---] <p> Enter the car to drive it. It gives some protection and saves supplies. Refuel cars at gas stations. Drive on roads to save fuel.;true;readTutorialCar
 TUTORIAL.TERRAINTYPES;tutorial.terraintypes;[---TUTORIAL---] <p> Vehicles cannot drive over rough terrain. Exit the car with [SHIFT] + [ARROW KEY].;true;readTutorialTerrainTypes
 TUTORIAL.GOODLUCK;tutorial.goodluck;[---TUTORIAL---] <p> This ends the tutorial. Good luck!;true;readTutorialGoodLuck

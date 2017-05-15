@@ -16,7 +16,7 @@ public class OptionsRenderer implements Renderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
-		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, drawingContext, TEXT, FontType.InGameMenuInterface);
+		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, drawingContext, TEXT, FontType.InGameMenuInterface, 0);
 	}
 
 }

@@ -17,6 +17,7 @@ public class ChartInteraction extends AbstractPieceInteraction {
 			item = (ChartInventoryItem) item;
 		} else {
 			item = new ChartInventoryItem();
+			item.setNumber(0); //It is 1 by default for all countable items.
 			player.getInventory().put(InventoryItemType.CHART, item);
 		}
 		

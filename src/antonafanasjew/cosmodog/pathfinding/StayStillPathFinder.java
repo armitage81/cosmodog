@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 public class StayStillPathFinder extends AbstractPathFinder {
 
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
 		
 		//Adding the actors position as the first step in the path in any case.
 		Path subPath = new Path();

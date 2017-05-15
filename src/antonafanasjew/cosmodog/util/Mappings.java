@@ -45,8 +45,8 @@ public class Mappings {
 	
 	static {
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_0, "luckyquarterkiller");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_1, "Series002");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_2, "Series003");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_1, "maryharper");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_2, "aliennomads");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_3, "Series004");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_4, "Series005");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_5, "Series006");
@@ -75,9 +75,9 @@ public class Mappings {
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_5, "solarcells");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_6, "sightradius");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_7, "southlab");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_8, "tobedefined009");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_9, "tobedefined010");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_10, "tobedefined011");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_8, "isolatedmonolith");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_9, "aliensequencepart1");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_10, "aliensequencepart2");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_11, "tobedefined012");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_12, "tobedefined013");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_13, "tobedefined014");

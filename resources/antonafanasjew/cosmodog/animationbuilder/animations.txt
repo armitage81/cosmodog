@@ -847,24 +847,24 @@ trancescendent;data/trancescendent.png;97;42;[0/0/100000];true;true
 
 
 
-pistol;data/weapons.png;16;16;[0/0/250,1/0/250,2/0/250,1/0/250];true;true
-shotgun;data/weapons.png;32;16;[0/1/250,1/1/250,2/1/250,1/1/250];true;true
-rifle;data/weapons.png;32;16;[0/2/250,1/2/250,2/2/250,1/2/250];true;true
-machinegun;data/weapons.png;48;16;[0/3/250,1/3/250,2/3/250,1/3/250];true;true
-rpg;data/weapons.png;48;16;[0/4/250,1/4/250,2/4/250,1/4/250];true;true
+pistol;data/weapons2.png;32;32;[0/0/250,1/0/250,2/0/250,1/0/250];true;true
+shotgun;data/weapons2.png;48;16;[0/3/250,1/3/250,2/3/250,1/3/250];true;true
+rifle;data/weapons2.png;48;16;[0/5/250,1/5/250,2/5/250,1/5/250];true;true
+machinegun;data/weapons2.png;48;32;[0/3/250,1/3/250,2/3/250,1/3/250];true;true
+rpg;data/weapons2.png;48;32;[0/4/250,1/4/250,2/4/250,1/4/250];true;true
 
 
-pistolAmmo;data/weapons.png;16;16;[9/0/250,10/0/250,11/0/250,10/0/250];true;true
-shotgunAmmo;data/weapons.png;16;16;[9/1/250,10/1/250,11/1/250,10/1/250];true;true
-rifleAmmo;data/weapons.png;16;16;[9/2/250,10/2/250,11/2/250,10/2/250];true;true
-machinegunAmmo;data/weapons.png;16;16;[9/3/250,10/3/250,11/3/250,10/3/250];true;true
-rpgAmmo;data/weapons.png;16;16;[9/4/250,10/4/250,11/4/250,10/4/250];true;true
+pistolAmmo;data/weapons2.png;16;16;[10/0/250,11/0/250,12/0/250,11/0/250];true;true
+shotgunAmmo;data/weapons2.png;16;16;[10/2/250,11/2/250,12/2/250,11/2/250];true;true
+rifleAmmo;data/weapons2.png;16;16;[10/4/250,11/4/250,12/4/250,11/4/250];true;true
+machinegunAmmo;data/weapons2.png;16;16;[10/6/250,11/6/250,12/6/250,11/6/250];true;true
+rpgAmmo;data/weapons2.png;32;16;[5/8/250,6/8/250,7/8/250,6/8/250];true;true
 
-pistolIcon;data/weapons.png;16;16;[1/0/10000];true;true
-shotgunIcon;data/weapons.png;32;16;[1/1/10000];true;true
-rifleIcon;data/weapons.png;32;16;[1/2/10000];true;true
-machinegunIcon;data/weapons.png;48;16;[1/3/10000];true;true
-rpgIcon;data/weapons.png;48;16;[1/4/10000];true;true
+pistolIcon;data/weapons2.png;80;64;[0/3/10000];true;true
+shotgunIcon;data/weapons2.png;80;64;[1/3/10000];true;true
+rifleIcon;data/weapons2.png;80;64;[2/3/10000];true;true
+machinegunIcon;data/weapons2.png;80;64;[3/3/10000];true;true
+rpgIcon;data/weapons2.png;80;64;[4/3/10000];true;true
 
 
 teleportEffect;data/teleporteffect.png;16;16;[0/0/250,1/0/250,2/0/250,0/1/250,1/1/250,2/1/250,0/2/250,1/2/250,2/2/250,0/1/250,1/1/250,2/1/250];true;true
@@ -1462,3 +1462,6 @@ enemySleeping;data/enemy_icons.png;16;16;[2/0/200,2/1/200,2/2/200,2/3/200,2/2/20
 explosion;data/explosion.png;48;48;[0/0/150,1/0/150,2/0/150,0/1/150,1/1/150,2/1/150,0/2/150];false;false
 artilleryGrenadeUp;data/artillery_grenade.png;16;16;[0/0/10000];false;false
 artilleryGrenadeDown;data/artillery_grenade.png;16;16;[1/0/10000];false;false
+
+
+

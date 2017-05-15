@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
+import antonafanasjew.cosmodog.util.MusicUtils;
 
 public class IntroState extends BasicGameState {
 
@@ -33,7 +34,7 @@ public class IntroState extends BasicGameState {
 		initialTimestamp = System.currentTimeMillis();
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.loadScoreList();
-		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_LOGO).play();
+		MusicUtils.playMusic(MusicResources.MUSIC_LOGO);
 	}
 	
 	@Override

@@ -15,10 +15,9 @@ public interface PathFinder {
 	 * @param actor The actor for whom the movement action result will be calculated. (Mostly, NPC)
 	 * @param costBudget The cost budget that can be used for crossing tiles.
 	 * @param collisionValidator Validator to check collision
-	 * @param travelTimeCalculator Calculator to define costs of crossing a tile.  
 	 * @param playerMovementActionResult Result of the player movement. Needed to calculate the path related to the result of players movement and not his actual position.
 	 * @return The movement action result for the given actor including the path he will take and the costs he will need.
 	 */
-	MovementActionResult calculateMovementResult(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult);
+	MovementActionResult calculateMovementResult(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult);
 	
 }

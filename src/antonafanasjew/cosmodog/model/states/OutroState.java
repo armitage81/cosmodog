@@ -13,6 +13,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -24,6 +25,7 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
+import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 import com.google.common.collect.Lists;
@@ -35,6 +37,8 @@ public class OutroState extends BasicGameState {
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		MusicUtils.loopMusic(MusicResources.MUSIC_CUTSCENE);
 		
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.updateScoreList();
@@ -103,14 +107,14 @@ public class OutroState extends BasicGameState {
 		boolean endLabel = page == texts.size() - 1 ? true : false;
 		
 		if (endLabel) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, introTextDc, texts.get(page), FontType.EndLabel);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, introTextDc, texts.get(page), FontType.EndLabel, 0);
 		} else {
-			TextBookRendererUtils.renderTextPage(gc, g, introTextDc, texts.get(page), FontType.OutroText);
+			TextBookRendererUtils.renderTextPage(gc, g, introTextDc, texts.get(page), FontType.OutroText, 0);
 		}
 		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
 		}
 
 	}

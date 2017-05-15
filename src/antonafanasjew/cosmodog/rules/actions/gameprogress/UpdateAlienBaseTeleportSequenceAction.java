@@ -25,7 +25,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 	//private static final String CORRECT_SEQUENCE = "1";
 	private static final int SEQUENCE_LENGTH = CORRECT_SEQUENCE.length();
 	
-	private static final String CONSOLE1_TEXT = "Gravity impuls";
+	private static final String CONSOLE1_TEXT = "Gravity impulse";
 	private static final String CONSOLE2_TEXT = "Dynamo";
 	private static final String CONSOLE3_TEXT = "Ignition";
 	private static final String CONSOLE4_TEXT = "Space warp";
@@ -91,7 +91,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		if (CORRECT_SEQUENCE.equals(currentSequence)) {
 			AsyncAction asyncAction = new SwitchingIndicatorAction(2000, "AlienBaseTeleportIndicator", true);
 			asyncAction = new CamCenteringDecoratorAction(1000, 204, 310, asyncAction, ApplicationContextUtils.getCosmodogGame());
-			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
+			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		}
 		

@@ -25,6 +25,8 @@ public class LogPlayerInputHandler implements InputHandler {
 			state.up();
 		} else if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
 			state.down();
+		} else if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			state.rotatePage();
 		}
 	}
 }

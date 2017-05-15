@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.fighting;
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
@@ -25,7 +26,13 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		
-		int damage = selectedWeaponType == null ? SIMPLE_PLAYER_DAMAGE : selectedWeaponType.getDamage(enemyArmorType);
+		int damage;
+		if (Features.getInstance().featureOn(Features.FEATURE_GODFISTS)) {
+			damage = selectedWeaponType == WeaponType.FISTS ? 1000 : selectedWeaponType.getDamage(enemyArmorType);
+		} else {
+			damage = selectedWeaponType == null ? SIMPLE_PLAYER_DAMAGE : selectedWeaponType.getDamage(enemyArmorType);
+		}
+		
 		
 		
 		

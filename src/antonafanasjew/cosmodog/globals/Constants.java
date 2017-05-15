@@ -22,32 +22,13 @@ public class Constants {
 	 * It will be multiplied with the number of planetary minutes needed for the action
 	 * to calculate the action movement.
 	 */
-	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 30;
+	//public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 50;
+	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 75;
 	
 	/**
-	 * Minimal unit on the planetary calendar in minutes.
+	 * That many minutes will pass in the planetary calendar with each turn. 
 	 */
-	public static final int MINIMAL_TIME_UNIT_IN_MINUTES = 1;
-	
-	/**
-	 * Time costs that a vehicle has to pay to move from one default tile to another. 
-	 */
-	public static final int DEFAULT_TIME_COSTS_WITH_VEHICLE = MINIMAL_TIME_UNIT_IN_MINUTES;
-	
-	/**
-	 * Time costs that the platform has to pay to move on rails.
-	 */
-	public static final int DEFAULT_TIME_COSTS_WITH_PLATFORM = DEFAULT_TIME_COSTS_WITH_VEHICLE;
-	
-	/**
-	 * Time costs that a flying device has to pay to move from one default tile to another. 
-	 */
-	public static final int DEFAULT_TIME_COSTS_FLYING = DEFAULT_TIME_COSTS_WITH_VEHICLE;
-	
-	/**
-	 * Time costs that a unit on foot has to pay to move from one default tile to another. 
-	 */
-	public static final int DEFAULT_TIME_COSTS_ON_FOOT = DEFAULT_TIME_COSTS_WITH_VEHICLE * 3;
+	public static final int MINUTES_PER_TURN = 3;
 
 	/**
 	 * Number of entries in the score list.

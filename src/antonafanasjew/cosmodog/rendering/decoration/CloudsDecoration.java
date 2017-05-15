@@ -16,7 +16,7 @@ public class CloudsDecoration {
 	
 	private LinearMovementFunction movementFunction;
 	private ParticlePattern particlePattern;
-	private Rectangle particlePatternSurface = Rectangle.fromSize(1280, 720);
+	private Rectangle particlePatternSurface = Rectangle.fromSize(1920, 1080);
 	private OffsetCalculator offsetCalculator;
 	
 	public static CloudsDecoration instance() {
@@ -29,7 +29,7 @@ public class CloudsDecoration {
 	private CloudsDecoration() {
 		initialTimestamp = System.currentTimeMillis();
 		movementFunction = new LinearMovementFunction(1, 50);
-		particlePattern = new GridParticlePatternBuilder(1280, 720).build(particlePatternSurface);
+		particlePattern = new GridParticlePatternBuilder(1920, 1080).build(particlePatternSurface);
 		offsetCalculator = new OffsetCalculator();
 		offsetCalculator.setMovementOffsetFunction(movementFunction);
 		offsetCalculator.setParticlePattern(particlePattern);

@@ -18,10 +18,9 @@ import com.google.common.collect.Lists;
  */
 public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
-	private CollisionValidator unequippedWalkerCollisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new UnequippedWalkerCollisionValidator()));
+	private CollisionValidator defaultCollisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new UnpassableCollisionValidator(), new WaterCollisionValidator(), new SnowCollisionValidator()));
 	private CollisionValidator vehicleCollisionValidator =  new OneBlocksAllCollisionValidator(Lists.newArrayList(new ActorOnWheelsCollisionValidator(), new VehicleObstacleCollisionValidator(), new NonInteractivePieceCollisionValidator()));
 	private FuelCollisionValidator fuelCollisionValidator = new FuelCollisionValidator();
-	private BoatCollisionValidator boatCollisionValidator = new BoatCollisionValidator();
 	private PlatformAsVehicleCollisionValidator platformAsVehicleCollisionValidator = new PlatformAsVehicleCollisionValidator();
 	private CollisionValidator platformAsObstacleOnFootCollisionValidator = new PlatformAsObstacleForPlayerCollisionValidator();
 	private CollisionValidator platformAsObstacleForCarCollisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(platformAsObstacleOnFootCollisionValidator, new VehicleObstacleCollisionValidator()));
@@ -48,8 +47,6 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 		boolean platformAsObstacleCollision = !platformAsVehicleCollision && (CosmodogMapUtils.isTileOnPlatform(tileX, tileY) || CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));
 		boolean vehicleCollision = vehicleInventoryItem != null && !vehicleInventoryItem.isExiting(); 
 
-		boolean boatCollision = !vehicleCollision && boatInventoryItem != null;
-
 		if (exitingPlatformCollision) {
 			return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
 		} else {
@@ -75,11 +72,7 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 			} else if (platformAsVehicleCollision) {
 				return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
 			} else {
-				if (boatCollision) {
-					return boatCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-				} else {
-					return unequippedWalkerCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-				}
+				return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
 			}
 		}
 	}

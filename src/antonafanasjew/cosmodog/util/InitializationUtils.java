@@ -14,10 +14,7 @@ import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction;
-import antonafanasjew.cosmodog.calendar.ComposedPlanetaryCalendarListener;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
-import antonafanasjew.cosmodog.calendar.listeners.FoodConsumer;
-import antonafanasjew.cosmodog.calendar.listeners.WaterConsumer;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
@@ -102,6 +99,7 @@ import antonafanasjew.cosmodog.rules.triggers.InteractingWithEveryCollectibleTri
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.OrTrigger;
+import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
@@ -148,6 +146,7 @@ public class InitializationUtils {
 
 		cosmodogGame.getMap().setCustomTiledMap(ApplicationContextUtils.getCustomTiledMap());
 		cosmodogGame.setActionRegistry(new ActionRegistry());
+		cosmodogGame.setAmbientSoundRegistry(new AmbientSoundRegistry());
 		cosmodogGame.setInterfaceActionRegistry(new ActionRegistry());
 		cosmodogGame.setTeleportationTransition(new TeleportationTransition());
 		cosmodogGame.setActorTransitionRegistry(new ActorTransitionRegistry());
@@ -176,10 +175,6 @@ public class InitializationUtils {
 		player.getLifeListeners().add(playerLifeListener);
 
 		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
-		ComposedPlanetaryCalendarListener listener = new ComposedPlanetaryCalendarListener();
-		listener.getUnderlyings().add(new FoodConsumer());
-		listener.getUnderlyings().add(new WaterConsumer());
-		planetaryCalendar.setListener(listener);
 		
 	}
 
@@ -592,7 +587,7 @@ public class InitializationUtils {
 			secretEntranceTrigger = AndTrigger.and(secretEntranceTrigger, new GameProgressPropertyTrigger("SecretCollected." + secretObjectKey, "false")); 
 			
 			RuleAction action = new SetGameProgressPropertyAction("SecretCollected." + secretObjectKey, "true");
-			asyncAction = new OnScreenNotificationAction("Secret found", 3000, SoundResources.SOUND_SECRET_FOUND);
+			asyncAction = new OnScreenNotificationAction("Secret found", 1500, SoundResources.SOUND_SECRET_FOUND);
 			RuleAction updateGameProgress = new AbstractRuleAction() {
 				
 				private static final long serialVersionUID = 3465808157964130895L;

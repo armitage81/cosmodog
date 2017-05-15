@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -75,7 +76,9 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 				player.getInventory().remove(InventoryItemType.VEHICLE);
 			}
 		} else {
-			player.decreaseLife(Mine.DAMAGE_TO_PLAYER);
+			if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
+				player.decreaseLife(Mine.DAMAGE_TO_PLAYER);
+			}
 		}
 		
 	}

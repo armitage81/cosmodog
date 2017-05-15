@@ -7,6 +7,10 @@ A deployed drone will autonomously roam the given area of interest and attack ev
 The unit will NEVER leave the assigned region. The scan radius of a drone will be reduced at night.
 
 
+...
+
+
+
 Units can be constrained by the terrain in the area of interest. Deployment of wheeled units requires proper ground conditions while tracked and walking units can cross almost all terrain types.
 Only copter drones should be deployed in naval areas of interest.
 

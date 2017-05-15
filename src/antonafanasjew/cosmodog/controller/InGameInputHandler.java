@@ -23,10 +23,12 @@ import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.PassageBlockerType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -84,7 +86,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		//Handle skip turn
 		if (inputSkipTurn) {
-			int timePassed = Constants.DEFAULT_TIME_COSTS_ON_FOOT;
+			int timePassed = Constants.MINUTES_PER_TURN;
 			AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, true);
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 		}
@@ -141,7 +143,17 @@ public class InGameInputHandler extends AbstractInputHandler {
     		if (targetEnemy != null) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
-    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(targetEnemy, new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), new SimpleEnemyAttackDamageCalculator()));
+    			
+    			boolean damageFeatureOn = Features.getInstance().featureOn(Features.FEATURE_DAMAGE);
+    			AbstractEnemyAttackDamageCalculator enemyDamageCalculator = damageFeatureOn ? new SimpleEnemyAttackDamageCalculator() : new AbstractEnemyAttackDamageCalculator() {
+    				
+    				@Override
+    				protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
+    					return 0;
+    				}
+    			};
+    			
+    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(targetEnemy, new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
     		
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newX, newY);
@@ -174,7 +186,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 						}
 					}
 					
-					int timePassed = cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, newX, newY);
+					int timePassed = Constants.MINUTES_PER_TURN;
 					AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, false);
 					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);

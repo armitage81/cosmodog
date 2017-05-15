@@ -23,6 +23,7 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer.MenuRenderingParam;
+import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MainMenuState extends BasicGameState {
@@ -36,12 +37,6 @@ public class MainMenuState extends BasicGameState {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
-		super.leave(container, game);
-		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU).stop();
-	}
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
@@ -49,7 +44,7 @@ public class MainMenuState extends BasicGameState {
 		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
 		mainMenu.setInitialized();
 		menuRenderer.resetMenuLabelCache();
-		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU).loop();
+		MusicUtils.loopMusic(MusicResources.MUSIC_MAIN_MENU);
 	}
 	
 	@Override
@@ -108,7 +103,7 @@ public class MainMenuState extends BasicGameState {
 		
 		
 		String text = ApplicationContext.instance().getGameTexts().get("references").getLogText();
-		TextBookRendererUtils.renderCenteredLabel(gc, g, referencesDc, text, FontType.References);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, referencesDc, text, FontType.References, 0);
 		
 	}
 

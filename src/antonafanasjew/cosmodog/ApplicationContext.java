@@ -32,6 +32,11 @@ import antonafanasjew.cosmodog.controller.NoInputInputHandler;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.Features;
+import antonafanasjew.cosmodog.listener.movement.consumer.FoodConsumer;
+import antonafanasjew.cosmodog.listener.movement.consumer.FuelConsumer;
+import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
+import antonafanasjew.cosmodog.listener.movement.consumer.WaterConsumer;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AntidoteInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
@@ -71,8 +76,10 @@ import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleLog;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.Cosmodog;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
@@ -82,7 +89,6 @@ import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
 import antonafanasjew.cosmodog.model.menu.MenuLabel;
 import antonafanasjew.cosmodog.model.menu.MenuLabelFactory;
-import antonafanasjew.cosmodog.pathfinding.DefaultTravelTimeCalculator;
 import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
 import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedPathFinder;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
@@ -143,6 +149,7 @@ public class ApplicationContext {
 	private MusicResources musicResources = new MusicResources();
 	private SoundResources soundResources = new SoundResources();
 	private Animations animations = new Animations();
+	private Images images = new Images();
 	private SpriteSheets spriteSheets = new SpriteSheets();
 	private TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.PATH_TO_TILED_MAP);
 	
@@ -215,6 +222,10 @@ public class ApplicationContext {
 		return animations;
 	}
 	
+	public Images getImages() {
+		return images;
+	}
+	
 	/**
 	 * Returns the map of sprite sheets.
 	 * @return Sprite sheet resources by their IDs.
@@ -254,9 +265,36 @@ public class ApplicationContext {
 		
 		cosmodog.setPathFinder(enemyAlertBasedDecisionPathFinder);
 		cosmodog.setCollisionValidator(new FeatureBoundCollisionValidator(collisionValidator));
+		
 		cosmodog.setWaterValidator(new DefaultWaterValidator());
 		
-		cosmodog.setTravelTimeCalculator(new DefaultTravelTimeCalculator());
+		ResourceConsumer fuelConsumer = Features.getInstance().featureOn(Features.FEATURE_FUEL) ? new FuelConsumer() : new ResourceConsumer() {
+			@Override
+			public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+				return 0;
+			}
+		};
+		
+		cosmodog.setFuelConsumer(fuelConsumer);
+		
+		ResourceConsumer waterConsumer = Features.getInstance().featureOn(Features.FEATURE_THIRST) ? new WaterConsumer() : new ResourceConsumer() {
+			@Override
+			public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+				return 0;
+			}
+		};
+		
+		cosmodog.setWaterConsumer(waterConsumer);
+		
+		ResourceConsumer foodConsumer = Features.getInstance().featureOn(Features.FEATURE_HUNGER) ? new FoodConsumer() : new ResourceConsumer() {
+			@Override
+			public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+				return 0;
+			}
+		};
+		
+		cosmodog.setFoodConsumer(foodConsumer);
+		
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME, inGameInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_CONTROL, inGameControlInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DEBUGCONSOLE, debugConsoleInputHandler);
@@ -343,7 +381,7 @@ public class ApplicationContext {
 		Music musicInGame1 = new Music("data/music/EG_Unknown_Loop.wav");
 		Music musicGameOver = new Music("data/music/EG_Negative_Stinger.wav");
 		Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.wav");
-		Music musicIntro = new Music("data/music/EG_DangerZone_Loop.wav");
+		Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.wav");
 		
 		
 		
@@ -358,7 +396,7 @@ public class ApplicationContext {
 		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME5, musicInGame5);
 		this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
 		this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
-		this.getMusicResources().put(MusicResources.MUSIC_INTRO, musicIntro);
+		this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
 		
 		Sound collected = new Sound("data/sound/collected.wav");
 		Sound eaten = new Sound("data/sound/eaten.wav");
@@ -422,6 +460,10 @@ public class ApplicationContext {
 		Sound footstepsSand = new Sound("data/sound/footsteps_sand.wav");
 		Sound footstepsRoad = new Sound("data/sound/footsteps_road.wav");
 		Sound footstepsWater = new Sound("data/sound/footsteps_water.wav");
+		
+		Sound ambientElectricity = new Sound("data/sound/ambient_electricity.wav");
+		Sound ambientEnergyWall = new Sound("data/sound/ambient_energywall.wav");
+		Sound ambientFire = new Sound("data/sound/ambient_fire.wav");
 		
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
@@ -488,6 +530,10 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_SNOW, footstepsSnow);
 		this.getSoundResources().put(SoundResources.SOUND_FOOTSTEPS_WATER, footstepsWater);
 		
+		this.getSoundResources().put(SoundResources.SOUND_AMBIENT_ELECTRICITY, ambientElectricity);
+		this.getSoundResources().put(SoundResources.SOUND_AMBIENT_ENERGYWALL, ambientEnergyWall);
+		this.getSoundResources().put(SoundResources.SOUND_AMBIENT_FIRE, ambientFire);
+		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
 		SpriteSheet collectibleItemToolSheet = new SpriteSheet("data/collectible_tool.png", 16, 16);
@@ -519,6 +565,24 @@ public class ApplicationContext {
 		for (String key : animationResourceWrappers.keySet()) {
 			this.getAnimations().put(key, animationResourceWrappers.get(key).getEntity());
 		}
+		
+		
+		images.put("ui.ingame.background", new Image("data/ui/background.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.lifeframe", new Image("data/ui/lifeframe2.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.barbackground", new Image("data/ui/barbackground.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.barframestart", new Image("data/ui/barframestart.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.barframemiddle", new Image("data/ui/barframemiddle.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.barframeend", new Image("data/ui/barframeend.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.gamelogframe", new Image("data/ui/gamelogframe.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.popupframe", new Image("data/ui/popupframe.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.frame", new Image("data/ui/maininterface.png", false, Image.FILTER_NEAREST));
+		
+		images.put("ui.ingame.compasspointer", new Image("data/ui/compasspointer.png", false, Image.FILTER_NEAREST));
+		
+		images.put("ui.ingame.weaponboxsimple", new Image("data/ui/weaponboxsimple.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.weaponboxdouble", new Image("data/ui/weaponboxdouble.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.weaponboxtriple", new Image("data/ui/weaponboxtriple.png", false, Image.FILTER_NEAREST));
+		
 		
 		//This big image is not loaded eagerly when initializing animations in the application context.
 		//That causes a delay when opening map for the first time. Initializing the map image explicitly to

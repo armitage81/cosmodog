@@ -9,9 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.listener.movement.MovementListenerAdapter;
+import antonafanasjew.cosmodog.model.Collectible.CollectibleType;
 import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
@@ -25,7 +26,9 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -56,6 +59,8 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	}
 	
+	private Piece closestPieceInterestingForDebugging;
+	
 	private Piece closestSupply;
 	
 	private boolean playerOnPlatform;
@@ -73,6 +78,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		recalculateClosestSupplyPosition(actor, x1, y1, x2, y2, applicationContext);
+		recalculateclosestPieceInterestingForDebugging(actor, x1, y1, x2, y2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
 		recalculateRoofRegions(actor);
 		recalculateDynamicPieces();
@@ -191,6 +197,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	public Piece getClosestSupply() {
 		return closestSupply;
 	}
+	
+	public Piece getClosestPieceInterestingForDebugging() {
+		return closestPieceInterestingForDebugging;
+	}
 
 	private void recalculateClosestSupplyPosition(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
@@ -216,6 +226,78 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		
 	}
 
+	
+	private void recalculateclosestPieceInterestingForDebugging(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
+		Collection<Piece> pieces = map.getMapPieces().values();
+		
+		pieces = Lists.newArrayList(Iterables.filter(pieces, new Predicate<Piece>() {
+
+			@Override
+			public boolean apply(Piece piece) {
+								
+				if (!(piece instanceof Collectible)) {
+					return false;
+				}
+				
+				
+				Collectible coll = (Collectible)piece;
+				if (coll.getCollectibleType() == CollectibleType.GOODIE) {
+					CollectibleGoodie goodie = (CollectibleGoodie)coll;
+					if (goodie.getGoodieType() == GoodieType.cognition) {
+						return false;
+					}
+				}
+				
+				return true;
+				
+			}
+			
+			
+		}));
+		
+		Collection<Enemy> enemies = map.getEnemies();
+		
+		enemies = Lists.newArrayList(Iterables.filter(enemies, new Predicate<Enemy>() {
+
+			@Override
+			public boolean apply(Enemy enemy) {
+								
+				if (enemy.getUnitType() == UnitType.ARTILLERY) {
+					return false;
+				}
+				
+				return true;
+				
+			}
+			
+			
+		}));
+		
+		
+		List<Piece> piecesSortedByProximity = Lists.newArrayList(pieces);
+		piecesSortedByProximity.addAll(enemies);
+		Collections.sort(piecesSortedByProximity, new Comparator<Piece>() {
+
+			@Override
+			public int compare(Piece o1, Piece o2) {
+				Position o1Pos = Position.fromCoordinates(o1.getPositionX(), o1.getPositionY());
+				Position o2Pos = Position.fromCoordinates(o2.getPositionX(), o2.getPositionY());
+				Position playerPos = Position.fromCoordinates(actor.getPositionX(), actor.getPositionY());
+				
+				float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
+				float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
+				
+				return distance1 > distance2 ? 1 : (distance1 < distance2 ? -1 : 0);
+			}
+
+		});
+		
+		closestPieceInterestingForDebugging = piecesSortedByProximity.isEmpty() ? null : piecesSortedByProximity.get(0);
+		
+	}
+	
+	
 	
 	private void recalculateWhetherPlayerIsOnPlatform(Actor actor) {
 		setPlayerOnPlatform(CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));

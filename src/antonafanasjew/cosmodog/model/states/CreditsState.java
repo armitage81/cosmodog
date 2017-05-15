@@ -53,11 +53,11 @@ public class CreditsState extends BasicGameState {
 		DrawingContext creditsTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
 		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
 		
-		TextBookRendererUtils.renderCenteredLabel(gc, g, creditsTextDc, credits, FontType.CreditsText);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, creditsTextDc, credits, FontType.CreditsText, 0);
 		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
 		}
 	}
 

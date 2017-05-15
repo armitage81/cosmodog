@@ -5,8 +5,10 @@ import java.util.Set;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Sound;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
@@ -81,6 +83,12 @@ public class EffectsRenderer extends AbstractRenderer {
 		
 		Set<Piece> effectPieces = map.visibleEffectPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
 		
+		
+		
+		boolean audibleElectricity = false;
+		boolean audibleEnergyWall = false;
+		boolean audibleFire = false;
+		
 		for (Piece piece : effectPieces) {
 			if (piece instanceof Effect) {
 				Effect effect = (Effect) piece;
@@ -91,12 +99,14 @@ public class EffectsRenderer extends AbstractRenderer {
     				}
 					
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_FIRE)) {
+    					audibleFire = true;
     					applicationContext.getAnimations().get("fire").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * (tileHeight - 1));
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_SMOKE)) {
     					applicationContext.getAnimations().get("smoke").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY)) {
+    					audibleElectricity = true;
     					applicationContext.getAnimations().get("electricity").draw((piece.getPositionX() - tileNoX - 2) * tileWidth, (piece.getPositionY() - tileNoY - 1) * tileHeight);
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ENERGYWALL)) {
@@ -104,6 +114,7 @@ public class EffectsRenderer extends AbstractRenderer {
     					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), map, piece.getPositionX(), piece.getPositionY());
     					
     					if (energyWallCollisionStatus.isPassable() == false) {
+    						audibleEnergyWall = true;
     						applicationContext.getAnimations().get("energywall").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - 1) * (tileHeight));
     					}
 
@@ -112,6 +123,32 @@ public class EffectsRenderer extends AbstractRenderer {
 				}
 			}
 		}
+
+		//Ambient sounds
+		if (param.equals(EffectsRendererParam.FOR_GROUND_EFFECTS)) {
+			if (audibleElectricity) {
+				Sound sound = applicationContext.getSoundResources().get(SoundResources.SOUND_AMBIENT_ELECTRICITY);
+				cosmodogGame.getAmbientSoundRegistry().put(SoundResources.SOUND_AMBIENT_ELECTRICITY, sound);
+			} else {
+				cosmodogGame.getAmbientSoundRegistry().remove(SoundResources.SOUND_AMBIENT_ELECTRICITY);
+			}
+			
+		}
+		if (param.equals(EffectsRendererParam.FOR_TOP_EFFECTS)) {
+			if (audibleEnergyWall) {
+				Sound sound = applicationContext.getSoundResources().get(SoundResources.SOUND_AMBIENT_ENERGYWALL);
+				cosmodogGame.getAmbientSoundRegistry().put(SoundResources.SOUND_AMBIENT_ENERGYWALL, sound);
+			} else {
+				cosmodogGame.getAmbientSoundRegistry().remove(SoundResources.SOUND_AMBIENT_ENERGYWALL);
+			}
+			if (audibleFire) {
+				Sound sound = applicationContext.getSoundResources().get(SoundResources.SOUND_AMBIENT_FIRE);
+				cosmodogGame.getAmbientSoundRegistry().put(SoundResources.SOUND_AMBIENT_FIRE, sound);
+			} else {
+				cosmodogGame.getAmbientSoundRegistry().remove(SoundResources.SOUND_AMBIENT_FIRE);
+			}
+		}
+
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);

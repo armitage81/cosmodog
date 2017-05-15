@@ -5,8 +5,9 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rules.RuleBook;
+import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
@@ -28,6 +29,8 @@ public class CosmodogGame extends CosmodogModel {
 	
 	private transient ActionRegistry interfaceActionRegistry;
 	
+	private transient AmbientSoundRegistry ambientSoundRegistry;
+	
 	private transient MovementAttemptTransition movementAttemptTransition;
 	
 	private transient TeleportationTransition teleportationTransition;
@@ -40,7 +43,7 @@ public class CosmodogGame extends CosmodogModel {
 	
 	private transient TextFrame textFrame;
 	
-	private transient GameLog openGameLog;
+	private transient GameLogState openGameLog;
 	
 	private transient InGameMenu inGameMenu;
 	
@@ -174,11 +177,11 @@ public class CosmodogGame extends CosmodogModel {
 		this.textFrame = textFrame;
 	}
 
-	public GameLog getOpenGameLog() {
+	public GameLogState getOpenGameLog() {
 		return openGameLog;
 	}
 	
-	public void setOpenGameLog(GameLog openGameLog) {
+	public void setOpenGameLog(GameLogState openGameLog) {
 		this.openGameLog = openGameLog;
 	}
 	
@@ -222,4 +225,11 @@ public class CosmodogGame extends CosmodogModel {
 		this.gameName = gameName;
 	}
 
+	public AmbientSoundRegistry getAmbientSoundRegistry() {
+		return ambientSoundRegistry;
+	}
+
+	public void setAmbientSoundRegistry(AmbientSoundRegistry ambientSoundRegistry) {
+		this.ambientSoundRegistry = ambientSoundRegistry;
+	}
 }

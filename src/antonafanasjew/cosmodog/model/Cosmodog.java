@@ -9,11 +9,11 @@ import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
+import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
-import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.sight.SightModifier;
@@ -35,8 +35,12 @@ public class Cosmodog extends CosmodogModel {
 	private CollisionValidator collisionValidator;
     private WaterValidator waterValidator;
     private SightModifier sightModifier;
-    private TravelTimeCalculator travelTimeCalculator;
     private PathFinder pathFinder;
+    
+    private ResourceConsumer fuelConsumer;
+    private ResourceConsumer foodConsumer;
+    private ResourceConsumer waterConsumer;
+    
     private GameLifeCycle gameLifeCycle = new GameLifeCycle();
 	private InputHandlers inputHandlers = new InputHandlers();
 	private CosmodogScorePersistor scorePersistor;
@@ -90,12 +94,7 @@ public class Cosmodog extends CosmodogModel {
 	public void setCollisionValidator(CollisionValidator collisionValidator) {
 		this.collisionValidator = collisionValidator;
 	}
-	public TravelTimeCalculator getTravelTimeCalculator() {
-		return travelTimeCalculator;
-	}
-	public void setTravelTimeCalculator(TravelTimeCalculator travelTimeCalculator) {
-		this.travelTimeCalculator = travelTimeCalculator;
-	}
+
 	public GameLifeCycle getGameLifeCycle() {
 		return gameLifeCycle;
 	}
@@ -154,4 +153,30 @@ public class Cosmodog extends CosmodogModel {
 	public PlayerBuilder getPlayerBuilder() {
 		return playerBuilder;
 	}
+
+	public ResourceConsumer getFuelConsumer() {
+		return fuelConsumer;
+	}
+
+	public void setFuelConsumer(ResourceConsumer fuelConsumer) {
+		this.fuelConsumer = fuelConsumer;
+	}
+
+	public ResourceConsumer getFoodConsumer() {
+		return foodConsumer;
+	}
+
+	public void setFoodConsumer(ResourceConsumer foodConsumer) {
+		this.foodConsumer = foodConsumer;
+	}
+
+	public ResourceConsumer getWaterConsumer() {
+		return waterConsumer;
+	}
+
+	public void setWaterConsumer(ResourceConsumer waterConsumer) {
+		this.waterConsumer = waterConsumer;
+	}
+	
+	
 }

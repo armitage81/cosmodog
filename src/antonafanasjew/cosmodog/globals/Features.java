@@ -39,11 +39,6 @@ public class Features {
 	public static final String FEATURE_COLLISION = "feature.collision";
 	
 	/**
-	 * Movement costs feature including the movement costs and terrain types.
-	 */
-	public static final String FEATURE_MOVEMENT_COSTS = "feature.movementcosts";
-	
-	/**
 	 * Fuel feature including fuel reduction, gas stations.
 	 */
 	public static final String FEATURE_FUEL = "feature.fuel";
@@ -63,6 +58,12 @@ public class Features {
 	 */
 	public static final String FEATURE_TEMPERATURE = "feature.temperature";
 	
+	public static final String FEATURE_MUSIC = "feature.music";
+	
+	public static final String FEATURE_DAMAGE = "feature.damage";
+	
+	public static final String FEATURE_GODFISTS = "feature.godfists";
+	
 	private static final Features instance = new Features();
 	
 	/**
@@ -81,11 +82,13 @@ public class Features {
 		getFeatureFlags().put(FEATURE_INFOBITS, true);
 		getFeatureFlags().put(FEATURE_SOULESSENCE, true);
 		getFeatureFlags().put(FEATURE_COLLISION, true);
-		getFeatureFlags().put(FEATURE_MOVEMENT_COSTS, true);
 		getFeatureFlags().put(FEATURE_FUEL, true);
 		getFeatureFlags().put(FEATURE_STORY, false);
 		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
+		getFeatureFlags().put(FEATURE_MUSIC, true);
+		getFeatureFlags().put(FEATURE_DAMAGE, true);
+		getFeatureFlags().put(FEATURE_GODFISTS, false);
 	}
 	
 	/**

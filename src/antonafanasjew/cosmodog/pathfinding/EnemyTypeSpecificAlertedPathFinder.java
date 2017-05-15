@@ -12,7 +12,7 @@ public class EnemyTypeSpecificAlertedPathFinder extends AbstractPathFinder {
 	StayStillPathFinder stayStillPathFinder = new StayStillPathFinder();
 	
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
 		Enemy enemy = (Enemy)actor;
 		UnitType unitType = enemy.getUnitType();
 		PathFinder pathFinder;
@@ -22,7 +22,7 @@ public class EnemyTypeSpecificAlertedPathFinder extends AbstractPathFinder {
 			pathFinder = defaultPathFinder;
 		}
 		
-		return pathFinder.calculateMovementResult(actor, costBudget, collisionValidator, travelTimeCalculator, playerMovementActionResult);
+		return pathFinder.calculateMovementResult(actor, costBudget, collisionValidator, playerMovementActionResult);
 	}
 
 }

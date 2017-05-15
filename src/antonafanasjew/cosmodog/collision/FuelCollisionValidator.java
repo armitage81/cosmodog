@@ -1,8 +1,5 @@
 package antonafanasjew.cosmodog.collision;
 
-import java.util.concurrent.Callable;
-
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
@@ -28,12 +25,7 @@ public class FuelCollisionValidator extends AbstractCollisionValidator {
 			if (!vehicleInventoryItem.isExiting()) {
 				Vehicle vehicle = vehicleInventoryItem.getVehicle();
 				if (vehicle.outOfFuel()) {
-					retVal = Features.getInstance().featureBoundFunction(Features.FEATURE_FUEL, new Callable<CollisionStatus>() {
-						@Override
-						public CollisionStatus call() throws Exception {
-							return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
-						}
-					}, retVal);
+					return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
 				}
 			}
 		}

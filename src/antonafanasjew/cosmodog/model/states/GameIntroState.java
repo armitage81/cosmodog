@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
+import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class GameIntroState  extends BasicGameState {
@@ -40,7 +41,7 @@ public class GameIntroState  extends BasicGameState {
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_INTRO).loop();
+		MusicUtils.loopMusic(MusicResources.MUSIC_CUTSCENE);
 	}
 	
 	@Override
@@ -58,11 +59,11 @@ public class GameIntroState  extends BasicGameState {
 		DrawingContext introTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
 		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
 		
-		TextBookRendererUtils.renderTextPage(gc, g, introTextDc, TEXT, FontType.IntroText);
+		TextBookRendererUtils.renderTextPage(gc, g, introTextDc, TEXT, FontType.IntroText, 0);
 		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
 		}
 		
 	}

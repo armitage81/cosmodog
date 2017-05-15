@@ -61,17 +61,17 @@ public class GameOverState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		TextBookRendererUtils.renderCenteredLabel(gc, g, centerContainerRow1DrawingContext, "GAME OVER", FontType.GameOver);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, centerContainerRow1DrawingContext, "GAME OVER", FontType.GameOver, 0);
 		
 		Player player = ApplicationContextUtils.getCosmodogGame().getPlayer();
 		long score = player.getGameProgress().getGameScore();
 		
-		TextBookRendererUtils.renderCenteredLabel(gc, g, centerContainerRow2DrawingContext, "Your score: " + score, FontType.GameOverScore);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, centerContainerRow2DrawingContext, "Your score: " + score, FontType.GameOverScore, 0);
 		
 		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, bottomContainerDrawingContext, "Press [ENTER]", FontType.PopUpInterface);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, bottomContainerDrawingContext, "Press [ENTER]", FontType.PopUpInterface, 0);
 		}
 		
 		

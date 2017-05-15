@@ -71,13 +71,13 @@ public class ProgressRenderer implements Renderer {
 			
 			if (i == 0) {
 				
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Score", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Score", FontType.GameProgressLabel, 0);
 				
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, contentDc, String.valueOf(player.getGameProgress().getGameScore()), FontType.GameProgressLabelInBars);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, contentDc, String.valueOf(player.getGameProgress().getGameScore()), FontType.GameProgressLabelInBars, 0);
 			}
 			
 			if (i == 1) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Infobits", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Infobits", FontType.GameProgressLabel, 0);
 				
 				float barWidth = contentDc.w() / maxInfobits * noInfobits;
 				
@@ -87,17 +87,17 @@ public class ProgressRenderer implements Renderer {
 				graphics.setColor(Color.green);
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
 				
-				graphics.setColor(Color.white);
+				graphics.setColor(Color.orange);
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				
 				int percentage = Math.round((float)noInfobits / ((float)maxInfobits / 100f));
 				
-				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, contentDc, noInfobits + "/" + maxInfobits + " (" + percentage + "%)", FontType.GameProgressLabelInBars);
+				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, contentDc, noInfobits + "/" + maxInfobits + " (" + percentage + "%)", FontType.GameProgressLabelInBars, 0);
 				
 			}
 			
 			if (i == 2) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Secrets", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Secrets", FontType.GameProgressLabel, 0);
 				
 				float barWidth = contentDc.w() / maxSecrets * noSecrets;
 				
@@ -107,17 +107,17 @@ public class ProgressRenderer implements Renderer {
 				graphics.setColor(Color.green);
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
 				
-				graphics.setColor(Color.white);
+				graphics.setColor(Color.orange);
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				
 				int percentage = Math.round((float)noSecrets / ((float)maxSecrets / 100f));
 				
-				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, contentDc, noSecrets + "/" + maxSecrets + " (" + percentage + "%)", FontType.GameProgressLabelInBars);
+				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, contentDc, noSecrets + "/" + maxSecrets + " (" + percentage + "%)", FontType.GameProgressLabelInBars, 0);
 				
 			}
 			
 			if (i == 3) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Soul Essenses", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Soul Essenses", FontType.GameProgressLabel, 0);
 				
 				for (int j = 0; j < maxSoulEssenses; j++) {
 					DrawingContext dc = new TileDrawingContext(contentDc, maxSoulEssenses, 1, j, 0);
@@ -134,7 +134,7 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 4) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Armor", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Armor", FontType.GameProgressLabel, 0);
 				
 				for (int j = 0; j < maxArmor; j++) {
 					DrawingContext dc = new TileDrawingContext(contentDc, maxArmor, 1, j, 0);
@@ -151,7 +151,7 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 5) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Map pieces", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Map pieces", FontType.GameProgressLabel, 0);
 				int mapsInRow = maxMaps / 2;
 				for (int j = 0; j < maxMaps; j++) {
 					int k = j % mapsInRow;
@@ -171,7 +171,7 @@ public class ProgressRenderer implements Renderer {
 			
 			if (i == 6) {
 				
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Software", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Software", FontType.GameProgressLabel, 0);
 				
 				for (int j = 0; j < maxSoftware; j++) {
 					DrawingContext dc = new TileDrawingContext(contentDc, maxSoftware, 1, j, 0);
@@ -188,7 +188,7 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 7) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Artifacts", FontType.GameProgressLabel);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Artifacts", FontType.GameProgressLabel, 0);
 				for (int j = 0; j < maxInsights; j++) {
 					DrawingContext boxDc = new TileDrawingContext(contentDc, maxInsights, 1, j, 0);
 					boxDc = new CenteredDrawingContext(boxDc, 1);

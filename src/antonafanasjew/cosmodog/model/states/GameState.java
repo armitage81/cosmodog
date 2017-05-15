@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model.states;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -26,7 +27,6 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.QuadraticDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
@@ -35,6 +35,7 @@ import antonafanasjew.cosmodog.rendering.renderer.ArtilleryGrenadeRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.DayTimeIconRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
@@ -55,7 +56,9 @@ import antonafanasjew.cosmodog.rendering.renderer.PiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.rendering.renderer.SightRadiusRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.SupplyTrackerViewRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextFrameRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.TimeRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.VitalDataInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WormAttackRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.WormSnowSparkRenderer;
@@ -70,8 +73,11 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.Text
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameEventUtils;
+import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
+import antonafanasjew.cosmodog.util.MusicUtils;
 
 public class GameState extends BasicGameState {
 
@@ -82,12 +88,12 @@ public class GameState extends BasicGameState {
 	
 	private DrawingContext gameContainerDrawingContext;
 	private DrawingContext middleColumnDrawingContext;
-	private DrawingContext topDrawingContext;
 	private DrawingContext geigerCounterDrawingContext;
+	private DrawingContext supplyTrackerDrawingContext;
+	private DrawingContext timeDrawingContext;
+	private DrawingContext dayTimeIconDrawingContext;
 	
 	private DrawingContext lifeDrawingContext;
-	private DrawingContext arsenalDrawingContext;
-	private DrawingContext bottomDrawingContext;
 	private DrawingContext vitalDataDrawingContext;
 	private DrawingContext mapDrawingContext;
 	
@@ -115,6 +121,8 @@ public class GameState extends BasicGameState {
 	private Renderer arsenalInterfaceRenderer;
 	private Renderer dyingPlayerRenderer;
 	private AbstractRenderer onScreenNotificationRenderer;
+	private Renderer timeRenderer;
+	private Renderer dayTimeIconRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -125,6 +133,7 @@ public class GameState extends BasicGameState {
 	private GameLogRenderer gameLogRenderer;
 	private InGameMenuRenderer inGameMenuRenderer;
 	private GeigerCounterViewRenderer geigerCounterViewRenderer;
+	private SupplyTrackerViewRenderer supplyTrackerViewRenderer;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -140,22 +149,17 @@ public class GameState extends BasicGameState {
 		middleColumnDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 8, 0, 0, 1, 8);
 		
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
-		topDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 7, 0, 0);
 		
 		//we want it to be just under the top bar but quadratic and still most left.
-		geigerCounterDrawingContext = new TileDrawingContext(mapDrawingContext, 7, 7, 0, 1);
-		float x = geigerCounterDrawingContext.x();
-		float y = geigerCounterDrawingContext.y();
-		geigerCounterDrawingContext = new QuadraticDrawingContext(geigerCounterDrawingContext);
-		float w = geigerCounterDrawingContext.w();
-		float h = geigerCounterDrawingContext.w() + 30;
-		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, x, y, w, h);
+		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 36, 277, 117, 116);
+		supplyTrackerDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1128, 277 , 117, 116);
 		
-		lifeDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 0, 0);
-		arsenalDrawingContext = new TileDrawingContext(topDrawingContext, 2, 1, 1, 0);
+		timeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 932, 31, 228, 66);
+		dayTimeIconDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1184, 31, 70, 66);
 		
-		bottomDrawingContext = new TileDrawingContext(mapDrawingContext, 1, 12, 0, 11);
-		vitalDataDrawingContext = new TileDrawingContext(bottomDrawingContext, 1, 1, 0, 0);
+		lifeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 35, 35, 500, 61);
+		
+		vitalDataDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 35, 623, 500, 61);
 		
 				
 		//Update the global dialog drawing context variable in the application context.
@@ -195,6 +199,10 @@ public class GameState extends BasicGameState {
 		gameLogRenderer = new GameLogRenderer();
 		inGameMenuRenderer = new InGameMenuRenderer();
 		geigerCounterViewRenderer = new GeigerCounterViewRenderer();
+		supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
+		timeRenderer = new TimeRenderer();
+		dayTimeIconRenderer = new DayTimeIconRenderer();
+		
 		
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
 		tipsLayersPredicate = new TipsLayersRenderingPredicate();
@@ -243,7 +251,7 @@ public class GameState extends BasicGameState {
     		
 		}
 		
-		ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_IN_GAME1).loop();
+		MusicUtils.loopMusic(MusicResources.MUSIC_IN_GAME1);
 		
 		firstUpdate = true;
 	}
@@ -368,14 +376,22 @@ public class GameState extends BasicGameState {
 		//Draw overhead notifications, e.g. "blocked" warning.
 		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
 		
+		arsenalInterfaceRenderer.render(gc, g, gameContainerDrawingContext, null);
+
+		Image topPanelFrame = ApplicationContext.instance().getImages().get("ui.ingame.frame");
+		ImageUtils.renderImage(gc, g, topPanelFrame, gameContainerDrawingContext);
+		
+		geigerCounterViewRenderer.render(gc, g, geigerCounterDrawingContext, null);
+		supplyTrackerViewRenderer.render(gc, g, supplyTrackerDrawingContext, null);
+		timeRenderer.render(gc, g, timeDrawingContext, null);
+		dayTimeIconRenderer.render(gc, g, dayTimeIconDrawingContext, null);
 		
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
-		arsenalInterfaceRenderer.render(gc, g, arsenalDrawingContext, null);
+		
 		
 		vitalDataInterfaceRenderer.render(gc, g, vitalDataDrawingContext, null);
 
 		
-		geigerCounterViewRenderer.render(gc, g, geigerCounterDrawingContext, null);
 		
 		dyingPlayerRenderer.render(gc, g, mapDrawingContext, null);
 	
@@ -390,11 +406,11 @@ public class GameState extends BasicGameState {
 		if (cosmodogGame.getTextFrame() != null) {
 			String text = cosmodogGame.getTextFrame().getText();
 			TextBookRendererParameter param = TextBookRendererParameter.instance(text, FontType.PopUp, TextBookRendererParameter.ALIGN_CENTER, TextBookRendererParameter.ALIGN_CENTER, 0);
-			textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 400, 300), param);
+			textFrameRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 500, 400), param);
 		}
 		
 		if (cosmodogGame.getOpenGameLog() != null) {
-			gameLogRenderer.render(gc, g, new CenteredDrawingContext(mapDrawingContext, 800, 500), null);
+			gameLogRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, 800, 700), null);
 		}
 		
 		//Draws onscreen notifications
@@ -412,4 +428,10 @@ public class GameState extends BasicGameState {
 		return CosmodogStarter.GAME_STATE_ID;
 	}
 
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		//Stop ambient sounds
+		
+		ApplicationContextUtils.getCosmodogGame().getAmbientSoundRegistry().clear();
+	}
 }

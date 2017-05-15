@@ -12,6 +12,7 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -27,7 +28,7 @@ import com.google.common.collect.Lists;
 public class TowardsPlayerPathFinder extends AbstractPathFinder {
 
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
 		
 		//Preparing static data.
 		ApplicationContext applicationContext = ApplicationContext.instance();
@@ -46,7 +47,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		enemy.setTimeBudgetOverhead(0);
 		
 		//Preparing the AStar path finder.
-		TileBasedMap tileBasedMap = tileBasedMapFactory.createTileBasedMap(enemy, applicationContext, map, collisionValidator, travelTimeCalculator);
+		TileBasedMap tileBasedMap = tileBasedMapFactory.createTileBasedMap(enemy, applicationContext, map, collisionValidator);
 		AStarPathFinder pathFinder = new AStarPathFinder(tileBasedMap, followDistance, false);
 		
 		//Adding the actors position as the first step in the path in any case.
@@ -70,7 +71,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
         		
         		//Starting with 1 as the step 0 is the initial position without any costs.
         		for (int i = 1; i < path.getLength(); i++) {
-        			int costsForTile = travelTimeCalculator.calculateTravelTime(applicationContext, enemy, path.getX(i), path.getY(i));
+        			int costsForTile = Constants.MINUTES_PER_TURN;
         			if (accumulatedCosts + costsForTile <= costBudget) {
         				costs.add((float)costsForTile);
         				subPath.appendStep(path.getX(i), path.getY(i));

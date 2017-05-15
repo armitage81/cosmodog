@@ -5,6 +5,7 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
@@ -14,16 +15,14 @@ public class TileBasedMapAdapter implements TileBasedMap {
 	private Actor actor;
 	private ApplicationContext applicationContext;
 	private CollisionValidator collisionValidator;
-	private TravelTimeCalculator travelTimeCalculator;
 	private CosmodogMap map;
 	
 
-	public TileBasedMapAdapter(Actor actor, ApplicationContext applicationContext, CosmodogMap map, CollisionValidator collisionValidator, TravelTimeCalculator travelTimeCalculator) {
+	public TileBasedMapAdapter(Actor actor, ApplicationContext applicationContext, CosmodogMap map, CollisionValidator collisionValidator) {
 		this.actor = actor;
 		this.applicationContext = applicationContext;
 		this.map = map;
 		this.collisionValidator = collisionValidator;
-		this.travelTimeCalculator = travelTimeCalculator;
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class TileBasedMapAdapter implements TileBasedMap {
 
 	@Override
 	public float getCost(PathFindingContext cx, int x, int y) {
-		return travelTimeCalculator.calculateTravelTime(applicationContext, actor, x, y);
+		return Constants.MINUTES_PER_TURN;
 	}
 
 	@Override

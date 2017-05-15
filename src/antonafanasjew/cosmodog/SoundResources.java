@@ -184,4 +184,8 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_MENU_SELECT = "sound.menu_select";
 	public static final String SOUND_MENU_MOVE = "sound.menu_move";
 
+	public static final String SOUND_AMBIENT_ELECTRICITY = "sound.ambient.electricity";
+	public static final String SOUND_AMBIENT_ENERGYWALL = "sound.ambient.energywall";
+	public static final String SOUND_AMBIENT_FIRE = "sound.ambient.fire";
+
 }

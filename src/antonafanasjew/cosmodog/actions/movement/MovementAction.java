@@ -20,10 +20,12 @@ import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.GeneralCollisionValidatorForEnemy;
 import antonafanasjew.cosmodog.domains.ChaussieType;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -32,7 +34,6 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
-import antonafanasjew.cosmodog.pathfinding.TravelTimeCalculator;
 import antonafanasjew.cosmodog.sight.Sight;
 import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
@@ -119,8 +120,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 	private void initMovementActionResults() {
 		
 		//Preparing static data.
-		ApplicationContext applicationContext = ApplicationContext.instance();
-		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		Position playerPosition = Position.fromCoordinates(player.getPositionX(), player.getPositionY());
@@ -129,7 +128,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Position targetPos = skipTurn ? playerPosition : PositionUtils.neighbourPositionInFacingDirection(player);
 		
 		//Calculating the future result of the player movement.
-		int playerMovementActionCosts = skipTurn ? Constants.DEFAULT_TIME_COSTS_ON_FOOT : cosmodog.getTravelTimeCalculator().calculateTravelTime(applicationContext, player, (int)targetPos.getX(), (int)targetPos.getY());
+		int playerMovementActionCosts = Constants.MINUTES_PER_TURN;
 		this.playerMovementActionResult = MovementActionResult.instance(player.getPositionX(), player.getPositionY(), (int)targetPos.getX(), (int)targetPos.getY(), playerMovementActionCosts);
 		
 		//Preparing the future results of the enemy movements.
@@ -156,13 +155,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 		//Preparing static data.
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		PathFinder pathFinder = cosmodog.getPathFinder();
-		TravelTimeCalculator travelTimeCalculator = cosmodog.getTravelTimeCalculator();
 		
 		//Preparing enemy collision validator
 		CollisionValidator collisionValidator = GeneralCollisionValidatorForEnemy.instance(playerMovementActionResult, enemyMovementActionResults);
 		
 		//Using the path finder to calculate the movement result based on the time budget generated from user movement and enemy's time overhead from the previous turns.
-		return pathFinder.calculateMovementResult(enemy, (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep(), collisionValidator, travelTimeCalculator, playerMovementActionResult);
+		int costBudget = Constants.MINUTES_PER_TURN * enemy.getSpeedFactor();
+		return pathFinder.calculateMovementResult(enemy, costBudget, collisionValidator, playerMovementActionResult);
 
 	}
 
@@ -442,7 +441,17 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		ActionRegistry ar = game.getActionRegistry();
-		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), new SimpleEnemyAttackDamageCalculator()));
+		boolean damageFeatureOn = Features.getInstance().featureOn(Features.FEATURE_DAMAGE);
+		
+		AbstractEnemyAttackDamageCalculator enemyDamageCalculator = damageFeatureOn ? new SimpleEnemyAttackDamageCalculator() : new AbstractEnemyAttackDamageCalculator() {
+			
+			@Override
+			protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
+				return 0;
+			}
+		};
+		
+		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
 		
 	}
 }
