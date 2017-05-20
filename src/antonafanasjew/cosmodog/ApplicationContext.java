@@ -576,12 +576,20 @@ public class ApplicationContext {
 		images.put("ui.ingame.gamelogframe", new Image("data/ui/gamelogframe.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.popupframe", new Image("data/ui/popupframe.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.frame", new Image("data/ui/maininterface.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingamemenuframe", new Image("data/ui/ingamemenuinterface.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingameinventory", new Image("data/ui/ingameinventory.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingamemap", new Image("data/ui/ingamemap.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingamelogs", new Image("data/ui/ingamelogs.png", false, Image.FILTER_NEAREST));
 		
 		images.put("ui.ingame.compasspointer", new Image("data/ui/compasspointer.png", false, Image.FILTER_NEAREST));
 		
 		images.put("ui.ingame.weaponboxsimple", new Image("data/ui/weaponboxsimple.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.weaponboxdouble", new Image("data/ui/weaponboxdouble.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.weaponboxtriple", new Image("data/ui/weaponboxtriple.png", false, Image.FILTER_NEAREST));
+		
+		images.put("ui.ingame.ingameinventoryitembox", new Image("data/ui/ingameinventoryitembox.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingameinventoryitemboxselected", new Image("data/ui/ingameinventoryitemboxselected.png", false, Image.FILTER_NEAREST));
+		
 		
 		
 		//This big image is not loaded eagerly when initializing animations in the application context.
@@ -634,6 +642,11 @@ public class ApplicationContext {
 		GameLogBuilder gameLogBuilder = new GameLogBuilderImpl();
 		try {
 			this.gameLogs = gameLogBuilder.buildGameLogs("data/writing/gamelogs");
+			this.gameTexts.put("intro1", gameLogBuilder.buildGameLog("data/writing/intro/intro1"));
+			this.gameTexts.put("intro2", gameLogBuilder.buildGameLog("data/writing/intro/intro2"));
+			this.gameTexts.put("intro3", gameLogBuilder.buildGameLog("data/writing/intro/intro3"));
+			this.gameTexts.put("intro4", gameLogBuilder.buildGameLog("data/writing/intro/intro4"));
+			this.gameTexts.put("intro5", gameLogBuilder.buildGameLog("data/writing/intro/intro5"));
 			this.gameTexts.put("outro1", gameLogBuilder.buildGameLog("data/writing/outro/outro1"));
 			this.gameTexts.put("outro2", gameLogBuilder.buildGameLog("data/writing/outro/outro2"));
 			this.gameTexts.put("outro3", gameLogBuilder.buildGameLog("data/writing/outro/outro3"));

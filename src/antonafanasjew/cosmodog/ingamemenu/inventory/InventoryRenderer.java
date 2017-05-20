@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.ingamemenu.inventory;
 
 import java.util.Iterator;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,16 +18,19 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.notifications.NotificationQueue;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.InventoryItemRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.util.ImageUtils;
+import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class InventoryRenderer implements Renderer {
 
 	public static final int NUMBER_OF_VISIBLE_MESSAGES = NotificationQueue.MAX_MESSAGES_BEFORE_REMOVAL;
-	public static final int INVENTORY_COLUMNS = 10;
-	public static final int INVENTORY_ROWS = 8;
+	public static final int INVENTORY_COLUMNS = 5;
+	public static final int INVENTORY_ROWS = 4;
 
 	
 	@Override
@@ -42,14 +46,9 @@ public class InventoryRenderer implements Renderer {
 		Player player = cosmodogGame.getPlayer();
 		Inventory inventory = player.getInventory();
 		
-		DrawingContext contentContext = new CenteredDrawingContext(context, context.w() - 10, context.h() - 10);
+		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingameinventory", context);
 		
-		DrawingContext itemsDrawingContext = itemsDrawingContext(contentContext);
-		
-		graphics.translate(itemsDrawingContext.x(), itemsDrawingContext.y());
-		graphics.setColor(Color.orange);
-		graphics.drawRoundRect(0, 0, itemsDrawingContext.w(), itemsDrawingContext.h(), 5);
-		graphics.translate(-itemsDrawingContext.x(), -itemsDrawingContext.y());
+		DrawingContext itemsDrawingContext = itemsDrawingContext(context);
 		
 				
 		Iterator<InventoryItemType> itemTypeIterator = inventory.keySet().iterator();
@@ -70,24 +69,28 @@ public class InventoryRenderer implements Renderer {
 			DrawingContext tiledDrawingContext = new TileDrawingContext(itemsDrawingContext, INVENTORY_COLUMNS, INVENTORY_ROWS, column, row);
 			
 			if (item != null) {
-				InventoryItemRenderer inventoryItemRenderer = new InventoryItemRenderer();
-				inventoryItemRenderer.render(gameContainer, graphics, tiledDrawingContext, item);
+				String animationId = Mappings.INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.get(item.getInventoryItemType());
+				Animation itemAnimation = ApplicationContext.instance().getAnimations().get(animationId);
+				
+				DrawingContext picDc = new CenteredDrawingContext(tiledDrawingContext, 2);
+				
+				graphics.translate(picDc.x(), picDc.y());
+				graphics.setColor(new Color(192,192,192));
+				graphics.fillRect(0, 0, picDc.w(), picDc.h());
+				itemAnimation.draw(0, 0, picDc.w(), picDc.h());
+				graphics.translate(-picDc.x(), -picDc.y());
 			}
 			
 			if (column == selectionX && row == selectionY) {
 				selectedItem = item;
-				graphics.setColor(Color.orange);
-				graphics.drawRect(tiledDrawingContext.x(), tiledDrawingContext.y(), tiledDrawingContext.w(), tiledDrawingContext.h());
+				ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingameinventoryitemboxselected", tiledDrawingContext);
+			} else {
+				ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingameinventoryitembox", tiledDrawingContext);
 			}
 
 		}
 		
-		DrawingContext descriptionDrawingContext = descriptionDrawingContext(contentContext);
-		
-		graphics.translate(descriptionDrawingContext.x(), descriptionDrawingContext.y());
-		graphics.setColor(Color.orange);
-		graphics.drawRoundRect(0, 0, descriptionDrawingContext.w(), descriptionDrawingContext.h(), 5);
-		graphics.translate(-descriptionDrawingContext.x(), -descriptionDrawingContext.y());
+		DrawingContext descriptionDrawingContext = descriptionDrawingContext(context);
 
 		descriptionDrawingContext = new CenteredDrawingContext(descriptionDrawingContext, 20);
 		
@@ -99,11 +102,11 @@ public class InventoryRenderer implements Renderer {
 	}
 	
 	private DrawingContext itemsDrawingContext(DrawingContext mainDc) {
-		return new TileDrawingContext(mainDc, 3, 1, 0, 0, 2, 1);
+		return new SimpleDrawingContext(mainDc, 13, 13, 539, 406);
 	}
 	
 	private DrawingContext descriptionDrawingContext(DrawingContext mainDc) {
-		return new TileDrawingContext(mainDc, 3, 1, 2, 0, 1, 1);
+		return new SimpleDrawingContext(mainDc, 584, 13, 617, 406);
 	}
 
 }

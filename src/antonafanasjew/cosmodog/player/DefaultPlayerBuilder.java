@@ -12,20 +12,20 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
-//		player.setMaxLife(100);
-//		player.setLife(100);
-		player.setPositionX(7);
-		player.setPositionY(22);
-		
-		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
-		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
+		player.setMaxLife(100);
+		player.setLife(100);
+		player.setPositionX(100);
+		player.setPositionY(68);
 //		
-		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
+//		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+//		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
+//		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
+////		
+//		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+//		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+//		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+//		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+//		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 //		
 //		SoftwareInventoryItem item = new SoftwareInventoryItem();
 //		item.setNumber(10);
@@ -62,9 +62,9 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 //		
 //		player.getInventory().put(InventoryItemType.INSIGHT, insightInventoryItem);
 		
-		for (int i = 0; i < 6000; i++) {
-			player.getGameProgress().addInfobit();
-		}
+//		for (int i = 0; i < 6000; i++) {
+//			player.getGameProgress().addInfobit();
+//		}
 //		
 //		for (int i = 0; i < 120; i++) {
 //			player.getGameProgress().increaseNumberOfFoundSecrets();

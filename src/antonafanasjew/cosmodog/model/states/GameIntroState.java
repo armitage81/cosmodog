@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
+import java.util.List;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -7,6 +9,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+
+import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
@@ -22,26 +27,27 @@ import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class GameIntroState  extends BasicGameState {
-
-	private static final String TEXT = "It's been three years since you were hired by the Archeological Institute of Vera as a pilot transporting the scientists to remote corners of the galaxy "
-			+ "in search of a mysterious alien race."
-			+ " <p> "
-			+ "Finally, a hint of some ancient monolyths has brought you to Phaeton. This planet has a bad reputation among the colonists. "
-			+ "Everyone knows Phaeton from the stories about insane rebellions, extinct settlements and mass suicides. "
-			+ "Under these circumstances, The Star Union would never give a landing permission to a civilian so you don't even try. "
-			+ "Archeologists are used to operate under semi-legal conditions."
-			+ " <p> "
-			+ "Upon reaching the Phaetons orbit, your ship Cosmodog is hit by a missile fired from an automated guardian satellite. "
-			+ "You manage to reach the escape pod before the ship is destroyed."
-			+ " <p> "
-			+ "You land on the surface of the planet as a lone survivor. There is no way back. "
-			+ " <p> "
-			+ "Reveal the mystery around the aliens and escape the planet.";
+	
+	private List<String> texts = Lists.newArrayList();
+	private int page;
 
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		MusicUtils.loopMusic(MusicResources.MUSIC_CUTSCENE);
+		String intro1 = ApplicationContext.instance().getGameTexts().get("intro1").getLogText();
+		String intro2 = ApplicationContext.instance().getGameTexts().get("intro2").getLogText();
+		String intro3 = ApplicationContext.instance().getGameTexts().get("intro3").getLogText();
+		String intro4 = ApplicationContext.instance().getGameTexts().get("intro4").getLogText();
+		String intro5 = ApplicationContext.instance().getGameTexts().get("intro5").getLogText();
+		
+		texts.add(intro1);
+		texts.add(intro2);
+		texts.add(intro3);
+		texts.add(intro4);
+		texts.add(intro5);
+		
+		page = 0;
 	}
 	
 	@Override
@@ -52,6 +58,8 @@ public class GameIntroState  extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
+		
+		
 		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		
 		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
@@ -59,7 +67,7 @@ public class GameIntroState  extends BasicGameState {
 		DrawingContext introTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
 		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
 		
-		TextBookRendererUtils.renderTextPage(gc, g, introTextDc, TEXT, FontType.IntroText, 0);
+		TextBookRendererUtils.renderTextPage(gc, g, introTextDc, texts.get(page), FontType.IntroText, 0);
 		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 		if (renderBlinkingHint) {
@@ -73,7 +81,12 @@ public class GameIntroState  extends BasicGameState {
 		
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
-			sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
+			if (page < texts.size() - 1) {
+				page++;
+			} else {
+				sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
+			}
+			
 		}
 		
 	}

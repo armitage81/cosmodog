@@ -13,9 +13,11 @@ import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class LogPlayerRenderer implements Renderer {
@@ -35,14 +37,11 @@ public class LogPlayerRenderer implements Renderer {
 		int seriesNumber = logPlayerInputState.getSeriesNumber();
 		int logNumber = logPlayerInputState.getLogNumber();
 		
-		drawingContext = new CenteredDrawingContext(drawingContext, 5);
+		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamelogs", drawingContext);
 		
-		DrawingContext logOverviewDrawingContext = new TileDrawingContext(drawingContext, 3, 1, 0, 0);
-		DrawingContext logContentDrawingContext = new TileDrawingContext(drawingContext, 3, 1, 1, 0, 2, 1);
+		DrawingContext logOverviewDrawingContext = new SimpleDrawingContext(drawingContext, 12, 13, 397, 406);
+		DrawingContext logContentDrawingContext = new SimpleDrawingContext(drawingContext, 441, 13, 759, 406);
 		
-		graphics.drawRoundRect(logOverviewDrawingContext.x(), logOverviewDrawingContext.y(), logOverviewDrawingContext.w(), logOverviewDrawingContext.h(), 5);
-		graphics.drawRoundRect(logContentDrawingContext.x(), logContentDrawingContext.y(), logContentDrawingContext.w(), logContentDrawingContext.h(), 5);
-	
 		logOverviewDrawingContext = new CenteredDrawingContext(logOverviewDrawingContext, 10);
 		logContentDrawingContext = new CenteredDrawingContext(logContentDrawingContext, 10);
 		
@@ -81,21 +80,20 @@ public class LogPlayerRenderer implements Renderer {
 					graphics.drawRect(oneLogDc.x(), oneLogDc.y(), oneLogDc.w(), oneLogDc.h());
 					
 					
-					String logHeader = "Not found.";
+					String logHeader = "";
 					String logContent = "";
+					String logHint = "";
 					
 					if (found) {
 						logHeader = gameLog.getHeader();
-						
 						if (logPlayerInputState.getPages() > 1) {
 							logHeader = logHeader + " (Page " + (logPlayerInputState.getCurrentPage() + 1) + "/" + logPlayerInputState.getPages() + ")";
 						}
-						
 						logContent = gameLog.getLogText();
+						logHint = "Press [ENTER] to turn page.";
 					}
 					
 					DrawingContext headerDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 0);
-					headerDrawingContext = new CenteredDrawingContext(headerDrawingContext, 15);
 
 					DrawingContext titleDrawingContext = new TileDrawingContext(headerDrawingContext, 1, 2, 0, 0);
 					DrawingContext controlsHintDrawingContext = new TileDrawingContext(headerDrawingContext, 1, 2, 0, 1);
@@ -103,11 +101,9 @@ public class LogPlayerRenderer implements Renderer {
 					DrawingContext textDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 5);
 					DrawingContext pressEnterDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 6, 1, 1);
 					
-					textDrawingContext = new CenteredDrawingContext(textDrawingContext, 15); 
-					
 					TextBookRendererUtils.renderTextPage(gameContainer, graphics, titleDrawingContext, logHeader, FontType.GameLogHeader, 0);
 					if (logPlayerInputState.getPages() > 1) {
-						TextBookRendererUtils.renderTextPage(gameContainer, graphics, controlsHintDrawingContext, "Press [ENTER] to turn page.", FontType.GameLogControlsHint, 0);
+						TextBookRendererUtils.renderTextPage(gameContainer, graphics, controlsHintDrawingContext, logHint, FontType.GameLogControlsHint, 0);
 					}
 					TextBookRendererUtils.renderTextPage(gameContainer, graphics, textDrawingContext, logContent, FontType.GameLog, logPlayerInputState.getCurrentPage());
 					

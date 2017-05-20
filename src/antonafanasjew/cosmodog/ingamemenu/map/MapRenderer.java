@@ -23,6 +23,7 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MapRenderer implements Renderer {
@@ -61,15 +62,16 @@ public class MapRenderer implements Renderer {
 //			}
 //		}
 		
+		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemap", drawingContext);
+		
 		int mapPieceColumns = ChartInventoryItem.CHART_PIECE_NUMBER_X;
 		int mapPieceRows = ChartInventoryItem.CHART_PIECE_NUMBER_Y;
 		
 		Image mapImage = ApplicationContext.instance().getAnimations().get("completechart").getImage(0);
 		
-		DrawingContext contentContext = new CenteredDrawingContext(drawingContext, drawingContext.w() - 10, drawingContext.h() - 10);
 		
-		DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(contentContext);
-		DrawingContext descriptionDrawingContext = descriptionDrawingContext(contentContext);
+		DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(drawingContext);
+		DrawingContext descriptionDrawingContext = descriptionDrawingContext(drawingContext);
 		DrawingContext coordinatesDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 0);
 		DrawingContext hintsDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 1, 1, 2);
 		DrawingContext fullMapDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 3, 1, 3);
@@ -127,25 +129,9 @@ public class MapRenderer implements Renderer {
 			graphics.fillRect(playerPositionDrawingContext.x(), playerPositionDrawingContext.y(), playerPositionDrawingContext.w(), playerPositionDrawingContext.h());
 		}
 		
-		graphics.translate(mapAreaDrawingContext.x(), mapAreaDrawingContext.y());
-		graphics.setColor(Color.orange);
-		graphics.drawRoundRect(0, 0, mapAreaDrawingContext.w(), mapAreaDrawingContext.h(), 5);
-		graphics.translate(-mapAreaDrawingContext.x(), -mapAreaDrawingContext.y());
 		
-		graphics.translate(coordinatesDrawingContext.x(), coordinatesDrawingContext.y());
-		graphics.setColor(Color.orange);
-		graphics.drawRoundRect(0, 0, coordinatesDrawingContext.w(), coordinatesDrawingContext.h(), 5);
-		graphics.translate(-coordinatesDrawingContext.x(), -coordinatesDrawingContext.y());
 		
-		graphics.translate(hintsDrawingContext.x(), hintsDrawingContext.y());
-		graphics.setColor(Color.orange);
-		graphics.drawRoundRect(0, 0, hintsDrawingContext.w(), hintsDrawingContext.h(), 5);
-		graphics.translate(-hintsDrawingContext.x(), -hintsDrawingContext.y());
 		
-		graphics.translate(fullMapDrawingContext.x(), fullMapDrawingContext.y());
-		graphics.setColor(Color.orange);
-		graphics.drawRoundRect(0, 0, fullMapDrawingContext.w(), fullMapDrawingContext.h(), 5);
-		graphics.translate(-fullMapDrawingContext.x(), -fullMapDrawingContext.y());
 		
 		coordinatesDrawingContext = new CenteredDrawingContext(coordinatesDrawingContext, 20);
 		
@@ -221,11 +207,11 @@ public class MapRenderer implements Renderer {
 //	}
 	
 	private DrawingContext mapAreaDrawingContext(DrawingContext mainDc) {
-		return new TileDrawingContext(mainDc, 3, 1, 0, 0, 2, 1);
+		return new SimpleDrawingContext(mainDc, 13, 13, 759, 406);
 	}
 	
 	private DrawingContext descriptionDrawingContext(DrawingContext mainDc) {
-		return new TileDrawingContext(mainDc, 3, 1, 2, 0, 1, 1);
+		return new SimpleDrawingContext(mainDc, 804, 13, 397, 406);
 	}
 
 }

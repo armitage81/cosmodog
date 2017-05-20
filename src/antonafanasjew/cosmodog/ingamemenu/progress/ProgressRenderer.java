@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.ingamemenu.progress;
 
-import org.junit.experimental.max.MaxCore;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -66,7 +65,7 @@ public class ProgressRenderer implements Renderer {
 			DrawingContext rowDc = new TileDrawingContext(drawingContext, 1, ROWS, 0, i);
 			rowDc = new CenteredDrawingContext(rowDc, ROW_PADDING);
 			
-			DrawingContext labelDc = new TileDrawingContext(rowDc, 15, 1, 0, 0);
+			DrawingContext labelDc = new TileDrawingContext(rowDc, 15, 1, 0, 0, 2, 1);
 			DrawingContext contentDc = new TileDrawingContext(rowDc, 15, 1, 2, 0, 13, 1);
 			
 			if (i == 0) {
@@ -87,7 +86,7 @@ public class ProgressRenderer implements Renderer {
 				graphics.setColor(Color.green);
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
 				
-				graphics.setColor(Color.orange);
+				graphics.setColor(new Color(0x00, 0x4b, 0xaf));
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				
 				int percentage = Math.round((float)noInfobits / ((float)maxInfobits / 100f));
@@ -107,7 +106,7 @@ public class ProgressRenderer implements Renderer {
 				graphics.setColor(Color.green);
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
 				
-				graphics.setColor(Color.orange);
+				graphics.setColor(new Color(0x00, 0x4b, 0xaf));
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				
 				int percentage = Math.round((float)noSecrets / ((float)maxSecrets / 100f));
