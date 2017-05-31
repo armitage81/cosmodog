@@ -1,21 +1,15 @@
 package antonafanasjew.cosmodog.player;
 
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
-import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
-		player.setMaxLife(100);
-		player.setLife(100);
-		player.setPositionX(100);
-		player.setPositionY(68);
+//		player.setMaxLife(100);
+//		player.setLife(100);
+//		player.setPositionX(235);
+//		player.setPositionY(363);
 //		
 //		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 //		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
