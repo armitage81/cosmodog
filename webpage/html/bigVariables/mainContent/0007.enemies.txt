@@ -1,8 +1,12 @@
+<img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_robot.png" alt="" height="64" width="64"> 
+
 <b>Bot</b>
 
 <p>
 This bots have been dispatched by the Star Union Fleet to enforce the quarantine on Phaeton after the colony was struck by mass suicides and dementia epidemics. They are slow, not very robust and have a limited sight but can be dangerous nevertheless if they attack in groups. Try to catch them off-guard and attack from behind with hand weapons.
 </p>
+
+<img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_tank.png" alt="" height="64" width="64">
 
 <b>AMPV</b>
 
@@ -10,13 +14,17 @@ This bots have been dispatched by the Star Union Fleet to enforce the quarantine
 Very fast and dangerous autonomous multi-purpose vehicles that patrol important regions and can cross almost any terrain. Avoid them whenever you can by sneaking around them or attack them with heavy weapons. Luckily, the AMPV's sight is not very good, especially at night.
 </p>
 
+<img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_drone.png" alt="" height="64" width="64">
+
 <b>Copter</b>
 
 <p>
 Copters are flying drones and the only unit that can cross water. They are extremely fast and dangerous. Find a proper weapon and prepare a lot of ammunition if you want to attack them.
 </p>
 
-<b>Turrets</b>
+<img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_turret.png" alt="" height="64" width="64">
+
+<b>Turret</b>
 
 <p>
 The stationary turrets are gruesome enemies. 
@@ -25,6 +33,8 @@ Turrets have a very limited sight and can attack only adjacent targets.
 A rocket launcher is the only weapon that is strong enough to destroy a turret.
 Sometimes, it is better to pass by a turret than to fight it. 
 </p>
+
+<img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_artillery.png" alt="" height="64" width="64">
 
 <b>Artillery</b>
 
@@ -36,6 +46,7 @@ The best way to deal with artillery units is avoiding them.
 If an artillery has spotted you, try to escape or run to it to destroy it before it can kill you.
 </p>
 
+<img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_pigrat.png" alt="" height="64" width="64">
 
 <b>Pigrat</b>
 
