@@ -1,0 +1,34 @@
+<div class="w3-panel w3-leftbar w3-light-grey">
+	<p class="w3-xlarge w3-serif">
+		<i>
+		"Free will is an illusion of a mind trying to convince itself of having control while it can't even handle its own impulses."
+		</i>
+	</p>
+	<p>Mary Harper, Xenoarcheologist</p>
+</div> 
+
+<p>
+Cosmodog requires a Windows operating system. It was tested on Windows 7 and Windows 10. You can download the game here. 
+</p>
+
+<p>
+<a href="downloads/Cosmodog.zip" download="filename" class="w3-button w3-white w3-large w3-block w3-mobile">Cosmodog standalone</a>
+</p>
+
+<p>
+<a href="downloads/CosmodogInstaller.zip" download="filename" class="w3-button w3-white w3-large w3-block w3-mobile">Cosmodog installer</a>
+</p>
+
+<p>
+Choose the standalone version if you have Java 7 JRE installed on your system. If you don't have Java 7 installed or are not sure about it, download the Cosmodog installer.
+</p>
+
+<p>
+You can play the full game for free and distribute it in any non-commercial way. You are not allowed to modify the game without the author's permission.
+</p>
+
+<p>
+Please leave your comments, found bugs and extensions suggestions <a href="empty" download="filename">here</a>. If you are interested in the source code, you can find it in <a href="https://github.com/armitage81/cosmodog" download="filename">GitHub</a>
+</p>
+
+

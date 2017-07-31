@@ -1,0 +1,76 @@
+<div class="w3-panel w3-leftbar w3-light-grey">
+	<p class="w3-xlarge w3-serif">
+		<i>
+		"Forget physics. It's all about information. Information is the essence of the universe. In fact, it forms the line between reality and transcendence. Its exchange is the restriction that allows reality to exist in the boundless world of dreams."
+		</i>
+	</p>
+	<p>Mary Harper, Xenoarcheologist</p>
+</div> 
+
+<p>
+<i>Cosmodog</i> is a retro style game with 8/16-bit visuals and unforgiving but fair difficulty. Our goal was to create a complex and challenging adventure with fast-paced and easy-to-learn gameplay. Remember all those procedurally generated worlds of countless other games? Cosmodog is not like them. Every corner of its world is designed by hand. And it's all there for you - no loading screens, no cuts, no stages. Just you and a contaminated valley on an abandoned planet.
+</p>
+
+<br/>
+
+<p class="w3-center w3-xlarge">Explore</p>
+
+<p>
+An open world, alien but familiar, awaits you. Explore the <i>mysterious valley</i> at your own pace. Find <i>secret passages</i>, enter <i>abandoned camps</i> and collect <i>pieces of knowledge</i> to find out what happened here in the recent past.
+</p>
+
+<p class="w3-center w3-xlarge">Survive</p>
+
+<p>
+Fight for your survival! Find <i>medicine</i>, <i>means of transport</i>, <i>food</i> and <i>water</i>, avoid <i>land mines</i> and <i>poisonous traps</i>, beware the <i>radiation</i>.  
+</p>
+
+<p class="w3-center w3-xlarge">Fight</p>
+
+<p>
+Many <a href="enemies.html">enemies</a> will obstruct your path. <i>Military drones</i>, <i>security robots</i> and <i>indigenous life forms</i> roam within the perimeter of the forbidden valley. Find <i>weapons</i>, manage <i>ammunition</i> and defeat your opponents in a <i>fast paced, turn based combat</i>.
+</p>
+
+<p class="w3-center w3-xlarge">Discover</p>
+
+<p>
+Many helpful items are scattered around the valley. Each of them will make you stronger and provide <i>new abilities</i>. You will learn how to survive without water, how to walk in cold snow, how to protect yourself from radiation and poison. You will find means to cross rivers and break your way through jungles and rocks. Every corner of this world hides a secret. But beware! The most valuable loot is guarded by the strongest enemies.
+</p>
+
+<p class="w3-center w3-xlarge">Investigate</p>
+
+<p>
+A forbidden <i>alien structure</i> is looming over the landscape in the center of the valley. Will you be able to break the seal and reveal the <i>ancient mystery</i> inside it?
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

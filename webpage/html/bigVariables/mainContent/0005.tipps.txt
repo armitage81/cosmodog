@@ -1,0 +1,69 @@
+<div class="w3-panel w3-leftbar w3-light-grey">
+	<p class="w3-xlarge w3-serif">
+		<i>
+		"Physics has outlived itself as the language of reality. If we want to understand the universe as a whole, we need a new, more powerful language."
+		</i>
+	</p>
+	<p>Mary Harper, Xenoarcheologist</p>
+</div> 
+
+
+<p>
+Your main objective is to collect 20 out of the 32 insights provided by the alien monoliths scattered around the valley. By doing so, you will unlock the entrance to the structure in the center of the valley where a final challenge is awaiting you.
+</p>
+
+<p>
+Following are some hints that will help you survive the first steps on Phaeton.
+</p>
+
+<ul class="w3-ul w3-card-4">
+<li>
+<p>
+Don't rush! Cosmodog is not an action game. The whole world will hold still unless you execute an action. Think and plan your movement before you execute it. Will this enemy notice you when you move west? Is it worth it to pick up and use a supply ration or should you leave it for your way back? Will your health suffice to kill the enemy guarding a medkit? Ask those and many other questions and you will be more likely to survive.
+</p>
+</li>
+
+<ul class="w3-ul w3-card-4">
+<li>
+<p>
+Always keep in mind your food and water bars. Both deplete with every turn. To still thirst, approach a lake or a river. To eat, find a supply ration. Don't panic if your thirst or hunger bar reaches its limit. In such a case, your life bar will reduce with every turn but you won't die. Try to avoid enemies and polluted areas if you are hungry or thirsty or find a vehicle to protect yourself. Hint: Food and water do not deplete while you're driving a car.
+</p>
+</li>
+
+<li>
+<p>
+Soul essence jars and vehicle armor plates are usually well hidden but it is worth it to search for them as they permanently increase your life and the robustness of vehicles.
+</p>
+</li>
+
+<li>
+<p>
+Some <a href="enemies.html">enemies</a> are hard to beat but have limited sight. Sneak around them and hit them from behind which will double the damage. The sight of the enemies will be reduced at night or if you are located in high grass. Some robots and drones are powered by solar cells which means they are deactivated at night. Living enemies usually have a good perception which makes it almost impossible to reach them from behind. Try to find out which weapon makes most damage against each enemy type.
+</p>
+</li>
+
+<li>
+<p>
+Some areas are locked out by energy walls. These barriers will switch off automatically when you collect enough knowledge about the planet. Knowledge is represented by infobits, infobytes and infobanks. One infobyte is worth five infobits and one infobank is worth five infobytes. Collect as many as you can.
+</p>
+</li>
+
+<li>
+<p>
+There are 120 secret areas in the game. Try everything to find them as they usually contain valuable items. Hidden passages can be behind trees, in mountain caves, beside broken fences and under house ruins. 
+</p>
+</li>
+
+<li>
+<p>
+You can break crates and other things by running against them. Often, items are hidden inside. Some of the enemies are also holding items which will be dropped upon their defeat.
+</p>
+</li>
+
+<li>
+<p>
+There are 64 map pieces to find in the game world. Each of them will uncover a part of the valley. You can inspect the complete map in the menu screen to locate points of interest and plan your path.
+</p>
+</li>
+
+</	ul>
