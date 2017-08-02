@@ -11,6 +11,13 @@
 <p>
 The following videos are a mix of Let's Play and development commentary. In it I will complete the game and collect as many items, logs and secrets as possible. You can watch the videos as a reference and a walkthrough to the game but beware of spoilers. You will have the most fun playing the game without any hints and learning through errors. On the other hand, you can watch the videos after beating the game to get some insights into the development process and design decisions that have been made while making the game.
 </p>
+
+
+<p>
+<b>(Please stay tuned: the videos will follow after the game will be released.)</b>
+</p>
+
+<!--
 <div id="gallery" class="galleryClass">
 	<div class="w3-cell-row w3-padding-16">
 
@@ -114,4 +121,5 @@ The following videos are a mix of Let's Play and development commentary. In it I
 			</div>
 		</div>
 	</div>
+-->
 </div>
