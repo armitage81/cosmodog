@@ -8,4 +8,15 @@
 </div> 
 
 
-SCREENSHOTS
+<div id="screenshots" class="w3-row">
+	<img class="w3-half" src="pics/screenshot1.png" alt="Screenshot 1" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot2.png" alt="Screenshot 2" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot3.png" alt="Screenshot 3" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot4.png" alt="Screenshot 4" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot5.png" alt="Screenshot 5" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot6.png" alt="Screenshot 6" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot7.png" alt="Screenshot 7" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot8.png" alt="Screenshot 8" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot9.png" alt="Screenshot 9" height="auto" width="50%">
+	<img class="w3-half" src="pics/screenshot10.png" alt="Screenshot 10" height="auto" width="50%">
+</div>

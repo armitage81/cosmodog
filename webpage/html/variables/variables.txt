@@ -6,4 +6,5 @@ videos.html;Let's play
 tipps.html;Tipps & Tricks
 download.html;Downloads
 enemies.html;Enemies
-support.html;Troubleshooting & Support
+support.html;Support
+about.html;About Cosmodog

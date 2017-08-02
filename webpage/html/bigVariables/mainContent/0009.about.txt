@@ -1,0 +1,44 @@
+
+<p>
+This game was designed and implemented by Anton Afanasjew, a german located developer. I'd greatly appreciate any feedback. Please let me know your opinion about the game at <a href="mailto:support@cosmodog.eu">support@cosmodog.eu</a>. 
+</p>
+
+<p>
+The credit goes to the great frameworks, tools and libraries that were used in the development process of the game.
+</p>
+
+<p>
+<a href="https://www.oracle.com/java/index.html">Java platform</a>
+</p>
+
+<p>
+<a href="https://commons.apache.org/">Apache Commons framework</a>
+</p>
+
+<p>
+<a href="https://github.com/google/guava">Guava framework</a>
+</p>
+
+<p>
+<a href="http://slick.ninjacave.com/">Slick2D - 2D Java Game Library</a>
+</p>
+
+<p>
+<a href="http://www.mapeditor.org/">Tiled Map editor</a>
+</p>
+
+<p>
+
+<a href="http://pyxeledit.com/">Pyxel Edit: pixel art and tileset creation tool</a>
+</p>
+
+<p>
+This game uses the music from <b>Exploration Game Music Pack</b> by <b>wowsoundsg</b> 
+and sound samples from <a href="http://www.Freesound.org">Freesound.org</a> 
+and <a href="http://www.superflashbros.net/as3sfxr/">http://www.superflashbros.net/as3sfxr/</a>.
+</p>
+
+<p>
+Additionally, it features graphics from the packs <b>Pak weapons</b>, <b>Premium Quality - Royalty Free Guns</b> 
+and <b>Game User Interface 3</b> as licensed from <a href="http://www.gamedevmarket.net">GameDev Market</a> 
+</p>
