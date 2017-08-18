@@ -1,0 +1,56 @@
+<project name="Cosmodog" default="dist" basedir=".">
+	<description>
+    Build for Cosmodog
+  </description>
+
+	<property name="src" location="src" />
+	<property name="res" location="resources" />
+	<property name="data" location="data" />
+	<property name="build" location="build" />
+	<property name="dist" location="target" />
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${basedir}/lib/gdx-1.8.0.jar;${basedir}/lib/jdom2-2.0.6.jar;${basedir}/lib/commons-beanutils-1.9.2.jar;${basedir}/lib/guava-18.0.jar;${basedir}/lib/slick2d/lib/slick.jar;${basedir}/lib/slick2d/lib/lwjgl.jar" />
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<mkdir dir="${dist}/lib" />
+		<jar jarfile="${dist}/cosmodog-${DSTAMP}.jar" basedir="${build}">
+			<fileset dir="${res}" />
+			<manifest>
+				<attribute name="Main-Class" value="antonafanasjew.cosmodog.CosmodogStarter" />
+			</manifest>
+		</jar>
+		<copy todir="${dist}/data">
+			<fileset dir="${data}" />
+		</copy>
+		<copy todir="${dist}/lib">
+			<fileset dir="${basedir}/lib/">
+				<include name="gdx-1.8.0.jar" />
+				<include name="jdom2-2.0.6.jar" />
+				<include name="commons-beanutils-1.9.2.jar" />
+				<include name="guava-18.0.jar" />
+				<include name="slick2d/lib/slick.jar" />
+				<include name="slick2d/lib/lwjgl.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${dist}/dll">
+			<fileset dir="${basedir}/lib/lwjgl/native/windows" />
+		</copy>
+		<copy todir="${dist}">
+			<fileset dir="${basedir}">
+				<include name="start.bat"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>

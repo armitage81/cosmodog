@@ -130,7 +130,7 @@ public class VisibilityCalculator {
 
 	private float distanceFromPointToCenter(float x, float y) {
 		
-		//a² + b² = c² => c = sqrt(a² + b²)
+		//aÂ² + bÂ² = cÂ² => c = sqrt(aÂ² + bÂ²)
 		
 		float horizontalDistance = Math.abs(x - centerX);
 		float verticalDistance = Math.abs(y - centerY);

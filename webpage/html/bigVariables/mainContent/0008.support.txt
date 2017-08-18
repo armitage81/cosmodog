@@ -1,6 +1,6 @@
 <p>
 
-Although the game has been tested extensively, chances are that you encounter a bug or a problem while playing it. In such a case, please let me know by sending an eMail at the address <a href="mailto:support@cosmodog.eu">support@cosmodog.eu</a>. Don't forget to mention the exact problem, the circumstances when it occurred and your machine and operating system. Ideally, provide a short description of how the problem can be reproduced.
+Although the game has been tested extensively, chances are that you encounter a bug or a problem while playing it. In such a case, please let me know by sending an eMail at the address <a href="mailto:feedback@cosmodog.eu">feedback@cosmodog.eu</a>. Don't forget to mention the exact problem, the circumstances when it occurred and your machine and operating system. Ideally, provide a short description of how the problem can be reproduced.
 
 </p>	
 

@@ -1,1 +1,6 @@
 /bin/
+/target/
+/dist/
+/build/
+/.settings/
+/data/music/
