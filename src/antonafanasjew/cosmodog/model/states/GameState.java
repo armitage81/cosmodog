@@ -35,7 +35,6 @@ import antonafanasjew.cosmodog.rendering.renderer.ArtilleryGrenadeRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.DayTimeIconRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
@@ -91,7 +90,6 @@ public class GameState extends BasicGameState {
 	private DrawingContext geigerCounterDrawingContext;
 	private DrawingContext supplyTrackerDrawingContext;
 	private DrawingContext timeDrawingContext;
-	private DrawingContext dayTimeIconDrawingContext;
 	
 	private DrawingContext lifeDrawingContext;
 	private DrawingContext vitalDataDrawingContext;
@@ -122,7 +120,6 @@ public class GameState extends BasicGameState {
 	private Renderer dyingPlayerRenderer;
 	private AbstractRenderer onScreenNotificationRenderer;
 	private Renderer timeRenderer;
-	private Renderer dayTimeIconRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -150,16 +147,17 @@ public class GameState extends BasicGameState {
 		
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
 		
-		//we want it to be just under the top bar but quadratic and still most left.
-		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 36, 277, 117, 116);
-		supplyTrackerDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1128, 277 , 117, 116);
+
 		
-		timeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 932, 31, 228, 66);
-		dayTimeIconDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1184, 31, 70, 66);
+		timeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1026, 28, 56, 52);
+		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1111, 28, 56, 52);
+		supplyTrackerDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1196, 28, 56, 52);
 		
-		lifeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 35, 35, 500, 61);
 		
-		vitalDataDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 35, 623, 500, 61);
+		lifeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 28, 28, 524, 52);
+		
+		
+		vitalDataDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 28, 640, 524, 52);
 		
 				
 		//Update the global dialog drawing context variable in the application context.
@@ -201,8 +199,6 @@ public class GameState extends BasicGameState {
 		geigerCounterViewRenderer = new GeigerCounterViewRenderer();
 		supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
 		timeRenderer = new TimeRenderer();
-		dayTimeIconRenderer = new DayTimeIconRenderer();
-		
 		
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
 		tipsLayersPredicate = new TipsLayersRenderingPredicate();
@@ -376,15 +372,13 @@ public class GameState extends BasicGameState {
 		//Draw overhead notifications, e.g. "blocked" warning.
 		overheadNotificationRenderer.render(gc, g, mapDrawingContext);
 		
-		arsenalInterfaceRenderer.render(gc, g, gameContainerDrawingContext, null);
-
 		Image topPanelFrame = ApplicationContext.instance().getImages().get("ui.ingame.frame");
 		ImageUtils.renderImage(gc, g, topPanelFrame, gameContainerDrawingContext);
 		
 		geigerCounterViewRenderer.render(gc, g, geigerCounterDrawingContext, null);
 		supplyTrackerViewRenderer.render(gc, g, supplyTrackerDrawingContext, null);
 		timeRenderer.render(gc, g, timeDrawingContext, null);
-		dayTimeIconRenderer.render(gc, g, dayTimeIconDrawingContext, null);
+		arsenalInterfaceRenderer.render(gc, g, gameContainerDrawingContext, null);
 		
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
 		

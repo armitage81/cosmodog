@@ -30,16 +30,14 @@ public class TextFrameRenderer implements Renderer {
 			
 			ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.popupframe", drawingContext);
 			
-//			graphics.fillRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
-//			
-//			graphics.setColor(Color.black);
-//			graphics.drawRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
-
-			DrawingContext headerDrawingContext = new SimpleDrawingContext(drawingContext, 130, 10, 250, 60);
+			DrawingContext headerDrawingContext = new SimpleDrawingContext(drawingContext, 50, 14, 400, 44);
 			DrawingContext textDrawingContext = new SimpleDrawingContext(drawingContext, 50, 100, 400, 200);
+			DrawingContext pressEnterDrawingContext = new SimpleDrawingContext(drawingContext, 50, 340, 400, 44);
 			
-			
-			DrawingContext pressEnterDrawingContext = new TileDrawingContext(drawingContext, 1, 3, 0, 2);
+//			graphics.setColor(Color.green);
+//			graphics.drawRect(headerDrawingContext.x(), headerDrawingContext.y(), headerDrawingContext.w(), headerDrawingContext.h());
+//			graphics.drawRect(textDrawingContext.x(), textDrawingContext.y(), textDrawingContext.w(), textDrawingContext.h());
+//			graphics.drawRect(pressEnterDrawingContext.x(), pressEnterDrawingContext.y(), pressEnterDrawingContext.w(), pressEnterDrawingContext.h());
 			
 			
 			textDrawingContext = new CenteredDrawingContext(textDrawingContext, 30); 

@@ -37,6 +37,11 @@ public enum UnitType {
 	ARTILLERY(false, true, true),
 	
 	/**
+	 * Trike.
+	 */
+	SCOUT(false, true, false),
+	
+	/**
 	 * Heavy armored floating drone in the alien base
 	 */
 	FLOATER(false, true, false),

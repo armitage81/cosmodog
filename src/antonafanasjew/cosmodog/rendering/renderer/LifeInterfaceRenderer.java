@@ -7,6 +7,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.FontType;
@@ -39,6 +41,7 @@ public class LifeInterfaceRenderer implements Renderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
+		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();

@@ -36,6 +36,13 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 			return false;
 		}
 		
+		//If player is on one of the roof removal blockers, then render any top tile.
+		Set<TiledObject> roofRemovalBlockerRegionsOverPlayer = roofRemovalBlockerRegions(player, map);
+		
+		if (roofRemovalBlockerRegionsOverPlayer.isEmpty() == false) {
+			return true;
+		}
+		
 		//If player is not in one of the roof regions then render any top tile
 		Set<TiledObject> roofRegionsOverPlayer = roofRegions(player, map);
 		
@@ -92,6 +99,10 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 	
 	private Set<TiledObject> roofRegions(Player player, CosmodogMap map) {
 		return PlayerMovementCache.getInstance().getRoofRegionsOverPlayer();
+	}
+	
+	private Set<TiledObject> roofRemovalBlockerRegions(Player player, CosmodogMap map) {
+		return PlayerMovementCache.getInstance().getRoofRemovalBlockerRegionsOverPlayer();
 	}
 	
 

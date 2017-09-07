@@ -28,17 +28,17 @@ public enum FontType {
 	Test(createUnicodeFont(new Font("Arial", Font.PLAIN, 24), 72, true, true, Color.red)), 
 	GameOver(createUnicodeFont(new Font("Arial", Font.BOLD, 72), 72, true, true, Color.red)),
 	GameOverScore(createUnicodeFont(new Font("Courier New", Font.BOLD, 24), 24, true, true, Color.white)), 
-	RadiationLabelDanger(createUnicodeFont(new Font("Arial", Font.BOLD, 14), 14, true, false, Color.red)),
+	RadiationLabelDanger(createUnicodeFont(new Font("Arial", Font.BOLD, 10), 10, true, false, Color.red)),
 	RadiationLabelSafe(createUnicodeFont(new Font("Arial", Font.BOLD, 14), 14, true, false, Color.green)),
-	SuppliesTrackerLabel(createUnicodeFont(new Font("Arial", Font.BOLD, 14), 14, true, false, Color.green)),
+	SuppliesTrackerLabel(createUnicodeFont(new Font("Arial", Font.BOLD, 10), 10, true, false, Color.green)),
 	GameProgressLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 14), 14, false, false, Color.white)), 
 	GameProgressLabelInBars(createUnicodeFont(new Font("Arial", Font.BOLD, 20), 20, true, false, Color.red)),
 	RecordsTitleLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)), 
 	Records(createUnicodeFont(new Font("Courier New", Font.PLAIN, 24), 24, true, false, Color.red)), 
 	Loading(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)), 
-	Hud(createUnicodeFont(new Font("Arial", Font.BOLD, 12), 12, true, false, Color.WHITE)), 
-	HudTime(createUnicodeFont(new Font("Courier", Font.PLAIN, 20), 20, false, false, Color.RED)),
-	HudDayTime(createUnicodeFont(new Font("Courier", Font.BOLD, 16), 16, false, false, Color.RED));
+	Hud(createUnicodeFont(new Font("Arial", Font.BOLD, 10), 10, true, false, Color.WHITE)), 
+	HudTime(createUnicodeFont(new Font("Courier", Font.BOLD, 10), 10, true, false, Color.RED)),
+	HudDayTime(createUnicodeFont(new Font("Courier", Font.BOLD, 10), 10, true, false, Color.RED));
 		
 	private UnicodeFont font;
 	

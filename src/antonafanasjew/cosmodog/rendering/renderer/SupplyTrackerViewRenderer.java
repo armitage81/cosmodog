@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -42,14 +43,12 @@ public class SupplyTrackerViewRenderer implements Renderer {
 //		}		
 //		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerValueDrawingContext, LetterTextRenderingParameter.fromText(supplyTrackerValue));
 		
-		
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		SupplyTrackerInventoryItem supplyTracker = (SupplyTrackerInventoryItem)player.getInventory().get(InventoryItemType.SUPPLYTRACKER);
 		
 		if (supplyTracker != null) {
 		
-			DrawingContext labelDc = new SimpleDrawingContext(null, 1124, 406, 124, 35);
 			DrawingContext viewDc = new CenteredDrawingContext(drawingContext, 5);
 
 			Piece closestSupply = PlayerMovementCache.getInstance().getClosestSupply();
@@ -60,11 +59,8 @@ public class SupplyTrackerViewRenderer implements Renderer {
 				Image image = ApplicationContext.instance().getImages().get("ui.ingame.compasspointer");
 				ImageUtils.renderImageRotated(gameContainer, g, image, viewDc, angle);
 				
-				TextBookRendererUtils.renderCenteredLabel(gameContainer, g, labelDc, "Supplies found", FontType.SuppliesTrackerLabel, 0);
-			} else {
-				TextBookRendererUtils.renderCenteredLabel(gameContainer, g, labelDc, "No supplies", FontType.SuppliesTrackerLabel, 0);
+
 			}
-			
 		
 		}
 		

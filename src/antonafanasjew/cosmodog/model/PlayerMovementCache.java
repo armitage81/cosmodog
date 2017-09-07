@@ -66,6 +66,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private boolean playerOnPlatform;
 	
 	private Set<TiledObject> roofRegionsOverPlayer = Sets.newHashSet();
+	private Set<TiledObject> roofRemovalBlockerRegionsOverPlayer = Sets.newHashSet();
 	
 	private int numberInfobitsInGame;
 	
@@ -81,6 +82,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		recalculateclosestPieceInterestingForDebugging(actor, x1, y1, x2, y2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
 		recalculateRoofRegions(actor);
+		recalculateRoofRemovalBlockerRegions(actor);
 		recalculateDynamicPieces();
 		recalculateVisibleDynamicPieces();
 		recalculateInfobitsInGame();
@@ -189,6 +191,23 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		
 			if (RegionUtils.pieceInRegion((Player)actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
 				roofRegionsOverPlayer.add(roofRegion);
+			}
+		}
+		
+	}
+	
+	private void recalculateRoofRemovalBlockerRegions(Actor actor) {
+		
+		roofRemovalBlockerRegionsOverPlayer.clear();
+		
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		
+		Map<String, TiledObject> regions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_ROOF_REMOVAL_BLOCKERS).getObjects();
+		
+		for (TiledObject region : regions.values()) {
+		
+			if (RegionUtils.pieceInRegion((Player)actor, region, map.getTileWidth(), map.getTileHeight())) {
+				roofRemovalBlockerRegionsOverPlayer.add(region);
 			}
 		}
 		
@@ -342,6 +361,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	public Set<TiledObject> getRoofRegionsOverPlayer() {
 		return roofRegionsOverPlayer;
+	}
+	
+	public Set<TiledObject> getRoofRemovalBlockerRegionsOverPlayer() {
+		return roofRemovalBlockerRegionsOverPlayer;
 	}
 
 	public Map<Position, DynamicPiece> getDynamicPieces() {

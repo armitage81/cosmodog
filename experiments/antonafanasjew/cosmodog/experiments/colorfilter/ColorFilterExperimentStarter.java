@@ -29,7 +29,7 @@ public class ColorFilterExperimentStarter extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 	
-		spriteSheet = new SpriteSheet("data/enemy_trike.png", 16, 16);
+		spriteSheet = new SpriteSheet("data/enemy_scout.png", 16, 16);
 		
 		animation = new Animation();
 		animation.setAutoUpdate(true);

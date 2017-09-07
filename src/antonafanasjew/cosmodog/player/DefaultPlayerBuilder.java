@@ -4,18 +4,19 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 
 public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
-		player.setMaxLife(100);
-		player.setLife(100);
-		player.setPositionX(214);
-		player.setPositionY(14);
+//		player.setMaxLife(100);
+//		player.setLife(100);
+//		player.setPositionX(273);
+//		player.setPositionY(138);
 //		
-		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
-		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
+//		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
+//		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
 //		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());
 //		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
 ////		

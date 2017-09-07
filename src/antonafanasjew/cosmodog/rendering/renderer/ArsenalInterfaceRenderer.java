@@ -61,11 +61,11 @@ public class ArsenalInterfaceRenderer implements Renderer {
 		
 		
 		DrawingContext[] dcs = new DrawingContext[5];
-		dcs[0] = new SimpleDrawingContext(context, 640, 605, 90, 90);
-		dcs[1] = new SimpleDrawingContext(context, 740, 605, 90, 90);
-		dcs[2] = new SimpleDrawingContext(context, 840, 605, 90, 90);
-		dcs[3] = new SimpleDrawingContext(context, 950, 605, 90, 90);
-		dcs[4] = new SimpleDrawingContext(context, 1050, 605, 90, 90);
+		dcs[0] = new SimpleDrawingContext(context, 856, 640, 56, 52);
+		dcs[1] = new SimpleDrawingContext(context, 941, 640, 56, 52);
+		dcs[2] = new SimpleDrawingContext(context, 1026, 640, 56, 52);
+		dcs[3] = new SimpleDrawingContext(context, 1111, 640, 56, 52);
+		dcs[4] = new SimpleDrawingContext(context, 1196, 640, 56, 52);
 		
 		Map<WeaponType, DrawingContext> contextsForWeapons = Maps.newHashMap();
 		
@@ -106,7 +106,7 @@ public class ArsenalInterfaceRenderer implements Renderer {
 				g.setColor(Color.white);
 			}
 			g.fillRect(weaponDc.x(), weaponDc.y(), weaponDc.w(), weaponDc.h());
-			
+
 			if (weapon != null) {
 			
 				
@@ -114,12 +114,12 @@ public class ArsenalInterfaceRenderer implements Renderer {
 				Animation animation = applicationContext.getAnimations().get(animationId);
 				
 				
-				DrawingContext weaponIconDc = new TileDrawingContext(weaponDc, 1, 8, 0, 0, 1, 6);
-				weaponIconDc = new SimpleDrawingContext(weaponIconDc, weaponIconDc.w() - 80, 0, 80, 64);
+				//DrawingContext weaponIconDc = new TileDrawingContext(weaponDc, 1, 8, 0, 0, 1, 6);
+				//weaponIconDc = new SimpleDrawingContext(weaponIconDc, weaponIconDc.w() - 80, 0, 80, 64);
 				DrawingContext ammoDc = new TileDrawingContext(weaponDc, 1, 8, 0, 6, 1, 2);
 				ammoDc = new CenteredDrawingContext(ammoDc, 40, ammoDc.h());
 				
-				animation.draw(weaponIconDc.x(), weaponIconDc.y(), weaponIconDc.w(), weaponIconDc.h());
+				animation.draw(weaponDc.x(), weaponDc.y(), weaponDc.w(), weaponDc.h());
 
 				
 				
