@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -42,6 +43,8 @@ public class LifeInterfaceRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
 		
+		
+		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
@@ -61,9 +64,9 @@ public class LifeInterfaceRenderer implements Renderer {
 //		environmentDataDrawingContext = new CenteredDrawingContext(environmentDataDrawingContext, 2);
 		
 		long timestamp = System.currentTimeMillis();
+		boolean flick = (timestamp / Constants.FLICKING_RATE_IN_MILLIS) % 2 == 0;
 		
 		//RENDERING LIFE ROW
-		
 		
 		
 		SimpleDrawingContext lifeLabelDrawingContext = new SimpleDrawingContext(lifeDrawingContext, 0, 0, LABEL_WIDTH, lifeDrawingContext.h());
@@ -73,6 +76,8 @@ public class LifeInterfaceRenderer implements Renderer {
 				
 		
 		g.translate(lifeBarDrawingContext.x(), lifeBarDrawingContext.y());
+
+
 		
 		float potentialMaxLife = player.getMaxLife();
 		float potentialLife = player.getLife();
@@ -93,12 +98,16 @@ public class LifeInterfaceRenderer implements Renderer {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, maxLifeBarWidth, lifeBarDrawingContext.h());
 		
-		ApplicationContext.instance().getAnimations().get("lifeBar").draw(0, 0, currentLifeBarWidth, lifeBarDrawingContext.h());
+		boolean lifeBarLow = ((float)player.getLife() - lifeLentForHunger - lifeLentForThirst - lifeLentForFrost) / player.getMaxLife() <= Constants.FLICKING_THRESHOLD;
+ 
+		if (flick || !lifeBarLow) {
+			ApplicationContext.instance().getAnimations().get("lifeBar").draw(0, 0, currentLifeBarWidth, lifeBarDrawingContext.h());
+		}
 		
 		float thirstLentBarOffset = currentLifeBarWidth - frostLentBarWidth - hungerLentBarWidth - thirstLentBarWidth ;
 		float hungerLentBarOffset = thirstLentBarOffset + thirstLentBarWidth;
 		float frostLentBarOffset = hungerLentBarOffset + hungerLentBarWidth;
-		
+			
 		g.setColor(Color.blue);
 		g.fillRect(thirstLentBarOffset, 0, thirstLentBarWidth, lifeBarDrawingContext.h());
 		
@@ -111,7 +120,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		g.setColor(Color.black);
 		g.setLineWidth(2);
 		g.drawRect(0, 0, currentLifeBarWidth, lifeBarDrawingContext.h());
-		
+	
 		g.setColor(new Color(100, 96, 31, 0.10f));
 		g.setLineWidth(1);
 		for (int i = 1; i < potentialMaxLife; i++) {
@@ -122,7 +131,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		g.setColor(Color.black);
 		g.setLineWidth(2);
 		g.drawRect(0, 0, maxLifeBarWidth, lifeBarDrawingContext.h());
-
+		
 		g.translate(-lifeBarDrawingContext.x(), -lifeBarDrawingContext.y());
 		
 		
@@ -152,7 +161,14 @@ public class LifeInterfaceRenderer implements Renderer {
 			
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, maxRobustnessBarWidth, robustnessBarDrawingContext.h());
-			ApplicationContext.instance().getAnimations().get("robustnessBar").draw(0, 0, currentRobustnessBarWidth, robustnessBarDrawingContext.h());
+			
+
+			boolean robustnessBarLow = ((float)vehicle.getLife()) / vehicle.getMaxLife() <= Constants.FLICKING_THRESHOLD;
+			 
+			if (flick || !robustnessBarLow) {
+				ApplicationContext.instance().getAnimations().get("robustnessBar").draw(0, 0, currentRobustnessBarWidth, robustnessBarDrawingContext.h());
+			}
+			
 			g.setColor(Color.black);
 			g.setLineWidth(2);
 			g.drawRect(0, 0, currentRobustnessBarWidth, robustnessBarDrawingContext.h());
@@ -204,7 +220,12 @@ public class LifeInterfaceRenderer implements Renderer {
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, maxFuelBarWidth, fuelBarDrawingContext.h());
 			
-			ApplicationContext.instance().getAnimations().get("fuelBar").draw(0, 0, currentFuelBarWidth, fuelBarDrawingContext.h());
+			boolean fuelBarLow = ((float)vehicle.getFuel()) / Vehicle.MAX_FUEL <= Constants.FLICKING_THRESHOLD;
+			 
+			if (flick || !fuelBarLow) {
+				ApplicationContext.instance().getAnimations().get("fuelBar").draw(0, 0, currentFuelBarWidth, fuelBarDrawingContext.h());
+			}
+			
 			g.setColor(Color.black);
 			g.setLineWidth(2);
 			g.drawRect(0, 0, currentFuelBarWidth, fuelBarDrawingContext.h());

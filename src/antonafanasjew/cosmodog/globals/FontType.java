@@ -18,7 +18,7 @@ public enum FontType {
 	EndLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)),
 	CreditsText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, false, false, Color.white)),
 	GameLog(createUnicodeFont(new Font("Courier New", Font.PLAIN, 16), 16, true, false, Color.white)),
-	GameLogHeader(createUnicodeFont(new Font("Courier New", Font.BOLD, 12), 12, true, false, Color.ORANGE)),
+	GameLogHeader(createUnicodeFont(new Font("Courier New", Font.PLAIN, 16), 16, true, false, Color.ORANGE)),
 	GameLogControlsHint(createUnicodeFont(new Font("Courier New", Font.BOLD, 12), 12, true, false, Color.GRAY)),
 	PopUp(createUnicodeFont(new Font("Courier New", Font.PLAIN, 16), 16, false, false, Color.white)),
 	PopUpHeader(createUnicodeFont(new Font("Courier New", Font.BOLD, 12), 12, true, false, Color.ORANGE)),

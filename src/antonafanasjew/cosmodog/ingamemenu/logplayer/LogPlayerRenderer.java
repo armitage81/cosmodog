@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
@@ -98,14 +99,19 @@ public class LogPlayerRenderer implements Renderer {
 					DrawingContext titleDrawingContext = new TileDrawingContext(headerDrawingContext, 1, 2, 0, 0);
 					DrawingContext controlsHintDrawingContext = new TileDrawingContext(headerDrawingContext, 1, 2, 0, 1);
 					
-					DrawingContext textDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 5);
-					DrawingContext pressEnterDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 6, 1, 1);
+					//DrawingContext textDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 5);
+					DrawingContext absoluteTextDrawingContext = new SimpleDrawingContext(logContentDrawingContext, 0, 55, Constants.LOG_PLAYER_TEXT_WIDTH, Constants.LOG_PLAYER_TEXT_HEIGHT);
+					
+//					graphics.setColor(Color.red);
+//					graphics.drawRect(textDrawingContext.x(), textDrawingContext.y(), textDrawingContext.w(), textDrawingContext.h());
+//					graphics.setColor(Color.green);
+//					graphics.drawRect(absoluteTextDrawingContext.x(), absoluteTextDrawingContext.y(), absoluteTextDrawingContext.w(), absoluteTextDrawingContext.h());
 					
 					TextBookRendererUtils.renderTextPage(gameContainer, graphics, titleDrawingContext, logHeader, FontType.GameLogHeader, 0);
 					if (logPlayerInputState.getPages() > 1) {
 						TextBookRendererUtils.renderTextPage(gameContainer, graphics, controlsHintDrawingContext, logHint, FontType.GameLogControlsHint, 0);
 					}
-					TextBookRendererUtils.renderTextPage(gameContainer, graphics, textDrawingContext, logContent, FontType.GameLog, logPlayerInputState.getCurrentPage());
+					TextBookRendererUtils.renderTextPage(gameContainer, graphics, absoluteTextDrawingContext, logContent, FontType.GameLog, logPlayerInputState.getCurrentPage());
 					
 				}
 				

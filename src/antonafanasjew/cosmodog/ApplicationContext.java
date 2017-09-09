@@ -573,7 +573,7 @@ public class ApplicationContext {
 		images.put("ui.ingame.barframestart", new Image("data/ui/barframestart.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.barframemiddle", new Image("data/ui/barframemiddle.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.barframeend", new Image("data/ui/barframeend.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.gamelogframe", new Image("data/ui/gamelogframe.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.gamelogframe", new Image("data/ui2/gamelogfield.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.popupframe", new Image("data/ui2/textfield.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.frame", new Image("data/ui2/ui2.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.ingamemenuframe", new Image("data/ui/ingamemenuinterface.png", false, Image.FILTER_NEAREST));

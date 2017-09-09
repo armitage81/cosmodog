@@ -2,6 +2,19 @@ package antonafanasjew.cosmodog.globals;
 
 public class Constants {
 
+	
+	public static final float GAME_LOG_FRAME_WIDTH = 864;
+	public static final float GAME_LOG_FRAME_HEIGHT = 572;
+	
+	public static final float LOG_PLAYER_TEXT_WIDTH = 730;
+	public static final float LOG_PLAYER_TEXT_HEIGHT = 270;
+	
+	public static final float GAME_LOG_TEXT_WIDTH = 800;
+	public static final float GAME_LOG_TEXT_HEIGHT = 440;
+	
+	public static final int FLICKING_RATE_IN_MILLIS = 500;
+	public static final float FLICKING_THRESHOLD = 0.2f;
+	
 	/**
 	 * Relative path to the tiled map document.
 	 */

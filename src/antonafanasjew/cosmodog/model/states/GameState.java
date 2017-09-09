@@ -404,7 +404,7 @@ public class GameState extends BasicGameState {
 		}
 		
 		if (cosmodogGame.getOpenGameLog() != null) {
-			gameLogRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, 800, 700), null);
+			gameLogRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, Constants.GAME_LOG_FRAME_WIDTH, Constants.GAME_LOG_FRAME_HEIGHT), null);
 		}
 		
 		//Draws onscreen notifications

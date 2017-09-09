@@ -10,10 +10,74 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
-//		player.setMaxLife(100);
-//		player.setLife(100);
-//		player.setPositionX(273);
-//		player.setPositionY(138);
+		player.setMaxLife(100);
+		player.setLife(100);
+		player.setPositionX(334);
+		player.setPositionY(317);
+		
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		player.getLogPlayer().addLogToSeries("aliennomads");
+		
+		
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		player.getLogPlayer().addLogToSeries("amurderingpoet");
+		
+		
+		player.getLogPlayer().addLogToSeries("smileofthegoddess");
+		player.getLogPlayer().addLogToSeries("smileofthegoddess");
+		player.getLogPlayer().addLogToSeries("smileofthegoddess");
+		player.getLogPlayer().addLogToSeries("smileofthegoddess");
+		
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		player.getLogPlayer().addLogToSeries("privatehiggs");
+		
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		player.getLogPlayer().addLogToSeries("pinky");
+		
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		player.getLogPlayer().addLogToSeries("maryharper");
+		
+		
+//		player.setWater(20);
+//		player.setFood(20);
 //		
 //		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 //		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());

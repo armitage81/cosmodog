@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -25,6 +26,9 @@ public class VitalDataInterfaceRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
 
+		long timestamp = System.currentTimeMillis();
+		boolean flick = (timestamp / Constants.FLICKING_RATE_IN_MILLIS) % 2 == 0;
+		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
@@ -73,7 +77,13 @@ public class VitalDataInterfaceRenderer implements Renderer {
 			
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, maxWaterBarWidth, thirstBarDrawingContext.h());
-			ApplicationContext.instance().getAnimations().get("waterBar").draw(0, 0, currentWaterBarWidth, thirstBarDrawingContext.h());
+			
+			boolean waterBarLow = ((float)player.getWater()) / player.getCurrentMaxWater() <= Constants.FLICKING_THRESHOLD;
+			 
+			if (flick || !waterBarLow) {
+				ApplicationContext.instance().getAnimations().get("waterBar").draw(0, 0, currentWaterBarWidth, thirstBarDrawingContext.h());
+			}
+			
 			g.setColor(Color.black);
 			g.setLineWidth(2);
 			g.drawRect(0, 0, maxWaterBarWidth, thirstBarDrawingContext.h());
@@ -115,7 +125,13 @@ public class VitalDataInterfaceRenderer implements Renderer {
 			
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, maxFoodBarWidth, hungerBarDrawingContext.h());
-			ApplicationContext.instance().getAnimations().get("foodBar").draw(0, 0, currentFoodBarWidth, hungerBarDrawingContext.h());
+			
+			boolean foodBarLow = ((float)player.getFood()) / player.getCurrentMaxFood() <= Constants.FLICKING_THRESHOLD;
+			 
+			if (flick || !foodBarLow) {
+				ApplicationContext.instance().getAnimations().get("foodBar").draw(0, 0, currentFoodBarWidth, hungerBarDrawingContext.h());
+			}
+			
 			g.setColor(Color.black);
 			g.setLineWidth(2);
 			g.drawRect(0, 0, maxFoodBarWidth, hungerBarDrawingContext.h());

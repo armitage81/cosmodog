@@ -288,7 +288,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Set<Enemy> enemies = map.getEnemies();
 		for (Enemy enemy : enemies) {
 			
-			int timeBudgetForMovement = (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep();
+			int timeBudgetForMovement = (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep() * enemy.getSpeedFactor();
 			float spentTimeBudget = actionTimeRatio * timeBudgetForMovement;
 			
 			
