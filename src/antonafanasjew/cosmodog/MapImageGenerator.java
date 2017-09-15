@@ -16,6 +16,7 @@ import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapReader;
 import antonafanasjew.cosmodog.tiledmap.io.XmlTiledMapReader;
 import antonafanasjew.cosmodog.util.InitializationUtils;
+import antonafanasjew.cosmodog.util.TilesetUtils;
 
 public class MapImageGenerator {
 
@@ -62,9 +63,7 @@ public class MapImageGenerator {
 			int imagePosX = imageIndex % 9;
 			int imagePosY = imageIndex / 9;
 
-			SpriteSheet tilesetSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_TILES);
-
-			Image tileImage = tilesetSpriteSheet.getSprite(imagePosX, imagePosY);
+			Image tileImage = TilesetUtils.tileByIndex(imagePosX, imagePosY);
 			g.drawImage(tileImage, dc.x(), dc.y(), dc.x() + dc.w(), dc.y() + dc.h(), 0, 0, tileImage.getWidth(), tileImage.getHeight());
 		}
 

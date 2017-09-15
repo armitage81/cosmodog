@@ -10,6 +10,7 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
+		/*
 		player.setMaxLife(100);
 		player.setLife(100);
 		player.setPositionX(334);
@@ -74,7 +75,7 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("maryharper");
 		player.getLogPlayer().addLogToSeries("maryharper");
 		player.getLogPlayer().addLogToSeries("maryharper");
-		
+		*/
 		
 //		player.setWater(20);
 //		player.setFood(20);

@@ -20,6 +20,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.TilesetUtils;
 
 
 
@@ -106,13 +107,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 				int imagePosX = imageIndex % 9;
 				int imagePosY = imageIndex / 9;
 				
-				SpriteSheet tilesetSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_TILES);
-				
-				if (imagePosY == 119304984 ) {
-					System.out.println("Yulka Kozyulka");
-				}
-				
-				Image tileImage = tilesetSpriteSheet.getSprite(imagePosX, imagePosY);
+				Image tileImage = TilesetUtils.tileByIndex(imagePosX, imagePosY);
 				
 				tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
 			}	

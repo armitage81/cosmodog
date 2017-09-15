@@ -373,30 +373,38 @@ public class ApplicationContext {
 		
 		this.setCosmodog(cosmodog);
 		
-		Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.wav");
-		Music musicInGame4 = new Music("data/music/EG_DangerZone_Loop.wav");
-		Music musicInGame5 = new Music("data/music/EG_Despair_Loop.wav");
-		Music musicInGame2 = new Music("data/music/EG_Dreamworld_Loop.wav");
-		Music musicInGame3 = new Music("data/music/EG_RayofHope_Loop.wav");
-		Music musicInGame1 = new Music("data/music/EG_Unknown_Loop.wav");
-		Music musicGameOver = new Music("data/music/EG_Negative_Stinger.wav");
-		Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.wav");
-		Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.wav");
-		
-		
-		
-		
+		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, new Runnable() {
 
-		this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
+			@Override
+			public void run() {
+				try {
+					Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.wav");
+					Music musicInGame4 = new Music("data/music/EG_DangerZone_Loop.wav");
+					Music musicInGame5 = new Music("data/music/EG_Despair_Loop.wav");
+					Music musicInGame2 = new Music("data/music/EG_Dreamworld_Loop.wav");
+					Music musicInGame3 = new Music("data/music/EG_RayofHope_Loop.wav");
+					Music musicInGame1 = new Music("data/music/EG_Unknown_Loop.wav");
+					Music musicGameOver = new Music("data/music/EG_Negative_Stinger.wav");
+					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.wav");
+					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.wav");
+					
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
+					
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME1, musicInGame1);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME2, musicInGame2);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME3, musicInGame3);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME4, musicInGame4);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME5, musicInGame5);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+			
+		});
 		
-		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME1, musicInGame1);
-		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME2, musicInGame2);
-		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME3, musicInGame3);
-		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME4, musicInGame4);
-		this.getMusicResources().put(MusicResources.MUSIC_IN_GAME5, musicInGame5);
-		this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
-		this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
-		this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
 		
 		Sound collected = new Sound("data/sound/collected.wav");
 		Sound eaten = new Sound("data/sound/eaten.wav");
@@ -545,7 +553,8 @@ public class ApplicationContext {
 		SpriteSheet alphabethSheet = new SpriteSheet("data/alphabeth.png", 16, 24);
 		SpriteSheet alphabeth2Sheet = new SpriteSheet("data/alphabeth2.png", 16, 16);
 		SpriteSheet interfaceSheet = new SpriteSheet("data/interface.png", 16, 16);
-		SpriteSheet tilesetSheet = new SpriteSheet("data/tiles.png", 16, 16);
+		SpriteSheet tileset1Sheet = new SpriteSheet("data/tiles1.png", 16, 16);
+		SpriteSheet tileset2Sheet = new SpriteSheet("data/tiles2.png", 16, 16);
 		
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_PLAYER, playerSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_COLLECTIBLE_ITEM_TOOL, collectibleItemToolSheet);
@@ -557,7 +566,8 @@ public class ApplicationContext {
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH, alphabethSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH2, alphabeth2Sheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INTERFACE, interfaceSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES, tilesetSheet);
+		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES1, tileset1Sheet);
+		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES2, tileset2Sheet);
 		
 		
 		AnimationBuilder builder = new AnimationBuilder();
@@ -595,8 +605,8 @@ public class ApplicationContext {
 		//This big image is not loaded eagerly when initializing animations in the application context.
 		//That causes a delay when opening map for the first time. Initializing the map image explicitly to
 		//avoid this.
-		Image mapImage = getAnimations().get("completechart").getImage(0);
-		mapImage.draw();
+		//Image mapImage = getAnimations().get("completechart").getImage(0);
+		//mapImage.draw();
 		
 		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabeth2Sheet);
 		this.characterLetters = letterBuilder.buildLetters();

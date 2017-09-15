@@ -86,7 +86,7 @@ public class Features {
 		getFeatureFlags().put(FEATURE_STORY, false);
 		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
-		getFeatureFlags().put(FEATURE_MUSIC, true);
+		getFeatureFlags().put(FEATURE_MUSIC, false);
 		getFeatureFlags().put(FEATURE_DAMAGE, true);
 		getFeatureFlags().put(FEATURE_GODFISTS, false);
 	}

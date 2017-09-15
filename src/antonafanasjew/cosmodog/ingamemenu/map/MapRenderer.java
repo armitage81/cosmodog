@@ -63,7 +63,7 @@ public class MapRenderer implements Renderer {
 //		}
 		
 		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemap", drawingContext);
-		
+		/*
 		int mapPieceColumns = ChartInventoryItem.CHART_PIECE_NUMBER_X;
 		int mapPieceRows = ChartInventoryItem.CHART_PIECE_NUMBER_Y;
 		
@@ -178,8 +178,8 @@ public class MapRenderer implements Renderer {
 				}
 			}
 		}
-		
 		graphics.translate(-fullMapGridDc.x(), -fullMapGridDc.y());
+		 */
 		
 	}
 	
