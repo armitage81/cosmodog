@@ -1,16 +1,17 @@
 package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.globals.Features;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
-import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
-import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
+import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InteractingWithPieceTrigger;
@@ -28,27 +29,33 @@ public class MultiInstancePieceRuleBuilder extends AbstractResourceWrapperBuilde
 		
 		String ruleName = values[0];
 		String pieceName = values[1];
-		String narrativeSequenceId = values[2];
+		String gameLogsSeriesNameAndId = values[2];
 		String gameProgressProperty = values[3];
 		String gameProgressPropertyValue = values[4];
 		int gameProgressPropertyCount = Integer.valueOf(gameProgressPropertyValue);
+		short priority = Short.valueOf(values[5]);
 		
 		
 		RuleTrigger pieceInteractionTrigger = new InteractingWithPieceTrigger(pieceName);
-		RuleTrigger gameProgressPropertyValueTrigger = new GameProgressPropertyTrigger(gameProgressProperty, gameProgressPropertyValue);
+		RuleTrigger gameProgressPropertyValueTrigger = new GameProgressPropertyTrigger(gameProgressProperty, gameProgressPropertyValue, "0");
 		
 		RuleTrigger trigger = AndTrigger.and(pieceInteractionTrigger, gameProgressPropertyValueTrigger);
 		
+		String gameLogSeries = gameLogsSeriesNameAndId.split("/")[0];
+		String gameLogId = gameLogsSeriesNameAndId.split("/")[1];
 		
-		AsyncAction asyncAction = new DialogAction(narrativeSequenceId);
+		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
+		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
+		
+		AsyncAction asyncAction = new GameLogAction(gameLog);
 		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		
-		action = new FeatureBoundAction(Features.FEATURE_STORY, action);
+		//action = new FeatureBoundAction(Features.FEATURE_STORY, action);
 		
 		RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, String.valueOf(gameProgressPropertyCount + 1));
 		action = BlockAction.block(action, setPropertyAction);
 				
-		Rule rule = new Rule(ruleName, trigger, action, Rule.RULE_PRIORITY_10);
+		Rule rule = new Rule(ruleName, trigger, action, priority);
 		return rule;
 	}
 	

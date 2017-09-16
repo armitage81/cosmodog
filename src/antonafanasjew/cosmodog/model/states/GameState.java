@@ -34,6 +34,7 @@ import antonafanasjew.cosmodog.rendering.renderer.ArsenalInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.ArtilleryGrenadeRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.BirdsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.CloudRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.CutsceneRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DayTimeFilterRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DialogBoxRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
@@ -128,6 +129,7 @@ public class GameState extends BasicGameState {
 	private DialogBoxRenderer dialogBoxRenderer;
 	private TextFrameRenderer textFrameRenderer;
 	private GameLogRenderer gameLogRenderer;
+	private CutsceneRenderer cutsceneRenderer;
 	private InGameMenuRenderer inGameMenuRenderer;
 	private GeigerCounterViewRenderer geigerCounterViewRenderer;
 	private SupplyTrackerViewRenderer supplyTrackerViewRenderer;
@@ -195,6 +197,7 @@ public class GameState extends BasicGameState {
 		dialogBoxRenderer = new DialogBoxRenderer();
 		textFrameRenderer = new TextFrameRenderer();
 		gameLogRenderer = new GameLogRenderer();
+		cutsceneRenderer = new CutsceneRenderer();
 		inGameMenuRenderer = new InGameMenuRenderer();
 		geigerCounterViewRenderer = new GeigerCounterViewRenderer();
 		supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
@@ -404,7 +407,12 @@ public class GameState extends BasicGameState {
 		}
 		
 		if (cosmodogGame.getOpenGameLog() != null) {
-			gameLogRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, Constants.GAME_LOG_FRAME_WIDTH, Constants.GAME_LOG_FRAME_HEIGHT), null);
+			String category = cosmodogGame.getOpenGameLog().getGameLog().getCategory();
+			if (category.equals("cutscenes")) {
+				cutsceneRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, Constants.GAME_LOG_FRAME_WIDTH, Constants.GAME_LOG_FRAME_HEIGHT), null);
+			} else {
+				gameLogRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, Constants.GAME_LOG_FRAME_WIDTH, Constants.GAME_LOG_FRAME_HEIGHT), null);
+			}
 		}
 		
 		//Draws onscreen notifications
