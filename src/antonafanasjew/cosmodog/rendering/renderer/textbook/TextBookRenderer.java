@@ -71,7 +71,7 @@ public class TextBookRenderer implements Renderer {
 		float usedUpVerticalSpace = lineHeight * linesInPage;
 		float remainingVerticalSpace = c.getHeight() - usedUpVerticalSpace;
 		
-		float verticalOffset = (param.verticalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.verticalAlignment == TextBookRendererParameter.ALIGN_END ? remainingVerticalSpace : remainingVerticalSpace / 2));
+		int verticalOffset = (int)(param.verticalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.verticalAlignment == TextBookRendererParameter.ALIGN_END ? remainingVerticalSpace : remainingVerticalSpace / 2));
 		
 		
 		for (int i = 0; i < linesInPage; i++) {
