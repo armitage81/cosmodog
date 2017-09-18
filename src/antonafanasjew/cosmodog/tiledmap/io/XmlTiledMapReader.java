@@ -161,9 +161,16 @@ public class XmlTiledMapReader implements TiledMapReader {
 						throw new IOException("Error Reading TMX Layer Data: Premature end of tile data");
 					}
 					
-					TiledTile tile = new TiledTile();
 					int gid = unsignedByteToInt(temp[0]) | unsignedByteToInt(temp[1]) << 8 | unsignedByteToInt(temp[2]) << 16 | unsignedByteToInt(temp[3]) << 24;
-					tile.setGid(gid);
+					
+					//To use less memory do not create a TiledTile object in case the gid is 0
+					TiledTile tile = null;
+					
+					if (gid > 0) {
+						tile = new TiledTile();
+						tile.setGid(gid);
+					}
+					
 					retVal.add(tile); 
 				}
 			}

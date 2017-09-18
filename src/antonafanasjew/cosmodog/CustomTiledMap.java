@@ -236,6 +236,6 @@ public class CustomTiledMap {
 	public int getTileId(int x, int y, int layerIndex) {
 		TiledMapLayer layer = mapLayers.get(layerIndex);
 		TiledTile tile = layer.getTile(x, y);
-		return tile.getGid();
+		return tile == null ? 0 : tile.getGid();
 	}
 }

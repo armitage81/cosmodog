@@ -605,8 +605,8 @@ public class ApplicationContext {
 		//This big image is not loaded eagerly when initializing animations in the application context.
 		//That causes a delay when opening map for the first time. Initializing the map image explicitly to
 		//avoid this.
-		//Image mapImage = getAnimations().get("completechart").getImage(0);
-		//mapImage.draw();
+//		Image mapImage = getAnimations().get("completechart").getImage(0);
+//		mapImage.draw();
 		
 		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabeth2Sheet);
 		this.characterLetters = letterBuilder.buildLetters();

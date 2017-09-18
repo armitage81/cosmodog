@@ -2,14 +2,14 @@ package antonafanasjew.cosmodog.tiledmap;
 
 public class TiledTile {
 
-	private int gid;
+	private short gid;
 
 	public int getGid() {
 		return gid;
 	}
 
 	public void setGid(int gid) {
-		this.gid = gid;
+		this.gid = (short)gid;
 	}
 	
 	public int getGidAsTileNumber() {
@@ -17,7 +17,7 @@ public class TiledTile {
 	}
 
 	public void setGidFromTileNumber(int tileNumber) {
-		this.gid = tileNumber + 1;
+		this.gid = (short)(tileNumber + 1);
 	}
 
 	

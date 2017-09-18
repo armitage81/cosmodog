@@ -24,13 +24,13 @@ public class MapInputState implements InGameMenuInputState {
 	}
 	
 	public void right() {
-		if (selectionX < ChartInventoryItem.CHART_PIECE_NUMBER_X - 1) {
+		if (selectionX < ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X - 1) {
 			selectionX += 1;
 		}
 	}
 	
 	public void down() {
-		if (selectionY < ChartInventoryItem.CHART_PIECE_NUMBER_Y - 1) {
+		if (selectionY < ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y - 1) {
 			selectionY += 1;
 		}
 	}
@@ -57,8 +57,8 @@ public class MapInputState implements InGameMenuInputState {
 		int posX = player.getPositionX();
 		int posY = player.getPositionY();
 		
-		int chartPieceWidth = mapWidth / ChartInventoryItem.CHART_PIECE_NUMBER_X;
-		int chartPieceHeight = mapHeight / ChartInventoryItem.CHART_PIECE_NUMBER_Y;
+		int chartPieceWidth = mapWidth / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
+		int chartPieceHeight = mapHeight / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
 		
 		selectionX = posX / chartPieceWidth;
 		selectionY = posY / chartPieceHeight;

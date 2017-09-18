@@ -1,18 +1,10 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.imageout.ImageOut;
 
-import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.globals.FontType;
-import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
@@ -21,6 +13,7 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.MiniMapRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
@@ -28,47 +21,20 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MapRenderer implements Renderer {
 
-//	private Image mapCache = null;
+	
+	private MiniMapRenderer miniMapRenderer = new MiniMapRenderer();
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
 		
-		
-//		//Keep this block as you will need it to regenerate the map if it changes.
-//		if (mapCache == null) {
-//			try {
-//				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-//				mapCache = new Image(map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
-//				Graphics mapCacheGraphics = mapCache.getGraphics();
-//				//This context starts with 0/0 as it relates to the map image graphics.
-//				DrawingContext mapDrawingContext = new SimpleDrawingContext(null, 0, 0, (float)mapCache.getWidth(), (float)mapCache.getHeight());
-//				
-//				for (int i = 0; i < Layers.LAYER_META_COLLISIONS; i++) {
-//					for (int tx = 0; tx < map.getWidth(); tx++) {
-//						for (int ty = 0; ty < map.getHeight(); ty++) {
-//							TileDrawingContext tileDc = new TileDrawingContext(mapDrawingContext, map.getWidth(), map.getHeight(), tx, ty);
-//							if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
-//								render(map, tileDc, mapCacheGraphics, tx, ty, i);
-//							}
-//						}
-//					}
-//					
-//				}
-//				
-//				ImageOut.write(mapCache, "c:/temp/map.png");
-//				
-//			} catch (SlickException e) {
-//				e.printStackTrace();
-//			}
-//		}
-		
+				
 		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemap", drawingContext);
-		/*
-		int mapPieceColumns = ChartInventoryItem.CHART_PIECE_NUMBER_X;
-		int mapPieceRows = ChartInventoryItem.CHART_PIECE_NUMBER_Y;
 		
-		Image mapImage = ApplicationContext.instance().getAnimations().get("completechart").getImage(0);
+		int actualMapPieceColumns = ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
+		int actualMapPieceRows = ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
 		
+		int mapPieceColumns = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
+		int mapPieceRows = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
 		
 		DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(drawingContext);
 		DrawingContext descriptionDrawingContext = descriptionDrawingContext(drawingContext);
@@ -85,23 +51,15 @@ public class MapRenderer implements Renderer {
 		Player player = ApplicationContextUtils.getPlayer();
 		ChartInventoryItem chartInventoryItem = (ChartInventoryItem)player.getInventory().get(InventoryItemType.CHART);
 		
-		boolean chartPieceDiscovered = chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(mapVisibleAreaX, mapVisibleAreaY);
+		boolean chartPieceDiscovered = chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(mapVisibleAreaX / 2, mapVisibleAreaY / 2);
 
 		float mapAreaContextLength = mapAreaDrawingContext.w() < mapAreaDrawingContext.h() ? mapAreaDrawingContext.w() : mapAreaDrawingContext.h();
 		DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
 		
 		if (chartPieceDiscovered) {
 		
-			float pieceWidth = mapImage.getWidth() / (float)mapPieceColumns;
-			float pieceHeight = mapImage.getHeight() / (float)mapPieceRows;
+			miniMapRenderer.render(gameContainer, graphics, mapAreaQuadraticDrawingContext, mapInputState);
 			
-			float offsetX = pieceWidth * mapVisibleAreaX;
-			float offsetY = pieceHeight * mapVisibleAreaY;
-			
-
-			
-			graphics.drawImage(mapImage, mapAreaQuadraticDrawingContext.x(), mapAreaQuadraticDrawingContext.y(), mapAreaQuadraticDrawingContext.x() + mapAreaQuadraticDrawingContext.w(), mapAreaQuadraticDrawingContext.y() + mapAreaQuadraticDrawingContext.h(), offsetX, offsetY, offsetX + pieceWidth, offsetY + pieceHeight);
-		
 		}
 		
 		//Render players position in the selected chart piece.
@@ -111,8 +69,8 @@ public class MapRenderer implements Renderer {
 		int posX = player.getPositionX();
 		int posY = player.getPositionY();
 		
-		int chartPieceWidth = mapWidth / ChartInventoryItem.CHART_PIECE_NUMBER_X;
-		int chartPieceHeight = mapHeight / ChartInventoryItem.CHART_PIECE_NUMBER_Y;
+		int chartPieceWidth = mapWidth / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
+		int chartPieceHeight = mapHeight / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
 		
 		if (mapVisibleAreaX == posX / chartPieceWidth && mapVisibleAreaY == posY / chartPieceHeight) {
 			int posInChartPieceX = posX - (chartPieceWidth * mapVisibleAreaX);
@@ -154,6 +112,9 @@ public class MapRenderer implements Renderer {
 		float gridW = fullMapGridDc.w() / mapPieceColumns;
 		float gridH = fullMapGridDc.h() / mapPieceRows;
 		
+		float bigGridW = fullMapGridDc.w() / actualMapPieceColumns;
+		float bigGridH = fullMapGridDc.h() / actualMapPieceRows;
+		
 		graphics.translate(fullMapGridDc.x(), fullMapGridDc.y());
 		
 		for (int i = 0; i < mapPieceColumns; i++) {
@@ -161,15 +122,15 @@ public class MapRenderer implements Renderer {
 				float x = gridW * i;
 				float y = gridH * j;
 				boolean currentSelection = (i == mapVisibleAreaX) && (j == mapVisibleAreaY);
-				boolean discovered = chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(i, j);
+				boolean discovered = chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(i / 2, j / 2);
 				if (discovered) {
 					graphics.setColor(Color.blue);
 				} else {
 					graphics.setColor(Color.red);
 				}
 				graphics.fillRect(x, y, gridW, gridH);
-				graphics.setColor(Color.orange);
-				graphics.drawRect(x, y, gridW, gridH);
+				//graphics.setColor(Color.orange);
+				//graphics.drawRect(x, y, gridW, gridH);
 				
 				long timestamp = System.currentTimeMillis();
 				if (currentSelection && (timestamp / 250) % 2 == 0) {
@@ -178,33 +139,20 @@ public class MapRenderer implements Renderer {
 				}
 			}
 		}
-		graphics.translate(-fullMapGridDc.x(), -fullMapGridDc.y());
-		 */
 		
+		for (int i = 0; i < actualMapPieceColumns; i++) {
+			for (int j = 0; j < actualMapPieceRows; j++) {
+				
+				float x = bigGridW * i;
+				float y = bigGridH * j;
+				
+				graphics.setColor(Color.orange);
+				graphics.drawRect(x, y, bigGridW, bigGridH);				
+			}
+		}
+		
+		graphics.translate(-fullMapGridDc.x(), -fullMapGridDc.y());
 	}
-	
-	
-//	private void render(CosmodogMap map, DrawingContext dc, Graphics g, int tilePosX, int tilePosY, int layerIndex) {
-//		
-//		
-//		Animation animation = null;
-//
-//		int tileId = map.getTileId(tilePosX, tilePosY, layerIndex);
-//
-//		int imageIndex = tileId - 1;
-//
-//		if (imageIndex >= 0) {
-//
-//			int imagePosX = imageIndex % 9;
-//			int imagePosY = imageIndex / 9;
-//
-//			SpriteSheet tilesetSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_TILES);
-//
-//			Image tileImage = tilesetSpriteSheet.getSprite(imagePosX, imagePosY);
-//			g.drawImage(tileImage, dc.x(), dc.y(), dc.x() + dc.w(), dc.y() + dc.h(), 0, 0, tileImage.getWidth(), tileImage.getHeight());
-//		}
-//
-//	}
 	
 	private DrawingContext mapAreaDrawingContext(DrawingContext mainDc) {
 		return new SimpleDrawingContext(mainDc, 13, 13, 759, 406);
