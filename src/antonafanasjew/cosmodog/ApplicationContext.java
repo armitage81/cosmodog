@@ -553,8 +553,8 @@ public class ApplicationContext {
 		SpriteSheet alphabethSheet = new SpriteSheet("data/alphabeth.png", 16, 24);
 		SpriteSheet alphabeth2Sheet = new SpriteSheet("data/alphabeth2.png", 16, 16);
 		SpriteSheet interfaceSheet = new SpriteSheet("data/interface.png", 16, 16);
-		SpriteSheet tileset1Sheet = new SpriteSheet("data/tiles1.png", 16, 16);
-		SpriteSheet tileset2Sheet = new SpriteSheet("data/tiles2.png", 16, 16);
+		SpriteSheet tileset1Sheet = new SpriteSheet("data/tileset00000.png", 16, 16);
+		SpriteSheet tileset2Sheet = new SpriteSheet("data/tileset00001.png", 16, 16);
 		
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_PLAYER, playerSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_COLLECTIBLE_ITEM_TOOL, collectibleItemToolSheet);
