@@ -43,6 +43,10 @@ public enum AsyncActionType {
 	
 	MINE_EXPLOSION(true, false, true),
 	
+	RADIATION_DAMAGE(true, false, true),
+	SHOCK_DAMAGE(true, false, true),
+	
+	DEATH_BY_SHOCK(true, false, true),
 	DEATH_BY_RADIATION(true, false, true),
 	
 	/**

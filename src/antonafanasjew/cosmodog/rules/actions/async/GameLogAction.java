@@ -9,8 +9,11 @@ import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogState;
+import antonafanasjew.cosmodog.model.gamelog.GameLogs;
+import antonafanasjew.cosmodog.model.inventory.LogPlayer;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -35,6 +38,21 @@ public class GameLogAction extends AbstractAsyncAction {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME_GAMELOG).handleInput(gc, sbg, after - before, applicationContext);
+	}
+	
+	@Override
+	public void onEnd() {
+		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
+		Player player = ApplicationContextUtils.getPlayer();
+		LogPlayer logPlayer = player.getLogPlayer();
+		String series = gameLog.getCategory();
+		String id = gameLog.getIdInCategory();
+		if (GameLogs.SPECIFIC_LOGS_SERIES.contains(series)) {
+			short unsortedLogId = gameLogs.getGameLogNumberById(series, id);
+			logPlayer.addSpecificLog(series, unsortedLogId);
+		} else {
+			logPlayer.addLogToSeries(series);
+		}
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
+import antonafanasjew.cosmodog.actions.cutscenes.RadiationDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -94,6 +95,8 @@ public class PlayerRenderer extends AbstractRenderer {
 			mineExplosionAction = (MineExplosionAction)action;
 		}
 		
+		Object radiationDamageAction = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.RADIATION_DAMAGE);
+		Object shockDamageAction = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SHOCK_DAMAGE);
 		
 		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
@@ -114,7 +117,12 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 		boolean playerIsTakingDamage = false;
-		if (mineExplosionAction != null) {
+		
+		if (shockDamageAction != null) {
+			playerIsTakingDamage = true;
+		} if (radiationDamageAction != null) {
+			playerIsTakingDamage = true;
+		} else if (mineExplosionAction != null) {
 			playerIsTakingDamage = true;
 		} else if (fightPhaseTransition != null) {
 			if (fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition) {

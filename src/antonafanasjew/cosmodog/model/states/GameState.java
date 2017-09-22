@@ -45,6 +45,7 @@ import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendere
 import antonafanasjew.cosmodog.rendering.renderer.GameLogRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.GeigerCounterViewRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.InfobitsRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.LifeInterfaceRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MapLayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MarkedTileRenderer;
@@ -91,6 +92,7 @@ public class GameState extends BasicGameState {
 	private DrawingContext geigerCounterDrawingContext;
 	private DrawingContext supplyTrackerDrawingContext;
 	private DrawingContext timeDrawingContext;
+	private DrawingContext infobitsDrawingContext;
 	
 	private DrawingContext lifeDrawingContext;
 	private DrawingContext vitalDataDrawingContext;
@@ -121,6 +123,7 @@ public class GameState extends BasicGameState {
 	private Renderer dyingPlayerRenderer;
 	private AbstractRenderer onScreenNotificationRenderer;
 	private Renderer timeRenderer;
+	private Renderer infobitsRenderer;
 	
 	private MapLayerRendererPredicate bottomLayersPredicate;
 	private MapLayerRendererPredicate tipsLayersPredicate;
@@ -150,7 +153,7 @@ public class GameState extends BasicGameState {
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
 		
 
-		
+		infobitsDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 582, 28, 56, 52);
 		timeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1026, 28, 56, 52);
 		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1111, 28, 56, 52);
 		supplyTrackerDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1196, 28, 56, 52);
@@ -202,6 +205,7 @@ public class GameState extends BasicGameState {
 		geigerCounterViewRenderer = new GeigerCounterViewRenderer();
 		supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
 		timeRenderer = new TimeRenderer();
+		infobitsRenderer = new InfobitsRenderer();
 		
 		bottomLayersPredicate = new BottomLayersRenderingPredicate();
 		tipsLayersPredicate = new TipsLayersRenderingPredicate();
@@ -381,6 +385,8 @@ public class GameState extends BasicGameState {
 		geigerCounterViewRenderer.render(gc, g, geigerCounterDrawingContext, null);
 		supplyTrackerViewRenderer.render(gc, g, supplyTrackerDrawingContext, null);
 		timeRenderer.render(gc, g, timeDrawingContext, null);
+		infobitsRenderer.render(gc, g, infobitsDrawingContext, null);
+		
 		arsenalInterfaceRenderer.render(gc, g, gameContainerDrawingContext, null);
 		
 		lifeInterfaceRenderer.render(gc, g, lifeDrawingContext, null);
@@ -408,7 +414,7 @@ public class GameState extends BasicGameState {
 		
 		if (cosmodogGame.getOpenGameLog() != null) {
 			String category = cosmodogGame.getOpenGameLog().getGameLog().getCategory();
-			if (category.equals("cutscenes")) {
+			if (category.equals("memories") || category.equals("cutscenes")) {
 				cutsceneRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, Constants.GAME_LOG_FRAME_WIDTH, Constants.GAME_LOG_FRAME_HEIGHT), null);
 			} else {
 				gameLogRenderer.render(gc, g, new CenteredDrawingContext(gameContainerDrawingContext, Constants.GAME_LOG_FRAME_WIDTH, Constants.GAME_LOG_FRAME_HEIGHT), null);

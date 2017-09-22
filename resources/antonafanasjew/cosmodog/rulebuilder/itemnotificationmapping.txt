@@ -10,7 +10,6 @@ VEHICLE_DESCRIPTION;vehicle;0;vehicleDescription; You found a vehicle. Use it to
 SOULESSENCE_DESCRIPTION;soulessence;ANY;soulessenceDescription;You found the jar of Soul Essence. Your maximal life has increased.;40
 MEDIPACK_DESCRIPTION;medipack;0;medipackDescription;You found a medipack and used it. Your health has been restored.;40
 ARMOR_DESCRIPTION;armor;ANY;armorDescription;You found an armor plate. Vehicles will be more durable.;40
-INSIGHT_DESCRIPTION;insight;ANY;insightDesciption;You found an alien artifact.;40
 SOFTWARE_DESCRIPTION;software;ANY;softwareDesciption;You found a software chip from the data center.;40
 CHART_DESCRIPTION;chart;ANY;chartDesciption;You found a map of this area. It can be viewed in the menu on the map screen.;40
 PISTOL_DESCRIPTION;pistol;0;pistolDescription;You found a handgun. Press [TAB] to switch weapons. Collect ammo to reload.;40

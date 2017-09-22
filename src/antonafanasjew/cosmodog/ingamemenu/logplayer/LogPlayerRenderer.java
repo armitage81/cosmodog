@@ -69,8 +69,8 @@ public class LogPlayerRenderer implements Renderer {
 				GameLog gameLog = gameLogsForSeries.get(j);
 
 				boolean found;
-				if (GameLogs.SPECIFIC_LOGS_SERIES.equals(seriesName)) {
-					found = logPlayer.allFoundSpecificLogs().contains(j);
+				if (GameLogs.SPECIFIC_LOGS_SERIES.contains(seriesName)) {
+					found = logPlayer.allFoundSpecificLogs(seriesName).contains(j);
 				} else {
 					found = logPlayer.noOfFoundLogsForSeries(seriesName) > j;
 				}

@@ -4,4 +4,5 @@ public interface InGameMenuInputState {
 
 	void initializeState();
 	
+	
 }

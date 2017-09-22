@@ -7,8 +7,9 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.DeathByRadiationAction;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
+import antonafanasjew.cosmodog.actions.cutscenes.RadiationDamageAction;
+import antonafanasjew.cosmodog.actions.cutscenes.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
@@ -448,12 +449,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) == null) {
 				if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
-					OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
-					if (player.getLife() > 2) {
-						player.decreaseLife(2);
-					} else {
-						cosmodogGame.getActionRegistry().registerAction(AsyncActionType.DEATH_BY_RADIATION, new DeathByRadiationAction(1000));
-					}
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.RADIATION_DAMAGE, new RadiationDamageAction(500));
 				}
 			} else {
 				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: Suppressed by suit");
@@ -463,7 +459,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	}
 	
 	private void checkElectricity(ApplicationContext applicationContext) {
-
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
@@ -471,8 +467,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		if (TileType.ELECTRICITY.getTileId() == electricityTileId) {
 			if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
-				player.decreaseLife(1);
-				OverheadNotificationAction.registerOverheadNotification(player, "Shock: -1");
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.SHOCK_DAMAGE, new ShockDamageAction(500));
 			}
 		}
 		

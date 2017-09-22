@@ -30,15 +30,12 @@ public class LogInteraction extends AbstractPieceInteraction {
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog concreteLog;
 		
-		if (GameLogs.SPECIFIC_LOGS_SERIES.equals(series)) {
-			short unsortedLogId = gameLogs.getUnsortedGameLogNumberById(id);
-			concreteLog = gameLogs.getUnsortedGameLogById(id);
-			logPlayer.addSpecificLog(unsortedLogId);
+		if (GameLogs.SPECIFIC_LOGS_SERIES.contains(series)) {
+			concreteLog = gameLogs.getUnsortedGameLogById(series, id);
 		} else {
 			List<GameLog> logsForSeries = gameLogs.getGameLogsForSeries(series);
 			int noOfFoundLogs = logPlayer.noOfFoundLogsForSeries(series);
 			concreteLog = logsForSeries.get(noOfFoundLogs); //it's the next one because list is zero-based.
-			logPlayer.addLogToSeries(series);
 		}
 		
 		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new GameLogAction(concreteLog));

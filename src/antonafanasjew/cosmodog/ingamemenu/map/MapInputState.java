@@ -57,8 +57,8 @@ public class MapInputState implements InGameMenuInputState {
 		int posX = player.getPositionX();
 		int posY = player.getPositionY();
 		
-		int chartPieceWidth = mapWidth / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
-		int chartPieceHeight = mapHeight / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
+		int chartPieceWidth = mapWidth / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
+		int chartPieceHeight = mapHeight / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
 		
 		selectionX = posX / chartPieceWidth;
 		selectionY = posY / chartPieceHeight;

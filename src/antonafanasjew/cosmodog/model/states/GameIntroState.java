@@ -18,11 +18,14 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
@@ -57,12 +60,10 @@ public class GameIntroState  extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		
-		
-		
+				
 		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		
-		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
+		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
 		
 		DrawingContext introTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
 		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);

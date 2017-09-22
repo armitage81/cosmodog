@@ -49,28 +49,13 @@ public class OutroState extends BasicGameState {
 		String outro1 = ApplicationContext.instance().getGameTexts().get("outro1").getLogText();
 		String outro2 = ApplicationContext.instance().getGameTexts().get("outro2").getLogText();
 		String outro3 = ApplicationContext.instance().getGameTexts().get("outro3").getLogText();
-		String outrohint = ApplicationContext.instance().getGameTexts().get("outrohint").getLogText();
+		String outro4 = ApplicationContext.instance().getGameTexts().get("outro4").getLogText();
 		
-		int noOfInsights = 0;
-		Player player = ApplicationContextUtils.getPlayer();
-		Object uncastedInsight = player.getInventory().get(InventoryItemType.INSIGHT);
-		if (uncastedInsight != null) {
-			InsightInventoryItem insight = (InsightInventoryItem)uncastedInsight;
-			noOfInsights = insight.getNumber();
-		}
+		texts.add(outro1);
+		texts.add(outro2);
+		texts.add(outro3);
+		texts.add(outro4);
 		
-		if (noOfInsights < 25) {
-			texts.add(outro1);
-			texts.add(outrohint);
-		} else if (noOfInsights < 32) {
-			texts.add(outro1);
-			texts.add(outro2);
-			texts.add(outrohint);
-		} else {
-			texts.add(outro1);
-			texts.add(outro2);
-			texts.add(outro3);
-		}
 		texts.add("The End");
 		
 		

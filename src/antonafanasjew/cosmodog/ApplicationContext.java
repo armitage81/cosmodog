@@ -660,7 +660,7 @@ public class ApplicationContext {
 			this.gameTexts.put("outro1", gameLogBuilder.buildGameLog("data/writing/outro/outro1"));
 			this.gameTexts.put("outro2", gameLogBuilder.buildGameLog("data/writing/outro/outro2"));
 			this.gameTexts.put("outro3", gameLogBuilder.buildGameLog("data/writing/outro/outro3"));
-			this.gameTexts.put("outrohint", gameLogBuilder.buildGameLog("data/writing/outro/outrohint"));
+			this.gameTexts.put("outro4", gameLogBuilder.buildGameLog("data/writing/outro/outro4"));
 			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("data/writing/credits/credits"));
 			this.gameTexts.put("references", gameLogBuilder.buildGameLog("data/writing/references/references"));
 		} catch (IOException e) {

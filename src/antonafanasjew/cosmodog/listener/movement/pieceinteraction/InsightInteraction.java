@@ -88,12 +88,10 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		//Now check if the alien base door can be opened and notify the player.
 		
 		if (item != null && ((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
-			AsyncAction asyncAction1 = new PopUpNotificationAction("Something has changed. There is a feeling you did not have before. You peek at the large structure in the center of the valley.");
-			AsyncAction asyncAction2 = new PopUpNotificationAction("Suddenly, you know. <br> You know about the base. <br> You know how to open it.");
+			AsyncAction asyncAction2 = new PopUpNotificationAction("You can enter the alien base now.");
 			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);
 			asyncAction2 = new CamCenteringDecoratorAction(3000, 238, 238, asyncAction2, ApplicationContextUtils.getCosmodogGame());
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction1);
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction2);			
 		}
 		

@@ -73,7 +73,7 @@ public class PieceFactory {
 		
 		
 		if (TileType.LOG_CARD_0.getTileId() <= tileType.getTileId() && tileType.getTileId() <= TileType.LOG_CARD_35.getTileId()) {
-			CollectibleLog collectibleLog = new CollectibleLog(GameLogs.SPECIFIC_LOGS_SERIES, Mappings.MAP_TILE_TO_UNSORTED_LOG_ID.get(tileType));
+			CollectibleLog collectibleLog = new CollectibleLog("unsorted", Mappings.MAP_TILE_TO_UNSORTED_LOG_ID.get(tileType));
 			piece = collectibleLog;
 		}
 		

@@ -53,11 +53,6 @@ public class GeigerCounterViewRenderer implements Renderer {
 			}
 			
 			long timestamp = System.currentTimeMillis();
-			if (dangerIsClose) {
-				if ((timestamp / 250) % 2 == 0) {
-					TextBookRendererUtils.renderCenteredLabel(gameContainer, g, labelDc, "RADIATION!", FontType.RadiationLabelDanger, 0);
-				}			
-			}
 			
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {

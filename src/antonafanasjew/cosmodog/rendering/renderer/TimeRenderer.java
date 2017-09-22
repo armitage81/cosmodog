@@ -32,9 +32,9 @@ public class TimeRenderer implements Renderer {
 		
 		topDc = new CenteredDrawingContext(topDc, 5);
 		
-		DrawingContext minutesDc = new TileDrawingContext(topDc, 7, 1, 0, 0, 3, 1);
-		DrawingContext colonDc = new TileDrawingContext(topDc, 7, 1, 3, 0, 1, 1);
-		DrawingContext secondsDc = new TileDrawingContext(topDc, 7, 1, 4, 0, 3, 1);
+		DrawingContext minutesDc = new TileDrawingContext(topDc, 5, 1, 0, 0, 2, 1);
+		DrawingContext colonDc = new TileDrawingContext(topDc, 5, 1, 2, 0, 1, 1);
+		DrawingContext secondsDc = new TileDrawingContext(topDc, 5, 1, 3, 0, 2, 1);
 		
 		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, minutesDc, timeTextParts[0], FontType.HudTime, 0);
 		if (flic) {

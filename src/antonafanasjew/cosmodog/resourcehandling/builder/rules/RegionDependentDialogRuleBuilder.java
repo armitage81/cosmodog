@@ -1,17 +1,18 @@
 package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
-import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
-import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
+import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
@@ -25,7 +26,7 @@ public class RegionDependentDialogRuleBuilder extends AbstractResourceWrapperBui
 		
 		String ruleName = values[0];
 		String regionName = values[1];
-		String narrativeSequenceId = values[2];
+		String gameLogsSeriesNameAndId = values[2];
 		String onlyOnceFlag = values[3];
 		String gameProgressProperty = values[4];
 		
@@ -38,10 +39,14 @@ public class RegionDependentDialogRuleBuilder extends AbstractResourceWrapperBui
 			trigger = AndTrigger.and(onlyOnceTrigger, trigger);
 		}
 		
-		AsyncAction asyncAction = new DialogAction(narrativeSequenceId);
-		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		String gameLogSeries = gameLogsSeriesNameAndId.split("/")[0];
+		String gameLogId = gameLogsSeriesNameAndId.split("/")[1];
 		
-		action = new FeatureBoundAction(Features.FEATURE_STORY, action);
+		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
+		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
+		
+		AsyncAction asyncAction = new GameLogAction(gameLog);
+		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		
 		if (onlyOnce) {
 			RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, "true");
