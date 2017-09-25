@@ -38,7 +38,11 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 
 	@Override
 	public void onTrigger() {
-		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EXPLOSION).play();
+		if (getEnemy().getUnitType().equals(UnitType.GUARDIAN)) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_GUARDIAN_DESTROYED).play();
+		} else {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EXPLOSION).play();
+		}
 		EnemyDestructionFightPhaseTransition fightPhaseTransition = new DefaultEnemyDestructionFightPhaseTransition();
 		fightPhaseTransition.setPlayer(getPlayer());
 		fightPhaseTransition.setEnemy(getEnemy());

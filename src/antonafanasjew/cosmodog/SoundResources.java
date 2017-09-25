@@ -179,6 +179,8 @@ public class SoundResources extends HashMap<String, Sound> {
 
 	public static final String SOUND_POISONED = "sound.poisoned";
 
+	public static final String SOUND_GUARDIAN_DESTROYED = "sound.guardiandestroyed";
+
 	public static final String SOUND_MENU_SUB = "sound.menu_sub";
 	public static final String SOUND_MENU_BACK = "sound.menu_back";
 	public static final String SOUND_MENU_SELECT = "sound.menu_select";
@@ -187,5 +189,6 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_AMBIENT_ELECTRICITY = "sound.ambient.electricity";
 	public static final String SOUND_AMBIENT_ENERGYWALL = "sound.ambient.energywall";
 	public static final String SOUND_AMBIENT_FIRE = "sound.ambient.fire";
+
 
 }

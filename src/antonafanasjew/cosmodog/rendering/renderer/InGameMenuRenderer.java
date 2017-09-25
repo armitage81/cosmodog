@@ -27,7 +27,7 @@ public class InGameMenuRenderer implements Renderer {
 			ApplicationContextUtils.getCosmodogGame().getAmbientSoundRegistry().clear();
 			
 			InGameMenuFrame currentMenuFrame = inGameMenu.currentMenuFrame();
-			
+						
 			ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemenuframe", drawingContext);
 			
 			
@@ -38,7 +38,9 @@ public class InGameMenuRenderer implements Renderer {
 			String headerText = currentMenuFrame.getTitle();
 			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, headerDc, headerText, FontType.InGameMenuInterface, 0);
 			
-			String footerText = "[ESC] to close. [TAB] to switch.";
+			int noOfFrames = inGameMenu.getMenuFrames().size();
+			
+			String footerText = noOfFrames > 1 ? "[ESC] to close. [TAB] to switch." : "[ESC] to close.";
 			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, footerDc, footerText, FontType.InGameMenuInterface, 0);
 			
 			Renderer contentRenderer = currentMenuFrame.getContentRenderer();

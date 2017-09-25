@@ -454,6 +454,8 @@ public class ApplicationContext {
 		
 		Sound poisoned = new Sound("data/sound/poisoned.wav");
 		
+		Sound guardianDestroyed = new Sound("data/sound/guardiandestroyed.wav");
+		
 		Sound menu_sub = new Sound("data/sound/menu_sub.wav");
 		Sound menu_back = new Sound("data/sound/menu_back.wav");
 		Sound menu_select = new Sound("data/sound/menu_select.wav");
@@ -523,6 +525,8 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_OPENING_ALIEN_DOOR, openingaliendoor);
 		
 		this.getSoundResources().put(SoundResources.SOUND_POISONED, poisoned);
+		
+		this.getSoundResources().put(SoundResources.SOUND_GUARDIAN_DESTROYED, guardianDestroyed);
 		
 		this.getSoundResources().put(SoundResources.SOUND_MENU_SUB, menu_sub);
 		this.getSoundResources().put(SoundResources.SOUND_MENU_BACK, menu_back);

@@ -1,6 +1,9 @@
 package antonafanasjew.cosmodog.ingamemenu;
 
 import antonafanasjew.cosmodog.controller.InputHandler;
+import antonafanasjew.cosmodog.ingamemenu.help.HelpInputHandler;
+import antonafanasjew.cosmodog.ingamemenu.help.HelpInputState;
+import antonafanasjew.cosmodog.ingamemenu.help.HelpRenderer;
 import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryInputHandler;
 import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryInputState;
 import antonafanasjew.cosmodog.ingamemenu.inventory.InventoryRenderer;
@@ -29,11 +32,13 @@ public class InGameMenuFrame {
 	private static MapInputState mapInputState = new MapInputState();
 	private static LogPlayerInputState logPlayerInputState = new LogPlayerInputState();
 	private static OptionsInputState optionsInputState = new OptionsInputState();
+	private static HelpInputState helpInputState = new HelpInputState();
 	
 	public static final InGameMenuFrame INVENTORY_INGAME_MENU_FRAME = new InGameMenuFrame("Inventory", new InventoryInputHandler(inventoryInputState), new InventoryRenderer(), inventoryInputState);
 	public static final InGameMenuFrame PROGRESS_INGAME_MENU_FRAME = new InGameMenuFrame("Game progress", new ProgressInputHandler(), new ProgressRenderer(), new ProgressInputState());
 	public static final InGameMenuFrame MAP_INGAME_MENU_FRAME = new InGameMenuFrame("Map", new MapInputHandler(mapInputState), new MapRenderer(), mapInputState);
 	public static final InGameMenuFrame LOG_PLAYER_INGAME_MENU_FRAME = new InGameMenuFrame("Log Player", new LogPlayerInputHandler(logPlayerInputState), new LogPlayerRenderer(), logPlayerInputState);
+	public static final InGameMenuFrame HELP_INGAME_MENU_FRAME = new InGameMenuFrame("Help", new HelpInputHandler(), new HelpRenderer(), helpInputState);
 	public static final InGameMenuFrame OPTIONS_INGAME_MENU_FRAME = new InGameMenuFrame("Save and Quit", new OptionsInputHandler(), new OptionsRenderer(), optionsInputState);
 	
 	

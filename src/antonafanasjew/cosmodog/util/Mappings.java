@@ -44,7 +44,7 @@ public class Mappings {
 	public static Map<TileType, String> MAP_TILE_TO_LOG_SERIES = Maps.newHashMap();
 	
 	static {
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_0, "luckyquarterkiller");
+		//MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_0, "luckyquarterkiller");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_1, "maryharper");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_2, "aliennomads");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_3, "privatehiggs");
