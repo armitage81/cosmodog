@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.model.states.IntroState;
 import antonafanasjew.cosmodog.model.states.MainMenuState;
 import antonafanasjew.cosmodog.model.states.OutroState;
 import antonafanasjew.cosmodog.model.states.ScoreState;
+import antonafanasjew.cosmodog.model.states.StatisticsState;
 
 /**
  * The name is a bit misleading. This singleton is the state machine for the application. Its instance can be used
@@ -79,6 +80,11 @@ public class CosmodogStarter extends StateBasedGame {
 	 * Game intro state.
 	 */
 	public static final int GAME_INTRO_STATE_ID = 10;
+	
+	/**
+	 * Post game statistics
+	 */
+	public static final int STATISTICS_STATE_ID = 11;
 
 	/**
 	 * The singleton instance of this class.
@@ -146,6 +152,7 @@ public class CosmodogStarter extends StateBasedGame {
 		this.addState(new OutroState());
 		this.addState(new DebugState());
 		this.addState(new GameIntroState());
+		this.addState(new StatisticsState());
 	}
 
 }

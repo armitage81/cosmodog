@@ -1,1 +1,1 @@
-java -Djava.library.path=dll -Xms1024m -Xmx8196m -Dcosmodog.fullscreen=true -cp cosmodog-20170811.jar;lib/*;lib/slick2d/lib/* antonafanasjew.cosmodog.CosmodogStarter
+java -Djava.library.path=dll -Xms1024m -Xmx8196m -Dcosmodog.fullscreen=true -cp cosmodog.jar;lib/*;lib/slick2d/lib/* antonafanasjew.cosmodog.CosmodogStarter

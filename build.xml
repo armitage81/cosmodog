@@ -9,7 +9,7 @@
 	<property name="build" location="build" />
 	<property name="dist" location="target" />
 
-	<target name="init">
+	<target name="init" depends="clean">
 		<tstamp />
 		<mkdir dir="${build}" />
 	</target>
@@ -20,14 +20,14 @@
 
 	<target name="dist" depends="compile" description="generate the distribution">
 		<mkdir dir="${dist}/lib" />
-		<jar jarfile="${dist}/cosmodog-${DSTAMP}.jar" basedir="${build}">
-			<fileset dir="${res}" />
+		<jar jarfile="${dist}/cosmodog.jar" basedir="${build}">
+			<fileset dir="${res}"/>
 			<manifest>
 				<attribute name="Main-Class" value="antonafanasjew.cosmodog.CosmodogStarter" />
 			</manifest>
 		</jar>
 		<copy todir="${dist}/data">
-			<fileset dir="${data}" />
+			<fileset dir="${data}" excludes="**/*.xcf FinalMapInProgress.tmx grassmap.tmx sprites.png.bak tiles.png tools_lib/ temp/"/>
 		</copy>
 		<copy todir="${dist}/lib">
 			<fileset dir="${basedir}/lib/">

@@ -41,7 +41,9 @@ public enum FontType {
 	HudTime(createUnicodeFont(new Font("Courier", Font.BOLD, 12), 12, true, false, Color.RED)),
 	HudDayTime(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.RED)),
 	HintsActions(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.WHITE)),
-	HintsKeys(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.GREEN));
+	HintsKeys(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.GREEN)),
+	StatisticsLabel(createUnicodeFont(new Font("Courier", Font.BOLD, 18), 18, true, false, Color.RED)),
+	StatisticsHeader(createUnicodeFont(new Font("Courier", Font.BOLD, 36), 36, true, false, Color.WHITE));
 		
 	private UnicodeFont font;
 	

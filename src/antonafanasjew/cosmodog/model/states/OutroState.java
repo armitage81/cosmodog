@@ -73,7 +73,7 @@ public class OutroState extends BasicGameState {
 			if (page < texts.size() - 1) {
 				page++;
 			} else {
-				sbg.enterState(CosmodogStarter.CREDITS_STATE_ID, new FadeOutTransition(), new FadeInTransition());
+				sbg.enterState(CosmodogStarter.STATISTICS_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 			}
 		}
 
