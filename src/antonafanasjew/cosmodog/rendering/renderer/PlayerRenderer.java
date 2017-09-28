@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
-import antonafanasjew.cosmodog.actions.cutscenes.RadiationDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -17,6 +16,7 @@ import antonafanasjew.cosmodog.domains.PlayerActionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RenderingUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
@@ -134,6 +135,7 @@ public class PlayerRenderer extends AbstractRenderer {
 			}
 		}
 
+		boolean playerIsHoldingUpItem = cosmodogGame.getCurrentlyFoundTool() != null;
 		
 		ActorAppearanceType playerAppearanceType;
 		
@@ -163,6 +165,8 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerActionType = PlayerActionType.ANIMATE;
 		} else if (playerIsTakingDamage) {
 			playerActionType = PlayerActionType.TAKINGDAMAGE;
+		} else if (playerIsHoldingUpItem) {
+			playerActionType = PlayerActionType.HOLDING_UP_ITEM;
 		} else {
 			playerActionType = PlayerActionType.INANIMATE;
 		}
@@ -262,6 +266,18 @@ public class PlayerRenderer extends AbstractRenderer {
 		if (playerWeaponAnimation != null) {
 			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
 		}
+		
+		if (playerIsHoldingUpItem) {
+			CollectibleTool tool = cosmodogGame.getCurrentlyFoundTool();
+			if (tool != null) {
+				String animationId = Mappings.collectibleToolToAnimationId(tool);
+				Animation foundToolAnimation = ApplicationContext.instance().getAnimations().get(animationId);
+				if (foundToolAnimation != null) {
+					foundToolAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY - 1) * tileHeight + pieceOffsetY);
+				}
+			}
+		}
+		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

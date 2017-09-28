@@ -15,7 +15,7 @@
 
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
 
-	<target name="deployToServer">
+	<target name="deployToServer" depends="prepareDeployment">
 		<ftp server="cosmodog.eu" port="21" userid="${user}" password="${password}" remotedir="cosmodog.eu/downloads" passive="yes" binary="yes" verbose="yes">
 			<fileset dir="${deployment}" includes="cosmodog.zip"/>
 		</ftp>

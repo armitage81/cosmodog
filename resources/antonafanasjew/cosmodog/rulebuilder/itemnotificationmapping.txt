@@ -1,7 +1,4 @@
 ruleName;pieceType;ifGameProgressPropertyValueIs;gameProgressProperty;description;priority
-PICK_DESCRIPTION;pick;0;pickDescription;You found a pick axe. It can be used to destroy the gray stones.;40
-AXE_DESCRIPTION;axe;0;axeDescription;You found an axe. It can be used to destroy dry trees.;40
-MACHETE_DESCRIPTION;machete;0;macheteDescription;You found a machete. It can be used to destroy the bamboo stems.;40
 INFOBIT_DESCRIPTION;infobit;0;infobitDescription;You found an infobit. Your knowledge increases.;40
 INFOBYTE_DESCRIPTION;infobyte;0;infobyteDescription;You found an infobyte. It's worth five infobits.;40
 INFOBANK_DESCRIPTION;infobank;0;infobankDescription;You found an infobank. It's worth twenty five infobits.;40
@@ -32,18 +29,8 @@ SHOTGUN_AMMO_DESCRIPTION;CollectibleAmmo_shotgun;0;shotgunAmmoDescription;You fo
 RIFLE_AMMO_DESCRIPTION;CollectibleAmmo_rifle;0;rifleAmmoDescription;You found assault rifle ammunition.;40
 MACHINEGUN_AMMO_DESCRIPTION;CollectibleAmmo_machinegun;0;machinegunAmmoDescription;You found machine gun ammunition.;40
 RPG_AMMO_DESCRIPTION;CollectibleAmmo_rpg;0;rpgAmmoDescription;You found RPG ammunition.;40
-BOAT_DESCRIPTION;boat;0;boatDescription;You found a boat. You can cross water now.;40
-GEIGERZAEHLER_DESCRIPTION;geigerzaehler;0;geigerzaehlerDescription;You found a Geiger counter. It indicates radiation. The 'RAD' value shows the number of contaminated adjacent tiles including your own position.;40
-GEIGERZAEHLER_DESCRIPTION2;geigerzaehler;1;geigerzaehlerDescription;You found the radiation suit. It will protect you from radioactive rays.;39
 BOTTLE_DESCRIPTION;bottle;ANY;bottleDescription;You found a bottle. Your water capacity increases.;40
 FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;ANY;foodcompartmentDescription;You found a food compartment and attached it to your backback. Your supply capacity increases.;40
-SUPPLYTRACKER_DESCRIPTION;supplytracker;ANY;supplytrackerDescription;You found the supply tracker. It must have fallen from your emergency pod. Use it to track the closest supply box.;40
-JACKET_DESCRIPTION;jacket;ANY;jacketDescription;You found a warm jacket. Now you can walk cold regions without freezing.;40
-ANTIDOTE_DESCRIPTION;antidote;ANY;antidoteDescription;You found the antidote. Poison is not a threat anymore.;40
-MINEDETECTOR_DESCRIPTION;minedetector;ANY;minedetectorDescription;You found a mine detector. It will detect nearby mines. Avoid stepping on them.;40
-BINOCULARS_DESCRIPTION;binoculars;ANY;binocularsDescription;You found the binoculars. You can see distant things now. Press Y and Z to zoom in and out.;40
-SKI_DESCRIPTION;ski;ANY;skiDescription;You found the ski. Now you can cross snow.;40
-DYNAMITE_DESCRIPTION;dynamite;0;dynamiteDescription;You found the dynamite. Weak structures can be destroyed with it.;40
 RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters.;40
 LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage.;40
 CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room.;40

@@ -45,6 +45,8 @@ public class CosmodogGame extends CosmodogModel {
 	
 	private transient GameLogState openGameLog;
 	
+	private transient CollectibleTool currentlyFoundTool;
+	
 	private transient InGameMenu inGameMenu;
 	
 	private transient RuleBook ruleBook;
@@ -183,6 +185,14 @@ public class CosmodogGame extends CosmodogModel {
 	
 	public void setOpenGameLog(GameLogState openGameLog) {
 		this.openGameLog = openGameLog;
+	}
+	
+	public CollectibleTool getCurrentlyFoundTool() {
+		return currentlyFoundTool;
+	}
+	
+	public void setCurrentlyFoundTool(CollectibleTool currentlyFoundTool) {
+		this.currentlyFoundTool = currentlyFoundTool;
 	}
 	
 	public InGameMenu getInGameMenu() {

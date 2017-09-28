@@ -1,25 +1,17 @@
 package antonafanasjew.cosmodog.player;
 
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
-import antonafanasjew.cosmodog.model.upgrades.Weapon;
 
 public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
 
-//		player.setPositionX(227);
-//		player.setPositionY(256);
-		
-		
+		/*
+		player.setPositionX(10);
+		player.setPositionY(53);
+		*/
+		/*
 		player.setMaxLife(100);
 		player.setLife(100);
 		
@@ -89,7 +81,7 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("maryharper");
 		player.getLogPlayer().addLogToSeries("maryharper");
 		player.getLogPlayer().addLogToSeries("maryharper");
-		
+		*/
 		
 //		player.setWater(20);
 //		player.setFood(20);

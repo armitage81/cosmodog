@@ -7,14 +7,11 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.AntidoteInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 
-public class AntidoteInteraction extends AbstractPieceInteraction {
+public class AntidoteInteraction extends ToolInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
-		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundAntidote()), true, false);	
 		player.getInventory().put(InventoryItemType.ANTIDOTE, new AntidoteInventoryItem());
 		player.decontaminate();
 	}
@@ -24,5 +21,9 @@ public class AntidoteInteraction extends AbstractPieceInteraction {
 	public String soundResource() {
 		return SoundResources.SOUND_POWERUP;
 	}
-	
+
+	@Override
+	protected String text() {
+		return "You found the antidote. Poison is not a threat anymore.";
+	}
 }

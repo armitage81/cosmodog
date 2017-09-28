@@ -5,6 +5,8 @@ package antonafanasjew.cosmodog.actions;
  */
 public enum AsyncActionType {
 	
+	FOUND_TOOL_JINGLE(false, false, false),
+	
 	/**
 	 * Player is dying
 	 */
@@ -77,7 +79,7 @@ public enum AsyncActionType {
 	 */
 	NON_BLOCKING_INTERFACE(false, false, true),
 	
-	PRESENTING_NEW_TOOL(true, false, true);
+	PRESENTING_NEW_TOOL(true, false, false);
 	
 	private boolean blocksInput;
 	private boolean stackable;

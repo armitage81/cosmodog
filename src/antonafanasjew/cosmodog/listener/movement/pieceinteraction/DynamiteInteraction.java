@@ -7,20 +7,22 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 
-public class DynamiteInteraction extends AbstractPieceInteraction {
+public class DynamiteInteraction extends ToolInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
-		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundDynamite()), true, false);
 		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
 	}
 
 	@Override
 	public String soundResource() {
 		return SoundResources.SOUND_POWERUP;
+	}
+
+	@Override
+	protected String text() {
+		return "You found the dynamite. Weak structures can be destroyed with it.";
 	}
 	
 }

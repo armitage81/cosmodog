@@ -45,7 +45,7 @@ public class Constants {
 	 * to calculate the action movement.
 	 */
 	//public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 50;
-	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 75;
+	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 50;
 	
 	/**
 	 * That many minutes will pass in the planetary calendar with each turn. 

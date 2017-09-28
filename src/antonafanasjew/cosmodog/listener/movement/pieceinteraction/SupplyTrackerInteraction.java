@@ -7,20 +7,22 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 
-public class SupplyTrackerInteraction extends AbstractPieceInteraction {
+public class SupplyTrackerInteraction extends ToolInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
-		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundSupplyTracker()), true, false);
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
 	}
 	
 	@Override
 	public String soundResource() {
 		return SoundResources.SOUND_POWERUP;
+	}
+	
+	@Override
+	protected String text() {
+		return "You found the supply tracker. It must have fallen from your emergency pod. Use it to track the closest supply box.";
 	}
 
 }

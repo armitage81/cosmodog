@@ -3,15 +3,17 @@ package antonafanasjew.cosmodog.util;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
 import antonafanasjew.cosmodog.domains.PlayerActionType;
-import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
+import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorAppearanceType;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -294,6 +296,41 @@ public class Mappings {
 		
 	}
 	
+	public static final String collectibleToolToAnimationId(CollectibleTool tool) {
+		if (tool.getToolType() == ToolType.boat) {
+			return "inventoryItemBoat";
+		} else if (tool.getToolType() == ToolType.antidote) {
+			return "inventoryItemAntidote";
+		} else if (tool.getToolType() == ToolType.axe) {
+			return "inventoryItemAxe";
+		} else if (tool.getToolType() == ToolType.binoculars) {
+			return "inventoryItemBinoculars";
+		} else if (tool.getToolType() == ToolType.dynamite) {
+			return "inventoryItemDynamite";
+		} else if (tool.getToolType() == ToolType.geigerzaehler) {
+			Player player = ApplicationContextUtils.getPlayer();
+			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) != null) {
+				return "inventoryItemRadioactiveSuit";
+			} else {
+				return "inventoryItemGeigerZaehler";
+			}
+		} else if (tool.getToolType() == ToolType.jacket) {
+			return "inventoryItemJacket";
+		} else if (tool.getToolType() == ToolType.machete) {
+			return "inventoryItemMachete";
+		} else if (tool.getToolType() == ToolType.minedetector) {
+			return "inventoryItemMineDetector";
+		} else if (tool.getToolType() == ToolType.pick) {
+			return "inventoryItemPick";
+		} else if (tool.getToolType() == ToolType.ski) {
+			return "inventoryItemSki";
+		} else if (tool.getToolType() == ToolType.supplytracker) {
+			return "inventoryItemSupplyTracker";
+		}
+		
+		return "infobit";
+	}
+	
 	/**
 	 * Map of inventory item types to their animations in the inventory.
 	 */
@@ -380,6 +417,7 @@ public class Mappings {
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.ANIMATE, "Animated");
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.INANIMATE, "Inanimated");
 		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.TAKINGDAMAGE, "Hit");
+		ANIMATION_KEY_BY_PLAYER_ACTION_TYPE.put(PlayerActionType.HOLDING_UP_ITEM, "HoldingItem");
 		
 		
 	}

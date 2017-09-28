@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
 
-public class PickInteraction extends AbstractPieceInteraction {
+public class PickInteraction extends ToolInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
@@ -20,4 +20,8 @@ public class PickInteraction extends AbstractPieceInteraction {
 		return SoundResources.SOUND_POWERUP;
 	}
 	
+	@Override
+	protected String text() {
+		return "You found a pick axe. It can be used to destroy the gray stones.";
+	}
 }

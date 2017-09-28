@@ -19,4 +19,6 @@ public enum PlayerActionType {
 	 * Player character is taking damage during a fight phase.
 	 */
 	TAKINGDAMAGE,
+	
+	HOLDING_UP_ITEM,
 }

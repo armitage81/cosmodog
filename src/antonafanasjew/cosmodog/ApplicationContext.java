@@ -387,6 +387,8 @@ public class ApplicationContext {
 					Music musicGameOver = new Music("data/music/EG_Negative_Stinger.wav");
 					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.wav");
 					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.wav");
+					Music foundTool = new Music("data/music/EG_Positive_Stinger_02.wav");
+					
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
 					
@@ -398,6 +400,7 @@ public class ApplicationContext {
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_FOUND_TOOL, foundTool);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}

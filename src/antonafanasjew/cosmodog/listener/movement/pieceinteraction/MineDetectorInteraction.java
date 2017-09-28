@@ -14,7 +14,7 @@ import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
-public class MineDetectorInteraction extends AbstractPieceInteraction {
+public class MineDetectorInteraction extends ToolInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
@@ -27,9 +27,6 @@ public class MineDetectorInteraction extends AbstractPieceInteraction {
 			player.getInventory().put(InventoryItemType.MINEDETECTOR, new MineDetectorInventoryItem());
 		} else {
 			mineDetectorInventoryItem.increaseDetectionDistance();
-			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
-			AsyncAction asyncAction = new PopUpNotificationAction("Mine detection distance increased by 1.");
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		}
 		
 	}
@@ -37,6 +34,23 @@ public class MineDetectorInteraction extends AbstractPieceInteraction {
 	@Override
 	public String soundResource() {
 		return SoundResources.SOUND_POWERUP;
+	}
+	
+	@Override
+	protected String text() {
+		
+		Player player = ApplicationContextUtils.getPlayer();
+		
+		Inventory inventory = player.getInventory();
+		
+		MineDetectorInventoryItem mineDetectorInventoryItem = (MineDetectorInventoryItem)inventory.get(InventoryItemType.MINEDETECTOR);
+		
+		if (mineDetectorInventoryItem == null) {
+			return "You found a mine detector. It will detect nearby mines. Avoid stepping on them.";
+		} else {
+			return "You found another mine detector and manage to scavenge its parts to increase the detection distance by 1 field.";
+		}
+		
 	}
 	
 }

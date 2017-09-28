@@ -13,7 +13,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
 import antonafanasjew.cosmodog.util.NotificationUtils;
 
-public class BinocularsInteraction extends AbstractPieceInteraction {
+public class BinocularsInteraction extends ToolInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
@@ -31,5 +31,12 @@ public class BinocularsInteraction extends AbstractPieceInteraction {
 	public String soundResource() {
 		return SoundResources.SOUND_POWERUP;
 	}
+
+	@Override
+	protected String text() {
+		return "You found the binoculars. You can see distant things now. Press Y and Z to zoom in and out.";
+	}
+	
+	
 	
 }
