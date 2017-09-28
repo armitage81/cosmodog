@@ -2,12 +2,21 @@ package antonafanasjew.cosmodog.globals;
 
 public class Constants {
 
+	public static String[] PREFERRED_RESOLUTIONS = new String[] {
+		"1280x720",
+		"1920x1080",
+		"1152x648",
+		"1280x1024",
+		"1024x800",
+		"1366x768",
+		"1024x576",
+	};
 	
 	public static final float GAME_LOG_FRAME_WIDTH = 864;
 	public static final float GAME_LOG_FRAME_HEIGHT = 572;
 	
-	public static final float LOG_PLAYER_TEXT_WIDTH = 730;
-	public static final float LOG_PLAYER_TEXT_HEIGHT = 270;
+	public static final float LOG_PLAYER_TEXT_WIDTH = 400;
+	public static final float LOG_PLAYER_TEXT_HEIGHT = 200;
 	
 	public static final float GAME_LOG_TEXT_WIDTH = 800;
 	public static final float GAME_LOG_TEXT_HEIGHT = 440;
@@ -73,15 +82,9 @@ public class Constants {
 	 */
 	public static final int ENEMY_DESTRUCTION_ACTION_DURATION = 750;
 	
-	/**
-	 * The horizontal resolution of the game window.
-	 */
-	public static final int RESOLUTION_WIDTH = 	1280;
+	public static final int REFERENCE_RESOLUTION_WIDTH = 1280;
 	
-	/**
-	 * The vertical resolution of the game window.
-	 */
-	public static final int RESOLUTION_HEIGHT = 720;
+	public static final int REFERENCE_RESOLUTION_HEIGHT = 720;
 	
 //	/**
 //	 * The horizontal resolution of the game window.

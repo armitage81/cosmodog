@@ -9,6 +9,8 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -18,6 +20,7 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 
 import com.google.common.collect.Maps;
@@ -62,10 +65,19 @@ public class ArsenalInterfaceRenderer implements Renderer {
 		
 		DrawingContext[] dcs = new DrawingContext[5];
 		dcs[0] = new SimpleDrawingContext(context, 856, 640, 56, 52);
+		dcs[0] = DrawingContextUtils.difResFromRef(dcs[0], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		dcs[1] = new SimpleDrawingContext(context, 941, 640, 56, 52);
+		dcs[1] = DrawingContextUtils.difResFromRef(dcs[1], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		dcs[2] = new SimpleDrawingContext(context, 1026, 640, 56, 52);
+		dcs[2] = DrawingContextUtils.difResFromRef(dcs[2], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		dcs[3] = new SimpleDrawingContext(context, 1111, 640, 56, 52);
+		dcs[3] = DrawingContextUtils.difResFromRef(dcs[3], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		dcs[4] = new SimpleDrawingContext(context, 1196, 640, 56, 52);
+		dcs[4] = DrawingContextUtils.difResFromRef(dcs[4], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
 		Map<WeaponType, DrawingContext> contextsForWeapons = Maps.newHashMap();
 		

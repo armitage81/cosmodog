@@ -4,7 +4,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
@@ -16,6 +18,7 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.MiniMapRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
@@ -155,11 +158,15 @@ public class MapRenderer implements Renderer {
 	}
 	
 	private DrawingContext mapAreaDrawingContext(DrawingContext mainDc) {
-		return new SimpleDrawingContext(mainDc, 13, 13, 759, 406);
+		DrawingContext dc = new SimpleDrawingContext(null, 13 + 33, 13 + 144, 759, 406);
+		dc = DrawingContextUtils.difResFromRef(dc, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		return dc;
 	}
 	
 	private DrawingContext descriptionDrawingContext(DrawingContext mainDc) {
-		return new SimpleDrawingContext(mainDc, 804, 13, 397, 406);
+		DrawingContext dc = new SimpleDrawingContext(null, 804 + 33, 13 + 144, 397, 406);
+		dc = DrawingContextUtils.difResFromRef(dc, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		return dc;
 	}
 
 }

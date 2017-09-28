@@ -21,6 +21,7 @@ import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -75,6 +76,7 @@ import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.GameEventUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
@@ -152,17 +154,27 @@ public class GameState extends BasicGameState {
 		
 		mapDrawingContext = new TileDrawingContext(middleColumnDrawingContext, 5, 1, 0, 0, 5, 1);
 		
-
+		
+		
 		infobitsDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 582, 28, 56, 52);
+		infobitsDrawingContext = DrawingContextUtils.difResFromRef(infobitsDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		timeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1026, 28, 56, 52);
+		timeDrawingContext = DrawingContextUtils.difResFromRef(timeDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		geigerCounterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1111, 28, 56, 52);
+		geigerCounterDrawingContext = DrawingContextUtils.difResFromRef(geigerCounterDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		
 		supplyTrackerDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1196, 28, 56, 52);
+		supplyTrackerDrawingContext = DrawingContextUtils.difResFromRef(supplyTrackerDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
 		
 		lifeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 28, 28, 524, 52);
+		lifeDrawingContext = DrawingContextUtils.difResFromRef(lifeDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
 		
 		vitalDataDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 28, 640, 524, 52);
+		vitalDataDrawingContext = DrawingContextUtils.difResFromRef(vitalDataDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
 				
 		//Update the global dialog drawing context variable in the application context.

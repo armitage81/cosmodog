@@ -37,4 +37,16 @@ public abstract class AbstractDrawingContext implements DrawingContext {
 		return this.x() + "/" + this.y() + "/" + this.w() + "/" + this.h();
 	}
 
+	public boolean isRoot() {
+		return parentDrawingContext == null;
+	}
+	
+	public DrawingContext getParentDrawingContext() {
+		return parentDrawingContext;
+	}
+	
+	public void setParentDrawingContext(DrawingContext parentDrawingContext) {
+		this.parentDrawingContext = parentDrawingContext;
+	}
+	
 }

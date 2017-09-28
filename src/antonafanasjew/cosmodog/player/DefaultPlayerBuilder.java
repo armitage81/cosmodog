@@ -19,7 +19,7 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 //		player.setPositionX(227);
 //		player.setPositionY(256);
 		
-		/*
+		
 		player.setMaxLife(100);
 		player.setLife(100);
 		
@@ -27,9 +27,9 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 		
 		
 		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
-		 */
+		 
 
-		/*
+		
 		player.getLogPlayer().addLogToSeries("aliennomads");
 		player.getLogPlayer().addLogToSeries("aliennomads");
 		player.getLogPlayer().addLogToSeries("aliennomads");
@@ -89,7 +89,7 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("maryharper");
 		player.getLogPlayer().addLogToSeries("maryharper");
 		player.getLogPlayer().addLogToSeries("maryharper");
-		*/
+		
 		
 //		player.setWater(20);
 //		player.setFood(20);

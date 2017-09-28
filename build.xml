@@ -6,8 +6,28 @@
 	<property name="src" location="src" />
 	<property name="res" location="resources" />
 	<property name="data" location="data" />
+	<property name="jre" location="lib/jre" />
 	<property name="build" location="build" />
 	<property name="dist" location="target" />
+	<property name="deployment" location="deployment" />
+
+	<property name="launch4j.dir" location="C:/Program Files (x86)/Launch4j" />
+
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+
+	<target name="deployToServer">
+		<ftp server="cosmodog.eu" port="21" userid="${user}" password="${password}" remotedir="cosmodog.eu/downloads" passive="yes" binary="yes" verbose="yes">
+			<fileset dir="${deployment}" includes="cosmodog.zip"/>
+		</ftp>
+	</target>
+
+	<target name="prepareDeployment" depends="createLauncher">
+		<zip destfile="${deployment}/cosmodog.zip" basedir="${dist}" />
+	</target>
+
+	<target name="createLauncher" depends="dist">
+		<launch4j configFile="./install.xml" />
+	</target>
 
 	<target name="init" depends="clean">
 		<tstamp />
@@ -21,13 +41,16 @@
 	<target name="dist" depends="compile" description="generate the distribution">
 		<mkdir dir="${dist}/lib" />
 		<jar jarfile="${dist}/cosmodog.jar" basedir="${build}">
-			<fileset dir="${res}"/>
+			<fileset dir="${res}" />
 			<manifest>
 				<attribute name="Main-Class" value="antonafanasjew.cosmodog.CosmodogStarter" />
 			</manifest>
 		</jar>
 		<copy todir="${dist}/data">
-			<fileset dir="${data}" excludes="**/*.xcf FinalMapInProgress.tmx grassmap.tmx sprites.png.bak tiles.png tools_lib/ temp/"/>
+			<fileset dir="${data}" excludes="**/*.xcf FinalMapInProgress.tmx grassmap.tmx sprites.png.bak tiles.png tools_lib/ temp/" />
+		</copy>
+		<copy todir="${dist}/jre">
+			<fileset dir="${jre}" />
 		</copy>
 		<copy todir="${dist}/lib">
 			<fileset dir="${basedir}/lib/">
@@ -44,7 +67,7 @@
 		</copy>
 		<copy todir="${dist}">
 			<fileset dir="${basedir}">
-				<include name="start.bat"/>
+				<include name="start.bat" />
 			</fileset>
 		</copy>
 	</target>
@@ -52,5 +75,6 @@
 	<target name="clean" description="clean up">
 		<delete dir="${build}" />
 		<delete dir="${dist}" />
+		<delete dir="${deployment}" />
 	</target>
 </project>

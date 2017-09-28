@@ -1,5 +1,8 @@
 package antonafanasjew.cosmodog;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -7,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.states.CreditsState;
 import antonafanasjew.cosmodog.model.states.CutsceneState;
 import antonafanasjew.cosmodog.model.states.DebugState;
@@ -125,8 +129,31 @@ public class CosmodogStarter extends StateBasedGame {
 		if (System.getProperty("cosmodog.fullscreen") != null) {
 			fullScreen = Boolean.valueOf(System.getProperty("cosmodog.fullscreen"));
 		}
+
+		try {
+			DisplayMode[] modes = Display.getAvailableDisplayModes();
+			DisplayMode preferred = null;
+			for (String preferredRes : Constants.PREFERRED_RESOLUTIONS) {
+				for (DisplayMode mode : modes) {
+					String supportedMode = mode.getWidth() + "x" + mode.getHeight();
+					if (supportedMode.equals(preferredRes)) {
+						preferred = mode;
+						break;
+					}
+				}				
+			}
+			
+			if (preferred == null) {
+				preferred = modes[0];
+			}
+
+			ResolutionHolder.set(preferred.getWidth(), preferred.getHeight());
+			
+		} catch (LWJGLException e) {
+			throw new RuntimeException("Error while obtaining supported display modes.", e);
+		}
 		
-		gameContainer.setDisplayMode(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, fullScreen);
+		gameContainer.setDisplayMode(ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight(), fullScreen);
 		gameContainer.setAlwaysRender(true);
 		gameContainer.setTargetFrameRate(60);
 		if (fullScreen) {

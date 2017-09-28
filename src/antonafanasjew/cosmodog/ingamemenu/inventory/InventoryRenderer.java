@@ -8,7 +8,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -22,6 +24,7 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.InventoryItemRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
@@ -102,11 +105,15 @@ public class InventoryRenderer implements Renderer {
 	}
 	
 	private DrawingContext itemsDrawingContext(DrawingContext mainDc) {
-		return new SimpleDrawingContext(mainDc, 13, 13, 539, 406);
+		DrawingContext dc = new SimpleDrawingContext(null, 13 + 33, 13 + 144, 539, 406);
+		dc = DrawingContextUtils.difResFromRef(dc, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		return dc;
 	}
 	
 	private DrawingContext descriptionDrawingContext(DrawingContext mainDc) {
-		return new SimpleDrawingContext(mainDc, 584, 13, 617, 406);
+		DrawingContext dc = new SimpleDrawingContext(null, 584 + 33, 13 + 144, 617, 406);
+		dc = DrawingContextUtils.difResFromRef(dc, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
+		return dc;
 	}
 
 }
