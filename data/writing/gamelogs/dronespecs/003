@@ -1,0 +1,36 @@
+A page from the technical specification of deployed drones
+---------------------------------------------------------------------------------------
+Copter
+
+
+Copters are our most flexible units. They are fast and can fly over water.
+That makes them a perfect choice for guarding naval or island areas. 
+A copter's detection radius is extremely high and its height allows a big 'sight' angle. 
+
+
+Armor type: Light
+
+Weapon type: Machine gun
+
+Damage: 3
+
+Chaussie type: Flying (Can cross almost every terrain)
+
+Max Life: 20
+
+Speed factor: 3
+
+
+Weaknesses: 
+
+
+Copters don't have good armor and can be shot down fast with rapid-fire weapons, such as assault rifles.   
+
+
+ 
+
+ 
+
+
+
+  

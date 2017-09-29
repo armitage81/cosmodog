@@ -53,7 +53,7 @@ public class Mappings {
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_4, "pinky");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_5, "smileofthegoddess");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_6, "amurderingpoet");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_7, "Series008");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_7, "dronespecs");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_8, "Series009");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_9, "Series010");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_10, "Series011");

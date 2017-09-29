@@ -378,25 +378,17 @@ public class ApplicationContext {
 			@Override
 			public void run() {
 				try {
-					Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.wav");
-					Music musicInGame4 = new Music("data/music/EG_DangerZone_Loop.wav");
-					Music musicInGame5 = new Music("data/music/EG_Despair_Loop.wav");
-					Music musicInGame2 = new Music("data/music/EG_Dreamworld_Loop.wav");
-					Music musicInGame3 = new Music("data/music/EG_RayofHope_Loop.wav");
-					Music musicInGame1 = new Music("data/music/EG_Unknown_Loop.wav");
-					Music musicGameOver = new Music("data/music/EG_Negative_Stinger.wav");
-					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.wav");
-					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.wav");
-					Music foundTool = new Music("data/music/EG_Positive_Stinger_02.wav");
+					Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.ogg");
+					Music musicSoundtrack = new Music("data/music/Soundtrack.ogg");
+					Music musicGameOver = new Music("data/music/EG_Negative_Stinger.ogg");
+					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.ogg");
+					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.ogg");
+					Music foundTool = new Music("data/music/EG_Positive_Stinger_02.ogg");
 					
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
 					
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME1, musicInGame1);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME2, musicInGame2);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME3, musicInGame3);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME4, musicInGame4);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_IN_GAME5, musicInGame5);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK, musicSoundtrack);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);

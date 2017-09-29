@@ -21,16 +21,16 @@ public class PlayJingleAction extends FixedLengthAsyncAction {
 
 	@Override
 	public void onTrigger() {
-		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_IN_GAME1);
+		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
 		originalMusicPosition = music.getPosition();
 		MusicUtils.playMusic(musicResourceId);
 	}
 	
 	@Override
 	public void onEnd() {
-		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_IN_GAME1);
+		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
 		music.setPosition(originalMusicPosition);
-		MusicUtils.loopMusic(MusicResources.MUSIC_IN_GAME1);
+		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
 	}
 
 }

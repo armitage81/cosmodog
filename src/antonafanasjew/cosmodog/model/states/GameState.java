@@ -266,7 +266,7 @@ public class GameState extends BasicGameState {
     		
 		}
 		
-		MusicUtils.loopMusic(MusicResources.MUSIC_IN_GAME1);
+		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
 		
 		firstUpdate = true;
 	}

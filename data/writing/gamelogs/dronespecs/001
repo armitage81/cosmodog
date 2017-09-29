@@ -1,0 +1,26 @@
+A page from the technical specification of deployed drones
+---------------------------------------------------------------------------------------
+Bot
+
+
+The bot is the slowest unit in the SUF arsenal. It is mostly deployed for patrolling dense urban or forest areas. 
+The bot unit is cheap but neither flexible nor strong. If caught by surprise, it can be destroyed by a single handgun shot.
+
+
+Armor type: Light
+
+Weapon type: Light gun
+
+Damage: 1
+
+Chaussie type: Legs (Can cross plain and rough terrain, no water)
+
+Max Life: 15
+
+Speed factor: 1
+
+
+Weaknesses: 
+
+
+Its light armor makes the bots vulnerable against handguns. A shot from behind can completely destoy the unit. 
