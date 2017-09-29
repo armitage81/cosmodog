@@ -134,13 +134,15 @@ public class CosmodogStarter extends StateBasedGame {
 			DisplayMode[] modes = Display.getAvailableDisplayModes();
 			DisplayMode preferred = null;
 			for (String preferredRes : Constants.PREFERRED_RESOLUTIONS) {
-				for (DisplayMode mode : modes) {
-					String supportedMode = mode.getWidth() + "x" + mode.getHeight();
-					if (supportedMode.equals(preferredRes)) {
-						preferred = mode;
-						break;
-					}
-				}				
+				if (preferred == null) {
+					for (DisplayMode mode : modes) {
+						String supportedMode = mode.getWidth() + "x" + mode.getHeight();
+						if (supportedMode.equals(preferredRes)) {
+							preferred = mode;
+							break;
+						}
+					}				
+				}
 			}
 			
 			if (preferred == null) {

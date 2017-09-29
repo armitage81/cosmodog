@@ -1,16 +1,20 @@
 package antonafanasjew.cosmodog.player;
 
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
+	
 	@Override
 	protected void updatePlayer(Player player) {
 
-		
 		/*
-		player.setPositionX(10);
-		player.setPositionY(49);
+		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+		
+		player.setPositionX(86);
+		player.setPositionY(150);
 		
 		player.setMaxLife(100);
 		player.setLife(100);
