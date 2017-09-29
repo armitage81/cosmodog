@@ -58,6 +58,8 @@
 				<include name="jdom2-2.0.6.jar" />
 				<include name="commons-beanutils-1.9.2.jar" />
 				<include name="guava-18.0.jar" />
+					<include name="jogg-0.0.7.jar" />
+					<include name="jorbis-0.0.15.jar" />				
 				<include name="slick2d/lib/slick.jar" />
 				<include name="slick2d/lib/lwjgl.jar" />
 			</fileset>

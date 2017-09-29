@@ -25,6 +25,10 @@
 		<a href="cosmodog.html" class="w3-bar-item w3-button">Game</a>
 		</div>
 		
+		<div id="menuNews">
+		<a href="news.html" class="w3-bar-item w3-button">News</a>
+		</div>
+		
 		<div id="menuTheGame">
 		<a href="features.html" class="w3-bar-item w3-button">Features</a>
 		</div>

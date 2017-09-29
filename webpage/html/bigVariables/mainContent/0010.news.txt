@@ -1,0 +1,8 @@
+<div>
+
+		<h3>September 29th 2017</h3>
+		<p>
+			Finally! After more than three years of development, Cosmodog is released! <a href="download.html">Download</a> the game for FREE! We'd greatly appreciate your feedback at <a href="mailto:feedback@cosmodog.eu">feedback@cosmodog.eu</a>.			
+		</p>
+
+</div>

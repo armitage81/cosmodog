@@ -8,3 +8,4 @@ download.html;Downloads
 enemies.html;Enemies
 support.html;Support
 about.html;About Cosmodog
+news.html;News

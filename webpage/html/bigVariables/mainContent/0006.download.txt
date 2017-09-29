@@ -12,15 +12,7 @@ Cosmodog requires a Windows operating system. It was tested on Windows 7 and Win
 </p>
 
 <p>
-<a href="downloads/readme.txt" download="filename" class="w3-button w3-white w3-large w3-block w3-mobile">Cosmodog standalone</a>
-</p>
-
-<p>
-<a href="downloads/readme.txt" download="filename" class="w3-button w3-white w3-large w3-block w3-mobile">Cosmodog installer</a>
-</p>
-
-<p>
-Choose the standalone version if you have Java 7 JRE installed on your system. If you don't have Java 7 installed or are not sure about it, download the Cosmodog installer.
+<a href="downloads/cosmodog.zip" download="cosmodog.zip" class="w3-button w3-white w3-large w3-block w3-mobile">Cosmodog</a>
 </p>
 
 <p>
@@ -28,7 +20,7 @@ You can play the full game for free and distribute it in any non-commercial way.
 </p>
 
 <p>
-Please leave your comments, found bugs and extensions suggestions <a href="empty" download="filename">here</a>. If you are interested in the source code, you can find it in <a href="https://github.com/armitage81/cosmodog" download="filename">GitHub</a>
+Please leave your comments, found bugs and extensions suggestions <a href="mailto:feedback@cosmodog.eu">feedback@cosmodog.eu</a>. If you are interested in the source code, you can find it in <a href="https://github.com/armitage81/cosmodog" download="filename">GitHub</a>
 </p>
 
 

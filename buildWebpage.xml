@@ -1,0 +1,32 @@
+<project name="Cosmodog" default="dist" basedir=".">
+	<description>
+    Build for Cosmodog
+  </description>
+
+	<property name="buildScript" location="webpage/build.bat" />
+	<property name="src" location="webpage/html" />
+	<property name="build" location="webpage/html/output" />
+
+
+	<target name="deployToServer" depends="dist">
+		<ftp server="cosmodog.eu" port="21" userid="${user}" password="${password}" remotedir="cosmodog.eu" passive="yes" binary="yes" verbose="yes">
+			<fileset dir="${build}">
+				<include name="*.html" />
+				<include name="**/*.png" />
+			</fileset>
+		</ftp>
+	</target>
+
+	<target name="init" depends="clean">
+		<tstamp />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="dist" depends="init" description="generate the distribution">
+		<exec executable="${buildScript}" dir="webpage" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+	</target>
+</project>
