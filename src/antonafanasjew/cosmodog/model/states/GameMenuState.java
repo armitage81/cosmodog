@@ -5,23 +5,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import antonafanasjew.cosmodog.CosmodogStarter;
 
-public class GameMenuState extends BasicGameState {
+public class GameMenuState extends CosmodogAbstractState {
 
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		container.getInput().clearKeyPressedRecord();
 	}
 	

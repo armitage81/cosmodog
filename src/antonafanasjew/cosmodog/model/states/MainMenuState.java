@@ -1,45 +1,35 @@
 package antonafanasjew.cosmodog.model.states;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.model.menu.MenuItem;
-import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
-import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer.MenuRenderingParam;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class MainMenuState extends BasicGameState {
+public class MainMenuState extends CosmodogAbstractState {
 
 	private Menu mainMenu;
 	private MenuRenderer menuRenderer = new MenuRenderer();
 	private MenuRenderingParam param = new MenuRenderingParam();
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// TODO Auto-generated method stub
-
-	}
-	
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		container.getInput().clearKeyPressedRecord();
 		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
 		mainMenu.setInitialized();
@@ -78,32 +68,26 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		
-		DrawingContext dc = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		
-		DrawingContext logoDc = new TileDrawingContext(dc, 1, 3, 0, 1);
-		
-		DrawingContext menuDc = new TileDrawingContext(dc, 10, 10, 6, 7, 4, 2);
-		
-		DrawingContext referencesDc = new TileDrawingContext(dc, 10, 10, 0, 9, 10, 1);
-		
-		
+		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+		DrawingContext startScreenLogoDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenLogoDrawingContext();
+		DrawingContext startScreenReferencesDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenReferencesDrawingContext();
+				
 		Animation titleAnimation = ApplicationContext.instance().getAnimations().get("title");
 		
-		titleAnimation.draw(dc.x(), dc.y(), dc.w(), dc.h());
+		titleAnimation.draw(gameContainerDrawingContext.x(), gameContainerDrawingContext.y(), gameContainerDrawingContext.w(), gameContainerDrawingContext.h());
 		
 		Animation logo = ApplicationContext.instance().getAnimations().get("logo");
-		logoDc = new CenteredDrawingContext(logoDc, 640, 192);
-		logo.draw(logoDc.x(), logoDc.y(), logoDc.w(), logoDc.h());
+		
+		logo.draw(startScreenLogoDrawingContext.x(), startScreenLogoDrawingContext.y(), startScreenLogoDrawingContext.w(), startScreenLogoDrawingContext.h());
 		
 		param.menu = mainMenu;
-		menuRenderer.render(gc, g, menuDc, param);
+		menuRenderer.render(gc, g, param);
 		
 		
 		
 		
 		String text = ApplicationContext.instance().getGameTexts().get("references").getLogText();
-		TextBookRendererUtils.renderCenteredLabel(gc, g, referencesDc, text, FontType.References, 0);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, startScreenReferencesDrawingContext, text, FontType.References, 0);
 		
 	}
 

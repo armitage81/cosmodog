@@ -1,16 +1,13 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import java.util.Date;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SpriteSheet;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -27,7 +24,11 @@ import antonafanasjew.cosmodog.util.TilesetUtils;
 public class MapLayerRenderer extends AbstractRenderer {
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 		
 		MapLayerRendererPredicate rendererPredicate = (MapLayerRendererPredicate)renderingParameter;
 		
@@ -84,6 +85,9 @@ public class MapLayerRenderer extends AbstractRenderer {
 
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
+		
+		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 		
 	}
 

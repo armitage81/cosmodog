@@ -18,25 +18,29 @@ public class TextRenderer extends AbstractRenderer {
 	private float textHeight;
 	private Color textColor; 
 	private Color backgroundColor;
+	private DrawingContext drawingContext;
 	
-	public TextRenderer(TrueTypeFont font, boolean centered, Color textColor, Color backgroundColor) {
+	public TextRenderer(TrueTypeFont font, boolean centered, DrawingContext drawingContext, Color textColor, Color backgroundColor) {
 		this.centered = centered;
 		this.trueTypeFont = font;
 		this.textHeight = trueTypeFont.getHeight();
 		this.textColor = textColor;
 		this.backgroundColor = backgroundColor;
+		this.drawingContext = drawingContext;
 	}
 
-	public TextRenderer(TrueTypeFont font, boolean centered) {
-		this(font, centered, Color.white, Color.black);
+	public TextRenderer(TrueTypeFont font, boolean centered, DrawingContext drawingContext) {
+		this(font, centered, drawingContext, Color.white, Color.black);
 	}
 	
-	public TextRenderer() {
-		this(FONT, false);
+	public TextRenderer(DrawingContext drawingContext) {
+		this(FONT, false, drawingContext);
 	}
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext context, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		graphics.translate(drawingContext.x(), drawingContext.y());
 		
 		String text = (String)renderingParameter;
 		this.textWidth = trueTypeFont.getWidth(text);
@@ -46,13 +50,15 @@ public class TextRenderer extends AbstractRenderer {
 
 		if (centered) {
 
-			offsetX = (context.w() - textWidth) / 2.0f;
-			offsetY = (context.h() - textHeight) / 2.0f;
+			offsetX = (drawingContext.w() - textWidth) / 2.0f;
+			offsetY = (drawingContext.h() - textHeight) / 2.0f;
 		}
 		graphics.setColor(this.backgroundColor);
 		graphics.fillRect(offsetX, offsetY, textWidth, textHeight);
 		graphics.setColor(this.textColor);
 		trueTypeFont.drawString(offsetX, offsetY, text, Color.white);
+		
+		graphics.translate(-drawingContext.x(), -drawingContext.y());
 	}
 
 }

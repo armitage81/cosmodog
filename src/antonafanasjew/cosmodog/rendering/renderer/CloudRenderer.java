@@ -3,7 +3,6 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Set;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -11,6 +10,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -34,7 +34,11 @@ public class CloudRenderer extends AbstractRenderer {
 	
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
@@ -92,6 +96,8 @@ public class CloudRenderer extends AbstractRenderer {
 		}
 		
 		graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
+		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 		
 	}
 

@@ -9,7 +9,6 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.particlepattern.model.GridParticlePatternBuilder;
 
 public abstract class AbstractPieceRenderer implements PieceRenderer {
 

@@ -1,16 +1,16 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import java.awt.AlphaComposite;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
@@ -52,8 +52,8 @@ import antonafanasjew.cosmodog.rendering.renderer.pieces.VehicleRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.WeaponRenderer;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 public class PiecesRenderer extends AbstractRenderer {
 
@@ -140,7 +140,11 @@ public class PiecesRenderer extends AbstractRenderer {
 	}
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 		
 		PieceRendererPredicate renderingPredicate = (PieceRendererPredicate)renderingParameter;
 		
@@ -175,16 +179,31 @@ public class PiecesRenderer extends AbstractRenderer {
 		
 		Collection<Piece> mapPieces = map.visibleMapPieces(tileNoX, tileNoY, tilesW, tilesH, 5).values();
 		
-		Set<Piece> filteredMapPieces = Sets.newHashSet();
+		
+		
+		List<Piece> filteredMapPieces = Lists.newArrayList();
 		
 		for (Piece piece : mapPieces) {
+						
 			if (renderingPredicate == null || renderingPredicate.pieceShouldBeRendered(piece)) {
-				boolean isNorthFromPlayer = piece.getPositionY() < player.getPositionY();
-				if ((isNorthFromPlayer && northFromPlayer) || (!isNorthFromPlayer && (piece instanceof Platform == false) && southFromPlayer) || (northFromPlayer && piece instanceof Platform)) {
+				boolean pieceIsNorthFromPlayer = piece.getPositionY() < player.getPositionY();
+				boolean northernPiecesDrawingPhase = northFromPlayer;
+				boolean southernPiecesDrawingPhase = southFromPlayer;
+				
+				boolean pieceIsPlatform = piece instanceof Platform;
+				boolean pieceIsNotPlatform = !pieceIsPlatform;
+				
+				boolean northernPieceForNorthernDrawingPhase = northernPiecesDrawingPhase && pieceIsNorthFromPlayer;
+				boolean platformForNorthernDrawingPhase = northernPiecesDrawingPhase && pieceIsPlatform;
+				
+				if (northernPieceForNorthernDrawingPhase || platformForNorthernDrawingPhase || (!pieceIsNorthFromPlayer && pieceIsNotPlatform && southernPiecesDrawingPhase)) {
 					filteredMapPieces.add(piece);
 				}
 			}
 		}
+		
+		//Sort the remaining pieces so that northern pieces come before the southern ones. This allows proper rendering (so, for instance, the platform does not cover a vehicle which is in front of it.)
+		filteredMapPieces = filteredMapPieces.stream().sorted((p1, p2) -> p1.getPositionY() - p2.getPositionY()).collect(Collectors.toList());
 		
 		for (Piece piece : filteredMapPieces) {
 			
@@ -221,6 +240,9 @@ public class PiecesRenderer extends AbstractRenderer {
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
+		
+		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}
 
 }

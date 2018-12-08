@@ -4,7 +4,6 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
@@ -18,12 +17,13 @@ import com.google.common.collect.Lists;
  */
 public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
+	private CollisionValidator otherVehicleCollisionValidator = new VehicleObstacleCollisionValidator();
 	private CollisionValidator defaultCollisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new UnpassableCollisionValidator(), new WaterCollisionValidator(), new SnowCollisionValidator()));
-	private CollisionValidator vehicleCollisionValidator =  new OneBlocksAllCollisionValidator(Lists.newArrayList(new ActorOnWheelsCollisionValidator(), new VehicleObstacleCollisionValidator(), new NonInteractivePieceCollisionValidator()));
+	private CollisionValidator vehicleCollisionValidator =  new OneBlocksAllCollisionValidator(Lists.newArrayList(new ActorOnWheelsCollisionValidator(), new NonInteractivePieceCollisionValidator()));
 	private FuelCollisionValidator fuelCollisionValidator = new FuelCollisionValidator();
 	private PlatformAsVehicleCollisionValidator platformAsVehicleCollisionValidator = new PlatformAsVehicleCollisionValidator();
-	private CollisionValidator platformAsObstacleOnFootCollisionValidator = new PlatformAsObstacleForPlayerCollisionValidator();
-	private CollisionValidator platformAsObstacleForCarCollisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(platformAsObstacleOnFootCollisionValidator, new VehicleObstacleCollisionValidator()));
+	private CollisionValidator platformAsObstacleCollisionValidator = new PlatformAsObstacleForPlayerCollisionValidator();
+
 	
 	/**
 	 * the parameter consider vehicle is needed to describe the case when player is exiting the vehicle
@@ -36,7 +36,6 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 		
 		Player player = (Player)actor;
 		VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
-		BoatInventoryItem boatInventoryItem = (BoatInventoryItem)player.getInventory().get(InventoryItemType.BOAT);
 		PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
 		
 		boolean exitingPlatformCollision = platformInventoryItem != null && platformInventoryItem.isExiting();
@@ -47,34 +46,53 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 		boolean platformAsObstacleCollision = !platformAsVehicleCollision && (CosmodogMapUtils.isTileOnPlatform(tileX, tileY) || CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));
 		boolean vehicleCollision = vehicleInventoryItem != null && !vehicleInventoryItem.isExiting(); 
 
-		if (exitingPlatformCollision) {
-			return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
-		} else {
-			//Player is on the platform but not using it.
-			if (platformAsObstacleCollision) {
-				if (vehicleCollision) {
-					return platformAsObstacleForCarCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-				} else {
-					return platformAsObstacleOnFootCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-				}
-			} else if (vehicleCollision) {
-				CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-				CollisionStatus vehicleCollisionStatus = vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-				if (fuelCollisionStatus.isPassable() && vehicleCollisionStatus.isPassable()) {
-					return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
-				} else {
-					if (fuelCollisionStatus.isPassable() == false) {
-						return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
-					} else {
-						return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED);
-					}
-				}
-			} else if (platformAsVehicleCollision) {
-				return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-			} else {
-				return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+		
+		if (vehicleCollision) {
+			
+			//Check fuel collision
+			CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			if (fuelCollisionStatus.isPassable() == false) {
+				return fuelCollisionStatus;
+			}
+			
+			//Check collision against other vehicle
+			CollisionStatus otherVehicleCollisionStatus = otherVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			if (otherVehicleCollisionStatus.isPassable() == false) {
+				return otherVehicleCollisionStatus;
 			}
 		}
+		
+		//Check exiting platform collision. It is always PASSABLE
+		if (exitingPlatformCollision) {
+			return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+		}
+			
+		//All cases when player or the target tile is on platform (and not driving)
+		if (platformAsObstacleCollision) {
+			
+			//Only check platform obstacles
+			CollisionStatus platformCollisionStatus = platformAsObstacleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			
+			//If platform blocks passage return IMPASSABLE
+			if (!platformCollisionStatus.isPassable()) {
+				return platformCollisionStatus;
+			}
+			
+			//If no platform obstacles and target tile on platform, there is no need to check for the terrain type collisions, so return PASSABLE
+			if (CosmodogMapUtils.isTileOnPlatform(tileX, tileY)) {
+				return platformCollisionStatus;
+			}
+		} 
+		
+		if (vehicleCollision) {
+			return vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+		} 
+		
+		if (platformAsVehicleCollision) {
+			return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+		} 
+		
+		return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
 	}
 
 

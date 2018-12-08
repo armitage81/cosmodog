@@ -1,72 +1,65 @@
 package antonafanasjew.cosmodog.globals;
 
-import java.awt.Color;
 import java.awt.Font;
 
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 
 
 
 public enum FontType {
 
-	References(createUnicodeFont(new Font("Arial", Font.PLAIN, 12), 12, true, false, Color.white)),
-	MainMenu(createUnicodeFont(new Font("Courier New", Font.PLAIN, 24), 24, true, false, Color.red)),
-	IntroText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, true, false, Color.white)),
-	OutroText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, true, false, Color.white)),
-	EndLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)),
-	CreditsText(createUnicodeFont(new Font("Courier New", Font.PLAIN, 18), 18, false, false, Color.white)),
-	GameLog(createUnicodeFont(new Font("Courier New", Font.PLAIN, 16), 16, true, false, Color.white)),
-	GameLogHeader(createUnicodeFont(new Font("Courier New", Font.PLAIN, 16), 16, true, false, Color.ORANGE)),
-	GameLogControlsHint(createUnicodeFont(new Font("Courier New", Font.BOLD, 12), 12, true, false, Color.GRAY)),
-	PopUp(createUnicodeFont(new Font("Courier New", Font.PLAIN, 16), 16, false, false, Color.white)),
-	PopUpHeader(createUnicodeFont(new Font("Courier New", Font.BOLD, 12), 12, true, false, Color.ORANGE)),
-	PopUpInterface(createUnicodeFont(new Font("Arial", Font.PLAIN, 16), 16, true, false, Color.gray)),
-	InGameMenuInterface(createUnicodeFont(new Font("Courier New", Font.PLAIN, 20), 20, false, false, Color.white)),
-	InventoryDescription(createUnicodeFont(new Font("Courier New", Font.PLAIN, 24), 24, false, false, Color.white)),
-	Test(createUnicodeFont(new Font("Arial", Font.PLAIN, 24), 72, true, true, Color.red)), 
-	GameOver(createUnicodeFont(new Font("Arial", Font.BOLD, 72), 72, true, true, Color.red)),
-	GameOverScore(createUnicodeFont(new Font("Courier New", Font.BOLD, 24), 24, true, true, Color.white)), 
-	RadiationLabelDanger(createUnicodeFont(new Font("Arial", Font.BOLD, 10), 10, true, false, Color.red)),
-	RadiationLabelSafe(createUnicodeFont(new Font("Arial", Font.BOLD, 14), 14, true, false, Color.green)),
-	SuppliesTrackerLabel(createUnicodeFont(new Font("Arial", Font.BOLD, 10), 10, true, false, Color.green)),
-	GameProgressLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 14), 14, false, false, Color.white)), 
-	GameProgressLabelInBars(createUnicodeFont(new Font("Arial", Font.BOLD, 20), 20, true, false, Color.red)),
-	RecordsTitleLabel(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)), 
-	Records(createUnicodeFont(new Font("Courier New", Font.PLAIN, 24), 24, true, false, Color.red)), 
-	Loading(createUnicodeFont(new Font("Courier New", Font.PLAIN, 36), 36, true, false, Color.white)), 
-	Hud(createUnicodeFont(new Font("Arial", Font.BOLD, 10), 10, true, false, Color.WHITE)),
-	HudInfobits(createUnicodeFont(new Font("Courier", Font.BOLD, 20), 20, true, false, Color.RED)),
-	HudTime(createUnicodeFont(new Font("Courier", Font.BOLD, 12), 12, true, false, Color.RED)),
-	HudDayTime(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.RED)),
-	HintsActions(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.WHITE)),
-	HintsKeys(createUnicodeFont(new Font("Courier", Font.BOLD, 14), 14, true, false, Color.GREEN)),
-	StatisticsLabel(createUnicodeFont(new Font("Courier", Font.BOLD, 18), 18, true, false, Color.RED)),
-	StatisticsHeader(createUnicodeFont(new Font("Courier", Font.BOLD, 36), 36, true, false, Color.WHITE));
+	References(new TrueTypeFont(new Font("Arial", Font.PLAIN, 12), false), Color.black),
+	MainMenu(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
+	IntroText(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.green),
+	OutroText(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.green),
+	Outro2Text(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.orange),
+	EndLabel(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 36), false), Color.white),
+	CreditsText(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.white),
+	GameLog(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
+	GameLogHeader(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
+	GameLogControlsHint(new TrueTypeFont(new Font("Courier New", Font.BOLD, 12), false), Color.white),
+	PopUp(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
+	PopUpHeader(new TrueTypeFont(new Font("Courier New", Font.BOLD, 18), false), Color.orange),
+	PopUpInterface(new TrueTypeFont(new Font("Arial", Font.PLAIN, 16), false), Color.white),
+	InGameMenuInterface(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.white),
+	InventoryDescription(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.white),
+	Test(new TrueTypeFont(new Font("Arial", Font.PLAIN, 24), false), Color.white), 
+	GameOver(new TrueTypeFont(new Font("Arial", Font.BOLD, 36), false), Color.red),
+	GameOverScore(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.white), 
+	RadiationLabelDanger(new TrueTypeFont(new Font("Arial", Font.BOLD, 10), false), Color.white),
+	RadiationLabelSafe(new TrueTypeFont(new Font("Arial", Font.BOLD, 14), false), Color.white),
+	SuppliesTrackerLabel(new TrueTypeFont(new Font("Arial", Font.BOLD, 10), false), Color.white),
+	GameProgressLabel(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 14), false), Color.white), 
+	GameProgressLabelInBars(new TrueTypeFont(new Font("Arial", Font.BOLD, 20), false), Color.white),
+	RecordsTitleLabel(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 36), false), Color.white), 
+	Records(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.white), 
+	Loading(new TrueTypeFont(new Font("Courier New", Font.BOLD, 48), false), Color.red), 
+	Hud(new TrueTypeFont(new Font("Arial", Font.BOLD, 16), false), Color.green),
+	HudInfobits(new TrueTypeFont(new Font("Courier", Font.BOLD, 26), false), Color.green),
+	HudTime(new TrueTypeFont(new Font("Courier", Font.BOLD, 12), false), Color.green),
+	HudDayTime(new TrueTypeFont(new Font("Courier", Font.BOLD, 14), false), Color.green),
+	HintsActions(new TrueTypeFont(new Font("Courier", Font.BOLD, 14), false), Color.white),
+	HintsKeys(new TrueTypeFont(new Font("Courier", Font.BOLD, 14), false), Color.white),
+	StatisticsLabel(new TrueTypeFont(new Font("Courier", Font.BOLD, 18), false), Color.white),
+	StatisticsHeader(new TrueTypeFont(new Font("Courier", Font.BOLD, 36), false), Color.white);
 		
-	private UnicodeFont font;
+	private TrueTypeFont font;
 	
-	@SuppressWarnings("unchecked")
-	private static UnicodeFont createUnicodeFont(Font font, int size, boolean bold, boolean italic, Color color) {
-		try {
-			UnicodeFont unicodeFont = new UnicodeFont(font, size, bold, italic);
-			unicodeFont.addAsciiGlyphs();
-			unicodeFont.addGlyphs(400, 600);
-			unicodeFont.getEffects().add(new ColorEffect(color));
-			unicodeFont.loadGlyphs();
-			return unicodeFont;
-		} catch (SlickException e) {
-			throw new RuntimeException("Error while loading font", e);
-		}
-	}
+	private Color color;
 	
-	private FontType(UnicodeFont font) {
+	
+	private FontType(TrueTypeFont font, Color color) {
 		this.font = font;
+		this.color = color;
 	}
 
-	public UnicodeFont getFont() {
+	public TrueTypeFont getFont() {
 		return font;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
 }

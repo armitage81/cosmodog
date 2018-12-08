@@ -7,6 +7,6 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
 public interface Renderer {
 
-	void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter);
+	void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter);
 	
 }

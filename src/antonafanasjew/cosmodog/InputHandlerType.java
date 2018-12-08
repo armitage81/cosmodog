@@ -18,10 +18,6 @@ public enum InputHandlerType {
 	 */
 	INPUT_HANDLER_INGAME,
 	/**
-	 * Dialog box controls.
-	 */
-	INPUT_HANDLER_INGAME_DIALOG,
-	/**
 	 * Debug console controls.
 	 */
 	INPUT_HANDLER_INGAME_DEBUGCONSOLE,

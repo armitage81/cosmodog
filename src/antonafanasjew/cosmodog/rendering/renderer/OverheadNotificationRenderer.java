@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction.OverheadNotificationTransition;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -27,8 +28,12 @@ import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 public class OverheadNotificationRenderer extends AbstractRenderer {
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
@@ -104,27 +109,24 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			float textWidth = textBounds.getWidth();
 			float textOffsetX = (scaledTileWidth - textWidth) / 2;
 			float textPosX = actorPosXOnVisibleMapInclMovementInclScale + textOffsetX;
-			if (actorPosXOnVisibleMapInclMovementInclScale + textWidth > drawingContext.w()) {
+			if (actorPosXOnVisibleMapInclMovementInclScale + textWidth > sceneDrawingContext.w()) {
 				//Why is x substracted here? It has to do with thranslation around the drawing method, but what exactly?
-				textPosX = drawingContext.w() - textWidth - x;  
+				textPosX = sceneDrawingContext.w() - textWidth - x;  
 			}
 			
 			float overheadMessageStartingY = actorPosYOnVisibleMapInclMovementInclScale - 25;
 			float overheadMessageCurrentY = overheadMessageStartingY - 50 * completion;
 			
-	//		graphics.setColor(color);
-	//		graphics.setFont(Fonts.HOVERTEXT_FONT);
-	//		graphics.drawString(text, textPosX, overheadMessageCurrentY);
-			
-			DrawingContext dc = new SimpleDrawingContext(drawingContext, textPosX, overheadMessageCurrentY, textBounds.getWidth(), textBounds.getHeight());
+			DrawingContext dc = new SimpleDrawingContext(sceneDrawingContext, textPosX, overheadMessageCurrentY, textBounds.getWidth(), textBounds.getHeight());
 			
 			
-			LetterTextRenderer.getInstance().render(gameContainer, graphics, dc, LetterTextRenderingParameter.fromText(text));
+			LetterTextRenderer.getInstance().withDrawingContext(dc).render(gameContainer, graphics, LetterTextRenderingParameter.fromText(text));
 			
 	
 			graphics.translate(-x, -y);
 		}
 		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}
 
 }

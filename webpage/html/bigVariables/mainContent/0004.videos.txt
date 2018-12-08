@@ -17,109 +17,25 @@ The following videos are a mix of Let's Play and development commentary. In it I
 <b>(Please stay tuned: the videos will follow after the game will be released.)</b>
 </p>
 
-<!--
+
 <div id="gallery" class="galleryClass">
 	<div class="w3-cell-row w3-padding-16">
 
-		<div class="w3-container w3-cell" style="width:35%;">
+		<div class="w3-container w3-cell" style="width:50%;">
 			<iframe 
 				width="100%"
 				height="auto"
 				title="YouTube video player" 
 				class="youtube-player" 
 				type="text/html" 
-				src="http://www.youtube.com/embed/W-Q7RMpINVo"
+				src="http://www.youtube.com/embed/HlgwbQuiyUU"
 				frameborder="0" 
 				allowFullScreen>
 			</iframe>
 			<div class="w3-container w3-center w3-white w3-small">
-				<p>Walkthrough and development commentary</p>
+				<p>Launch trailer for Cosmodog</p>
 			</div>
 		</div>
 		
-		<div class="w3-container w3-cell" style="width:35%">
-			<iframe 
-				width="100%"
-				height="auto"
-				title="YouTube video player" 
-				class="youtube-player" 
-				type="text/html" 
-				src="http://www.youtube.com/embed/W-Q7RMpINVo"
-				frameborder="0" 
-				allowFullScreen>
-			</iframe>
-			<div class="w3-container w3-center w3-white w3-small">
-				<p>Walkthrough and development commentary</p>
-			</div>
-		</div>
 	</div>
-	<div class="w3-cell-row w3-padding-16">
-
-		<div class="w3-container w3-cell" style="width:35%">
-			<iframe 
-				width="100%"
-				height="auto"
-				title="YouTube video player" 
-				class="youtube-player" 
-				type="text/html" 
-				src="http://www.youtube.com/embed/W-Q7RMpINVo"
-				frameborder="0" 
-				allowFullScreen>
-			</iframe>
-			<div class="w3-container w3-center w3-white w3-small">
-				<p>Walkthrough and development commentary</p>
-			</div>
-		</div>
-		
-		<div class="w3-container w3-cell" style="width:35%">
-			<iframe 
-				width="100%"
-				height="auto"
-				title="YouTube video player" 
-				class="youtube-player" 
-				type="text/html" 
-				src="http://www.youtube.com/embed/W-Q7RMpINVo"
-				frameborder="0" 
-				allowFullScreen>
-			</iframe>
-			<div class="w3-container w3-center w3-white w3-small">
-				<p>Walkthrough and development commentary</p>
-			</div>
-		</div>
-	</div>
-	<div class="w3-cell-row w3-padding-16">
-
-		<div class="w3-container w3-cell" style="width:35%">
-			<iframe 
-				width="100%"
-				height="auto"
-				title="YouTube video player" 
-				class="youtube-player" 
-				type="text/html" 
-				src="http://www.youtube.com/embed/W-Q7RMpINVo"
-				frameborder="0" 
-				allowFullScreen>
-			</iframe>
-			<div class="w3-container w3-center w3-white w3-small">
-				<p>Walkthrough and development commentary</p>
-			</div>
-		</div>
-		
-		<div class="w3-container w3-cell" style="width:35%">
-			<iframe 
-				width="100%"
-				height="auto"
-				title="YouTube video player" 
-				class="youtube-player" 
-				type="text/html" 
-				src="http://www.youtube.com/embed/W-Q7RMpINVo"
-				frameborder="0" 
-				allowFullScreen>
-			</iframe>
-			<div class="w3-container w3-center w3-white w3-small">
-				<p>Walkthrough and development commentary</p>
-			</div>
-		</div>
-	</div>
--->
 </div>

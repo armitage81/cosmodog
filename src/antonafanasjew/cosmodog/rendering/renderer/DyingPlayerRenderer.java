@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.dying.DyingAction;
 import antonafanasjew.cosmodog.actions.dying.DyingAction.DyingTransition;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -21,12 +22,15 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-	
+
+		
 		
 		Player player = cosmodogGame.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
@@ -43,7 +47,7 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		ApplicationContextUtils.getCosmodogGame().getAmbientSoundRegistry().clear();
 		
 		graphics.setColor(Color.black);
-		graphics.fillRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
+		graphics.fillRect(gameContainerDrawingContext.x(), gameContainerDrawingContext.y(), gameContainerDrawingContext.w(), gameContainerDrawingContext.h());
 		
 		if (!deathSequence) {
 			return;

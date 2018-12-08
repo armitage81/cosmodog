@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer.textbook;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.TrueTypeFont;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -28,12 +28,12 @@ public class TextPageConstraints {
 		
 	private static Pattern SEPARATOR = Pattern.compile("[\t\\u0020]+");
 	
-	public List<List<String>> textSplitByLinesAndPages(String text, UnicodeFont font) {
+	public List<List<String>> textSplitByLinesAndPages(String text, TrueTypeFont font) {
 		List<String> lines = textSplitByLines(text, font);
 		return textSplitByPages(lines, font);
 	}
 	
-	public List<String> textSplitByLines(String text, UnicodeFont font) {
+	public List<String> textSplitByLines(String text, TrueTypeFont font) {
 		Iterable<String> wordsIterable = Splitter.on(SEPARATOR).split(text);
 		List<String> words = Lists.newArrayList(wordsIterable);
 		Integer lastWordIndex = words.size() - 1;
@@ -79,7 +79,7 @@ public class TextPageConstraints {
 		
 	}
 	
-	public List<List<String>> textSplitByPages(List<String> lines, UnicodeFont font) {
+	public List<List<String>> textSplitByPages(List<String> lines, TrueTypeFont font) {
 		List<List<String>> pages = Lists.newArrayList();
 		
 		List<String> currentPage = Lists.newArrayList();

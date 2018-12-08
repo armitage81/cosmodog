@@ -9,7 +9,8 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.WeaponType;
-import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -36,8 +37,6 @@ public class ArsenalInterfaceRenderer implements Renderer {
 	private Map<WeaponType, String> imageIdForBoxForWeaponType = Maps.newHashMap();
 		
 	
-	private int columns;
-	
 	public ArsenalInterfaceRenderer() {
 		columnsForWeaponType.put(WeaponType.FISTS, 0);
 		columnsForWeaponType.put(WeaponType.PISTOL, 1);
@@ -53,30 +52,32 @@ public class ArsenalInterfaceRenderer implements Renderer {
 		imageIdForBoxForWeaponType.put(WeaponType.MACHINEGUN, "ui.ingame.weaponboxtriple");
 		imageIdForBoxForWeaponType.put(WeaponType.RPG, "ui.ingame.weaponboxtriple");
 		
-		for (int n : columnsForWeaponType.values()) {
-			columns += n;
-		}
 	}
 	
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
+		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+			return;
+		}
+		
+		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 		
 		DrawingContext[] dcs = new DrawingContext[5];
-		dcs[0] = new SimpleDrawingContext(context, 856, 640, 56, 52);
+		dcs[0] = new SimpleDrawingContext(gameContainerDrawingContext, 856, 640, 56, 52);
 		dcs[0] = DrawingContextUtils.difResFromRef(dcs[0], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		dcs[1] = new SimpleDrawingContext(context, 941, 640, 56, 52);
+		dcs[1] = new SimpleDrawingContext(gameContainerDrawingContext, 941, 640, 56, 52);
 		dcs[1] = DrawingContextUtils.difResFromRef(dcs[1], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		dcs[2] = new SimpleDrawingContext(context, 1026, 640, 56, 52);
+		dcs[2] = new SimpleDrawingContext(gameContainerDrawingContext, 1026, 640, 56, 52);
 		dcs[2] = DrawingContextUtils.difResFromRef(dcs[2], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		dcs[3] = new SimpleDrawingContext(context, 1111, 640, 56, 52);
+		dcs[3] = new SimpleDrawingContext(gameContainerDrawingContext, 1111, 640, 56, 52);
 		dcs[3] = DrawingContextUtils.difResFromRef(dcs[3], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		dcs[4] = new SimpleDrawingContext(context, 1196, 640, 56, 52);
+		dcs[4] = new SimpleDrawingContext(gameContainerDrawingContext, 1196, 640, 56, 52);
 		dcs[4] = DrawingContextUtils.difResFromRef(dcs[4], ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
 		Map<WeaponType, DrawingContext> contextsForWeapons = Maps.newHashMap();
@@ -96,7 +97,6 @@ public class ArsenalInterfaceRenderer implements Renderer {
 
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		
-		int columnsUsed = 0;
 		for (WeaponType weaponType : arsenal.getWeaponsOrder()) {
 			
 			//Do not render fists.

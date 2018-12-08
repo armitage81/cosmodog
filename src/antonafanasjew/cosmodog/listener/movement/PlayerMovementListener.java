@@ -41,8 +41,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
@@ -226,7 +224,6 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		if (hasWaterAccess) {
 			if (oldWater < player.getCurrentMaxWater()) {
-				cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundWater()), true, false);
 				applicationContext.getSoundResources().get(SoundResources.SOUND_DRUNK).play();
 				OverheadNotificationAction.registerOverheadNotification(player, "You drink the water");
 			}
@@ -417,11 +414,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				
 				boolean coldTile = TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD;
 				boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+				boolean inPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 				boolean hasJacket = player.getInventory().get(InventoryItemType.JACKET) != null;
 				
 				boolean wasFrozen = player.getLifeLentForFrost() > 0;
 
-				if (coldTile && !inCar && !hasJacket) {
+				if (coldTile && !inCar && !inPlatform && !hasJacket) {
 					if (player.getActualLife() > 1) {
 						player.increaseLifeLentForFrost(1);
 					}

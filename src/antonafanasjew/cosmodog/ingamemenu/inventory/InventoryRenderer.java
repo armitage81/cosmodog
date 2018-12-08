@@ -8,7 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -22,7 +22,6 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.InventoryItemRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
@@ -37,7 +36,9 @@ public class InventoryRenderer implements Renderer {
 
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext context, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 		
 		InventoryInputState inventoryInputState = (InventoryInputState)renderingParameter;
 		
@@ -49,9 +50,9 @@ public class InventoryRenderer implements Renderer {
 		Player player = cosmodogGame.getPlayer();
 		Inventory inventory = player.getInventory();
 		
-		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingameinventory", context);
+		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingameinventory", inGameMenuContentDrawingContext);
 		
-		DrawingContext itemsDrawingContext = itemsDrawingContext(context);
+		DrawingContext itemsDrawingContext = itemsDrawingContext(inGameMenuContentDrawingContext);
 		
 				
 		Iterator<InventoryItemType> itemTypeIterator = inventory.keySet().iterator();
@@ -93,7 +94,7 @@ public class InventoryRenderer implements Renderer {
 
 		}
 		
-		DrawingContext descriptionDrawingContext = descriptionDrawingContext(context);
+		DrawingContext descriptionDrawingContext = descriptionDrawingContext(inGameMenuContentDrawingContext);
 
 		descriptionDrawingContext = new CenteredDrawingContext(descriptionDrawingContext, 20);
 		

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.movement;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,6 +47,7 @@ import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -365,14 +367,34 @@ public class MovementAction extends FixedLengthAsyncAction {
 		boolean playerInPlatform = player.getInventory().hasPlatform();
 		
 		if (playerInPlatform) {
+			
+			Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
+			
 			for (Piece piece : cosmodogGame.getMap().getMapPieces().values()) {
 				if (piece instanceof Platform == false && CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
+					
+					//As we move the piece on the platform, we need to update it in the mapValues cache
+					Position position = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
+					oldPositionsForPiecesOnPlatform.put(position, piece);
+					
 					if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
 						piece.setPositionY(piece.getPositionY() + (player.getDirection() == DirectionType.UP ? -1 : 1));
 					} else {
 						piece.setPositionX(piece.getPositionX() + (player.getDirection() == DirectionType.LEFT ? -1 : 1));
 					}
 				}
+			}
+			
+			//When we modify positions of pieces on platform, we need to modify the mapPieces cache as well.
+			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
+				Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
+				cosmodogGame.getMap().getMapPieces().remove(oldPosition);
+			}
+			
+			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
+				Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
+				Position newPosition = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
+				cosmodogGame.getMap().getMapPieces().put(newPosition, piece);
 			}
 		}
 		

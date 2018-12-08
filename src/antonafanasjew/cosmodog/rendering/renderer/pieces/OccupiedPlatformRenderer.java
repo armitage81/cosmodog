@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Platform;
@@ -38,7 +39,11 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 	}
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 		
 		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
@@ -162,6 +167,8 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			graphics.translate(-x, -y);
 			
 		}
+		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}
 
 }

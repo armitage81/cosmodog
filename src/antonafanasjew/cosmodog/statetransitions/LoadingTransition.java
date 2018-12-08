@@ -42,7 +42,6 @@ public class LoadingTransition implements Transition {
 	@Override
 	public void postRender(StateBasedGame sbg, GameContainer gc, Graphics g) throws SlickException {
 
-
 		mainDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		g.setColor(Color.black);
 		g.fillRect(mainDrawingContext.x(), mainDrawingContext.y(), mainDrawingContext.w(), mainDrawingContext.h());

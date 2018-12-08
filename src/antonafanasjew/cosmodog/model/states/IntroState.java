@@ -4,7 +4,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -19,7 +18,7 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
 
-public class IntroState extends BasicGameState {
+public class IntroState extends CosmodogAbstractState {
 
 	private DrawingContext gameContainerDrawingContext;
 	private DrawingContext topContainerDrawingContext;
@@ -30,7 +29,7 @@ public class IntroState extends BasicGameState {
 	private long timestamp;
 	
 	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		initialTimestamp = System.currentTimeMillis();
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.loadScoreList();
@@ -38,7 +37,7 @@ public class IntroState extends BasicGameState {
 	}
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+	public void firstEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		topContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
@@ -63,10 +62,13 @@ public class IntroState extends BasicGameState {
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		timestamp = System.currentTimeMillis();
 		
-		Animation logo = ApplicationContext.instance().getAnimations().get("trancescendent");
-		DrawingContext dc = new CenteredDrawingContext(centerContainerDrawingContext, 640, 192);
-		logo.draw(dc.x(), dc.y(), dc.w(), dc.h());
+		if (timestamp - initialTimestamp < 5000) {
+			Animation logo = ApplicationContext.instance().getAnimations().get("trancescendent");
+			DrawingContext dc = new CenteredDrawingContext(centerContainerDrawingContext, 640, 192);
+			logo.draw(dc.x(), dc.y(), dc.w(), dc.h());
+		}
 		
 	}
 

@@ -6,12 +6,15 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
 public class DayTimeFilterRenderer implements Renderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		PlanetaryCalendar calendar = ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlanetaryCalendar();
 		
@@ -26,7 +29,7 @@ public class DayTimeFilterRenderer implements Renderer {
 		}
 		
 		graphics.setColor(filterColor);
-		graphics.fillRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
+		graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 		
 	}
 

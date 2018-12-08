@@ -64,6 +64,10 @@ public class Features {
 	
 	public static final String FEATURE_GODFISTS = "feature.godfists";
 	
+	public static final String FEATURE_INTERFACE = "feature.interface";
+	
+	public static final String FEATURE_SIGHTRADIUS = "feature.sightradius";
+	
 	private static final Features instance = new Features();
 	
 	/**
@@ -84,11 +88,13 @@ public class Features {
 		getFeatureFlags().put(FEATURE_COLLISION, true);
 		getFeatureFlags().put(FEATURE_FUEL, true);
 		getFeatureFlags().put(FEATURE_STORY, false);
-		getFeatureFlags().put(FEATURE_TUTORIAL, true);
+		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
 		getFeatureFlags().put(FEATURE_MUSIC, true);
-		getFeatureFlags().put(FEATURE_DAMAGE, true);
-		getFeatureFlags().put(FEATURE_GODFISTS, false);
+		getFeatureFlags().put(FEATURE_DAMAGE, false);
+		getFeatureFlags().put(FEATURE_GODFISTS, true);
+		getFeatureFlags().put(FEATURE_INTERFACE, true);
+		getFeatureFlags().put(FEATURE_SIGHTRADIUS, true);
 	}
 	
 	/**

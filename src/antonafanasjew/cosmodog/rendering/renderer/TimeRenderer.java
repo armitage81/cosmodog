@@ -5,6 +5,8 @@ import java.util.Locale;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
@@ -16,10 +18,16 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 public class TimeRenderer implements Renderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext dc, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
-		DrawingContext topDc = new TileDrawingContext(dc, 1, 2, 0, 0);
-		DrawingContext bottomDc = new TileDrawingContext(dc, 1, 2, 0, 1);
+		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+			return;
+		}
+		
+		DrawingContext timeDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().timeDrawingContext();
+		
+		DrawingContext topDc = new TileDrawingContext(timeDrawingContext, 1, 2, 0, 0);
+		DrawingContext bottomDc = new TileDrawingContext(timeDrawingContext, 1, 2, 0, 1);
 		
 		long timestamp = System.currentTimeMillis();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();

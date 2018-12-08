@@ -6,7 +6,6 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
@@ -50,17 +49,15 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
-import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.ResourceWrapperBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.EnemyFactoryBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.ItemNotificationRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.MultiInstancePieceRuleBuilder;
-import antonafanasjew.cosmodog.resourcehandling.builder.rules.PieceRuleBuilder;
-import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentCommentRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentDialogRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentPopupRuleBuilder;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
@@ -75,7 +72,6 @@ import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
-import antonafanasjew.cosmodog.rules.actions.async.DialogAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
@@ -108,8 +104,6 @@ import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
-import antonafanasjew.cosmodog.writing.textbox.WritingTextBox;
-import antonafanasjew.cosmodog.writing.textbox.WritingTextBoxStateUpdater;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -122,7 +116,7 @@ public class InitializationUtils {
 		
 		CosmodogMap cosmodogMap = initializeCosmodogMap(customTiledMap);
 		cosmodogGame.setMap(cosmodogMap);
-
+		
 		User user = new User();
 		user.setUserName(userName);
 		cosmodogGame.setUser(user);
@@ -136,7 +130,7 @@ public class InitializationUtils {
 		planetaryCalendar.setYear(2314);
 		planetaryCalendar.setMonth(1);
 		planetaryCalendar.setDay(27);
-		planetaryCalendar.setHour(17);
+		planetaryCalendar.setHour(10);
 		planetaryCalendar.setMinute(20);
 		cosmodogGame.setPlanetaryCalendar(planetaryCalendar);
 
@@ -152,13 +146,6 @@ public class InitializationUtils {
 		cosmodogGame.setActorTransitionRegistry(new ActorTransitionRegistry());
 		cosmodogGame.setChronometer(new Chronometer());
 		cosmodogGame.setRuleBook(new RuleBook());
-
-		// We initialize the text box here as we need to refer to it when
-		// posting Alisa's comments in the updatable writing state.
-		DrawingContext dialogBoxDc = ApplicationContext.instance().getDialogBoxDrawingContext();
-		DrawingContext dialogWritingDc = DrawingContextUtils.writingContentDcFromDialogBoxDc(dialogBoxDc);
-		WritingTextBox dialogWritingTextBox = new WritingTextBox(dialogWritingDc.w(), dialogWritingDc.h(), 0, 3, 18, 22);
-		cosmodogGame.setCommentsStateUpdater(new WritingTextBoxStateUpdater(3000, dialogWritingTextBox));
 
 		initializeRuleBook(cosmodogGame);
 
@@ -305,6 +292,11 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(k, l, dynamicTilesLayerIndex);
 
+				if (tileId == TileType.DYNAMIC_PIECE_GUIDETERMINAL.getTileId()) {
+					Terminal terminal = Terminal.create(k, l);
+					map.getDynamicPieces().put(Terminal.class, terminal);
+				}
+				
 				if (tileId == TileType.DYNAMIC_PIECE_STONE.getTileId()) {
 					Stone stone = Stone.create(k, l);
 					map.getDynamicPieces().put(Stone.class, stone);
@@ -419,24 +411,8 @@ public class InitializationUtils {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 
-		// Add all region dependent comment rules (like dialogs, but simpler and
-		// not blocking)
-		ruleBuilder = new RegionDependentCommentRuleBuilder();
-		ruleResourceWrappers = ruleBuilder.build();
-		for (String s : ruleResourceWrappers.keySet()) {
-			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
-		}
-
 		// Add all region dependent popup rules (e.g. tutorial messages)
-		
 		ruleBuilder = new RegionDependentPopupRuleBuilder();
-		ruleResourceWrappers = ruleBuilder.build();
-		for (String s : ruleResourceWrappers.keySet()) {
-			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
-		}
-		
-		// Add all pieces related dialog rules.
-		ruleBuilder = new PieceRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
@@ -457,8 +433,6 @@ public class InitializationUtils {
 		}
 
 		// Beginning of the game.
-		AsyncAction dialogAsyncAction = new DialogAction(NarrativeSequenceUtils.STORY_MAIN_0001_AFTERLANDING);
-		RuleAction dialogRegisteringAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, dialogAsyncAction);
 
 		List<RuleAction> tutorialActions = Lists.newArrayList();
 
@@ -474,7 +448,6 @@ public class InitializationUtils {
 		}
 
 		List<RuleAction> atTheBeginningActions = Lists.newArrayList();
-		atTheBeginningActions.add(new FeatureBoundAction(Features.FEATURE_STORY, dialogRegisteringAction));
 		atTheBeginningActions.add(new SetGameProgressPropertyAction(GameProgress.GAME_PROGRESS_PROPERTY_AFTERLANDING, "true"));
 		atTheBeginningActions.addAll(tutorialActions);
 

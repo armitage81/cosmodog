@@ -12,8 +12,6 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 
 public class VehicleInteraction extends AbstractPieceInteraction {
 
@@ -28,12 +26,6 @@ public class VehicleInteraction extends AbstractPieceInteraction {
 			
 			vehicleInventoryItem.getVehicle().setFuel(Vehicle.MAX_FUEL);
 			player.getInventory().remove(InventoryItemType.FUEL_TANK);
-		}
-
-		if (vehicleInventoryItem.getVehicle().getFuel() > 0) {
-			cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundVehicle()), true, false);
-		} else {
-			cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundVehicleWithoutFuel()), true, false);
 		}
 		
 		player.getInventory().put(InventoryItemType.VEHICLE, vehicleInventoryItem);

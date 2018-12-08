@@ -1,12 +1,12 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -14,34 +14,18 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
-import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class SupplyTrackerViewRenderer implements Renderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
-//		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerLabelDrawingContext, LetterTextRenderingParameter.fromText("BOX"));
-//
-//		String supplyTrackerValue = "--";
-//		
-//		SupplyTrackerInventoryItem supplyTracker = (SupplyTrackerInventoryItem)player.getInventory().get(InventoryItemType.SUPPLYTRACKER);
-//		
-//		if (supplyTracker != null) {
-//			
-//			Piece closestSupply = PlayerMovementCache.getInstance().getClosestSupply();
-//			
-//			if (closestSupply != null) {
-//				DirectionType dirType = PositionUtils.targetDirection(player, closestSupply);
-//				supplyTrackerValue = dirType.getRepresentation().toUpperCase();
-//			}
-//			
-//		}		
-//		LetterTextRenderer.getInstance().render(gameContainer, g, supplyTrackerValueDrawingContext, LetterTextRenderingParameter.fromText(supplyTrackerValue));
+		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+			return;
+		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		
@@ -49,7 +33,8 @@ public class SupplyTrackerViewRenderer implements Renderer {
 		
 		if (supplyTracker != null) {
 		
-			DrawingContext viewDc = new CenteredDrawingContext(drawingContext, 5);
+			DrawingContext supplyTrackerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().supplyTrackerDrawingContext();
+			DrawingContext viewDc = new CenteredDrawingContext(supplyTrackerDrawingContext, 5);
 
 			Piece closestSupply = PlayerMovementCache.getInstance().getClosestSupply();
 			

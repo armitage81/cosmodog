@@ -4,7 +4,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -12,15 +13,19 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class GeigerCounterViewRenderer implements Renderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+		
+		DrawingContext geigerCounterDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().geigerCounterDrawingContext();
+		
+		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+			return;
+		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();	
@@ -29,11 +34,6 @@ public class GeigerCounterViewRenderer implements Renderer {
 		
 		if (geigerZaehler != null) {
 		
-			DrawingContext labelDc = new SimpleDrawingContext(null, 1111, 80, 56, 35);
-			DrawingContext viewDc = drawingContext;
-			
-			boolean dangerIsClose = false;
-			
 			boolean[][] radiationInfos = new boolean[3][3];
 			int posX = player.getPositionX();
 			int posY = player.getPositionY();
@@ -47,7 +47,6 @@ public class GeigerCounterViewRenderer implements Renderer {
 					int radiationTileId = map.getTileId(i, j, Layers.LAYER_META_RADIATION);
 					if (TileType.RADIATION.getTileId() == radiationTileId) {
 						radiationInfos[i - xMin][j - yMin] = true;
-						dangerIsClose = true;
 					}
 				}
 			}
@@ -67,7 +66,7 @@ public class GeigerCounterViewRenderer implements Renderer {
 						color = Color.green;	
 					}
 					g.setColor(color);
-					TileDrawingContext tileDc = new TileDrawingContext(viewDc, 3, 3, i, j);
+					TileDrawingContext tileDc = new TileDrawingContext(geigerCounterDrawingContext, 3, 3, i, j);
 					g.fillRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
 					g.setColor(Color.white);
 					g.setLineWidth(1);

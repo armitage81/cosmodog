@@ -14,7 +14,7 @@ public class FoodConsumer implements ResourceConsumer {
 	public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
 		
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
-		boolean hasPlatform = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		
 		if (hasVehicle || hasPlatform) {
 			return 0;

@@ -6,6 +6,8 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -24,8 +26,14 @@ public class VitalDataInterfaceRenderer implements Renderer {
 	private static final float LABEL_WIDTH = 70;
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, DrawingContext context, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 
+		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+			return;
+		}
+		
+		DrawingContext vitalDataDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().vitalDataDrawingContext();
+		
 		long timestamp = System.currentTimeMillis();
 		boolean flick = (timestamp / Constants.FLICKING_RATE_IN_MILLIS) % 2 == 0;
 		
@@ -34,17 +42,17 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		Player player = cosmodogGame.getPlayer();
 				
-		g.translate(context.x(), context.y());
+		g.translate(vitalDataDrawingContext.x(), vitalDataDrawingContext.y());
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.75f));
-		g.fillRect(0, 0, context.w(), context.h());
-		g.translate(-context.x(), -context.y());
+		g.fillRect(0, 0, vitalDataDrawingContext.w(), vitalDataDrawingContext.h());
+		g.translate(-vitalDataDrawingContext.x(), -vitalDataDrawingContext.y());
 		
-		context = new CenteredDrawingContext(context, 1);
+		vitalDataDrawingContext = new CenteredDrawingContext(vitalDataDrawingContext, 1);
 		
-		DrawingContext thirstDrawingContext = new TileDrawingContext(context, 1, 2, 0, 0);
+		DrawingContext thirstDrawingContext = new TileDrawingContext(vitalDataDrawingContext, 1, 2, 0, 0);
 		thirstDrawingContext = new CenteredDrawingContext(thirstDrawingContext, 2);
 		
-		DrawingContext hungerDrawingContext = new TileDrawingContext(context, 1, 2, 0, 1);
+		DrawingContext hungerDrawingContext = new TileDrawingContext(vitalDataDrawingContext, 1, 2, 0, 1);
 		hungerDrawingContext = new CenteredDrawingContext(hungerDrawingContext, 2);
 		
 		SimpleDrawingContext thirstLabelDrawingContext = new SimpleDrawingContext(thirstDrawingContext, 0, 0, LABEL_WIDTH, thirstDrawingContext.h());

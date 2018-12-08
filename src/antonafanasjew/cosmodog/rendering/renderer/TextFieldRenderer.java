@@ -14,18 +14,25 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 public class TextFieldRenderer extends AbstractRenderer {
 	
 	private TextField textField;
+	private DrawingContext drawingContext;
 	
-	public TextFieldRenderer(TextField textField) {
+	public TextFieldRenderer(TextField textField, DrawingContext drawingContext) {
 
 		this.textField = textField;
+		this.drawingContext = drawingContext;
 		
 	}
 	
 	
 	@Override
-	protected void renderFromZero(GameContainer gc, Graphics g, DrawingContext c, Object renderingParameter) {
+	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
+		
+		g.translate(drawingContext.x(), drawingContext.y());
+		
 		g.setColor(Color.white);
 		textField.render(gc, g);
+		
+		g.translate(-drawingContext.x(), -drawingContext.y());
 	}
 
 }

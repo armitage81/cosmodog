@@ -1,7 +1,0 @@
-ruleName;regionName;labelText;onlyOnceFlag;gameProgressProperty
-ALESAFEELSDRAFT;alisafeelsdraft;Alisa: Hmmm, I feel a draft.;true;alisafeelsdraft
-FOUNDREBELCAVE;foundrebelcave;Alisa: Wow, it's a secret cave hideout!;true;foundrebelcave
-SEESCRASHEDPLANE;seescrashedplane;Alisa: Never save on the landing runway length.;true;seescrashedplane
-PROBABLYDEADEND;probablydeadend;Alisa: I bet it is a dead-end.;false;dummy
-KNEWITWASDEADEND;knewitwasdeadend;Alisa: Told you!;true;knewitwasdeadend
-LUCKILYWEHAVEBOAT;luckilywehaveboat;Alisa: I bet there is something on this river side. What a luck you found that boat;true;luckilywehaveboat

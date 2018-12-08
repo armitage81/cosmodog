@@ -10,8 +10,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.NarrativeSequenceUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 
 public class BinocularsInteraction extends ToolInteraction {
 
@@ -19,8 +17,6 @@ public class BinocularsInteraction extends ToolInteraction {
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		
-		cosmodogGame.getCommentsStateUpdater().addNarrativeSequence(NarrativeSequenceUtils.commentNarrativeSequenceFromText(NotificationUtils.foundBinoculars()), true, false);
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 		Cam cam = cosmodogGame.getCam();
 		cam.focusOnPiece(map, 0, 0, player);

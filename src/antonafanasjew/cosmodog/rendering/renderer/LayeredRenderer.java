@@ -8,8 +8,6 @@ import java.util.Set;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -24,14 +22,14 @@ public class LayeredRenderer implements Renderer {
 	private Multimap<Integer, Renderer> underlyingRenderers = ArrayListMultimap.create();
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		Set<Integer> keys = underlyingRenderers.keySet();
 		List<Integer> sortedKeys = Lists.newArrayList(keys);
 		Collections.sort(sortedKeys);
 		for (Integer key : sortedKeys) {
 			Collection<Renderer> renderersForLayer = underlyingRenderers.get(key);
 			for (Renderer renderer : renderersForLayer) {
-				renderer.render(gameContainer, graphics, drawingContext, renderingParameter);
+				renderer.render(gameContainer, graphics, renderingParameter);
 			}
 		}
 	}

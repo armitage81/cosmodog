@@ -1,6 +1,20 @@
 <div>
 
-		<h3>September 29th 2017</h3>
+		<h3>10/01/2018</h3>
+		<p>
+			Check out the <a href="https://youtu.be/HlgwbQuiyUU">trailer</a> for Cosmodog						
+		</p>
+		<h3>28/10/2017</h3>
+		<p>
+			Cosmodog is now hosted on <a href="http://www.indiedb.com/games/cosmodog">indiedb.com</a>						
+		</p>
+
+		<h3>21/10/2017</h3>
+		<p>
+			A <a href="http://daikonmedia.com/cosmodog-review/">review</a> of Cosmodog from DaikonMedia						
+		</p>
+
+		<h3>29/09/2017</h3>
 		<p>
 			Finally! After more than three years of development, Cosmodog is released! <a href="download.html">Download</a> the game for FREE! We'd greatly appreciate your feedback at <a href="mailto:feedback@cosmodog.eu">feedback@cosmodog.eu</a>.			
 		</p>

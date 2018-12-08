@@ -14,6 +14,7 @@ public class TutorialUtils {
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> The time in this game stays still until you execute an action. Check the top interface bar to see the current game time.");
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> You have basic needs. Find supply rations and approach water to still thirst.");
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> As everything in the game, thirst and hunger will increase only when you execute an action causing the time to pass by.");
+		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> Cosmodog is hard. There are no autosaves. Don't forget to save your progress with Ctrl+S.");
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> Now use the arrow keys to move.");
 	}
 	

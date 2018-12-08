@@ -3,8 +3,8 @@ package antonafanasjew.cosmodog.globals;
 public class Constants {
 
 	public static String[] PREFERRED_RESOLUTIONS = new String[] {
-		"1280x720",
 		"1920x1080",
+		"1280x720",
 		"1152x648",
 		"1280x1024",
 		"1024x800",
@@ -12,14 +12,19 @@ public class Constants {
 		"1024x576",
 	};
 	
-	public static final float GAME_LOG_FRAME_WIDTH = 864;
-	public static final float GAME_LOG_FRAME_HEIGHT = 572;
+	public static String[] PREFERRED_RESOLUTIONS_WINDOW_MODE = new String[] {
+		"1280x720",
+		"1024x800",
+		"1280x1024",
+		"1920x1080",
+		"1152x648",
+		"1366x768",
+		"1024x576",
+	};
 	
 	public static final float LOG_PLAYER_TEXT_WIDTH = 400;
 	public static final float LOG_PLAYER_TEXT_HEIGHT = 200;
 	
-	public static final float GAME_LOG_TEXT_WIDTH = 800;
-	public static final float GAME_LOG_TEXT_HEIGHT = 440;
 	
 	public static final int FLICKING_RATE_IN_MILLIS = 500;
 	public static final float FLICKING_THRESHOLD = 0.2f;
@@ -32,7 +37,7 @@ public class Constants {
 	/**
 	 * Milliseconds to wait between turns.
 	 */
-	public static final int INTERVAL_BETWEEN_TURNS = 50;
+	public static final int INTERVAL_BETWEEN_TURNS = 10;
 	
 	/**
 	 * Milliseconds between another collision notification.
@@ -45,7 +50,7 @@ public class Constants {
 	 * to calculate the action movement.
 	 */
 	//public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 50;
-	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 50;
+	public static final int VISIBLE_MOVEMENT_DURATION_FACTOR = 75;
 	
 	/**
 	 * That many minutes will pass in the planetary calendar with each turn. 

@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
@@ -22,8 +23,13 @@ import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhas
 public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
+		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 
@@ -90,7 +96,7 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float risingLeftGrenadeX1 = enemyX1 - (leftRightOffset);
 			float risingRightGrenadeX1 = enemyX2 - animationWidth + (leftRightOffset);
 			float risingGrenadeY1Max = enemyY1 - animationHeight;
-			float risingGrenadeY1Min = drawingContext.y() - animationHeight;
+			float risingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
 			float maxVerticalRisingGrenadeDistance = risingGrenadeY1Max - risingGrenadeY1Min;
 
 			float playerX1 = (playerPosX - tileNoX) * tileWidth;
@@ -100,7 +106,7 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float fallingLeftGrenadeX1 = playerX1 - (leftRightOffset);
 			float fallingRightGrenadeX1 = playerX2 - animationWidth + (leftRightOffset);
 			float fallingGrenadeY1Max = playerY1 + tileHeight - animationHeight;
-			float fallingGrenadeY1Min = drawingContext.y() - animationHeight;
+			float fallingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
 			float maxVerticalfallingGrenadeDistance = fallingGrenadeY1Max - fallingGrenadeY1Min;
 
 			graphics.translate(x, y);
@@ -132,6 +138,8 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
 		}
 
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
+		
 	}
 
 }

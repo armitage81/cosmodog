@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -49,8 +50,12 @@ public class EffectsRenderer extends AbstractRenderer {
 	private EnergyWallCollisionValidator energyWallCollisionValidator = new EnergyWallCollisionValidator();
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
 		EffectsRendererParam param = (EffectsRendererParam)renderingParameter;
 		List<String> effectsToRender = param.getEffectTypes();
 		
@@ -152,6 +157,8 @@ public class EffectsRenderer extends AbstractRenderer {
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
+
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 		
 	}
 

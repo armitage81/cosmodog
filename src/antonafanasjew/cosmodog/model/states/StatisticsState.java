@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -27,21 +26,8 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-import com.google.common.base.Strings;
+public class StatisticsState extends CosmodogAbstractState {
 
-public class StatisticsState extends BasicGameState {
-
-	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		
-	}
-
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		
-
-	}
-	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		

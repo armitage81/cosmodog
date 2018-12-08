@@ -573,7 +573,7 @@ public class Mappings {
 		
 		
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.GRASS_OBJECT_FLOWER);
-		
+				
 	}
 	
 	/**

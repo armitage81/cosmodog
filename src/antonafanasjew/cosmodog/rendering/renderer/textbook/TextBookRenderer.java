@@ -3,9 +3,10 @@ package antonafanasjew.cosmodog.rendering.renderer.textbook;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.TrueTypeFont;
 
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -13,6 +14,8 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 
 public class TextBookRenderer implements Renderer {
+	
+	private DrawingContext drawingContext;
 	
 	public static class TextBookRendererParameter {
 		
@@ -53,13 +56,18 @@ public class TextBookRenderer implements Renderer {
 	}
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		TextBookRendererParameter param = (TextBookRendererParameter)renderingParameter;
 		
 		String text = param.text;
-		UnicodeFont font = param.fontType.getFont();
+		Color color = param.fontType.getColor();
+		TrueTypeFont font = param.fontType.getFont();
 		
+		/*
+		graphics.setColor(Color.red);
+		graphics.drawRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
+		*/
 		
 		TextPageConstraints c = new TextPageConstraints(drawingContext.w(), drawingContext.h());
 		List<List<String>> splitText = c.textSplitByLinesAndPages(text, font);
@@ -81,13 +89,18 @@ public class TextBookRenderer implements Renderer {
 			float horizontalOffset = (param.horizontalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.horizontalAlignment == TextBookRendererParameter.ALIGN_END ? remainingWidth : (remainingWidth / 2f)));
 			
 			TileDrawingContext lineDc = new TileDrawingContext(drawingContext, 1, maxNumberOfLinesInPage, 0, i);
-			graphics.translate(horizontalOffset, verticalOffset);
+			graphics.translate((int)horizontalOffset, (int)verticalOffset);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			font.drawString(lineDc.x(), lineDc.y(), line);
-			graphics.translate(-horizontalOffset, -verticalOffset);
+			font.drawString((int)lineDc.x(), (int)lineDc.y(), line, color);
+			graphics.translate(-(int)horizontalOffset, -(int)verticalOffset);
 		}
 		
+	}
+	
+	public TextBookRenderer withDrawingContext(DrawingContext drawingContext) {
+		this.drawingContext = drawingContext;
+		return this;
 	}
 	
 }

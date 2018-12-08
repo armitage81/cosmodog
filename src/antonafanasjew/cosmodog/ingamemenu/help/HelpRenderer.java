@@ -5,6 +5,7 @@ package antonafanasjew.cosmodog.ingamemenu.help;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
@@ -15,7 +16,9 @@ public class HelpRenderer implements Renderer {
 
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 		
 		String[] actions = new String[] {
 		
@@ -93,8 +96,8 @@ public class HelpRenderer implements Renderer {
 		
 		for (int i = 0; i < 20; i++) {
 			if (i < actions.length) {
-				TileDrawingContext tdcAction = new TileDrawingContext(drawingContext, 10, 20, 0, i, 3, 1);
-				TileDrawingContext tdcKey = new TileDrawingContext(drawingContext, 10, 20, 3, i, 7, 1);
+				TileDrawingContext tdcAction = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 20, 0, i, 3, 1);
+				TileDrawingContext tdcKey = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 20, 3, i, 7, 1);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, tdcAction, actions[i], FontType.HintsActions, 0);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, tdcKey, keys[i], FontType.HintsKeys, 0);
 			}

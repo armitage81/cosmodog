@@ -4,14 +4,18 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
 public class LeftInterfaceRenderer extends AbstractRenderer {
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext context, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext leftColumnDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().leftColumnDrawingContext();
+		
 		graphics.setColor(Color.blue);
-		graphics.fillRect(0, 0, context.w(), context.h());
+		graphics.fillRect(leftColumnDrawingContext.x(), leftColumnDrawingContext.y(), leftColumnDrawingContext.w(), leftColumnDrawingContext.h());
 	}
 
 }

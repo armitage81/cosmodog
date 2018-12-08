@@ -10,6 +10,8 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -33,8 +35,16 @@ import com.google.common.collect.Sets;
 public class SightRadiusRenderer extends AbstractRenderer {
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
+		if (Features.getInstance().featureOn(Features.FEATURE_SIGHTRADIUS) == false) {
+			return;
+		}
+		
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
@@ -212,7 +222,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		
 		
 		
-		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}
 
 }

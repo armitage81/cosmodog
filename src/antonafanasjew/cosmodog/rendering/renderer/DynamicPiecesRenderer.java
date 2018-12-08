@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -23,6 +24,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
@@ -50,8 +52,12 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 	}
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
 		DynamicPiecesRendererParam dynamicPiecerenderingParam = (DynamicPiecesRendererParam)renderingParameter;
 		
 		ApplicationContext applicationContext = ApplicationContext.instance();
@@ -82,6 +88,15 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 		
 		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
+		
+		Collection<DynamicPiece> guideTerminals = dynamicPieces.get(Terminal.class);
+		
+		for (DynamicPiece piece : guideTerminals) {
+			if (dynamicPiecerenderingParam.isBottomNotTop()) {
+				String animationId = "dynamicPieceGuideTerminal";
+				applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			}
+		}
 		
 		Collection<DynamicPiece> stones = dynamicPieces.get(Stone.class);
 		
@@ -267,6 +282,9 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
+		
+		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 		
 	}
 

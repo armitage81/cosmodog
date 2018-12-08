@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction;
 import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction.OnScreenNotificationTransition;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
@@ -14,15 +15,19 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 public class OnScreenNotificationRenderer extends AbstractRenderer {
 
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		OnScreenNotificationAction action = (OnScreenNotificationAction)game.getActionRegistry().getRegisteredAction(AsyncActionType.ONSCREEN_NOTIFICATION);
 		if (action != null) {
 			OnScreenNotificationTransition transition = action.getTransition();
 			if (transition != null) {
-				LetterTextRenderer ltr = new LetterTextRenderer();
-				ltr.render(gameContainer, graphics, drawingContext, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(action.getText(), transition.textScale(), LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
+				LetterTextRenderer ltr = LetterTextRenderer.getInstance().withDrawingContext(sceneDrawingContext);
+				ltr.render(gameContainer, graphics, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(action.getText(), transition.textScale(), LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
 			}
 		}
 		

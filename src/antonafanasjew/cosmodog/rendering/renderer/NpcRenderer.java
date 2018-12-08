@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.NpcActionType;
 import antonafanasjew.cosmodog.domains.UnitType;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -45,8 +46,12 @@ public class NpcRenderer extends AbstractRenderer {
 	}
 	
 	@Override
-	protected void renderFromZero(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		
+		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
@@ -333,8 +338,7 @@ public class NpcRenderer extends AbstractRenderer {
 			
 		}	
 		
-
-		
+		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}
 	
 }

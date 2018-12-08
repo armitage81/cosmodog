@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.mapmodifications.MapModification;
 import antonafanasjew.cosmodog.model.mapmodifications.MapModificationImpl;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
@@ -106,7 +108,9 @@ public class CosmodogMap extends CosmodogModel {
 	}
 	
 	public Map<Position, Piece> visibleMapPieces(int x, int y, int width, int height, int grace) {
+		
 		Map<Position, Piece> retVal = Maps.newHashMap();
+		
 		for (Position position : mapPieces.keySet()) {
 			if (position.getX() >= x - grace && position.getX() < x + width + grace) {
 				if (position.getY() >= y - grace && position.getY() < y + height + grace) {
@@ -114,6 +118,7 @@ public class CosmodogMap extends CosmodogModel {
 				}
 			}
 		}
+		
 		return retVal;
 	}
 	

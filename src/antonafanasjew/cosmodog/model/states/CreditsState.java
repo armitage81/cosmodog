@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -19,17 +18,17 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class CreditsState extends BasicGameState {
+public class CreditsState extends CosmodogAbstractState {
 
 	private String credits;
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+	public void firstEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		credits = ApplicationContext.instance().getGameTexts().get("credits").getLogText();
 	}
 	
 	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		container.getInput().clearKeyPressedRecord();
 	}
 

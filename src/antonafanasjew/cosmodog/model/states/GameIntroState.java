@@ -6,37 +6,34 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
-
-import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.FontType;
-import antonafanasjew.cosmodog.model.gamelog.GameLog;
-import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class GameIntroState  extends BasicGameState {
+import com.google.common.collect.Lists;
+
+public class GameIntroState  extends CosmodogAbstractState {
 	
 	private List<String> texts = Lists.newArrayList();
 	private int page;
 
 	
 	@Override
-	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
+	public void everyEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		
+		
 		MusicUtils.loopMusic(MusicResources.MUSIC_CUTSCENE);
 		String intro1 = ApplicationContext.instance().getGameTexts().get("intro1").getLogText();
 		String intro2 = ApplicationContext.instance().getGameTexts().get("intro2").getLogText();
@@ -44,6 +41,7 @@ public class GameIntroState  extends BasicGameState {
 		String intro4 = ApplicationContext.instance().getGameTexts().get("intro4").getLogText();
 		String intro5 = ApplicationContext.instance().getGameTexts().get("intro5").getLogText();
 		
+		texts.clear();
 		texts.add(intro1);
 		texts.add(intro2);
 		texts.add(intro3);
@@ -53,11 +51,6 @@ public class GameIntroState  extends BasicGameState {
 		page = 0;
 	}
 	
-	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		
-	}
-
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 				

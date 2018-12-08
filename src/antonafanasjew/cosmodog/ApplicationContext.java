@@ -22,7 +22,6 @@ import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
 import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
 import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
 import antonafanasjew.cosmodog.controller.InGameControlInputHandler;
-import antonafanasjew.cosmodog.controller.InGameDialogInputHandler;
 import antonafanasjew.cosmodog.controller.InGameGameLogInputHandler;
 import antonafanasjew.cosmodog.controller.InGameInputHandler;
 import antonafanasjew.cosmodog.controller.InGameMenuInputHandler;
@@ -159,10 +158,9 @@ public class ApplicationContext {
 	private Map<String, MenuLabel> menuLabels = Maps.newHashMap();
 	
 	private Map<String, Menu> menus = Maps.newHashMap();
-	
-	//We need this global variable to link the writing text box state to the place where it will be drawn.
-	private DrawingContext dialogBoxDrawingContext = null;
 
+	private AbstractDrawingContextProvider drawingContextProvider;
+	
 	private ApplicationContext() {
 		try {
 			init();
@@ -245,7 +243,6 @@ public class ApplicationContext {
 		InputHandler inGameInputHandler = new InGameInputHandler();
 		InputHandler inGameControlInputHandler = new InGameControlInputHandler();
 		InputHandler debugConsoleInputHandler = new DebugConsoleInputHandler();
-		InputHandler inGameDialogInputHandler = new InGameDialogInputHandler();
 		InputHandler inGameTextFrameInputHandler = new InGameTextFrameInputHandler();
 		InputHandler inGameGameLogInputHandler = new InGameGameLogInputHandler();
 		InputHandler inGameMenuInputHandler = new InGameMenuInputHandler();
@@ -298,7 +295,6 @@ public class ApplicationContext {
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME, inGameInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_CONTROL, inGameControlInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DEBUGCONSOLE, debugConsoleInputHandler);
-		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DIALOG, inGameDialogInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_TEXTFRAME, inGameTextFrameInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_GAMELOG, inGameGameLogInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_MENU, inGameMenuInputHandler);
@@ -667,22 +663,6 @@ public class ApplicationContext {
 		}
 		
 	}
-
-	/**
-	 * Returns the dialog box drawing context. 
-	 * @return Dialog box drawing context.
-	 */
-	public DrawingContext getDialogBoxDrawingContext() {
-		return dialogBoxDrawingContext;
-	}
-
-	/**
-	 * Sets the dialog box drawing context.
-	 * @param dialogBoxDrawingContext Dialog box drawing context.
-	 */
-	public void setDialogBoxDrawingContext(DrawingContext dialogBoxDrawingContext) {
-		this.dialogBoxDrawingContext = dialogBoxDrawingContext;
-	}
 	
 	/**
 	 * Returns the tiled map reader which is responsible for loading the custom tiled map.
@@ -715,5 +695,6 @@ public class ApplicationContext {
 	public MusicResources getMusicResources() {
 		return musicResources;
 	}
+
 	
 }

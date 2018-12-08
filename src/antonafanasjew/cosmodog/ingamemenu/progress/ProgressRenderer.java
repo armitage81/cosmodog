@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
@@ -28,7 +29,9 @@ public class ProgressRenderer implements Renderer {
 	private static final int ROW_PADDING = 10;
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 		
 		Animation softwareAnimation = ApplicationContext.instance().getAnimations().get("software");
 		Animation armorAnimation = ApplicationContext.instance().getAnimations().get("armor");
@@ -62,7 +65,7 @@ public class ProgressRenderer implements Renderer {
 		graphics.setLineWidth(1);
 		
 		for (int i = 0; i < ROWS; i++) {
-			DrawingContext rowDc = new TileDrawingContext(drawingContext, 1, ROWS, 0, i);
+			DrawingContext rowDc = new TileDrawingContext(inGameMenuContentDrawingContext, 1, ROWS, 0, i);
 			rowDc = new CenteredDrawingContext(rowDc, ROW_PADDING);
 			
 			DrawingContext labelDc = new TileDrawingContext(rowDc, 15, 1, 0, 0, 2, 1);

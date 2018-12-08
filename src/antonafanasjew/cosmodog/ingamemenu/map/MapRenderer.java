@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -25,26 +25,30 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 public class MapRenderer implements Renderer {
 
 	
-	private MiniMapRenderer miniMapRenderer = new MiniMapRenderer();
+	private DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
+	private DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(inGameMenuContentDrawingContext);
+	private DrawingContext descriptionDrawingContext = descriptionDrawingContext(inGameMenuContentDrawingContext);
+	private DrawingContext coordinatesDrawingContext = new CenteredDrawingContext(new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 0), 20);
+	private DrawingContext hintsDrawingContext = new CenteredDrawingContext(new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 1, 1, 2), 20);
+	private DrawingContext fullMapDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 3, 1, 3);
+	private float mapAreaContextLength = mapAreaDrawingContext.w() < mapAreaDrawingContext.h() ? mapAreaDrawingContext.w() : mapAreaDrawingContext.h();
+	private DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
+	private MiniMapRenderer miniMapRenderer = new MiniMapRenderer(mapAreaQuadraticDrawingContext);
+	
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
+		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 				
-		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemap", drawingContext);
+		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemap", inGameMenuContentDrawingContext);
 		
 		int actualMapPieceColumns = ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
 		int actualMapPieceRows = ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
 		
 		int mapPieceColumns = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
 		int mapPieceRows = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
-		
-		DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(drawingContext);
-		DrawingContext descriptionDrawingContext = descriptionDrawingContext(drawingContext);
-		DrawingContext coordinatesDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 0);
-		DrawingContext hintsDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 1, 1, 2);
-		DrawingContext fullMapDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 3, 1, 3);
-		
+				
 		MapInputState mapInputState = (MapInputState)renderingParameter;
 		
 		int mapVisibleAreaX = mapInputState.getSelectionX();
@@ -60,9 +64,7 @@ public class MapRenderer implements Renderer {
 		DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
 		
 		if (chartPieceDiscovered) {
-		
-			miniMapRenderer.render(gameContainer, graphics, mapAreaQuadraticDrawingContext, mapInputState);
-			
+			miniMapRenderer.render(gameContainer, graphics, mapInputState);
 		}
 		
 		//Render players position in the selected chart piece.
@@ -90,12 +92,6 @@ public class MapRenderer implements Renderer {
 			graphics.fillRect(playerPositionDrawingContext.x(), playerPositionDrawingContext.y(), playerPositionDrawingContext.w(), playerPositionDrawingContext.h());
 		}
 		
-		
-		
-		
-		
-		coordinatesDrawingContext = new CenteredDrawingContext(coordinatesDrawingContext, 20);
-		
 		StringBuffer mapPieceDescription = new StringBuffer(String.valueOf(mapInputState.getSelectionX() + 1) + "/" + String.valueOf(mapInputState.getSelectionY() + 1));
 		if (!chartPieceDiscovered) {
 			mapPieceDescription.append(" (Uncharted)");
@@ -103,9 +99,6 @@ public class MapRenderer implements Renderer {
 		
 		String text = mapPieceDescription.toString();
 		TextBookRendererUtils.renderTextPage(gameContainer, graphics, coordinatesDrawingContext, text, FontType.InGameMenuInterface, 0);
-		
-		
-		hintsDrawingContext = new CenteredDrawingContext(hintsDrawingContext, 20);
 		
 		text = "Use arrow keys to scroll through the map. Find map pieces to chart the map.";
 		TextBookRendererUtils.renderTextPage(gameContainer, graphics, hintsDrawingContext, text, FontType.InGameMenuInterface, 0);

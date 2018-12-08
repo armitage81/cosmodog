@@ -22,11 +22,11 @@ public class FeatureBoundRenderer implements Renderer {
 	}
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		Features.getInstance().featureBoundProcedure(feature, new Runnable() {
 			@Override
 			public void run() {
-				delegate.render(gameContainer, graphics, drawingContext, renderingParameter);
+				delegate.render(gameContainer, graphics, renderingParameter);
 			}
 		});		
 	}

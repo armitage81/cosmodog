@@ -17,8 +17,14 @@ import antonafanasjew.cosmodog.util.TilesetUtils;
 
 public class MiniMapRenderer implements Renderer {
 	
+	private DrawingContext drawingContext;
+	
+	public MiniMapRenderer(DrawingContext drawingContext) {
+		this.drawingContext = drawingContext;
+	}
+	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		MapInputState mapInputState = (MapInputState)renderingParameter;
 		

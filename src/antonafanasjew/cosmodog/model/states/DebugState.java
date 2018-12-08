@@ -8,7 +8,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.TextField;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -18,46 +17,34 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.debug.PropertyAssignment;
 import antonafanasjew.cosmodog.debug.PropertyAssignmentExecutor;
 import antonafanasjew.cosmodog.debug.PropertyAssignmentParser;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Fonts;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
-import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.TextFieldRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
 
-public class DebugState extends BasicGameState {
+public class DebugState extends CosmodogAbstractState {
 
-	private DrawingContext gameContainerDrawingContext;
-	private DrawingContext topContainerDrawingContext;
-	private DrawingContext centerContainerDrawingContext;
-	private DrawingContext bottomContainerDrawingContext;
-	
 	private TextField textField;
 	private TextFieldRenderer tfr;
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		topContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
-		centerContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
-		bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
-	}
-
-	@Override
-	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
+	public void everyEnter(GameContainer gc, StateBasedGame game) throws SlickException {
+		
+		DrawingContext debugConsoleContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().debugConsoleContentDrawingContext();
 		
 		gc.getInput().clearKeyPressedRecord();
 				
 		//The bounds of the text field should have better been calculated in the renderer, but as the API requires them at the creation of the object, this is the only way.
 		//Note that we do not set the x/y offset, as the renderer will translate the text field according to the drawing context anyway.
-		textField = new TextField(gc, gc.getDefaultFont(), 0, 0, (int)centerContainerDrawingContext.w(), (int)centerContainerDrawingContext.h());
+		textField = new TextField(gc, gc.getDefaultFont(), 0, 0, (int)debugConsoleContentDrawingContext.w(), (int)debugConsoleContentDrawingContext.h());
 		textField.setAcceptingInput(true);
 		textField.setFocus(true);
 		textField.setConsumeEvents(true);
 		textField.setBackgroundColor(Color.blue);
-		tfr = new TextFieldRenderer(textField);
+		tfr = new TextFieldRenderer(textField, debugConsoleContentDrawingContext);
 		
 	}
 	
@@ -113,14 +100,17 @@ public class DebugState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
-		TextRenderer tr = new TextRenderer(Fonts.DEBUG_FONT, true);
-		tr.render(gc, g, topContainerDrawingContext, "Debug console");
+		DrawingContext debugConsoleHeaderDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().debugConsoleHeaderDrawingContext();
+		DrawingContext debugConsoleControlsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().debugConsoleControlsDrawingContext();
 		
-		tfr.render(gc, g, centerContainerDrawingContext);
+		TextRenderer trHeader = new TextRenderer(Fonts.DEBUG_FONT, true, debugConsoleHeaderDrawingContext);
+		TextRenderer trControls = new TextRenderer(Fonts.DEBUG_FONT, true, debugConsoleControlsDrawingContext);
 		
+		trHeader.render(gc, g, "Debug console");
 		
-		tr = new TextRenderer(Fonts.DEBUG_FONT, true);
-		tr.render(gc, g, bottomContainerDrawingContext, "Press Enter to execute debug command. Press Esc to return to the game.");
+		tfr.render(gc, g);
+		
+		trControls.render(gc, g, "Press Enter to execute debug command. Press Esc to return to the game.");
 		
 	}
 

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -36,9 +37,9 @@ public class PlatformAsVehicleCollisionValidator extends AbstractCollisionValida
 				}
 			}
 		}
-		//Check blocking vehicles. The platform is blocked only if the vehicle is not on the platform, but would be after platform movement.
+		//Check blocking vehicles and collectibles. The platform is blocked only if the piece is not on the platform, but would be after platform movement.
 		for (Piece piece : cosmodogMap.getMapPieces().values()) {
-			if (piece instanceof Vehicle) {
+			if (piece instanceof Vehicle || piece instanceof Collectible) {
 				if (PiecesUtils.distanceBetweenPieces(piece, actor) <= 10) {
 					if (CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), tileX, tileY)) {
 						if (!CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), actor.getPositionX(), actor.getPositionY())) {

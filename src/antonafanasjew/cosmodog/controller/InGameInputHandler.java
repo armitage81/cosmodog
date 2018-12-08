@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.controller;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -35,6 +37,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -48,6 +51,7 @@ import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rules.actions.async.InGameMenuAction;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
 /**
@@ -177,6 +181,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					}
 					
 					if (platformItem != null) {
+						
 						if (platformItem.isExiting()) {
 							Platform platform = platformItem.getPlatform();
 							platform.setPositionX(player.getPositionX());

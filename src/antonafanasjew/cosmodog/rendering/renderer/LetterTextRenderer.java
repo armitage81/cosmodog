@@ -19,6 +19,12 @@ public class LetterTextRenderer implements Renderer {
 		return instance;
 	}
 	
+	private DrawingContext drawingContext;
+	
+	private LetterTextRenderer() {
+		
+	}
+	
 	public static class LetterTextRenderingParameter {
 		
 		public static final short HOR_ALIGNMENT_LEFT = 0;
@@ -54,7 +60,7 @@ public class LetterTextRenderer implements Renderer {
 	
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		LetterTextRenderingParameter param = (LetterTextRenderingParameter)renderingParameter;
 		
 		String text = param.text;
@@ -98,6 +104,11 @@ public class LetterTextRenderer implements Renderer {
 			
 		}
 		
+	}
+	
+	public LetterTextRenderer withDrawingContext(DrawingContext drawingContext) {
+		this.drawingContext = drawingContext;
+		return this;
 	}
 
 }

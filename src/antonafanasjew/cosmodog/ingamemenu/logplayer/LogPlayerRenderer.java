@@ -8,18 +8,16 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
-import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
@@ -29,7 +27,11 @@ public class LogPlayerRenderer implements Renderer {
 	private static final int MAX_NUMBER_OF_SERIES = 20;
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext, Object renderingParameter) {
+	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+		
+		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
+		DrawingContext logOverviewDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().logOverviewDrawingContext();
+		DrawingContext logContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().logContentDrawingContext();
 		
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		
@@ -40,16 +42,9 @@ public class LogPlayerRenderer implements Renderer {
 		int seriesNumber = logPlayerInputState.getSeriesNumber();
 		int logNumber = logPlayerInputState.getLogNumber();
 		
-		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamelogs", drawingContext);
+		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamelogs", inGameMenuContentDrawingContext);
 		
-		DrawingContext logOverviewDrawingContext = new SimpleDrawingContext(null, 12 + 33, 13 + 144, 397, 406);
-		logOverviewDrawingContext = DrawingContextUtils.difResFromRef(logOverviewDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		DrawingContext logContentDrawingContext = new SimpleDrawingContext(null, 441 + 33, 13 + 144, 759, 406);
-		logContentDrawingContext = DrawingContextUtils.difResFromRef(logContentDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
-		
-		logOverviewDrawingContext = new CenteredDrawingContext(logOverviewDrawingContext, 10);
-		logContentDrawingContext = new CenteredDrawingContext(logContentDrawingContext, 10);
 		
 		int noOfSeries = gameLogs.getSeriesNames().size();
 		

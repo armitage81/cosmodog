@@ -1,0 +1,32 @@
+full,free,game,complete,
+
+This is the complete game to play for free. Just download the archive and unpack it. Click on Cosmodog.exe to play.
+
+Cosmodog is a fast-paced, turn-based adventure/survival game.
+
+Explore an abandoned valley on Phaeton, an ancient planet with traces of alien civilization. A thriving colony of the past, Phaeton was recently hit by multiple strikes of mysterious epidemies that caused dementia and mass suicides among the population.
+
+You are a cargo pilot whose ship crashed on Phaeton's surface. Your task is to investigate the forbidden valley and uncover the truth behind the mystery. The epic scale of the recent events has a personal meaning to you as a person you love is affected by them.
+
+You will have to find weapons to fight your way through the hordes of automatized drones, robots and native predators in order to gather knowledge about the mysterious monoliths scattered around the valley. Thirst and hunger will be your enemies. To survive, you will have to manage your supplies, evade radiation, detect land mines and avoid poisonous traps.
+
+Improve your survival chances by obtaining items, such as a Geiger counter, a mine detector, explosives, vehicles and boats. New areas will open for exploration with each gadget you find. Every revealed secret will bring you closer to the answer of what happened on the planet and to the person you love.
+
+
+What Cosmodog offers:
+
+    A complete and stable game with a beginning, an end and ca. 10 hours play time inbetween. No micro transactions, no dlc, no loot boxes, no multiplayer. For free.
+    Retro style visuals a la 8/16 bit, brought to life by a custom 2D engine.
+    A sci-fi open world with enemies, collectibles, secrets, giant worms, labyrinths, teleports and vehicles. No procedural generation, no random bioms - each corner of this game is crafted by hand.
+    A new approach to survival mechanics. Apart from hunger and thirst, you'll need to master cold, radiation, poisonous traps, deadly land mines, intricate puzzles and giant snow worms.
+    Many gadgets, upgrades and weapons increase your stats and unlock new areas of the game world. Use vehicles, boats, ski equipment and many more hidden gadgets to access uncharted places.
+    Rewarding collectibles: 5 weapons, 10 enemy types, 32 alien monoliths, 6000 infobits, 64 map pieces, 120 secret areas and many story logs.
+    A sci-fi narration with a broken AI as one of the protagonists and the story that deals with identity, intelligence, love and self-identification.
+
+Please send your feedback to feedback@cosmodog.eu or post comments here
+
+You can also visit the game's web page at http://www.cosmodog.eu/cosmodog.html for news about Cosmodog.
+
+Installation instructions
+
+The game was developed in Java and can be played on Windows systems. It was tested on Windows 7 and Windows 10. Just download and unpack the cosmodog.zip file. You can start the game by double-clicking cosmodog.exe within the archive. The game is based on Java but you don't need Java environment to be installed on your computer as it is included in the package. Please send feedback and bug reports to feedback@cosmodog.eu.

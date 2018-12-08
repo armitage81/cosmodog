@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -13,17 +12,15 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.FontType;
-import antonafanasjew.cosmodog.globals.Fonts;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.TextRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class GameOverState extends BasicGameState {
+public class GameOverState extends CosmodogAbstractState {
 
 	private DrawingContext gameContainerDrawingContext;
 	private DrawingContext centerContainerDrawingContext;
@@ -34,13 +31,13 @@ public class GameOverState extends BasicGameState {
 	private DrawingContext bottomContainerDrawingContext;
 	
 	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.updateScoreList();
 	}
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+	public void firstEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		centerContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
 		

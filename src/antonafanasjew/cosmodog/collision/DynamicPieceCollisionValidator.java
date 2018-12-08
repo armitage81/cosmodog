@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.collision;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -19,12 +20,14 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
+import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.KeyRingInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Key;
+import antonafanasjew.cosmodog.util.PositionUtils;
 
 public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 
@@ -43,7 +46,12 @@ public class DynamicPieceCollisionValidator extends AbstractCollisionValidator {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
 			}	
 			
-			if (dynamicPiece instanceof BinaryIndicator) {
+			if (dynamicPiece instanceof Terminal) {
+				
+				DirectionType directionType = PositionUtils.targetDirection(actor, dynamicPiece);
+				String blockReasonParam = directionType == DirectionType.UP ? "" : "Blocked";
+				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+			} else if (dynamicPiece instanceof BinaryIndicator) {
 				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			} else if (dynamicPiece instanceof Stone) {
 				Stone stone = (Stone)dynamicPiece;

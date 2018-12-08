@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.states.CreditsState;
 import antonafanasjew.cosmodog.model.states.CutsceneState;
@@ -20,8 +21,10 @@ import antonafanasjew.cosmodog.model.states.GameOverState;
 import antonafanasjew.cosmodog.model.states.GameState;
 import antonafanasjew.cosmodog.model.states.IntroState;
 import antonafanasjew.cosmodog.model.states.MainMenuState;
+import antonafanasjew.cosmodog.model.states.Outro2State;
 import antonafanasjew.cosmodog.model.states.OutroState;
 import antonafanasjew.cosmodog.model.states.ScoreState;
+import antonafanasjew.cosmodog.model.states.SplashState;
 import antonafanasjew.cosmodog.model.states.StatisticsState;
 
 /**
@@ -74,6 +77,7 @@ public class CosmodogStarter extends StateBasedGame {
 	 * Outro state.
 	 */
 	public static final int OUTRO_STATE_ID = 8;
+	public static final int OUTRO2_STATE_ID = 13;
 	
 	/**
 	 * Debug state.
@@ -89,6 +93,8 @@ public class CosmodogStarter extends StateBasedGame {
 	 * Post game statistics
 	 */
 	public static final int STATISTICS_STATE_ID = 11;
+	
+	public static final int SPLASH_STATE_ID = 12;
 
 	/**
 	 * The singleton instance of this class.
@@ -133,7 +139,10 @@ public class CosmodogStarter extends StateBasedGame {
 		try {
 			DisplayMode[] modes = Display.getAvailableDisplayModes();
 			DisplayMode preferred = null;
-			for (String preferredRes : Constants.PREFERRED_RESOLUTIONS) {
+			
+			String[] preferredResolutions = fullScreen ? Constants.PREFERRED_RESOLUTIONS : Constants.PREFERRED_RESOLUTIONS_WINDOW_MODE;
+			
+			for (String preferredRes : preferredResolutions) {
 				if (preferred == null) {
 					for (DisplayMode mode : modes) {
 						String supportedMode = mode.getWidth() + "x" + mode.getHeight();
@@ -150,6 +159,8 @@ public class CosmodogStarter extends StateBasedGame {
 			}
 
 			ResolutionHolder.set(preferred.getWidth(), preferred.getHeight());
+			DrawingContextProviderHolder.set(preferred.getWidth(), preferred.getHeight());
+			
 			
 		} catch (LWJGLException e) {
 			throw new RuntimeException("Error while obtaining supported display modes.", e);
@@ -158,6 +169,8 @@ public class CosmodogStarter extends StateBasedGame {
 		gameContainer.setDisplayMode(ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight(), fullScreen);
 		gameContainer.setAlwaysRender(true);
 		gameContainer.setTargetFrameRate(60);
+		gameContainer.setVSync(true);
+		gameContainer.setShowFPS(false);
 		if (fullScreen) {
 			gameContainer.setMouseGrabbed(true);
 		}
@@ -170,8 +183,9 @@ public class CosmodogStarter extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
-		this.addState(new IntroState());
+		this.addState(new SplashState());
 		this.addState(new GameState());
+		this.addState(new IntroState());
 		this.addState(new MainMenuState());
 		this.addState(new ScoreState());
 		this.addState(new GameMenuState());
@@ -179,6 +193,7 @@ public class CosmodogStarter extends StateBasedGame {
 		this.addState(new CutsceneState());
 		this.addState(new CreditsState());
 		this.addState(new OutroState());
+		this.addState(new Outro2State());
 		this.addState(new DebugState());
 		this.addState(new GameIntroState());
 		this.addState(new StatisticsState());

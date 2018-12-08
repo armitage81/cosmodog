@@ -21,13 +21,14 @@ public class WaterConsumer implements ResourceConsumer {
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
-		boolean hasPlatform = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		
 		if (hasVehicle || hasPlatform) {
 			return 0;
 		}
 		
 		int tileId = map.getTileId(x2, y2, Layers.LAYER_META_GROUNDTYPES);
+		
 		boolean onSand = TileType.GROUND_TYPE_SAND.getTileId() == tileId;
 		boolean atNight = game.getPlanetaryCalendar().isNight();
 		
