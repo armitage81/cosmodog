@@ -6,6 +6,7 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
@@ -51,6 +52,8 @@ import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.gamelog.GameLog;
+import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -72,6 +75,7 @@ import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
+import antonafanasjew.cosmodog.rules.actions.async.AbstractNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
@@ -447,10 +451,72 @@ public class InitializationUtils {
 			tutorialActions.add(tutorialRegistrationAction);
 		}
 
+		
+		
+		
+		
 		List<RuleAction> atTheBeginningActions = Lists.newArrayList();
 		atTheBeginningActions.add(new SetGameProgressPropertyAction(GameProgress.GAME_PROGRESS_PROPERTY_AFTERLANDING, "true"));
 		atTheBeginningActions.addAll(tutorialActions);
 
+		//DELETE IT - ONLY FOR TEST - BEGIN
+//		List<String> cutscenes = Lists.newArrayList(
+//				"memories/memory001",
+//				"memories/memory002",
+//				"memories/memory003",
+//				"memories/memory004",
+//				"memories/memory005",
+//				"memories/memory006",
+//				"memories/memory007",
+//				"memories/memory008",
+//				"memories/memory009",
+//				"memories/memory010",
+//				"memories/memory011",
+//				"memories/memory012",
+//				"memories/memory013",
+//				"memories/memory014",
+//				"memories/memory015",
+//				"memories/memory016",
+//				"memories/memory017",
+//				"memories/memory018",
+//				"memories/memory019",
+//				"memories/memory020",
+//				"maryharper/001",
+//				"maryharper/002",
+//				"maryharper/003",
+//				"maryharper/004",
+//				"maryharper/005",
+//				"maryharper/006",
+//				"maryharper/007",
+//				"maryharper/008",
+//				"maryharper/009",
+//				"maryharper/010",
+//				"maryharper/011",
+//				"maryharper/012"	
+//		);
+//		
+//		RuleAction cutsceneAction = null;
+//		
+//		for (int i = 0; i < cutscenes.size(); i++) {
+//			String series = cutscenes.get(i).split("/")[0];
+//			String logId = cutscenes.get(i).split("/")[1];
+//			GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
+//			GameLog gameLog = gameLogs.getGameLogBySeriesAndId(series, logId);
+//			AsyncAction asyncAction = new GameLogAction(gameLog);
+//			if (cutsceneAction == null) {
+//				cutsceneAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);		
+//			} else {
+//				cutsceneAction = BlockAction.block(cutsceneAction, new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction));
+//			}
+//		}
+//		atTheBeginningActions.add(cutsceneAction);
+		//DELETE IT - ONLY FOR TEST - END
+
+		
+		
+		
+		
+		
 		Rule rule = new Rule(Rule.RULE_DIALOG_AFTER_LANDING, new NewGameTrigger(), BlockAction.block(atTheBeginningActions));
 		ruleBook.put(rule.getId(), rule);
 

@@ -466,6 +466,13 @@ public class ApplicationContext {
 		Sound ambientEnergyWall = new Sound("data/sound/ambient_energywall.wav");
 		Sound ambientFire = new Sound("data/sound/ambient_fire.wav");
 		
+		Sound introMissileAlert = new Sound("data/intro/missilealert.wav");
+		Sound introSiren = new Sound("data/intro/siren.wav");
+		
+		Sound alisasMessage = new Sound("data/alisasMessage.wav");
+		
+		
+		
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -536,6 +543,10 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_AMBIENT_ELECTRICITY, ambientElectricity);
 		this.getSoundResources().put(SoundResources.SOUND_AMBIENT_ENERGYWALL, ambientEnergyWall);
 		this.getSoundResources().put(SoundResources.SOUND_AMBIENT_FIRE, ambientFire);
+		
+		this.getSoundResources().put(SoundResources.SOUND_INTRO_MISSILE_ALERT, introMissileAlert);
+		this.getSoundResources().put(SoundResources.SOUND_INTRO_SIREN, introSiren);
+		this.getSoundResources().put(SoundResources.SOUND_CUTSCENE_ALISASMESSAGE, alisasMessage);
 		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

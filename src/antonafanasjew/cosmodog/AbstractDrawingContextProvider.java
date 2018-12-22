@@ -62,6 +62,8 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext logOverviewDrawingContext;
 	protected DrawingContext logContentDrawingContext;
 	
+	protected DrawingContext secretFoundMessageDrawingContext;
+	
 	
 	public DrawingContext gameContainerDrawingContext() {
 		return this.gameContainerDrawingContext;
@@ -211,6 +213,10 @@ public abstract class AbstractDrawingContextProvider {
 	
 	public DrawingContext logContentDrawingContext() {
 		return logContentDrawingContext;
+	}
+	
+	public DrawingContext secretFoundMessageDrawingContext() {
+		return secretFoundMessageDrawingContext;
 	}
 	
 	public static AbstractDrawingContextProvider createDrawingContextProviderForResolution(int width, int height) {

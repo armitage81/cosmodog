@@ -14,9 +14,10 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition.ActionPhase;
+import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
+import antonafanasjew.cosmodog.view.transitions.MonolithTransition.ActionPhase;
 
-public class CutsceneRenderer implements Renderer {
+public class MemoriesRenderer implements Renderer {
 
 	public static boolean firstLoop = true;
 	
@@ -32,12 +33,13 @@ public class CutsceneRenderer implements Renderer {
 		DrawingContext cutsceneControlsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneControlsDrawingContext();
 		
 		GameLogState openGameLog = ApplicationContextUtils.getCosmodogGame().getOpenGameLog();
-		DialogWithAlisaTransition transition = ApplicationContextUtils.getCosmodogGame().getDialogWithAlisaTransition();
 		
 		int page = openGameLog.getCurrentPage();
 		GameLog gameLog = openGameLog.getGameLog();
-
+		MonolithTransition transition = ApplicationContextUtils.getCosmodogGame().getMonolithTransition();
+		
 		if (openGameLog != null && transition != null) {
+			
 			
 			graphics.setColor(Color.black);
 			graphics.fillRect(
@@ -45,45 +47,23 @@ public class CutsceneRenderer implements Renderer {
 					gameContainerDrawingContext.y(),
 					gameContainerDrawingContext.w(),
 					gameContainerDrawingContext.h());
-
-			Animation cutsceneBackground = ApplicationContext.instance().getAnimations().get("cutsceneAlisa");
+			
+			String animationId = "cutsceneMonolith";
+			Animation cutsceneBackground = ApplicationContext.instance().getAnimations().get(animationId);
+			
+			cutsceneBackground.draw(
+					gameContainerDrawingContext.x(), 
+					gameContainerDrawingContext.y(), 
+					gameContainerDrawingContext.w(), 
+					gameContainerDrawingContext.h()
+			);
 			
 			ActionPhase phase = transition.phase;
 			float phaseCompletion = transition.phaseCompletion();
 			
-			if (phase == ActionPhase.ARM_APPEARS) {
+			if (phase == ActionPhase.MONOLITH_FADES_IN) {
 				
-				float xOffset = -(gameContainerDrawingContext.w() * (1 - phaseCompletion));
-				
-				cutsceneBackground.draw(
-						gameContainerDrawingContext.x() + xOffset, 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
-				);
-				
-			}
-			
-			if (phase == ActionPhase.DEVICE_TURNS_ON) {
-				
-				cutsceneBackground.draw(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
-				);
-			}
-			
-			if (phase == ActionPhase.PICTURE_FADES) {
-				
-				cutsceneBackground.draw(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
-				);
-				
-				float textPageOpacity = (float)(phaseCompletion * DialogWithAlisaTransition.MAX_PICTURE_OPACITY);
+				float textPageOpacity = (float)((1 - phaseCompletion) * MonolithTransition.MAX_PICTURE_OPACITY);
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
@@ -92,19 +72,30 @@ public class CutsceneRenderer implements Renderer {
 						gameContainerDrawingContext.w(), 
 						gameContainerDrawingContext.h()
 				);
+				
 			}
 			
-			if (phase == ActionPhase.TEXT) {
+			if (phase == ActionPhase.MONOLITH) {
 				
-				cutsceneBackground.draw(
+			}
+			
+			if (phase == ActionPhase.PICTURE_FADES) {
+
+				float textPageOpacity = (float)(phaseCompletion * MonolithTransition.MAX_PICTURE_OPACITY);
+				
+				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
+				graphics.fillRect(
 						gameContainerDrawingContext.x(), 
 						gameContainerDrawingContext.y(), 
 						gameContainerDrawingContext.w(), 
 						gameContainerDrawingContext.h()
 				);
 				
+			}
+			
+			if (phase == ActionPhase.TEXT) {
+				graphics.setColor(new Color(0f, 0f, 0f, MonolithTransition.MAX_PICTURE_OPACITY));
 				
-				graphics.setColor(new Color(0f, 0f, 0f, DialogWithAlisaTransition.MAX_PICTURE_OPACITY));
 				graphics.fillRect(
 						gameContainerDrawingContext.x(), 
 						gameContainerDrawingContext.y(), 

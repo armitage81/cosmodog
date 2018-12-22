@@ -3,7 +3,9 @@ package antonafanasjew.cosmodog.model.states;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -19,18 +21,23 @@ import antonafanasjew.cosmodog.model.menu.MenuItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.MenuRenderer.MenuRenderingParam;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
+import antonafanasjew.particlepattern.movement.SinusMovementFunction;
 
 public class MainMenuState extends CosmodogAbstractState {
 
 	private Menu mainMenu;
 	private MenuRenderer menuRenderer = new MenuRenderer();
 	private MenuRenderingParam param = new MenuRenderingParam();
+	private SinusMovementFunction flying = new SinusMovementFunction(0, 10, 0, 500);
+	private long stateEnteredTime;
 	
 	@Override
 	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		container.getInput().clearKeyPressedRecord();
+		stateEnteredTime = System.currentTimeMillis();
 		mainMenu = ApplicationContext.instance().getMenus().get("mainMenu");
 		mainMenu.setInitialized();
 		menuRenderer.resetMenuLabelCache();
@@ -66,15 +73,42 @@ public class MainMenuState extends CosmodogAbstractState {
 	}
 
 	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU);
+		if (music.playing()) {
+			music.stop();
+		}
+	}
+	
+	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		
+		long timestamp = System.currentTimeMillis();
+		long stateDuration = timestamp - stateEnteredTime; 
 		
 		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 		DrawingContext startScreenLogoDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenLogoDrawingContext();
 		DrawingContext startScreenReferencesDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenReferencesDrawingContext();
 				
-		Animation titleAnimation = ApplicationContext.instance().getAnimations().get("title");
+		Animation shipFrameCalmFlight = ApplicationContext.instance().getAnimations().get("introShipCalmFlight");
+		Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 		
-		titleAnimation.draw(gameContainerDrawingContext.x(), gameContainerDrawingContext.y(), gameContainerDrawingContext.w(), gameContainerDrawingContext.h());
+		float backgroundLength = gc.getWidth() * 1.3f;
+
+		Image backgroundImage = phaetonBackground.getCurrentFrame();
+		
+		backgroundImage.draw(
+				-(backgroundLength - gc.getWidth()) / 2, 
+				-(backgroundLength - gc.getHeight()) / 2,
+				backgroundLength, 
+				backgroundLength
+		);
+		
+		Vector flyingVector = flying.apply(stateDuration);
+		float shipOffsetX = flyingVector.getX();
+		float shipOffsetY = flyingVector.getY();
+		
+		shipFrameCalmFlight.draw(gameContainerDrawingContext.x() - 20 + shipOffsetX, gameContainerDrawingContext.y() - 20 + shipOffsetY, gameContainerDrawingContext.w() + 40, gameContainerDrawingContext.h() + 40);
 		
 		Animation logo = ApplicationContext.instance().getAnimations().get("logo");
 		

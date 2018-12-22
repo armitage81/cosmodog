@@ -11,7 +11,7 @@ import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
-import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
+import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InteractingWithPieceTrigger;
@@ -47,7 +47,7 @@ public class MultiInstancePieceRuleBuilder extends AbstractResourceWrapperBuilde
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
 		
-		AsyncAction asyncAction = new GameLogAction(gameLog);
+		AsyncAction asyncAction = new MonolithNarrationAction(gameLog);
 		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		
 		//action = new FeatureBoundAction(Features.FEATURE_STORY, action);

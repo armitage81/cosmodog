@@ -6,6 +6,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.dying.DyingAction;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
@@ -14,6 +16,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.TextBookRendererParameter;
+import antonafanasjew.cosmodog.rules.actions.async.AbstractNarrationAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 
@@ -31,6 +34,8 @@ public class InterfaceOnSceneRenderer implements Renderer {
 	private Renderer onScreenNotificationRenderer = new OnScreenNotificationRenderer();
 	private Renderer gameLogRenderer = new GameLogRenderer();
 	private Renderer cutsceneRenderer = new CutsceneRenderer();
+	private Renderer memoriesRenderer = new MemoriesRenderer();
+	private Renderer endingRenderer = new EndingRenderer();
 		
 	@Override
 	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
@@ -94,11 +99,18 @@ public class InterfaceOnSceneRenderer implements Renderer {
 			textFrameRenderer.render(gc, g, param);
 		}
 		
-		
+				
 		if (cosmodogGame.getOpenGameLog() != null) {
 			String category = cosmodogGame.getOpenGameLog().getGameLog().getCategory();
-			if (category.equals("memories") || category.equals("cutscenes")) {
-				cutsceneRenderer.render(gc, g, null);
+			String id = cosmodogGame.getOpenGameLog().getGameLog().getIdInCategory();
+			if (category.equals("cutscenes")) {
+				if (id.equals("decision")) {
+					endingRenderer.render(gc, g, null);
+				} else {
+					cutsceneRenderer.render(gc, g, null);
+				}
+			} else if (category.equals("memories")|| category.equals("maryharper")) {
+				memoriesRenderer.render(gc, g, null);
 			} else {
 				gameLogRenderer.render(gc, g, null);
 			}

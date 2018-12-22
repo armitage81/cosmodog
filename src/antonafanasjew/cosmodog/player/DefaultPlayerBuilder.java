@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.player;
 
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 
@@ -24,8 +26,8 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 //		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
 //		player.getInventory().put(InventoryItemType.MACHETE, new MacheteInventoryItem());
 //
-		player.setPositionX(211);
-		player.setPositionY(250);
+		player.setPositionX(9);
+		player.setPositionY(8);
 //
 //		player.setMaxLife(100);
 //		player.setLife(100);
@@ -137,31 +139,29 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 		// player.getInventory().put(InventoryItemType.CHART,
 		// chartInventoryItem);
 
-		// InsightInventoryItem insightInventoryItem = new
-		// InsightInventoryItem();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		// insightInventoryItem.increaseNumber();
-		//
-		// player.getInventory().put(InventoryItemType.INSIGHT,
-		// insightInventoryItem);
+		 InsightInventoryItem insightInventoryItem = new InsightInventoryItem();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		 insightInventoryItem.increaseNumber();
+		
+		 player.getInventory().put(InventoryItemType.INSIGHT, insightInventoryItem);
 		//
 		// for (int i = 0; i < 6000; i++) {
 		// player.getGameProgress().addInfobit();

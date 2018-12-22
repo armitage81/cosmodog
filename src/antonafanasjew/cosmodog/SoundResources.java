@@ -190,5 +190,9 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_AMBIENT_ENERGYWALL = "sound.ambient.energywall";
 	public static final String SOUND_AMBIENT_FIRE = "sound.ambient.fire";
 
+	public static final String SOUND_INTRO_MISSILE_ALERT = "sound.intro.missilealert";
+	public static final String SOUND_INTRO_SIREN = "sound.intro.siren";
 
+	public static final String SOUND_CUTSCENE_ALISASMESSAGE = "sound.cutscene.alisasmessage";
+	
 }

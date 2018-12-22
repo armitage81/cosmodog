@@ -115,8 +115,7 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 		debugConsoleContentDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
 		debugConsoleControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
 		
-		startScreenLogoDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
-		startScreenLogoDrawingContext = new CenteredDrawingContext(startScreenLogoDrawingContext, 640, 192);
+		startScreenLogoDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, (gameContainerDrawingContext.w() - 640) / 2, 360, 640, 192);
 		startScreenMenuDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 10, 10, 6, 7, 4, 2);
 		startScreenReferencesDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 10, 10, 0, 9, 10, 1);
 		
@@ -128,6 +127,7 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 		logContentDrawingContext = DrawingContextUtils.difResFromRef(logContentDrawingContext, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
 		logContentDrawingContext = new CenteredDrawingContext(logContentDrawingContext, 10);
 		
+		secretFoundMessageDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
 		
 	}
 	

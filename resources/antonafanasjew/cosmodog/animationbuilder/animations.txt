@@ -935,7 +935,8 @@ title;data/title.png;320;180;[0/0/100000];true;true
 logo;data/logo.png;160;48;[0/0/100000];true;true
 trancescendent;data/trancescendent.png;97;42;[0/0/100000];true;true
 
-
+cutsceneMonolith;data/Monolith.png;1920;1080;[0/0/100000];true;true
+cutsceneAlisa;data/cutscene_alisa.png;640;300;[0/0/100000];true;true
 
 
 pistol;data/weapons2.png;32;32;[0/0/250,1/0/250,2/0/250,1/0/250];true;true
@@ -1552,4 +1553,7 @@ artilleryGrenadeUp;data/artillery_grenade.png;16;16;[0/0/10000];false;false
 artilleryGrenadeDown;data/artillery_grenade.png;16;16;[1/0/10000];false;false
 
 
-
+introShipCalmFlight;data/intro/shipFrameCalmFlight.png;640;300;[0/0/10000];false;false
+introShipDamaged;data/intro/shipFrameDamaged.png;640;300;[0/0/10000];false;false
+phaetonBackground;data/intro/phaetonBackground.png;1280;1280;[0/0/10000];false;false
+endingBackground;data/endingBackground.png;640;300;[0/0/10000];false;false

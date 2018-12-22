@@ -91,8 +91,8 @@ public class Features {
 		getFeatureFlags().put(FEATURE_TUTORIAL, false);
 		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
 		getFeatureFlags().put(FEATURE_MUSIC, true);
-		getFeatureFlags().put(FEATURE_DAMAGE, false);
-		getFeatureFlags().put(FEATURE_GODFISTS, true);
+		getFeatureFlags().put(FEATURE_DAMAGE, true);
+		getFeatureFlags().put(FEATURE_GODFISTS, false);
 		getFeatureFlags().put(FEATURE_INTERFACE, true);
 		getFeatureFlags().put(FEATURE_SIGHTRADIUS, true);
 	}

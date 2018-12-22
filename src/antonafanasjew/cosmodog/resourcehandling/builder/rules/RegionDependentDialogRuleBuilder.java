@@ -12,7 +12,7 @@ import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
-import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
+import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
@@ -45,7 +45,7 @@ public class RegionDependentDialogRuleBuilder extends AbstractResourceWrapperBui
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
 		
-		AsyncAction asyncAction = new GameLogAction(gameLog);
+		AsyncAction asyncAction = new DialogWithAlisaNarrationAction(gameLog);
 		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		
 		if (onlyOnce) {

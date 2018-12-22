@@ -115,6 +115,8 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 		startScreenLogoDrawingContext = new CenteredDrawingContext(startScreenLogoDrawingContext, 640, 192);
 		startScreenMenuDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 10, 10, 6, 7, 4, 2);
 		startScreenReferencesDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 10, 10, 0, 9, 10, 1);
+
+		secretFoundMessageDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
 		
 	}
 	

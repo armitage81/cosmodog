@@ -12,7 +12,8 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
-import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
+import antonafanasjew.cosmodog.rules.actions.async.AbstractNarrationAction;
+import antonafanasjew.cosmodog.rules.actions.async.GameLogNarrationAction;
 
 public class LogInteraction extends AbstractPieceInteraction {
 
@@ -38,7 +39,7 @@ public class LogInteraction extends AbstractPieceInteraction {
 			concreteLog = logsForSeries.get(noOfFoundLogs); //it's the next one because list is zero-based.
 		}
 		
-		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new GameLogAction(concreteLog));
+		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new GameLogNarrationAction(concreteLog));
 		
 		
 	}

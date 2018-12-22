@@ -16,6 +16,7 @@ public enum FontType {
 	Outro2Text(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.orange),
 	EndLabel(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 36), false), Color.white),
 	CreditsText(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.white),
+	Cutscene(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.yellow),
 	GameLog(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
 	GameLogHeader(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
 	GameLogControlsHint(new TrueTypeFont(new Font("Courier New", Font.BOLD, 12), false), Color.white),

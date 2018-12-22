@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
+import antonafanasjew.particlepattern.movement.ShakingMovementFunction;
 
 public class IntroState extends CosmodogAbstractState {
 

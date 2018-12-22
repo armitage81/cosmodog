@@ -15,7 +15,7 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
-import antonafanasjew.cosmodog.rules.actions.async.GameLogAction;
+import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
 
 public class CognitionInteraction extends AbstractPieceInteraction {
 
@@ -28,7 +28,7 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
 		
-		AsyncAction gameLogAction = new GameLogAction(gameLog);
+		AsyncAction gameLogAction = new EndingNarrationAction(gameLog);
 
 		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, gameLogAction);
 		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new FixedLengthAsyncAction(1000) {

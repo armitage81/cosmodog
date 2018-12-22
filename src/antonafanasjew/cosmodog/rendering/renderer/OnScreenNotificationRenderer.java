@@ -17,16 +17,16 @@ public class OnScreenNotificationRenderer extends AbstractRenderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
-		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+		DrawingContext secretFoundMessageDc = DrawingContextProviderHolder.get().getDrawingContextProvider().secretFoundMessageDrawingContext();
 		
-		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
+		graphics.translate(secretFoundMessageDc.x(), secretFoundMessageDc.y());
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		OnScreenNotificationAction action = (OnScreenNotificationAction)game.getActionRegistry().getRegisteredAction(AsyncActionType.ONSCREEN_NOTIFICATION);
 		if (action != null) {
 			OnScreenNotificationTransition transition = action.getTransition();
 			if (transition != null) {
-				LetterTextRenderer ltr = LetterTextRenderer.getInstance().withDrawingContext(sceneDrawingContext);
+				LetterTextRenderer ltr = LetterTextRenderer.getInstance().withDrawingContext(secretFoundMessageDc);
 				ltr.render(gameContainer, graphics, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(action.getText(), transition.textScale(), LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
 			}
 		}

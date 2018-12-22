@@ -11,6 +11,9 @@ import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.timing.Chronometer;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
+import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
+import antonafanasjew.cosmodog.view.transitions.EndingTransition;
+import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
@@ -40,6 +43,12 @@ public class CosmodogGame extends CosmodogModel {
 	private transient TextFrame textFrame;
 	
 	private transient GameLogState openGameLog;
+	
+	private transient DialogWithAlisaTransition dialogWithAlisaTransition;
+	
+	private transient MonolithTransition monolithTransition;
+	
+	private transient EndingTransition endingTransition;
 	
 	private transient CollectibleTool currentlyFoundTool;
 	
@@ -209,5 +218,29 @@ public class CosmodogGame extends CosmodogModel {
 
 	public void setAmbientSoundRegistry(AmbientSoundRegistry ambientSoundRegistry) {
 		this.ambientSoundRegistry = ambientSoundRegistry;
+	}
+	
+	public DialogWithAlisaTransition getDialogWithAlisaTransition() {
+		return dialogWithAlisaTransition;
+	}
+	
+	public void setDialogWithAlisaTransition(DialogWithAlisaTransition dialogWithAlisaTransition) {
+		this.dialogWithAlisaTransition = dialogWithAlisaTransition;
+	}
+	
+	public MonolithTransition getMonolithTransition() {
+		return monolithTransition;
+	}
+	
+	public void setMonolithTransition(MonolithTransition monolithTransition) {
+		this.monolithTransition = monolithTransition;
+	}
+	
+	public EndingTransition getEndingTransition() {
+		return endingTransition;
+	}
+	
+	public void setEndingTransition(EndingTransition endingTransition) {
+		this.endingTransition = endingTransition;
 	}
 }

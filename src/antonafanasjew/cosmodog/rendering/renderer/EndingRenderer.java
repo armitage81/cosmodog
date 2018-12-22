@@ -13,10 +13,10 @@ import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition.ActionPhase;
+import antonafanasjew.cosmodog.view.transitions.EndingTransition;
+import antonafanasjew.cosmodog.view.transitions.EndingTransition.ActionPhase;
 
-public class CutsceneRenderer implements Renderer {
+public class EndingRenderer implements Renderer {
 
 	public static boolean firstLoop = true;
 	
@@ -32,7 +32,7 @@ public class CutsceneRenderer implements Renderer {
 		DrawingContext cutsceneControlsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneControlsDrawingContext();
 		
 		GameLogState openGameLog = ApplicationContextUtils.getCosmodogGame().getOpenGameLog();
-		DialogWithAlisaTransition transition = ApplicationContextUtils.getCosmodogGame().getDialogWithAlisaTransition();
+		EndingTransition transition = ApplicationContextUtils.getCosmodogGame().getEndingTransition();
 		
 		int page = openGameLog.getCurrentPage();
 		GameLog gameLog = openGameLog.getGameLog();
@@ -46,46 +46,20 @@ public class CutsceneRenderer implements Renderer {
 					gameContainerDrawingContext.w(),
 					gameContainerDrawingContext.h());
 
-			Animation cutsceneBackground = ApplicationContext.instance().getAnimations().get("cutsceneAlisa");
+			Animation endingBackground = ApplicationContext.instance().getAnimations().get("endingBackground");
+			
+			endingBackground.draw(
+					gameContainerDrawingContext.x(), 
+					gameContainerDrawingContext.y(), 
+					gameContainerDrawingContext.w(), 
+					gameContainerDrawingContext.h()
+			);
 			
 			ActionPhase phase = transition.phase;
 			float phaseCompletion = transition.phaseCompletion();
 			
-			if (phase == ActionPhase.ARM_APPEARS) {
-				
-				float xOffset = -(gameContainerDrawingContext.w() * (1 - phaseCompletion));
-				
-				cutsceneBackground.draw(
-						gameContainerDrawingContext.x() + xOffset, 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
-				);
-				
-			}
-			
-			if (phase == ActionPhase.DEVICE_TURNS_ON) {
-				
-				cutsceneBackground.draw(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
-				);
-			}
-			
-			if (phase == ActionPhase.PICTURE_FADES) {
-				
-				cutsceneBackground.draw(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
-				);
-				
-				float textPageOpacity = (float)(phaseCompletion * DialogWithAlisaTransition.MAX_PICTURE_OPACITY);
-				
-				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
+			if (phase == ActionPhase.DARKNESS) {
+				graphics.setColor(new Color(0f, 0f, 0f));
 				graphics.fillRect(
 						gameContainerDrawingContext.x(), 
 						gameContainerDrawingContext.y(), 
@@ -94,17 +68,41 @@ public class CutsceneRenderer implements Renderer {
 				);
 			}
 			
-			if (phase == ActionPhase.TEXT) {
+			if (phase == ActionPhase.PICTURE_FADES_IN) {
 				
-				cutsceneBackground.draw(
+				float textPageOpacity = (float)((1 - phaseCompletion) * EndingTransition.INITIAL_PICTURE_OPACITY);
+				
+				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
+				graphics.fillRect(
 						gameContainerDrawingContext.x(), 
 						gameContainerDrawingContext.y(), 
 						gameContainerDrawingContext.w(), 
 						gameContainerDrawingContext.h()
 				);
 				
+			}
+			
+			if (phase == ActionPhase.PICTURE) {
+
+			}
+			
+			if (phase == ActionPhase.PICTURE_FADES_OUT) {
 				
-				graphics.setColor(new Color(0f, 0f, 0f, DialogWithAlisaTransition.MAX_PICTURE_OPACITY));
+				float textPageOpacity = (float)(phaseCompletion * EndingTransition.INITIAL_PICTURE_OPACITY);
+				
+				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
+				graphics.fillRect(
+						gameContainerDrawingContext.x(), 
+						gameContainerDrawingContext.y(), 
+						gameContainerDrawingContext.w(), 
+						gameContainerDrawingContext.h()
+				);
+				
+			}
+			
+			if (phase == ActionPhase.TEXT) {
+				
+				graphics.setColor(new Color(0f, 0f, 0f, EndingTransition.TEXT_PICTURE_OPACITY));
 				graphics.fillRect(
 						gameContainerDrawingContext.x(), 
 						gameContainerDrawingContext.y(), 
