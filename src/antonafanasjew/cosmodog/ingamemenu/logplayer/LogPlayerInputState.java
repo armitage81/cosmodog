@@ -4,6 +4,7 @@ import java.util.List;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuInputState;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogState;
@@ -98,7 +99,7 @@ public class LogPlayerInputState implements InGameMenuInputState {
 		String seriesName = gameLogs.getSeriesNames().get(seriesNumber);
 		List<GameLog> gameLogsForSeries = gameLogs.getGameLogsForSeries(seriesName);
 		GameLog gameLog = gameLogsForSeries.get(logNumber);
-		GameLogState gameLogState = new GameLogState(gameLog, new TextPageConstraints(Constants.LOG_PLAYER_TEXT_WIDTH, Constants.LOG_PLAYER_TEXT_HEIGHT));
+		GameLogState gameLogState = new GameLogState(gameLog, new TextPageConstraints(Constants.LOG_PLAYER_TEXT_WIDTH, Constants.LOG_PLAYER_TEXT_HEIGHT), FontType.GameLogPlayer);
 		this.pages = gameLogState.getPages();
 		this.currentPage = gameLogState.getCurrentPage();
 	}

@@ -120,7 +120,7 @@ public class Constants {
 	 * The main objective of the game is collecting the insight objects to open the entrance into the alien base.
 	 * There are 32 insight objects. This constant defines, how many are enough to open the base.
 	 */
-	public static final int MIN_INSIGHTS_TO_OPEN_ALIEN_BASE = 20;
+	public static final int MIN_INSIGHTS_TO_OPEN_ALIEN_BASE = 32;
 
 	public static final int NUMBER_OF_SOFTWARE_PIECES_IN_GAME = 16;
 	

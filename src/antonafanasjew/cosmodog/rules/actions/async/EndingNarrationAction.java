@@ -5,7 +5,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
@@ -28,10 +30,11 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 	public void onTrigger() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		DrawingContext cutsceneTextDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
-		cosmodogGame.setOpenGameLog(new GameLogState(getGameLog(), new TextPageConstraints(cutsceneTextDrawingContext.w(), cutsceneTextDrawingContext.h())));
+		cosmodogGame.setOpenGameLog(new GameLogState(getGameLog(), new TextPageConstraints(cutsceneTextDrawingContext.w(), cutsceneTextDrawingContext.h()), FontType.EndingNarration));
 		
 		EndingTransition transition = new EndingTransition();
 		transition.phaseStart = System.currentTimeMillis();
+		transition.pageIsDynamic = true;
 		cosmodogGame.setEndingTransition(transition);
 	}
 
@@ -58,6 +61,8 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 		} else if (transition.phase == ActionPhase.PICTURE_FADES_OUT) {
 			if (transition.phaseCompletion() >= 1.0f) {
 				transition.phase = ActionPhase.TEXT;
+				transition.pageStart = System.currentTimeMillis();
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 			}
 		} else {
 			ApplicationContext applicationContext = ApplicationContext.instance();

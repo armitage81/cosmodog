@@ -194,5 +194,6 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_INTRO_SIREN = "sound.intro.siren";
 
 	public static final String SOUND_CUTSCENE_ALISASMESSAGE = "sound.cutscene.alisasmessage";
-	
+
+	public static final String SOUND_TEXT_TYPING = "sound.texttyping";
 }

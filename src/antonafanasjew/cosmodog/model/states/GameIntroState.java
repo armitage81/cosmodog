@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.model.states;
 
 import java.util.List;
 
+import javax.crypto.spec.OAEPParameterSpec;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -19,9 +21,7 @@ import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontType;
-import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.MusicUtils;
@@ -41,14 +41,15 @@ public class GameIntroState  extends CosmodogAbstractState {
 	private ShakingMovementFunction shaking = new ShakingMovementFunction(50, 6, 3, 6, 4);
 	
 	private long phaseStart;
+	private long pageStart;
+	
 	private IntroPhase phase;
 
 	private enum IntroPhase {
 		CALM_FLIGHT,
 		EXPLOSION,
 		FALLING,
-		TEXT1_RUNNING,
-		TEXT1_FINISHED
+		TEXT
 	}
 
 	@Override
@@ -124,7 +125,9 @@ public class GameIntroState  extends CosmodogAbstractState {
 		} else if (phase == IntroPhase.FALLING) {
 			
 			if (timestamp - phaseStart >= 6000) {
-				phase = IntroPhase.TEXT1_RUNNING;
+				phase = IntroPhase.TEXT;
+				pageStart = System.currentTimeMillis();
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 				MusicUtils.loopMusic(MusicResources.MUSIC_CUTSCENE);
 			}
 
@@ -133,20 +136,17 @@ public class GameIntroState  extends CosmodogAbstractState {
 			if (!sirenSound.playing()) {
 				sirenSound.play();
 			}
-			
-		} else if (phase == IntroPhase.TEXT1_RUNNING) {
-			
-			if (timestamp - phaseStart >= 3000) {
-				phase = IntroPhase.TEXT1_FINISHED;
-			}
-			
-		} else if (phase == IntroPhase.TEXT1_FINISHED) {
+		} else if (phase == IntroPhase.TEXT) {
 		
 			if (input.isKeyPressed(Input.KEY_ENTER)) {
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
 				if (page < texts.size() - 1) {
 					page++;
+					pageStart = System.currentTimeMillis();
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 				} else {
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
 					sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
 				}
 			}
@@ -165,6 +165,8 @@ public class GameIntroState  extends CosmodogAbstractState {
 	private void renderPhase(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+		DrawingContext gameIntroTextDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroTextDrawingContext();
+		DrawingContext gameIntroControlsDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroControlsDrawingContext();
 		
 		long timestamp = System.currentTimeMillis();
 		long phaseDuration = timestamp - phaseStart;
@@ -251,41 +253,7 @@ public class GameIntroState  extends CosmodogAbstractState {
 			
 		}
 		
-		if (phase == IntroPhase.TEXT1_RUNNING) {
-
-			Animation shipFrame = ApplicationContext.instance().getAnimations().get("introShipDamaged");
-			Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
-			
-			float backgroundLength = gc.getWidth() * 1.3f;
-
-			Image backgroundImage = phaetonBackground.getCurrentFrame();
-			backgroundImage.setCenterOfRotation(backgroundLength / 2, backgroundLength / 2);
-			backgroundImage.setRotation(backgroundImage.getRotation() + 1);
-			
-			
-			backgroundImage.draw(
-					-(backgroundLength - gc.getWidth()) / 2, 
-					-(backgroundLength - gc.getHeight()) / 2,
-					backgroundLength, 
-					backgroundLength
-			);
-								
-			
-			Vector shakingVector = shaking.apply(phaseDuration);
-			float shipOffsetX = shakingVector.getX();
-			float shipOffsetY = shakingVector.getY();
-			
-			shipFrame.draw(dc.x() - 20 + shipOffsetX, dc.y() - 20 + shipOffsetY, dc.w() + 40, dc.h() + 40);
-
-			
-			float textPageOpacity = (float)(phaseDuration / 3000f * 0.9);
-			
-			g.setColor(new Color(0f, 0f, 0f, textPageOpacity));
-			g.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
-			
-		}
-		
-		if (phase == IntroPhase.TEXT1_FINISHED) {
+		if (phase == IntroPhase.TEXT) {
 			Animation shipFrame = ApplicationContext.instance().getAnimations().get("introShipDamaged");
 			Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 			
@@ -313,16 +281,12 @@ public class GameIntroState  extends CosmodogAbstractState {
 			g.setColor(new Color(0f, 0f, 0f, 0.9f));
 			g.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
 			
-			DrawingContext textDrawingContext = new CenteredDrawingContext(dc, 1000, 500);
-			
-			DrawingContext introTextDc = new TileDrawingContext(textDrawingContext, 1, 7, 0, 0, 1, 6);
-			DrawingContext pressEnterTextDc = new TileDrawingContext(textDrawingContext, 1, 7, 0, 6, 1, 1);
-			
-			TextBookRendererUtils.renderTextPage(gc, g, introTextDc, texts.get(page), FontType.IntroText, 0);
-			
+			long millisSinsePageOpened = System.currentTimeMillis() - pageStart;
+			TextBookRendererUtils.renderDynamicTextPage(gc, g, gameIntroTextDc, texts.get(page), FontType.IntroText, 0, millisSinsePageOpened);
+						
 			boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 			if (renderBlinkingHint) {
-				TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
+				TextBookRendererUtils.renderCenteredLabel(gc, g, gameIntroControlsDc, "Press [ENTER]", FontType.PopUpInterface, 0);
 			}
 			
 		}

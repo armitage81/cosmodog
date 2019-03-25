@@ -103,7 +103,12 @@ public class MemoriesRenderer implements Renderer {
 						gameContainerDrawingContext.h()
 				);
 				
-				TextBookRendererUtils.renderTextPage(gameContainer, graphics, cutsceneTextDrawingContext, gameLog.getLogText(), FontType.Cutscene, page);
+				long transitionPhaseDuration = System.currentTimeMillis() - transition.pageStart;
+				if (transition.pageIsDynamic == false) {
+					transitionPhaseDuration = -1;
+				}
+				
+				TextBookRendererUtils.renderDynamicTextPage(gameContainer, graphics, cutsceneTextDrawingContext, gameLog.getLogText(), FontType.MemoryNarration, page, transitionPhaseDuration);
 				
 				boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 							

@@ -112,7 +112,7 @@ public class CutsceneRenderer implements Renderer {
 						gameContainerDrawingContext.h()
 				);
 				
-				TextBookRendererUtils.renderTextPage(gameContainer, graphics, cutsceneTextDrawingContext, gameLog.getLogText(), FontType.Cutscene, page);
+				TextBookRendererUtils.renderTextPage(gameContainer, graphics, cutsceneTextDrawingContext, gameLog.getLogText(), FontType.CutsceneNarration, page);
 				
 				boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 							

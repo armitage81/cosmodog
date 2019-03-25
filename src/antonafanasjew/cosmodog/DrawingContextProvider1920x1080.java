@@ -97,10 +97,20 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 		inGameMenuFooterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 625, 1213, 61);
 		inGameMenuFooterDrawingContext = DrawingContextUtils.difResFromRef(inGameMenuFooterDrawingContext, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
 		
+		/*
 		cutsceneDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, CUTSCENE_FRAME_WIDTH, CUTSCENE_FRAME_HEIGHT);
 		cutsceneTextDrawingContext = new SimpleDrawingContext(cutsceneDrawingContext, (CUTSCENE_FRAME_WIDTH - CUTSCENE_TEXT_WIDTH) / 2, 0, CUTSCENE_TEXT_WIDTH, CUTSCENE_TEXT_HEIGHT);
 		cutsceneControlsDrawingContext = new SimpleDrawingContext(cutsceneDrawingContext, (CUTSCENE_FRAME_WIDTH - CUTSCENE_TEXT_WIDTH) / 2, CUTSCENE_TEXT_HEIGHT, CUTSCENE_TEXT_WIDTH, CUTSCENE_FRAME_HEIGHT - CUTSCENE_TEXT_HEIGHT);
-
+		*/
+		
+		cutsceneDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
+		cutsceneTextDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 7, 0, 0, 1, 6);
+		cutsceneControlsDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 7, 0, 6, 1, 1);
+		
+		gameIntroTextFrameDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
+		gameIntroTextDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 7, 0, 0, 1, 6);
+		gameIntroControlsDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 7, 0, 6, 1, 1);
+		
 		gameLogDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, GAME_LOG_FRAME_WIDTH, GAME_LOG_FRAME_HEIGHT);
 		gameLogHeaderDrawingContext = new SimpleDrawingContext(gameLogDrawingContext, (GAME_LOG_FRAME_WIDTH - GAME_LOG_TEXT_WIDTH) / 2, 20, GAME_LOG_TEXT_WIDTH, 34);
 		gameLogContentDrawingContext = new SimpleDrawingContext(gameLogDrawingContext, (GAME_LOG_FRAME_WIDTH - GAME_LOG_TEXT_WIDTH) / 2, 100, GAME_LOG_TEXT_WIDTH, GAME_LOG_TEXT_HEIGHT);

@@ -22,6 +22,8 @@ public class EndingTransition implements Transition {
 	public ActionPhase phase = ActionPhase.DARKNESS;
 	
 	public long phaseStart;
+	public long pageStart;
+	public boolean pageIsDynamic;
 	
 	public float phaseCompletion() {
 		

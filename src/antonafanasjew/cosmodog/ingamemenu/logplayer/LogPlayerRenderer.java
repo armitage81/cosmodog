@@ -110,7 +110,7 @@ public class LogPlayerRenderer implements Renderer {
 					if (logPlayerInputState.getPages() > 1) {
 						TextBookRendererUtils.renderTextPage(gameContainer, graphics, controlsHintDrawingContext, logHint, FontType.GameLogControlsHint, 0);
 					}
-					TextBookRendererUtils.renderTextPage(gameContainer, graphics, absoluteTextDrawingContext, logContent, FontType.GameLog, logPlayerInputState.getCurrentPage());
+					TextBookRendererUtils.renderTextPage(gameContainer, graphics, absoluteTextDrawingContext, logContent, FontType.GameLogPlayer, logPlayerInputState.getCurrentPage());
 					
 				}
 				

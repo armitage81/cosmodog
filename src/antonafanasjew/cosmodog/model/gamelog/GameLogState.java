@@ -11,14 +11,14 @@ public class GameLogState {
 	private int pages;
 	private int currentPage;
 	
-	public GameLogState(GameLog gameLog, TextPageConstraints c) {
+	public GameLogState(GameLog gameLog, TextPageConstraints c, FontType fontType) {
 		super();
 		this.gameLog = gameLog;
 		String text = gameLog.getLogText();
 		
 		//We don't care about the actual constraints.
 		//The only relevant thing for the page number are the page break mark up tags in the text.
-		List<List<String>> splitText = c.textSplitByLinesAndPages(text, FontType.GameLog.getFont());
+		List<List<String>> splitText = c.textSplitByLinesAndPages(text, fontType.getFont());
 		pages = splitText.size();
 		
 		this.currentPage = 0;

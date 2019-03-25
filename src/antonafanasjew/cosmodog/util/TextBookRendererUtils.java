@@ -21,7 +21,11 @@ public class TextBookRendererUtils {
 	}
 	
 	public static void renderTextPage(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType, int page) {
-		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_START, page);
+		renderDynamicTextPage(gc, g, dc, text, fontType, page, -1);
+	}
+	
+	public static void renderDynamicTextPage(GameContainer gc, Graphics g, DrawingContext dc, String text, FontType fontType, int page, long millisSinsePageOpened) {
+		TextBookRendererParameter param = TextBookRendererParameter.instance(text, fontType, TextBookRendererParameter.ALIGN_START, TextBookRendererParameter.ALIGN_START, page, millisSinsePageOpened);
 		TextBookRenderer.getInstance().withDrawingContext(dc).render(gc, g, param);
 	}
 	

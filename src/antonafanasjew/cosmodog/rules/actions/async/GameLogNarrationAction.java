@@ -6,6 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
@@ -26,7 +27,7 @@ public class GameLogNarrationAction extends AbstractNarrationAction {
 	public void onTrigger() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		DrawingContext cutsceneTextDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
-		cosmodogGame.setOpenGameLog(new GameLogState(getGameLog(), new TextPageConstraints(cutsceneTextDrawingContext.w(), cutsceneTextDrawingContext.h())));
+		cosmodogGame.setOpenGameLog(new GameLogState(getGameLog(), new TextPageConstraints(cutsceneTextDrawingContext.w(), cutsceneTextDrawingContext.h()), FontType.GameLog));
 	}
 
 	@Override

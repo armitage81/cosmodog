@@ -64,7 +64,7 @@ public class TextPageConstraints {
 					allLines.add("<div>");
 					thisLine = "";
 					lineWidth = 0;
-				} else if (lineWidth + nextWordLength > this.width) {
+				} else if (!nextWord.equals("<br>") && !nextWord.equals("<p>") && !nextWord.equals("<div>") && lineWidth + nextWordLength > this.width) {
 					allLines.add(thisLine.trim());
 					thisLine = "";
 					lineWidth = 0;

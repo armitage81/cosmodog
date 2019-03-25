@@ -32,8 +32,11 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext inGameMenuContentDrawingContext;
 	protected DrawingContext inGameMenuFooterDrawingContext;
 	
-	protected DrawingContext cutsceneDrawingContext;
+	protected DrawingContext gameIntroTextFrameDrawingContext;
+	protected DrawingContext gameIntroTextDrawingContext;
+	protected DrawingContext gameIntroControlsDrawingContext;
 	
+	protected DrawingContext cutsceneDrawingContext;
 	protected DrawingContext cutsceneTextDrawingContext;
 	protected DrawingContext cutsceneControlsDrawingContext;
 	
@@ -217,6 +220,18 @@ public abstract class AbstractDrawingContextProvider {
 	
 	public DrawingContext secretFoundMessageDrawingContext() {
 		return secretFoundMessageDrawingContext;
+	}
+	
+	public DrawingContext gameIntroTextFrameDrawingContext() {
+		return gameIntroTextFrameDrawingContext;
+	}
+	
+	public DrawingContext gameIntroTextDrawingContext() {
+		return gameIntroTextDrawingContext;
+	}
+	
+	public DrawingContext gameIntroControlsDrawingContext() {
+		return gameIntroControlsDrawingContext;
 	}
 	
 	public static AbstractDrawingContextProvider createDrawingContextProviderForResolution(int width, int height) {

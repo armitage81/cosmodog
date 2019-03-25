@@ -46,23 +46,23 @@ public class MenuRenderer implements Renderer {
 		
 		DrawingContext startScreenMenuDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenMenuDrawingContext();
 		
-		g.setColor(new Color(0f, 1f, 0f, 0.8f));
-		g.fillRoundRect(
-			startScreenMenuDrawingContext.x(), 
-			startScreenMenuDrawingContext.y(), 
-			startScreenMenuDrawingContext.w(), 
-			startScreenMenuDrawingContext.h(), 
-			5
-		);
-		
-		g.setColor(Color.black);
-		g.drawRoundRect(
-				startScreenMenuDrawingContext.x(), 
-				startScreenMenuDrawingContext.y(), 
-				startScreenMenuDrawingContext.w(), 
-				startScreenMenuDrawingContext.h(), 
-				5
-		);
+//		g.setColor(new Color(0f, 1f, 0f, 0.8f));
+//		g.fillRoundRect(
+//			startScreenMenuDrawingContext.x(), 
+//			startScreenMenuDrawingContext.y(), 
+//			startScreenMenuDrawingContext.w(), 
+//			startScreenMenuDrawingContext.h(), 
+//			5
+//		);
+//		
+//		g.setColor(Color.black);
+//		g.drawRoundRect(
+//				startScreenMenuDrawingContext.x(), 
+//				startScreenMenuDrawingContext.y(), 
+//				startScreenMenuDrawingContext.w(), 
+//				startScreenMenuDrawingContext.h(), 
+//				5
+//		);
 		
 		
 		Menu menu = ((MenuRenderingParam)renderingParameter).menu;

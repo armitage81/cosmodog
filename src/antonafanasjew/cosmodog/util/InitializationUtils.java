@@ -75,7 +75,7 @@ import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
-import antonafanasjew.cosmodog.rules.actions.async.AbstractNarrationAction;
+import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
@@ -463,36 +463,36 @@ public class InitializationUtils {
 //		List<String> cutscenes = Lists.newArrayList(
 //				"memories/memory001",
 //				"memories/memory002",
+//				"maryharper/001",
 //				"memories/memory003",
 //				"memories/memory004",
 //				"memories/memory005",
+//				"maryharper/002",
 //				"memories/memory006",
 //				"memories/memory007",
+//				"maryharper/003",
 //				"memories/memory008",
 //				"memories/memory009",
 //				"memories/memory010",
+//				"maryharper/004",
 //				"memories/memory011",
 //				"memories/memory012",
-//				"memories/memory013",
-//				"memories/memory014",
-//				"memories/memory015",
-//				"memories/memory016",
-//				"memories/memory017",
-//				"memories/memory018",
-//				"memories/memory019",
-//				"memories/memory020",
-//				"maryharper/001",
-//				"maryharper/002",
-//				"maryharper/003",
-//				"maryharper/004",
 //				"maryharper/005",
+//				"memories/memory013",
 //				"maryharper/006",
+//				"memories/memory014",
 //				"maryharper/007",
+//				"memories/memory015",
 //				"maryharper/008",
+//				"memories/memory016",
 //				"maryharper/009",
+//				"memories/memory017",
 //				"maryharper/010",
+//				"memories/memory018",
 //				"maryharper/011",
-//				"maryharper/012"	
+//				"memories/memory019",
+//				"maryharper/012",	
+//				"memories/memory020"
 //		);
 //		
 //		RuleAction cutsceneAction = null;
@@ -502,7 +502,7 @@ public class InitializationUtils {
 //			String logId = cutscenes.get(i).split("/")[1];
 //			GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 //			GameLog gameLog = gameLogs.getGameLogBySeriesAndId(series, logId);
-//			AsyncAction asyncAction = new GameLogAction(gameLog);
+//			AsyncAction asyncAction = new MonolithNarrationAction(gameLog);
 //			if (cutsceneAction == null) {
 //				cutsceneAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);		
 //			} else {

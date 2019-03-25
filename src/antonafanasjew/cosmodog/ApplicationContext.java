@@ -471,7 +471,7 @@ public class ApplicationContext {
 		
 		Sound alisasMessage = new Sound("data/alisasMessage.wav");
 		
-		
+		Sound textTyping = new Sound("data/sound/text.wav");
 		
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
@@ -547,6 +547,8 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_INTRO_MISSILE_ALERT, introMissileAlert);
 		this.getSoundResources().put(SoundResources.SOUND_INTRO_SIREN, introSiren);
 		this.getSoundResources().put(SoundResources.SOUND_CUTSCENE_ALISASMESSAGE, alisasMessage);
+		
+		this.getSoundResources().put(SoundResources.SOUND_TEXT_TYPING, textTyping);
 		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

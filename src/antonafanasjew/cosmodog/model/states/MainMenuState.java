@@ -90,8 +90,10 @@ public class MainMenuState extends CosmodogAbstractState {
 		DrawingContext startScreenLogoDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenLogoDrawingContext();
 		DrawingContext startScreenReferencesDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenReferencesDrawingContext();
 				
-		Animation shipFrameCalmFlight = ApplicationContext.instance().getAnimations().get("introShipCalmFlight");
-		Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
+//		Animation shipFrameCalmFlight = ApplicationContext.instance().getAnimations().get("introShipCalmFlight");
+//		Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
+		
+		Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("title");
 		
 		float backgroundLength = gc.getWidth() * 1.3f;
 
@@ -108,7 +110,7 @@ public class MainMenuState extends CosmodogAbstractState {
 		float shipOffsetX = flyingVector.getX();
 		float shipOffsetY = flyingVector.getY();
 		
-		shipFrameCalmFlight.draw(gameContainerDrawingContext.x() - 20 + shipOffsetX, gameContainerDrawingContext.y() - 20 + shipOffsetY, gameContainerDrawingContext.w() + 40, gameContainerDrawingContext.h() + 40);
+		phaetonBackground.draw(gameContainerDrawingContext.x() - 20 + shipOffsetX, gameContainerDrawingContext.y() - 20 + shipOffsetY, gameContainerDrawingContext.w() + 40, gameContainerDrawingContext.h() + 40);
 		
 		Animation logo = ApplicationContext.instance().getAnimations().get("logo");
 		
