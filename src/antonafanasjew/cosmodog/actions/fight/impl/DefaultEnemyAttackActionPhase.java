@@ -39,7 +39,7 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 		fightPhaseTransition.setCompletion(0.0f);
 		setFightPhaseTransition(fightPhaseTransition);
 
-		String text = String.valueOf(getFightPhaseResult().getDamage());
+		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage());
 		
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getPlayer(), text);
 		

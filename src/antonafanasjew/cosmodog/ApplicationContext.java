@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,9 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.util.Log;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
 import antonafanasjew.cosmodog.collision.DynamicPieceCollisionValidator;
@@ -21,7 +25,6 @@ import antonafanasjew.cosmodog.collision.GeneralCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
 import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
 import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
-import antonafanasjew.cosmodog.controller.InGameControlInputHandler;
 import antonafanasjew.cosmodog.controller.InGameGameLogInputHandler;
 import antonafanasjew.cosmodog.controller.InGameInputHandler;
 import antonafanasjew.cosmodog.controller.InGameMenuInputHandler;
@@ -38,6 +41,7 @@ import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
 import antonafanasjew.cosmodog.listener.movement.consumer.WaterConsumer;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AntidoteInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArcheologistsJournalInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AxeInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInteraction;
@@ -68,6 +72,7 @@ import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInt
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SupplyTrackerInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponFirmwareUpgradeInteraction;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
@@ -92,10 +97,11 @@ import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
 import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedPathFinder;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.PatrolingPathFinder;
-import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.menu.MenuBuilder;
+import antonafanasjew.cosmodog.resourcehandling.dyinghints.DyingHintsBuilder;
+import antonafanasjew.cosmodog.resourcehandling.dyinghints.DyingHintsBuilderImpl;
 import antonafanasjew.cosmodog.resourcehandling.gamelogs.GameLogBuilder;
 import antonafanasjew.cosmodog.resourcehandling.gamelogs.GameLogBuilderImpl;
 import antonafanasjew.cosmodog.sight.GeneralSightModifier;
@@ -106,9 +112,6 @@ import antonafanasjew.cosmodog.text.LetterBuilder;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapReader;
 import antonafanasjew.cosmodog.tiledmap.io.XmlTiledMapReader;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * Note: The application context needs to be instantiated only from a OpenGL bound thread. Do not 
@@ -143,6 +146,7 @@ public class ApplicationContext {
 	private Cosmodog cosmodog;
 	private CustomTiledMap customTiledMap;
 	private GameLogs gameLogs = new GameLogs();
+	private List<String> dyingHints = new ArrayList<>();
 	private Map<String, GameLog> gameTexts = Maps.newHashMap();
 	
 	private MusicResources musicResources = new MusicResources();
@@ -150,7 +154,7 @@ public class ApplicationContext {
 	private Animations animations = new Animations();
 	private Images images = new Images();
 	private SpriteSheets spriteSheets = new SpriteSheets();
-	private TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.PATH_TO_TILED_MAP);
+	private TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.pathToTiledMapSupplier.get());
 	
 	private Map<Character, Letter> characterLetters = Maps.newHashMap();
 	
@@ -159,8 +163,6 @@ public class ApplicationContext {
 	
 	private Map<String, Menu> menus = Maps.newHashMap();
 
-	private AbstractDrawingContextProvider drawingContextProvider;
-	
 	private ApplicationContext() {
 		try {
 			init();
@@ -241,7 +243,6 @@ public class ApplicationContext {
 	private void init() throws SlickException {
 		
 		InputHandler inGameInputHandler = new InGameInputHandler();
-		InputHandler inGameControlInputHandler = new InGameControlInputHandler();
 		InputHandler debugConsoleInputHandler = new DebugConsoleInputHandler();
 		InputHandler inGameTextFrameInputHandler = new InGameTextFrameInputHandler();
 		InputHandler inGameGameLogInputHandler = new InGameGameLogInputHandler();
@@ -293,7 +294,6 @@ public class ApplicationContext {
 		cosmodog.setFoodConsumer(foodConsumer);
 		
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME, inGameInputHandler);
-		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_CONTROL, inGameControlInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_DEBUGCONSOLE, debugConsoleInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_TEXTFRAME, inGameTextFrameInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_GAMELOG, inGameGameLogInputHandler);
@@ -360,6 +360,8 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.ski.name(), new SkiInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.pick.name(), new PickInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.machete.name(), new MacheteInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.archeologistsJournal.name(), new ArcheologistsJournalInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.weaponFirmwareUpgrade.name(), new WeaponFirmwareUpgradeInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.axe.name(), new AxeInteraction());
 		
 		
@@ -375,11 +377,11 @@ public class ApplicationContext {
 			public void run() {
 				try {
 					Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.ogg");
-					Music musicSoundtrack = new Music("data/music/Soundtrack.ogg");
 					Music musicGameOver = new Music("data/music/EG_Negative_Stinger.ogg");
 					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.ogg");
 					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.ogg");
 					Music foundTool = new Music("data/music/EG_Positive_Stinger_02.ogg");
+					Music musicSoundtrack = new Music("data/music/Soundtrack.ogg");
 					
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
@@ -414,6 +416,7 @@ public class ApplicationContext {
 		Sound reload = new Sound("data/sound/reload.wav");
 		Sound droppedItem = new Sound("data/sound/droppeditem.wav");
 		Sound pressurePlate = new Sound("data/sound/pressureplate.wav");
+		Sound letterPlate = new Sound("data/sound/letterplate.wav");
 		Sound drainPoison = new Sound("data/sound/drainpoison.wav");
 		Sound artilleryShots = new Sound("data/sound/artilleryshots.wav");
 		Sound secretFound = new Sound("data/sound/secretfound.wav");
@@ -491,6 +494,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_RELOAD, reload);
 		this.getSoundResources().put(SoundResources.SOUND_DROPPED_ITEM, droppedItem);
 		this.getSoundResources().put(SoundResources.SOUND_PRESSURE_PLATE, pressurePlate);
+		this.getSoundResources().put(SoundResources.SOUND_LETTER_PLATE, letterPlate);
 		this.getSoundResources().put(SoundResources.SOUND_DRAIN_POISON, drainPoison);
 		this.getSoundResources().put(SoundResources.SOUND_ARTILLERY_SHOTS, artilleryShots);
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_FOUND, secretFound);
@@ -660,19 +664,21 @@ public class ApplicationContext {
 		GameLogBuilder gameLogBuilder = new GameLogBuilderImpl();
 		try {
 			this.gameLogs = gameLogBuilder.buildGameLogs("data/writing/gamelogs");
-			this.gameTexts.put("intro1", gameLogBuilder.buildGameLog("data/writing/intro/intro1"));
-			this.gameTexts.put("intro2", gameLogBuilder.buildGameLog("data/writing/intro/intro2"));
-			this.gameTexts.put("intro3", gameLogBuilder.buildGameLog("data/writing/intro/intro3"));
-			this.gameTexts.put("intro4", gameLogBuilder.buildGameLog("data/writing/intro/intro4"));
-			this.gameTexts.put("intro5", gameLogBuilder.buildGameLog("data/writing/intro/intro5"));
-			this.gameTexts.put("outro1", gameLogBuilder.buildGameLog("data/writing/outro/outro1"));
-			this.gameTexts.put("outro2", gameLogBuilder.buildGameLog("data/writing/outro/outro2"));
-			this.gameTexts.put("outro3", gameLogBuilder.buildGameLog("data/writing/outro/outro3"));
-			this.gameTexts.put("outro4", gameLogBuilder.buildGameLog("data/writing/outro/outro4"));
+			this.gameTexts.put("intro", gameLogBuilder.buildGameLog("data/writing/intro/intro"));
+			this.gameTexts.put("outro_a", gameLogBuilder.buildGameLog("data/writing/outro/outro_a"));
+			this.gameTexts.put("outro_b", gameLogBuilder.buildGameLog("data/writing/outro/outro_b"));
 			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("data/writing/credits/credits"));
 			this.gameTexts.put("references", gameLogBuilder.buildGameLog("data/writing/references/references"));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not load game logs.", e);
+		}
+		
+		DyingHintsBuilder dyingHintsBuilder = new DyingHintsBuilderImpl();
+		
+		try {
+			this.dyingHints.addAll(dyingHintsBuilder.build("data/writing/dyinghints/dyinghints"));
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load dying hints.", e);
 		}
 		
 	}
@@ -701,6 +707,10 @@ public class ApplicationContext {
 		return gameLogs;
 	}
 
+	public List<String> getDyingHints() {
+		return dyingHints;
+	}
+	
 	public Map<String, GameLog> getGameTexts() {
 		return gameTexts;
 	}

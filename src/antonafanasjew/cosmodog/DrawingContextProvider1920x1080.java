@@ -13,7 +13,7 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 	public static final float GAME_LOG_FRAME_WIDTH = 1200;
 	public static final float GAME_LOG_FRAME_HEIGHT = 700;
 	
-	public static final float GAME_LOG_TEXT_WIDTH = 1120;
+	public static final float GAME_LOG_TEXT_WIDTH = 1040;
 	public static final float GAME_LOG_TEXT_HEIGHT = 500;
 	
 	public static final float CUTSCENE_FRAME_WIDTH = 1600;
@@ -97,19 +97,17 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 		inGameMenuFooterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 625, 1213, 61);
 		inGameMenuFooterDrawingContext = DrawingContextUtils.difResFromRef(inGameMenuFooterDrawingContext, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
 		
-		/*
-		cutsceneDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, CUTSCENE_FRAME_WIDTH, CUTSCENE_FRAME_HEIGHT);
-		cutsceneTextDrawingContext = new SimpleDrawingContext(cutsceneDrawingContext, (CUTSCENE_FRAME_WIDTH - CUTSCENE_TEXT_WIDTH) / 2, 0, CUTSCENE_TEXT_WIDTH, CUTSCENE_TEXT_HEIGHT);
-		cutsceneControlsDrawingContext = new SimpleDrawingContext(cutsceneDrawingContext, (CUTSCENE_FRAME_WIDTH - CUTSCENE_TEXT_WIDTH) / 2, CUTSCENE_TEXT_HEIGHT, CUTSCENE_TEXT_WIDTH, CUTSCENE_FRAME_HEIGHT - CUTSCENE_TEXT_HEIGHT);
-		*/
-		
 		cutsceneDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
-		cutsceneTextDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 7, 0, 0, 1, 6);
-		cutsceneControlsDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 7, 0, 6, 1, 1);
+		cutsceneTextDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 1, 0, 0);
+		cutsceneControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9);
 		
 		gameIntroTextFrameDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
-		gameIntroTextDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 7, 0, 0, 1, 6);
-		gameIntroControlsDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 7, 0, 6, 1, 1);
+		gameIntroTextDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 1, 0, 0);
+		gameIntroControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
+		
+		gameOutroTextFrameDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
+		gameOutroTextDrawingContext = new TileDrawingContext(gameOutroTextFrameDrawingContext, 1, 1, 0, 0);
+		gameOutroControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
 		
 		gameLogDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, GAME_LOG_FRAME_WIDTH, GAME_LOG_FRAME_HEIGHT);
 		gameLogHeaderDrawingContext = new SimpleDrawingContext(gameLogDrawingContext, (GAME_LOG_FRAME_WIDTH - GAME_LOG_TEXT_WIDTH) / 2, 20, GAME_LOG_TEXT_WIDTH, 34);
@@ -138,6 +136,11 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 		logContentDrawingContext = new CenteredDrawingContext(logContentDrawingContext, 10);
 		
 		secretFoundMessageDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
+		
+		logPlayerHeaderDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 0);
+		logPlayerTitleDrawingContext = new TileDrawingContext(logPlayerHeaderDrawingContext, 1, 2, 0, 0);
+		logPlayerControlsHintDrawingContext = new TileDrawingContext(logPlayerHeaderDrawingContext, 1, 2, 0, 1);
+		logPlayerTextDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 6);
 		
 	}
 	

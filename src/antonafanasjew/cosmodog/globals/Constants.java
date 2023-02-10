@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.globals;
 
+import java.util.function.Supplier;
+
 public class Constants {
 
 	public static String[] PREFERRED_RESOLUTIONS = new String[] {
@@ -22,17 +24,20 @@ public class Constants {
 		"1024x576",
 	};
 	
-	public static final float LOG_PLAYER_TEXT_WIDTH = 400;
-	public static final float LOG_PLAYER_TEXT_HEIGHT = 200;
-	
-	
 	public static final int FLICKING_RATE_IN_MILLIS = 500;
 	public static final float FLICKING_THRESHOLD = 0.2f;
 	
 	/**
-	 * Relative path to the tiled map document.
+	 * Provides the relative path to the tiled map document.
+	 * The map file be overridden by a system property cosmodog.mapFile
 	 */
-	public static final String PATH_TO_TILED_MAP = "data/FinalMap.tmx";
+	public static Supplier<String> pathToTiledMapSupplier = () -> {
+		String mapFile = System.getProperty("cosmodog.mapFile");
+		if (mapFile != null) {
+			return "data/" + mapFile;
+		}
+		return "data/FinalMap.tmx";
+	};
 	
 	/**
 	 * Milliseconds to wait between turns.
@@ -65,7 +70,7 @@ public class Constants {
 	/**
 	 * The initial zoom factor on the camera.
 	 */
-	public static final float DEFAULT_CAM_ZOOM_FACTOR = 4.0f;
+	public static final float DEFAULT_CAM_ZOOM_FACTOR = 5.0f;
 	
 	/**
 	 * The visible duration of the player attack fight action phase transition.

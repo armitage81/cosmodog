@@ -25,4 +25,9 @@ public class CollectibleLog extends Collectible {
 		return logId;
 	}
 	
+	@Override
+	public String toString() {
+		return "Log: " + logSeries + "/" + logId;
+	}
+	
 }

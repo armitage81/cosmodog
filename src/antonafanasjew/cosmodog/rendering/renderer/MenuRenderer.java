@@ -8,17 +8,20 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.Log;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
  *
@@ -117,7 +120,9 @@ public class MenuRenderer implements Renderer {
 				}
 				
 				if (renderSelected) {
-					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, itemDc, labelText, FontType.MainMenu, 0);
+					FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.MainMenu);
+					Book textBook = TextPageConstraints.fromDc(itemDc).textToBook(labelText, fontType);
+					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 				}
 			}
 			

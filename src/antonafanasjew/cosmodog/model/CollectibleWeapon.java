@@ -19,5 +19,9 @@ public class CollectibleWeapon extends Collectible {
 		return weapon;
 	}
 
+	@Override
+	public String toString() {
+		return "Weapon: " + weapon.getWeaponType().toString();
+	}
 
 }

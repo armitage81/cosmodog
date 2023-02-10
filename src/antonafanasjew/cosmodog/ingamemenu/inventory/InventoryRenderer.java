@@ -9,7 +9,7 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -23,6 +23,9 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.Mappings;
@@ -97,10 +100,11 @@ public class InventoryRenderer implements Renderer {
 		DrawingContext descriptionDrawingContext = descriptionDrawingContext(inGameMenuContentDrawingContext);
 
 		descriptionDrawingContext = new CenteredDrawingContext(descriptionDrawingContext, 20);
-		
-		
+
 		String text = selectedItem == null ? "" : selectedItem.description();
-		TextBookRendererUtils.renderTextPage(gameContainer, graphics, descriptionDrawingContext, text, FontType.InventoryDescription, 0);
+		FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+		Book textBook = TextPageConstraints.fromDc(descriptionDrawingContext).textToBook(text, fontType);
+		TextBookRendererUtils.renderDynamicTextPage(gameContainer, graphics, textBook);
 		
 				
 	}

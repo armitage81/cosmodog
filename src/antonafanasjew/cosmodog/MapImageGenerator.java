@@ -1,10 +1,8 @@
 package antonafanasjew.cosmodog;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -22,7 +20,7 @@ public class MapImageGenerator {
 
 	public static void main(String[] args) throws SlickException, TiledMapIoException {
 		
-		TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.PATH_TO_TILED_MAP);
+		TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.pathToTiledMapSupplier.get());
 		CustomTiledMap tiledMap = tiledMapReader.readTiledMap();
 		CosmodogMap map = InitializationUtils.initializeCosmodogMap(tiledMap);
 		generateMapImage(map);
@@ -52,8 +50,6 @@ public class MapImageGenerator {
 	private static void render(CosmodogMap map, DrawingContext dc, Graphics g, int tilePosX, int tilePosY, int layerIndex) {
 		
 		
-		Animation animation = null;
-
 		int tileId = map.getTileId(tilePosX, tilePosY, layerIndex);
 
 		int imageIndex = tileId - 1;

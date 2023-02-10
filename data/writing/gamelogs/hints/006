@@ -1,0 +1,18 @@
+HINTS: COMBAT
+--------------------------------------------------------------------------
+Each enemy type can move for a specific number of tiles per turn. Most enemies will try to approach the player figure when it appears in their sight field. When an alerted enemy enters a tile adjacent to the player figure, it will attack. Artillery enemies have ranged weapons. They will attack from far as soon as the player figure enters their sight field. Turret enemies are stationary. They cannot move.
+
+
+You can attack enemies by approaching them. If you manage to approach an enemy without entering its sight field, then you can attack first. The enemy will become alerted in this case. If it survives your attack, it will face you and retaliate. Afterwards, you can decide whether you attack again or flee. If you are surrounded by multiple alerted enemy units, all of them will attack on every turn.
+
+
+You inflict double damage when backstabbing an enemy.
+
+
+Additionally to your unarmed attack, you will find five different weapons in the game world. Each of them deals different amount of damage to different enemy types. Experiment with them. More information for handling weapons can be found in the hint section WEAPONS.
+
+
+Some enemies hold items. They will drop them when destroyed.
+
+
+Often, it will not be possible to flee an enemy as most of them will pursue you and attack on every turn. Exceptions are turrets and artillery units. Sometimes it is reasonable to withdraw from their sight field. Some units cannot leave roads or enter water tiles. Also, all units are assigned invisible patrol areas that they cannot leave. Use this fact to your advantage when fleeing. You can also try to lose pursuers by avoiding their sight field and hiding in grass or behind corners.

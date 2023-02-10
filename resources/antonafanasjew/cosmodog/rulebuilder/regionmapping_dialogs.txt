@@ -1,5 +1,5 @@
 ruleName;regionName;narrativeSequenceId;onlyOnceFlag;gameProgressProperty
-ALISAENTERS;alisaenters;cutscenes/meetingalisa;true;alisaenters
-NOBODYTHERE;nobodythere;cutscenes/silence;true;nobodythere
-GHOSTTOWN;ghosttown;cutscenes/ghosttown;true;ghosttown
-ENTERINGALIENBASE;enteringalienbase;cutscenes/enteringthebase;true;enteringthebase
+ALISAENTERS;alisaenters;cutscenes/001.meetingalisa;true;alisaenters
+NOBODYTHERE;nobodythere;cutscenes/002.silence;true;nobodythere
+GHOSTTOWN;ghosttown;cutscenes/003.ghosttown;true;ghosttown
+ENTERINGALIENBASE;enteringalienbase;cutscenes/004.enteringthebase;true;enteringthebase

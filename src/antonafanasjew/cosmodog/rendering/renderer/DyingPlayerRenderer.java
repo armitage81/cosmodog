@@ -11,12 +11,18 @@ import antonafanasjew.cosmodog.actions.dying.DyingAction;
 import antonafanasjew.cosmodog.actions.dying.DyingAction.DyingTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class DyingPlayerRenderer extends AbstractRenderer {
 
@@ -25,6 +31,8 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+		
+		DrawingContext bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
 		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
@@ -87,6 +95,10 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth, (player.getPositionY() - tileNoY) * tileHeight);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
+		FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.LoadingOrGameOverOrTheEnd);
+		Book dyingHintBook = TextPageConstraints.fromDc(bottomContainerDrawingContext).textToBook(dyingAction.getDyingHint(), fontRefToFontTypeMap);
+		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, dyingHintBook);
+		
 		
 	}
 

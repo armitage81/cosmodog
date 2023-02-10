@@ -52,6 +52,7 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		if (playerLooksAtEnemy && enemyLooksAway && criticalHitsAllowed) {
 			text = text + " (x2)";
 		}
+		
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), text);
 		
 		getFightPhaseResult().getPlayer().lookAtActor(getFightPhaseResult().getEnemy());

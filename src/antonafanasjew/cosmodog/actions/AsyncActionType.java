@@ -68,6 +68,12 @@ public enum AsyncActionType {
 	FIGHT(true, true, true),
 	
 	/**
+	 * Fight from platform. This is a simple fight where all enemies targeted by the platform are killed without a chance to retaliate.
+	 */
+	FIGHT_FROM_PLATFORM(true, true, true),
+	
+	
+	/**
 	 * Action type: Blocking interface. Is used for all interface actions that block the normal control flow.
 	 * F.i. Modal windows.
 	 */

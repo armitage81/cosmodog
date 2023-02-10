@@ -67,14 +67,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 			for (int tx = tileNoX; tx < tileNoX + tilesW; tx++) {
 				for (int ty = tileNoY; ty < tileNoY + tilesH; ty++) {
 					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
-						long begin = System.currentTimeMillis();
 						if (rendererPredicate.tileShouldBeRendered(i, tx, ty)) {
-							long end = System.currentTimeMillis();
-							if (end - begin > 200) {
-								System.out.println(end - begin);
-								System.out.println(rendererPredicate.toString());
-								System.out.println(rendererPredicate.getClass());
-							}
 							render(map, (tx - tileNoX) * tileWidth, (ty - tileNoY) * tileHeight, tx, ty, i);
 						}
 					}

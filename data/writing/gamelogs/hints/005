@@ -1,0 +1,21 @@
+HINTS: STEALTH
+--------------------------------------------------------------------------
+The game world of Cosmodog is full of hostile drones and wildlife. If you feel strong enough, you can fight the enemies. However, sometimes stealth is a better option.
+
+
+Each enemy has a sight field. This field is represented by blinking squares around the enemy unit. The size of the field depends on the enemy type and other factors. An enemy will ignore the player as long as the player is outside of its sight field. When the player steps into the sight field of a hostile unit, the enemy will attempt to approach and attack the player. An alerted enemy has a blinking exclamation mark above it.
+
+
+If an alerted enemy could not reach the player for a number of turns and the player is not in its sight field anymore, then the enemy will give up the chase and switch to its usual patrol mode.
+
+
+The sight field of all enemies is reduced at night.
+
+
+The player can hide in high grass. By doing so, only adjacent enemies can sense the player. This is visualized by a significantly reduced sight field for all enemies while the player is hiding.
+
+
+Attacking an enemy from behind doubles the damage. The damage indicator will have an "x2" in it. If the enemy survives the stealth attack, it becomes alerted.
+
+
+Most of the enemies are assigned patrol zones. These areas are invisible to the player. An enemy unit can never leave its assigned patrol zone. Estimating and finding out the borders of patrol zones can be a valid tactic to avoid being caught.

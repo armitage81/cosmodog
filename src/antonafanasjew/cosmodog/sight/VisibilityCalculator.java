@@ -71,6 +71,13 @@ public class VisibilityCalculator {
 		float angle = sight.getAngle();
 		float directionAngle = getActorDirectionAngle() + sight.getAngleRelativeToDirection();
 		
+		//There was a bug for rover's sight fields. 
+		//When a rover faced east, its direction angle was 270 degree.
+		//The cone that pointed back hat a relative degree of 180. Adding 270 and 180 results in 450 which breaks the calculation. 
+		//It should be 90 instead. We just "wound up the clock" too far and need to get rid of full circles.
+		//That's why we only take the rest of 365 degrees as the final degree.
+		directionAngle = directionAngle % 365;
+		
 		//If the distance from the point of view to the given point is greater than the sight radius, then it will never be visible.
 		float distanceFromPointToCenter = distanceFromPointToCenter(x, y);
 		

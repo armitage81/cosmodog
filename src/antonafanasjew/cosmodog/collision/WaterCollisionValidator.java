@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.collision;
 
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;

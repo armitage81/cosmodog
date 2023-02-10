@@ -39,5 +39,10 @@ public class CollectibleAmmo extends Collectible {
 		
 		return interactive;
 	}
+	
+	@Override
+	public String toString() {
+		return "Ammo: " + this.getWeaponType().toString();
+	}
 
 }

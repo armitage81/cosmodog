@@ -16,7 +16,9 @@ public class CollectibleTool extends Collectible {
 		ski(5000),
 		pick(5000),
 		axe(5000),
-		machete(5000);
+		machete(5000),
+		archeologistsJournal(5000),
+		weaponFirmwareUpgrade(5000);
 		
 		private int scorePoints;
 
@@ -43,4 +45,9 @@ public class CollectibleTool extends Collectible {
 		return toolType;
 	}
 
+	@Override
+	public String toString() {
+		return "Tool: " + toolType.toString();
+	}
+	
 }

@@ -36,6 +36,10 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext gameIntroTextDrawingContext;
 	protected DrawingContext gameIntroControlsDrawingContext;
 	
+	protected DrawingContext gameOutroTextFrameDrawingContext;
+	protected DrawingContext gameOutroTextDrawingContext;
+	protected DrawingContext gameOutroControlsDrawingContext;
+	
 	protected DrawingContext cutsceneDrawingContext;
 	protected DrawingContext cutsceneTextDrawingContext;
 	protected DrawingContext cutsceneControlsDrawingContext;
@@ -66,6 +70,12 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext logContentDrawingContext;
 	
 	protected DrawingContext secretFoundMessageDrawingContext;
+	
+	
+	protected DrawingContext logPlayerHeaderDrawingContext;
+	protected DrawingContext logPlayerTitleDrawingContext;
+	protected DrawingContext logPlayerControlsHintDrawingContext;
+	protected DrawingContext logPlayerTextDrawingContext;
 	
 	
 	public DrawingContext gameContainerDrawingContext() {
@@ -234,6 +244,34 @@ public abstract class AbstractDrawingContextProvider {
 		return gameIntroControlsDrawingContext;
 	}
 	
+	public DrawingContext gameOutroTextFrameDrawingContext() {
+		return gameOutroTextFrameDrawingContext;
+	}
+	
+	public DrawingContext gameOutroTextDrawingContext() {
+		return gameOutroTextDrawingContext;
+	}
+	
+	public DrawingContext gameOutroControlsDrawingContext() {
+		return gameOutroControlsDrawingContext;
+	}
+	
+	public DrawingContext logPlayerHeaderDrawingContext() {
+		return logPlayerHeaderDrawingContext;
+	}
+
+	public DrawingContext logPlayerTitleDrawingContext() {
+		return logPlayerTitleDrawingContext;
+	}
+
+	public DrawingContext logPlayerControlsHintDrawingContext() {
+		return logPlayerControlsHintDrawingContext;
+	}
+
+	public DrawingContext logPlayerTextDrawingContext() {
+		return logPlayerTextDrawingContext;
+	}
+
 	public static AbstractDrawingContextProvider createDrawingContextProviderForResolution(int width, int height) {
 		if (width == 1920 && height == 1080) {
 			return new DrawingContextProvider1920x1080();

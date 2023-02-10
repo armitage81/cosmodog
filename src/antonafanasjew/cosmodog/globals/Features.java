@@ -68,6 +68,12 @@ public class Features {
 	
 	public static final String FEATURE_SIGHTRADIUS = "feature.sightradius";
 	
+	public static final String FEATURE_CUTSCENES = "feature.cutscenes";
+	
+	public static final String FEATURE_LOGO = "feature.logo";
+	
+	public static final String FEATURE_DEBUGGER = "feature.debugger";
+	
 	private static final Features instance = new Features();
 	
 	/**
@@ -81,13 +87,14 @@ public class Features {
 	private Map<String, Boolean> featureFlags = Maps.newHashMap();
 
 	private Features() {
+		
 		getFeatureFlags().put(FEATURE_HUNGER, true);
 		getFeatureFlags().put(FEATURE_THIRST, true);
 		getFeatureFlags().put(FEATURE_INFOBITS, true);
 		getFeatureFlags().put(FEATURE_SOULESSENCE, true);
 		getFeatureFlags().put(FEATURE_COLLISION, true);
 		getFeatureFlags().put(FEATURE_FUEL, true);
-		getFeatureFlags().put(FEATURE_STORY, false);
+		getFeatureFlags().put(FEATURE_STORY, true);
 		getFeatureFlags().put(FEATURE_TUTORIAL, true);
 		getFeatureFlags().put(FEATURE_TEMPERATURE, true);
 		getFeatureFlags().put(FEATURE_MUSIC, true);
@@ -95,6 +102,24 @@ public class Features {
 		getFeatureFlags().put(FEATURE_GODFISTS, false);
 		getFeatureFlags().put(FEATURE_INTERFACE, true);
 		getFeatureFlags().put(FEATURE_SIGHTRADIUS, true);
+		getFeatureFlags().put(FEATURE_CUTSCENES, true);
+		getFeatureFlags().put(FEATURE_LOGO, true);
+		getFeatureFlags().put(FEATURE_DEBUGGER, true);
+		
+		//Override features by system properties if any.
+		for (String key : getFeatureFlags().keySet()) {
+
+			String featureName = key.replaceAll("feature.", "");
+			String featureEnabledRepr = System.getProperty("cosmodog.features." + featureName);
+			
+			if (featureEnabledRepr != null) {
+				boolean featureEnabled = Boolean.valueOf(featureEnabledRepr);
+				getFeatureFlags().put(key, featureEnabled);
+			}
+			
+			
+		}
+		
 	}
 	
 	/**

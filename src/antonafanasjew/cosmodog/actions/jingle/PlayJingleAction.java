@@ -5,6 +5,7 @@ import org.newdawn.slick.Music;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.util.MusicUtils;
 
 public class PlayJingleAction extends FixedLengthAsyncAction {
@@ -21,16 +22,32 @@ public class PlayJingleAction extends FixedLengthAsyncAction {
 
 	@Override
 	public void onTrigger() {
-		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
-		originalMusicPosition = music.getPosition();
-		MusicUtils.playMusic(musicResourceId);
+		
+		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, new Runnable() {
+			
+			@Override
+			public void run() {
+				Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
+				originalMusicPosition = music.getPosition();
+				MusicUtils.playMusic(musicResourceId);
+			}
+		});
+		
 	}
 	
 	@Override
 	public void onEnd() {
-		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
-		music.setPosition(originalMusicPosition);
-		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
+		
+		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, new Runnable() {
+			
+			@Override
+			public void run() {
+				Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
+				music.setPosition(originalMusicPosition);
+				MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
+			}
+		});
+		
 	}
 
 }

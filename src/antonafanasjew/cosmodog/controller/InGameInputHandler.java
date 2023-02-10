@@ -1,8 +1,7 @@
 package antonafanasjew.cosmodog.controller;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -16,6 +15,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.FightAction;
+import antonafanasjew.cosmodog.actions.fight.FightFromPlatformAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.tooltip.WeaponTooltipAction;
@@ -37,12 +37,12 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
-import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
+import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
@@ -79,14 +79,45 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Check movement keys
 		Input input = gc.getInput();
 		
-		boolean inputLeft = input.isKeyDown(Input.KEY_LEFT); 
-		boolean inputRight = input.isKeyDown(Input.KEY_RIGHT);
-		boolean inputUp = input.isKeyDown(Input.KEY_UP);
-		boolean inputDown = input.isKeyDown(Input.KEY_DOWN);
+		float oneThirdOfScreenX = gc.getWidth() * 0.33333f;
+		float twoThirdOfScreenX = gc.getWidth() * 0.66666f;
+		
+		float oneThirdOfScreenY = gc.getHeight() * 0.33333f;
+		float twoThirdOfScreenY = gc.getHeight() * 0.66666f;
+		
+		boolean mouseButtonLeft = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
+
+		int mouseX = input.getMouseX();
+		int mouseY = input.getMouseY();
+		
+		boolean inputMouseLeft = mouseButtonLeft && mouseX < oneThirdOfScreenX && mouseY > oneThirdOfScreenY && mouseY < twoThirdOfScreenY;
+		boolean inputMouseRight = mouseButtonLeft && mouseX > twoThirdOfScreenX && mouseY > oneThirdOfScreenY && mouseY < twoThirdOfScreenY;
+		boolean inputMouseUp = mouseButtonLeft && mouseY < oneThirdOfScreenY && mouseX > oneThirdOfScreenX && mouseX < twoThirdOfScreenX;
+		boolean inputMouseDown = mouseButtonLeft && mouseY > twoThirdOfScreenY && mouseX > oneThirdOfScreenX && mouseX < twoThirdOfScreenX;
+		
+		
+		boolean inputControllerLeft = input.isControllerLeft(0);
+		boolean inputControllerRight = input.isControllerRight(0);
+		boolean inputControllerUp = input.isControllerUp(0);
+		boolean inputControllerDown = input.isControllerDown(0);
+		
+		boolean inputKeyboardLeft = input.isKeyDown(Input.KEY_LEFT); 
+		boolean inputKeyboardRight = input.isKeyDown(Input.KEY_RIGHT);
+		boolean inputKeyboardUp = input.isKeyDown(Input.KEY_UP);
+		boolean inputKeyboardDown = input.isKeyDown(Input.KEY_DOWN);
+
+		boolean inputLeft = inputMouseLeft || inputControllerLeft || inputKeyboardLeft;
+		boolean inputRight = inputMouseRight || inputControllerRight || inputKeyboardRight;
+		boolean inputUp = inputMouseUp || inputControllerUp || inputKeyboardUp;
+		boolean inputDown = inputMouseDown || inputControllerDown || inputKeyboardDown;
+		
 		
 		boolean inputMovement = inputLeft || inputRight || inputUp || inputDown;
 		
-		boolean inputSkipTurn = input.isKeyPressed(Input.KEY_ENTER);
+		boolean inputKeyboardSkipTurn = input.isKeyPressed(Input.KEY_ENTER);
+		boolean inputMouseSkipTurn = mouseButtonLeft && mouseY > oneThirdOfScreenY && mouseY < twoThirdOfScreenY && mouseX > oneThirdOfScreenX && mouseX < twoThirdOfScreenX;
+		
+		boolean inputSkipTurn = inputKeyboardSkipTurn || inputMouseSkipTurn;
 		
 		//Handle skip turn
 		if (inputSkipTurn) {
@@ -133,18 +164,29 @@ public class InGameInputHandler extends AbstractInputHandler {
     		} else if (player.getDirection() == DirectionType.DOWN) {
     			newY = player.getPositionY() + 1;
     		} 
-    		
-    		
-    		//First handle the case when an enemy is standing on the target tile. In this case initialize a fight instead of a movement.
+    		  		
+    		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.
     		Set<Enemy> enemies = map.getEnemies();
-    		Enemy targetEnemy = null;
+    		Enemy meleeTargetEnemy = null;
+    		Set<Enemy> platformTargetEnemies = new HashSet<>();
     		for (Enemy enemy : enemies) {
-    			if (enemy.getPositionX() == newX && enemy.getPositionY() == newY) {
-    				targetEnemy = enemy;
+    			
+    			if (platformItem != null && !platformItem.isExiting()) {
+    				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPositionX(), enemy.getPositionY(), newX, newY)) {
+    					platformTargetEnemies.add(enemy);
+        			}
+    			} else {
+	    			if (enemy.getPositionX() == newX && enemy.getPositionY() == newY) {
+	    				meleeTargetEnemy = enemy;
+	    			}
     			}
     		}
     		
-    		if (targetEnemy != null) {
+    		if (platformTargetEnemies.isEmpty() == false) {
+    			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+    			ActionRegistry ar = game.getActionRegistry();
+    			ar.registerAction(AsyncActionType.FIGHT_FROM_PLATFORM, new FightFromPlatformAction(platformTargetEnemies));
+    		} else if (meleeTargetEnemy != null) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
     			
@@ -157,7 +199,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     				}
     			};
     			
-    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(targetEnemy, new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
+    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
     		
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newX, newY);
@@ -320,16 +362,55 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		if (binoculars != null) {
 		
-			if (input.isKeyPressed(Input.KEY_Z)) {
-				cam.zoomIn();
+			if (input.isKeyDown(Input.KEY_Z)) {
+				if (cam.getZoomFactor() != Cam.ZOOM_FACTOR_FAR) {
+					cam.zoomOut();
+					cam.focusOnPiece(map, 0, 0, player);
+				}
+			} else {
+				if (cam.getZoomFactor() != Cam.ZOOM_FACTOR_CLOSE) {
+					cam.zoomIn();
+					cam.focusOnPiece(map, 0, 0, player);
+				}
+			}
+			
+		}
+		
+		//Handle debugging
+		DebuggerInventoryItem debugger = (DebuggerInventoryItem)player.getInventory().get(InventoryItemType.DEBUGGER);
+		
+		if (debugger != null) {
+			
+			if (input.isKeyPressed(Input.KEY_1)) {
+				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextMonolithPosition();
+				player.setPositionX(playerPosition.x);
+				player.setPositionY(playerPosition.y);
 				cam.focusOnPiece(map, 0, 0, player);
 			}
 			
-			if (input.isKeyPressed(Input.KEY_Y)) {
+			if (input.isKeyPressed(Input.KEY_2)) {
+				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextCutscenePosition();
+				player.setPositionX(playerPosition.x);
+				player.setPositionY(playerPosition.y);
 				cam.focusOnPiece(map, 0, 0, player);
-				cam.zoomOut();
 			}
-		
+			
+			if (input.isKeyPressed(Input.KEY_3)) {
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+				player.getGameProgress().addInfobank();
+							
+			}
+			
+			if (input.isKeyPressed(Input.KEY_9)) {
+				debugger.setPositionDisplayed(!debugger.isPositionDisplayed());
+			}
+			
 		}
 		
 		//Handle in-game menu

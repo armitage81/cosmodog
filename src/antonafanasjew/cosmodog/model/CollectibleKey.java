@@ -22,7 +22,10 @@ public class CollectibleKey extends Collectible {
 		this.key = key;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Key: " + key.getDoorType();
+	}
 
 
 

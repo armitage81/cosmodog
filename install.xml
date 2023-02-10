@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>C:\Workspaces\CosmodogGitWorkspace\cosmodog\target\cosmodog.jar</jar>
-  <outfile>C:\Workspaces\CosmodogGitWorkspace\cosmodog\target\cosmodog.exe</outfile>
+  <jar>C:\Workspaces\cosmodog\target\cosmodog.jar</jar>
+  <outfile>C:\Workspaces\cosmodog\target\cosmodog.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

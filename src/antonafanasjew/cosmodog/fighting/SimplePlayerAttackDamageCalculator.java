@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
 /**
@@ -47,6 +48,13 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		
 		if (playerLooksAtEnemy && enemyLooksAway && criticalHitsAllowed) {
 			damage *= 2;
+		}
+		
+		boolean fists = selectedWeaponType == WeaponType.FISTS;
+		boolean weaponFirmwareUpgrade = player.getInventory().get(InventoryItemType.WEAPON_FIRMWARE_UPGRADE) != null;
+		
+		if (!fists && weaponFirmwareUpgrade) {
+			damage *= 3;
 		}
 		
 		return damage;

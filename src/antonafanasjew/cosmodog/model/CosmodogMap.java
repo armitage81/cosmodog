@@ -1,27 +1,25 @@
 package antonafanasjew.cosmodog.model;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import antonafanasjew.cosmodog.CustomTiledMap;
-import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.actors.Platform;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.mapmodifications.MapModification;
-import antonafanasjew.cosmodog.model.mapmodifications.MapModificationImpl;
-import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
-import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
-import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+
+import antonafanasjew.cosmodog.CustomTiledMap;
+import antonafanasjew.cosmodog.model.actors.Enemy;
+import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.mapmodifications.MapModification;
+import antonafanasjew.cosmodog.model.mapmodifications.MapModificationImpl;
+import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
+import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 /**
  * Represents the game map as model. Does not contains information about the
@@ -102,6 +100,26 @@ public class CosmodogMap extends CosmodogModel {
 			@Override
 			public boolean apply(Piece piece) {
 				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
+			}
+		});
+		return supplies;
+	}
+	
+	public Map<Position, Piece> getMedkits() {
+		Map<Position, Piece> supplies = Maps.filterValues(mapPieces, new Predicate<Piece>() {
+			@Override
+			public boolean apply(Piece piece) {
+				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.medipack);
+			}
+		});
+		return supplies;
+	}
+	
+	public Map<Position, Piece> getInsights() {
+		Map<Position, Piece> supplies = Maps.filterValues(mapPieces, new Predicate<Piece>() {
+			@Override
+			public boolean apply(Piece piece) {
+				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.insight);
 			}
 		});
 		return supplies;

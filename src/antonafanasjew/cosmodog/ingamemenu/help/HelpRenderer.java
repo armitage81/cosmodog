@@ -6,10 +6,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class HelpRenderer implements Renderer {
@@ -26,19 +29,13 @@ public class HelpRenderer implements Renderer {
 	
 			"Skip turn",
 			
-			"Switch to the next or previous weapon",
-	
-			"Switch to unarmed mode",
+			"Switch weapon",
 	
 			"Exit a vehicle",
 	
 			"Zoom in",
 			
 			"Zoom out",
-			
-			"Quick save",
-	
-			"Quick load",
 	
 			"Menu",
 	
@@ -59,23 +56,17 @@ public class HelpRenderer implements Renderer {
 		
 		String[] keys = new String[] {
 				
-				"[UP],[DOWN],[LEFT],[RIGHT] (Use the arrow keys on the keyboard)",
+				"[UP],[DOWN],[LEFT],[RIGHT]",
 		
 				"[ENTER]",
 				
-				"[TAB] or [SHIFT] + [TAB] (Works only when at least one weapon was found)",
-		
-				"[TAB] or [SHIFT] + [TAB] multiple times to go through all available weapons until no weapon is selected.",
+				"[TAB] or [SHIFT] + [TAB]",
 		
 				"[SHIFT] + [UP] or [DOWN] or [LEFT] or [RIGHT]",
 		
-				"Z (if have binoculars)",
+				"Z (if owning binoculars)",
 				
-				"Y (if have binoculars)",
-				
-				"[CTRL] + [S]",
-		
-				"[CTRL] + [L]",
+				"Y (if owning binoculars)",
 		
 				"[ESC]",
 		
@@ -94,12 +85,21 @@ public class HelpRenderer implements Renderer {
 				"[Q]"
 			};
 		
-		for (int i = 0; i < 20; i++) {
+		FontRefToFontTypeMap fontTypeSubheaders = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
+		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+		
+		for (int i = 0; i < 14; i++) {
 			if (i < actions.length) {
-				TileDrawingContext tdcAction = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 20, 0, i, 3, 1);
-				TileDrawingContext tdcKey = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 20, 3, i, 7, 1);
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, tdcAction, actions[i], FontType.HintsActions, 0);
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, tdcKey, keys[i], FontType.HintsKeys, 0);
+				
+				Book textBook;
+				
+				TileDrawingContext tdcAction = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 14, 0, i, 3, 1);
+				TileDrawingContext tdcKey = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 14, 3, i, 7, 1);
+				
+				textBook = TextPageConstraints.fromDc(tdcAction).textToBook(actions[i], fontTypeSubheaders);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				textBook = TextPageConstraints.fromDc(tdcKey).textToBook(keys[i], fontTypeInformational);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 			}
 		}
 		

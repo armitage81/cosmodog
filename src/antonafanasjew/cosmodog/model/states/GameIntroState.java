@@ -1,9 +1,5 @@
 package antonafanasjew.cosmodog.model.states;
 
-import java.util.List;
-
-import javax.crypto.spec.OAEPParameterSpec;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -20,8 +16,12 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.Features;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.MusicUtils;
@@ -29,21 +29,19 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import antonafanasjew.particlepattern.movement.ShakingMovementFunction;
 import antonafanasjew.particlepattern.movement.SinusMovementFunction;
 
-import com.google.common.collect.Lists;
-
 public class GameIntroState  extends CosmodogAbstractState {
-	
-	private List<String> texts = Lists.newArrayList();
-	private int page;
 	
 	private SinusMovementFunction flying = new SinusMovementFunction(0, 10, 0, 500);
 	private ShakingMovementFunction exploding = new ShakingMovementFunction(30, 10, 10, 3, 2);
 	private ShakingMovementFunction shaking = new ShakingMovementFunction(50, 6, 3, 6, 4);
 	
 	private long phaseStart;
-	private long pageStart;
+	
+	private boolean cutsceneSkipped;
 	
 	private IntroPhase phase;
+	
+	private Book book;
 
 	private enum IntroPhase {
 		CALM_FLIGHT,
@@ -55,78 +53,63 @@ public class GameIntroState  extends CosmodogAbstractState {
 	@Override
 	public void everyEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
+		long referenceTime = System.currentTimeMillis();
+		
 		Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 		Image backgroundImage = phaetonBackground.getCurrentFrame();
 		backgroundImage.setRotation(0f);
 		
-		phaseStart = System.currentTimeMillis();
+		phaseStart = referenceTime;
 		phase = IntroPhase.CALM_FLIGHT;
+		
+		//Skip the intro cutscene if this feature is disabled.
+		cutsceneSkipped = false;
+		if (Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) == false) {
+			cutsceneSkipped = true;
+		}
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_INTRO_MISSILE_ALERT).play();
 		
-		String intro1 = ApplicationContext.instance().getGameTexts().get("intro1").getLogText();
-		String intro2 = ApplicationContext.instance().getGameTexts().get("intro2").getLogText();
-		String intro3 = ApplicationContext.instance().getGameTexts().get("intro3").getLogText();
-		String intro4 = ApplicationContext.instance().getGameTexts().get("intro4").getLogText();
-		String intro5 = ApplicationContext.instance().getGameTexts().get("intro5").getLogText();
+		String text = ApplicationContext.instance().getGameTexts().get("intro").getLogText();
+		DrawingContext textDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroTextDrawingContext();
+		TextPageConstraints tpc = TextPageConstraints.fromDc(textDc);
+		book = tpc.textToBook(text, FontRefToFontTypeMap.forNarration(), 20);
 		
-		texts.clear();
-		texts.add(intro1);
-		texts.add(intro2);
-		texts.add(intro3);
-		texts.add(intro4);
-		texts.add(intro5);
-		
-		page = 0;
 	}
 	
 	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-				
-//		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-//		
-//		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
-//		
-//		DrawingContext introTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
-//		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
-//		
-//		TextBookRendererUtils.renderTextPage(gc, g, introTextDc, texts.get(page), FontType.IntroText, 0);
-//		
-//		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
-//		if (renderBlinkingHint) {
-//			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
-//		}
-		
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {		
 		renderPhase(gc, sbg, g);
-		
 	}
 	
 	private void updatePhase(GameContainer gc, StateBasedGame sbg) {
 		
+		long referenceTime = System.currentTimeMillis();
+
 		Input input = gc.getInput();
 		
-		long timestamp = System.currentTimeMillis();
 		
 		IntroPhase phaseBeforeSwitch = phase;
 		
 		if (phase == IntroPhase.CALM_FLIGHT) {
 
-			if (timestamp - phaseStart >= 10000) {
+			if (referenceTime - phaseStart >= 10000 || cutsceneSkipped) {
 				phase = IntroPhase.EXPLOSION;
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_GUARDIAN_DESTROYED).play();
 			}
 			
 		} else if (phase == IntroPhase.EXPLOSION) {
 			
-			if (timestamp - phaseStart >= 3000) {
+			if (referenceTime - phaseStart >= 3000  || cutsceneSkipped) {
 				phase = IntroPhase.FALLING;
 			}
 			
 		} else if (phase == IntroPhase.FALLING) {
 			
-			if (timestamp - phaseStart >= 6000) {
+			if (referenceTime - phaseStart >= 6000  || cutsceneSkipped) {
 				phase = IntroPhase.TEXT;
-				pageStart = System.currentTimeMillis();
+
+				book.resetTimeAfterPageOpen();
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 				MusicUtils.loopMusic(MusicResources.MUSIC_CUTSCENE);
 			}
@@ -139,22 +122,28 @@ public class GameIntroState  extends CosmodogAbstractState {
 		} else if (phase == IntroPhase.TEXT) {
 		
 			if (input.isKeyPressed(Input.KEY_ENTER)) {
-				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
-				if (page < texts.size() - 1) {
-					page++;
-					pageStart = System.currentTimeMillis();
-					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
-					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
+				
+				if (book.isSkipPageBuildUpRequest() || book.dynamicPageComplete(referenceTime)) {
+				
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
+					if (!book.onLastPage()) {
+						book.nextPage();
+						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
+						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
+					} else {
+						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
+						sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
+					}
+				
 				} else {
-					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
-					sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
+					book.setSkipPageBuildUpRequest(true);
 				}
 			}
 			
 		}
 		
 		if (phaseBeforeSwitch != phase) {
-			phaseStart = timestamp;
+			phaseStart = referenceTime;
 		}
 		
 		//After processing a loop, clear the record of pressed buttons.
@@ -165,11 +154,10 @@ public class GameIntroState  extends CosmodogAbstractState {
 	private void renderPhase(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
-		DrawingContext gameIntroTextDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroTextDrawingContext();
-		DrawingContext gameIntroControlsDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroControlsDrawingContext();
+		DrawingContext controlsDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroControlsDrawingContext();
 		
-		long timestamp = System.currentTimeMillis();
-		long phaseDuration = timestamp - phaseStart;
+		long referenceTime = System.currentTimeMillis();
+		long phaseDuration = referenceTime - phaseStart;
 		
 		if (phase == IntroPhase.CALM_FLIGHT) {
 			
@@ -244,7 +232,7 @@ public class GameIntroState  extends CosmodogAbstractState {
 			
 			shipFrame.draw(dc.x() - 20 + shipOffsetX, dc.y() - 20 + shipOffsetY, dc.w() + 40, dc.h() + 40);
 			
-			int warnLampRest = (int)((timestamp / 200) % 2);
+			int warnLampRest = (int)((referenceTime / 200) % 2);
 			
 			if (warnLampRest == 0) {
 				g.setColor(new Color(1f, 0f, 0f, 0.2f));
@@ -281,12 +269,14 @@ public class GameIntroState  extends CosmodogAbstractState {
 			g.setColor(new Color(0f, 0f, 0f, 0.9f));
 			g.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
 			
-			long millisSinsePageOpened = System.currentTimeMillis() - pageStart;
-			TextBookRendererUtils.renderDynamicTextPage(gc, g, gameIntroTextDc, texts.get(page), FontType.IntroText, 0, millisSinsePageOpened);
-						
-			boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
-			if (renderBlinkingHint) {
-				TextBookRendererUtils.renderCenteredLabel(gc, g, gameIntroControlsDc, "Press [ENTER]", FontType.PopUpInterface, 0);
+			TextBookRendererUtils.renderDynamicTextPage(gc, g, book);
+			
+			boolean renderHint = book.dynamicPageComplete(referenceTime);
+			boolean renderBlinkingHint = (referenceTime / 250 % 2) == 1;
+			if (renderHint && renderBlinkingHint) {
+				FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
+				Book controlHint = TextPageConstraints.fromDc(controlsDc).textToBook("Press [ENTER]", fontRefToFontTypeMap);
+				TextBookRendererUtils.renderCenteredLabel(gc, g, controlHint);
 			}
 			
 		}
@@ -296,15 +286,6 @@ public class GameIntroState  extends CosmodogAbstractState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		
 		updatePhase(gc, sbg);
-		
-//		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-//			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_MENU_SELECT).play();
-//			if (page < texts.size() - 1) {
-//				page++;
-//			} else {
-//				sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
-//			}
-//		}
 		
 	}
 

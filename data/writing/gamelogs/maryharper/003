@@ -1,12 +1,14 @@
 M. Harper: Note on a toy dog in a space suit
 ---------------------------------------------------------------------------
-Mary Harper - 002: Note to Karl after the date
+You see the note clearly. It floats gently in front of you, surrounded by darkness. 
+You do not read it to remember what was written on it seven years ago. 
+You know every single word of it by heart.
 
 
-You see the note clearly. It floats gently in front of you, surrounded by darkness. You do not read it to remember what was written on it seven years ago. You know every single word of it by heart.
+...
 
 
-"Hey Karl,
+<font:speech> "Hey Karl,
 
 
 thanks for the great evening.
@@ -26,22 +28,30 @@ Maybe, he can help you out as co-pilot during our first expedition.
 
 See you
 
-Mary"
+
+Mary" <font:narration>
+
+
+...
+
 
 
 You awake and become aware of the time that passed since you had got this note. You were the luckiest man alive back then. What a contrast to now.
 
 
-You look at the landscape around you and ask yourself if it was worth it to come here. The device on your wrist goes on.
+You look at the landscape around you and ask yourself if it was worth it to come here. 
 
 
-"Still alive?" Alisa asks cheerfully. "You know, I have this cartoon series in my data base. I really need to watch it."
+The device on your wrist goes on.
+
+
+<font:speech> "Still alive?" <font:narration> Alisa asks cheerfully. <font:speech> "You know, I have this cartoon series in my data base. I really need to watch it." <font:narration>
 
 
 The device clicks and is silent for five seconds. Then it clicks again.
 
 
-"Not bad," Alisa exclaims. "I especially liked the ending of the seventh season."
+<font:speech> "Not bad," <font:narration> Alisa exclaims. <font:speech> "I especially liked the ending of the seventh season." <font:narration>
 
 
 You sigh and walk away from the now silent monolith.

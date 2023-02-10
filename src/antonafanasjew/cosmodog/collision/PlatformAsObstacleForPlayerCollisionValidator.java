@@ -2,6 +2,9 @@ package antonafanasjew.cosmodog.collision;
 
 import java.util.Collection;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -9,14 +12,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 /**
  * This validator is checking only the not-occupied platform as obstacle for the player (He may enter some areas of it) 

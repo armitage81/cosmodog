@@ -1,14 +1,13 @@
 package antonafanasjew.cosmodog.ingamemenu.progress;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
@@ -20,6 +19,9 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.QuadraticDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
@@ -64,7 +66,12 @@ public class ProgressRenderer implements Renderer {
 		
 		graphics.setLineWidth(1);
 		
+		
+		FontRefToFontTypeMap fontTypeSubheader = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
+		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+		
 		for (int i = 0; i < ROWS; i++) {
+			
 			DrawingContext rowDc = new TileDrawingContext(inGameMenuContentDrawingContext, 1, ROWS, 0, i);
 			rowDc = new CenteredDrawingContext(rowDc, ROW_PADDING);
 			
@@ -73,53 +80,54 @@ public class ProgressRenderer implements Renderer {
 			
 			if (i == 0) {
 				
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Score", FontType.GameProgressLabel, 0);
-				
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, contentDc, String.valueOf(player.getGameProgress().getGameScore()), FontType.GameProgressLabelInBars, 0);
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Score", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				textBook = TextPageConstraints.fromDc(contentDc).textToBook(String.valueOf(player.getGameProgress().getGameScore()), fontTypeInformational);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 			}
 			
 			if (i == 1) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Infobits", FontType.GameProgressLabel, 0);
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Infobits", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 				float barWidth = contentDc.w() / maxInfobits * noInfobits;
-				
-				graphics.setColor(Color.lightGray);
-				graphics.fillRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
-				
-				graphics.setColor(Color.green);
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
-				
-				graphics.setColor(new Color(0x00, 0x4b, 0xaf));
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
+				int percentage = (int)((float)noInfobits / (float)maxInfobits * 100f);
 				
-				int percentage = Math.round((float)noInfobits / ((float)maxInfobits / 100f));
+				textBook = TextPageConstraints.fromDc(contentDc).textToBook(noInfobits + "/" + maxInfobits + " (" + percentage + "%)", fontTypeInformational);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
-				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, contentDc, noInfobits + "/" + maxInfobits + " (" + percentage + "%)", FontType.GameProgressLabelInBars, 0);
 				
 			}
 			
 			if (i == 2) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Secrets", FontType.GameProgressLabel, 0);
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Secrets", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 				float barWidth = contentDc.w() / maxSecrets * noSecrets;
 				
-				graphics.setColor(Color.lightGray);
-				graphics.fillRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
-				
-				graphics.setColor(Color.green);
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
 				
-				graphics.setColor(new Color(0x00, 0x4b, 0xaf));
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				
-				int percentage = Math.round((float)noSecrets / ((float)maxSecrets / 100f));
+				int percentage = (int)((float)noSecrets / (float)maxSecrets * 100f);
 				
-				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, contentDc, noSecrets + "/" + maxSecrets + " (" + percentage + "%)", FontType.GameProgressLabelInBars, 0);
+				textBook = TextPageConstraints.fromDc(contentDc).textToBook(noSecrets + "/" + maxSecrets + " (" + percentage + "%)", fontTypeInformational);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 			}
 			
 			if (i == 3) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Soul Essenses", FontType.GameProgressLabel, 0);
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Soul Essences", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 				for (int j = 0; j < maxSoulEssenses; j++) {
 					DrawingContext dc = new TileDrawingContext(contentDc, maxSoulEssenses, 1, j, 0);
@@ -136,7 +144,10 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 4) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Armor", FontType.GameProgressLabel, 0);
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Armor", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 				for (int j = 0; j < maxArmor; j++) {
 					DrawingContext dc = new TileDrawingContext(contentDc, maxArmor, 1, j, 0);
@@ -153,7 +164,11 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 5) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Map pieces", FontType.GameProgressLabel, 0);
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Map pieces", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				
 				int mapsInRow = maxMaps / 2;
 				for (int j = 0; j < maxMaps; j++) {
 					int k = j % mapsInRow;
@@ -173,7 +188,9 @@ public class ProgressRenderer implements Renderer {
 			
 			if (i == 6) {
 				
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Software", FontType.GameProgressLabel, 0);
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Software", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 				for (int j = 0; j < maxSoftware; j++) {
 					DrawingContext dc = new TileDrawingContext(contentDc, maxSoftware, 1, j, 0);
@@ -190,7 +207,11 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 7) {
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, labelDc, "Artifacts", FontType.GameProgressLabel, 0);
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Artifacts", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				
 				for (int j = 0; j < maxInsights; j++) {
 					DrawingContext boxDc = new TileDrawingContext(contentDc, maxInsights, 1, j, 0);
 					boxDc = new CenteredDrawingContext(boxDc, 1);

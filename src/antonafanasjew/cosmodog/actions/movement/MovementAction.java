@@ -8,6 +8,10 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
@@ -30,6 +34,7 @@ import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
@@ -46,10 +51,6 @@ import antonafanasjew.cosmodog.util.FootstepUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 /**
  * Asynchronous action for movement.
@@ -106,6 +107,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		onEndForPlayer();		
 		onEndForEnemies();
 		fight();
+		onEndForDynamicPieces();
 	}
 
 	/**
@@ -120,7 +122,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 	}
 	
 	private void initMovementActionResults() {
-		
 		//Preparing static data.
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
@@ -387,7 +388,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 			
 			//When we modify positions of pieces on platform, we need to modify the mapPieces cache as well.
 			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
-				Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
 				cosmodogGame.getMap().getMapPieces().remove(oldPosition);
 			}
 			
@@ -474,6 +474,31 @@ public class MovementAction extends FixedLengthAsyncAction {
 		};
 		
 		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
+		
+	}
+	
+	private void onEndForDynamicPieces() {
+		int startX = playerMovementActionResult.getPath().getX(0);
+		int startY = playerMovementActionResult.getPath().getY(0);
+		int targetX = playerMovementActionResult.getPath().getX(1);
+		int targetY = playerMovementActionResult.getPath().getY(1);
+		
+		boolean noMovement = startX == targetX && startY == targetY;
+		
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Multimap<Class<?>, DynamicPiece> pieces = map.getDynamicPieces();
+		for (Class<?> pieceType : pieces.keySet()) {
+			Collection<DynamicPiece> piecesOfOneType = pieces.get(pieceType);
+			for (DynamicPiece piece : piecesOfOneType) {
+				if (piece.getPositionX() == targetX && piece.getPositionY() == targetY && !noMovement) {
+					piece.interactWhenSteppingOn();
+				}
+				
+				if (piece.getPositionX() == startX && piece.getPositionY() == startY && !noMovement) {
+					piece.interactWhenLeaving();
+				}
+			}
+		}
 		
 	}
 }

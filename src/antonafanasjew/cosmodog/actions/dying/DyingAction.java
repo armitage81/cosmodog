@@ -2,11 +2,18 @@ package antonafanasjew.cosmodog.actions.dying;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import antonafanasjew.cosmodog.CosmodogStarter;
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.model.Cosmodog;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.util.MusicUtils;
+import antonafanasjew.cosmodog.util.PathUtils;
 
 public class DyingAction extends FixedLengthAsyncAction {
 
@@ -45,9 +52,11 @@ public class DyingAction extends FixedLengthAsyncAction {
 	}
 	
 	private DyingTransition transition;
+	private String dyingHint;
 	
-	public DyingAction(int duration) {
+	public DyingAction(int duration, String dyingHint) {
 		super(duration);
+		this.dyingHint = dyingHint;
 		this.transition = new DyingTransition();
 	}
 
@@ -62,12 +71,33 @@ public class DyingAction extends FixedLengthAsyncAction {
 	
 	@Override
 	public void onEnd() {
-		CosmodogStarter.instance.enterState(CosmodogStarter.GAME_OVER_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		transition = null;
+		
+		Cosmodog cosmodog = ApplicationContext.instance().getCosmodog();
+		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		Player player = cosmodogGame.getPlayer();
+		Cam cam = cosmodogGame.getCam();
+
+		player.setFood(player.getCurrentMaxFood());
+		player.setWater(player.getCurrentMaxWater());
+		player.resetLife();
+		player.setPositionX(28);
+		player.setPositionY(58);
+		player.decontaminate();
+		player.resetTurnsWormAlerted();
+		PlayerMovementCache.getInstance().afterMovement(player, player.getPositionX(), player.getPositionY(), player.getPositionX(), player.getPositionY(), ApplicationContext.instance());
+		cam.focusOnPiece(cosmodogMap, 0, 0, player);
+		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
+		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");
 	}
 
 	public DyingTransition getTransition() {
 		return transition;
+	}
+	
+	public String getDyingHint() {
+		return dyingHint;
 	}
 
 }

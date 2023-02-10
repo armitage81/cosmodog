@@ -50,6 +50,8 @@ public enum UnitType {
 	
 	GUARDIAN(false, false, true),
 	
+	SOLARTANK(false, true, false);
+	
 	;
 	
 	private boolean alive;

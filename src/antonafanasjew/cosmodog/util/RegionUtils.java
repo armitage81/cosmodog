@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.util;
 
 import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;

@@ -12,7 +12,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
-import antonafanasjew.cosmodog.rules.actions.async.AbstractNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.async.GameLogNarrationAction;
 
 public class LogInteraction extends AbstractPieceInteraction {

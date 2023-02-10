@@ -21,6 +21,7 @@ public class ChaussieBasedCollisionValidator extends AbstractCollisionValidator 
 	public ChaussieBasedCollisionValidator() {
 		chaussieCollisionValidators.put(ChaussieType.FEET, new ActorOnFootCollisionValidator());
 		chaussieCollisionValidators.put(ChaussieType.FLYING, new ActorOnWingsCollisionValidator());
+		chaussieCollisionValidators.put(ChaussieType.HOVERING, new ActorOnHoverboardCollisionValidator());
 		chaussieCollisionValidators.put(ChaussieType.SWIMMING, new ActorOnBoatCollisionValidator());
 		chaussieCollisionValidators.put(ChaussieType.TRACKS, new ActorOnTracksCollisionValidator());
 		chaussieCollisionValidators.put(ChaussieType.WHEELS, new ActorOnWheelsCollisionValidator());

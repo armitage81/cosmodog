@@ -11,7 +11,6 @@ public class ProgressInputHandler implements InputHandler {
 	@Override
 	public void handleInput(GameContainer gc, StateBasedGame sbg, int delta, ApplicationContext applicationContext) {
 		if (gc.getInput().isKeyPressed(Input.KEY_P)) {
-			System.out.println("Handling progress input...");
 		}
 	}
 }

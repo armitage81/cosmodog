@@ -44,6 +44,7 @@
 			<fileset dir="${res}" />
 			<manifest>
 				<attribute name="Main-Class" value="antonafanasjew.cosmodog.CosmodogStarter" />
+				<attribute name="Class-Path" value="lib/commons-beanutils-1.9.2.jar lib/gdx-1.8.0.jar lib/guava-18.0.jar lib/jdom2-2.0.6.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/slick2d/lib/slick.jar lib/slick2d/lib/lwjgl.jar" />
 			</manifest>
 		</jar>
 		<copy todir="${dist}/data">

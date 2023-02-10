@@ -190,6 +190,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		if (weaponType != WeaponType.FISTS) {
 			String animationPrefix = Mappings.WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.get(weaponType);
 			String weaponAnimationId = animationKey.replace("player", "player" + animationPrefix);
+			weaponAnimationId = weaponAnimationId.replace("OnSki", "Default");
 			playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
 		}
 		

@@ -7,11 +7,13 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
@@ -29,28 +31,16 @@ public class TimeRenderer implements Renderer {
 		DrawingContext topDc = new TileDrawingContext(timeDrawingContext, 1, 2, 0, 0);
 		DrawingContext bottomDc = new TileDrawingContext(timeDrawingContext, 1, 2, 0, 1);
 		
-		long timestamp = System.currentTimeMillis();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		
 		String timeText = cosmodogGame.getPlanetaryCalendar().toTimeString(Locale.getDefault());
 
-		String[] timeTextParts = timeText.split(":");
+		FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.HudValues);
 		
-		boolean flic = (timestamp / 500 % 2 == 0);
+		Book textBook;
 		
-		topDc = new CenteredDrawingContext(topDc, 5);
-		
-		DrawingContext minutesDc = new TileDrawingContext(topDc, 5, 1, 0, 0, 2, 1);
-		DrawingContext colonDc = new TileDrawingContext(topDc, 5, 1, 2, 0, 1, 1);
-		DrawingContext secondsDc = new TileDrawingContext(topDc, 5, 1, 3, 0, 2, 1);
-		
-		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, minutesDc, timeTextParts[0], FontType.HudTime, 0);
-		if (flic) {
-			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, colonDc, ":", FontType.HudTime, 0);
-		}
-		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, secondsDc, timeTextParts[1], FontType.HudTime, 0);
-		
-		
+		textBook = TextPageConstraints.fromDc(topDc).textToBook(timeText, fontType);
+		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
 		
 		String text = "";
 		if (cosmodogGame.getPlanetaryCalendar().isDay()) {
@@ -63,12 +53,9 @@ public class TimeRenderer implements Renderer {
 			text = "NIGHT";
 		}
 		
-		
-		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, bottomDc, text, FontType.HudDayTime, 0);
-		
-		
-		
-		
+		textBook = TextPageConstraints.fromDc(bottomDc).textToBook(text, fontType);
+		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
+
 	}
 
 }

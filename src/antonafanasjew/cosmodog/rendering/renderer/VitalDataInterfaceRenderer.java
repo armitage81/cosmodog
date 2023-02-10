@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -16,6 +16,9 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 /**
@@ -59,11 +62,11 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		SimpleDrawingContext thirstBarsDrawingContext = new SimpleDrawingContext(thirstDrawingContext, LABEL_WIDTH, 0, thirstDrawingContext.w() - LABEL_WIDTH, thirstDrawingContext.h());
 		
 		
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, thirstLabelDrawingContext, "WATER", FontType.Hud, 0);
+		Book textBook;
 		
-		
-		
-		
+		FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.HudLabels);
+		textBook = TextPageConstraints.fromDc(thirstLabelDrawingContext).textToBook("WATER", fontType);
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 		
 		int noOfWaterBars = player.getCurrentMaxWater() / Player.INITIAL_MAX_WATER;
 		int noOfFullWaterBars = player.getWater() / Player.INITIAL_MAX_WATER;
@@ -110,8 +113,8 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		SimpleDrawingContext hungerLabelDrawingContext = new SimpleDrawingContext(hungerDrawingContext, 0, 0, LABEL_WIDTH, hungerDrawingContext.h());
 		SimpleDrawingContext hungerBarsDrawingContext = new SimpleDrawingContext(hungerDrawingContext, LABEL_WIDTH, 0, hungerDrawingContext.w() - LABEL_WIDTH, hungerDrawingContext.h());
 		
-		
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, hungerLabelDrawingContext, "FOOD", FontType.Hud, 0);
+		textBook = TextPageConstraints.fromDc(hungerLabelDrawingContext).textToBook("FOOD", fontType);
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 		
 		int noOfFoodBars = player.getCurrentMaxFood() / Player.INITIAL_MAX_FOOD;
 		int noOfFullFoodBars = player.getFood() / Player.INITIAL_MAX_FOOD;

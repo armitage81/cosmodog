@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -17,6 +17,9 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class LifeInterfaceRenderer implements Renderer {
@@ -44,12 +47,17 @@ public class LifeInterfaceRenderer implements Renderer {
 		
 		long timestamp = System.currentTimeMillis();
 		boolean flick = (timestamp / Constants.FLICKING_RATE_IN_MILLIS) % 2 == 0;
+
+		FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.HudLabels);
 		
 		//RENDERING LIFE ROW
 		SimpleDrawingContext lifeLabelDrawingContext = new SimpleDrawingContext(humanLifeDrawingContext, 0, 0, LABEL_WIDTH, humanLifeDrawingContext.h());
 		SimpleDrawingContext lifeBarDrawingContext = new SimpleDrawingContext(humanLifeDrawingContext, LABEL_WIDTH, 0, humanLifeDrawingContext.w() - LABEL_WIDTH, humanLifeDrawingContext.h());
 
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, lifeLabelDrawingContext, "LIFE", FontType.Hud, 0);
+		Book textBook;
+		
+		textBook = TextPageConstraints.fromDc(lifeLabelDrawingContext).textToBook("LIFE", fontType);
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 		
 		g.translate(lifeBarDrawingContext.x(), lifeBarDrawingContext.y());
 		
@@ -120,8 +128,8 @@ public class LifeInterfaceRenderer implements Renderer {
 			SimpleDrawingContext robustnessLabelDrawingContext = new SimpleDrawingContext(robustnessDrawingContext, 0, 0, LABEL_WIDTH, robustnessDrawingContext.h());
 			SimpleDrawingContext robustnessBarDrawingContext = new SimpleDrawingContext(robustnessDrawingContext, LABEL_WIDTH, 0, robustnessDrawingContext.w() - LABEL_WIDTH, robustnessDrawingContext.h());
 			
-			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, robustnessLabelDrawingContext, "ARMOR", FontType.Hud, 0);
-			
+			textBook = TextPageConstraints.fromDc(robustnessLabelDrawingContext).textToBook("ARMOR", fontType);
+			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 			
 			g.translate(robustnessBarDrawingContext.x(), robustnessBarDrawingContext.y());
 			
@@ -171,10 +179,8 @@ public class LifeInterfaceRenderer implements Renderer {
 			SimpleDrawingContext fuelLabelDrawingContext = new SimpleDrawingContext(fuelDrawingContext, 0, 0, LABEL_WIDTH, fuelDrawingContext.h());
 			SimpleDrawingContext fuelBarDrawingContext = new SimpleDrawingContext(fuelDrawingContext, LABEL_WIDTH, 0, fuelDrawingContext.w() - LABEL_WIDTH, fuelDrawingContext.h());
 			
-			
-			
-			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, fuelLabelDrawingContext, "FUEL", FontType.Hud, 0);
-			
+			textBook = TextPageConstraints.fromDc(fuelLabelDrawingContext).textToBook("FUEL", fontType);
+			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 			
 			g.translate(fuelBarDrawingContext.x(), fuelBarDrawingContext.y());
 			

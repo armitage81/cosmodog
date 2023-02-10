@@ -7,13 +7,13 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
-import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition.ActionPhase;
@@ -28,12 +28,21 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 
 	@Override
 	public void onTrigger() {
+		
+		long referenceTime = System.currentTimeMillis();
+		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		DrawingContext cutsceneTextDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
-		cosmodogGame.setOpenGameLog(new GameLogState(getGameLog(), new TextPageConstraints(cutsceneTextDrawingContext.w(), cutsceneTextDrawingContext.h()), FontType.CutsceneNarration));
+		String text = getGameLog().getLogText();
+		String title = getGameLog().getHeader();
+		DrawingContext textDc = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
+		TextPageConstraints tpc = TextPageConstraints.fromDc(textDc);
+		Book book = tpc.textToBook(text, FontRefToFontTypeMap.forNarration(), 20);
+		
+		cosmodogGame.setOpenBook(book);
+		cosmodogGame.setOpenBookTitle(title);
+
 		DialogWithAlisaTransition transition = new DialogWithAlisaTransition();
-		transition.phaseStart = System.currentTimeMillis();
-		transition.pageIsDynamic = true;
+		transition.phaseStart = referenceTime;
 		cosmodogGame.setDialogWithAlisaTransition(transition);
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CUTSCENE_ALISASMESSAGE).play();
 	}
@@ -41,7 +50,8 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
-		long timestamp = System.currentTimeMillis();
+		long referenceTime = System.currentTimeMillis();
+
 		DialogWithAlisaTransition transition = ApplicationContextUtils.getCosmodogGame().getDialogWithAlisaTransition();
 		
 		ActionPhase prevActionPhase = transition.phase;
@@ -57,7 +67,7 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 		} else if (transition.phase == ActionPhase.PICTURE_FADES) {
 			if (transition.phaseCompletion() >= 1.0f) {
 				transition.phase = ActionPhase.TEXT;
-				transition.pageStart = System.currentTimeMillis();
+				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 			}
 		} else {
@@ -67,7 +77,7 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 		}
 		
 		if (prevActionPhase != transition.phase) {
-			transition.phaseStart = timestamp;
+			transition.phaseStart = referenceTime;
 		}
 		
 	}
@@ -81,7 +91,7 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 	@Override
 	public boolean hasFinished() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		return cosmodogGame.getOpenGameLog() == null;
+		return cosmodogGame.getOpenBook() == null;
 	}
 	
 	

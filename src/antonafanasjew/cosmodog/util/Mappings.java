@@ -54,9 +54,9 @@ public class Mappings {
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_5, "smileofthegoddess");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_6, "amurderingpoet");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_7, "dronespecs");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_8, "Series009");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_9, "Series010");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_10, "Series011");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_8, "fathersfarewell");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_9, "writersblock");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_10, "montanajames");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_11, "Series012");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_12, "Series013");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_13, "Series014");
@@ -85,7 +85,7 @@ public class Mappings {
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_13, "encounterwithsuf");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_14, "trappedinacave");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_15, "openedgate");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_16, "tobedefined017");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_16, "guardiandeactivation");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_17, "tobedefined018");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_18, "tobedefined019");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_19, "tobedefined020");
@@ -123,6 +123,8 @@ public class Mappings {
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.PICK, ToolType.pick);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.AXE, ToolType.axe);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.MACHETE, ToolType.machete);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.ARCHEOLOGISTS_JOURNAL, ToolType.archeologistsJournal);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.WEAPON_FIRMWARE_UPGRADE, ToolType.weaponFirmwareUpgrade);
 	}
 	
 	public static Map<TileType, GoodieType> MAP_TILE_TO_GOODIE_TYPE = Maps.newHashMap();
@@ -319,13 +321,22 @@ public class Mappings {
 		} else if (tool.getToolType() == ToolType.machete) {
 			return "inventoryItemMachete";
 		} else if (tool.getToolType() == ToolType.minedetector) {
-			return "inventoryItemMineDetector";
+			Player player = ApplicationContextUtils.getPlayer();
+			if (player.getInventory().get(InventoryItemType.MINEDEACTIVATIONCODES) != null) {
+				return "inventoryItemMineDeactivationCodes";
+			} else {
+				return "inventoryItemMineDetector";
+			}
 		} else if (tool.getToolType() == ToolType.pick) {
 			return "inventoryItemPick";
 		} else if (tool.getToolType() == ToolType.ski) {
 			return "inventoryItemSki";
 		} else if (tool.getToolType() == ToolType.supplytracker) {
 			return "inventoryItemSupplyTracker";
+		} else if (tool.getToolType() == ToolType.archeologistsJournal) {
+			return "inventoryItemArcheologistsJournal";
+		} else if (tool.getToolType() == ToolType.weaponFirmwareUpgrade) {
+			return "inventoryItemWeaponFirmwareUpgrade";
 		}
 		
 		return "infobit";
@@ -352,11 +363,15 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.JACKET, "inventoryItemJacket");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.ANTIDOTE, "inventoryItemAntidote");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MINEDETECTOR, "inventoryItemMineDetector");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MINEDEACTIVATIONCODES, "inventoryItemMineDeactivationCodes");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.SKI, "inventoryItemSki");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.PICK, "inventoryItemPick");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MACHETE, "inventoryItemMachete");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.AXE, "inventoryItemAxe");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.KEY_RING, "inventoryItemKeyRing");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.ARCHEOLOGISTS_JOURNAL, "inventoryItemArcheologistsJournal");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.WEAPON_FIRMWARE_UPGRADE, "inventoryItemWeaponFirmwareUpgrade");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DEBUGGER, "inventoryItemCosmodog");
 	}
 	
 	/**
@@ -375,6 +390,7 @@ public class Mappings {
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_FLOATER, UnitType.FLOATER);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_CONDUCTOR, UnitType.CONDUCTOR);
 		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_GUARDIAN, UnitType.GUARDIAN);
+		ENEMY_TILE_TYPE_TO_UNIT_TYPE.put(TileType.META_ENEMY_TILE_SOLARTANK, UnitType.SOLARTANK);
 	}
 	
 	private static final Map<UnitType, String> ANIMATION_KEY_BY_UNIT_TYPE = Maps.newHashMap();
@@ -394,6 +410,7 @@ public class Mappings {
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.FLOATER, "Floater");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.CONDUCTOR, "Conductor");
 		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.GUARDIAN, "Guardian");
+		ANIMATION_KEY_BY_UNIT_TYPE.put(UnitType.SOLARTANK, "Solartank");
 		
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.UP, "Up");
 		ANIMATION_KEY_BY_DIRECTION_TYPE.put(DirectionType.DOWN, "Down");
@@ -500,6 +517,7 @@ public class Mappings {
 	public static Map<WeaponType, String> WEAPON_TYPE_2_ICON_ANIMATION_ID = Maps.newHashMap();
 	
 	static {
+		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.FISTS, "fistsIcon");
 		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.PISTOL, "pistolIcon");
 		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.SHOTGUN, "shotgunIcon");
 		WEAPON_TYPE_2_ICON_ANIMATION_ID.put(WeaponType.RIFLE, "rifleIcon");
@@ -573,6 +591,7 @@ public class Mappings {
 		
 		
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.GRASS_OBJECT_FLOWER);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.TRAFFIC_LIGHT);
 				
 	}
 	

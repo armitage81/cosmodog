@@ -10,7 +10,7 @@ public class Mine extends DynamicPiece {
 	private static final long serialVersionUID = 5708806596326635656L;
 	
 	
-	public static final int DAMAGE_TO_PLAYER = 5;
+	public static final int DAMAGE_TO_PLAYER = 9;
 	
 	public static final short STATE_INVISIBLE = 0;
 	public static final short STATE_VISIBLE = 1;

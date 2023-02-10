@@ -17,8 +17,6 @@ public class DialogWithAlisaTransition implements Transition {
 	public ActionPhase phase = ActionPhase.ARM_APPEARS;
 	
 	public long phaseStart;
-	public long pageStart;
-	public boolean pageIsDynamic;
 	
 	public float phaseCompletion() {
 		float duration = System.currentTimeMillis() - phaseStart;

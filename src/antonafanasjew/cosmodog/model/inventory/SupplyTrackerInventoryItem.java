@@ -18,7 +18,7 @@ public class SupplyTrackerInventoryItem extends InventoryItem {
 	@Override
 	public String description() {
 		return "You did not expect to see it again. You found this tracker after it survived the crash of Cosmodog. "
-				+ "It looks like an electronic compass except it will show in the direction of the next supply box.";
+				+ "It looks like an electronic compass except it will show in the direction of the next supply box (red line) and the next medkit (green line).";
 	}
 	
 }

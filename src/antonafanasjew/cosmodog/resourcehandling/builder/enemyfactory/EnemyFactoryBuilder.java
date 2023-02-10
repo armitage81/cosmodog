@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory;
 
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.ChaussieType;
-import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.listener.life.EnemyLifeListener;
@@ -49,6 +48,10 @@ public class EnemyFactoryBuilder extends AbstractResourceWrapperBuilder<EnemyFac
 					float sightAngleRelativeToDirection = Float.valueOf(sightElementParts[2]);
 					Sight sight = new Sight(sightDistance, sightAngle, sightAngleRelativeToDirection);
 					enemy.getSights().add(sight);
+				}
+				
+				if (enemy.getUnitType() == UnitType.SOLARTANK) {
+					enemy.setActiveAtDayTimeOnly(true);
 				}
 				
 				enemy.getLifeListeners().add(new EnemyLifeListener());

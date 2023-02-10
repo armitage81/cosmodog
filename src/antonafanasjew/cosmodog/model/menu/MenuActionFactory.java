@@ -5,11 +5,9 @@ import java.io.File;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
-import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
-import antonafanasjew.cosmodog.filesystem.CosmodogPersistenceException;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -33,19 +31,15 @@ public class MenuActionFactory {
 		return new MenuAction() {
 			@Override
 			public void execute(StateBasedGame sbg) {
-				try {
-					String filePath = PathUtils.gameSaveDir() + "/" + no + ".sav";
-					File f = new File(filePath);
+				String filePath = PathUtils.gameSaveDir() + "/" + no + ".sav";
+				File f = new File(filePath);
 
-					if (f.exists()) {
-						ApplicationContext appCx = ApplicationContext.instance();
-						CosmodogGame cosmodogGame = appCx.getCosmodog().getGamePersistor().restoreCosmodogGame(filePath);
-						appCx.getCosmodog().getGameLifeCycle().setStartNewGame(false);
-						appCx.getCosmodog().setCosmodogGame(cosmodogGame);
-						sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
-					}
-				} catch (CosmodogPersistenceException e) {
-					Log.error("Could not restore game", e);
+				if (f.exists()) {
+					ApplicationContext appCx = ApplicationContext.instance();
+					CosmodogGame cosmodogGame = appCx.getCosmodog().getGamePersistor().restoreCosmodogGame(filePath);
+					appCx.getCosmodog().getGameLifeCycle().setStartNewGame(false);
+					appCx.getCosmodog().setCosmodogGame(cosmodogGame);
+					sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());
 				}
 			}
 		};

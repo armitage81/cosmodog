@@ -70,7 +70,6 @@ public class MenuBuilder extends AbstractResourceWrapperBuilder<MenuElement> {
 		}
 		
 		if (label == null) {
-			System.out.println("Label for id " + labelId + " not found!");
 			Log.error("Label for id " + labelId + " not found!");
 		}
 		

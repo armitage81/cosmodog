@@ -10,8 +10,8 @@ public class ChartInventoryItem extends CountableInventoryItem {
 
 	private static final long serialVersionUID = -5819631394123309541L;
 
-	public static final int VISIBLE_CHART_PIECE_NUMBER_X = 16;
-	public static final int VISIBLE_CHART_PIECE_NUMBER_Y = 16;
+	public static final int VISIBLE_CHART_PIECE_NUMBER_X = 8;
+	public static final int VISIBLE_CHART_PIECE_NUMBER_Y = 8;
 	
 	public static final int ACTUAL_CHART_PIECE_NUMBER_X = 8;
 	public static final int ACTUAL_CHART_PIECE_NUMBER_Y = 8;

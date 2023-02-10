@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
@@ -22,5 +23,9 @@ public class CollectibleComposed extends Collectible {
 		getElements().add(element);
 	}
 
+	@Override
+	public String toString() {
+		return "[" + elements.stream().map(e -> e.toString()).collect(Collectors.joining(", ")) + "]";
+	}
 
 }

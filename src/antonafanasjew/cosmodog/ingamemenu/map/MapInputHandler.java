@@ -9,7 +9,10 @@ import antonafanasjew.cosmodog.controller.InputHandler;
 
 public class MapInputHandler implements InputHandler {
 
+	private static final int DELAY_LIMIT = 20;
+	
 	private MapInputState mapInputState;
+	private int delay = 0;
 	
 	public MapInputHandler(MapInputState mapInputState) {
 		this.mapInputState = mapInputState;
@@ -17,13 +20,40 @@ public class MapInputHandler implements InputHandler {
 	
 	@Override
 	public void handleInput(GameContainer gc, StateBasedGame sbg, int delta, ApplicationContext applicationContext) {
+		
 		if (gc.getInput().isKeyPressed(Input.KEY_LEFT)) {
 			mapInputState.left();
+			delay = 0;
+			return;
 		} else if (gc.getInput().isKeyPressed(Input.KEY_RIGHT)) {
 			mapInputState.right();
+			delay = 0;
+			return;
 		} else if (gc.getInput().isKeyPressed(Input.KEY_UP)) {
 			mapInputState.up();
+			delay = 0;
+			return;
 		} else if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
+			mapInputState.down();
+			delay = 0;
+			return;
+		}
+		
+		if (delay < DELAY_LIMIT) {
+			delay++;
+		}
+		
+		if (delay != DELAY_LIMIT) {
+			return;
+		}
+		
+		if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+			mapInputState.left();
+		} else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+			mapInputState.right();
+		} else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+			mapInputState.up();
+		} else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
 			mapInputState.down();
 		}
 	}

@@ -99,7 +99,7 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 		
 		int damage = getFightPhaseResult().getDamage();
 		
-		String text = String.valueOf(getFightPhaseResult().getDamage());
+		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage());
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getPlayer(), text);
 		
 		if (player.getInventory().hasVehicle()) {

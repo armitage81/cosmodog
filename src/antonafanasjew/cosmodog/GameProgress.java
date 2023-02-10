@@ -4,6 +4,7 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.model.CosmodogModel;
+import antonafanasjew.cosmodog.model.LetterPlateSequence;
 
 import com.google.common.collect.Maps;
 
@@ -34,10 +35,12 @@ public class GameProgress extends CosmodogModel {
 	private int armors = 0;
 	private int soulEssences = 0;
 	private long gameScore;
+	private int turn = 0;
 	
 	private int numberOfFoundSecrets = 0;
 	
 	private int turnsTillWormAppears = TURNS_TILL_WORM_APPEARS_PHASE1;
+	private boolean wormActive = true;
 	
 	//This information is redundand, as the mine deactivation will be stored in the
 	//state of each mine. Still, we can use these information for purposes like game statistics.
@@ -50,7 +53,8 @@ public class GameProgress extends CosmodogModel {
 		minesDeactivationInfo.put(QuadrandType.SE, Boolean.FALSE);
 	}
 	
-
+	private LetterPlateSequence letterPlateSequence = LetterPlateSequence.getInstance();
+	
 	private Map<String, String> progressProperties = Maps.newHashMap();
 
 	/**
@@ -115,6 +119,14 @@ public class GameProgress extends CosmodogModel {
 	public void setTurnsTillWormAppears(int turnsTillWormAppears) {
 		this.turnsTillWormAppears = turnsTillWormAppears;
 	}
+	
+	public boolean isWormActive() {
+		return wormActive;
+	}
+	
+	public void setWormActive(boolean wormActive) {
+		this.wormActive = wormActive;
+	}
 
 	public Map<QuadrandType, Boolean> getMinesDeactivationInfo() {
 		return minesDeactivationInfo;
@@ -167,6 +179,22 @@ public class GameProgress extends CosmodogModel {
 	public void increaseSoulEssenses() {
 		this.soulEssences++;
 	}
+
+	public LetterPlateSequence getLetterPlateSequence() {
+		return letterPlateSequence;
+	}
 	
+	public int getTurn() {
+		return turn;
+	}
+	
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+	
+	public int incTurn() {
+		this.turn = this.turn + 1;
+		return this.turn;
+	}
 	
 }

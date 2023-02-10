@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer.textbook;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -10,15 +11,18 @@ import org.newdawn.slick.TrueTypeFont;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.globals.FontProvider;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.Renderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Line;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Page;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Word;
 
 public class TextBookRenderer implements Renderer {
-	
-	public static final int PAGE_APPEARANCE_DURATION = 8000;
-//	public static final int LINE_APPEARANCE_DURATION = 50;
 	
 	private DrawingContext drawingContext;
 	
@@ -28,26 +32,22 @@ public class TextBookRenderer implements Renderer {
 		public static final short ALIGN_CENTER = 1;
 		public static final short ALIGN_END = 2;
 		
-		public String text;
-		public FontType fontType;
+		public Book book;
 		public short horizontalAlignment;
 		public short verticalAlignment;
-		public int page;
-		public long millisSincePageOpened; 
+		boolean framed;
 		
-		public static TextBookRendererParameter instance(String text, FontType fontType, short horAlign, short verAlign, int page, long millisSinsePageOpened) {
+		public static TextBookRendererParameter instance(Book book, short horAlign, short verAlign, boolean framed) {
 			TextBookRendererParameter retVal = new TextBookRendererParameter();
-			retVal.text = text;
-			retVal.fontType = fontType;
+			retVal.book = book;
 			retVal.horizontalAlignment = horAlign;
 			retVal.verticalAlignment = verAlign;
-			retVal.page = page;
-			retVal.millisSincePageOpened = millisSinsePageOpened;
+			retVal.framed = framed;
 			return retVal;
 		}
 		
-		public static TextBookRendererParameter instance(String text, FontType fontType, short horAlign, short verAlign, int page) {
-			return instance(text, fontType, horAlign, verAlign, page, -1);
+		public static TextBookRendererParameter instance(Book book, short horAlign, short verAlign) {
+			return instance(book, horAlign, verAlign, false);
 		}
 		
 	}
@@ -69,53 +69,37 @@ public class TextBookRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
+		long referenceTime = System.currentTimeMillis();
+		
 		TextBookRendererParameter param = (TextBookRendererParameter)renderingParameter;
 		
-		String text = param.text;
-		Color color = param.fontType.getColor();
-		TrueTypeFont font = param.fontType.getFont();
+		Book book = param.book;
+		boolean framed = param.framed;
 		
-		/*
-		graphics.setColor(Color.red);
-		graphics.drawRect(drawingContext.x(), drawingContext.y(), drawingContext.w(), drawingContext.h());
-		*/
+		TextPageConstraints c = TextPageConstraints.fromDc(drawingContext);
+		Page page = book.get(book.getCurrentPage());
+		int numberOfLines = page.size();
 		
-		TextPageConstraints c = new TextPageConstraints(drawingContext.w(), drawingContext.h());
-		List<List<String>> splitText = c.textSplitByLinesAndPages(text, font);
-		List<String> pageText = splitText.get(param.page);
 		
-		int charactersOnPage = pageText.stream().mapToInt(String::length).sum();
-		int charactersToRender;
-		
-		int linesInPage = pageText.size();
-		float lineHeight = font.getLineHeight();
+		//This must be changed.
+		float lineHeight = page.get(0).get(0).glyphDescriptor.height();
 		int maxNumberOfLinesInPage = (int)c.getHeight() / (int)lineHeight;
-		float usedUpVerticalSpace = lineHeight * linesInPage;
+		float usedUpVerticalSpace = lineHeight * numberOfLines;
 		float remainingVerticalSpace = c.getHeight() - usedUpVerticalSpace;
 		
 		int verticalOffset = (int)(param.verticalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.verticalAlignment == TextBookRendererParameter.ALIGN_END ? remainingVerticalSpace : remainingVerticalSpace / 2));
 		
-		int pageAppearanceDurationForNotFullyFilledPage;
-		if (maxNumberOfLinesInPage > 0) {
-			pageAppearanceDurationForNotFullyFilledPage = (PAGE_APPEARANCE_DURATION / maxNumberOfLinesInPage) * pageText.size();
-		} else {
-			pageAppearanceDurationForNotFullyFilledPage = 0;
-		}
-				
-		if (param.millisSincePageOpened >= pageAppearanceDurationForNotFullyFilledPage) {
-			charactersToRender = charactersOnPage;
+		int wordsToRender = book.numberOfWordsInCurrentDynamicPage(referenceTime);
+		
+		if (book.dynamicPageComplete(referenceTime)) {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
-		} else {
-			charactersToRender = (int)(charactersOnPage * param.millisSincePageOpened / (float)pageAppearanceDurationForNotFullyFilledPage);
 		}
 		
-		boolean dynamicPage = param.millisSincePageOpened >= 0;
-
-		int accumulatedCharacters = 0;
-		
-		for (int i = 0; i < linesInPage; i++) {
-			String line = pageText.get(i);
-			float lineWidth = font.getWidth(line);
+		int accumulatedWords = 0;
+		for (int i = 0; i < numberOfLines; i++) {
+			Line line = page.get(i);
+			
+			float lineWidth = line.getWidth();
 			float remainingWidth = c.getWidth() - lineWidth;
 			float horizontalOffset = (param.horizontalAlignment == TextBookRendererParameter.ALIGN_START ? 0 : (param.horizontalAlignment == TextBookRendererParameter.ALIGN_END ? remainingWidth : (remainingWidth / 2f)));
 			
@@ -124,41 +108,42 @@ public class TextBookRenderer implements Renderer {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			
-			String partialLineText;
+			List<Word> partialLineText;
 			
-			if (!dynamicPage) {
-				partialLineText = line;
+			if (accumulatedWords >= wordsToRender) {
+				partialLineText = new ArrayList<>();
 			} else {
-				if (accumulatedCharacters >= charactersToRender) {
-					partialLineText = "";
+				if (accumulatedWords + line.size() < wordsToRender) {
+					partialLineText = line;
 				} else {
-					if (accumulatedCharacters + line.length() < charactersToRender) {
-						partialLineText = line;
-					} else {
-						int rest = charactersToRender - accumulatedCharacters;
-						partialLineText = line.substring(0, rest);
-					}
+					int rest = wordsToRender - accumulatedWords;
+					partialLineText = line.subList(0, rest);
 				}
 			}
-			accumulatedCharacters += line.length();
 			
-//			if (dynamicPage) {
-//				
-//				long duration = param.millisSincePageOpened;
-//				
-//				if (duration < PAGE_APPEARANCE_DURATION + LINE_APPEARANCE_DURATION) {
-//					float alpha = 0.1f * (lastVisibleLine - i);
-//					color = new Color(color.r, color.g, color.b, alpha);	
-//				}
-//				
-//					
-//			}
+			//Draw frame
+			if (framed && line.getWidth() > 0) {
+				int padding = 2;
+				graphics.setColor(Color.white);
+				graphics.fillRoundRect(lineDc.x() - padding, lineDc.y() - padding, line.getWidth() + 2 * padding, line.getHeight() + 2 * padding, 10);
+			}
 			
-			font.drawString((int)lineDc.x(), (int)lineDc.y(), partialLineText, color);
-//			if (dynamicPage && i == lastVisibleLine) {
-//				graphics.setColor(new Color(1f, 0f, 0f, 0.5f));
-//				graphics.fillRect(lineDc.x(), lineDc.y(), lineDc.w(), lineDc.h());
-//			}
+			accumulatedWords += line.size();
+			float placementX = 0.0f;
+			for (Word word : partialLineText) {
+				String fontRef = word.glyphDescriptor.fontRef();
+				FontTypeName fontTypeName = book.getFontRefToFontTypeMap().get(fontRef);
+				String wordText = word.textBased ? word.text : " ";
+				FontType fontType = FontProvider.getInstance().fontType(fontTypeName);
+				TrueTypeFont font = fontType.getFont();
+				Color color = fontType.getColor();
+				graphics.setFont(font);
+				graphics.setColor(color);
+				graphics.drawString(wordText, lineDc.x() + placementX, lineDc.y());
+				placementX += word.glyphDescriptor.width();
+			}
+
+
 			graphics.translate(-(int)horizontalOffset, -(int)verticalOffset);
 		}
 		

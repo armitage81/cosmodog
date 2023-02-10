@@ -17,6 +17,7 @@ import com.google.common.collect.Sets;
 
 public class GameLogs {
 
+	public static final String SERIES_HINTS = "hints";
 	public static final String SERIES_UNSORTED = "unsorted";
 	public static final String SERIES_MEMORIES = "memories";
 	public static final String SERIES_CUTSCENES = "cutscenes";
@@ -26,10 +27,11 @@ public class GameLogs {
 	public static final Map<String, Integer> SERIES_SORT_PRIORITIES = Maps.newHashMap();
 	
 	static {
+		SERIES_SORT_PRIORITIES.put(SERIES_HINTS, 5);
 		SERIES_SORT_PRIORITIES.put(SERIES_MEMORIES, 10);
 		SERIES_SORT_PRIORITIES.put(SERIES_MARYHARPER, 20);
-		SERIES_SORT_PRIORITIES.put(SERIES_ALIENNOMADS, 30);
-		SERIES_SORT_PRIORITIES.put(SERIES_CUTSCENES, 40);
+		SERIES_SORT_PRIORITIES.put(SERIES_CUTSCENES, 30);
+		SERIES_SORT_PRIORITIES.put(SERIES_ALIENNOMADS, 40);
 		SERIES_SORT_PRIORITIES.put(SERIES_UNSORTED, 90);
 	}
 	

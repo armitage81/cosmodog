@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 /**
- * This class aggregates all elementar sight radius calculators and construct the complex calculator based
+ * This class aggregates all elementar sight radius calculators and constructs the complex calculator based
  * on the game properties.
  */
 public class GeneralSightModifier implements SightModifier {

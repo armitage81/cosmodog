@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -23,7 +24,7 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		
 		String gameLogSeries = GameLogs.SERIES_CUTSCENES;
-		String gameLogId = "decision";
+		String gameLogId = "005.decision";
 		
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
@@ -37,7 +38,10 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 			@Override
 			public void onEnd() {
 				player.getGameProgress().setWon(true);
-				CosmodogStarter.instance.enterState(CosmodogStarter.OUTRO_STATE_ID, new FadeOutTransition(Color.white, 5000), new FadeInTransition());
+				
+				int lengthOfFadeOutTransition = Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) ? 5000 : 0;
+				
+				CosmodogStarter.instance.enterState(CosmodogStarter.OUTRO_STATE_ID, new FadeOutTransition(Color.white, lengthOfFadeOutTransition), new FadeInTransition());
 			}
 		});
 		

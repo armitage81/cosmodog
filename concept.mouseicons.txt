@@ -1,0 +1,52 @@
+Mouse Controls and Icons:
+------------------------------------
+Main Menu
+	- Menu selection
+	- Back Button
+In Game
+	Movement
+		- Left
+		- Right
+		- Up
+		- Down
+		- SHIFT + Left
+		- SHIFT + Right
+		- SHIFT + Up
+		- SHIFT + Down
+		- Skip Turn
+	Zooming
+		- In
+		- Out
+	Weapons
+		- Fists
+		- Handgun
+		- Shotgun
+		- Rifle
+		- Machine Gun
+		- Rocket Launcher
+	Window Confirmations
+		- Enter to next page or close
+	Screen Openers
+		- Help
+		- Progress
+		- Map
+		- Inventory
+		- Log
+		- Quit
+	Help Screen
+		- Close
+	Inventory Screen
+		- Item Selection
+		- Close
+	Map Screen
+		- Map position selection
+		- Close
+	Log Screen
+		- Log file selection
+		- Page turner
+		- Close
+	Progress Screen
+		- Close
+	Quit Screen
+		- Quit
+		- Close

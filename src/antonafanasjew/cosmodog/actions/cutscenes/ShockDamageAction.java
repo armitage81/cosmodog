@@ -16,6 +16,8 @@ public class ShockDamageAction extends FixedLengthAsyncAction {
 
 	private static final long serialVersionUID = -5764923931787835528L;
 	
+	public static final int DAMAGE = 1;
+	
 	public static class ShockDamageTransition {
 
 		public int positionX;
@@ -42,7 +44,8 @@ public class ShockDamageAction extends FixedLengthAsyncAction {
 	public void onTrigger() {
 		Player player = ApplicationContextUtils.getPlayer();
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
-		OverheadNotificationAction.registerOverheadNotification(player, "Shock: -1");
+		OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> You were electrocuted.");
+		OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> " + DAMAGE);
 	}
 	
 	@Override
@@ -59,8 +62,8 @@ public class ShockDamageAction extends FixedLengthAsyncAction {
 		transition = null;
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		if (player.getLife() > 1) {
-			player.decreaseLife(1);
+		if (player.getLife() > DAMAGE) {
+			player.decreaseLife(DAMAGE);
 		} else {
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.DEATH_BY_SHOCK, new DeathByShockAction(1000));
 		}		

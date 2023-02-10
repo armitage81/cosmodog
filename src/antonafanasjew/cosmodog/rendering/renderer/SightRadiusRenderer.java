@@ -6,31 +6,31 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import com.google.common.collect.Sets;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.sight.Sight;
 import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
-
-import com.google.common.collect.Sets;
 
 public class SightRadiusRenderer extends AbstractRenderer {
 
@@ -78,60 +78,39 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		
 		EnemiesUtils.removeInactiveUnits(enemies);
 				
-		String playerRoofRegion;
+		Set<TiledObject> roofsOverPlayer = PlayerMovementCache.getInstance().getRoofRegionsOverPlayer();
 		
 		for (Enemy enemy : enemies) {
 
-			String enemyRoofRegion;
 			
-			float movementOffsetX = 0;
-			float movementOffsetY = 0;
+			Set<TiledObject> roofsOverEnemy = PlayerMovementCache.getInstance().getEnemiesInRangeWithRoofsOverThem().get(enemy);
 			
-			ActorTransition enemyTransition = cosmodogGame.getActorTransitionRegistry().get(enemy);
+			if (roofsOverEnemy != null) {
+				Set<TiledObject> roofsIntersection = Sets.newHashSet();
+				roofsIntersection.addAll(roofsOverEnemy);
+				roofsIntersection.retainAll(roofsOverPlayer);
+				if (roofsIntersection.isEmpty()) {
+					continue;
+				}
+			}
+			
 			
 			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 			
 
-			float fightOffsetX = 0.0f;
-			float fightOffsetY = 0.0f;
-			
-			if (enemyTransition != null) {
-				movementOffsetX = tileWidth * enemyTransition.getTransitionalOffsetX();
-				movementOffsetY = tileHeight * enemyTransition.getTransitionalOffsetY();
-				
-			}
-			
 			if (fightPhaseTransition != null) {
 				if (fightPhaseTransition.getEnemy().equals(enemy)) {
 					
 					float completion = fightPhaseTransition.getCompletion();
-					float fightOffset = 0.0f;
 					
 					if (fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition) {
 						
 						if (completion > 0.5f) {
 							completion = 1.0f - completion;
 						}
-						fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
 						
 					}
 					
-					if (enemy.getDirection() == DirectionType.DOWN) {
-						fightOffsetY = fightOffset;
-					}
-					
-					if (enemy.getDirection() == DirectionType.UP) {
-						fightOffsetY = -fightOffset;
-					}
-					
-					if (enemy.getDirection() == DirectionType.RIGHT) {
-						fightOffsetX = fightOffset;
-					}
-					
-					if (enemy.getDirection() == DirectionType.LEFT) {
-						fightOffsetX = -fightOffset;
-					}
-						
 				}
 			}
 			

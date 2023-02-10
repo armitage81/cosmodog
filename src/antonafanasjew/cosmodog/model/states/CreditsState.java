@@ -11,11 +11,14 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class CreditsState extends CosmodogAbstractState {
@@ -44,19 +47,27 @@ public class CreditsState extends CosmodogAbstractState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
+		long referenceTime = System.currentTimeMillis();
+		
 		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
 		
-		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
+		DrawingContext creditsTextDc = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
 		
-		DrawingContext creditsTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
-		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
+		creditsTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0, 1, 6);
+		DrawingContext controlsDc = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
 		
-		TextBookRendererUtils.renderCenteredLabel(gc, g, creditsTextDc, credits, FontType.CreditsText, 0);
+		FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Credits);
+		Book creditsBook = TextPageConstraints.fromDc(creditsTextDc).textToBook(credits, fontRefToFontTypeMap);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, creditsBook);
 		
-		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
+		
+		boolean renderBlinkingHint = (referenceTime / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
+			fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
+			Book controlHint = TextPageConstraints.fromDc(controlsDc).textToBook("Press [ENTER]", fontRefToFontTypeMap);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, controlHint);
 		}
+		
 	}
 
 	@Override

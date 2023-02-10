@@ -11,26 +11,31 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.GameFlowUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
-import antonafanasjew.particlepattern.movement.ShakingMovementFunction;
 
 public class IntroState extends CosmodogAbstractState {
 
 	private DrawingContext gameContainerDrawingContext;
-	private DrawingContext topContainerDrawingContext;
 	private DrawingContext centerContainerDrawingContext;
-	private DrawingContext bottomContainerDrawingContext;
 	
 	private long initialTimestamp;
 	private long timestamp;
+	private boolean skipped;
 	
 	@Override
 	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		skipped = false;
+		if (Features.getInstance().featureOn(Features.FEATURE_LOGO) == false) {
+			skipped = true;
+		}
+		
 		initialTimestamp = System.currentTimeMillis();
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.loadScoreList();
@@ -41,9 +46,7 @@ public class IntroState extends CosmodogAbstractState {
 	public void firstEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
 		gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		topContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
 		centerContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
-		bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
 		
 	}
 
@@ -52,7 +55,7 @@ public class IntroState extends CosmodogAbstractState {
 		
 		timestamp = System.currentTimeMillis();
 		
-		if (timestamp - initialTimestamp > 5000) {
+		if (timestamp - initialTimestamp > 5000 || skipped) {
 			sbg.enterState(CosmodogStarter.MAIN_MENU_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		}
 		

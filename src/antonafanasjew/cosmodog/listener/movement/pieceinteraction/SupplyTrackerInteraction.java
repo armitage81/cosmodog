@@ -22,7 +22,7 @@ public class SupplyTrackerInteraction extends ToolInteraction {
 	
 	@Override
 	protected String text() {
-		return "You found the supply tracker. It must have fallen from your emergency pod. Use it to track the closest supply box.";
+		return "You found the supply tracker. It must have fallen from your emergency pod. Use it to track supplies and medkits.";
 	}
 
 }

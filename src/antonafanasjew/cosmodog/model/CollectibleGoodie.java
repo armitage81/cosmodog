@@ -40,5 +40,10 @@ public class CollectibleGoodie extends Collectible {
 	public GoodieType getGoodieType() {
 		return goodieType;
 	}
+	
+	@Override
+	public String toString() {
+		return "Goodie: " + goodieType.toString();
+	}
 
 }

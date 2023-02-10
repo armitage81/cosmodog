@@ -7,8 +7,8 @@ import java.util.Set;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
-import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.SoundResources;
+import com.google.common.collect.Sets;
+
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -18,8 +18,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
-
-import com.google.common.collect.Sets;
 
 public class LowerGateAction extends FixedLengthAsyncAction {
 

@@ -7,10 +7,12 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
-import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import antonafanasjew.cosmodog.view.transitions.EndingTransition;
@@ -27,32 +29,35 @@ public class EndingRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
-		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
-		DrawingContext cutsceneTextDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
-		DrawingContext cutsceneControlsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneControlsDrawingContext();
+		long referenceTime = System.currentTimeMillis();
 		
-		GameLogState openGameLog = ApplicationContextUtils.getCosmodogGame().getOpenGameLog();
+		DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+		DrawingContext controlsDc = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneControlsDrawingContext();
+		
+		Book openBook = ApplicationContextUtils.getCosmodogGame().getOpenBook();
+		
+		if (openBook == null) {
+			return;
+		}
+
 		EndingTransition transition = ApplicationContextUtils.getCosmodogGame().getEndingTransition();
 		
-		int page = openGameLog.getCurrentPage();
-		GameLog gameLog = openGameLog.getGameLog();
-
-		if (openGameLog != null && transition != null) {
+		if (transition != null) {
 			
 			graphics.setColor(Color.black);
 			graphics.fillRect(
-					gameContainerDrawingContext.x(),
-					gameContainerDrawingContext.y(),
-					gameContainerDrawingContext.w(),
-					gameContainerDrawingContext.h());
+					dc.x(),
+					dc.y(),
+					dc.w(),
+					dc.h());
 
 			Animation endingBackground = ApplicationContext.instance().getAnimations().get("endingBackground");
 			
 			endingBackground.draw(
-					gameContainerDrawingContext.x(), 
-					gameContainerDrawingContext.y(), 
-					gameContainerDrawingContext.w(), 
-					gameContainerDrawingContext.h()
+					dc.x(), 
+					dc.y(), 
+					dc.w(), 
+					dc.h()
 			);
 			
 			ActionPhase phase = transition.phase;
@@ -61,10 +66,10 @@ public class EndingRenderer implements Renderer {
 			if (phase == ActionPhase.DARKNESS) {
 				graphics.setColor(new Color(0f, 0f, 0f));
 				graphics.fillRect(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
+						dc.x(), 
+						dc.y(), 
+						dc.w(), 
+						dc.h()
 				);
 			}
 			
@@ -74,10 +79,10 @@ public class EndingRenderer implements Renderer {
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
+						dc.x(), 
+						dc.y(), 
+						dc.w(), 
+						dc.h()
 				);
 				
 			}
@@ -92,10 +97,10 @@ public class EndingRenderer implements Renderer {
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
+						dc.x(), 
+						dc.y(), 
+						dc.w(), 
+						dc.h()
 				);
 				
 			}
@@ -104,18 +109,20 @@ public class EndingRenderer implements Renderer {
 				
 				graphics.setColor(new Color(0f, 0f, 0f, EndingTransition.TEXT_PICTURE_OPACITY));
 				graphics.fillRect(
-						gameContainerDrawingContext.x(), 
-						gameContainerDrawingContext.y(), 
-						gameContainerDrawingContext.w(), 
-						gameContainerDrawingContext.h()
+						dc.x(), 
+						dc.y(), 
+						dc.w(), 
+						dc.h()
 				);
 				
-				TextBookRendererUtils.renderTextPage(gameContainer, graphics, cutsceneTextDrawingContext, gameLog.getLogText(), FontType.CutsceneNarration, page);
+				TextBookRendererUtils.renderDynamicTextPage(gameContainer, graphics, openBook);
 				
-				boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
-							
-				if (renderBlinkingHint) {
-					TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, cutsceneControlsDrawingContext, "Press [ENTER]", FontType.PopUpInterface, 0);
+				boolean renderHint = openBook.dynamicPageComplete(referenceTime);
+				boolean renderBlinkingHint = (referenceTime / 250 % 2) == 1;
+				if (renderHint && renderBlinkingHint) {
+					FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
+					Book controlHint = TextPageConstraints.fromDc(controlsDc).textToBook("Press [ENTER]", fontRefToFontTypeMap);
+					TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, controlHint);
 				}
 			}
 		}

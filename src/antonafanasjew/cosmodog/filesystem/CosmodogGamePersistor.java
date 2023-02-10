@@ -14,8 +14,17 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
+import org.newdawn.slick.util.Log;
+
+import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.camera.CamPositioningException;
+import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogGameHeader;
+import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.topology.Rectangle;
 
 /**
  * Used for serializing and deserializing the cosmodog game state.
@@ -42,7 +51,7 @@ public class CosmodogGamePersistor {
 	 * @param filePath Path of the save file on disk.
 	 * @throws CosmodogPersistenceException Thrown if I/O errors occur.
 	 */
-	public void saveCosmodogGame(CosmodogGame game, String filePath) throws CosmodogPersistenceException {
+	public void saveCosmodogGame(CosmodogGame game, String filePath){
 		try {
 			File file = new File(filePath);
 			file.mkdirs();
@@ -61,7 +70,8 @@ public class CosmodogGamePersistor {
 			output.writeObject(game);
 			output.close();
 		} catch (IOException ex) {
-			throw new CosmodogPersistenceException(ex.getMessage(), ex);
+			Log.error("Could not save game", ex);
+			System.exit(1);
 		}
 	}
 
@@ -71,7 +81,7 @@ public class CosmodogGamePersistor {
 	 * @return Cosmodog game as deserialized from a save file.
 	 * @throws CosmodogPersistenceException Thrown if I/O errors occur.
 	 */
-	public CosmodogGame restoreCosmodogGame(String filePath) throws CosmodogPersistenceException {
+	public CosmodogGame restoreCosmodogGame(String filePath) {
 		try {
 			File file = new File(filePath);
 			file.mkdirs();
@@ -83,11 +93,35 @@ public class CosmodogGamePersistor {
 			CosmodogGame game = (CosmodogGame) input.readObject();
 			input.close();
 			game.initTransientFields();
+			
+			/*
+			 * When storing a game, the camera is stored, too.
+			 * Part of the camera persisted state is its size and location.
+			 * If saving a game in one resolution and then loading it in another resolution, the restored camera will be wrong.
+			 * That's why we fix it here after the restoration process.
+			 */
+			try {
+				CosmodogMap map = game.getMap();
+				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
+				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+				cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
+				cam.focusOnPiece(map, 0, 0, game.getPlayer());
+				game.setCam(cam);
+			} catch (CamPositioningException e) {
+				Log.error("Camera positioning could not be established", e);
+			}
+			
+			
 			return game;
 		} catch (ClassNotFoundException ex) {
-			throw new CosmodogPersistenceException(ex.getMessage(), ex);
+			Log.error("Could not restore game", ex);
+			System.exit(1);
+			return null;
 		} catch (IOException ex) {
-			throw new CosmodogPersistenceException(ex.getMessage(), ex);
+			Log.error("Could not restore game", ex);
+			System.exit(1);
+			return null;
 		}
 	}
 

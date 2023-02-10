@@ -6,6 +6,8 @@ import java.util.Set;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.common.collect.Sets;
+
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.FightActionResult.FightPhaseResult;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
@@ -18,13 +20,10 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.EnemiesUtils;
-
-import com.google.common.collect.Sets;
 
 /**
  * Represents the complete fight after a turn (with maybe multiple enemies)

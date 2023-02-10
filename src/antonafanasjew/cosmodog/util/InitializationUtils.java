@@ -6,7 +6,9 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import antonafanasjew.cosmodog.ApplicationContext;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
@@ -19,11 +21,14 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.globals.Features;
+import antonafanasjew.cosmodog.globals.FontProvider;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
+import antonafanasjew.cosmodog.listener.movement.AutosaveMovementListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -46,15 +51,15 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorAppearanceType;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.model.dynamicpieces.Gate;
 import antonafanasjew.cosmodog.model.dynamicpieces.HardStone;
+import antonafanasjew.cosmodog.model.dynamicpieces.LetterPlate;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
-import antonafanasjew.cosmodog.model.gamelog.GameLog;
-import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.ResourceWrapperBuilder;
@@ -75,12 +80,12 @@ import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
-import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DamageLastBossAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;
+import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnSewageToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToDelayWormAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
@@ -96,8 +101,10 @@ import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressWinningConditionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InteractingWithEveryCollectibleTrigger;
+import antonafanasjew.cosmodog.rules.triggers.InventoryBasedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
+import antonafanasjew.cosmodog.rules.triggers.logical.InvertedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.OrTrigger;
 import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
@@ -108,9 +115,6 @@ import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class InitializationUtils {
 
@@ -134,8 +138,8 @@ public class InitializationUtils {
 		planetaryCalendar.setYear(2314);
 		planetaryCalendar.setMonth(1);
 		planetaryCalendar.setDay(27);
-		planetaryCalendar.setHour(10);
-		planetaryCalendar.setMinute(20);
+		planetaryCalendar.setHour(8);
+		planetaryCalendar.setMinute(0);
 		cosmodogGame.setPlanetaryCalendar(planetaryCalendar);
 
 	}
@@ -158,22 +162,20 @@ public class InitializationUtils {
 		player.getMovementListeners().clear();
 		player.getMovementListeners().add(playerMovementListener);
 		player.getMovementListeners().add(new RuleBookMovementListener());
-
 		player.getMovementListeners().add(PlayerMovementCache.getInstance());
+		player.getMovementListeners().add(new AutosaveMovementListener());
 		
 		PlayerLifeListener playerLifeListener = new PlayerLifeListener();
 		player.getLifeListeners().clear();
 		player.getLifeListeners().add(playerLifeListener);
 
-		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
-		
 	}
 
 	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
 
 		//We just have to initialize this heavy-weight enum to avoid lazy loading with delays in game.
 		@SuppressWarnings("unused")
-		FontType fontType = FontType.GameLog;
+		FontType fontType = FontProvider.getInstance().fontType(FontTypeName.LicenseText);	
 		CosmodogGame cosmodogGame = new CosmodogGame();
 
 		initializeCosmodogGameNonTransient(cosmodogGame, game, customTiledMap, userName);
@@ -375,6 +377,52 @@ public class InitializationUtils {
 					door.setPositionY(l);
 					map.getDynamicPieces().put(Door.class, door);
 				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_1.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[0]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_2.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[1]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_3.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[2]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_4.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[3]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_5.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[4]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_6.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[5]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_7.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[6]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_8.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[7]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_9.getTileId()) {
+					LetterPlate letterPlate = LetterPlate.create(k, l, LetterPlate.ALPHABETHS[8]);
+					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+				}
+				
 			}
 		}
 	}
@@ -538,14 +586,31 @@ public class InitializationUtils {
 
 		// Mine deactivation rules
 		for (QuadrandType quadrandType : QuadrandType.values()) {
+			
+			//Trigger: Not yet deactivated AND entered region AND having deactivation codes.
 			RuleTrigger deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1), deactivateMinesForQuadrandTrigger);
+			//Action: Deactivate mines AND set deactivated property to true AND print notification.
 			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". You deactivate the mines.");
 			RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 			RuleAction deactivateMinesAction = new DeactivateMinesAction(quadrandType);
 			deactivateMinesAction = BlockAction.block(deactivateMinesAction, new SetGameProgressPropertyAction("MinesDeactivatedForQuadrand" + quadrandType, "true"), notificationAction);
-
+			//Create rule
 			rule = new Rule(deactivateMinesAction.getClass().getSimpleName() + ":" + quadrandType, Lists.newArrayList(GameEventChangedPosition.class), deactivateMinesForQuadrandTrigger, deactivateMinesAction, Rule.RULE_PRIORITY_LATEST);
+			ruleBook.put(rule.getId(), rule);
+			
+			//Trigger: Not yet deactivated AND entered region AND NOT having deactivation codes.
+			deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			RuleTrigger notHavingDeactivationCodesTrigger = new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1);
+			notHavingDeactivationCodesTrigger = InvertedTrigger.not(notHavingDeactivationCodesTrigger);
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(notHavingDeactivationCodesTrigger, deactivateMinesForQuadrandTrigger);
+			//Action: print notification that deactivation codes are missing.
+			asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". Unfortunately, you do not have the deactivation codes.");
+			notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+			//Create rule
+			rule = new Rule(deactivateMinesAction.getClass().getSimpleName() + ":" + quadrandType + "_NoDeactivationCodes", Lists.newArrayList(GameEventChangedPosition.class), deactivateMinesForQuadrandTrigger, notificationAction, Rule.RULE_PRIORITY_LATEST);
 			ruleBook.put(rule.getId(), rule);
 
 		}
@@ -553,30 +618,35 @@ public class InitializationUtils {
 		// Worm delay rules
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
 		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
-
 		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will have harder time to locate you.");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
 		switchOnVentilationAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
-
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE2, Lists.newArrayList(GameEventChangedPosition.class), switchOnVentilationTrigger, switchOnVentilationAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
-
+		
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
 		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
-
 		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will have even harder time to locate you.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
 		switchOnSewageAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
-
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE3, Lists.newArrayList(GameEventChangedPosition.class), switchOnSewageTrigger, switchOnSewageAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
+		
+		RuleTrigger switchOnDrillsTrigger = new GameProgressPropertyTrigger("WormAreaDrillOn", "false");
+		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
+		asyncAction = new PopUpNotificationAction("This is the control panel for the underground drill machines. You activate it. The worm cannot locate you anymore.");
+		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction switchOnDrillAction = new DeactivateWormAction();
+		switchOnDrillAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnDrillAction, new SetGameProgressPropertyAction("WormAreaDrillOn", "true"), notificationAction);
+		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE4, Lists.newArrayList(GameEventChangedPosition.class), switchOnDrillsTrigger, switchOnDrillAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 
 		//Pickup blue keycard rule.
 		RuleTrigger approachBlueKeyCardTrigger = new GameProgressPropertyTrigger("CollectedBlueKeyCard", "false");
 		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
-		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf. You grap the item. It is a key card for the mess hall.");
+		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf. You grab the item. It is a key card for the mass hall.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction pickUpBlueKeyCardAction = new PickupKeyAction(DoorType.blueKeycardDoor);
 		pickUpBlueKeyCardAction = BlockAction.block(pickUpBlueKeyCardAction, new SetGameProgressPropertyAction("CollectedBlueKeyCard", "true"), notificationAction);
@@ -684,13 +754,6 @@ public class InitializationUtils {
 
 						if (intersects) {
 							enemy.setHomeRegionName(homeRegion.getName());
-
-							// Now check if the region 'deactivates' units at
-							// night.
-							String dayOnlyPropertyValue = homeRegion.getProperties().get("DayOnly");
-							boolean dayOnly = dayOnlyPropertyValue != null && Boolean.valueOf(dayOnlyPropertyValue);
-							enemy.setActiveAtDayTimeOnly(dayOnly);
-
 						}
 
 					}

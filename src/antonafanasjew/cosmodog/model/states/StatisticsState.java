@@ -12,7 +12,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
@@ -23,11 +23,19 @@ import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class StatisticsState extends CosmodogAbstractState {
 
+	@Override
+	public void everyEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		gc.getInput().clearKeyPressedRecord();
+	}
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
@@ -67,53 +75,60 @@ public class StatisticsState extends CosmodogAbstractState {
 		DrawingContext centerContainerDrawingContext = new TileDrawingContext(dc, 1, 10, 0, 1, 1, 8);
 		centerContainerDrawingContext = new TileDrawingContext(centerContainerDrawingContext, 3, 1, 1, 0);
 		
-		TextBookRendererUtils.renderCenteredLabel(gc, g, topContainerDrawingContext, "Statistics", FontType.StatisticsHeader, 0);
+		FontRefToFontTypeMap fontTypeMainHeader = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.MainHeader);
+		FontRefToFontTypeMap fontTypeControlsHint = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
+		
+		Book statistics = TextPageConstraints.fromDc(topContainerDrawingContext).textToBook("Statistics", fontTypeMainHeader);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, statistics);
+		
+		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 0);
+		renderLabelAndValue(gc, g, scoreDc, "Score", String.valueOf(score));
+		
+		DrawingContext infobitsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 1);
+		renderLabelAndValue(gc, g, infobitsDc, "Found infobits", String.valueOf(noInfobits) + "/" + String.valueOf(maxInfobits));
+		
+		DrawingContext softwareDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 2);
+		renderLabelAndValue(gc, g, softwareDc, "Found software pieces", String.valueOf(noSoftware) + "/" + String.valueOf(maxSoftware));
+		
+		DrawingContext armorDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 3);
+		renderLabelAndValue(gc, g, armorDc, "Found armor plates", String.valueOf(noArmor) + "/" + String.valueOf(maxArmor));
+		
+		DrawingContext soulEssencesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 4);
+		renderLabelAndValue(gc, g, soulEssencesDc, "Found soul essences", String.valueOf(noSoulEssenses) + "/" + String.valueOf(maxSoulEssenses));
+		
+		DrawingContext chartsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 5);
+		renderLabelAndValue(gc, g, chartsDc, "Found map pieces", String.valueOf(noCharts) + "/" + String.valueOf(maxMaps));
+		
+		DrawingContext artifactsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 6);
+		renderLabelAndValue(gc, g, artifactsDc, "Found monoliths", String.valueOf(noInsights) + "/" + String.valueOf(maxInsights));
+		
+		DrawingContext secretsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 7);
+		renderLabelAndValue(gc, g, secretsDc, "Found secrets", String.valueOf(noSecrets) + "/" + String.valueOf(maxSecrets));
+		
+		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 8);
+		renderLabelAndValue(gc, g, enemiesDc, "Enemies left", String.valueOf(enemiesLeft));
 		
 		DrawingContext bottomContainerDrawingContext = new TileDrawingContext(dc, 1, 10, 0, 9, 1, 1);
 		
-		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(scoreDc, 1, 2, 0, 0), format("Score"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(scoreDc, 1, 2, 1, 0), String.valueOf(score), FontType.StatisticsLabel, 0);
-		
-		DrawingContext infobitsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 1);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(infobitsDc, 1, 2, 0, 0), format("Found infobits"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(infobitsDc, 1, 2, 1, 0), String.valueOf(noInfobits) + "/" + String.valueOf(maxInfobits), FontType.StatisticsLabel, 0);
-		
-		DrawingContext softwareDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 2);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(softwareDc, 1, 2, 0, 0), format("Found software pieces"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(softwareDc, 1, 2, 1, 0), String.valueOf(noSoftware) + "/" + String.valueOf(maxSoftware), FontType.StatisticsLabel, 0);
-		
-		DrawingContext armorDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 3);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(armorDc, 1, 2, 0, 0), format("Found armor plates"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(armorDc, 1, 2, 1, 0), String.valueOf(noArmor) + "/" + String.valueOf(maxArmor), FontType.StatisticsLabel, 0);
-		
-		DrawingContext soulEssencesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 4);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(soulEssencesDc, 1, 2, 0, 0), format("Found soul essences"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(soulEssencesDc, 1, 2, 1, 0), String.valueOf(noSoulEssenses) + "/" + String.valueOf(maxSoulEssenses), FontType.StatisticsLabel, 0);
-		
-		DrawingContext chartsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 5);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(chartsDc, 1, 2, 0, 0), format("Found map pieces"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(chartsDc, 1, 2, 1, 0), String.valueOf(noCharts) + "/" + String.valueOf(maxMaps), FontType.StatisticsLabel, 0);
-		
-		DrawingContext artifactsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 6);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(artifactsDc, 1, 2, 0, 0), format("Found monoliths"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(artifactsDc, 1, 2, 1, 0), String.valueOf(noInsights) + "/" + String.valueOf(maxInsights), FontType.StatisticsLabel, 0);
-		
-		DrawingContext secretsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 7);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(secretsDc, 1, 2, 0, 0), format("Found secrets"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(secretsDc, 1, 2, 1, 0), String.valueOf(noSecrets) + "/" + String.valueOf(maxSecrets), FontType.StatisticsLabel, 0);
-		
-		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 8);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(enemiesDc, 1, 2, 0, 0), format("Enemies left"), FontType.StatisticsLabel, 0);
-		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, new TileDrawingContext(enemiesDc, 1, 2, 1, 0), String.valueOf(enemiesLeft), FontType.StatisticsLabel, 0);
-		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, bottomContainerDrawingContext, "Press [ENTER]", FontType.PopUpInterface, 0);
+			Book controlHint = TextPageConstraints.fromDc(bottomContainerDrawingContext).textToBook("Press [ENTER]", fontTypeControlsHint);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, controlHint);
 		}
 		
 	}
 
+	private void renderLabelAndValue(GameContainer gc, Graphics g, DrawingContext dc, String label, String value) {
+		FontRefToFontTypeMap fontTypeSubHeader = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
+		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+		DrawingContext labelDc = new TileDrawingContext(dc, 1, 2, 0, 0);
+		DrawingContext valueDc = new TileDrawingContext(dc, 1, 2, 1, 0);
+		Book labelBook = TextPageConstraints.fromDc(labelDc).textToBook(label, fontTypeSubHeader);
+		Book valueBook = TextPageConstraints.fromDc(valueDc).textToBook(value, fontTypeInformational);
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, labelBook);
+		TextBookRendererUtils.renderVerticallyCenteredLabel(gc, g, valueBook);
+	}
+	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
 		
@@ -129,8 +144,4 @@ public class StatisticsState extends CosmodogAbstractState {
 		return CosmodogStarter.STATISTICS_STATE_ID;
 	}
 
-	public String format(String label) {
-		return label;
-	}
-	
 }

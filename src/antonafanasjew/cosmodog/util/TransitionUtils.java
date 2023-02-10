@@ -14,9 +14,17 @@ public class TransitionUtils {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
 		PhaseBasedAction fightAction = (PhaseBasedAction)actionRegistry.getRegisteredAction(AsyncActionType.FIGHT);
+		
+		if (fightAction == null) {
+			fightAction = (PhaseBasedAction)actionRegistry.getRegisteredAction(AsyncActionType.FIGHT_FROM_PLATFORM);
+		}
+		
 		if (fightAction != null) {
 			ActionRegistry fightActionPhaseRegistry = fightAction.getActionPhaseRegistry();
 			AbstractFightActionPhase fightActionPhase = (AbstractFightActionPhase)fightActionPhaseRegistry.getRegisteredAction(AsyncActionType.FIGHT);
+			if (fightActionPhase == null) {
+				fightActionPhase = (AbstractFightActionPhase)fightActionPhaseRegistry.getRegisteredAction(AsyncActionType.FIGHT_FROM_PLATFORM);
+			}
 			if (fightActionPhase != null) {
 				fightPhaseTransition = fightActionPhase.getFightPhaseTransition();
 			}

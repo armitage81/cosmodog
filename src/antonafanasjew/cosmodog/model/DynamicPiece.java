@@ -11,8 +11,36 @@ public abstract class DynamicPiece extends Piece {
 	
 	/**
 	 * Executed when the player tries to enter the tile with this piece.
+	 * This method will only be called if the dynamic piece is blocking, f.i. when the player hits on the hard stone.
+	 * Actual movement (f.i. when stepping on a plate or poison) will not call this method. Instead, the method interactWhenSteppingOn() will be called.
 	 */
-	public abstract void interact();
+	public void interact() {
+		
+	};
+	
+	/**
+	 * This method will be called only when stepping on a dynamic piece, such as a pressure plate or poison pool.
+	 * If the dynamic piece is blocking, then the interact() method is called instead.
+	 */
+	public void interactWhenSteppingOn() {
+		
+	}
+	
+	/**
+	 * This method will be called only when leacing on a dynamic piece, such as a pressure plate or poison pool.
+	 */
+	public void interactWhenLeaving() {
+		
+	}
+	
+	/**
+	 * Executed when the player approaches the piece.
+	 * This method is rarely needed so it provides an own empty implementation
+	 * to not have to implement it in every sub class.
+	 */
+	public void interactWhenApproaching() {
+		
+	}
 	
 	/**
 	 * Implementations should return the information whether the

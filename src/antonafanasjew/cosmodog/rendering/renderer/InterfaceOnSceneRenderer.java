@@ -6,19 +6,20 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.dying.DyingAction;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.TextBookRendererParameter;
-import antonafanasjew.cosmodog.rules.actions.async.AbstractNarrationAction;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
+import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
+import antonafanasjew.cosmodog.view.transitions.EndingTransition;
+import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 
 public class InterfaceOnSceneRenderer implements Renderer {
 
@@ -36,6 +37,7 @@ public class InterfaceOnSceneRenderer implements Renderer {
 	private Renderer cutsceneRenderer = new CutsceneRenderer();
 	private Renderer memoriesRenderer = new MemoriesRenderer();
 	private Renderer endingRenderer = new EndingRenderer();
+	private Renderer positionDebugInfoRenderer = new PositionDebugInfoRenderer();
 		
 	@Override
 	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
@@ -45,15 +47,8 @@ public class InterfaceOnSceneRenderer implements Renderer {
 		DrawingContext rightColumnDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().rightColumnDrawingContext();
 		DrawingContext topBarDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().topBarDrawingContext();
 		DrawingContext bottomBarDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().bottomBarDrawingContext();
-		DrawingContext supplyTrackerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().supplyTrackerDrawingContext();
-		DrawingContext timeDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().timeDrawingContext();
-		DrawingContext infobitsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().infobitsDrawingContext();
-		DrawingContext lifeDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().lifeDrawingContext();
-		
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		
-		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		//Draws the scene
 		sceneRenderer.render(gc, g, null);
@@ -95,21 +90,28 @@ public class InterfaceOnSceneRenderer implements Renderer {
 		//Draw an optional text frame if opened.
 		if (cosmodogGame.getTextFrame() != null) {
 			String text = cosmodogGame.getTextFrame().getText();
-			TextBookRendererParameter param = TextBookRendererParameter.instance(text, FontType.PopUp, TextBookRendererParameter.ALIGN_CENTER, TextBookRendererParameter.ALIGN_CENTER, 0);
+			FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+			
+			//Take care. This dc must match the one in the text frame renderer.
+			DrawingContext textFrameContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().textFrameContentDrawingContext();
+			Book textBook = TextPageConstraints.fromDc(textFrameContentDrawingContext).textToBook(text, fontRefToFontTypeMap);
+			
+			TextBookRendererParameter param = TextBookRendererParameter.instance(textBook, TextBookRendererParameter.ALIGN_CENTER, TextBookRendererParameter.ALIGN_CENTER);
 			textFrameRenderer.render(gc, g, param);
 		}
 		
 				
-		if (cosmodogGame.getOpenGameLog() != null) {
-			String category = cosmodogGame.getOpenGameLog().getGameLog().getCategory();
-			String id = cosmodogGame.getOpenGameLog().getGameLog().getIdInCategory();
-			if (category.equals("cutscenes")) {
-				if (id.equals("decision")) {
-					endingRenderer.render(gc, g, null);
-				} else {
-					cutsceneRenderer.render(gc, g, null);
-				}
-			} else if (category.equals("memories")|| category.equals("maryharper")) {
+		if (cosmodogGame.getOpenBook() != null) {
+			
+			MonolithTransition monolithTransition = cosmodogGame.getMonolithTransition();
+			DialogWithAlisaTransition dialogWithAlisaTransition = cosmodogGame.getDialogWithAlisaTransition();
+			EndingTransition endingTransition = cosmodogGame.getEndingTransition();
+			
+			if (endingTransition != null) {
+				endingRenderer.render(gc, g, null);
+			} else if (dialogWithAlisaTransition != null) {
+				cutsceneRenderer.render(gc, g, null);
+			} else if (monolithTransition != null) {
 				memoriesRenderer.render(gc, g, null);
 			} else {
 				gameLogRenderer.render(gc, g, null);
@@ -118,7 +120,8 @@ public class InterfaceOnSceneRenderer implements Renderer {
 
 		//Draws onscreen notifications
 		onScreenNotificationRenderer.render(gc, g, null);
-
+		
+		positionDebugInfoRenderer.render(gc, g, null);
 	}
 
 }

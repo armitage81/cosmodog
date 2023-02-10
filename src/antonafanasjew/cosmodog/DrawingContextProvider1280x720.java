@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog;
 
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
-import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.DrawingContextUtils;
@@ -14,7 +13,7 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 	
 	public static final float GAME_LOG_FRAME_WIDTH = 864;
 	public static final float GAME_LOG_FRAME_HEIGHT = 572;
-	public static final float GAME_LOG_TEXT_WIDTH = 800;
+	public static final float GAME_LOG_TEXT_WIDTH = 780;
 	public static final float GAME_LOG_TEXT_HEIGHT = 440;
 	
 	public DrawingContextProvider1280x720() {
@@ -50,7 +49,7 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 		
 		bottomBarDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 0, mapOffsetY + mapH, gameContainerDrawingContext.w(), gameContainerDrawingContext.h() - mapOffsetY - mapH);
 		
-		infobitsDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 582, 28, 56, 52);
+		infobitsDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 584, 28, 56, 52);
 		infobitsDrawingContext = DrawingContextUtils.difResFromRef(infobitsDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 
 		//Offset to the right, because text is not centered properly for some reason. 
@@ -83,19 +82,24 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 		inGameMenuHeaderDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 33, 1213, 61);
 		inGameMenuHeaderDrawingContext = DrawingContextUtils.difResFromRef(inGameMenuHeaderDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		DrawingContext inGameMenuContentDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 144, 1213, 431);
+		inGameMenuContentDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 144, 1213, 431);
 		inGameMenuContentDrawingContext = DrawingContextUtils.difResFromRef(inGameMenuContentDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
-		DrawingContext inGameMenuFooterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 625, 1213, 61);
+		inGameMenuFooterDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 33, 625, 1213, 61);
 		inGameMenuFooterDrawingContext = DrawingContextUtils.difResFromRef(inGameMenuFooterDrawingContext, ResolutionHolder.get().getWidth(), ResolutionHolder.get().getHeight());
 		
 		cutsceneDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
-		cutsceneTextDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 7, 0, 0, 1, 6);
-		cutsceneControlsDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 7, 0, 6, 1, 1);
+		cutsceneTextDrawingContext = new TileDrawingContext(cutsceneDrawingContext, 1, 1, 0, 0);
+		cutsceneControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
 
 		gameIntroTextFrameDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
-		gameIntroTextDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 7, 0, 0, 1, 6);
-		gameIntroControlsDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 7, 0, 6, 1, 1);
+		gameIntroTextDrawingContext = new TileDrawingContext(gameIntroTextFrameDrawingContext, 1, 1, 0, 0);
+		gameIntroControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
+		
+		gameOutroTextFrameDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 1000, 500);
+		gameOutroTextDrawingContext = new TileDrawingContext(gameOutroTextFrameDrawingContext, 1, 1, 0, 0);
+		gameOutroControlsDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
+		
 		
 		gameLogDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, GAME_LOG_FRAME_WIDTH, GAME_LOG_FRAME_HEIGHT);
 		
@@ -107,7 +111,6 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 		textFrameHeaderDrawingContext = new SimpleDrawingContext(textFrameDrawingContext, 50, 14, 400, 44);
 		textFrameContentDrawingContext = new SimpleDrawingContext(textFrameDrawingContext, 50, 100, 400, 200);
 		textFrameControlsDrawingContext = new SimpleDrawingContext(textFrameDrawingContext, 50, 340, 400, 44);
-		textFrameControlsDrawingContext = new CenteredDrawingContext(textFrameControlsDrawingContext, 30);
 		
 		debugConsoleHeaderDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
 		debugConsoleContentDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 1);
@@ -118,7 +121,20 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 		startScreenMenuDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 10, 10, 6, 7, 4, 2);
 		startScreenReferencesDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 10, 10, 0, 9, 10, 1);
 
+		logOverviewDrawingContext = new SimpleDrawingContext(null, 12 + 33, 13 + 144, 397, 406);
+		logOverviewDrawingContext = DrawingContextUtils.difResFromRef(logOverviewDrawingContext, SCENE_WIDTH, SCENE_HEIGHT);
+		logOverviewDrawingContext = new CenteredDrawingContext(logOverviewDrawingContext, 10);
+		
+		logContentDrawingContext = new SimpleDrawingContext(null, 441 + 33, 13 + 144, 759, 406);
+		logContentDrawingContext = DrawingContextUtils.difResFromRef(logContentDrawingContext, SCENE_WIDTH, SCENE_HEIGHT);
+		logContentDrawingContext = new CenteredDrawingContext(logContentDrawingContext, 10);
+		
 		secretFoundMessageDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 0);
+		
+		logPlayerHeaderDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 0);
+		logPlayerTitleDrawingContext = new TileDrawingContext(logPlayerHeaderDrawingContext, 1, 2, 0, 0);
+		logPlayerControlsHintDrawingContext = new TileDrawingContext(logPlayerHeaderDrawingContext, 1, 2, 0, 1);
+		logPlayerTextDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 6);
 		
 	}
 	

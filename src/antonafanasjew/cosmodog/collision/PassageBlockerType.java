@@ -16,6 +16,8 @@ public enum PassageBlockerType {
 	 */
 	BLOCKED("Blocked"),
 	
+	BLOCKED_ON_WHEELS("Blocked. [SHIFT] + [Arrow Key] to exit"),
+	
 	BLOCKED_BY_INACTIVE_PIECE("Blocked"),
 	
 	/**
@@ -26,7 +28,7 @@ public enum PassageBlockerType {
 	/**
 	 * The tile is not passable because the vehicle has no fuel.
 	 */
-	FUEL_EMPTY("No fuel"),
+	FUEL_EMPTY("No fuel. [SHIFT] + [Arrow Key] to exit"),
 
 	/**
 	 * The tile is out of the home region of an npc.
@@ -46,7 +48,7 @@ public enum PassageBlockerType {
 	/**
 	 * Passage blocked as the target tile has no rails. (Used for the big platform)
 	 */
-	BLOCKED_NO_RAILS("No rails"),
+	BLOCKED_NO_RAILS("No rails. [SHIFT] + [Arrow Key] to exit"),
 	
 	/**
 	 * Blocked by (mostly destroyable) obstacle set on the map as dynamic piece.

@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.gamelog.GameLogState;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.timing.Chronometer;
@@ -42,7 +42,9 @@ public class CosmodogGame extends CosmodogModel {
 
 	private transient TextFrame textFrame;
 	
-	private transient GameLogState openGameLog;
+	private transient Book openBook;
+	
+	private transient String openBookTitle;
 	
 	private transient DialogWithAlisaTransition dialogWithAlisaTransition;
 	
@@ -156,12 +158,20 @@ public class CosmodogGame extends CosmodogModel {
 		this.textFrame = textFrame;
 	}
 
-	public GameLogState getOpenGameLog() {
-		return openGameLog;
+	public Book getOpenBook() {
+		return openBook;
 	}
 	
-	public void setOpenGameLog(GameLogState openGameLog) {
-		this.openGameLog = openGameLog;
+	public void setOpenBook(Book openBook) {
+		this.openBook = openBook;
+	}
+	
+	public String getOpenBookTitle() {
+		return openBookTitle;
+	}
+	
+	public void setOpenBookTitle(String openBookTitle) {
+		this.openBookTitle = openBookTitle;
 	}
 	
 	public CollectibleTool getCurrentlyFoundTool() {

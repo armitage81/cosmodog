@@ -1,110 +1,46 @@
 package antonafanasjew.cosmodog.rendering.renderer.textbook;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
-import org.newdawn.slick.TrueTypeFont;
-
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
+import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.TextPlacer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.TextToWordsMapper;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Word;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.WordsToBookMapper;
 
 public class TextPageConstraints {
 	
-	private float width;
-	private float height;
+	private DrawingContext drawingContext;
+	
+	private TextToWordsMapper textToWordsMapper = new TextToWordsMapper();
+	private TextPlacer textPlacer = new TextPlacer();
+	private WordsToBookMapper wordsToBookMapper = new WordsToBookMapper();
 
-	public TextPageConstraints(float width, float height) {
-		this.width = width;
-		this.height = height;
+	public static TextPageConstraints fromDc(DrawingContext dc) {
+		return new TextPageConstraints(dc);
+	}
+	
+	public TextPageConstraints(DrawingContext drawingContext) {
+		this.drawingContext = drawingContext;
 	}
 	
 	public float getWidth() {
-		return width;
+		return drawingContext.w();
 	}
 	
 	public float getHeight() {
-		return height;
-	}
-		
-	private static Pattern SEPARATOR = Pattern.compile("[\t\\u0020]+");
-	
-	public List<List<String>> textSplitByLinesAndPages(String text, TrueTypeFont font) {
-		List<String> lines = textSplitByLines(text, font);
-		return textSplitByPages(lines, font);
+		return drawingContext.h();
 	}
 	
-	public List<String> textSplitByLines(String text, TrueTypeFont font) {
-		Iterable<String> wordsIterable = Splitter.on(SEPARATOR).split(text);
-		List<String> words = Lists.newArrayList(wordsIterable);
-		Integer lastWordIndex = words.size() - 1;
-		float lineWidth = 0;
-		String thisLine = "";
-		List<String> allLines = Lists.newArrayList();
-		
-		for (int i = 0; i < words.size(); i++) {
-			String word = words.get(i);
-			if (!word.equals("<br>") && !word.equals("<p>") && !word.equals("<div>")) {
-				thisLine = thisLine + word + " ";
-			}
-			lineWidth = font.getWidth(thisLine);
-			if (i < lastWordIndex) {
-				String nextWord = words.get(i + 1);
-				int nextWordLength = font.getWidth(nextWord);
-				if (word.equals("<br>") && thisLine.isEmpty() == false) {
-					allLines.add(thisLine);
-					thisLine = "";
-					lineWidth = 0;
-				} else if (word.equals("<p>") && thisLine.isEmpty() == false) {
-					allLines.add(thisLine);
-					allLines.add("");
-					thisLine = "";
-					lineWidth = 0;
-				} else if (word.equals("<div>")) {
-					allLines.add(thisLine);
-					allLines.add("<div>");
-					thisLine = "";
-					lineWidth = 0;
-				} else if (!nextWord.equals("<br>") && !nextWord.equals("<p>") && !nextWord.equals("<div>") && lineWidth + nextWordLength > this.width) {
-					allLines.add(thisLine.trim());
-					thisLine = "";
-					lineWidth = 0;
-				}
-			} else {
-				allLines.add(thisLine);
-				thisLine = "";
-				lineWidth = 0;
-			}
-		}
-		return allLines;
-		
+	public Book textToBook(String text, FontRefToFontTypeMap fontRefToFontTypeMap) {
+		return textToBook(text, fontRefToFontTypeMap, 0);
 	}
 	
-	public List<List<String>> textSplitByPages(List<String> lines, TrueTypeFont font) {
-		List<List<String>> pages = Lists.newArrayList();
-		
-		List<String> currentPage = Lists.newArrayList();
-		
-		for (int i = 0; i < lines.size(); i++) {
-			String line = lines.get(i);
-			if ((currentPage.size() + 1) * font.getLineHeight() > this.height) {
-				pages.add(currentPage);
-				currentPage = Lists.newArrayList();
-			} else if (line.equals("<div>")) {
-				pages.add(currentPage);
-				currentPage = Lists.newArrayList();
-			}
-			
-			if (!line.equals("<div>")) {
-				currentPage.add(line);
-			}
-		}
-		
-		if (!currentPage.isEmpty()) {
-			pages.add(currentPage);
-		}
-		
-		return pages;
-		
-		
+	public Book textToBook(String text, FontRefToFontTypeMap fontRefToFontTypeMap, int timeBetweenWords) {
+		List<Word> unprocessedWords = textToWordsMapper.map(text, fontRefToFontTypeMap);
+		List<Word> wordsWithControls = textPlacer.wordsWithNeededControlInstructions(unprocessedWords, drawingContext.w(), drawingContext.h());
+		Book book = wordsToBookMapper.convert(drawingContext, wordsWithControls, fontRefToFontTypeMap, timeBetweenWords);
+		return book;
 	}
 }

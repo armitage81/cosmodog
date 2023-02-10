@@ -3,13 +3,14 @@ package antonafanasjew.cosmodog.ingamemenu.logplayer;
 import java.util.List;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuInputState;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
-import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
+import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 
 public class LogPlayerInputState implements InGameMenuInputState {
 
@@ -18,8 +19,7 @@ public class LogPlayerInputState implements InGameMenuInputState {
 	private int seriesNumber = 0;
 	private int logNumber = 0;
 	
-	private int pages;
-	private int currentPage;
+	private Book currentLogBook;
 
 	public LogPlayerInputState() {
 		gameLogs = ApplicationContext.instance().getGameLogs();
@@ -72,10 +72,10 @@ public class LogPlayerInputState implements InGameMenuInputState {
 	}
 	
 	public void rotatePage() {
-		if (currentPage < pages - 1) {
-			currentPage++;
+		if (!currentLogBook.onLastPage()) {
+			currentLogBook.nextPage();
 		} else {
-			currentPage = 0;
+			currentLogBook.firstPage();
 		}
 	}
 	
@@ -96,21 +96,23 @@ public class LogPlayerInputState implements InGameMenuInputState {
 	}
 	
 	private void recalculatePages() {
+		
 		String seriesName = gameLogs.getSeriesNames().get(seriesNumber);
 		List<GameLog> gameLogsForSeries = gameLogs.getGameLogsForSeries(seriesName);
 		GameLog gameLog = gameLogsForSeries.get(logNumber);
-		GameLogState gameLogState = new GameLogState(gameLog, new TextPageConstraints(Constants.LOG_PLAYER_TEXT_WIDTH, Constants.LOG_PLAYER_TEXT_HEIGHT), FontType.GameLogPlayer);
-		this.pages = gameLogState.getPages();
-		this.currentPage = gameLogState.getCurrentPage();
+		String text = gameLog.getLogText();
+		DrawingContext textDc = DrawingContextProviderHolder.get().getDrawingContextProvider().logPlayerTextDrawingContext();
+		TextPageConstraints tpc = TextPageConstraints.fromDc(textDc);
+		currentLogBook = tpc.textToBook(text, FontRefToFontTypeMap.forNarration(), 0);
 	}
 
 	
 	
-	public int getPages() {
-		return pages;
+	public Book getCurrentLogBook() {
+		return currentLogBook;
 	}
 	
-	public int getCurrentPage() {
-		return currentPage;
+	public void setCurrentLogBook(Book currentLogBook) {
+		this.currentLogBook = currentLogBook;
 	}
 }

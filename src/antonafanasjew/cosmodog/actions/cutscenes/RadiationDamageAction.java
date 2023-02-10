@@ -16,6 +16,9 @@ public class RadiationDamageAction extends FixedLengthAsyncAction {
 
 	private static final long serialVersionUID = -5764923931787835528L;
 	
+	
+	public static final int DAMAGE = 5;
+	
 	public static class RadiationDamageTransition {
 
 		public int positionX;
@@ -42,7 +45,8 @@ public class RadiationDamageAction extends FixedLengthAsyncAction {
 	public void onTrigger() {
 		Player player = ApplicationContextUtils.getPlayer();
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_POISONED).play();
-		OverheadNotificationAction.registerOverheadNotification(player, "Radiation: -2");
+		OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> You are exposed to radiation.");
+		OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> " + DAMAGE);
 	}
 	
 	@Override
@@ -59,8 +63,8 @@ public class RadiationDamageAction extends FixedLengthAsyncAction {
 		transition = null;
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		if (player.getLife() > 2) {
-			player.decreaseLife(2);
+		if (player.getLife() > DAMAGE) {
+			player.decreaseLife(DAMAGE);
 		} else {
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.DEATH_BY_RADIATION, new DeathByRadiationAction(1000));
 		}		

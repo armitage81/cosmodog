@@ -175,7 +175,6 @@ public class XmlTiledMapReader implements TiledMapReader {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e);
 			throw e;
 		}
 		finally {

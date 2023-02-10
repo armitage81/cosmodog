@@ -10,10 +10,6 @@ public enum InputHandlerType {
 	 */
 	INPUT_HANDLER_NO_INPUT,
 	/**
-	 * Save and Restore controls (Ctrl. key is pressed).
-	 */	
-	INPUT_HANDLER_INGAME_CONTROL,
-	/**
 	 * Normal player character controls.
 	 */
 	INPUT_HANDLER_INGAME,

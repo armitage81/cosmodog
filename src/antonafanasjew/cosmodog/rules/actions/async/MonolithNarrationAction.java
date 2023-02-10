@@ -7,13 +7,14 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
-import antonafanasjew.cosmodog.model.gamelog.GameLogState;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 import antonafanasjew.cosmodog.view.transitions.MonolithTransition.ActionPhase;
@@ -28,23 +29,40 @@ public class MonolithNarrationAction extends AbstractNarrationAction {
 
 	@Override
 	public void onTrigger() {
+		
+		long referenceTime = System.currentTimeMillis();
+		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		DrawingContext cutsceneTextDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
-		cosmodogGame.setOpenGameLog(new GameLogState(getGameLog(), new TextPageConstraints(cutsceneTextDrawingContext.w(), cutsceneTextDrawingContext.h()), FontType.MemoryNarration));
+		String text = getGameLog().getLogText();
+		String title = getGameLog().getHeader();
+		DrawingContext textDc = DrawingContextProviderHolder.get().getDrawingContextProvider().cutsceneTextDrawingContext();
+		TextPageConstraints tpc = TextPageConstraints.fromDc(textDc);
+		Book book = tpc.textToBook(text, FontRefToFontTypeMap.forNarration(), 20);
+		
+		cosmodogGame.setOpenBook(book);
+		cosmodogGame.setOpenBookTitle(title);
 		
 		MonolithTransition transition = new MonolithTransition();
-		transition.phaseStart = System.currentTimeMillis();
-		transition.pageIsDynamic = true;
+		transition.phaseStart = referenceTime;		
 		cosmodogGame.setMonolithTransition(transition);
 	}
 
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
-		long timestamp = System.currentTimeMillis();
+		long referenceTime = System.currentTimeMillis();
+		
 		MonolithTransition transition = ApplicationContextUtils.getCosmodogGame().getMonolithTransition();
 		
 		ActionPhase prevActionPhase = transition.phase;
+		
+		if (Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) == false) {
+			if (transition.phase != ActionPhase.TEXT) {
+				transition.phase = ActionPhase.TEXT;
+				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
+			}
+		}
 		
 		if (transition.phase == ActionPhase.MONOLITH_FADES_IN) {
 			if (transition.phaseCompletion() >= 1.0f) {
@@ -57,7 +75,7 @@ public class MonolithNarrationAction extends AbstractNarrationAction {
 		} else if (transition.phase == ActionPhase.PICTURE_FADES) {
 			if (transition.phaseCompletion() >= 1.0f) {
 				transition.phase = ActionPhase.TEXT;
-				transition.pageStart = System.currentTimeMillis();
+				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 			}
 		} else {
@@ -67,7 +85,7 @@ public class MonolithNarrationAction extends AbstractNarrationAction {
 		}
 		
 		if (prevActionPhase != transition.phase) {
-			transition.phaseStart = timestamp;
+			transition.phaseStart = referenceTime;
 		}
 		
 	}
@@ -81,7 +99,7 @@ public class MonolithNarrationAction extends AbstractNarrationAction {
 	@Override
 	public boolean hasFinished() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		return cosmodogGame.getOpenGameLog() == null;
+		return cosmodogGame.getOpenBook() == null;
 	}
 
 }

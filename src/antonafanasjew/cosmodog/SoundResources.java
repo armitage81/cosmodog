@@ -108,6 +108,11 @@ public class SoundResources extends HashMap<String, Sound> {
 	 * Step on the pressure plate.
 	 */
 	public static final String SOUND_PRESSURE_PLATE = "sound.pressureplate";
+	
+	/**
+	 * Step on the letter plate.
+	 */
+	public static final String SOUND_LETTER_PLATE = "sound.letterplate";
 
 	/**
 	 * Drain poison.

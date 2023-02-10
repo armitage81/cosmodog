@@ -15,7 +15,12 @@ import antonafanasjew.cosmodog.topology.Rectangle;
  */
 public class Cam implements Serializable {
 
+
+
 	private static final long serialVersionUID = -8932980175152168004L;
+
+	public static final int ZOOM_FACTOR_FAR = 3;
+	public static final int ZOOM_FACTOR_CLOSE = 5;
 
 	/**
 	 * In-scene camera mode. The view must never leave the border of the scene.
@@ -195,7 +200,7 @@ public class Cam implements Serializable {
 	 * See also {@link #closerZoomLevel()}.
 	 */
 	public void zoomIn() {
-		zoom(closerZoomLevel());
+		zoom(ZOOM_FACTOR_CLOSE);
 	}
 	
 	/**
@@ -203,7 +208,7 @@ public class Cam implements Serializable {
 	 * See also {@link #furtherZoomLevel()}.
 	 */
 	public void zoomOut() {
-		zoom(furtherZoomLevel());
+		zoom(ZOOM_FACTOR_FAR);
 	}
 	
 	/**
@@ -216,6 +221,10 @@ public class Cam implements Serializable {
 	 * @param newZoomFactor New zoom factor. It won't be applied on the current zoom factor but on initial zoom factor.
 	 */
 	public void zoom(float newZoomFactor) {
+		
+		if (newZoomFactor == zoomFactor) {
+			return;
+		}
 		
 		float scaleFactor = newZoomFactor / this.zoomFactor;
 
@@ -236,36 +245,6 @@ public class Cam implements Serializable {
 		
 		this.view = PlacedRectangle.fromAnchorAndSize(newViewMinX, newViewMinY, this.view.width(), this.view.height());
 		
-	}
-
-	/*
-	 * Returns the next closer zoom level as compared to the current state without changing the state.
-	 * 
-	 * Take care: This is only an indication, the actual zoom factor state is not affected.
-	 * 
-	 * @return Closer zoom level.
-	 */
-	private float closerZoomLevel() {
-		float zoomLevel = zoomFactor;
-		if (zoomLevel < 4.0) {
-			zoomLevel *= 2;
-		}
-		return zoomLevel;
-	}
-
-	/*
-	 * Returns the next further zoom level as compared to the current state without changing the state.
-	 * 
-	 * Take care: This is only an indication, the actual zoom factor state is not affected.
-	 * 
-	 * @return Further zoom level.
-	 */
-	private float furtherZoomLevel() {
-		float zoomLevel = zoomFactor;
-		if (zoomLevel > 2.0) {
-			zoomLevel /= 2;
-		}
-		return zoomLevel;
 	}
 	
 	/**

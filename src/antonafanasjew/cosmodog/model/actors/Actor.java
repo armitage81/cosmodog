@@ -274,6 +274,24 @@ public abstract class Actor extends Piece {
 		setLifeLentForFrost(lifeLent);
 	}
 	
+	/**
+	 * When the player dies, he will be put back at start and his life will be reset.
+	 * We cannot update frost, hunger, thirst and life separately, as these updates would
+	 * trigger the life change listener every time. 
+	 * Player would count as dead and the dying action would trigger multiple times.
+	 * That's why we use this method to update everything at once.
+	 */
+	public void resetLife() {
+		int actualLifeBefore = getActualLife();
+		this.lifeLentForFrost = 0;
+		this.lifeLentForHunger = 0;
+		this.lifeLentForThirst = 0;
+		this.life = 10;
+		int actualLifeAfter = getActualLife();
+		composedLifeListener.onLifeChange(this, actualLifeBefore, actualLifeAfter);	
+		
+	}
+	
 	public void lookAtActor(Actor actor) {
 		DirectionType dirType = PositionUtils.targetDirection(this, actor);
 		this.setDirection(dirType);

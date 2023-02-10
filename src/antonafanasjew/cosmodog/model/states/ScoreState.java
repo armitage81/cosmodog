@@ -10,10 +10,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import com.google.common.base.Strings;
+
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.ScoreEntry;
 import antonafanasjew.cosmodog.model.ScoreList;
@@ -21,9 +23,10 @@ import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-
-import com.google.common.base.Strings;
 
 public class ScoreState extends CosmodogAbstractState {
 
@@ -46,20 +49,30 @@ public class ScoreState extends CosmodogAbstractState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
+		long referenceTime = System.currentTimeMillis();
+		
 		DrawingContext gameContainerDrawingContext = new SimpleDrawingContext(null, 0, 0, gc.getWidth(), gc.getHeight());
-		gameContainerDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
 		
-		DrawingContext titleDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 0);
-		DrawingContext recordsDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 1, 1, 5);
-		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 7, 0, 6, 1, 1);
+		DrawingContext textDrawingContext = new CenteredDrawingContext(gameContainerDrawingContext, 800, 500);
 		
-		TextBookRendererUtils.renderCenteredLabel(gc, g, titleDc, "RECORDS", FontType.RecordsTitleLabel, 0);
+		DrawingContext titleDc = new TileDrawingContext(textDrawingContext, 1, 7, 0, 0);
+		DrawingContext recordsDc = new TileDrawingContext(textDrawingContext, 1, 7, 0, 1, 1, 5);
+		DrawingContext pressEnterTextDc = new TileDrawingContext(gameContainerDrawingContext, 1, 10, 0, 9, 1, 1);
+		
+		FontRefToFontTypeMap fontTypeHeader = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.MainHeader);
+		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+		FontRefToFontTypeMap fontTypeControlsHint = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
+		
+		Book textBook;
+		textBook = TextPageConstraints.fromDc(titleDc).textToBook("RECORDS", fontTypeHeader);
+		TextBookRendererUtils.renderCenteredLabel(gc, g, textBook);
 		
 		Cosmodog cosmodog = ApplicationContext.instance().getCosmodog();
 		ScoreList scoreList = cosmodog.getScoreList();
 
 		if (scoreList.isEmpty()) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, recordsDc, "No records stored yet.", FontType.Records, 0);
+			textBook = TextPageConstraints.fromDc(recordsDc).textToBook("No records stored yet.", fontTypeInformational);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, textBook);
 		} else {
 			for (int i = 0; i < ScoreList.MAX_ELEMENTS; i++) {
 				String text = "";
@@ -69,13 +82,15 @@ public class ScoreState extends CosmodogAbstractState {
 				}
 				DrawingContext scoreEntryDc = new TileDrawingContext(recordsDc, 1, ScoreList.MAX_ELEMENTS, 0, i);
 				scoreEntryDc = new CenteredDrawingContext(scoreEntryDc, 3);
-				TextBookRendererUtils.renderCenteredLabel(gc, g, scoreEntryDc, text, FontType.Records, 0);
+				textBook = TextPageConstraints.fromDc(scoreEntryDc).textToBook(text, fontTypeInformational);
+				TextBookRendererUtils.renderCenteredLabel(gc, g, textBook);
 			}
 		}
 		
-		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;
+		boolean renderBlinkingHint = (referenceTime / 250 % 2) == 1;
 		if (renderBlinkingHint) {
-			TextBookRendererUtils.renderCenteredLabel(gc, g, pressEnterTextDc, "Press [ENTER]", FontType.PopUpInterface, 0);
+			Book controlHint = TextPageConstraints.fromDc(pressEnterTextDc).textToBook("Press [ENTER]", fontTypeControlsHint);
+			TextBookRendererUtils.renderCenteredLabel(gc, g, controlHint);
 		}
 
 

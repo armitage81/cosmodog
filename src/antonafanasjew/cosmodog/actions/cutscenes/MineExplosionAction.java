@@ -48,7 +48,7 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 		Player player = ApplicationContextUtils.getPlayer();
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EXPLOSION).play();
 		OverheadNotificationAction.registerOverheadNotification(player, "You stepped on a mine.");
-		OverheadNotificationAction.registerOverheadNotification(player, String.valueOf(Mine.DAMAGE_TO_PLAYER));
+		OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> " + String.valueOf(Mine.DAMAGE_TO_PLAYER));
 	}
 	
 	@Override

@@ -4,10 +4,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
+
+import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
@@ -22,8 +23,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-
-import com.google.common.collect.Lists;
 
 public class TowardsPlayerPathFinder extends AbstractPathFinder {
 
@@ -125,29 +124,29 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		final int finalX = x;
 		final int finalY = y;
 		
-		Log.debug("Players target position: " + x + "/" + y);
-		Log.debug("Actors Position: " + actor.getPositionX() + "/" + actor.getPositionY());
+		//Log.debug("Players target position: " + x + "/" + y);
+		//Log.debug("Actors Position: " + actor.getPositionX() + "/" + actor.getPositionY());
 		
 		//We calculate 12 closest positions to the player that are candidates to be the target of the enemy path.
 		int[] xs = new int[] {x,     x + 1, x    , x - 1, x - 1, x - 1, x + 1, x + 1, x - 2, x   ,  x + 2, x    };
 		int[] ys = new int[] {y - 1, y    , y + 1, y    , y - 1, y + 1, y + 1, y - 1, y    , y - 2, y    , y + 2};
 		
-		Log.debug("Calculating target candidates: ");
+		//Log.debug("Calculating target candidates: ");
 		
 
 		//All not blocked target candidates will be added to the list. It can be empty at the end, if all is blocked.
 		List<Position> notBlockedPositions = Lists.newArrayList();
 		for (int i = 0; i < xs.length; i++) {
-			Log.debug("Target candidate: " + xs[i] + "/" + ys[i]);
+			//Log.debug("Target candidate: " + xs[i] + "/" + ys[i]);
 			if (collisionValidator.collisionStatus(game, actor, map, xs[i], ys[i]).isPassable()) {
-				Log.debug("It is NOT blocked");
+				//Log.debug("It is NOT blocked");
 				notBlockedPositions.add(Position.fromCoordinates(xs[i], ys[i]));
 			} else {
-				Log.debug("It is blocked");
+				//Log.debug("It is blocked");
 			}
 		}
 		
-		Log.debug("Sorting remaining target candidates.");
+		//Log.debug("Sorting remaining target candidates.");
 		
 		//We sort the candidates list to have the best match as last element in the list (or an empty list)
 		Collections.sort(notBlockedPositions, new Comparator<Position>() {
@@ -157,28 +156,28 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 			 */
 			@Override
 			public int compare(Position p1, Position p2) {
-				Log.debug("Comparing positons: " + p1.getX() + "/" + p1.getY() + " and " + p2.getX() + "/" + p2.getY());
+				//Log.debug("Comparing positons: " + p1.getX() + "/" + p1.getY() + " and " + p2.getX() + "/" + p2.getY());
 				
 				float dp1 = distanceToActorTargetPosition(p1, Position.fromCoordinates(finalX, finalY));
-				Log.debug("Distance of p1 to player: " + dp1);
+				//Log.debug("Distance of p1 to player: " + dp1);
 				float dp2 = distanceToActorTargetPosition(p2, Position.fromCoordinates(finalX, finalY));
-				Log.debug("Distance of p2 to player: " + dp2);
+				//Log.debug("Distance of p2 to player: " + dp2);
 				
 				if (dp1 < dp2) {
-					Log.debug("Result is 1");
+					//Log.debug("Result is 1");
 					return 1;
 				} else if (dp1 > dp2) {
-					Log.debug("Result is -1");
+					//Log.debug("Result is -1");
 					return -1;
 				} else {
 					float de1 = distanceToActorTargetPosition(p1, Position.fromCoordinates(actor.getPositionX(), actor.getPositionY()));
-					Log.debug("Distance of p1 to actor: " + de1);
+					//Log.debug("Distance of p1 to actor: " + de1);
 					
 					float de2 = distanceToActorTargetPosition(p2, Position.fromCoordinates(actor.getPositionX(), actor.getPositionY()));
-					Log.debug("Distance of p2 to actor: " + de2);
+					//Log.debug("Distance of p2 to actor: " + de2);
 					
 					int result = (de1 < de2) ? 1 : ((de1 > de2) ? -1 : 0);
-					Log.debug("Result is " + result);
+					//Log.debug("Result is " + result);
 					return result;
 				}
 				
@@ -190,7 +189,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 			
 		});
 		
-		Log.debug("Target candidates after sort: " + notBlockedPositions.toString());
+		//Log.debug("Target candidates after sort: " + notBlockedPositions.toString());
 		
 		//We return null in case of an empty list or it's last element as the best candidate otherwise.
 		return notBlockedPositions.isEmpty() ? null : notBlockedPositions.get(notBlockedPositions.size() - 1);

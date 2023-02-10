@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
 import antonafanasjew.cosmodog.model.inventory.AmmoInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AntidoteInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.ArcheologistsJournalInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
@@ -71,6 +72,8 @@ public class InventoryItemFactory {
 			return new SkiInventoryItem();
 		} else if (toolType == ToolType.supplytracker) {
 			return new SupplyTrackerInventoryItem();
+		} else if (toolType == ToolType.archeologistsJournal) {
+			return new ArcheologistsJournalInventoryItem();
 		} else {
 			return null;
 		}

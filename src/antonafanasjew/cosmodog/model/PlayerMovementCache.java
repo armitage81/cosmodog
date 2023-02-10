@@ -7,6 +7,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.UnitType;
@@ -17,6 +27,7 @@ import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
@@ -25,14 +36,6 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 
 /**
  * This class holds values that need to be calculated only once per player movement.
@@ -62,6 +65,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private Piece closestPieceInterestingForDebugging;
 	
 	private Piece closestSupply;
+	private Piece closestMedkit;
 	
 	private boolean playerOnPlatform;
 	
@@ -75,18 +79,24 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private Multimap<Class<?>, DynamicPiece> visibleDynamicPieces = ArrayListMultimap.create();
 	
 	private Set<Enemy> enemiesInRange = Sets.newHashSet();
+	private Map<Enemy, Set<TiledObject>> enemiesInRangeWithRoofsOverThem = Maps.newHashMap();
+	
+	//Positions here are not tile positions but map piece positions.
+	private List<Position> insightChartPiecePositions = Lists.newArrayList();
 	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		recalculateClosestSupplyPosition(actor, x1, y1, x2, y2, applicationContext);
+		recalculateClosestSupplyAndMedkitPosition(actor, x1, y1, x2, y2, applicationContext);
 		recalculateclosestPieceInterestingForDebugging(actor, x1, y1, x2, y2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
-		recalculateRoofRegions(actor);
+		recalculateRoofRegions(actor, roofRegionsOverPlayer);
 		recalculateRoofRemovalBlockerRegions(actor);
 		recalculateDynamicPieces();
 		recalculateVisibleDynamicPieces();
 		recalculateInfobitsInGame();
 		recalculateEnemiesInRange();
+		recalculateRoofsOverEnemiesInRange();
+		recalculateRemainingInsightsMapPiecePositions();
 	}
 	
 	@Override
@@ -114,6 +124,61 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		}
 	}
 
+	private void recalculateRoofsOverEnemiesInRange() {
+		for (Enemy enemy : enemiesInRange) {
+			Set<TiledObject> roofs = Sets.newHashSet();
+			recalculateRoofRegions(enemy, roofs);
+			Set<TiledObject> oldRoofs = enemiesInRangeWithRoofsOverThem.get(enemy);
+			if (oldRoofs == null) {
+				if (roofs.isEmpty() == false) {
+					enemiesInRangeWithRoofsOverThem.put(enemy, roofs);
+				}
+			} else {
+				if (roofs.isEmpty() == false) {
+					enemiesInRangeWithRoofsOverThem.get(enemy).clear();
+					enemiesInRangeWithRoofsOverThem.get(enemy).addAll(roofs);
+				} else {
+					enemiesInRangeWithRoofsOverThem.remove(enemy);
+				}
+			}
+		}
+	}
+	
+	private void recalculateRemainingInsightsMapPiecePositions() {
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		List<Position> insightTilePositions = map.getMapPieces().entrySet().stream().filter(e -> {
+			Piece piece = e.getValue();
+			return 
+					piece instanceof Collectible 
+					&& 
+					((Collectible)piece).getCollectibleType() == CollectibleType.GOODIE
+					&& ((CollectibleGoodie)piece).getGoodieType() == GoodieType.insight;
+					
+		
+		}).map(e -> e.getKey()).collect(Collectors.toList());
+		
+		Function<Position, Position> tilePositionToChartPiecePosition = e -> {
+			int tilePositionX = (int)e.getX();
+			int tilePositionY = (int)e.getY();
+			
+			int chartPieceWidth = map.getWidth() / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
+			int chartPieceHeight = map.getHeight() / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
+			
+			int chartPiecePositionX = tilePositionX / chartPieceWidth;
+			int chartPiecePositionY = tilePositionY / chartPieceHeight;
+			
+			Position insightChartPiecePosition = Position.fromCoordinates(chartPiecePositionX, chartPiecePositionY);
+			return insightChartPiecePosition;
+			
+		};
+		
+		this.insightChartPiecePositions.clear();
+		this.insightChartPiecePositions.addAll(insightTilePositions
+				.stream()
+				.map(tilePositionToChartPiecePosition)
+				.collect(Collectors.toList()));
+	}
+	
 	private void recalculateDynamicPieces() {
 	
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
@@ -179,9 +244,9 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 //		}
 	}
 	
-	private void recalculateRoofRegions(Actor actor) {
+	private void recalculateRoofRegions(Actor actor, Set<TiledObject> roofs) {
 		
-		roofRegionsOverPlayer.clear();
+		roofs.clear();
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
@@ -189,8 +254,8 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		
 		for (TiledObject roofRegion : roofRegions.values()) {
 		
-			if (RegionUtils.pieceInRegion((Player)actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
-				roofRegionsOverPlayer.add(roofRegion);
+			if (RegionUtils.pieceInRegion(actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
+				roofs.add(roofRegion);
 			}
 		}
 		
@@ -217,15 +282,21 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		return closestSupply;
 	}
 	
+	public Piece getClosestMedkit() {
+		return closestMedkit;
+	}
+	
 	public Piece getClosestPieceInterestingForDebugging() {
 		return closestPieceInterestingForDebugging;
 	}
 
-	private void recalculateClosestSupplyPosition(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	private void recalculateClosestSupplyAndMedkitPosition(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
-		Collection<Piece> pieces = map.getSupplies().values();
-		List<Piece> piecesSortedByProximity = Lists.newArrayList(pieces);
-		Collections.sort(piecesSortedByProximity, new Comparator<Piece>() {
+		Collection<Piece> supplies = map.getSupplies().values();
+		Collection<Piece> medkits = map.getMedkits().values();
+		
+		
+		Comparator<Piece> proximityComparator = new Comparator<Piece>() {
 
 			@Override
 			public int compare(Piece o1, Piece o2) {
@@ -239,9 +310,16 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 				return distance1 > distance2 ? 1 : (distance1 < distance2 ? -1 : 0);
 			}
 
-		});
+		};
 		
-		closestSupply = piecesSortedByProximity.isEmpty() ? null : piecesSortedByProximity.get(0);
+		List<Piece> suppliesSortedByProximity = Lists.newArrayList(supplies);
+		Collections.sort(suppliesSortedByProximity, proximityComparator);
+		
+		List<Piece> medkitsSortedByProximity = Lists.newArrayList(medkits);
+		Collections.sort(medkitsSortedByProximity, proximityComparator);
+		
+		closestSupply = suppliesSortedByProximity.isEmpty() ? null : suppliesSortedByProximity.get(0);
+		closestMedkit = medkitsSortedByProximity.isEmpty() ? null : medkitsSortedByProximity.get(0);
 		
 	}
 
@@ -363,6 +441,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		return roofRegionsOverPlayer;
 	}
 	
+	public Map<Enemy, Set<TiledObject>> getEnemiesInRangeWithRoofsOverThem() {
+		return enemiesInRangeWithRoofsOverThem;
+	}
+	
 	public Set<TiledObject> getRoofRemovalBlockerRegionsOverPlayer() {
 		return roofRemovalBlockerRegionsOverPlayer;
 	}
@@ -383,5 +465,8 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		return enemiesInRange;
 	}
 	
+	public List<Position> getInsightChartPiecePositions() {
+		return insightChartPiecePositions;
+	}
 }
 

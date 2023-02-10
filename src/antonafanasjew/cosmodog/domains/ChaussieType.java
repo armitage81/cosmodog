@@ -33,6 +33,11 @@ public enum ChaussieType {
 	/**
 	 * Cannot move
 	 */
-	STATIONARY;
+	STATIONARY,
+	
+	
+	HOVERING
+	
+	;
 	
 }

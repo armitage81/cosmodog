@@ -1,12 +1,8 @@
 package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
-import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
-import antonafanasjew.cosmodog.actions.cutscenes.PauseDecoratorAction;
 import antonafanasjew.cosmodog.actions.fight.LastBossFightAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.globals.Constants;
@@ -29,10 +25,9 @@ public class DamageLastBossAction extends AbstractRuleAction {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 
+		//Check if the boss has been destroyed already.
 		boolean bossDestroyed = false;
-		
 		Enemy lastBoss = map.enemyAtTile(227, 254);
-		
 		if (lastBoss == null) {
 			bossDestroyed = true;
 		}
@@ -41,20 +36,19 @@ public class DamageLastBossAction extends AbstractRuleAction {
 		if (bossDestroyed) {
 			OverheadNotificationAction.registerOverheadNotification(player, "The guardian is already destroyed");
 		} else {
-			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
+			//Check if the player has all software chips.
 			SoftwareInventoryItem software = (SoftwareInventoryItem)player.getInventory().get(InventoryItemType.SOFTWARE);
 			if (software == null || software.getNumber() < Constants.NUMBER_OF_SOFTWARE_PIECES_IN_GAME) {
 				OverheadNotificationAction.registerOverheadNotification(player, "Needs " + String.valueOf(Constants.NUMBER_OF_SOFTWARE_PIECES_IN_GAME) + " software chips.");	
 			} else {
 				OverheadNotificationAction.registerOverheadNotification(player, "Software complete.");
 				OverheadNotificationAction.registerOverheadNotification(player, "Guardian deactivated.");
+				//Register the fight action for the Guardian.
 				AsyncAction asyncAction = new LastBossFightAction(lastBoss);
-				AsyncAction asyncAction2 = new PauseDecoratorAction(500, 500, asyncAction);
-				asyncAction2 = new CamCenteringDecoratorAction(1000, 227, 254, asyncAction, ApplicationContextUtils.getCosmodogGame());
+				//asyncAction = new PauseDecoratorAction(500, 500, asyncAction);
+				//asyncAction = new CamCenteringDecoratorAction(1000, 227, 254, asyncAction, ApplicationContextUtils.getCosmodogGame());
 				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 				actionRegistry.registerAction(AsyncActionType.FIGHT, asyncAction);
-				ActionRegistry actionRegistry2 = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
-				actionRegistry2.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction2);
 			}
 		}
 	}
