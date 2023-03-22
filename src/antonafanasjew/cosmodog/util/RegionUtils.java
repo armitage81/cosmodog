@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.util;
 
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.dynamicpieces.Block;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
@@ -15,6 +16,14 @@ public class RegionUtils {
 	public static final boolean pieceInRegion(Piece piece, TiledObject region, int tileWidth, int tileHeight) {
 		PlacedRectangle playerTileRectangle = pieceRectangle(piece, tileWidth, tileHeight);
 		
+		return CollisionUtils.intersects(playerTileRectangle, region);
+		
+	}
+	
+	public static final boolean tileInRegion(int tilePosX, int tilePosY, TiledObject region, int tileWidth, int tileHeight) {
+		//The actual piece implementation does not matter. We just need a type of a piece to satisfy the method signature.
+		Piece piece = Block.create(tilePosX, tilePosY);
+		PlacedRectangle playerTileRectangle = pieceRectangle(piece, tileWidth, tileHeight);
 		return CollisionUtils.intersects(playerTileRectangle, region);
 		
 	}

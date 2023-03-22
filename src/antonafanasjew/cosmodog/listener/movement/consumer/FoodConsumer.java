@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 public class FoodConsumer implements ResourceConsumer {
 
-	private static final int DEFAULT_FOOD_CONSUMPTION_PER_TURN = Constants.MINUTES_PER_TURN;
+	private static final int DEFAULT_FOOD_CONSUMPTION_PER_TURN = 2;
 	
 	@Override
 	public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {

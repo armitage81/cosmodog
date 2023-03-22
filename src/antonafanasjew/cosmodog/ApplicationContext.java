@@ -17,13 +17,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import antonafanasjew.cosmodog.collision.CollisionValidator;
-import antonafanasjew.cosmodog.collision.DefaultWaterValidator;
-import antonafanasjew.cosmodog.collision.DynamicPieceCollisionValidator;
-import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
-import antonafanasjew.cosmodog.collision.FeatureBoundCollisionValidator;
-import antonafanasjew.cosmodog.collision.GeneralCollisionValidatorForPlayer;
-import antonafanasjew.cosmodog.collision.InterCharacterCollisionValidator;
-import antonafanasjew.cosmodog.collision.OneBlocksAllCollisionValidator;
+import antonafanasjew.cosmodog.collision.validators.OneBlocksAllCollisionValidator;
+import antonafanasjew.cosmodog.collision.validators.moveable.GeneralCollisionValidatorForMoveable;
+import antonafanasjew.cosmodog.collision.validators.player.DynamicPieceCollisionValidatorForPlayer;
+import antonafanasjew.cosmodog.collision.validators.player.EnergyWallCollisionValidatorForPlayer;
+import antonafanasjew.cosmodog.collision.validators.player.FeatureBoundCollisionValidatorForPlayer;
+import antonafanasjew.cosmodog.collision.validators.player.GeneralCollisionValidatorForPlayer;
+import antonafanasjew.cosmodog.collision.validators.player.InterCharacterCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
 import antonafanasjew.cosmodog.controller.InGameGameLogInputHandler;
 import antonafanasjew.cosmodog.controller.InGameInputHandler;
@@ -112,6 +112,7 @@ import antonafanasjew.cosmodog.text.LetterBuilder;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapReader;
 import antonafanasjew.cosmodog.tiledmap.io.XmlTiledMapReader;
+import antonafanasjew.cosmodog.waterplaces.DefaultWaterValidator;
 
 /**
  * Note: The application context needs to be instantiated only from a OpenGL bound thread. Do not 
@@ -254,15 +255,21 @@ public class ApplicationContext {
 		user.setUserName("Armitage");
 		cosmodog.setUser(user);
 		
-		CollisionValidator collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(new GeneralCollisionValidatorForPlayer(), new InterCharacterCollisionValidator(null, Maps.newHashMap()), new EnergyWallCollisionValidator(), new DynamicPieceCollisionValidator())); 
+		List<CollisionValidator> delegateValidators = Lists.newArrayList();
+		delegateValidators.add(new GeneralCollisionValidatorForPlayer());
+		delegateValidators.add(new InterCharacterCollisionValidatorForPlayer());
+		delegateValidators.add(new EnergyWallCollisionValidatorForPlayer());
+		delegateValidators.add(new DynamicPieceCollisionValidatorForPlayer());
+		CollisionValidator collisionValidatorForPlayer = new OneBlocksAllCollisionValidator(delegateValidators); 
+		cosmodog.setCollisionValidatorForPlayer(new FeatureBoundCollisionValidatorForPlayer(collisionValidatorForPlayer));
+		CollisionValidator collisionValidatorForMoveable = new GeneralCollisionValidatorForMoveable();
+		cosmodog.setCollisionValidatorForMoveable(new FeatureBoundCollisionValidatorForPlayer(collisionValidatorForMoveable));
+
 		
 		PathFinder alertedPathFinder = new EnemyTypeSpecificAlertedPathFinder();
 		PathFinder patrolingPathFinder = new PatrolingPathFinder();
-		
 		PathFinder enemyAlertBasedDecisionPathFinder = new EnemyAlertBasedDecisionPathFinder(patrolingPathFinder, alertedPathFinder);
-		
 		cosmodog.setPathFinder(enemyAlertBasedDecisionPathFinder);
-		cosmodog.setCollisionValidator(new FeatureBoundCollisionValidator(collisionValidator));
 		
 		cosmodog.setWaterValidator(new DefaultWaterValidator());
 		
@@ -476,6 +483,13 @@ public class ApplicationContext {
 		
 		Sound textTyping = new Sound("data/sound/text.wav");
 		
+		Sound sliding = new Sound("data/sound/slide.wav");
+		
+		Sound secretDoorSpikes = new Sound("data/sound/secretdoor_spikes.wav");
+		Sound secretDoorHydraulics = new Sound("data/sound/secretdoor_hydraulics.wav");
+		Sound secretDoorEnergy = new Sound("data/sound/secretdoor_energy.wav");
+		Sound secretDoorWall = new Sound("data/sound/secretdoor_wall.wav");
+		
 		
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
@@ -553,6 +567,11 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_CUTSCENE_ALISASMESSAGE, alisasMessage);
 		
 		this.getSoundResources().put(SoundResources.SOUND_TEXT_TYPING, textTyping);
+		this.getSoundResources().put(SoundResources.SOUND_SLIDING, sliding);
+		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_SPIKES, secretDoorSpikes);
+		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS, secretDoorHydraulics);
+		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_ENERGY, secretDoorEnergy);
+		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_WALL, secretDoorWall);
 		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

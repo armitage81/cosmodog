@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -16,6 +17,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.mapmodifications.MapModification;
 import antonafanasjew.cosmodog.model.mapmodifications.MapModificationImpl;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
@@ -43,6 +45,8 @@ public class CosmodogMap extends CosmodogModel {
 	private Set<Piece> effectPieces = Sets.newHashSet();
 	private Set<Piece> markedTilePieces = Sets.newHashSet();
 	private Multimap<Class<?>, DynamicPiece> dynamicPieces = ArrayListMultimap.create();
+	
+	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
 	
 	private MapModification mapModification = new MapModificationImpl();
 	
@@ -288,4 +292,7 @@ public class CosmodogMap extends CosmodogModel {
 		return dynamicPieces;
 	}
 
+	public List<MoveableGroup> getMoveableGroups() {
+		return moveableGroups;
+	}
 }

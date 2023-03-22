@@ -38,6 +38,6 @@ public abstract class AbstractCollisionValidator implements CollisionValidator {
 		
 	}
 
-	protected abstract CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY);
+	public abstract CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY);
 
 }

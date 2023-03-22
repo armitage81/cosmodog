@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.util;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -35,6 +38,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Effect;
 import antonafanasjew.cosmodog.model.Mark;
+import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.User;
@@ -44,6 +48,7 @@ import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
 import antonafanasjew.cosmodog.model.dynamicpieces.AlienBaseBlockade;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
+import antonafanasjew.cosmodog.model.dynamicpieces.Block;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door;
@@ -55,6 +60,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.LetterPlate;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
+import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
@@ -91,10 +97,12 @@ import antonafanasjew.cosmodog.rules.actions.gameprogress.SwitchOnVentilationToD
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseGateSequenceAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.UpdateAlienBaseTeleportSequenceAction;
 import antonafanasjew.cosmodog.rules.actions.pickupitems.PickupKeyAction;
+import antonafanasjew.cosmodog.rules.actions.sokoban.OperateSecretDoorsInSokobanAction;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventPieceInteraction;
+import antonafanasjew.cosmodog.rules.events.GameEventTeleported;
 import antonafanasjew.cosmodog.rules.factories.PoisonDeactivationRuleFactory;
 import antonafanasjew.cosmodog.rules.factories.TeleportRuleFactory;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
@@ -106,7 +114,9 @@ import antonafanasjew.cosmodog.rules.triggers.NewGameTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.InvertedTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.OrTrigger;
+import antonafanasjew.cosmodog.rules.triggers.logical.TrueTrigger;
 import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
@@ -192,11 +202,78 @@ public class InitializationUtils {
 		initializeTiledMapObjects(customTiledMap, map);
 		initializeEnemies(customTiledMap, map);
 		initializeDynamicTiles(customTiledMap, map);
-		//This method relies on the enemy initialization, so don't shift it before the enemy initialization method.
+		//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
+		initializeMoveableGroups(customTiledMap, map);
+		//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
 		initializeCollectibles(customTiledMap, map);
 
 		return map;
 
+	}
+
+	private static void initializeMoveableGroups(CustomTiledMap customTiledMap, CosmodogMap map) {
+		TiledObjectGroup moveableGroupObjectGroup = customTiledMap.getObjectGroups().get("MoveableGroups");
+		Map<String, TiledObject> moveableGroupRegions = moveableGroupObjectGroup.getObjects();
+		Set<String> moveableGroupRegionNames = moveableGroupRegions.keySet();
+		for (String moveableGroupRegionName : moveableGroupRegionNames) {
+			
+			TiledObject moveableGroupRegion = moveableGroupRegions.get(moveableGroupRegionName);
+			
+			List<MoveableDynamicPiece> moveablesInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof MoveableDynamicPiece))
+					.filter(e -> RegionUtils.pieceInRegion(e, moveableGroupRegion, map.getTileWidth(), map.getTileHeight()))
+					.map(e -> (MoveableDynamicPiece)e)
+					.collect(Collectors.toList());
+
+			List<Position> originalPositions = moveablesInRegion
+					.stream()
+					.map(e -> Position.fromCoordinates(e.getPositionX(), e.getPositionY()))
+					.collect(Collectors.toList());
+			
+			
+			List<Position> sokobanGoalsPositions = Lists.newArrayList();
+			
+			String sokobanGoalsX = moveableGroupRegion.getProperties().get("sokobanGoalsX");
+			String sokobanGoalsY = moveableGroupRegion.getProperties().get("sokobanGoalsY");
+			
+			if (sokobanGoalsX != null && sokobanGoalsY != null) {
+				List<Integer> positionsX = Arrays.asList(sokobanGoalsX.split(",")).stream().map(e -> Integer.valueOf(e)).collect(Collectors.toList());
+				List<Integer> positionsY = Arrays.asList(sokobanGoalsY.split(",")).stream().map(e -> Integer.valueOf(e)).collect(Collectors.toList());
+				for (int i = 0; i < positionsX.size(); i++) {
+					int posX = positionsX.get(i);
+					int posY = positionsY.get(i);
+					sokobanGoalsPositions.add(Position.fromCoordinates(posX, posY));
+				}
+
+			}
+			
+			List<SecretDoor> secretDoorsInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof SecretDoor))
+					.filter(e -> RegionUtils.pieceInRegion(e, moveableGroupRegion, map.getTileWidth(), map.getTileHeight()))
+					.map(e -> (SecretDoor)e)
+					.collect(Collectors.toList());
+
+			
+			int x = Integer.valueOf(moveableGroupRegion.getProperties().get("playerStartPosX"));
+			int y = Integer.valueOf(moveableGroupRegion.getProperties().get("playerStartPosY"));
+			Position playerStartPosition = Position.fromCoordinates(x, y);
+			
+			MoveableGroup moveableGroup = new MoveableGroup();
+			moveableGroup.setRegion(moveableGroupRegion);
+			moveableGroup.getMoveables().addAll(moveablesInRegion);
+			moveableGroup.getOriginalPositions().addAll(originalPositions);
+			moveableGroup.getGoalPositions().addAll(sokobanGoalsPositions);
+			moveableGroup.getSecretDoors().addAll(secretDoorsInRegion);
+			moveableGroup.setPlayerStartPosition(playerStartPosition);
+			map.getMoveableGroups().add(moveableGroup);
+			
+		}
 	}
 
 	private static void initializeCollectibles(CustomTiledMap customTiledMap, CosmodogMap map) {
@@ -298,6 +375,30 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(k, l, dynamicTilesLayerIndex);
 
+				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_BLOCK.getTileId()) {
+					Block block = Block.create(k, l);
+					block.setStil(Block.STIL_BLOCK);
+					map.getDynamicPieces().put(Block.class, block);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_CONTAINER.getTileId()) {
+					Block block = Block.create(k, l);
+					block.setStil(Block.STIL_CONTAINER);
+					map.getDynamicPieces().put(Block.class, block);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_ICE.getTileId()) {
+					Block block = Block.create(k, l);
+					block.setStil(Block.STIL_ICE);
+					map.getDynamicPieces().put(Block.class, block);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_PLANT.getTileId()) {
+					Block block = Block.create(k, l);
+					block.setStil(Block.STIL_PLANT);
+					map.getDynamicPieces().put(Block.class, block);
+				}
+				
 				if (tileId == TileType.DYNAMIC_PIECE_GUIDETERMINAL.getTileId()) {
 					Terminal terminal = Terminal.create(k, l);
 					map.getDynamicPieces().put(Terminal.class, terminal);
@@ -341,6 +442,30 @@ public class InitializationUtils {
 				if (tileId == TileType.DYNAMIC_PIECE_GATE.getTileId()) {
 					Gate gate = Gate.create(k, l);
 					map.getDynamicPieces().put(Gate.class, gate);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_SPIKES.getTileId()) {
+					SecretDoor secretDoor = SecretDoor.create(k, l);
+					secretDoor.setStil(SecretDoor.STIL_SPIKES);
+					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_HYDRAULICS.getTileId()) {
+					SecretDoor secretDoor = SecretDoor.create(k, l);
+					secretDoor.setStil(SecretDoor.STIL_HYDRAULICS);
+					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_ENERGY.getTileId()) {
+					SecretDoor secretDoor = SecretDoor.create(k, l);
+					secretDoor.setStil(SecretDoor.STIL_ENERGY);
+					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+				}
+				
+				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_WALL.getTileId()) {
+					SecretDoor secretDoor = SecretDoor.create(k, l);
+					secretDoor.setStil(SecretDoor.STIL_WALL);
+					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {
@@ -711,6 +836,12 @@ public class InitializationUtils {
 			rule = new Rule(Rule.RULE_FOUND_SECRET + "." + secretObjectKey, Lists.newArrayList(GameEventChangedPosition.class), secretEntranceTrigger, action, Rule.RULE_PRIORITY_LATEST);
 			ruleBook.put(rule.getId(), rule);
 		}
+		
+		//Check sokoban solution rule
+		RuleTrigger sokobanSolutionCheckTrigger = new TrueTrigger();
+		RuleAction sokobanSolutionAction = new OperateSecretDoorsInSokobanAction();
+		rule = new Rule(Rule.RULE_OPERATE_SECRET_DOORS_IN_SOKOBAN, Lists.newArrayList(GameEventChangedPosition.class, GameEventTeleported.class), sokobanSolutionCheckTrigger, sokobanSolutionAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
 		
 		cosmodogGame.setRuleBook(ruleBook);
 

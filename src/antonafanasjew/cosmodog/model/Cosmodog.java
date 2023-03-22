@@ -6,7 +6,6 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameLifeCycle;
 import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
-import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
@@ -17,6 +16,7 @@ import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.sight.SightModifier;
+import antonafanasjew.cosmodog.waterplaces.WaterValidator;
 
 import com.google.common.collect.Maps;
 
@@ -32,7 +32,8 @@ public class Cosmodog extends CosmodogModel {
     private User user;
     private CosmodogGame cosmodogGame;
     private ScoreList scoreList;
-	private CollisionValidator collisionValidator;
+	private CollisionValidator collisionValidatorForPlayer;
+	private CollisionValidator collisionValidatorForMoveable;
     private WaterValidator waterValidator;
     private SightModifier sightModifier;
     private PathFinder pathFinder;
@@ -88,11 +89,21 @@ public class Cosmodog extends CosmodogModel {
     public void setScoreList(ScoreList scoreList) {
         this.scoreList = scoreList;
     }
-	public CollisionValidator getCollisionValidator() {
-		return collisionValidator;
+
+    public CollisionValidator getCollisionValidatorForPlayer() {
+		return collisionValidatorForPlayer;
 	}
-	public void setCollisionValidator(CollisionValidator collisionValidator) {
-		this.collisionValidator = collisionValidator;
+    
+    public void setCollisionValidatorForPlayer(CollisionValidator collisionValidatorForPlayer) {
+		this.collisionValidatorForPlayer = collisionValidatorForPlayer;
+	}
+    
+    public CollisionValidator getCollisionValidatorForMoveable() {
+		return collisionValidatorForMoveable;
+	}
+    
+    public void setCollisionValidatorForMoveable(CollisionValidator collisionValidatorForMoveable) {
+		this.collisionValidatorForMoveable = collisionValidatorForMoveable;
 	}
 
 	public GameLifeCycle getGameLifeCycle() {

@@ -1,0 +1,127 @@
+package antonafanasjew.cosmodog.structures;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Lists;
+
+import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
+import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.RegionUtils;
+
+/**
+ * Moveable objects on the map, such as boxes, can be pushed by the player, but not pulled.
+ * 
+ * By pushing objects, the player can enter a deadlock state when it is not possible to move a moveable object.
+ * This can happen when a boxed is pushed in a corner.
+ * 
+ * We don't want such deadlocks to be permanent, so in each puzzle with moveables, there will be a button which resets
+ * the moveable objects to their original places.
+ * 
+ * This approach is only possible, if we know which moveable objects belong to the same set.
+ * We group them via the tiled map regions in the object group 'MoveableSets'.
+ * 
+ * Each of the moveable sets has a region the set is assigned to, a set of moveables including their original positions
+ * and a reset button.
+ * 
+ * This class represents such a structure.
+ * 
+ */
+public class MoveableGroup implements Serializable {
+	
+	private static final long serialVersionUID = 2146440333970844578L;
+	private TiledObject region;
+	private List<MoveableDynamicPiece> moveables = Lists.newArrayList();
+	private List<Position> originalPositions = Lists.newArrayList();
+	private List<Position> goalPositions = Lists.newArrayList();
+	private Position playerStartPosition;
+	private List<SecretDoor> secretDoors = Lists.newArrayList();
+	private boolean solvedStatus = false;
+	
+	
+	public TiledObject getRegion() {
+		return region;
+	}
+	
+	public void setRegion(TiledObject region) {
+		this.region = region;
+	}
+	
+	public List<MoveableDynamicPiece> getMoveables() {
+		return moveables;
+	}
+	
+	public List<Position> getOriginalPositions() {
+		return originalPositions;
+	}
+	
+	public List<Position> getGoalPositions() {
+		return goalPositions;
+	}
+	
+	public Position getPlayerStartingPosition() {
+		return playerStartPosition;
+	}
+	
+	public void setPlayerStartPosition(Position playerStartPosition) {
+		this.playerStartPosition = playerStartPosition;
+	}
+	
+	public List<SecretDoor> getSecretDoors() {
+		return secretDoors;
+	}
+	
+	public boolean solved() {
+		List<Position> moveablePositions = moveables
+				.stream()
+				.map(e -> Position.fromCoordinates(e.getPositionX(), e.getPositionY()))
+				.collect(Collectors.toList())
+		;
+		
+		return moveablePositions.containsAll(goalPositions);
+	}
+	
+	public static void resetMoveableGroup(CosmodogGame game) {
+		Player player = game.getPlayer();
+		CosmodogMap map = game.getMap();
+		Cam cam = game.getCam();
+		MoveableGroup moveableGroupAroundPlayer = null;
+		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
+		for (MoveableGroup moveableGroup : moveableGroups) {
+			if (RegionUtils.pieceInRegion(player, moveableGroup.getRegion(), map.getTileWidth(), map.getTileHeight())) {
+				moveableGroupAroundPlayer = moveableGroup;
+				break;
+			}
+		}
+		
+		if (moveableGroupAroundPlayer != null) {
+			for (int i = 0; i < moveableGroupAroundPlayer.moveables.size(); i++) {
+				MoveableDynamicPiece moveable = moveableGroupAroundPlayer.getMoveables().get(i);
+				Position originalPosition = moveableGroupAroundPlayer.getOriginalPositions().get(i);
+				moveable.setPositionX((int)originalPosition.getX());
+				moveable.setPositionY((int)originalPosition.getY());
+			}
+			player.beginTeleportation();
+			Position playerStartingPosition = moveableGroupAroundPlayer.getPlayerStartingPosition();
+			player.setPositionX((int)playerStartingPosition.getX());
+			player.setPositionY((int)playerStartingPosition.getY());
+			player.endTeleportation();
+			cam.focusOnPiece(map, 0, 0, player);
+		}
+	}
+
+	public void setSolvedStatus(boolean solvedStatus) {
+		this.solvedStatus = solvedStatus;
+	}
+	
+	public boolean isSolvedStatus() {
+		return solvedStatus;
+	}
+}

@@ -37,6 +37,7 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -49,6 +50,7 @@ import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rules.actions.async.InGameMenuAction;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
@@ -69,7 +71,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		CosmodogMap map = cosmodogGame.getMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
-		CollisionValidator collisionValidator = cosmodog.getCollisionValidator();
+		CollisionValidator collisionValidator = cosmodog.getCollisionValidatorForPlayer();
 
 		//Verify that input is allowed.
 		if (cosmodogGame.getActionRegistry().inputBlocked()) {
@@ -232,6 +234,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
+					
+					
+					DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(newX, newY);
 					
 					int timePassed = Constants.MINUTES_PER_TURN;
 					AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, false);
@@ -453,6 +458,12 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (input.isKeyPressed(Input.KEY_Q)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.OPTIONS_INGAME_MENU_FRAME)));
+		}
+		
+		if (input.isKeyPressed(Input.KEY_R)) {
+			MoveableGroup.resetMoveableGroup(cosmodogGame);
+			OverheadNotificationAction.registerOverheadNotification(player, "Reset");
+			
 		}
 
 	}

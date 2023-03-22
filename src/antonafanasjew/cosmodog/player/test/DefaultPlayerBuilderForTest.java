@@ -30,8 +30,8 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
-		player.setPositionX(203);
-		player.setPositionY(53);
+		player.setPositionX(180);
+		player.setPositionY(60);
 		
 		player.getGameProgress().setTurnsTillWormAppears(7);
 

@@ -11,7 +11,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
-import antonafanasjew.cosmodog.collision.EnergyWallCollisionValidator;
+import antonafanasjew.cosmodog.collision.validators.player.EnergyWallCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -47,7 +47,7 @@ public class EffectsRenderer extends AbstractRenderer {
 	
 
 	//We need it to calculate whether to render the energy wall effect or not.
-	private EnergyWallCollisionValidator energyWallCollisionValidator = new EnergyWallCollisionValidator();
+	private EnergyWallCollisionValidatorForPlayer energyWallCollisionValidator = new EnergyWallCollisionValidatorForPlayer();
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {

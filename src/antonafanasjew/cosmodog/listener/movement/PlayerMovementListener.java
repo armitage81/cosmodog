@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -13,7 +14,6 @@ import antonafanasjew.cosmodog.actions.cutscenes.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
-import antonafanasjew.cosmodog.collision.WaterValidator;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -38,12 +38,15 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import antonafanasjew.cosmodog.util.NotificationUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.waterplaces.WaterValidator;
 
 /**
  * Note: this class is not thread-save

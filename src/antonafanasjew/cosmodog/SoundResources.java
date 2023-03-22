@@ -201,4 +201,11 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_CUTSCENE_ALISASMESSAGE = "sound.cutscene.alisasmessage";
 
 	public static final String SOUND_TEXT_TYPING = "sound.texttyping";
+	
+	public static final String SOUND_SLIDING = "sound.sliding";
+	
+	public static final String SOUND_SECRET_DOOR_SPIKES = "sound.secretdoor.spikes";
+	public static final String SOUND_SECRET_DOOR_HYDRAULICS = "sound.secretdoor.hydraulics";
+	public static final String SOUND_SECRET_DOOR_ENERGY = "sound.secretdoor.energy";
+	public static final String SOUND_SECRET_DOOR_WALL = "sound.secretdoor.wall";
 }

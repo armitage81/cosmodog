@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.dynamicpieces.AlienBaseBlockade;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
+import antonafanasjew.cosmodog.model.dynamicpieces.Block;
 import antonafanasjew.cosmodog.model.dynamicpieces.Crate;
 import antonafanasjew.cosmodog.model.dynamicpieces.CrumbledWall;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door;
@@ -26,10 +27,12 @@ import antonafanasjew.cosmodog.model.dynamicpieces.LetterPlate;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
+import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
@@ -88,6 +91,50 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
 
+		Collection<DynamicPiece> blocks = dynamicPieces.get(Block.class);
+
+		for (DynamicPiece piece : blocks) {
+			
+			Block block = (Block) piece;
+
+			String animationIdPrefix = "dynamicPiece";
+			String animationIdStil = block.getStil().substring(0, 1).toUpperCase() + block.getStil().substring(1);
+			String animationIdPrefixIndex = String.valueOf(block.getShapeNumber());
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = block.animationSuffixFromState();
+			String animationId = animationIdPrefix + animationIdStil + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+
+			float pieceOffsetX = 0.0f;
+			float pieceOffsetY = 0.0f;
+			
+			ActorTransition moveableTransition = cosmodogGame.getActorTransitionRegistry().get(block.asActor());
+			boolean moveableIsMoving = moveableTransition != null;
+			if (moveableIsMoving) {
+				pieceOffsetX = tileWidth * moveableTransition.getTransitionalOffsetX();
+				pieceOffsetY = tileHeight * moveableTransition.getTransitionalOffsetY();
+			}
+			
+			applicationContext.getAnimations().get(animationId).draw(
+					((piece.getPositionX() - tileNoX) * tileWidth) + pieceOffsetX, 
+					((piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight) + pieceOffsetY
+			);
+		}
+		
+		Collection<DynamicPiece> secretDoors = dynamicPieces.get(SecretDoor.class);
+
+		for (DynamicPiece piece : secretDoors) {
+			
+			SecretDoor door = (SecretDoor) piece;
+
+			String animationIdPrefix = "dynamicPieceSecretDoor";
+			String animationIdStil = door.getStil().substring(0, 1).toUpperCase() + door.getStil().substring(1);
+			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationSuffix = door.animationSuffixFromState();
+			String animationId = animationIdPrefix + animationIdStil + animationIdInfix + animationSuffix;
+			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+
+		}
+		
 		Collection<DynamicPiece> guideTerminals = dynamicPieces.get(Terminal.class);
 
 		for (DynamicPiece piece : guideTerminals) {
