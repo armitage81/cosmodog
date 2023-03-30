@@ -181,5 +181,9 @@ public class Features {
 	public Map<String, Boolean> getFeatureFlags() {
 		return featureFlags;
 	}
+	
+	public void setFeature(String feature, boolean flag) {
+		this.featureFlags.put(feature, flag);
+	}
 
 }

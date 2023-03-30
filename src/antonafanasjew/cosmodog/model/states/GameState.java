@@ -35,11 +35,22 @@ import antonafanasjew.cosmodog.util.GameEventUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
 
+/**
+ * This class implements the loop where the actual game takes place.
+ * 
+ * It shows the scene, the player, the enemies and the terrain.
+ * It listens to keyboard controls and updates the player positions.
+ * 
+ * In-game menus, like map, inventory etc. are also handled here.
+ * 
+ * Don't mix it with the base class GameState from the slick2d framework.
+ *
+ */
 public class GameState extends CosmodogAbstractState {
 
 	private boolean firstUpdate;
 
-	private ApplicationContext applicationContext = null;
+	private ApplicationContext applicationContext;
 
 	private Renderer interfaceOnSceneRenderer;
 

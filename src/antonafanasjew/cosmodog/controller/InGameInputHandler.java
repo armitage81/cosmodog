@@ -19,6 +19,7 @@ import antonafanasjew.cosmodog.actions.fight.FightFromPlatformAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.tooltip.WeaponTooltipAction;
+import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -37,7 +38,6 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
-import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -72,6 +72,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		CollisionValidator collisionValidator = cosmodog.getCollisionValidatorForPlayer();
+		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
 
 		//Verify that input is allowed.
 		if (cosmodogGame.getActionRegistry().inputBlocked()) {
@@ -201,7 +202,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     				}
     			};
     			
-    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
+    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
     		
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newX, newY);
