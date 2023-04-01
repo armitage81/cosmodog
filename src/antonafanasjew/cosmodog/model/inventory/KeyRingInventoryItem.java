@@ -1,13 +1,16 @@
 package antonafanasjew.cosmodog.model.inventory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
-import antonafanasjew.cosmodog.model.upgrades.Key;
-
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
+import antonafanasjew.cosmodog.model.upgrades.Key;
 
 
 public class KeyRingInventoryItem extends InventoryItem {
@@ -49,7 +52,17 @@ public class KeyRingInventoryItem extends InventoryItem {
 
 	@Override
 	public String description() {
-		return "This is the collection of all found keys and key cards.";
+		
+		List<String> keyDescriptions = new ArrayList<>();
+		for (DoorType doorType : keys.keySet()) {
+			keyDescriptions.add(" - " + doorType.getKeyDescription());
+		}
+		
+		Collections.sort(keyDescriptions);
+		
+		String keyDescriptionsText = Joiner.on("<br>").join(keyDescriptions);
+		
+		return "Your keys:" + "<p>" + keyDescriptionsText;
 	}
 
 	public List<DoorType> getDoorTypesOrder() {

@@ -31,15 +31,15 @@ MACHINEGUN_AMMO_DESCRIPTION;CollectibleAmmo_machinegun;0;machinegunAmmoDescripti
 RPG_AMMO_DESCRIPTION;CollectibleAmmo_rpg;0;rpgAmmoDescription;You found RPG ammunition.;40
 BOTTLE_DESCRIPTION;bottle;ANY;bottleDescription;You found a bottle. Your water capacity increases.;40
 FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;ANY;foodcompartmentDescription;You found a food compartment and attached it to your backback. Your supply capacity increases.;40
-RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters.;40
-LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage.;40
-CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room.;40
-GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermasters keycard.;40
-YELLOW_KEYCARD_DESCRIPTION;CollectibleKey_yellowKeycardDoor;0;CollectibleKey_yellowKeycardDoor;You found the key card to the expedition wing.;40
-BROWN_KEYCARD_DESCRIPTION;CollectibleKey_brownKeycardDoor;0;CollectibleKey_brownKeycardDoor;You found the key card to the hangar.;40
-PURPLE_KEYCARD_DESCRIPTION;CollectibleKey_purpleKeycardDoor;0;CollectibleKey_purpleKeycardDoor;You found captains key card.;40
-DARKBLUE_KEYCARD_DESCRIPTION;CollectibleKey_darkblueKeycardDoor;0;CollectibleKey_darkblueKeycardDoor;You found the key card of the keeper of traditions.;40
-WHITE_KEYCARD_DESCRIPTION;CollectibleKey_whiteKeycardDoor;0;CollectibleKey_whiteKeycardDoor;You found the expedition chiefs keycard.;40
+RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters (red).;40
+LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage (purpur).;40
+CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room (cyan).;40
+GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermasters keycard (green).;40
+YELLOW_KEYCARD_DESCRIPTION;CollectibleKey_yellowKeycardDoor;0;CollectibleKey_yellowKeycardDoor;You found the key card to the expedition wing (yellow).;40
+BROWN_KEYCARD_DESCRIPTION;CollectibleKey_brownKeycardDoor;0;CollectibleKey_brownKeycardDoor;You found the key card to the hangar (brown).;40
+PURPLE_KEYCARD_DESCRIPTION;CollectibleKey_purpleKeycardDoor;0;CollectibleKey_purpleKeycardDoor;You found captains key card (crimson).;40
+DARKBLUE_KEYCARD_DESCRIPTION;CollectibleKey_darkblueKeycardDoor;0;CollectibleKey_darkblueKeycardDoor;You found the key card of the keeper of traditions (dark blue).;40
+WHITE_KEYCARD_DESCRIPTION;CollectibleKey_whiteKeycardDoor;0;CollectibleKey_whiteKeycardDoor;You found the expedition chiefs keycard (white).;40
 YELLOW_KEY_DESCRIPTION;CollectibleKey_yellowKeyDoor;0;CollectibleKey_yellowKeyDoor;You found the yellow key. It will open some doors.;40
 GREEN_KEY_DESCRIPTION;CollectibleKey_greenKeyDoor;0;CollectibleKey_greenKeyDoor;You found the green key. It will open some doors.;40
 BLUE_KEY_DESCRIPTION;CollectibleKey_blueKeyDoor;0;CollectibleKey_blueKeyDoor;You found the blue key. It will open some doors.;40

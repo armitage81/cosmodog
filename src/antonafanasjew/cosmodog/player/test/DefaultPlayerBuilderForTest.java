@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.RadioactiveSuitInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
@@ -31,8 +32,8 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
-		player.setPositionX(369);
-		player.setPositionY(115);
+		player.setPositionX(223);
+		player.setPositionY(155);
 		
 		player.getGameProgress().setTurnsTillWormAppears(7);
 
@@ -57,11 +58,21 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
 		player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
-		
-		
-		for (int i = 0; i < 5999; i++) {
-			player.getGameProgress().addInfobit();
-		}
+		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
+//		player.getInventory().put(InventoryItemType.KEY_RING, new KeyRingInventoryItem());
+//		
+//		
+//		Key key;
+//		
+//		for (DoorType doorType : DoorType.values()) {
+//			key = new Key();
+//			key.setDoorType(doorType);
+//			((KeyRingInventoryItem)player.getInventory().get(InventoryItemType.KEY_RING)).addKey(key);
+//		}
+//		
+//		for (int i = 0; i < 5999; i++) {
+//			player.getGameProgress().addInfobit();
+//		}
 		
 		
 		/*

@@ -26,14 +26,14 @@ public class Door extends DynamicPiece {
 	
 	public static enum DoorType {
 		redKeycardDoor("red keycard"),
-		lilaKeycardDoor("lila keycard"),
+		lilaKeycardDoor("purpur keycard"),
 		blueKeycardDoor("blue keycard"),
 		cyanKeycardDoor("cyan keycard"),
 		greenKeycardDoor("green keycard"),
 		yellowKeycardDoor("yellow keycard"),
 		brownKeycardDoor("brown keycard"),
-		purpleKeycardDoor("purple keycard"),
-		darkblueKeycardDoor("darkblue keycard"),
+		purpleKeycardDoor("crimson keycard"),
+		darkblueKeycardDoor("dark blue keycard"),
 		whiteKeycardDoor("white keycard"),
 		yellowKeyDoor("yellow key"),
 		greenKeyDoor("green key"),
