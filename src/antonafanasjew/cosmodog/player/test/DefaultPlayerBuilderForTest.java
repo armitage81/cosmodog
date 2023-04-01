@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.RadioactiveSuitInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
@@ -30,8 +31,8 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
-		player.setPositionX(180);
-		player.setPositionY(60);
+		player.setPositionX(369);
+		player.setPositionY(115);
 		
 		player.getGameProgress().setTurnsTillWormAppears(7);
 
@@ -55,6 +56,7 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem()); 
 		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
+		player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
 		
 		
 		for (int i = 0; i < 5999; i++) {

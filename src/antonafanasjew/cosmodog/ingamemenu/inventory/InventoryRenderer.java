@@ -34,8 +34,8 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 public class InventoryRenderer implements Renderer {
 
 	public static final int NUMBER_OF_VISIBLE_MESSAGES = NotificationQueue.MAX_MESSAGES_BEFORE_REMOVAL;
-	public static final int INVENTORY_COLUMNS = 5;
-	public static final int INVENTORY_ROWS = 4;
+	public static final int INVENTORY_COLUMNS = 6;
+	public static final int INVENTORY_ROWS = 5;
 
 	
 	@Override
