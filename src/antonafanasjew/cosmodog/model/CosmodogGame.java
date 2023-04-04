@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
-import antonafanasjew.cosmodog.timing.Chronometer;
+import antonafanasjew.cosmodog.timing.Timer;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
@@ -38,8 +38,6 @@ public class CosmodogGame extends CosmodogModel {
 	
 	private transient ActorTransitionRegistry actorTransitionRegistry;
 
-	private transient Chronometer chronometer;
-
 	private transient TextFrame textFrame;
 	
 	private transient Book openBook;
@@ -63,6 +61,8 @@ public class CosmodogGame extends CosmodogModel {
 	private User user;
 
 	private PlanetaryCalendar planetaryCalendar;
+	
+	private Timer timer;
 
 	private Player player;
 
@@ -118,10 +118,14 @@ public class CosmodogGame extends CosmodogModel {
 		this.planetaryCalendar = planetaryCalendar;
 	}
 
-	public Chronometer getChronometer() {
-		return chronometer;
+	public Timer getTimer() {
+		return timer;
 	}
 
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+	
 	public ActionRegistry getActionRegistry() {
 		return actionRegistry;
 	}
@@ -208,10 +212,6 @@ public class CosmodogGame extends CosmodogModel {
 
 	public void setActorTransitionRegistry(ActorTransitionRegistry actorTransitionRegistry) {
 		this.actorTransitionRegistry = actorTransitionRegistry;
-	}
-
-	public void setChronometer(Chronometer chronometer) {
-		this.chronometer = chronometer;
 	}
 
 	public String getGameName() {

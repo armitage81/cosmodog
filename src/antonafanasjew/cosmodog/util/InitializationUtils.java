@@ -120,7 +120,7 @@ import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
-import antonafanasjew.cosmodog.timing.Chronometer;
+import antonafanasjew.cosmodog.timing.Timer;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
@@ -151,6 +151,10 @@ public class InitializationUtils {
 		planetaryCalendar.setHour(8);
 		planetaryCalendar.setMinute(0);
 		cosmodogGame.setPlanetaryCalendar(planetaryCalendar);
+		
+		Timer timer = new Timer();
+		cosmodogGame.setTimer(timer);
+		cosmodogGame.getTimer().initPlayTime();
 
 	}
 
@@ -162,11 +166,10 @@ public class InitializationUtils {
 		cosmodogGame.setInterfaceActionRegistry(new ActionRegistry());
 		cosmodogGame.setTeleportationTransition(new TeleportationTransition());
 		cosmodogGame.setActorTransitionRegistry(new ActorTransitionRegistry());
-		cosmodogGame.setChronometer(new Chronometer());
 		cosmodogGame.setRuleBook(new RuleBook());
 
 		initializeRuleBook(cosmodogGame);
-
+		
 		Player player = cosmodogGame.getPlayer();
 		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
 		player.getMovementListeners().clear();
@@ -178,6 +181,8 @@ public class InitializationUtils {
 		PlayerLifeListener playerLifeListener = new PlayerLifeListener();
 		player.getLifeListeners().clear();
 		player.getLifeListeners().add(playerLifeListener);
+		
+		cosmodogGame.getTimer().initLastUpdateTime();
 
 	}
 

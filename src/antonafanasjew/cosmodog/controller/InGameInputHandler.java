@@ -237,8 +237,6 @@ public class InGameInputHandler extends AbstractInputHandler {
 					}
 					
 					
-					DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(newX, newY);
-					
 					int timePassed = Constants.MINUTES_PER_TURN;
 					AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, false);
 					

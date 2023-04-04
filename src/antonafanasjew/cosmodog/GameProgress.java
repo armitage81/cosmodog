@@ -29,14 +29,13 @@ public class GameProgress extends CosmodogModel {
 	public static final String GAME_PROGRESS_ALIEN_BASE_TELEPORT_SEQUENCE = "alienbaseteleportsequence";
 
 	
-	
 	private boolean won = false;
 	private int infobits = 0;
 	private int armors = 0;
 	private int soulEssences = 0;
 	private long gameScore;
 	private int turn = 0;
-	
+
 	private int numberOfFoundSecrets = 0;
 	
 	private int turnsTillWormAppears = TURNS_TILL_WORM_APPEARS_PHASE1;

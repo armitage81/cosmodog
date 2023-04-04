@@ -6,14 +6,12 @@ import org.junit.runners.Suite;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendarTest;
 import antonafanasjew.cosmodog.camera.test.CamTest;
 import antonafanasjew.cosmodog.notifications.NotificationQueueTest;
-import antonafanasjew.cosmodog.timing.ChronometerTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 		PlanetaryCalendarTest.class, 
 		CamTest.class,
-		NotificationQueueTest.class,
-		ChronometerTest.class,
+		NotificationQueueTest.class
 	}
 )
 public class TestSuite {
