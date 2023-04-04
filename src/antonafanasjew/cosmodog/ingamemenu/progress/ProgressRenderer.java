@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
@@ -27,7 +28,7 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class ProgressRenderer implements Renderer {
 
-	private static final int ROWS = 8;
+	private static final int ROWS = 9;
 	private static final int ROW_PADDING = 10;
 	
 	@Override
@@ -42,6 +43,7 @@ public class ProgressRenderer implements Renderer {
 		Animation insightAnimation = ApplicationContext.instance().getAnimations().get("insight");
 		
 		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		
 		Inventory inv = player.getInventory();
 		
@@ -224,6 +226,18 @@ public class ProgressRenderer implements Renderer {
 					
 					graphics.drawRect(boxDc.x(), boxDc.y(), boxDc.w(), boxDc.h());
 				}
+			}
+			
+			if (i == 8) {
+				
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Play Time", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				
+				textBook = TextPageConstraints.fromDc(contentDc).textToBook(cosmodogGame.getTimer().playTimeRepresentationDaysHoursMinutesSeconds("%s days %s hours %s minutes %s seconds"), fontTypeInformational);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				
+				
 			}
 			
 		}

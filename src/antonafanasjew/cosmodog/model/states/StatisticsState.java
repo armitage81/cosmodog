@@ -65,6 +65,7 @@ public class StatisticsState extends CosmodogAbstractState {
 		int maxSecrets = Constants.NUMBER_OF_SECRETS_IN_GAME;
 		
 		int enemiesLeft = cosmodogGame.getMap().getEnemies().size();
+		String playTimeRepresentation = cosmodogGame.getTimer().playTimeRepresentationDaysHoursMinutesSeconds("%s D %s H %s M %s S");
 		
 		
 		
@@ -107,6 +108,9 @@ public class StatisticsState extends CosmodogAbstractState {
 		
 		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 8);
 		renderLabelAndValue(gc, g, enemiesDc, "Enemies left", String.valueOf(enemiesLeft));
+		
+		DrawingContext playTimeDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 9);
+		renderLabelAndValue(gc, g, playTimeDc, "Play time", playTimeRepresentation);
 		
 		DrawingContext bottomContainerDrawingContext = new TileDrawingContext(dc, 1, 10, 0, 9, 1, 1);
 		

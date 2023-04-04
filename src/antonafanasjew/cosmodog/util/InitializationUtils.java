@@ -182,6 +182,7 @@ public class InitializationUtils {
 		player.getLifeListeners().clear();
 		player.getLifeListeners().add(playerLifeListener);
 		
+		cosmodogGame.getTimer().setReferenceTimeSupplier(() -> System.currentTimeMillis());
 		cosmodogGame.getTimer().initLastUpdateTime();
 
 	}

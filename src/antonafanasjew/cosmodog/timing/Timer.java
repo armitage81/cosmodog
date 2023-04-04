@@ -21,7 +21,7 @@ public class Timer implements Serializable {
 
 	private static final long serialVersionUID = -5213503704477172402L;
 
-	private transient Supplier<Long> referenceTimeSupplier = () -> System.currentTimeMillis();
+	private transient Supplier<Long> referenceTimeSupplier;
 	
 	private transient long lastUpdateTime;
 	private long playTime;
