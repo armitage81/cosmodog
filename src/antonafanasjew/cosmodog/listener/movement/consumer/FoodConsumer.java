@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.listener.movement.consumer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;

@@ -143,16 +143,49 @@ public class ApplicationContext {
 		return instance;
 	}
 	
-	
+	/*
+	 * Contains the game model beyond the game session. User, score list etc are also included.
+	 */
 	private Cosmodog cosmodog;
+	
+	/*
+	 * Data of the map as loaded from the Tiled format. The prefix "Custom" indicates that it is my class and not the one from the framework.
+	 */
 	private CustomTiledMap customTiledMap;
+	
+	/*
+	 * All log data (cutscenes, monolith interactions, found logs) as texts. 
+	 */
 	private GameLogs gameLogs = new GameLogs();
+	
+	/*
+	 * A series of hint texts that are presented on the game over screen.
+	 */
 	private List<String> dyingHints = new ArrayList<>();
+	
+	/*
+	 * Texts for Intro, Outro, Credits and References in the main menu are stored here.
+	 */
 	private Map<String, GameLog> gameTexts = Maps.newHashMap();
 	
+	/*
+	 * All music data for the game.
+	 */
 	private MusicResources musicResources = new MusicResources();
+	
+	/*
+	 * All sounds for the game.
+	 */
 	private SoundResources soundResources = new SoundResources();
+	
+	/*
+	 * All animations and sprites for the game.
+	 */
 	private Animations animations = new Animations();
+	
+	/*
+	 * Big images like the whole screen interface frame are stored here.
+	 */
 	private Images images = new Images();
 	private SpriteSheets spriteSheets = new SpriteSheets();
 	private TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.pathToTiledMapSupplier.get());

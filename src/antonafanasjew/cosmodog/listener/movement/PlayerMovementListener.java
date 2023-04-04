@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -38,12 +37,10 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
-import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.NotificationUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 import antonafanasjew.cosmodog.waterplaces.WaterValidator;
@@ -153,6 +150,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
+		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 	}
 	
 	@Override
@@ -171,6 +169,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
+		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 	}
 	
 	@Override

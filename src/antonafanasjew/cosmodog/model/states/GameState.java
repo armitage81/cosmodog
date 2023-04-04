@@ -142,8 +142,6 @@ public class GameState extends CosmodogAbstractState {
 			}
 			cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME).handleInput(gc, sbg, n, applicationContext);
 
-			cosmodogGame.getChronometer().update(n);
-
 		}
 
 		cosmodogGame.getActionRegistry().update(n, gc, sbg);
