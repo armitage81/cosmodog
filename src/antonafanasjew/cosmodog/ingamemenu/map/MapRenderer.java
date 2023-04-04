@@ -3,7 +3,11 @@ package antonafanasjew.cosmodog.ingamemenu.map;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
@@ -118,10 +122,20 @@ public class MapRenderer implements Renderer {
 					DrawingContext cellDc = new SimpleDrawingContext(null, x, y, gridW, gridH);
 					Integer valueOfInfobitsForChartPiece = mapInputState.getInfobitNumbersByChartPiece().get(Position.fromCoordinates(i, j));
 					valueOfInfobitsForChartPiece = valueOfInfobitsForChartPiece == null ? 0 : valueOfInfobitsForChartPiece;
-					String infobitValueText = "" + valueOfInfobitsForChartPiece;
-					fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.InformationalSmall);
-					Book infobitValueBook = TextPageConstraints.fromDc(cellDc).textToBook(infobitValueText, fontRefToFontTypeMap);
-					TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, infobitValueBook);
+					if (valueOfInfobitsForChartPiece > 0) {
+						String infobitValueText = "" + valueOfInfobitsForChartPiece;
+						fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.InformationalSmall);
+						Book infobitValueBook = TextPageConstraints.fromDc(cellDc).textToBook(infobitValueText, fontRefToFontTypeMap);
+						TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, infobitValueBook);
+					} else {
+						
+						SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
+						Image checkMark = symbolsSpriteSheet.getSprite(0, 0);
+						
+						float horOffset = (gridW - gridH) / 2.0f;
+						
+						checkMark.draw(x + horOffset, y, gridH, gridH);
+					}
 				}
 			}
 		}

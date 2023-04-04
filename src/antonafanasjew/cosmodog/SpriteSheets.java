@@ -68,5 +68,7 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	 */
 	public static final String SPRITESHEET_TILES1 = "spritesheet.tiles1";
 	public static final String SPRITESHEET_TILES2 = "spritesheet.tiles2";
+	
+	public static final String SPRITESHEET_SYMBOLS = "spritesheet.symbols";
 
 }
