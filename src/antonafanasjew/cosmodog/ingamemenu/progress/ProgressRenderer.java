@@ -96,12 +96,14 @@ public class ProgressRenderer implements Renderer {
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 				
 				float barWidth = contentDc.w() / maxInfobits * noInfobits;
+				graphics.setColor(new org.newdawn.slick.Color(0f, 0.5f, 0f));
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
+				graphics.setColor(org.newdawn.slick.Color.orange);
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				int percentage = (int)((float)noInfobits / (float)maxInfobits * 100f);
 				
 				textBook = TextPageConstraints.fromDc(contentDc).textToBook(noInfobits + "/" + maxInfobits + " (" + percentage + "%)", fontTypeInformational);
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
 				
 				
 			}
@@ -114,14 +116,15 @@ public class ProgressRenderer implements Renderer {
 				
 				float barWidth = contentDc.w() / maxSecrets * noSecrets;
 				
+				graphics.setColor(new org.newdawn.slick.Color(0f, 0.5f, 0f));
 				graphics.fillRect(contentDc.x(), contentDc.y(), barWidth, contentDc.h());
-				
+				graphics.setColor(org.newdawn.slick.Color.orange);
 				graphics.drawRect(contentDc.x(), contentDc.y(), contentDc.w(), contentDc.h());
 				
 				int percentage = (int)((float)noSecrets / (float)maxSecrets * 100f);
 				
 				textBook = TextPageConstraints.fromDc(contentDc).textToBook(noSecrets + "/" + maxSecrets + " (" + percentage + "%)", fontTypeInformational);
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
 				
 			}
 			

@@ -73,9 +73,9 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 //			((KeyRingInventoryItem)player.getInventory().get(InventoryItemType.KEY_RING)).addKey(key);
 //		}
 //		
-//		for (int i = 0; i < 5999; i++) {
-//			player.getGameProgress().addInfobit();
-//		}
+		for (int i = 0; i < 4000; i++) {
+			player.getGameProgress().addInfobit();
+		}
 		
 		
 		/*
