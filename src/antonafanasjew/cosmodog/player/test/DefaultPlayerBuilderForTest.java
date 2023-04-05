@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.player.test;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ArcheologistsJournalInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
@@ -33,8 +34,8 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
-		player.setPositionX(334);
-		player.setPositionY(290);
+		player.setPositionX(61);
+		player.setPositionY(277);
 		
 		player.getGameProgress().setTurnsTillWormAppears(7);
 
@@ -60,6 +61,7 @@ public class DefaultPlayerBuilderForTest extends AbstractPlayerBuilder {
 		player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new SupplyTrackerInventoryItem());
 		player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
 		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
+		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
 		player.getInventory().put(InventoryItemType.ARCHEOLOGISTS_JOURNAL, new ArcheologistsJournalInventoryItem());
 		
 //		player.getInventory().put(InventoryItemType.KEY_RING, new KeyRingInventoryItem());
