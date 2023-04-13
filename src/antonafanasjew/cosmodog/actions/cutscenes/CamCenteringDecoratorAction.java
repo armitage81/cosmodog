@@ -10,6 +10,20 @@ import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 
+/**
+ * Wraps another async action with cam focus. The lifecycle is as following:
+ * 
+ * The camera loses focus on the player and moves towards a position.
+ * The underlying action is executed.
+ * The camera moves back to the player and focuses on him.
+ * 
+ * The speed of the camera movement is defined as time duration. That is, the camera will move faster if the target position
+ * is more remote from the player.
+ * 
+ * The camera movement to the focus and the movement back are themselves async actions with fixed length. Since they are parts of this action
+ * they are registered in a local action phase registry. The same happens with the underlying action.
+ *
+ */
 public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
 
 	private static final long serialVersionUID = 5171259029091809078L;
