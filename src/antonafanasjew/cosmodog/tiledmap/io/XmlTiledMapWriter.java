@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.tiledmap.io;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -246,7 +245,7 @@ public class XmlTiledMapWriter implements TiledMapWriter {
 
 			List<Point> points = tiledLineObject.getPoints();
 
-			String pointsAttributeValue = points.stream().map(p -> p.x + "," + p.y).collect(Collectors.joining(" "));
+			String pointsAttributeValue = points.stream().map(p -> (p.x - object.getX()) + "," + (p.y - object.getY())).collect(Collectors.joining(" "));
 
 			lineElement.setAttribute("points", pointsAttributeValue);
 

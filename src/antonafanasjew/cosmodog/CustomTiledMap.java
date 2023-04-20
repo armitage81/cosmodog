@@ -238,4 +238,78 @@ public class CustomTiledMap {
 		TiledTile tile = layer.getTile(x, y);
 		return tile == null ? 0 : tile.getGid();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + height;
+		result = prime * result + ((mapLayers == null) ? 0 : mapLayers.hashCode());
+		result = prime * result + nextObjectId;
+		result = prime * result + ((objectGroups == null) ? 0 : objectGroups.hashCode());
+		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((renderorder == null) ? 0 : renderorder.hashCode());
+		result = prime * result + tileHeight;
+		result = prime * result + tileWidth;
+		result = prime * result + ((tileset == null) ? 0 : tileset.hashCode());
+		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		result = prime * result + width;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomTiledMap other = (CustomTiledMap) obj;
+		if (height != other.height)
+			return false;
+		if (mapLayers == null) {
+			if (other.mapLayers != null)
+				return false;
+		} else if (!mapLayers.equals(other.mapLayers))
+			return false;
+		if (nextObjectId != other.nextObjectId)
+			return false;
+		if (objectGroups == null) {
+			if (other.objectGroups != null)
+				return false;
+		} else if (!objectGroups.equals(other.objectGroups))
+			return false;
+		if (orientation == null) {
+			if (other.orientation != null)
+				return false;
+		} else if (!orientation.equals(other.orientation))
+			return false;
+		if (renderorder == null) {
+			if (other.renderorder != null)
+				return false;
+		} else if (!renderorder.equals(other.renderorder))
+			return false;
+		if (tileHeight != other.tileHeight)
+			return false;
+		if (tileWidth != other.tileWidth)
+			return false;
+		if (tileset == null) {
+			if (other.tileset != null)
+				return false;
+		} else if (!tileset.equals(other.tileset))
+			return false;
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		if (width != other.width)
+			return false;
+		return true;
+	}
+	
+	
+	
+	
 }
