@@ -6,8 +6,27 @@ public class Tileset {
 	private String name;
 	private int tilewidth;
 	private int tileheight;
-	TileImage tileImage;
+	private int columns;
+	private int tileCount;
 	
+	private TileImage tileImage;
+	
+	public int getColumns() {
+		return columns;
+	}
+
+	public void setColumns(int columns) {
+		this.columns = columns;
+	}
+
+	public int getTileCount() {
+		return tileCount;
+	}
+
+	public void setTileCount(int tileCount) {
+		this.tileCount = tileCount;
+	}
+
 	public int getFirstgid() {
 		return firstgid;
 	}
@@ -52,8 +71,10 @@ public class Tileset {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + columns;
 		result = prime * result + firstgid;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + tileCount;
 		result = prime * result + ((tileImage == null) ? 0 : tileImage.hashCode());
 		result = prime * result + tileheight;
 		result = prime * result + tilewidth;
@@ -69,12 +90,16 @@ public class Tileset {
 		if (getClass() != obj.getClass())
 			return false;
 		Tileset other = (Tileset) obj;
+		if (columns != other.columns)
+			return false;
 		if (firstgid != other.firstgid)
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (tileCount != other.tileCount)
 			return false;
 		if (tileImage == null) {
 			if (other.tileImage != null)

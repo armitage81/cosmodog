@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -84,6 +85,13 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	//Positions here are not tile positions but map piece positions.
 	private List<Position> insightChartPiecePositions = Lists.newArrayList();
 	
+	/*
+	 * When the player is in the moveable group region (Sokoban riddle), a hint will be shown how to reset the riddle.
+	 * Instead of checking every time if the player is in such a region, we will use the value from the cache,
+	 * which will be updated once per turn.
+	 */
+	private MoveableGroup activeMoveableGroup;
+	
 	@Override
 	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
 		recalculateClosestSupplyAndMedkitPosition(actor, x1, y1, x2, y2, applicationContext);
@@ -97,6 +105,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		recalculateEnemiesInRange();
 		recalculateRoofsOverEnemiesInRange();
 		recalculateRemainingInsightsMapPiecePositions();
+		recalculateActiveMoveableGroup();
 	}
 	
 	@Override
@@ -467,6 +476,28 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	public List<Position> getInsightChartPiecePositions() {
 		return insightChartPiecePositions;
+	}
+	
+	public MoveableGroup getActiveMoveableGroup() {
+		return activeMoveableGroup;
+	}
+	
+	public void setActiveMoveableGroup(MoveableGroup activeMoveableGroup) {
+		this.activeMoveableGroup = activeMoveableGroup;
+	}
+	
+	private void recalculateActiveMoveableGroup() {
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Player player = ApplicationContextUtils.getPlayer();
+		MoveableGroup moveableGroupAroundPlayer = null;
+		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
+		for (MoveableGroup moveableGroup : moveableGroups) {
+			if (RegionUtils.pieceInRegion(player, moveableGroup.getRegion(), map.getTileWidth(), map.getTileHeight())) {
+				moveableGroupAroundPlayer = moveableGroup;
+				break;
+			}
+		}
+		setActiveMoveableGroup(moveableGroupAroundPlayer);
 	}
 }
 

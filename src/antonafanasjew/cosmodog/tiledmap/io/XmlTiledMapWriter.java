@@ -69,13 +69,16 @@ public class XmlTiledMapWriter implements TiledMapWriter {
 
 		Element root = new Element("map");
 
+		root.setAttribute("tiledversion", map.getTiledVersion());
 		root.setAttribute("version", map.getVersion());
+		root.setAttribute("infinite", map.getInfinite());
 		root.setAttribute("orientation", map.getOrientation());
 		root.setAttribute("renderorder", map.getRenderorder());
 		root.setAttribute("width", String.valueOf(map.getWidth()));
 		root.setAttribute("height", String.valueOf(map.getHeight()));
 		root.setAttribute("tilewidth", String.valueOf(map.getTileWidth()));
 		root.setAttribute("tileheight", String.valueOf(map.getTileHeight()));
+		root.setAttribute("nextlayerid", map.getNextLayerId());
 		root.setAttribute("nextobjectid", String.valueOf(map.getNextObjectId()));
 
 		Element tileset = toTilesetElement(map.getTileset());
@@ -101,9 +104,17 @@ public class XmlTiledMapWriter implements TiledMapWriter {
 
 		Element layerElement = new Element("layer");
 
+		layerElement.setAttribute("id", layer.getId());
 		layerElement.setAttribute("name", layer.getName());
 		layerElement.setAttribute("width", String.valueOf(layer.getWidth()));
 		layerElement.setAttribute("height", String.valueOf(layer.getHeight()));
+		
+		boolean visible = layer.isVisible();
+		//Usually, if layer is visible, the attribute is not set, as it is the default value.
+		if (!visible) {
+			layerElement.setAttribute("visible", "0");
+		}
+		
 		layerElement.setAttribute("opacity", String.valueOf(layer.getOpacity()));
 
 		Element dataElement = toDataElement(layer.getData(), layer.getWidth(), layer.getHeight());
@@ -172,6 +183,7 @@ public class XmlTiledMapWriter implements TiledMapWriter {
 	private Element toObjectGroupElement(TiledObjectGroup objectGroup) {
 
 		Element objectGroupElement = new Element("objectgroup");
+		objectGroupElement.setAttribute("id", objectGroup.getId());
 		objectGroupElement.setAttribute("name", objectGroup.getName());
 
 		for (String objectName : objectGroup.getObjects().keySet()) {
@@ -268,6 +280,8 @@ public class XmlTiledMapWriter implements TiledMapWriter {
 
 		Element tilesetElement = new Element("tileset");
 
+		tilesetElement.setAttribute("columns", String.valueOf(tileset.getColumns()));
+		tilesetElement.setAttribute("tilecount", String.valueOf(tileset.getTileCount()));
 		tilesetElement.setAttribute("firstgid", String.valueOf(tileset.getFirstgid()));
 		tilesetElement.setAttribute("name", tileset.getName());
 		tilesetElement.setAttribute("tilewidth", String.valueOf(tileset.getTilewidth()));

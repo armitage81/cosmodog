@@ -70,6 +70,9 @@ public class XmlTiledMapReader implements TiledMapReader {
 		CustomTiledMap map = new CustomTiledMap();
 		
 		String version = element.getAttribute("version").getValue();
+		String tiledVersion = element.getAttribute("tiledversion").getValue();
+		String infinite = element.getAttribute("infinite").getValue();
+		String nextLayerId = element.getAttribute("nextlayerid").getValue();
 		String orientation = element.getAttribute("orientation").getValue();
 		String renderorder = element.getAttribute("renderorder").getValue();
 		String width = element.getAttribute("width").getValue();
@@ -79,12 +82,15 @@ public class XmlTiledMapReader implements TiledMapReader {
 		String nextobjectid = element.getAttribute("nextobjectid").getValue();
 		
 		map.setVersion(version);
+		map.setTiledVersion(tiledVersion);
+		map.setInfinite(infinite);
 		map.setOrientation(orientation);
 		map.setRenderorder(renderorder);
 		map.setWidth(Integer.parseInt(width));
 		map.setHeight(Integer.parseInt(height));
 		map.setTileWidth(Integer.parseInt(tilewidth));
 		map.setTileHeight(Integer.parseInt(tileheight));
+		map.setNextLayerId(nextLayerId);
 		map.setNextObjectId(Integer.parseInt(nextobjectid));
 		
 		map.setTileset(fromTilesetElement(element.getChild("tileset")));
@@ -112,17 +118,23 @@ public class XmlTiledMapReader implements TiledMapReader {
 	private TiledMapLayer fromMapLayerElement(Element element) throws IOException {
 		TiledMapLayer layer = new TiledMapLayer();
 		
+		String id = element.getAttribute("id").getValue();
 		String name = element.getAttribute("name").getValue();
 		String width = element.getAttribute("width").getValue();
 		String height = element.getAttribute("height").getValue();
+		Attribute visibleAttribute = element.getAttribute("visible");
+		//Per default this attribute is skipped, defaulting to visible=true
+		boolean visible = visibleAttribute == null || !visibleAttribute.getValue().equals("0");
 		Attribute opacityAttribute = element.getAttribute("opacity");
 		float opacity = opacityAttribute == null ? 1.0f : Float.parseFloat(opacityAttribute.getValue());
 		
+		layer.setId(id);
 		layer.setName(name);
 		int mapWidth = Integer.parseInt(width);
 		int mapHeight = Integer.parseInt(height);
 		layer.setWidth(mapWidth);
 		layer.setHeight(mapHeight);
+		layer.setVisible(visible);
 		layer.setOpacity(opacity);
 		
 		Element data = element.getChild("data");
@@ -199,6 +211,7 @@ public class XmlTiledMapReader implements TiledMapReader {
 	
 	private TiledObjectGroup fromObjectGroupElement(Element element) {
 		TiledObjectGroup tiledObjectGroup = new TiledObjectGroup();
+		tiledObjectGroup.setId(element.getAttributeValue("id"));
 		tiledObjectGroup.setName(element.getAttributeValue("name"));
 		List<Element> objectElements = element.getChildren("object");
 		for (Element objectElement : objectElements) {
@@ -299,10 +312,15 @@ public class XmlTiledMapReader implements TiledMapReader {
 		String tilewidth = element.getAttribute("tilewidth").getValue();
 		String tileheight = element.getAttribute("tileheight").getValue();
 		
+		int columns = Integer.valueOf(element.getAttribute("columns").getValue());
+		int tileCount = Integer.valueOf(element.getAttribute("tilecount").getValue());
+		
 		tileset.setFirstgid(Integer.parseInt(firstgid));
 		tileset.setName(name);
 		tileset.setTilewidth(Integer.parseInt(tilewidth));
 		tileset.setTileheight(Integer.parseInt(tileheight));
+		tileset.setColumns(columns);
+		tileset.setTileCount(tileCount);
 		tileset.setTileImage(fromTileImageElement(element.getChild("image")));
 		
 		return tileset;

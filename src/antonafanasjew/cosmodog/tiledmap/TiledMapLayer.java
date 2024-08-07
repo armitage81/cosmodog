@@ -4,14 +4,24 @@ import java.util.List;
 
 public class TiledMapLayer {
 
+	private String id;
 	private String name;
 	private int width;
 	private int height;
+	private boolean visible;
 	private float opacity;
 	private List<TiledTile> data;
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public void setName(String name) {
@@ -42,6 +52,14 @@ public class TiledMapLayer {
 		this.data = data;
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+	
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+	
 	public float getOpacity() {
 		return opacity;
 	}
@@ -60,8 +78,10 @@ public class TiledMapLayer {
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + height;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + Float.floatToIntBits(opacity);
+		result = prime * result + (visible ? 1231 : 1237);
 		result = prime * result + width;
 		return result;
 	}
@@ -82,6 +102,11 @@ public class TiledMapLayer {
 			return false;
 		if (height != other.height)
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -89,9 +114,13 @@ public class TiledMapLayer {
 			return false;
 		if (Float.floatToIntBits(opacity) != Float.floatToIntBits(other.opacity))
 			return false;
+		if (visible != other.visible)
+			return false;
 		if (width != other.width)
 			return false;
 		return true;
 	}
+
 	
+
 }

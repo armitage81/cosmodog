@@ -18,19 +18,21 @@ import com.google.common.collect.Maps;
  */
 public class CustomTiledMap {
 
+	private String tiledVersion;
 	private String version;
+	private String infinite;
 	private String orientation;
 	private String renderorder;
 	private int width;
 	private int height;
 	private int tileWidth;
 	private int tileHeight;
+	private String nextLayerId;
 	private int nextObjectId;
 	private Tileset tileset;
 	private List<TiledMapLayer> mapLayers;
 	
 	private ImmutableMap<String, TiledMapLayer> mapLayersByNames;
-	
 	
 	private Map<String, TiledObjectGroup> objectGroups = Maps.newHashMap();
 	
@@ -162,6 +164,30 @@ public class CustomTiledMap {
 		this.nextObjectId = nextObjectId;
 	}
 	
+	public String getTiledVersion() {
+		return tiledVersion;
+	}
+
+	public void setTiledVersion(String tiledVersion) {
+		this.tiledVersion = tiledVersion;
+	}
+
+	public String getInfinite() {
+		return infinite;
+	}
+
+	public void setInfinite(String infinite) {
+		this.infinite = infinite;
+	}
+
+	public String getNextLayerId() {
+		return nextLayerId;
+	}
+
+	public void setNextLayerId(String nextLayerId) {
+		this.nextLayerId = nextLayerId;
+	}
+	
 	/**
 	 * Returns the tile set.
 	 * @return Tile set.
@@ -244,13 +270,17 @@ public class CustomTiledMap {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + height;
+		result = prime * result + ((infinite == null) ? 0 : infinite.hashCode());
 		result = prime * result + ((mapLayers == null) ? 0 : mapLayers.hashCode());
+		result = prime * result + ((mapLayersByNames == null) ? 0 : mapLayersByNames.hashCode());
+		result = prime * result + ((nextLayerId == null) ? 0 : nextLayerId.hashCode());
 		result = prime * result + nextObjectId;
 		result = prime * result + ((objectGroups == null) ? 0 : objectGroups.hashCode());
 		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
 		result = prime * result + ((renderorder == null) ? 0 : renderorder.hashCode());
 		result = prime * result + tileHeight;
 		result = prime * result + tileWidth;
+		result = prime * result + ((tiledVersion == null) ? 0 : tiledVersion.hashCode());
 		result = prime * result + ((tileset == null) ? 0 : tileset.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		result = prime * result + width;
@@ -268,10 +298,25 @@ public class CustomTiledMap {
 		CustomTiledMap other = (CustomTiledMap) obj;
 		if (height != other.height)
 			return false;
+		if (infinite == null) {
+			if (other.infinite != null)
+				return false;
+		} else if (!infinite.equals(other.infinite))
+			return false;
 		if (mapLayers == null) {
 			if (other.mapLayers != null)
 				return false;
 		} else if (!mapLayers.equals(other.mapLayers))
+			return false;
+		if (mapLayersByNames == null) {
+			if (other.mapLayersByNames != null)
+				return false;
+		} else if (!mapLayersByNames.equals(other.mapLayersByNames))
+			return false;
+		if (nextLayerId == null) {
+			if (other.nextLayerId != null)
+				return false;
+		} else if (!nextLayerId.equals(other.nextLayerId))
 			return false;
 		if (nextObjectId != other.nextObjectId)
 			return false;
@@ -294,6 +339,11 @@ public class CustomTiledMap {
 			return false;
 		if (tileWidth != other.tileWidth)
 			return false;
+		if (tiledVersion == null) {
+			if (other.tiledVersion != null)
+				return false;
+		} else if (!tiledVersion.equals(other.tiledVersion))
+			return false;
 		if (tileset == null) {
 			if (other.tileset != null)
 				return false;
@@ -308,8 +358,5 @@ public class CustomTiledMap {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
 }
