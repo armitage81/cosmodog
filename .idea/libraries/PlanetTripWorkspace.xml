@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="PlanetTripWorkspace">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/data/tools_lib/PlanetTripWorkspace.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

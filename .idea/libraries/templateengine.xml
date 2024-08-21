@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="templateengine">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/webpage/templateengine/guava-18.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/webpage/templateengine/log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/webpage/templateengine/TemplateEngine.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
