@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.fight.impl.DefaultEnemyDestructionActionPhase;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;

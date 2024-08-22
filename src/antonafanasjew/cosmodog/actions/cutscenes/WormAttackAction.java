@@ -54,6 +54,7 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 		
 		/**
 		 * Percentage of the action completion. It is a value between 0.0 and 1.0.
+		 * It is used to calculate the current height of the worm.
 		 */
 		public float percentage = 0.0f;
 		
@@ -62,38 +63,59 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 		 * This value can be used to render the worm animation
 		 * at the proper place.
 		 * <p>
+		 * The value returned here is the rate of the maximal height. It is in the interval between 0..1.
+		 * The renderer will move the image vertically by multiplying the actual max height with this value.
+		 * <p>
 		 * The function time -> height is implemented to make the lurching attack upwards plausible.
 		 * It follows the pattern:
-		 * - First, there is no worm for a while.
-		 * - 
+		 * - First, there is no worm for a while (20% of the animation time).
+		 * - Then, the worm lurches fast upward. (10% of the animation time up to 80% of its max height.)
+		 * - Then, the worm's upright movement is delayed. (It rises within 20% of the animation time the last 20% of its max height.)
+		 * - For 10% of the animation, the worm stays tall as a tower, not moving.
+		 * - Finally, it slowly goes down within the last 40% of the animation time, until it has disappeared under the snow.
 		 */
 		public float wormHeightPercentage() {
-			
+
+			//First 20% of the animation time, the worm is down.
 			if (percentage < 0.2) {
                 return (float) 0;
 			}
-			
+
+			//Between 20% and 30% of the animation time, the worm lurches upward.
+			//It happens linearly. The value returned here is in the interval 0..0.8.
 			if (percentage < 0.3) {
                 return (percentage - 0.2f) / (0.1f) * 0.8f;
 			}
-			
+
+			//Between 30% and 50% of the animation time, the worms movement upward is delayed.
+			//Being already at 0.8 percent of the max height at the beginning,
+			//it moves in the interval 0.8..1.0 during the 20% of the animation.
+			//At the end of this block, half of the animation has passed.
 			if (percentage < 0.5) {
                 return 0.8f + (percentage - 0.3f) / (0.2f) * 0.2f;
 			}
-			
+
+			//For a while, the worm stays still, having caught its prey.
+			//Its height is at max for 10% of the animation.
 			if (percentage < 0.6) {
                 return 1.0f;
 			}
-			
+
+			//Finally, the last 40% of the animation time are spent on going back down under the snow.
+			//The height of the worm is reduced with every frame until it has disappeared.
 			if (percentage < 1.0) {
                 return 1.0f - (percentage - 0.6f) / (0.4f);
 			}
 
+			//This case happens after the animation already finished and the worm disappeared. Its height rate is 0.0f.
             return 0.0f;
 		}
 		
 	}
 
+	/**
+	 * The transition that is used to render the worm attack on the screen.
+	 */
 	private WormAttackTransition transition;
 
 	/**
@@ -113,27 +135,37 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 	
 	/**
 	 * Updates the action by modifying the underlying transition.
+	 * <p>
+	 * Take note: The transition only defines, how high the worm should be rendered when it lurches upwards.
+	 * But there is also the earthquake sound to be played twice. The first time, it is played at the beginning. The second time,
+	 * it is played when the worm starts going down. Additionally, a growling sound from the worm is played once, when the worm appears.
+	 * <p>
+	 * Since we want to play the sounds only once, we need to keep track of whether they have been played already. That's what the boolean flags are for.
 	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		float actionPercentage = (float)after / (float)getDuration();
+
 		if (actionPercentage > 1.0f) {
 			actionPercentage = 1.0f;
 		}
 				
 		getTransition().percentage = actionPercentage;
-		
+
+		//Play the earthquake sound at the beginning.
 		if (!triggeredEarthquake) {
 			triggeredEarthquake = true;
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EARTHQUAKE).play();
 		}
-		
+
+		//Play the earthquake sound again when the worm starts going down.
 		if (!triggeredExitEarthquake && actionPercentage > 0.6) {
 			triggeredExitEarthquake= true;
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EARTHQUAKE).play();
 		}
-		
-		if (transition.wormHeightPercentage() > 0 && triggeredWorm == false) {
+
+		//Play the worm growl sound when the worm appears.
+		if (!triggeredWorm && transition.wormHeightPercentage() > 0) {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_WORM_GROWL).play();
 			triggeredWorm = true;
 		}
@@ -141,11 +173,12 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 	
 	/**
 	 * Concludes the action by nullifying the underlying transition.
+	 * Also set the player's life to zero. Since there is a listener for the player's life, the player will be killed
+	 * as a result.
 	 */
 	@Override
 	public void onEnd() {
 		transition = null;
 		ApplicationContextUtils.getPlayer().setLife(0);
 	}
-
 }

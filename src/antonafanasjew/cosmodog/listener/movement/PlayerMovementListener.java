@@ -375,7 +375,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		player.contaminate();
 	
 	}
-	
+
+	@Override
+	public void beforeFight(Actor actor, ApplicationContext applicationContext) {
+		super.beforeFight(actor, applicationContext);
+	}
+
 	/**
 	 * Removes the contamination flag if the player stays on the decontamination stop.
 	 */
