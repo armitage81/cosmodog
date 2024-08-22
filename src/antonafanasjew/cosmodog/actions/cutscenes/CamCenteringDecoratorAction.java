@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -26,7 +27,7 @@ import java.io.Serial;
  * Being components of this async action, they are considered phases and registered in the phase registry of this action.
  * The same happens with the underlying action.
  */
-public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
+public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 
 	@Serial
 	private static final long serialVersionUID = 5171259029091809078L;
@@ -59,11 +60,6 @@ public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
 	 * The game instance. Used to retrieve global game objects, like the camera and the map.
 	 */
 	private final CosmodogGame cosmodogGame;
-
-	/*
-	 * The registry of the phases of this action. It is used to hold the state of all phases of this action.
-	 */
-	private final ActionRegistry actionPhaseRegistry = new ActionRegistry();
 
 	/**
 	 * Creates the action instance by defining where the camera should be pointed on the map,
@@ -112,7 +108,7 @@ public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
 	 */
 	public CamCenteringDecoratorAction(int camMovementDuration, Piece piece, AsyncAction underlyingAsyncAction, CosmodogGame cosmodogGame) {
 		this(camMovementDuration, piece.getPositionX(), piece.getPositionY(), underlyingAsyncAction, cosmodogGame);
-		
+
 	}
 
 	/**
@@ -144,7 +140,6 @@ public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
 		this.camCenteringY = camCenteringY;
 		this.underlyingAsyncAction = underlyingAsyncAction;
 		this.cosmodogGame = cosmodogGame;
-		
 	}
 
 	/**
@@ -166,28 +161,11 @@ public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
 	public void onTrigger() {
 		float initialCamX = cosmodogGame.getCam().viewCopy().centerX() / cosmodogGame.getCam().getZoomFactor();
 		float initialCamY = cosmodogGame.getCam().viewCopy().centerY() / cosmodogGame.getCam().getZoomFactor();
-		
-		actionPhaseRegistry.registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, camCenteringX, camCenteringY, cosmodogGame));
-		actionPhaseRegistry.registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
-		actionPhaseRegistry.registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, initialCamX, initialCamY, cosmodogGame));
-		
-	}
 
-	/**
-	 * Updates the action based on the passed time.
-	 * <p>
-	 * In this case, the update is simply delegated to the phase registry of this action.
-	 * This way, the phases of this action are updated in the correct order: First, the camera moves to the target point.
-	 * Then, the underlying action is executed. Finally, the camera moves back to the player.
-	 *
-	 * @param before Time offset of the last update as compared to the start of the action.
-	 * @param after Time offset of the current update. after - before = time passed since the last update.
-	 * @param gc GameContainer instance forwarded by the game state's update method.
-	 * @param sbg StateBasedGame instance forwarded by the game state's update method.
-	 */
-	@Override
-	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		actionPhaseRegistry.update(after - before, gc, sbg);
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, camCenteringX, camCenteringY, cosmodogGame));
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, initialCamX, initialCamY, cosmodogGame));
+
 	}
 
 	/**
@@ -210,6 +188,6 @@ public class CamCenteringDecoratorAction  extends VariableLengthAsyncAction {
 	 */
 	@Override
 	public boolean hasFinished() {
-		return !actionPhaseRegistry.isActionRegistered(AsyncActionType.CUTSCENE);
+		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.CUTSCENE);
 	}
 }

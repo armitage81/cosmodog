@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.fight;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 
+
 public abstract class EnemyDestructionActionPhase extends AbstractFightActionPhase {
 
 	private static final long serialVersionUID = -793569752077639630L;

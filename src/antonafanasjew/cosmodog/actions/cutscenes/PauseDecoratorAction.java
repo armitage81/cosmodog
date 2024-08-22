@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,7 +19,7 @@ import java.io.Serial;
  * This is a variable length action. It uses its local action registry to register the underlying action and the pauses
  * as phases. The action is considered finished when all phases have been executed.
  */
-public class PauseDecoratorAction  extends VariableLengthAsyncAction {
+public class PauseDecoratorAction  extends PhaseBasedAction {
 
 	@Serial
 	private static final long serialVersionUID = 5171259029091809078L;
@@ -37,11 +38,6 @@ public class PauseDecoratorAction  extends VariableLengthAsyncAction {
 	 * The underlying action that is executed in between the pauses.
 	 */
 	private final AsyncAction underlyingAsyncAction;
-
-	/**
-	 * The local action registry that is used to register the underlying action and the pauses as phases.
-	 */
-	private final ActionRegistry actionPhaseRegistry = new ActionRegistry();
 
 	/**
 	 * Creates a new pause decorator action with the specified durations and the underlying action.
@@ -63,26 +59,9 @@ public class PauseDecoratorAction  extends VariableLengthAsyncAction {
 	 */
 	@Override
 	public void onTrigger() {
-		actionPhaseRegistry.registerAction(AsyncActionType.CUTSCENE, new WaitAction(durationBefore));
-		actionPhaseRegistry.registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
-		actionPhaseRegistry.registerAction(AsyncActionType.CUTSCENE, new WaitAction(durationAfter));
-	}
-
-	/**
-	 * Updates the action based on the passed time.
-	 * <p>
-	 * In this case, the update is simply delegated to the phase registry of this action.
-	 * This way, the phases of this action are updated in the correct order: First, the first pause is being executed.
-	 * Then, the underlying action is executed. Finally, the second pause is being executed.
-	 *
-	 * @param before Time offset of the last update as compared to the start of the action.
-	 * @param after Time offset of the current update. after - before = time passed since the last update.
-	 * @param gc GameContainer instance forwarded by the game state's update method.
-	 * @param sbg StateBasedGame instance forwarded by the game state's update method.
-	 */
-	@Override
-	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		actionPhaseRegistry.update(after - before, gc, sbg);
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new WaitAction(durationBefore));
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new WaitAction(durationAfter));
 	}
 
 	/**
@@ -94,7 +73,7 @@ public class PauseDecoratorAction  extends VariableLengthAsyncAction {
 	 */
 	@Override
 	public boolean hasFinished() {
-		return !actionPhaseRegistry.isActionRegistered(AsyncActionType.CUTSCENE);
+		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.CUTSCENE);
 	}
 	
 }

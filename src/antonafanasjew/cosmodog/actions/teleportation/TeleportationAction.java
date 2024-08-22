@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.teleportation;
 
+import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -10,12 +11,10 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
-public class TeleportationAction extends VariableLengthAsyncAction {
+public class TeleportationAction extends PhaseBasedAction {
 
 	private static final long serialVersionUID = -2126668222640966302L;
 	
-	private ActionRegistry actionPhaseRegistry = new ActionRegistry();
-
 	private TiledPolylineObject teleportConnection;
 	
 	public TeleportationAction(TiledPolylineObject teleportConnection) {
@@ -26,14 +25,9 @@ public class TeleportationAction extends VariableLengthAsyncAction {
 	public void onTrigger() {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.beginTeleportation();
-		actionPhaseRegistry.registerAction(AsyncActionType.TELEPORTATION, new TeleportStartActionPhase(1000));
-		actionPhaseRegistry.registerAction(AsyncActionType.TELEPORTATION, new ActualTeleportationActionPhase(1000, teleportConnection));
-		actionPhaseRegistry.registerAction(AsyncActionType.TELEPORTATION, new TeleportEndActionPhase(1000));
-	}
-	
-	@Override
-	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		actionPhaseRegistry.update(after - before, gc, sbg);
+		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new TeleportStartActionPhase(1000));
+		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new ActualTeleportationActionPhase(1000, teleportConnection));
+		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new TeleportEndActionPhase(1000));
 	}
 	
 	@Override
@@ -44,7 +38,7 @@ public class TeleportationAction extends VariableLengthAsyncAction {
 	
 	@Override
 	public boolean hasFinished() {
-		return !actionPhaseRegistry.isActionRegistered(AsyncActionType.TELEPORTATION);
+		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.TELEPORTATION);
 	}
 
 }
