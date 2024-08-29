@@ -74,6 +74,8 @@ public class Features {
 	
 	public static final String FEATURE_DEBUGGER = "feature.debugger";
 	
+	public static final String FEATURE_FASTRUNNING = "feature.fastrunning";
+	
 	private static final Features instance = new Features();
 	
 	/**
@@ -105,6 +107,7 @@ public class Features {
 		getFeatureFlags().put(FEATURE_CUTSCENES, true);
 		getFeatureFlags().put(FEATURE_LOGO, true);
 		getFeatureFlags().put(FEATURE_DEBUGGER, true);
+		getFeatureFlags().put(FEATURE_FASTRUNNING, false);
 		
 		//Override features by system properties if any.
 		for (String key : getFeatureFlags().keySet()) {

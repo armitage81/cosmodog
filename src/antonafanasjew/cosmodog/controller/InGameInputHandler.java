@@ -125,7 +125,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Handle skip turn
 		if (inputSkipTurn) {
 			int timePassed = Constants.MINUTES_PER_TURN;
-			AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, true);
+			int movementDurationFactor = Features.getInstance().featureBoundFunction(Features.FEATURE_FASTRUNNING, () -> Constants.VISIBLE_MOVEMENT_DURATION_FACTOR_WHEN_FASTRUNNING, Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
+			AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, true);
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 		}
 		
@@ -238,7 +239,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 					
 					
 					int timePassed = Constants.MINUTES_PER_TURN;
-					AsyncAction movementAction = new MovementAction(timePassed * Constants.VISIBLE_MOVEMENT_DURATION_FACTOR, false);
+					int movementDurationFactor = Features.getInstance().featureBoundFunction(Features.FEATURE_FASTRUNNING, () -> Constants.VISIBLE_MOVEMENT_DURATION_FACTOR_WHEN_FASTRUNNING, Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
+					AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, false);
 					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 					

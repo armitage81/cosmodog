@@ -198,8 +198,8 @@ public class CosmodogStarter extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
-		this.addState(new SplashState());
 		this.addState(new GameState());
+		this.addState(new SplashState());
 		this.addState(new IntroState());
 		this.addState(new MainMenuState());
 		this.addState(new ScoreState());
