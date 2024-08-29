@@ -28,6 +28,12 @@ public class VehicleInteraction extends AbstractPieceInteraction {
 			player.getInventory().remove(InventoryItemType.FUEL_TANK);
 		}
 		
+		//Entering a vehicle must reset thirst and hunger. This makes sense since the metaphor is that the car has infinite supplies.
+		player.setFood(player.getCurrentMaxFood());
+		player.setLifeLentForHunger(0);
+		player.setWater(player.getCurrentMaxWater());
+		player.setLifeLentForThirst(0);
+		
 		player.getInventory().put(InventoryItemType.VEHICLE, vehicleInventoryItem);
 	}
 
