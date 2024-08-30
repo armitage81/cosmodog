@@ -490,126 +490,153 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		cam.focusOnPiece(map, movementOffsetX, movementOffsetY, player);
 	}
-	
+
+	/**
+	 * Updates the moveable block's movement transition. The block's position in the game model does not change here.
+	 * It will happen only at the end of the action.
+	 * <p>
+	 * If the player skips a turn, nothing happens here.
+	 * <p>
+	 * If the player does not push a moveable block, nothing happens here.
+	 * <p>
+	 * Otherwise, the same transition type is used as the one for the player.
+	 * <p>
+	 * Take note: The transition is of type ActorTransition because it is used to represent actors like the player
+	 * and the enemies. The moveable block is a subtype of DynamicPiece and must be converted to an actor to be
+	 * able to use the transition type. This is quite a hack. Actors and dynamic pieces were supposed to represent
+	 * different concepts. The difference was that actors could move while dynamic pieces were stationary.
+	 * But with the moveable dynamic pieces, this difference is blurred.
+	 * <p>
+	 * Take note: The moveable block's movement transition is stored in the transition registry of the game.
+	 *
+	 * @param timePassed Time passed since the action triggered in milliseconds.
+	 */
 	private void onUpdateForMoveable(int timePassed) {
 
 		if (skipTurn) {
 			return;
 		}
 
-		if (moveableMovementActionResult != null) {
-
-			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-
-			Path path = moveableMovementActionResult.getPath();
-
-			int posX = path.getX(0);
-			int posY = path.getY(0);
-			int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
-			int targetPosY = path.getY(1);
-
-			MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils
-					.getCosmodogMap()
-					.dynamicPieceAtPosition(posX, posY);
-
-			float ratio = (float)timePassed / getDuration();
-			ratio = Math.min(ratio, 1.0f);
-
-			boolean verticalNotHorizontal;
-			boolean positiveNotNegative;
-
-			if (targetPosY > posY) {
-				verticalNotHorizontal = true;
-				positiveNotNegative = true;
-			} else if (targetPosY < posY) {
-				verticalNotHorizontal = true;
-				positiveNotNegative = false;
-			} else if (targetPosX < posX) {
-				verticalNotHorizontal = false;
-				positiveNotNegative = false;
-			} else {
-				verticalNotHorizontal = false;
-				positiveNotNegative = true;
-			}
-
-			ActorTransition moveableTransition = ActorTransition.fromActor(moveable.asActor(), targetPosX, targetPosY);
-			if (verticalNotHorizontal) {
-				moveableTransition.setTransitionalOffsetY(positiveNotNegative ? ratio : -ratio);
-			} else {
-				moveableTransition.setTransitionalOffsetX(positiveNotNegative ? ratio : -ratio);
-			}
-			cosmodogGame.getActorTransitionRegistry().put(moveable.asActor(), moveableTransition);
+		if (moveableMovementActionResult == null) {
+			return;
 		}
+
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+
+		Path path = moveableMovementActionResult.getPath();
+
+		int posX = path.getX(0);
+		int posY = path.getY(0);
+		int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
+		int targetPosY = path.getY(1);
+
+		MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils
+				.getCosmodogMap()
+				.dynamicPieceAtPosition(posX, posY);
+
+		float ratio = (float)timePassed / getDuration();
+		ratio = Math.min(ratio, 1.0f);
+
+		boolean verticalNotHorizontal;
+		boolean positiveNotNegative;
+
+		if (targetPosY > posY) {
+			verticalNotHorizontal = true;
+			positiveNotNegative = true;
+		} else if (targetPosY < posY) {
+			verticalNotHorizontal = true;
+			positiveNotNegative = false;
+		} else if (targetPosX < posX) {
+			verticalNotHorizontal = false;
+			positiveNotNegative = false;
+		} else {
+			verticalNotHorizontal = false;
+			positiveNotNegative = true;
+		}
+
+		ActorTransition moveableTransition = ActorTransition.fromActor(moveable.asActor(), targetPosX, targetPosY);
+		if (verticalNotHorizontal) {
+			moveableTransition.setTransitionalOffsetY(positiveNotNegative ? ratio : -ratio);
+		} else {
+			moveableTransition.setTransitionalOffsetX(positiveNotNegative ? ratio : -ratio);
+		}
+		cosmodogGame.getActorTransitionRegistry().put(moveable.asActor(), moveableTransition);
 	}
-	
+
+	/**
+	 * Updates the enemies' movement transition. Does it for all enemies from the enemy movement results.
+	 * <p>
+	 * First, calculates how far the enemy can move. This depends on the enemy's speed factor.
+	 * Then checks how much of the available movement budget has been spent so far (depending on passed time since
+	 * the action started). Calculates which step of the path the enemy is currently on.
+	 * (Example: If the enemy has a path with 3 steps and the enemy has spent 50% of the movement budget, the enemy is
+	 * between the first and the second step.) Then the transitional position is calculated based on the current step
+	 * and the remaining offset to the next step.
+	 * <p>
+	 * Take note: Enemies' transitions are stored in the transition registry of the game.
+	 *
+	 * @param timePassed Time passed since the action triggered in milliseconds.
+	 */
 	private void onUpdateForEnemies(int timePassed) {
 		
 		float actionTimeRatio = (float)timePassed / getDuration();
 
-		
-		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		Set<Enemy> enemies = map.getEnemies();
+		Set<Enemy> enemies = enemyMovementActionResults.keySet();
 		for (Enemy enemy : enemies) {
 			
 			int timeBudgetForMovement = (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep() * enemy.getSpeedFactor();
 			float spentTimeBudget = actionTimeRatio * timeBudgetForMovement;
-			
-			
+
 			MovementActionResult enemyMovementActionResult = enemyMovementActionResults.get(enemy);
-			if (enemyMovementActionResult != null) {
-				
-				int step = enemyMovementActionResult.getMovementStepIndexForPassedPlanetaryMinutes(spentTimeBudget);
-				
-				//Nothing to update here as the enemy has finished his movement.
-				if (step == -1) {
-					
-				} else {
-					
-					Path path = enemyMovementActionResult.getPath();
-					
-					if (path.getLength() > 1) { //The path can contain only the start point in case the npc does not move.
-						
-						float restMinutes = enemyMovementActionResult.getRemainingPlanetaryMinutesSinceLastMovementStep(spentTimeBudget);
-						float costsForNextStep = enemyMovementActionResult.getMovementCostsInPlanetaryMinutes().get(step);
-						float ratioForNextStep = restMinutes / costsForNextStep;
-						int transitionalPosX = enemy.getPositionX();
-						int transitionalPosY = enemy.getPositionY();
-						int transitionalTargetPosX = path.getX(step + 1); //We need to add 1 as the path contains the initial position at index 0
-						int transitionalTargetPosY = path.getY(step + 1);
-						
-						ActorTransitionRegistry transitionRegistry = game.getActorTransitionRegistry();
-						ActorTransition enemyTransition = transitionRegistry.get(enemy);
-						if (enemyTransition != null) {
-							//here we do not want the target position but the current transitional position from which the movement offset will be counted
-							//That's why we do not add 1 to the step. At the beginning, this will hold the initial actor position as it is before the movement starts
-							transitionalPosX = path.getX(step); 
-							transitionalPosY = path.getY(step);
-						}
-					
-						
-						ActorTransition newEnemyTransition = ActorTransition.fromActor(enemy, transitionalTargetPosX, transitionalTargetPosY);
-						newEnemyTransition.setTransitionalPosX(transitionalPosX); 
-						newEnemyTransition.setTransitionalPosY(transitionalPosY);
-						
-						if (transitionalPosX < transitionalTargetPosX) {
-							newEnemyTransition.setTransitionalOffsetX(ratioForNextStep);
-						} else if (transitionalPosX > transitionalTargetPosX) {
-							newEnemyTransition.setTransitionalOffsetX(-ratioForNextStep);
-						} else if (transitionalPosY < transitionalTargetPosY) {
-							newEnemyTransition.setTransitionalOffsetY(ratioForNextStep);
-						} else if (transitionalPosY > transitionalTargetPosY) {
-							newEnemyTransition.setTransitionalOffsetY(-ratioForNextStep);
-						}
-												
-						transitionRegistry.put(enemy, newEnemyTransition);
+
+			int step = enemyMovementActionResult.getMovementStepIndexForPassedPlanetaryMinutes(spentTimeBudget);
+
+			//Nothing to update here as the enemy has finished his movement.
+			if (step == -1) {
+
+			} else {
+
+				Path path = enemyMovementActionResult.getPath();
+
+				if (path.getLength() > 1) { //The path can contain only the start point in case the npc does not move.
+
+					float restMinutes = enemyMovementActionResult.getRemainingPlanetaryMinutesSinceLastMovementStep(spentTimeBudget);
+					float costsForNextStep = enemyMovementActionResult.getMovementCostsInPlanetaryMinutes().get(step);
+					float ratioForNextStep = restMinutes / costsForNextStep;
+					int transitionalPosX = enemy.getPositionX();
+					int transitionalPosY = enemy.getPositionY();
+					int transitionalTargetPosX = path.getX(step + 1); //We need to add 1 as the path contains the initial position at index 0
+					int transitionalTargetPosY = path.getY(step + 1);
+
+					ActorTransitionRegistry transitionRegistry = game.getActorTransitionRegistry();
+					ActorTransition enemyTransition = transitionRegistry.get(enemy);
+					if (enemyTransition != null) {
+						//here we do not want the target position but the current transitional position from which the movement offset will be counted
+						//That's why we do not add 1 to the step. At the beginning, this will hold the initial actor position as it is before the movement starts
+						transitionalPosX = path.getX(step);
+						transitionalPosY = path.getY(step);
 					}
-					
+
+					ActorTransition newEnemyTransition = ActorTransition.fromActor(enemy, transitionalTargetPosX, transitionalTargetPosY);
+					newEnemyTransition.setTransitionalPosX(transitionalPosX);
+					newEnemyTransition.setTransitionalPosY(transitionalPosY);
+
+					if (transitionalPosX < transitionalTargetPosX) {
+						newEnemyTransition.setTransitionalOffsetX(ratioForNextStep);
+					} else if (transitionalPosX > transitionalTargetPosX) {
+						newEnemyTransition.setTransitionalOffsetX(-ratioForNextStep);
+					} else if (transitionalPosY < transitionalTargetPosY) {
+						newEnemyTransition.setTransitionalOffsetY(ratioForNextStep);
+					} else if (transitionalPosY > transitionalTargetPosY) {
+						newEnemyTransition.setTransitionalOffsetY(-ratioForNextStep);
+					}
+
+					transitionRegistry.put(enemy, newEnemyTransition);
 				}
-				
+
 			}
-			
 		}
 	}
 	
