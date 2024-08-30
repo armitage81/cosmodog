@@ -426,7 +426,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	/**
 	 * Updates the player's movement transition. The player's position in the game model does not change here.
-	 * It will happen only at the end of the action.
+	 * It will happen only at the end of the action. The transition only handles the offset between two tiles
+	 * to represent a smooth movement.
 	 * <p>
 	 * If the player skips a turn, nothing happens here.
 	 * <p>
@@ -639,8 +640,24 @@ public class MovementAction extends FixedLengthAsyncAction {
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * Executed when the action has finished and handles the part for the player.
+	 * <p>
+	 * Removes the actor transition from the registry.
+	 * <p>
+	 * If the action was about skipping turn, the listeners for skipping turn are notified.
+	 * (They update time, increase the worm counter, reduce water and food and many other things,
+	 * see PlayerMovementListener.)
+	 * <p>
+	 * If the player is in the platform (that is he has it in his inventory, technically) then all pieces that are
+	 * on the platform are moved as well. Their movement correlates to the player's movement.
+	 * The movement means changing the x/y coordinates of the pieces, delete the references to them from the map
+	 * and add them to the map again at new places.
+	 * <p>
+	 * Finally, the player's position is shifted to the target tile.
+	 * This triggers all movement listeners for the player.
+	 */
 	private void onEndForPlayer() {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
@@ -661,7 +678,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
 			
 			for (Piece piece : cosmodogGame.getMap().getMapPieces().values()) {
-				if (piece instanceof Platform == false && CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
+				if (CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
 					
 					//As we move the piece on the platform, we need to update it in the mapValues cache
 					Position position = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
@@ -692,9 +709,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 		} else {
 			player.shiftHorizontal(player.getDirection() == DirectionType.LEFT ? -1 : 1);
 		}
-		
 	}
-	
+
+	/**
+	 * Executed when the action has finished and handles the part for a potential moveable object.
+	 * <p>
+	 * Uses the moveable object's action result.
+	 * If there was a movement (it could've been a skip turn) the dynamic piece coordinates of the moveable object
+	 * are set to the target tile and the actor transition is removed from the registry. (Remember, the moveable
+	 * object is handled as an actor here even if it is technically a dynamic piece.)
+	 */
 	private void onEndForMoveable() {
 		
 		MovementActionResult moveableMovementActionResult = this.moveableMovementActionResult;
@@ -721,7 +745,21 @@ public class MovementAction extends FixedLengthAsyncAction {
 			}
 		}
 	}
-	
+
+	/**
+	 * Executed when the action has finished and handles the part for the enemies.
+	 * <p>
+	 * Removes actor transitions for all enemies from the registry.
+	 * <p>
+	 * Sets the coordinates of each enemy to the target position as defined in their corresponding
+	 * movement action results. Also sets each enemy's direction to its transitional direction.
+	 * (During the transition the displayed direction was only temporary, now it is fixed in the model as well.
+	 * If it hadn't been done, the enemy would face in the wrong direction after the transition would be over.)
+	 * <p>
+	 * Finally, the enemy alert level is handled. If it sees the player after the movement, the alert is set
+	 * to the highest level. If not, it is reduced by one unless it is 0 already. This way, the enemy can "forget"
+	 * about the player.
+	 */
 	private void onEndForEnemies() {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
@@ -750,9 +788,17 @@ public class MovementAction extends FixedLengthAsyncAction {
 				enemy.reduceAlertLevel();
 			}
 		}
-		
 	}
-	
+
+	/**
+	 * States whether the player is visible to the given enemy.
+	 * <p>
+	 * Note how all sight modifiers are considered, especially nightly reduction of the vision and hiding in high grass.
+	 *
+	 * @param enemy Enemy for which the visibility should be checked.
+	 * @param player The player who is either visible to the enemy, or not.
+	 * @return true if the player is visible to the enemy, false otherwise.
+	 */
 	private boolean playerInVisibilityRange(Enemy enemy, Player player) {
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
@@ -771,10 +817,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	
+
+	/**
+	 * Handles the case when an enemy ends up alerted and adjacent to the player after the movement.
+	 * In this case, the enemy will attack the player.
+	 */
 	private void fight() {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
