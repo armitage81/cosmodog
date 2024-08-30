@@ -5,12 +5,35 @@ import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.io.Serial;
+
+/**
+ * Represents an asynchronous action that is based on phases.
+ * <p>
+ * It is a variable length asynchronous action.
+ * <p>
+ * This class is abstract.
+ * <p>
+ * This class holds common code for all actions that can have multiple phases, such as FightActions.
+ */
 public abstract class PhaseBasedAction extends VariableLengthAsyncAction {
 
+	@Serial
 	private static final long serialVersionUID = 7995087870759665127L;
 
-	private ActionRegistry actionPhaseRegistry = new ActionRegistry();
-	
+	/**
+	 * The registry of action phases. They are asynchronous actions themselves.
+	 * The PhasebasedAction uses them as sub-actions.
+	 * <p>
+	 * Example: A fight action can consist of multiple phases: first the player attacks, then the target enemy explodes,
+	 * than the next enemy attacks etc.
+	 */
+	private final ActionRegistry actionPhaseRegistry = new ActionRegistry();
+
+	/**
+	 * Returns the registry of action phases for this action.
+	 * The PhaseBasedAction ends when the phase registry for a specific action type is empty.
+	 */
 	public ActionRegistry getActionPhaseRegistry() {
 		return actionPhaseRegistry;
 	}

@@ -45,7 +45,8 @@ public abstract class AbstractFightActionPhase extends FixedLengthAsyncAction {
 	}
 
 	/**
-	 * Sets the fight phase transition. This is usually done in the onTrigger methods of subclasses.
+	 * Sets the fight phase transition. This is usually done in the onTrigger methods of subclasses and reset to null
+	 * in the onEnd methods of subclasses.
 	 * @param fightPhaseTransition The fight phase transition.
 	 */
 	public void setFightPhaseTransition(FightPhaseTransition fightPhaseTransition) {

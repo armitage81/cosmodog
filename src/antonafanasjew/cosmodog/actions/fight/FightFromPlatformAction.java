@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.fight;
 
+import java.io.Serial;
 import java.util.Set;
 
 import org.newdawn.slick.GameContainer;
@@ -16,24 +17,54 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 /**
  * Represents the fight from a platform. This is a simple fight as all enemies that are touched by the platform are obliterated
  * without any chance to retaliate. No damage calculation, no ammunition depletion needed.
- * 
- * This action has it's own action registry to maintain the fight phases.
+ * <p>
+ * The player is always the attacker here. (There is no way for enemies to attack the player if he is in the platform.)
+ * Other than in the normal fights, the player can attack multiple enemies at once.
+ * <p>
+ * This action has its own action registry to maintain the fight phases.
  * 
  */
 public class FightFromPlatformAction extends PhaseBasedAction {
 
+	@Serial
 	private static final long serialVersionUID = -5197319922966169468L;
 
-	private Set<Enemy> targetEnemies;
+	/**
+	 * The enemies that are targeted by the player. Note that the player can attack multiple enemies at once if he is on a platform.
+	 */
+	private final Set<Enemy> targetEnemies;
+
+	/**
+	 * The fight action result. For each enemy adjacent to the platform, a fight phase result is calculated by setting
+	 * the player as attacker, the enemy as target and a fixed (huge) damage amount.
+	 * Note that there is no difference in the structure of this fight action result compared to normal fights.
+	 */
 	private FightActionResult fightActionResult = new FightActionResult();
-	
+
+	/**
+	 * Constructor.
+	 * <p>
+	 * Retrieves a set of adjacent enemies that are targeted by the player.
+	 *
+	 * @param targetEnemies The enemies that are targeted by the player.
+	 */
 	public FightFromPlatformAction(Set<Enemy> targetEnemies) {
 		this.targetEnemies = targetEnemies;
 	}
 
 	/**
-	 * Calculates the complete fight result. Calculates the fight phases based
-	 * on the fight result and registers them in the internal action registry.
+	 * Calls the player's listener to notify it about the impending fight.
+	 * <p>
+	 * Then calculates the result for the whole fight. The fight result is a list of fight phase results.
+	 * Each fight phase result represents a single attack phase. The player is always the attacker in this case. (Enemies have no chance to attack the platform.)
+	 * <p>
+	 * The calculated result is set to the property fightActionResult.
+	 * <p>
+	 * The property fightActionResult is then used to initialize the action phase registry. Fight action phases are created based on the
+	 * fight phase results. The fight action phases are then registered in the action phase registry. Fight actions contain player attacks
+	 * and enemy destruction.
+	 * <p>
+	 * At the end of this method, the fight is decided and its execution is prepared. The fight is then played in the onUpdate method.
 	 */
 	@Override
 	public void onTrigger() {
@@ -46,31 +77,36 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 	}
 
 	/**
-	 * Updates the action registry, causing it to play forward the phase queue.
+	 * At the end of the action, the player's listener is called to indicate the end of the fight.
+	 * <p>
+	 * Usually, same calculations are executed here as the ones after the player's movement.
+	 * <p>
+	 * Note: afterMovement and afterFight listener methods do not trigger enemy movements or attacks.
+	 * Instead, they move during the player's movement action, and they fight during the player's movement or fight action.
 	 */
-	@Override
-	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		getActionPhaseRegistry().update(after - before, gc, sbg);
-	}
-
 	@Override
 	public void onEnd() {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.endFight();
 	}
-	
+
 	/**
-	 * Returns true if the fight action registry is empty, meaning that there
-	 * are no unplayed fight phases.
+	 * States whether the action is finished.
+	 * <p>
+	 * This is the case when the last phase of the action has been unregistered and the phase registry is empty.
+	 *
+	 * @return true if the action has finished, false otherwise.
 	 */
 	@Override
 	public boolean hasFinished() {
 		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.FIGHT_FROM_PLATFORM);
 	}
 
-	/*
+	/**
 	 * Initializes the fight action result by simulating the fights between the
 	 * player and all adjacent enemies.
+	 * Note: The player is always the attacker in this case. The enemies have no chance to attack the player.
+	 * The enemies are destroyed in any case.
 	 */
 	private void initFightActionResult() {
 		Player player = ApplicationContextUtils.getPlayer();
@@ -79,14 +115,26 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 		}
 	}
 
+	/**
+	 * Updates the fight action result for one enemy. The player is the attacker, the enemy is the target.
+	 * The player's attack damage is set to a fixed (huge) value. It will always kill the enemy.
+	 *
+	 * @param player The player who is the attacker.
+	 * @param enemy The enemy who is the target.
+	 */
 	private void updateFightActionResultForOneEnemy(Player player, Enemy enemy) {
 		int playerAttackDamage = 1000;
 		FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
 		fightActionResult.add(playerPhaseResult);
 	}
 
-	/*
+	/**
 	 * Calculates the phase queue based on the fight action result.
+	 * <p>
+	 * For each fight phase result, a player's attack action phase and an enemy destruction action phase are created.
+	 * After all, the player is always the attacker if he is on the platform and each attacked enemy is destroyed.
+	 * <p>
+	 * If there are any overhead notifications, they are canceled.
 	 */
 	private void initActionPhaseRegistry() {
 
@@ -105,5 +153,4 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT_FROM_PLATFORM, enemyDestructionActionPhase);
 		}
 	}
-
 }

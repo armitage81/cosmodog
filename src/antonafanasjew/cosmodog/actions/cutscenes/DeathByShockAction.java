@@ -45,6 +45,11 @@ public class DeathByShockAction extends FixedLengthAsyncAction {
 
 	/**
 	 * This action does not have any update logic. The only relevant logic is at the end.
+	 *
+	 * @param before Time offset of the last update as compared to the start of the action.
+	 * @param after Time offset of the current update. after - before = time passed since the last update.
+	 * @param gc GameContainer instance forwarded by the game state's update method.
+	 * @param sbg StateBasedGame instance forwarded by the game state's update method.
 	 */
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
