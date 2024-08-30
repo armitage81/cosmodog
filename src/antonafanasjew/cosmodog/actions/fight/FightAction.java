@@ -333,4 +333,9 @@ public class FightAction extends PhaseBasedAction {
 			}
 		}
 	}
+
+	@Override
+	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
+		super.onUpdate(before, after, gc, sbg);
+	}
 }
