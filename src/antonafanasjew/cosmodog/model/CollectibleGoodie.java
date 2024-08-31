@@ -17,7 +17,8 @@ public class CollectibleGoodie extends Collectible {
 		soulessence(500),
 		armor(500),
 		bottle(1000),
-		foodcompartment(1000);
+		foodcompartment(1000),
+		fueltank(1000);
 
 		private int scorePoints;
 		

@@ -184,7 +184,7 @@ public class LifeInterfaceRenderer implements Renderer {
 			
 			g.translate(fuelBarDrawingContext.x(), fuelBarDrawingContext.y());
 			
-			float maxFuel = Vehicle.MAX_FUEL;
+			float maxFuel = vehicle.getMaxFuel();
 			float maxFuelBarWidth = fuelBarDrawingContext.w();
 			
 			float oneFuelUnitBarWidth = maxFuelBarWidth / maxFuel;
@@ -195,7 +195,7 @@ public class LifeInterfaceRenderer implements Renderer {
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, maxFuelBarWidth, fuelBarDrawingContext.h());
 			
-			boolean fuelBarLow = ((float)vehicle.getFuel()) / Vehicle.MAX_FUEL <= Constants.FLICKING_THRESHOLD;
+			boolean fuelBarLow = ((float)vehicle.getFuel()) / vehicle.getMaxFuel() <= Constants.FLICKING_THRESHOLD;
 			 
 			if (flick || !fuelBarLow) {
 				ApplicationContext.instance().getAnimations().get("fuelBar").draw(0, 0, currentFuelBarWidth, fuelBarDrawingContext.h());

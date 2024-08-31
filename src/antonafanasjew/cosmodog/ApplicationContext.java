@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
+import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
+import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
@@ -39,41 +42,6 @@ import antonafanasjew.cosmodog.listener.movement.consumer.FoodConsumer;
 import antonafanasjew.cosmodog.listener.movement.consumer.FuelConsumer;
 import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
 import antonafanasjew.cosmodog.listener.movement.consumer.WaterConsumer;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AmmoInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AntidoteInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArcheologistsJournalInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ArmorInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.AxeInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BinocularsInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BoatInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.BottleInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ChartInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.CognitionInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.ComposedInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.DynamiteInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.FoodCompartmentInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.GeigerZaehlerInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobankInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobitInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InfobyteInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.InsightInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.JacketInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.KeyInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.LogInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MacheteInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MedipackInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.MineDetectorInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PickInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PlatformInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SkiInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoftwareInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SoulEssenceInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SuppliesInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.SupplyTrackerInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.VehicleInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponFirmwareUpgradeInteraction;
-import antonafanasjew.cosmodog.listener.movement.pieceinteraction.WeaponInteraction;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
@@ -97,6 +65,7 @@ import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
 import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedPathFinder;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.PatrolingPathFinder;
+import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.menu.MenuBuilder;
@@ -142,6 +111,8 @@ public class ApplicationContext {
 		
 		return instance;
 	}
+	
+	private PlayerBuilder playerBuilder;
 	
 	/*
 	 * Contains the game model beyond the game session. User, score list etc are also included.
@@ -287,6 +258,9 @@ public class ApplicationContext {
 		User user = new User();
 		user.setUserName("Armitage");
 		cosmodog.setUser(user);
+
+		this.playerBuilder = CosmodogModelHolder.retrievePlayerBuilder();
+		cosmodog.setPlayerBuilder(playerBuilder);
 		
 		List<CollisionValidator> delegateValidators = Lists.newArrayList();
 		delegateValidators.add(new GeneralCollisionValidatorForPlayer());
@@ -359,6 +333,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.infobank.name(), new InfobankInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.fueltank.name(), new FuelTankInteraction());
 		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
 		pieceInteractionMap.put(Platform.class.getSimpleName(), new PlatformInteraction());
 		pieceInteractionMap.put("pistol", new WeaponInteraction());
@@ -772,6 +747,5 @@ public class ApplicationContext {
 	public MusicResources getMusicResources() {
 		return musicResources;
 	}
-
 	
 }

@@ -31,6 +31,7 @@ MACHINEGUN_AMMO_DESCRIPTION;CollectibleAmmo_machinegun;0;machinegunAmmoDescripti
 RPG_AMMO_DESCRIPTION;CollectibleAmmo_rpg;0;rpgAmmoDescription;You found RPG ammunition.;40
 BOTTLE_DESCRIPTION;bottle;ANY;bottleDescription;You found a bottle. Your water capacity increases.;40
 FOOD_COMPARTMENT_DESCRIPTION;foodcompartment;ANY;foodcompartmentDescription;You found a food compartment and attached it to your backback. Your supply capacity increases.;40
+FUEL_TANK_DESCRIPTION;fueltank;ANY;fuelTankDescription;You found a fuel tank upgrade. Vehicles will have more fuel now.;40
 RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters (red).;40
 LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage (purple).;40
 CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room (cyan).;40

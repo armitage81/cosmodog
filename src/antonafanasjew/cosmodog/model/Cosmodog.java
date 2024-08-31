@@ -49,25 +49,7 @@ public class Cosmodog extends CosmodogModel {
 	private TileBasedMapFactory tileBasedMapFactory = new TileBasedMapFactory();
 	private Map<String, PieceInteraction> pieceInteractionMap = Maps.newHashMap();
 	private PlayerBuilder playerBuilder = new DefaultPlayerBuilder();
-	
-	public Cosmodog() {
-		try {
-			if (System.getProperty("playerBuilder") != null) {
-				String playerBuilderTypeName = System.getProperty("playerBuilder");
-				@SuppressWarnings("rawtypes")
-				Class playerBuilderClass = Class.forName(playerBuilderTypeName);
-				PlayerBuilder playerBuilder = (PlayerBuilder)playerBuilderClass.newInstance();
-				this.playerBuilder = playerBuilder;
-			}
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
+
     public User getUser() {
         return user;
     }
@@ -163,6 +145,10 @@ public class Cosmodog extends CosmodogModel {
 	}
 	public PlayerBuilder getPlayerBuilder() {
 		return playerBuilder;
+	}
+	
+	public void setPlayerBuilder(PlayerBuilder playerBuilder) {
+		this.playerBuilder = playerBuilder;
 	}
 
 	public ResourceConsumer getFuelConsumer() {

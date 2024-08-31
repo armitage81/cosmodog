@@ -253,8 +253,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 				VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 				Vehicle vehicle = vehicleItem.getVehicle();
-				if (vehicle.getFuel() < Vehicle.MAX_FUEL) {
-					vehicle.setFuel(Vehicle.MAX_FUEL);
+				if (vehicle.getFuel() < vehicle.getMaxFuel()) {
+					vehicle.setFuel(vehicle.getMaxFuel());
 					notificationText = "You refueled the car.";
 				}
 			} else {

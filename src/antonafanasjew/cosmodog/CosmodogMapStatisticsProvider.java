@@ -211,6 +211,18 @@ public class CosmodogMapStatisticsProvider {
 		};
 		return specificCollectibles(pieces, importantCollectiblePredicate);
 	}
+
+	public Map<Position, Collectible> fuelTanks(Map<Position, Piece> pieces) {
+		Predicate<Collectible> importantCollectiblePredicate = e -> {
+			boolean goodie = e instanceof CollectibleGoodie;
+			if (goodie) {
+				GoodieType goodieType = ((CollectibleGoodie) e).getGoodieType();
+				return goodieType == GoodieType.fueltank;
+			}
+			return false;
+		};
+		return specificCollectibles(pieces, importantCollectiblePredicate);
+	}
 	
 	public Map<Position, Collectible> softwares(Map<Position, Piece> pieces) {
 		Predicate<Collectible> importantCollectiblePredicate = e -> {

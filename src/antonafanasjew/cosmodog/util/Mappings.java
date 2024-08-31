@@ -143,6 +143,7 @@ public class Mappings {
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.ARMOR, GoodieType.armor);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.BOTTLE, GoodieType.bottle);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.FOOD_COMPARTMENT, GoodieType.foodcompartment);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.FUEL_TANK, GoodieType.fueltank);
 	}
 	
 	public static final Map<Integer, DoorType> TILE_ID_TO_KEY_TYPE = Maps.newHashMap();

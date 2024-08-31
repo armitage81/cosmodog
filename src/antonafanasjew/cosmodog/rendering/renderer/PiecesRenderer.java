@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.rendering.renderer.pieces.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -28,28 +29,6 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.PieceRendererPredicate;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.AmmoRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.ArmorRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.BottleRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.ChartRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.CognitionRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.CollectibleComposedRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.FoodCompartmentRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobankRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobitRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.InfobyteRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.InsightRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.KeyRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.LogRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.MedipackRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.PieceRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.PlatformRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.SoftwareRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.SoulEssenceRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.SuppliesRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.ToolRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.VehicleRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.WeaponRenderer;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 
 import com.google.common.collect.Lists;
@@ -139,6 +118,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.infobank.name(), new InfobankRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.fueltank.name(), new FuelTankRenderer());
 	}
 	
 	@Override

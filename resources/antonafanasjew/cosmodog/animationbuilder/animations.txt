@@ -203,6 +203,7 @@ soulessence;data/soulessence.png;16;16;[0/0/200,1/0/200,2/0/200,1/0/200];true;tr
 armor;data/armor.png;16;16;[0/0/200,1/0/200,2/0/200,3/0/200,4/0/200,3/0/200,2/0/200,1/0/200];true;true
 bottle;data/bottle.png;16;16;[0/0/200,1/0/200,2/0/200,1/0/200];true;true
 foodcompartment;data/foodcompartment.png;16;16;[0/0/200,1/0/200,2/0/200,1/0/200];true;true
+fueltank;data/fueltank.png;16;16;[0/0/200,1/0/200,2/0/200,1/0/200];true;true
 
 collectibleItemTool;data/collectible_tool.png;16;16;[0/0/1000,1/0/100,2/0/100,3/0/100,4/0/100];true;true
 
