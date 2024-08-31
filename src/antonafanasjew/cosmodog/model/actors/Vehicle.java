@@ -10,9 +10,11 @@ public class Vehicle extends Transport {
 	public static final int MAX_POSSIBLE_LIFE = 100;
 	public static final int INITIAL_LIFE = 10;
 	
-	public static final int INITIAL_MAX_FUEL = 200;
+	public static final int INITIAL_MAX_FUEL = 100;
+    public static final int HIGHEST_MAX_FUEL = 400;
 
 	private int maxFuel = INITIAL_MAX_FUEL;
+
 	private int fuel = maxFuel;
 	
 	public Vehicle() {

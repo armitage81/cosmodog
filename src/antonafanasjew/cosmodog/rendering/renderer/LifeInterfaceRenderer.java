@@ -172,8 +172,6 @@ public class LifeInterfaceRenderer implements Renderer {
 		//RENDERING FUEL ROW
 		if (vehicleInventoryItem != null) {
 		
-			
-			
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
 			
 			SimpleDrawingContext fuelLabelDrawingContext = new SimpleDrawingContext(fuelDrawingContext, 0, 0, LABEL_WIDTH, fuelDrawingContext.h());
@@ -183,14 +181,17 @@ public class LifeInterfaceRenderer implements Renderer {
 			TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, g, textBook);
 			
 			g.translate(fuelBarDrawingContext.x(), fuelBarDrawingContext.y());
-			
+
+			//Max fuel can be increased with fuel tanks up to this value.
+			float highestMaxFuel = Vehicle.HIGHEST_MAX_FUEL;
 			float maxFuel = vehicle.getMaxFuel();
-			float maxFuelBarWidth = fuelBarDrawingContext.w();
-			
-			float oneFuelUnitBarWidth = maxFuelBarWidth / maxFuel;
-			
 			float currentFuel = vehicle.getFuel();
-			float currentFuelBarWidth = currentFuel / maxFuel * maxFuelBarWidth;
+
+			float maxFuelBarWidth = fuelBarDrawingContext.w() / highestMaxFuel * maxFuel;
+
+			float oneFuelUnitBarWidth = maxFuelBarWidth / maxFuel;
+
+			float currentFuelBarWidth = currentFuel * oneFuelUnitBarWidth;
 			
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, maxFuelBarWidth, fuelBarDrawingContext.h());
