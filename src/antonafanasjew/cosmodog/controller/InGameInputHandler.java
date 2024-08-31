@@ -137,7 +137,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			PlatformInventoryItem platformItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
 			
-			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {				if (vehicleItem != null) {
+			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
+				if (vehicleItem != null) {
 					vehicleItem.setExiting(true);
 				}
 				if (platformItem != null) {
@@ -388,20 +389,13 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (debugger != null) {
 			
 			if (input.isKeyPressed(Input.KEY_1)) {
-				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextMonolithPosition();
+				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextPosition();
 				player.setPositionX(playerPosition.x);
 				player.setPositionY(playerPosition.y);
 				cam.focusOnPiece(map, 0, 0, player);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_2)) {
-				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextCutscenePosition();
-				player.setPositionX(playerPosition.x);
-				player.setPositionY(playerPosition.y);
-				cam.focusOnPiece(map, 0, 0, player);
-			}
-			
-			if (input.isKeyPressed(Input.KEY_3)) {
 				player.getGameProgress().addInfobank();
 				player.getGameProgress().addInfobank();
 				player.getGameProgress().addInfobank();
