@@ -1053,6 +1053,37 @@ tile.GRASS_OBJECT_FLOWER;data/bees.png;16;16;[0/0/150,1/0/150,2/0/150,3/0/150,4/
 
 tile.TRAFFIC_LIGHT;data/trafficlight.png;16;16;[0/0/750,1/0/750];true;true
 
+
+tile.LAVA_CENTER;data/lava.png;16;16;[1/1/500,1/4/500,1/7/500,1/4/500];true;true
+
+
+
+
+
+tile.RIVER_VERT;data/rivers.png;16;16;[1/2/200,1/3/200,1/4/200,1/5/200,1/6/200,1/7/200,1/8/200,1/9/200];true;true
+tile.RIVER_HOR;data/rivers.png;16;16;[9/2/200,9/3/200,9/4/200,9/5/200,9/6/200,9/7/200,9/8/200,9/9/200];true;true
+tile.RIVER_W_AND_S;data/rivers.png;16;16;[5/2/200,5/3/200,5/4/200,5/5/200,5/6/200,5/7/200,5/8/200,5/9/200];true;true
+tile.RIVER_N_AND_E;data/rivers.png;16;16;[18/2/200,18/3/200,18/4/200,18/5/200,18/6/200,18/7/200,18/8/200,18/9/200];true;true
+tile.RIVER_E_AND_S;data/rivers.png;16;16;[3/2/200,3/3/200,3/4/200,3/5/200,3/6/200,3/7/200,3/8/200,3/9/200];true;true
+tile.RIVER_N_AND_W;data/rivers.png;16;16;[20/2/200,20/3/200,20/4/200,20/5/200,20/6/200,20/7/200,20/8/200,20/9/200];true;true
+tile.RIVER_N_S_E;data/rivers.png;16;16;[12/2/200,12/3/200,12/4/200,12/5/200,12/6/200,12/7/200,12/8/200,12/9/200];true;true
+tile.RIVER_N_S_W;data/rivers.png;16;16;[14/2/200,14/3/200,14/4/200,14/5/200,14/6/200,14/7/200,14/8/200,14/9/200];true;true
+tile.RIVER_W_E_N;data/rivers.png;16;16;[22/2/200,22/3/200,22/4/200,22/5/200,22/6/200,22/7/200,22/8/200,22/9/200];true;true
+tile.RIVER_W_E_S;data/rivers.png;16;16;[4/2/200,4/3/200,4/4/200,4/5/200,4/6/200,4/7/200,4/8/200,4/9/200];true;true
+tile.RIVER_W_E_N_S;data/rivers.png;16;16;[10/2/200,10/3/200,10/4/200,10/5/200,10/6/200,10/7/200,10/8/200,10/9/200];true;true
+tile.RIVER_PATCH;data/rivers.png;16;16;[13/2/200,13/3/200,13/4/200,13/5/200,13/6/200,13/7/200,13/8/200,13/9/200];true;true
+tile.RIVER_DELTA_N;data/rivers.png;16;16;[25/2/200,25/3/200,25/4/200,25/5/200,25/6/200,25/7/200,25/8/200,25/9/200];true;true
+tile.RIVER_DELTA_S;data/rivers.png;16;16;[7/2/200,7/3/200,7/4/200,7/5/200,7/6/200,7/7/200,7/8/200,7/9/200];true;true
+tile.RIVER_DELTA_W;data/rivers.png;16;16;[17/2/200,17/3/200,17/4/200,17/5/200,17/6/200,17/7/200,17/8/200,17/9/200];true;true
+tile.RIVER_DELTA_E;data/rivers.png;16;16;[15/2/200,15/3/200,15/4/200,15/5/200,15/6/200,15/7/200,15/8/200,15/9/200];true;true
+tile.RIVER_BRIDGE_VERT;data/rivers.png;16;16;[6/2/200,6/3/200,6/4/200,6/5/200,6/6/200,6/7/200,6/8/200,6/9/200];true;true
+tile.RIVER_BRIDGE_HOR;data/rivers.png;16;16;[8/2/200,8/3/200,8/4/200,8/5/200,8/6/200,8/7/200,8/8/200,8/9/200];true;true
+
+
+
+
+
+
 tile.WATER_CENTER;data/water.png;16;16;[0/0/500,0/1/500,0/2/500,0/3/500];true;true
 tile.WATER_BORDER_W;data/water.png;16;16;[1/0/1000,1/1/1000];true;true
 tile.WATER_BORDER_NW;data/water.png;16;16;[2/0/1000,2/1/1000];true;true
