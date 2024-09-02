@@ -26,8 +26,7 @@ public class AnimationBuilder extends AbstractResourceWrapperBuilder<Animation> 
 		}
 		
 		Animation animation = new Animation();
-		animation.setAutoUpdate(true);
-		
+
 		String[] frameData = frameDataset.split(",");
 		
 		for (String frameDate : frameData) {
@@ -45,8 +44,7 @@ public class AnimationBuilder extends AbstractResourceWrapperBuilder<Animation> 
 		
 		animation.setAutoUpdate(autoUpdate);
 		animation.setLooping(looping);
-		animation.
-		
+
 		return animation;
 	}
 

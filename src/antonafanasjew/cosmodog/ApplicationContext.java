@@ -616,8 +616,7 @@ public class ApplicationContext {
 		for (String key : animationResourceWrappers.keySet()) {
 			this.getAnimations().put(key, animationResourceWrappers.get(key).getEntity());
 		}
-		
-		
+
 		images.put("ui.ingame.background", new Image("data/ui/background.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.lifeframe", new Image("data/ui/lifeframe2.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.barbackground", new Image("data/ui/barbackground.png", false, Image.FILTER_NEAREST));
