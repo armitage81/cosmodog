@@ -45,6 +45,7 @@ public class AnimationBuilder extends AbstractResourceWrapperBuilder<Animation> 
 		
 		animation.setAutoUpdate(autoUpdate);
 		animation.setLooping(looping);
+		animation.
 		
 		return animation;
 	}
