@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.pathfinding;
 import java.util.List;
 import java.util.Random;
 
+import antonafanasjew.cosmodog.globals.Constants;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
@@ -71,8 +72,7 @@ public class RandomPathFinder extends AbstractPathFinder {
     		Path path = new Path();
     		path.appendStep(enemy.getPositionX(), enemy.getPositionY());
     		path.appendStep(x, y);
-    		List<Float> enemyMovementCosts = Lists.newArrayList(3f);
-    		retVal = MovementActionResult.instance(path, enemyMovementCosts);
+    		retVal = MovementActionResult.instance(path);
 		
 		}
 		

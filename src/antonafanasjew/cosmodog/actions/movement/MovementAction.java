@@ -82,17 +82,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 	private static final long serialVersionUID = -693412142092974821L;
 
 	/**
-	 * Movement action result for the player. It contains the path of the movement and the (time) costs for each step.
-	 * In case of the player, the path always contains only one step (No movement, North, West, East or South)
-	 * and the time cost is constant.
+	 * Movement action result for the player. It contains the path of the movement.
+	 * In case of the player, the path always contains only one step (No movement, North, West, East or South).
 	 */
 	private MovementActionResult playerMovementActionResult = null;
 
 	/**
 	 * Movement action result for the moveable block pushed by the player.
-	 * It contains the path of the movement and the (time) costs for each step.
+	 * It contains the path of the movement.
 	 * <p>
-	 * The path of the moveable block and the time costs always correlate to the player's movement (one tile ahead).
+	 * The path of the moveable block always correlates to the player's movement (one tile ahead).
 	 * <p>
 	 * Only one block can be pushed at a time.
 	 */
@@ -100,23 +99,24 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	/**
 	 * Movement action results for enemies.
-	 * Each result contains the path of the movement and the (time) costs for each step.
+	 * Each result contains the path of the movement.
 	 * <p>
-	 * Only enemies in the activation distance of the player will move (performance optimization).
+	 * Enemies will only move if they are  in the activation distance of the player (performance optimization).
 	 * <p>
 	 * Enemies that are deactivated (f.i. solar tanks at night) will not be considered.
 	 * <p>
 	 * Stationary enemies (chassis type STATIONARY, f.i. turrets) will not be considered.
 	 * <p>
-	 * Player's movement (and that of moveable objects) will be considered in the collision detection.
+	 * Player's movement (and that of moveable objects) will be considered in the collision detection
+	 * for the enemies. (F.i. the player's target position will be considered blocked.)
 	 * <p>
 	 * Each movement action result will contain a path with the start position of the enemy as the first step.
-	 * It will depend on the alert level, the player's position, terrain and the enemy's speed factor.
+	 * It will depend on the alert level, the player's position and the enemy's speed factor.
 	 */
 	private final Map<Enemy, MovementActionResult> enemyMovementActionResults = Maps.newHashMap();
 
 	/**
-	 * Defines whether the player really moves or just skips a turn. (Enemies still move in that case.)
+	 * Defines whether the player really moves or just skips a turn. (Enemies still move in the latter case.)
 	 */
 	private final boolean skipTurn;
 
@@ -153,7 +153,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * Updates the action based on the passed time.
 	 * <p>
 	 * In this case, the update slowly updates transitions of the player, a potential moveable and enemies
-	 * so the renderer can show the movement between turns.
+	 * so the renderer can show the transitional movement between tiles.
 	 *
 	 * @param before Time offset of the last update as compared to the start of the action.
 	 * @param after Time offset of the current update. after - before = time passed since the last update.
@@ -205,7 +205,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * Registers a short waiting action to simulate turn based movement.
 	 * Without it, the player's movement would be too smooth.
 	 * <p>
-	 * This action blocks the player's input meaning that the player cannot move or change weapons
+	 * This action blocks the player's input, meaning that the player cannot move or change weapons
 	 * until the action has finished.
 	 */
 	@Override
@@ -239,8 +239,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		Position targetPos = skipTurn ? playerPosition : PositionUtils.neighbourPositionInFacingDirection(player);
 		
 		//Calculating the future result of the player movement.
-		int playerMovementActionCosts = Constants.MINUTES_PER_TURN;
-		this.playerMovementActionResult = MovementActionResult.instance(player.getPositionX(), player.getPositionY(), (int)targetPos.getX(), (int)targetPos.getY(), playerMovementActionCosts);
+		this.playerMovementActionResult = MovementActionResult.instance(player.getPositionX(), player.getPositionY(), (int)targetPos.getX(), (int)targetPos.getY());
 		
 		//There could be a moveable block in player's path. In this case, it also would be moved (collision has been checked already.)
 		//Take care: Player's movement has to be calculated before this.
@@ -309,7 +308,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 				newMoveablePosX++;
 			}
 			
-			retVal = MovementActionResult.instance(moveablePosX, moveablePosY, newMoveablePosX, newMoveablePosY, Constants.MINUTES_PER_TURN);
+			retVal = MovementActionResult.instance(moveablePosX, moveablePosY, newMoveablePosX, newMoveablePosY);
 		}
 		return retVal;
 		
@@ -324,6 +323,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * <p>
 	 * The actual movement of the enemy is calculated by its pathfinder. It can be an idle patrol movement or a chase
 	 * in case the enemy is alerted. The result is not a simple movement step but a path with potentially multiple steps.
+	 * (F.i. drones can move up to three tiles in a round.)
 	 *
 	 * @param enemy Enemy for which the movement should be calculated.
 	 * @return Movement action result for the enemy. It contains a path that will be followed by the enemy during the action.
@@ -352,8 +352,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * and removed from the map. In this process, only target positions are considered so
 	 * the enemies have a chance to escape the platform.
 	 * <p>
-	 * If the player is on foot (or in a boat), the footstep sound is played. The sound depends on the terrain on
-	 * the target position.
+	 * If the player is on foot (or in a boat), the footstep sound (or water splash) is played.
+	 * The sound depends on the terrain on the target position.
 	 */
 	private void onTriggerForPlayer() {
 		ApplicationContext applicationContext = ApplicationContext.instance();
@@ -579,65 +579,63 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * @param timePassed Time passed since the action triggered in milliseconds.
 	 */
 	private void onUpdateForEnemies(int timePassed) {
-		
+
 		float actionTimeRatio = (float)timePassed / getDuration();
+
+		//The enemy has moved completely already. Note: It is important to
+		//skip the case actionTimeRation == 1 to avoid the indexoutofbounds exception.
+		if (actionTimeRatio >= 1) {
+			return;
+		}
 
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Set<Enemy> enemies = enemyMovementActionResults.keySet();
 		for (Enemy enemy : enemies) {
-			
-			int timeBudgetForMovement = (int)playerMovementActionResult.getMovementCostsInPlanetaryMinutesForFirstStep() * enemy.getSpeedFactor();
-			float spentTimeBudget = actionTimeRatio * timeBudgetForMovement;
 
 			MovementActionResult enemyMovementActionResult = enemyMovementActionResults.get(enemy);
+			Path path = enemyMovementActionResult.getPath();
 
-			int step = enemyMovementActionResult.getMovementStepIndexForPassedPlanetaryMinutes(spentTimeBudget);
-
-			//Nothing to update here as the enemy has finished his movement.
-			if (step == -1) {
-
-			} else {
-
-				Path path = enemyMovementActionResult.getPath();
-
-				if (path.getLength() > 1) { //The path can contain only the start point in case the npc does not move.
-
-					float restMinutes = enemyMovementActionResult.getRemainingPlanetaryMinutesSinceLastMovementStep(spentTimeBudget);
-					float costsForNextStep = enemyMovementActionResult.getMovementCostsInPlanetaryMinutes().get(step);
-					float ratioForNextStep = restMinutes / costsForNextStep;
-					int transitionalPosX = enemy.getPositionX();
-					int transitionalPosY = enemy.getPositionY();
-					int transitionalTargetPosX = path.getX(step + 1); //We need to add 1 as the path contains the initial position at index 0
-					int transitionalTargetPosY = path.getY(step + 1);
-
-					ActorTransitionRegistry transitionRegistry = game.getActorTransitionRegistry();
-					ActorTransition enemyTransition = transitionRegistry.get(enemy);
-					if (enemyTransition != null) {
-						//here we do not want the target position but the current transitional position from which the movement offset will be counted
-						//That's why we do not add 1 to the step. At the beginning, this will hold the initial actor position as it is before the movement starts
-						transitionalPosX = path.getX(step);
-						transitionalPosY = path.getY(step);
-					}
-
-					ActorTransition newEnemyTransition = ActorTransition.fromActor(enemy, transitionalTargetPosX, transitionalTargetPosY);
-					newEnemyTransition.setTransitionalPosX(transitionalPosX);
-					newEnemyTransition.setTransitionalPosY(transitionalPosY);
-
-					if (transitionalPosX < transitionalTargetPosX) {
-						newEnemyTransition.setTransitionalOffsetX(ratioForNextStep);
-					} else if (transitionalPosX > transitionalTargetPosX) {
-						newEnemyTransition.setTransitionalOffsetX(-ratioForNextStep);
-					} else if (transitionalPosY < transitionalTargetPosY) {
-						newEnemyTransition.setTransitionalOffsetY(ratioForNextStep);
-					} else if (transitionalPosY > transitionalTargetPosY) {
-						newEnemyTransition.setTransitionalOffsetY(-ratioForNextStep);
-					}
-
-					transitionRegistry.put(enemy, newEnemyTransition);
-				}
-
+			//The path can contain only the start point in case the npc does not move.
+			//This is others than in case of the player's "skip turn" where two steps are added to the path
+			// (start and target positions that are equal).
+			if (path.getLength() == 1) {
+				continue;
 			}
+
+			float movedDistanceInTilesWithOffset = actionTimeRatio * (path.getLength() - 1);
+			int movedDistanceInTiles = (int)movedDistanceInTilesWithOffset;
+			float ratioForNextStep = movedDistanceInTilesWithOffset - movedDistanceInTiles;
+
+			int transitionalPosX = path.getX(movedDistanceInTiles);
+			int transitionalPosY = path.getY(movedDistanceInTiles);
+
+			//The starting position of the movement is stored in the path at index = 0.
+			//While the actor still moves from its starting position tile, the position at index = 1 of the path is taken as target.
+			//While the actor moves from the first to the second tile, the position at index = 2 of the path is taken as target.
+			//etc.
+			int transitionalTargetPosX = path.getX(movedDistanceInTiles + 1);
+			int transitionalTargetPosY = path.getY(movedDistanceInTiles + 1);
+
+			ActorTransitionRegistry transitionRegistry = game.getActorTransitionRegistry();
+			ActorTransition enemyTransition = transitionRegistry.get(enemy);
+
+			ActorTransition newEnemyTransition = ActorTransition.fromActor(enemy, transitionalTargetPosX, transitionalTargetPosY);
+			newEnemyTransition.setTransitionalPosX(transitionalPosX);
+			newEnemyTransition.setTransitionalPosY(transitionalPosY);
+
+			if (transitionalPosX < transitionalTargetPosX) {
+				newEnemyTransition.setTransitionalOffsetX(ratioForNextStep);
+			} else if (transitionalPosX > transitionalTargetPosX) {
+				newEnemyTransition.setTransitionalOffsetX(-ratioForNextStep);
+			} else if (transitionalPosY < transitionalTargetPosY) {
+				newEnemyTransition.setTransitionalOffsetY(ratioForNextStep);
+			} else if (transitionalPosY > transitionalTargetPosY) {
+				newEnemyTransition.setTransitionalOffsetY(-ratioForNextStep);
+			}
+
+			transitionRegistry.put(enemy, newEnemyTransition);
+
 		}
 	}
 
@@ -757,8 +755,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * If it hadn't been done, the enemy would face in the wrong direction after the transition would be over.)
 	 * <p>
 	 * Finally, the enemy alert level is handled. If it sees the player after the movement, the alert is set
-	 * to the highest level. If not, it is reduced by one unless it is 0 already. This way, the enemy can "forget"
-	 * about the player.
+	 * to the highest level. If not, it is reduced by one unless it is 0 already. This way, the enemy can "lose scent"
+	 * of the player.
 	 */
 	private void onEndForEnemies() {
 		
@@ -823,6 +821,20 @@ public class MovementAction extends FixedLengthAsyncAction {
 	/**
 	 * Handles the case when an enemy ends up alerted and adjacent to the player after the movement.
 	 * In this case, the enemy will attack the player.
+	 * <p>
+	 * The resulting fight action is registered in the action registry and will be executed before the next turn can be
+	 * done by the player.
+	 * <p>
+	 * Take note: This version of a fight will happen exclusively when (at least one) enemy is the attacker. It will
+	 * never contain a phase when player attacks or an enemy is destroyed. (Don't be distracted by the player's
+	 * damage calculator passed to the fight action. It is needed only to satisfy the contract of the class.)
+	 * <p>
+	 * Take note: The damage dealt to the player by enemies' attacks can be toggled off by deactivating the feature
+	 * DAMAGE. This is useful for debugging and testing.
+	 * <p>
+	 * The calculation of damage dealt to the player (given that the DAMAGE feature is toggled on) is done by
+	 * the damage calculator of the enemy. Usually, it will just take the enemy's weapon and deal constant damage
+	 * to the player depending on it.
 	 */
 	private void fight() {
 		
@@ -841,7 +853,24 @@ public class MovementAction extends FixedLengthAsyncAction {
 		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(game.getPlanetaryCalendar()), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
 		
 	}
-	
+
+	/**
+	 * At the end of the movement action, dynamic pieces are updated.
+	 * <p>
+	 * If there was no actual movement ("skip turn"), nothing happens.
+	 * <p>
+	 * Otherwise, all dynamic pieces from the map are collected and grouped by their type.
+	 * Each group is then iterated on.
+	 * <p>
+	 * For each piece, the interaction when stepping on is called if the piece is on the target tile of the movement.
+	 * The interaction when leaving is called if the piece is on the start tile of the movement.
+	 * <p>
+	 * Take note: These updates are mainly done for the letter plates in the Indiana Jones puzzle.
+	 * <p>
+	 * (Interestingly, mines are not handled in an analog way when stepped on. This is probably because
+	 * the method interactWhenSteppingOn was added after mines had been implemented already. Mine explosions
+	 * happen within the player's movement listener, instead.)
+	 */
 	private void onEndForDynamicPieces() {
 		int startX = playerMovementActionResult.getPath().getX(0);
 		int startY = playerMovementActionResult.getPath().getY(0);
@@ -849,21 +878,24 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int targetY = playerMovementActionResult.getPath().getY(1);
 		
 		boolean noMovement = startX == targetX && startY == targetY;
-		
+
+		if (noMovement) {
+			return;
+		}
+
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Multimap<Class<?>, DynamicPiece> pieces = map.getDynamicPieces();
 		for (Class<?> pieceType : pieces.keySet()) {
 			Collection<DynamicPiece> piecesOfOneType = pieces.get(pieceType);
 			for (DynamicPiece piece : piecesOfOneType) {
-				if (piece.getPositionX() == targetX && piece.getPositionY() == targetY && !noMovement) {
+				if (piece.getPositionX() == targetX && piece.getPositionY() == targetY) {
 					piece.interactWhenSteppingOn();
 				}
 				
-				if (piece.getPositionX() == startX && piece.getPositionY() == startY && !noMovement) {
+				if (piece.getPositionX() == startX && piece.getPositionY() == startY) {
 					piece.interactWhenLeaving();
 				}
 			}
 		}
-		
 	}
 }

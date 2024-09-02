@@ -7,120 +7,89 @@ import org.newdawn.slick.util.pathfinding.Path;
 import com.google.common.collect.Lists;
 
 /**
- * This class represents the result of a movement action.
- * It will contain pre-calculated (on action trigger) values which will be applied when the 
+ * Represents the result of a movement action which is executed when the player moves or skips turn.
+ * <p>
+ * This result contains the precalculated values for an actor that is involved in the movement
+ * (player, moveable actor, enemy).
+ * <p>
+ * Take note: This result relates to ONE actor only.
+ * Each actor that is involved in the movement will have its own result (see MovementAction::onTrigger).
+ * <p>
+ * It will contain precalculated (on action trigger) target position which will be applied when the
  * action will finish.
- * 
- * The reason for this is because we need to know the result of the action while the action is
+ * <p>
+ * This precalculated target position is to know the result of the action while the action is
  * executed. F.i. An enemy needs to know where the player will be at the end of the action
  * to not bump into him.
- * 
+ * <p>
+ * Example: When the player moves, he blocks his target position. When there are multiple enemies around, they
+ * will also move and block their target positions. So when calculating the movement path of an enemy, the player's
+ * target position and the target positions of the other enemies must be considered.
+ * Same is valid for moveable objects. All of these positions are held
+ * in the movement action results of the corresponding actors.
+ * <p>
  * The movement can consist of more than one step (f.i. for enemies that move with double speed.)
  * So the movement is represented as a path with the start position as the first step.
- * 
+ * <p>
+ * Take note: If an actor does not move, the path will still contain two elements,
+ * the start position and the target position that are equal. (This is valid only for the player. Enemies will have only the start
+ * position in their path in this case.) If an actor moves
+ * the path will contain the start position and all passed positions up to the target position. For the player's
+ * movement, the path will contain the start position and the target position of an adjacent tile.
+ * <p>
+ * Take note: When creating a result object, the whole path of the movement must be known already. The movement
+ * action result object is only to hold the values of this path.
  */
 public class MovementActionResult {
 
 	/**
-	 * Returns the movement action result instance based on a path and movement costs.
-	 * @param path Path of the movement.
-	 * @param movementCostsInPlanetaryMinutes Costs in planetary minutes for each step in the path.
+	 * Returns the movement action result instance based on a path.
+	 *
+	 * @param path Path of the movement. First element is the start position of the actor.
 	 * @return Movement action result.
 	 */
-	public static MovementActionResult instance(Path path, List<Float> movementCostsInPlanetaryMinutes) {
+	public static MovementActionResult instance(Path path) {
 		MovementActionResult retVal = new MovementActionResult();
 		retVal.path = path;
-		retVal.movementCostsInPlanetaryMinutes = movementCostsInPlanetaryMinutes;
 		return retVal;
 	}
 
 	/**
-	 * Returns the movement action result instance based on the start and the target positions and the movement action costs.
-	 * @param startPosX x position before the movement.
-	 * @param startPosY y position before the movement.
-	 * @param targetPosX Target x position.
-	 * @param targetPosY Target y position.
-	 * @param movementCostsInPlanetaryMinutesForOneStep Movement costs in planetary minutes.
+	 * Returns the movement action result instance based on the start and the target positions.
+	 * <p>
+	 * This is the convenience method for creating a movement action result for a single step movement (mostly, for the player).
+	 * <p>
+	 * Take note: The start position and the target position can be equal if the player does not move (skip turn).
+	 *
+	 * @param startPosX x position of the actor before the movement.
+	 * @param startPosY y position of the actor before the movement.
+	 * @param targetPosX Target x position of the actor.
+	 * @param targetPosY Target y position of the actor.
 	 * @return Movement action result.
 	 */
-	public static MovementActionResult instance(int startPosX, int startPosY, int targetPosX, int targetPosY, float movementCostsInPlanetaryMinutesForOneStep) {
+	public static MovementActionResult instance(int startPosX, int startPosY, int targetPosX, int targetPosY) {
 		Path path = new Path();
 		path.appendStep(startPosX, startPosY);
 		path.appendStep(targetPosX, targetPosY);
-		List<Float> movementCostsInPlanetaryMinutes = Lists.newArrayList(movementCostsInPlanetaryMinutesForOneStep);
-		return instance(path, movementCostsInPlanetaryMinutes);
+		return instance(path);
 	}
-	
+
+	/**
+	 * Contains the path of the movement. First location is the start position.
+	 * Subsequent locations are the steps of the movement. A "skip turn" action will cause a path with two elements
+	 * that are equal (only valid for the player).
+	 */
 	private Path path = new Path();
-	
-	private List<Float> movementCostsInPlanetaryMinutes;
 	
 	/**
 	 * Returns the path of the movement. First location is the start position.
+	 * Subsequent locations are the steps of the movement. A "skip turn" action will cause a path with two elements
+	 * that are equal (only valid for the player).
+	 *
 	 * @return Path of the movement.
 	 */
 	public Path getPath() {
 		return path;
-	}
-
-	/**
-	 * Costs for the movement in planetary minutes. Each path step has its own costs.
-	 * Take note: As the step zero is the starting point, no costs are saved for it.
-	 * Costs element zero is assigned to the path step one and so forth.
-	 * @return Costs for each step in the path.
-	 */
-	public List<Float> getMovementCostsInPlanetaryMinutes() {
-		return movementCostsInPlanetaryMinutes;
-	}
-
-	/**
-	 * Costs for the first movement step in the path in planetary minutes. (Step one, not step zero, as step zero is storing the initial position)
-	 * @return Costs for the first step in the path.
-	 */
-	public float getMovementCostsInPlanetaryMinutesForFirstStep() {
-		return movementCostsInPlanetaryMinutes.get(0);
-	}
-	
-	/**
-	 * Returns the planetary minutes that remain after spending the given planetary minutes
-	 * on path steps. (If steps cost 3,4,5,4 minutes and the parameter is 15, the result will be 3 as the costs for the last step (4) are too high)
-	 * @param passedPlanetaryMinutes Minutes to apply on the path.
-	 * @return Remaining minutes before the last not taken step, or -1 if the whole path can be executed by the given time.
-	 */
-	public float getRemainingPlanetaryMinutesSinceLastMovementStep(float passedPlanetaryMinutes) {
-		int accumulatedMinutes = 0;
-		
-		for (int i = 0; i < movementCostsInPlanetaryMinutes.size(); i++) {
-			accumulatedMinutes += movementCostsInPlanetaryMinutes.get(i);
-			
-			if (accumulatedMinutes > passedPlanetaryMinutes) {
-				accumulatedMinutes -= movementCostsInPlanetaryMinutes.get(i);
-				return passedPlanetaryMinutes - accumulatedMinutes;
-			}
-		}
-		
-		return -1;
-	}
-	
-	/**
-	 * Returns the index of the step in the path that will be executed after the giben minutes.
-	 * @param passedPlanetaryMinutes Planetary minutes.
-	 * @return The step in the path that will be executed at this time.
-	 */
-	public int getMovementStepIndexForPassedPlanetaryMinutes(float passedPlanetaryMinutes) {
-		
-		int accumulatedMinutes = 0;
-		
-		for (int i = 0; i < movementCostsInPlanetaryMinutes.size(); i++) {
-			accumulatedMinutes += movementCostsInPlanetaryMinutes.get(i);
-			
-			if (accumulatedMinutes > passedPlanetaryMinutes) {
-				return i;
-			}
-		}
-		
-		return -1;
-		
 	}
 	
 }

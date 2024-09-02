@@ -18,8 +18,7 @@ public class StayStillPathFinder extends AbstractPathFinder {
 		//Adding the actors position as the first step in the path in any case.
 		Path subPath = new Path();
 		subPath.appendStep(actor.getPositionX(), actor.getPositionY());
-		List<Float> costs = Lists.newArrayList();
-		MovementActionResult retVal = MovementActionResult.instance(subPath, costs);
+		MovementActionResult retVal = MovementActionResult.instance(subPath);
 		return retVal;
         
 	}

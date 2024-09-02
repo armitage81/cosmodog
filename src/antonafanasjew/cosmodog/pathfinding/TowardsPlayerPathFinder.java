@@ -13,7 +13,6 @@ import com.google.common.collect.Lists;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -41,53 +40,30 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		
 		int followDistance = 25;
 		
-		//Calculating the time budget overhead into the general time budget and resetting it for the enemy.
-		costBudget += enemy.getTimeBudgetOverhead();
-		enemy.setTimeBudgetOverhead(0);
-		
 		//Preparing the AStar path finder.
 		TileBasedMap tileBasedMap = tileBasedMapFactory.createTileBasedMap(enemy, applicationContext, map, collisionValidator);
 		AStarPathFinder pathFinder = new AStarPathFinder(tileBasedMap, followDistance, false);
 		
 		//Adding the actors position as the first step in the path in any case.
-		Path subPath = new Path();
-		subPath.appendStep(enemy.getPositionX(), enemy.getPositionY());
-		List<Float> costs = Lists.newArrayList();
-		
+		Path path = new Path();
+		path.appendStep(enemy.getPositionX(), enemy.getPositionY());
+
 		//Selecting the best match for the target position. It can be null. (See the comment of the method for exact algorithm).
 		Position actorTarget = nextFreePositionNearbyPlayer(actor, player, playerMovementActionResult, collisionValidator);
 		
 		//If there is a target position, calculate the path (if possible)
 		if (actorTarget != null) {
-			
-    		Path path = pathFinder.findPath(null, enemy.getPositionX(), enemy.getPositionY(), (int)actorTarget.getX(), (int)actorTarget.getY());
-    		
-    		if (path != null) {
-        		
-    			//Here, we store the costs for the sub path until they exceed the available time budget for the turn.
-    			//The resulting difference (if any) goes to the time budget overhead of the enemy.
-        		int accumulatedCosts = 0;
-        		
-        		//Starting with 1 as the step 0 is the initial position without any costs.
-        		for (int i = 1; i < path.getLength(); i++) {
-        			int costsForTile = Constants.MINUTES_PER_TURN;
-        			if (accumulatedCosts + costsForTile <= costBudget) {
-        				costs.add((float)costsForTile);
-        				subPath.appendStep(path.getX(i), path.getY(i));
-        				accumulatedCosts += costsForTile;
-        			} else {
-        				//Enemy has some time budget left but it is not enough to move to the next tile,
-        				//so the remaining budget will be stored as overhead for the next turn.
-        				enemy.setTimeBudgetOverhead(costBudget - accumulatedCosts);
-        				break;
-        			}
-        		}
-        		
-    		}
+			Path wholePath = pathFinder.findPath(null, enemy.getPositionX(), enemy.getPositionY(), (int) actorTarget.getX(), (int) actorTarget.getY());
+
+			if (wholePath != null) {
+				int tilesToMove = Math.min(enemy.getSpeedFactor(), wholePath.getLength() - 1);
+				for (int i = 1; i <= tilesToMove; i++) {
+					path.appendStep(wholePath.getX(i), wholePath.getY(i));
+				}
+			}
 		}
-		
-		MovementActionResult retVal = MovementActionResult.instance(subPath, costs);
-		return retVal;
+
+        return MovementActionResult.instance(path);
         
 	}
 	
@@ -141,12 +117,8 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 			if (collisionValidator.collisionStatus(game, actor, map, xs[i], ys[i]).isPassable()) {
 				//Log.debug("It is NOT blocked");
 				notBlockedPositions.add(Position.fromCoordinates(xs[i], ys[i]));
-			} else {
-				//Log.debug("It is blocked");
 			}
 		}
-		
-		//Log.debug("Sorting remaining target candidates.");
 		
 		//We sort the candidates list to have the best match as last element in the list (or an empty list)
 		Collections.sort(notBlockedPositions, new Comparator<Position>() {

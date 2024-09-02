@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.notification;
 
+import java.io.Serial;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -14,8 +15,14 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
+/**
+ * Represents an overhead notification action. It is used to display a notification above the actor's head.
+ * <p>
+ * The actor can be the player or an enemy. The notification can show context information or damage dealt.
+ */
 public class OverheadNotificationAction extends VariableLengthAsyncAction {
 
+	@Serial
 	private static final long serialVersionUID = -8697185530449890051L;
 
 	public static final int OVERHEAD_NOTIFICATION_DURATION = 1000;
