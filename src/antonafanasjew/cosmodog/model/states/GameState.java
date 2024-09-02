@@ -123,6 +123,9 @@ public class GameState extends CosmodogAbstractState {
 			firstUpdate = false;
 		}
 
+		final int nn = n;
+		ApplicationContext.instance().getAnimations().values().forEach(e -> e.update(nn));
+
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 

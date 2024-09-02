@@ -39,7 +39,7 @@ public class AnimationBuilder extends AbstractResourceWrapperBuilder<Animation> 
 			
 		}
 		
-		boolean autoUpdate = Boolean.valueOf(animationDataset[5]);
+		boolean autoUpdate = false;
 		boolean looping = Boolean.valueOf(animationDataset[6]);
 		
 		animation.setAutoUpdate(autoUpdate);
