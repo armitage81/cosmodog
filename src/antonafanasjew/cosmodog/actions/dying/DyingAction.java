@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.dying;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -24,7 +25,7 @@ import java.io.Serial;
  * <p>
  * The action is visualized by a black screen and the player slowly going down. Additionally, a game hint is shown.
  * <p>
- * The death of the player does not end the game. Instead, the player respawns at the beginning of the map.
+ * The death of the player does not end the game. Instead, the player respawns at the beginning of the map (or at a checkpoint).
  * His food and water are restored to the maximum. His contamination state is reset. Also, the worm alert counter is reset.
  * The music starts playing from the beginning. The game state is persisted.
  */
@@ -108,15 +109,25 @@ public class DyingAction extends FixedLengthAsyncAction {
 	private final String dyingHint;
 
 	/**
+	 * Defines where the player will be respawned after resurrection.
+	 * <p>
+	 * Normally, it will be the start location of the map, but for some cases, like the Indiana Jones
+	 * puzzle, the player should respawn near the death location.
+	 *
+	 */
+	private final Position respawnPosition;
+
+	/**
 	 * Initializes the dying action with the given duration and the dying hint.
 	 *
 	 * @param duration Duration of the action in milliseconds.
 	 * @param dyingHint The hint that is shown when the player dies.
 	 */
-	public DyingAction(int duration, String dyingHint) {
+	public DyingAction(int duration, String dyingHint, Position respawnPosition) {
 		super(duration);
 		this.dyingHint = dyingHint;
 		this.transition = new DyingTransition();
+		this.respawnPosition = respawnPosition;
 	}
 
 	/**
@@ -139,7 +150,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 	}
 
 	/**
-	 * At the end of the action, the player respawns at the beginning of the map.
+	 * At the end of the action, the player respawns at the beginning of the map (or at a checkpoint).
 	 * His food and water are restored to the maximum. His contamination state is reset. Also, the worm alert counter is reset.
 	 * The music starts playing from the beginning. The game state is persisted.
 	 * <p>
@@ -159,8 +170,8 @@ public class DyingAction extends FixedLengthAsyncAction {
 		player.setFood(player.getCurrentMaxFood());
 		player.setWater(player.getCurrentMaxWater());
 		player.resetLife();
-		player.setPositionX(28);
-		player.setPositionY(58);
+		player.setPositionX((int)respawnPosition.getX());
+		player.setPositionY((int)respawnPosition.getY());
 		player.decontaminate();
 		player.resetTurnsWormAlerted();
 		PlayerMovementCache.getInstance().afterMovement(player, player.getPositionX(), player.getPositionY(), player.getPositionX(), player.getPositionY(), ApplicationContext.instance());

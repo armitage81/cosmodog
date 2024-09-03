@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.fight.WrongLetterSequenceFightAction;
+import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -95,14 +95,29 @@ public class LetterPlate extends DynamicPiece {
 			//We print the currently entered sequence over the player's head. It is not complete. It could be a valid sub sequence, or a wrong one.
 			StringBuffer message = new StringBuffer(sequence.getCurrentSequence().toUpperCase() + "...");
 			//If the currently entered sequence is wrong due to the last entered character, we append the corresponding message to the message over the player's head.
-			if (!sequence.sequenceCorrect()) {
-				message.append(" Something is wrong.");
-			}
 			OverheadNotificationAction.registerOverheadNotification(player, message.toString());
 			
 			//If the currently entered sequence is wrong due to the last entered character, we initiate a dummy fight action without an enemy. It will kill the player.
 			if (!sequence.sequenceCorrect()) {
-				game.getActionRegistry().registerAction(AsyncActionType.FIGHT, new WrongLetterSequenceFightAction());
+
+				FixedLengthAsyncAction restartRiddle = new FixedLengthAsyncAction(1500) {
+
+					@Override
+					public void onTrigger() {
+						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
+						OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> Something is wrong.");
+						OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> I must start anew.");
+					}
+
+					@Override
+					public void onEnd() {
+						player.setPositionX(218);
+						player.setPositionY(191);
+						ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(ApplicationContextUtils.getCosmodogMap(), 0, 0, player);
+					}
+				};
+
+				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.WAIT, restartRiddle);
 			}
 		}
 		
