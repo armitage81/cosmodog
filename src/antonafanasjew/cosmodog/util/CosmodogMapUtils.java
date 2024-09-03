@@ -34,6 +34,16 @@ public class CosmodogMapUtils {
 				int adjacentY = adjacentPositionsY[i];
 				
 				if (enemy.getPositionX() == adjacentX && enemy.getPositionY() == adjacentY) {
+
+					//Artillery units should be excluded from adjacent enemies since they will be added
+					//as adjacent ranged enemies anyway. It did not matter in the past, but since
+					//artillery units have now an inner distance in which they cannot attack,
+					//adding them to this list would be problematic since adjacent enemies always attack.
+					//Actually, it should be valid for all units who have inner sight distance > 0.
+					if (enemy.getSights().stream().anyMatch(e -> e.getInnerDistance() > 0)) {
+						continue;
+					}
+
 					retVal.add(enemy);
 				}
 				

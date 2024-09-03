@@ -12,13 +12,16 @@ public class Sight implements Serializable {
 	private static final long serialVersionUID = -2174059709810754936L;
 
 	private float distance;
+
+	private float innerDistance;
 	
 	private float angle;
 
 	private float angleRelativeToDirection;
 	
-	public Sight(float distance, float angle, float angleRelativeToDirection) {
+	public Sight(float distance, float innerDistance, float angle, float angleRelativeToDirection) {
 		this.distance = distance;
+		this.innerDistance = innerDistance;
 		this.angle = angle;
 		this.setAngleRelativeToDirection(angleRelativeToDirection);
 	}
@@ -29,6 +32,14 @@ public class Sight implements Serializable {
 
 	public void setDistance(float distance) {
 		this.distance = distance;
+	}
+
+	public float getInnerDistance() {
+		return innerDistance;
+	}
+
+	public void setInnerDistance(float innerDistance) {
+		this.innerDistance = innerDistance;
 	}
 
 	public float getAngle() {
@@ -48,7 +59,7 @@ public class Sight implements Serializable {
 	}
 
 	public Sight copyWithOtherDistance(float distance) {
-		return new Sight(distance, this.angle, this.angleRelativeToDirection);
+		return new Sight(distance, this.innerDistance, this.angle, this.angleRelativeToDirection);
 	}
 	
 	

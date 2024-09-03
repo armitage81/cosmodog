@@ -68,12 +68,13 @@ public class VisibilityCalculator {
 	public boolean visible(float x, float y) {
 		
 		float distance = sight.getDistance();
+		float innerDistance = sight.getInnerDistance();
 		float angle = sight.getAngle();
 		float directionAngle = getActorDirectionAngle() + sight.getAngleRelativeToDirection();
 		
 		//There was a bug for rover's sight fields. 
 		//When a rover faced east, its direction angle was 270 degree.
-		//The cone that pointed back hat a relative degree of 180. Adding 270 and 180 results in 450 which breaks the calculation. 
+		//The cone that pointed back had a relative degree of 180. Adding 270 and 180 results in 450 which breaks the calculation.
 		//It should be 90 instead. We just "wound up the clock" too far and need to get rid of full circles.
 		//That's why we only take the rest of 365 degrees as the final degree.
 		directionAngle = directionAngle % 365;
@@ -88,7 +89,11 @@ public class VisibilityCalculator {
 		if (distanceFromPointToCenter > distance) {
 			return false;
 		}
-		
+
+		if (distanceFromPointToCenter <= innerDistance) {
+			return false;
+		}
+
 		/* Calculate the minimum and the maximum angles of the sight cone as related to the direction.
 		 * Three cases can occur:
 		 * 1) direction angle is somewhere in the middle of the range and the sight cone is small => min and max angles are both within the range (0;360]
@@ -139,8 +144,8 @@ public class VisibilityCalculator {
 		
 		//a² + b² = c² => c = sqrt(a² + b²)
 		
-		float horizontalDistance = Math.abs(x - centerX);
-		float verticalDistance = Math.abs(y - centerY);
+		float horizontalDistance = x - centerX;
+		float verticalDistance = y - centerY;
 		
 		float retVal = (float)Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
 		

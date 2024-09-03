@@ -44,9 +44,10 @@ public class EnemyFactoryBuilder extends AbstractResourceWrapperBuilder<EnemyFac
 				for (String sightElement : sightElements) {
 					String[] sightElementParts = sightElement.split("/");
 					float sightDistance = Float.valueOf(sightElementParts[0]);
-					float sightAngle = Float.valueOf(sightElementParts[1]);
-					float sightAngleRelativeToDirection = Float.valueOf(sightElementParts[2]);
-					Sight sight = new Sight(sightDistance, sightAngle, sightAngleRelativeToDirection);
+					float sightInnerDistance = Float.valueOf(sightElementParts[1]);
+					float sightAngle = Float.valueOf(sightElementParts[2]);
+					float sightAngleRelativeToDirection = Float.valueOf(sightElementParts[3]);
+					Sight sight = new Sight(sightDistance, sightInnerDistance, sightAngle, sightAngleRelativeToDirection);
 					enemy.getSights().add(sight);
 				}
 				

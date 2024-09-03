@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Set;
 
+import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -26,9 +27,6 @@ import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.EnemiesUtils;
-import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
@@ -135,13 +133,28 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			
 				Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
 				float sightDistance = modifiedSight.getDistance();
+				float sightInnerDistance = modifiedSight.getInnerDistance();
 				int sightDistanceInTiles = (int)(sightDistance / map.getTileWidth()); //Works only for quadratic tiles.
+				int sightInnerDistanceInTiles = (int)(sightInnerDistance / map.getTileWidth()); //Works only for quadratic tiles.
 				
 				VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, tileWidth, tileHeight);
 				
 				for (int i = enemy.getPositionX() - sightDistanceInTiles; i <= enemy.getPositionX() + sightDistanceInTiles; i++) {
 					for (int j = enemy.getPositionY() - sightDistanceInTiles; j <= enemy.getPositionY() + sightDistanceInTiles; j++) {
-						
+
+						//TODO: This code is redundant and needs to be consolidated with VisibilityCalculator
+						float centerX = enemy.getPositionX() * tileWidth + (float) tileWidth / 2;
+						float centerY = enemy.getPositionY() * tileHeight + (float) tileHeight / 2;
+						float tileCenterX = i * tileWidth + (float) tileWidth / 2;
+						float tileCenterY = j * tileHeight + (float) tileHeight / 2;
+						float horizontalDistance = tileCenterX - centerX;
+						float verticalDistance = tileCenterY - centerY;
+						float distance = (float)Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
+
+						if (distance <= sightInnerDistance) {
+							continue;
+						}
+
 						if (i == enemy.getPositionX() && j == enemy.getPositionY()) {
 							continue;
 						}
@@ -170,9 +183,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			}
 
 		}
-		
-		
-		
+
 		sightMarkers.removeAll(alertMarkers);
 		
 		for (Position alertMarker : alertMarkers) {
