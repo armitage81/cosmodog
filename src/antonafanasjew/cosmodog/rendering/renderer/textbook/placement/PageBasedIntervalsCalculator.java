@@ -5,14 +5,14 @@ import java.util.List;
 
 public class PageBasedIntervalsCalculator {
 
-	private IntervalInverter intervalInverter = new IntervalInverter();	
+	private final IntervalInverter intervalInverter = new IntervalInverter();
 	
 	public List<Interval> intervals(List<Word> words, float height) {
 		
 		List<Interval> intervalsForLineBreaks = new ArrayList<>();
 		
 		//This must be changed later. Not the first word counts but the highest one.
-		float lineHeight = words.get(0).glyphDescriptor.height();
+		float lineHeight = words.getFirst().glyphDescriptor.height();
 		
 		float currentlyUsedHeight = lineHeight;
 		int wordIndex = 0;
@@ -31,9 +31,8 @@ public class PageBasedIntervalsCalculator {
 				} else {
 					begin = wordIndex;
 					end = wordIndex;
-					boolean withinBreak = word.lineBreak;
-					
-					if (!withinBreak && begin > 0) {
+
+					if (begin > 0) {
 						begin--;
 					}
 					while (begin > 0 && words.get(begin).lineBreak) {
@@ -44,7 +43,7 @@ public class PageBasedIntervalsCalculator {
 						begin++;
 					}
 					
-					if (!withinBreak && end > 0) {
+					if (end > 0) {
 						end--;
 					}
 					

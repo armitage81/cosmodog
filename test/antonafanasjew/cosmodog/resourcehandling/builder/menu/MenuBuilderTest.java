@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.menu;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.model.menu.Menu;
@@ -40,10 +40,6 @@ public class MenuBuilderTest {
 			});
 		}
 	}
-	
-	
-	
-	
 	
 	@Test
 	public void testMenuBuilder() {

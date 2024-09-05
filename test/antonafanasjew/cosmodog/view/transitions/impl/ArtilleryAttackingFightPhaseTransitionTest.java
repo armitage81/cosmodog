@@ -2,9 +2,8 @@ package antonafanasjew.cosmodog.view.transitions.impl;
 
 import java.util.List;
 
-import org.junit.Test;
-
 import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhaseTransition.GrenadeTransition;
+import org.junit.jupiter.api.Test;
 
 public class ArtilleryAttackingFightPhaseTransitionTest {
 

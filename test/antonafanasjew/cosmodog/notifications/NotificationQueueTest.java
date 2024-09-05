@@ -1,9 +1,9 @@
 package antonafanasjew.cosmodog.notifications;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NotificationQueueTest {
 
@@ -15,7 +15,7 @@ public class NotificationQueueTest {
 	
 	private NotificationQueue q;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		q = new NotificationQueue();
 		q.addNotificatoin(n1);

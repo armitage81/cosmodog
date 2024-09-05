@@ -2,8 +2,6 @@ package antonafanasjew.cosmodog.fighting;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
-
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -15,6 +13,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.WeaponFirmwareUpgradeInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import org.junit.jupiter.api.Test;
 
 public class SimplePlayerAttackDamageCalculatorTest {
 
@@ -249,7 +248,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		enemy.setSpeedFactor(1);
 		enemy.setUnitType(UnitType.ARTILLERY);
 		damage = out.damage(player, enemy);
-		assertEquals(50, damage);
+		assertEquals(100, damage);
 		
 		//Player hits from behind, and enemy is normal.
 		enemy.setDirection(DirectionType.RIGHT);

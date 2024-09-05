@@ -30,8 +30,8 @@ class PageBasedIntervalsCalculatorTest {
 		words.add(Word.textBased("C", GlyphDescriptorImpl.of(1, 10, FontRefToFontTypeMap.FONT_REF_DEFAULT)));
 		List<Interval> intervals = calc.intervals(words, 2);
 		assertEquals(1, intervals.size());
-		assertEquals(0, intervals.get(0).beginIndex);
-		assertEquals(5, intervals.get(0).endIndex);
+		assertEquals(0, intervals.getFirst().beginIndex);
+		assertEquals(5, intervals.getFirst().endIndex);
 	}
 	
 	@Test
@@ -42,8 +42,8 @@ class PageBasedIntervalsCalculatorTest {
 		words.add(Word.textBased("C", GlyphDescriptorImpl.of(1, 10, FontRefToFontTypeMap.FONT_REF_DEFAULT)));
 		List<Interval> intervals = calc.intervals(words, 4);
 		assertEquals(1, intervals.size());
-		assertEquals(0, intervals.get(0).beginIndex);
-		assertEquals(4, intervals.get(0).endIndex);
+		assertEquals(0, intervals.getFirst().beginIndex);
+		assertEquals(4, intervals.getFirst().endIndex);
 	}
 	
 	@Test

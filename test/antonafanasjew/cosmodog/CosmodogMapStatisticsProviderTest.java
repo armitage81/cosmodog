@@ -3,9 +3,6 @@ package antonafanasjew.cosmodog;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -16,6 +13,10 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
 import antonafanasjew.cosmodog.topology.Position;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CosmodogMapStatisticsProviderTest {
 
@@ -54,19 +55,19 @@ public class CosmodogMapStatisticsProviderTest {
 		composedMixed.addElement(infobank);
 		composedMixed.addElement(supplies);
 		
-		Assert.assertEquals(1, (int)f.apply(enemyHoldingInfobit));
-		Assert.assertEquals(5, (int)f.apply(enemyHoldingInfobyte));
-		Assert.assertEquals(25, (int)f.apply(enemyHoldingInfobank));
-		Assert.assertEquals(0, (int)f.apply(enemyWithoutItems));
+		assertEquals(1, (int)f.apply(enemyHoldingInfobit));
+		assertEquals(5, (int)f.apply(enemyHoldingInfobyte));
+		assertEquals(25, (int)f.apply(enemyHoldingInfobank));
+		assertEquals(0, (int)f.apply(enemyWithoutItems));
 		
-		Assert.assertEquals(1, (int)f.apply(infobit));
-		Assert.assertEquals(5, (int)f.apply(infobyte));
-		Assert.assertEquals(25, (int)f.apply(infobank));
-		Assert.assertEquals(0, (int)f.apply(supplies));
+		assertEquals(1, (int)f.apply(infobit));
+		assertEquals(5, (int)f.apply(infobyte));
+		assertEquals(25, (int)f.apply(infobank));
+		assertEquals(0, (int)f.apply(supplies));
 		
-		Assert.assertEquals(31, (int)f.apply(composedInfobits));
-		Assert.assertEquals(0, (int)f.apply(composedSupplies));
-		Assert.assertEquals(26, (int)f.apply(composedMixed));
+		assertEquals(31, (int)f.apply(composedInfobits));
+		assertEquals(0, (int)f.apply(composedSupplies));
+		assertEquals(26, (int)f.apply(composedMixed));
 		
 	}
 
@@ -91,10 +92,10 @@ public class CosmodogMapStatisticsProviderTest {
 		Position m3 = Position.fromCoordinates(1f, 0f);
 		Position m4 = Position.fromCoordinates(1f, 1f);
 		
-		Assert.assertEquals(2, (int)result.get(m1));
-		Assert.assertEquals(1, (int)result.get(m2));
-		Assert.assertEquals(1, (int)result.get(m3));
-		Assert.assertNull(result.get(m4));
+		assertEquals(2, (int)result.get(m1));
+		assertEquals(1, (int)result.get(m2));
+		assertEquals(1, (int)result.get(m3));
+		assertNull(result.get(m4));
 	}
 
 }

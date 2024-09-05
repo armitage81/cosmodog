@@ -1,14 +1,13 @@
 package antonafanasjew.cosmodog.camera.test;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CamTest {
 
@@ -16,7 +15,7 @@ public class CamTest {
 	private Rectangle originalScene;
 	private PlacedRectangle originalView;
 
-	@Before
+	@BeforeEach
 	public void init() throws CamPositioningException {
 		originalScene = Rectangle.fromSize(1000, 1000);
 		originalView = PlacedRectangle.fromAnchorAndSize(0, 0, 50, 50);

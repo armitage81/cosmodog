@@ -45,10 +45,7 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 		if (after < getDuration() / 2) {
 			return;
 		}
-		
-		
-		
-		
+
 		if (!executedAction) {
 			
 			executedAction = true;

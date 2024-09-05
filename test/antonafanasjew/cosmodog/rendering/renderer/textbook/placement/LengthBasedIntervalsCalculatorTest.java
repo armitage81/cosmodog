@@ -1,13 +1,13 @@
 package antonafanasjew.cosmodog.rendering.renderer.textbook.placement;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class LengthBasedIntervalsCalculatorTest {
 
@@ -15,7 +15,7 @@ class LengthBasedIntervalsCalculatorTest {
 	private List<Word> words;
 	
 	@BeforeEach
-	private void init() {
+	public void init() {
 		calc = new LengthBasedIntervalsCalculator();
 		words = new ArrayList<>();
 
@@ -153,7 +153,7 @@ class LengthBasedIntervalsCalculatorTest {
 	@Test
 	void testRealExample() {
 		
-		String s = "Ein Alphabet (frühneuhochdeutsch von kirchenlateinisch alphabetum) ist die Gesamtheit der kleinsten Schriftzeichen bzw. Buchstaben einer Sprache oder mehrerer Sprachen in einer festgelegten Reihenfolge. Die Buchstaben können über orthographische Regeln zu Wörtern verknüpft werden und damit die Sprache schriftlich darstellen. Die im Alphabet festgelegte Reihenfolge der Buchstaben erlaubt die alphabetische Sortierung von Wörtern und Namen beispielsweise in Wörterbüchern. Nach einigen Definitionen ist mit Alphabet nicht der Buchstabenbestand in seiner festgelegten Reihenfolge gemeint, sondern die Reihenfolge selbst.";
+		String s = "Ein Alphabet (frï¿½hneuhochdeutsch von kirchenlateinisch alphabetum) ist die Gesamtheit der kleinsten Schriftzeichen bzw. Buchstaben einer Sprache oder mehrerer Sprachen in einer festgelegten Reihenfolge. Die Buchstaben kï¿½nnen ï¿½ber orthographische Regeln zu Wï¿½rtern verknï¿½pft werden und damit die Sprache schriftlich darstellen. Die im Alphabet festgelegte Reihenfolge der Buchstaben erlaubt die alphabetische Sortierung von Wï¿½rtern und Namen beispielsweise in Wï¿½rterbï¿½chern. Nach einigen Definitionen ist mit Alphabet nicht der Buchstabenbestand in seiner festgelegten Reihenfolge gemeint, sondern die Reihenfolge selbst.";
 		
 		String[] parts = s.split(" ");
 		
