@@ -32,6 +32,9 @@ public class GameProgress extends CosmodogModel {
 	private boolean won = false;
 	private int infobits = 0;
 	private int armors = 0;
+	private int fuelTanks = 0;
+	private int bottles = 0;
+	private int foodCompartments = 0;
 	private int soulEssences = 0;
 	private long gameScore;
 	private int turn = 0;
@@ -162,7 +165,31 @@ public class GameProgress extends CosmodogModel {
 	public void setArmors(int armors) {
 		this.armors = armors;
 	}
-	
+
+	public int getFuelTanks() {
+		return fuelTanks;
+	}
+
+	public void setFuelTanks(int fuelTanks) {
+		this.fuelTanks = fuelTanks;
+	}
+
+	public int getBottles() {
+		return bottles;
+	}
+
+	public void setBottles(int bottles) {
+		this.bottles = bottles;
+	}
+
+	public int getFoodCompartments() {
+		return foodCompartments;
+	}
+
+	public void setFoodCompartments(int foodCompartments) {
+		this.foodCompartments = foodCompartments;
+	}
+
 	public int getSoulEssences() {
 		return soulEssences;
 	}
@@ -174,7 +201,19 @@ public class GameProgress extends CosmodogModel {
 	public void increaseArmors() {
 		this.armors++;
 	}
-	
+
+	public void increaseFuelTanks() {
+		this.fuelTanks++;
+	}
+
+	public void increaseBottles() {
+		this.bottles++;
+	}
+
+	public void increaseFoodCompartments() {
+		this.foodCompartments++;
+	}
+
 	public void increaseSoulEssenses() {
 		this.soulEssences++;
 	}

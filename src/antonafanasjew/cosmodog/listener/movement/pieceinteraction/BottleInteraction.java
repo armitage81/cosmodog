@@ -11,6 +11,7 @@ public class BottleInteraction extends AbstractPieceInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		player.setCurrentMaxWater(player.getCurrentMaxWater() + Player.INITIAL_MAX_WATER);
+		player.getGameProgress().increaseBottles();
 	}
 	
 	@Override

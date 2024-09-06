@@ -11,6 +11,7 @@ public class FoodCompartmentInteraction extends AbstractPieceInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		player.setCurrentMaxFood(player.getCurrentMaxFood() + Player.INITIAL_MAX_FOOD);
+		player.getGameProgress().increaseFoodCompartments();
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.ingamemenu.progress;
 
+import antonafanasjew.cosmodog.domains.WeaponType;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -26,6 +28,8 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
+import java.util.List;
+
 public class ProgressRenderer implements Renderer {
 
 	private static final int ROWS = 9;
@@ -38,9 +42,19 @@ public class ProgressRenderer implements Renderer {
 		
 		Animation softwareAnimation = ApplicationContext.instance().getAnimations().get("software");
 		Animation armorAnimation = ApplicationContext.instance().getAnimations().get("armor");
+		Animation fuelTankAnimation = ApplicationContext.instance().getAnimations().get("fueltank");
+		Animation bottleAnimation = ApplicationContext.instance().getAnimations().get("bottle");
+		Animation foodCompartmentAnimation = ApplicationContext.instance().getAnimations().get("foodcompartment");
 		Animation soulEssenseAnimation = ApplicationContext.instance().getAnimations().get("soulessence");
 		Animation mapAnimation = ApplicationContext.instance().getAnimations().get("chart");
 		Animation insightAnimation = ApplicationContext.instance().getAnimations().get("insight");
+
+		Animation pistolAnimation = ApplicationContext.instance().getAnimations().get("pistol");
+		Animation shotgunAnimation = ApplicationContext.instance().getAnimations().get("shotgun");
+		Animation rifleAnimation = ApplicationContext.instance().getAnimations().get("rifle");
+		Animation machinegunAnimation = ApplicationContext.instance().getAnimations().get("machinegun");
+		Animation rpgAnimation = ApplicationContext.instance().getAnimations().get("rpg");
+		List<Animation> weaponAnimations = List.of(pistolAnimation, shotgunAnimation, rifleAnimation, machinegunAnimation, rpgAnimation);
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
@@ -55,6 +69,12 @@ public class ProgressRenderer implements Renderer {
 		int maxSoftware = Constants.NUMBER_OF_SOFTWARE_PIECES_IN_GAME;
 		int noArmor = player.getGameProgress().getArmors();
 		int maxArmor = Constants.NUMBER_OF_ARMOR_PIECES_IN_GAME;
+		int noFuelTanks = player.getGameProgress().getFuelTanks();
+		int maxFuelTanks = Constants.NUMBER_OF_FUEL_TANK_PIECES_IN_GAME;
+		int noBottles = player.getGameProgress().getBottles();
+		int maxBottles = Constants.NUMBER_OF_BOTTLES_IN_GAME;
+		int noFoodCompartments = player.getGameProgress().getFoodCompartments();
+		int maxFoodCompartments = Constants.NUMBER_OF_FOOD_COMPARTMENTS_IN_GAME;
 		int noSoulEssenses = player.getGameProgress().getSoulEssences();
 		int maxSoulEssenses = Constants.NUMBER_OF_SOULESSENSE_PIECES_IN_GAME;
 		int noCharts = chart == null ? 0 : chart.getNumber();
@@ -129,42 +149,98 @@ public class ProgressRenderer implements Renderer {
 			}
 			
 			if (i == 3) {
-				
+
 				Book textBook;
-				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Soul Essences", fontTypeSubheader);
+
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Collectibles", fontTypeSubheader);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
-				
-				for (int j = 0; j < maxSoulEssenses; j++) {
-					DrawingContext dc = new TileDrawingContext(contentDc, maxSoulEssenses, 1, j, 0);
-					dc = new CenteredDrawingContext(dc, 2);
-					DrawingContext quadDc = new QuadraticDrawingContext(dc);
-					quadDc = new CenteredDrawingContext(quadDc, 2);
-					
-					if (j < noSoulEssenses) {
-						soulEssenseAnimation.draw(quadDc.x(), quadDc.y(), quadDc.w(), quadDc.h());
-					}
-					
-					graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
-				}
+
+				int columns = 8;
+				int currentColumn = 0;
+
+				DrawingContext dc;
+				DrawingContext iconDc;
+				DrawingContext amountDc;
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				soulEssenseAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noSoulEssenses, maxSoulEssenses), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				bottleAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noBottles, maxBottles), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				foodCompartmentAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noFoodCompartments, maxFoodCompartments), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				armorAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noArmor, maxArmor), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				fuelTankAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noFuelTanks, maxFuelTanks), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				mapAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noCharts, maxMaps), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				softwareAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noSoftware, maxSoftware), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
+				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
+				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
+				insightAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noInsights, maxInsights), fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
 			}
 			
 			if (i == 4) {
 				
 				Book textBook;
-				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Armor", fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Weapons", fontTypeSubheader);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
-				
-				for (int j = 0; j < maxArmor; j++) {
-					DrawingContext dc = new TileDrawingContext(contentDc, maxArmor, 1, j, 0);
-					dc = new CenteredDrawingContext(dc, 2);
-					DrawingContext quadDc = new QuadraticDrawingContext(dc);
-					quadDc = new CenteredDrawingContext(quadDc, 2);
-					
-					if (j < noArmor) {
-						armorAnimation.draw(quadDc.x(), quadDc.y(), quadDc.w(), quadDc.h());
-					}
-					
-					graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
+
+				DrawingContext dc;
+				DrawingContext iconDc;
+				DrawingContext upgradesDc;
+
+				List<WeaponType> weaponTypes = player.getArsenal().getWeaponsOrder().subList(1, player.getArsenal().getWeaponsOrder().size());
+				List<Integer> weaponWidthScales = List.of(1, 3, 3, 3, 3);
+				for (int j = 0; j < weaponTypes.size(); j++) {
+					dc = new TileDrawingContext(contentDc, weaponTypes.size(), 1, j, 0);
+					iconDc = new TileDrawingContext(dc, 5, 1, 0, 0, 3, 1);
+					iconDc = new CenteredDrawingContext(iconDc, 48 * weaponWidthScales.get(j), 48);
+					upgradesDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 5, 1, 3, 0, 2, 1));
+					graphics.setColor(Color.white);
+					weaponAnimations.get(j).draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
+					graphics.setColor(Color.green);
+					graphics.drawRect(upgradesDc.x(), upgradesDc.y(), upgradesDc.w(), upgradesDc.h());
 				}
 			}
 			

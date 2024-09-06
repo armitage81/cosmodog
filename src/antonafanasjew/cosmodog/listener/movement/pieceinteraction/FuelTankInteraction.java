@@ -32,6 +32,8 @@ public class FuelTankInteraction extends AbstractPieceInteraction {
 			Vehicle vehicle = ((VehicleInventoryItem)(player.getInventory().get(InventoryItemType.VEHICLE))).getVehicle();
 			vehicle.upgradeMaxFuel();
 		}
+
+		player.getGameProgress().increaseFuelTanks();
 	}
 
 	@Override
