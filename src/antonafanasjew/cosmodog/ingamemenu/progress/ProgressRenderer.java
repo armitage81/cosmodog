@@ -99,6 +99,7 @@ public class ProgressRenderer implements Renderer {
 		
 		FontRefToFontTypeMap fontTypeSubheader = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
 		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+		FontRefToFontTypeMap fontTypeInactive = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Inactive);
 		
 		for (int i = 0; i < ROWS; i++) {
 			
@@ -174,56 +175,56 @@ public class ProgressRenderer implements Renderer {
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				soulEssenseAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noSoulEssenses, maxSoulEssenses), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noSoulEssenses, maxSoulEssenses), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				bottleAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noBottles, maxBottles), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noBottles, maxBottles), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				foodCompartmentAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noFoodCompartments, maxFoodCompartments), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noFoodCompartments, maxFoodCompartments), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				armorAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noArmor, maxArmor), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noArmor, maxArmor), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				fuelTankAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noFuelTanks, maxFuelTanks), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noFuelTanks, maxFuelTanks), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				mapAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noCharts, maxMaps), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noCharts, maxMaps), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				softwareAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noSoftware, maxSoftware), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noSoftware, maxSoftware), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				dc = new TileDrawingContext(contentDc, columns, 1, currentColumn++, 0);
 				iconDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 2, 1, 0, 0));
 				amountDc = new TileDrawingContext(dc, 2, 1, 1, 0);
 				insightAnimation.draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noInsights, maxInsights), fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(amountDc).textToBook(String.format("%s/%s", noInsights, maxInsights), fontTypeInformational);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 			}
@@ -236,15 +237,11 @@ public class ProgressRenderer implements Renderer {
 
 				DrawingContext dc;
 				DrawingContext iconDc;
-				DrawingContext upgradesDc;
 
 				List<WeaponType> weaponTypes = player.getArsenal().getWeaponsOrder().subList(1, player.getArsenal().getWeaponsOrder().size());
-				List<Integer> weaponWidthScales = List.of(1, 3, 3, 3, 3);
+				List<Integer> weaponWidthScales = List.of(2, 3, 3, 2, 2);
 				for (int j = 0; j < weaponTypes.size(); j++) {
-					dc = new TileDrawingContext(contentDc, weaponTypes.size(), 1, j, 0);
-					iconDc = new TileDrawingContext(dc, 5, 1, 0, 0, 3, 1);
-					iconDc = new CenteredDrawingContext(iconDc, 48 * weaponWidthScales.get(j), 48);
-					upgradesDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 5, 1, 3, 0, 2, 1));
+					iconDc = new TileDrawingContext(contentDc, weaponTypes.size(), 1, j, 0);
 
 					boolean hasWeapon;
 					boolean hasFirstAmmoUpgrade;
@@ -263,29 +260,18 @@ public class ProgressRenderer implements Renderer {
 					}
 
 					if (!hasWeapon) {
-						weaponAnimations.get(j).draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h(), new Color(1, 0, 0, 0.5f));
+						textBook = TextPageConstraints.fromDc(iconDc).textToBook(weaponTypes.get(j).name(), fontTypeInactive);
+						TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
 					} else {
-						weaponAnimations.get(j).draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h(), new Color(0, 1, 0, 1f));
-					}
-					DrawingContext firstUpgradeDc = new TileDrawingContext(upgradesDc, 1, 2, 0, 1);
-					graphics.setColor(Color.white);
-					graphics.fillRect(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h());
-					graphics.setColor(Color.orange);
-					graphics.drawRect(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h());
-					if (!hasFirstAmmoUpgrade) {
-						weaponAmmoAnimations.get(j).draw(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h(), new Color(1, 0, 0, 0.5f));
-					} else {
-						weaponAmmoAnimations.get(j).draw(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h(), new Color(0, 1, 0, 1f));
-					}
-					DrawingContext secondUpgradeDc = new TileDrawingContext(upgradesDc, 1, 2, 0, 0);
-					graphics.setColor(Color.white);
-					graphics.fillRect(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h());
-					graphics.setColor(Color.orange);
-					graphics.drawRect(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h());
-					if (!hasSecondAmmoUpgrade) {
-						weaponAmmoAnimations.get(j).draw(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h(), new Color(1, 0, 0, 0.5f));
-					} else {
-						weaponAmmoAnimations.get(j).draw(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h(), new Color(0, 1, 0, 1f));
+						String weaponName = weaponTypes.get(j).name();
+						if (hasFirstAmmoUpgrade) {
+							weaponName = weaponName + " +";
+						}
+						if (hasSecondAmmoUpgrade) {
+							weaponName = weaponName + " +";
+						}
+						textBook = TextPageConstraints.fromDc(iconDc).textToBook(weaponName, fontTypeInformational);
+						TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
 					}
 				}
 			}

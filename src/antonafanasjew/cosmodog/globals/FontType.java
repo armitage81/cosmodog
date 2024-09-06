@@ -20,6 +20,7 @@ public enum FontType {
 	
 	EmphasizedNarration(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.orange),
 	Informational(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.white),
+	Inactive(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.darkGray),
 	InformationalSmall(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.white),
 	ControlsHint(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.gray),
 	MainHeader(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.orange),
@@ -42,6 +43,7 @@ public enum FontType {
 	
 	EmphasizedNarration_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.orange),
 	Informational_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.white),
+	Inactive_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.darkGray),
 	InformationalSmall_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
 	ControlsHint_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), false), Color.gray),
 	MainHeader_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), false), Color.orange),

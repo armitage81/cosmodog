@@ -41,22 +41,13 @@ public class TestProgressScreen {
 				player.getInventory().put(InventoryItemType.INSIGHT, insight);
 				Arsenal arsenal = player.getArsenal();
 				arsenal.addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-				arsenal.addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 				arsenal.addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-				arsenal.addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 				arsenal.addWeaponToArsenal(new Weapon(WeaponType.RPG));
 
 				arsenal.getWeaponsCopy().get(WeaponType.PISTOL).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.SHOTGUN).upgrade();
 				arsenal.getWeaponsCopy().get(WeaponType.RIFLE).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.MACHINEGUN).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.RPG).upgrade();
 
 				arsenal.getWeaponsCopy().get(WeaponType.PISTOL).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.SHOTGUN).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.RIFLE).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.MACHINEGUN).upgrade();
-				arsenal.getWeaponsCopy().get(WeaponType.RPG).upgrade();
 
 				player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
 				player.getInventory().put(InventoryItemType.ARCHEOLOGISTS_JOURNAL, new ArcheologistsJournalInventoryItem());
