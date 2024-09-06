@@ -32,7 +32,27 @@ public class Mappings {
 		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.MACHINEGUN, "machinegun");
 		WEAPON_TYPE_TO_PIECE_TYPE.put(WeaponType.RPG, "rpg");
 	}
-	
+
+	public static Map<ToolType, InventoryItemType> COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE = Maps.newHashMap();
+
+	static {
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.boat, InventoryItemType.BOAT);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.dynamite, InventoryItemType.DYNAMITE);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.geigerzaehler, InventoryItemType.GEIGERZAEHLER);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.supplytracker, InventoryItemType.SUPPLYTRACKER);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.binoculars, InventoryItemType.BINOCULARS);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.jacket, InventoryItemType.JACKET);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.antidote, InventoryItemType.ANTIDOTE);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.minedetector, InventoryItemType.MINEDETECTOR);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.ski, InventoryItemType.SKI);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.pick, InventoryItemType.PICK);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.axe, InventoryItemType.AXE);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.machete, InventoryItemType.MACHETE);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.archeologistsJournal, InventoryItemType.ARCHEOLOGISTS_JOURNAL);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.weaponFirmwareUpgrade, InventoryItemType.WEAPON_FIRMWARE_UPGRADE);
+
+	}
+
 	public static Map<WeaponType, String> WEAPON_TYPE_TO_AMMO_PIECE_TYPE = Maps.newHashMap();
 	
 	static {

@@ -1,6 +1,10 @@
 package antonafanasjew.cosmodog.ingamemenu.progress;
 
 import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.inventory.*;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.util.Mappings;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -12,11 +16,6 @@ import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.Inventory;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.QuadraticDrawingContext;
@@ -28,11 +27,13 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProgressRenderer implements Renderer {
 
-	private static final int ROWS = 9;
+	private static final int ROWS = 7;
 	private static final int ROW_PADDING = 10;
 	
 	@Override
@@ -55,6 +56,13 @@ public class ProgressRenderer implements Renderer {
 		Animation machinegunAnimation = ApplicationContext.instance().getAnimations().get("machinegun");
 		Animation rpgAnimation = ApplicationContext.instance().getAnimations().get("rpg");
 		List<Animation> weaponAnimations = List.of(pistolAnimation, shotgunAnimation, rifleAnimation, machinegunAnimation, rpgAnimation);
+
+		Animation pistolAmmoAnimation = ApplicationContext.instance().getAnimations().get("pistolAmmo");
+		Animation shotgunAmmoAnimation = ApplicationContext.instance().getAnimations().get("shotgunAmmo");
+		Animation rifleAmmoAnimation = ApplicationContext.instance().getAnimations().get("rifleAmmo");
+		Animation machinegunAmmoAnimation = ApplicationContext.instance().getAnimations().get("machinegunAmmo");
+		Animation rpgAmmoAnimation = ApplicationContext.instance().getAnimations().get("rpgAmmo");
+		List<Animation> weaponAmmoAnimations = List.of(pistolAmmoAnimation, shotgunAmmoAnimation, rifleAmmoAnimation, machinegunAmmoAnimation, rpgAmmoAnimation);
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
@@ -237,77 +245,86 @@ public class ProgressRenderer implements Renderer {
 					iconDc = new TileDrawingContext(dc, 5, 1, 0, 0, 3, 1);
 					iconDc = new CenteredDrawingContext(iconDc, 48 * weaponWidthScales.get(j), 48);
 					upgradesDc = new QuadraticDrawingContext(new TileDrawingContext(dc, 5, 1, 3, 0, 2, 1));
+
+					boolean hasWeapon;
+					boolean hasFirstAmmoUpgrade;
+					boolean hasSecondAmmoUpgrade;
+
+					Weapon weapon = player.getArsenal().getWeaponsCopy().get(weaponTypes.get(j));
+
+					if (weapon == null) {
+						hasWeapon = false;
+						hasFirstAmmoUpgrade = false;
+						hasSecondAmmoUpgrade = false;
+					} else {
+						hasWeapon = true;
+						hasFirstAmmoUpgrade = weapon.getAmmunition() > weapon.getWeaponType().getMaxAmmo();
+						hasSecondAmmoUpgrade = weapon.getAmmunition() > weapon.getWeaponType().getMaxAmmo() + 1;
+					}
+
+					if (!hasWeapon) {
+						weaponAnimations.get(j).draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h(), new Color(1, 0, 0, 0.5f));
+					} else {
+						weaponAnimations.get(j).draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h(), new Color(0, 1, 0, 1f));
+					}
+					DrawingContext firstUpgradeDc = new TileDrawingContext(upgradesDc, 1, 2, 0, 1);
 					graphics.setColor(Color.white);
-					weaponAnimations.get(j).draw(iconDc.x(), iconDc.y(), iconDc.w(), iconDc.h());
-					graphics.setColor(Color.green);
-					graphics.drawRect(upgradesDc.x(), upgradesDc.y(), upgradesDc.w(), upgradesDc.h());
+					graphics.fillRect(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h());
+					graphics.setColor(Color.orange);
+					graphics.drawRect(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h());
+					if (!hasFirstAmmoUpgrade) {
+						weaponAmmoAnimations.get(j).draw(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h(), new Color(1, 0, 0, 0.5f));
+					} else {
+						weaponAmmoAnimations.get(j).draw(firstUpgradeDc.x(), firstUpgradeDc.y(), firstUpgradeDc.w(), firstUpgradeDc.h(), new Color(0, 1, 0, 1f));
+					}
+					DrawingContext secondUpgradeDc = new TileDrawingContext(upgradesDc, 1, 2, 0, 0);
+					graphics.setColor(Color.white);
+					graphics.fillRect(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h());
+					graphics.setColor(Color.orange);
+					graphics.drawRect(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h());
+					if (!hasSecondAmmoUpgrade) {
+						weaponAmmoAnimations.get(j).draw(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h(), new Color(1, 0, 0, 0.5f));
+					} else {
+						weaponAmmoAnimations.get(j).draw(secondUpgradeDc.x(), secondUpgradeDc.y(), secondUpgradeDc.w(), secondUpgradeDc.h(), new Color(0, 1, 0, 1f));
+					}
 				}
 			}
-			
 			if (i == 5) {
-				
 				Book textBook;
-				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Map pieces", fontTypeSubheader);
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Tools", fontTypeSubheader);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
-				
-				int mapsInRow = maxMaps / 2;
-				for (int j = 0; j < maxMaps; j++) {
-					int k = j % mapsInRow;
-					int l = j / mapsInRow;
-					DrawingContext dc = new TileDrawingContext(contentDc, mapsInRow, 2, k, l);
-					dc = new CenteredDrawingContext(dc, 1);
-					DrawingContext quadDc = new QuadraticDrawingContext(dc);
-					quadDc = new CenteredDrawingContext(quadDc, 2);
-					
-					if (j < noCharts) {
-						mapAnimation.draw(quadDc.x(), quadDc.y(), quadDc.w(), quadDc.h());
+
+				Iterator<CollectibleTool.ToolType> toolTypeIterator = Arrays.stream(CollectibleTool.ToolType.values()).iterator();
+				for (int j = 0; j < 20; j++) {
+					DrawingContext toolDc = new TileDrawingContext(contentDc, 20, 1, j, 0);
+					toolDc = new CenteredDrawingContext(toolDc, 5);
+					if (toolTypeIterator.hasNext()) {
+						CollectibleTool.ToolType toolType = toolTypeIterator.next();
+						InventoryItemType inventoryItemType = Mappings.COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.get(toolType);
+						InventoryItem inventoryItem = player.getInventory().get(inventoryItemType);
+						String animationId = Mappings.INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.get(inventoryItemType);
+						Animation inventoryItemAnimation = ApplicationContext.instance().getAnimations().get(animationId);
+						if (inventoryItem != null) {
+							graphics.setColor(Color.green);
+							graphics.fillRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+							graphics.setColor(Color.orange);
+							graphics.setLineWidth(3);
+							graphics.drawRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+							inventoryItemAnimation.draw(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+						} else {
+							graphics.setColor(Color.lightGray);
+							graphics.fillRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+							graphics.setColor(Color.orange);
+							graphics.setLineWidth(3);
+							graphics.drawRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+							inventoryItemAnimation.draw(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h(), new Color(0,0,0));
+						}
+					} else {
+						break;
 					}
-					
-					graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
 				}
 			}
-			
 			if (i == 6) {
-				
-				Book textBook;
-				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Software", fontTypeSubheader);
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
-				
-				for (int j = 0; j < maxSoftware; j++) {
-					DrawingContext dc = new TileDrawingContext(contentDc, maxSoftware, 1, j, 0);
-					dc = new CenteredDrawingContext(dc, 2);
-					DrawingContext quadDc = new QuadraticDrawingContext(dc);
-					quadDc = new CenteredDrawingContext(quadDc, 2);
-					
-					if (j < noSoftware) {
-						softwareAnimation.draw(quadDc.x(), quadDc.y(), quadDc.w(), quadDc.h());
-					}
-					
-					graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
-				}
-			}
-			
-			if (i == 7) {
-				
-				Book textBook;
-				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Artifacts", fontTypeSubheader);
-				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
-				
-				for (int j = 0; j < maxInsights; j++) {
-					DrawingContext boxDc = new TileDrawingContext(contentDc, maxInsights, 1, j, 0);
-					boxDc = new CenteredDrawingContext(boxDc, 1);
-					boxDc = new QuadraticDrawingContext(boxDc);
-					DrawingContext picDc = new CenteredDrawingContext(boxDc, 2);
-					
-					if (j < noInsights) {
-						insightAnimation.draw(picDc.x(), picDc.y(), picDc.w(), picDc.h());
-					}
-					
-					graphics.drawRect(boxDc.x(), boxDc.y(), boxDc.w(), boxDc.h());
-				}
-			}
-			
-			if (i == 8) {
 				
 				Book textBook;
 				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Play Time", fontTypeSubheader);
