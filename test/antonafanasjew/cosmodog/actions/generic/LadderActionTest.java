@@ -12,9 +12,9 @@ public class LadderActionTest {
 
     @BeforeEach
     public void setUp() {
-        ladderAction = new LadderAction(1000, "generic", 10);
+        ladderAction = new LadderAction(1000, 10);
         ladderAction.onTrigger();
-        ladderActionWithManySteps = new LadderAction(1000, "generic", 10000);
+        ladderActionWithManySteps = new LadderAction(1000, 10000);
         ladderActionWithManySteps.onTrigger();
     }
 

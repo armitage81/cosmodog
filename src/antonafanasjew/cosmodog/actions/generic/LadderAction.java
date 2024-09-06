@@ -4,8 +4,8 @@ public class LadderAction extends CompletionRateBasedAction {
 
     private final int steps;
 
-    public LadderAction(int duration, String name, int steps) {
-        super(duration, name);
+    public LadderAction(int duration, int steps) {
+        super(duration);
         this.steps = steps;
     }
 

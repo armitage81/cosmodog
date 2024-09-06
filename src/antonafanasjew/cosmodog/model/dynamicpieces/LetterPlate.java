@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.actions.letterplateriddle.WrongSequenceAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -97,27 +98,9 @@ public class LetterPlate extends DynamicPiece {
 			//If the currently entered sequence is wrong due to the last entered character, we append the corresponding message to the message over the player's head.
 			OverheadNotificationAction.registerOverheadNotification(player, message.toString());
 			
-			//If the currently entered sequence is wrong due to the last entered character, we initiate a dummy fight action without an enemy. It will kill the player.
 			if (!sequence.sequenceCorrect()) {
-
-				FixedLengthAsyncAction restartRiddle = new FixedLengthAsyncAction(1500) {
-
-					@Override
-					public void onTrigger() {
-						ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
-						OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> Something is wrong.");
-						OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> I must start anew.");
-					}
-
-					@Override
-					public void onEnd() {
-						player.setPositionX(218);
-						player.setPositionY(191);
-						ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(ApplicationContextUtils.getCosmodogMap(), 0, 0, player);
-					}
-				};
-
-				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.WAIT, restartRiddle);
+				WrongSequenceAction wrongSequenceConsequenceAction = new WrongSequenceAction();
+				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.WRONG_SEQUENCE_IN_LETTER_PLATE_RIDDLE, wrongSequenceConsequenceAction);
 			}
 		}
 		

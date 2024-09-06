@@ -10,7 +10,7 @@ public class ParabolicActionTest {
 
     @BeforeEach
     public void setUp() {
-        parabolicAction = new ParabolicAction(1000, "generic");
+        parabolicAction = new ParabolicAction(1000);
         parabolicAction.onTrigger();
     }
 

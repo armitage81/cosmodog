@@ -2,8 +2,8 @@ package antonafanasjew.cosmodog.actions.generic;
 
 public class ParabolicAction extends CompletionRateBasedAction {
 
-    public ParabolicAction(int duration, String name) {
-        super(duration, name);
+    public ParabolicAction(int duration) {
+        super(duration);
     }
 
     /**

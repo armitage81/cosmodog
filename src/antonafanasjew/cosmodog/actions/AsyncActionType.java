@@ -85,7 +85,9 @@ public enum AsyncActionType {
 	 */
 	NON_BLOCKING_INTERFACE(false, false, true),
 	
-	PRESENTING_NEW_TOOL(true, false, false);
+	PRESENTING_NEW_TOOL(true, false, false),
+
+	WRONG_SEQUENCE_IN_LETTER_PLATE_RIDDLE(true, false, false);
 	
 	private boolean blocksInput;
 	private boolean stackable;

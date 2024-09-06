@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.states;
 
+import antonafanasjew.cosmodog.rendering.renderer.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -23,10 +24,6 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.DyingPlayerRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.InGameMenuRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.InterfaceOnSceneRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.Renderer;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
@@ -56,6 +53,8 @@ public class GameState extends CosmodogAbstractState {
 
 	private Renderer dyingPlayerRenderer;
 
+	private Renderer wrongSequenceRenderer;
+
 	private InGameMenuRenderer inGameMenuRenderer;
 
 	@Override
@@ -66,6 +65,8 @@ public class GameState extends CosmodogAbstractState {
 		interfaceOnSceneRenderer = new InterfaceOnSceneRenderer();
 
 		dyingPlayerRenderer = new DyingPlayerRenderer();
+
+		wrongSequenceRenderer = new WrongSequenceInLetterPlateRiddleRenderer();
 
 		inGameMenuRenderer = new InGameMenuRenderer();
 
@@ -161,6 +162,7 @@ public class GameState extends CosmodogAbstractState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		interfaceOnSceneRenderer.render(gc, g, null);
 		dyingPlayerRenderer.render(gc, g, null);
+		wrongSequenceRenderer.render(gc, g, null);
 		inGameMenuRenderer.render(gc, g, null);
 	}
 

@@ -11,25 +11,14 @@ public abstract class CompletionRateBasedAction extends FixedLengthAsyncAction {
     @Serial
     private static final long serialVersionUID = -1032910058049587274L;
 
-    private final String name;
-
     private CompletionRateBasedTransition transition;
-
-    public String getName() {
-        return name;
-    }
 
     public CompletionRateBasedTransition getTransition() {
         return transition;
     }
 
-    public CompletionRateBasedAction(int duration, String name) {
+    public CompletionRateBasedAction(int duration) {
         super(duration);
-        this.name = name;
-    }
-
-    @Override
-    public void onTrigger() {
         transition = CompletionRateBasedTransition.instance();
     }
 
@@ -42,7 +31,7 @@ public abstract class CompletionRateBasedAction extends FixedLengthAsyncAction {
     protected abstract void onUpdate(float completionRate);
 
     @Override
-    public void onEnd() {
+    public void afterUnregistration() {
         transition = null;
     }
 

@@ -2,19 +2,27 @@ package antonafanasjew.cosmodog.actions.generic;
 
 public class FadingAction extends CompletionRateBasedAction {
 
-    public FadingAction(int duration, String name) {
-        super(duration, name);
+    private boolean fadingInNotFadingOut;
+
+    public FadingAction(int duration, boolean fadingInNotFadingOut) {
+        super(duration);
+        this.fadingInNotFadingOut = fadingInNotFadingOut;
+    }
+
+    public boolean isFadingInNotFadingOut() {
+        return fadingInNotFadingOut;
     }
 
     @Override
     public void onUpdate(float completionRate) {
 
-        double e = Math.E;
-        double minusTenX = -10 * completionRate;
-        double ePowMinusTenX = Math.pow(e, minusTenX);
-        double onePlusRes = 1 - ePowMinusTenX;
-        double oneDivRes = 1 / onePlusRes;
+        double value = completionRate;
+        value -= 0.5;
+        value *= -10;
+        value = Math.pow(Math.E, value);
+        value += 1;
+        value = 1 / value;
 
-        getTransition().setValue((float)oneDivRes);
+        getTransition().setValue((float)value);
     }
 }

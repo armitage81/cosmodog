@@ -5,8 +5,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class LinearAction extends CompletionRateBasedAction {
 
-    public LinearAction(int duration, String name) {
-        super(duration, name);
+    public LinearAction(int duration) {
+        super(duration);
     }
 
     @Override
