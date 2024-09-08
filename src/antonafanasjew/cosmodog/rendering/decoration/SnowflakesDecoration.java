@@ -2,10 +2,12 @@ package antonafanasjew.cosmodog.rendering.decoration;
 
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.particlepattern.OffsetCalculator;
 import antonafanasjew.particlepattern.model.GridParticlePatternBuilder;
 import antonafanasjew.particlepattern.model.ParticlePattern;
-import antonafanasjew.particlepattern.movement.LinearMovementFunction;
+import antonafanasjew.particlepattern.movement.*;
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public class SnowflakesDecoration {
 
 	private long initialTimestamp;
 
-	private List<LinearMovementFunction> movementFunctions = Lists.newArrayList();
+	private List<Function<Long, Vector>> movementFunctions = Lists.newArrayList();
 	private List<ParticlePattern> particlePatterns = Lists.newArrayList();
 	private Rectangle particlePatternSurface = Rectangle.fromSize(3840, 2160);
 	private List<OffsetCalculator> offsetCalculators = Lists.newArrayList();
@@ -30,9 +32,32 @@ public class SnowflakesDecoration {
 
 	private SnowflakesDecoration() {
 		initialTimestamp = System.currentTimeMillis();
-		movementFunctions.add(new LinearMovementFunction(1f, 40));
-        movementFunctions.add(new LinearMovementFunction(0.7f, 30));
-		movementFunctions.add(new LinearMovementFunction(0.75f, 20));
+
+		AbstractMovementFunction l;
+		AbstractMovementFunction s;
+		ComposedMovementFunction c;
+
+		l = new LinearMovementFunction(1f, 40);
+		s = new SinusMovementFunction(20f, 20f, 0, 800f);
+		c = new ComposedMovementFunction();
+		c.getElements().add(l);
+		c.getElements().add(s);
+		movementFunctions.add(c);
+
+		l = new LinearMovementFunction(0.7f, 30);
+		s = new SinusMovementFunction(20f, 15f, 0, 800f);
+		c = new ComposedMovementFunction();
+		c.getElements().add(l);
+		c.getElements().add(s);
+		movementFunctions.add(c);
+
+		l = new LinearMovementFunction(0.75f, 20);
+		s = new SinusMovementFunction(20f, 10f, 0, 800f);
+		c = new ComposedMovementFunction();
+		c.getElements().add(l);
+		c.getElements().add(s);
+		movementFunctions.add(c);
+
 		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
         particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
 		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
