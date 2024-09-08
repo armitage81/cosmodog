@@ -6,8 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
-import antonafanasjew.cosmodog.actions.letterplateriddle.WrongSequenceAction;
+import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -99,8 +98,11 @@ public class LetterPlate extends DynamicPiece {
 			OverheadNotificationAction.registerOverheadNotification(player, message.toString());
 			
 			if (!sequence.sequenceCorrect()) {
-				WrongSequenceAction wrongSequenceConsequenceAction = new WrongSequenceAction();
-				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.WRONG_SEQUENCE_IN_LETTER_PLATE_RIDDLE, wrongSequenceConsequenceAction);
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
+				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> Something is wrong.");
+				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> I must start anew.");
+				RespawnAction wrongSequenceConsequenceAction = new RespawnAction(218, 191, true, true);
+				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, wrongSequenceConsequenceAction);
 			}
 		}
 		

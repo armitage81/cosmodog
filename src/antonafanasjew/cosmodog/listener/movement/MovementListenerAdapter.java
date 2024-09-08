@@ -62,4 +62,13 @@ public class MovementListenerAdapter implements MovementListener {
 		
 	}
 
+	@Override
+	public void beforeRespawn(Actor actor, ApplicationContext applicationContext) {
+
+	}
+
+	@Override
+	public void afterRespawn(Actor actor, ApplicationContext applicationContext) {
+
+	}
 }

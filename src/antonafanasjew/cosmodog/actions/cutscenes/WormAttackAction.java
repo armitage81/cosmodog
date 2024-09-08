@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -173,12 +175,15 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 	
 	/**
 	 * Concludes the action by nullifying the underlying transition.
-	 * Also set the player's life to zero. Since there is a listener for the player's life, the player will be killed
-	 * as a result.
+	 * Additionally, registered the respawning action to respawn the player at the beginning of the worm area.
+	 * Take note: In the previous versions, the player has been killed here and respawned at the beginning of the game,
+	 * but now the consequence of being eaten by the worm has been mitigated. There is no death sequence but a fading
+	 * sequence instead when resetting the player's position.
 	 */
 	@Override
 	public void onEnd() {
 		transition = null;
-		ApplicationContextUtils.getPlayer().setLife(0);
+		ApplicationContextUtils.getPlayer().resetTurnsWormAlerted();
+		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, new RespawnAction(321, 335, false, true));
 	}
 }

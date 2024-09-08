@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.actions.cutscenes.RadiationDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
@@ -179,6 +180,25 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
 		changeLettersOnLetterPlates(applicationContext);
+	}
+
+	@Override
+	public void afterRespawn(Actor actor, ApplicationContext applicationContext) {
+		collectCollectibles(applicationContext);
+		refillWater(applicationContext);
+		refillFuel(applicationContext);
+		detectMines(applicationContext);
+		changeLettersOnLetterPlates(applicationContext);
+		checkStarvation(applicationContext);
+		checkDehydration(applicationContext);
+		checkTemperature(applicationContext);
+		checkRadiation(applicationContext);
+		checkElectricity(applicationContext);
+		checkWorm(applicationContext);
+		checkMine(applicationContext);
+		checkContaminationStatus(applicationContext);
+		ApplicationContextUtils.getGameProgress().incTurn();
+		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 	}
 
 	private void collectCollectibles(ApplicationContext applicationContext) {

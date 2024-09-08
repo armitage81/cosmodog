@@ -66,7 +66,7 @@ public class GameState extends CosmodogAbstractState {
 
 		dyingPlayerRenderer = new DyingPlayerRenderer();
 
-		wrongSequenceRenderer = new WrongSequenceInLetterPlateRiddleRenderer();
+		wrongSequenceRenderer = new RespawnRenderer();
 
 		inGameMenuRenderer = new InGameMenuRenderer();
 

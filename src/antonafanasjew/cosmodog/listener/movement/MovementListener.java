@@ -21,6 +21,9 @@ public interface MovementListener extends Serializable {
 	
 	void beforeTeleportation(Actor actor, ApplicationContext applicationContext);
 	void afterTeleportation(Actor actor, ApplicationContext applicationContext);
+
+	void beforeRespawn(Actor actor, ApplicationContext applicationContext);
+	void afterRespawn(Actor actor, ApplicationContext applicationContext);
 	
 	
 }

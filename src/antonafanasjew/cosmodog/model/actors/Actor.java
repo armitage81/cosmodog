@@ -51,9 +51,17 @@ public abstract class Actor extends Piece {
 	public void beginTeleportation() {
 		composedMovementListener.beforeTeleportation(this, ApplicationContext.instance());
 	}
-	
+
+	public void beginRespawn() {
+		composedMovementListener.beforeRespawn(this, ApplicationContext.instance());
+	}
+
 	public void endTeleportation() {
 		composedMovementListener.afterTeleportation(this, ApplicationContext.instance());
+	}
+
+	public void endRespawn() {
+		composedMovementListener.afterRespawn(this, ApplicationContext.instance());
 	}
 	
 	public void shiftHorizontal(int positionOffset) {

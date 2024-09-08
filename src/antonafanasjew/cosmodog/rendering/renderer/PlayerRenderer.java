@@ -1,5 +1,9 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
+import antonafanasjew.cosmodog.actions.AsyncAction;
+import antonafanasjew.cosmodog.actions.generic.FadingAction;
+import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -66,6 +70,24 @@ public class PlayerRenderer extends AbstractRenderer {
 					return;
 				}
 			}
+		}
+
+		RespawnAction respawnAction = (RespawnAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.RESPAWNING);
+		if (respawnAction != null) {
+			AsyncAction phase = respawnAction.getActionPhaseRegistry().getRegisteredAction(AsyncActionType.CUTSCENE);
+
+			if (phase == null && !respawnAction.isShowPlayerWhenFadingOut()) {
+				return;
+			}
+
+			if (phase instanceof FadingAction fadingPhase) {
+				if (fadingPhase.isFadingInNotFadingOut() && !respawnAction.isShowPlayerWhenFadingIn()) {
+					return;
+				};
+				if (!fadingPhase.isFadingInNotFadingOut() && !respawnAction.isShowPlayerWhenFadingOut()) {
+					return;
+				};
+            }
 		}
 		
 		

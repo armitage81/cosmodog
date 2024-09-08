@@ -159,5 +159,9 @@ public class Player extends Actor {
 	public LogPlayer getLogPlayer() {
 		return logPlayer;
 	}
-	
+
+	@Override
+	public void shiftHorizontal(int positionOffset) {
+		super.shiftHorizontal(positionOffset);
+	}
 }
