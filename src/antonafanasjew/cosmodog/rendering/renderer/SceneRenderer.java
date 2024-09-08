@@ -39,6 +39,7 @@ public class SceneRenderer implements Renderer {
 	
 	private AbstractRenderer cloudRenderer = new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
 	private AbstractRenderer birdsRenderer = new BirdsRenderer();
+	private AbstractRenderer snowflakesRenderer = new SnowflakesRenderer();
 	private AbstractRenderer wormAttackRenderer = new WormAttackRenderer();
 	private AbstractRenderer artilleryGrenadeRenderer = new ArtilleryGrenadeRenderer();
 	private AbstractRenderer wormSnowSparkRenderer = new WormSnowSparkRenderer();
@@ -112,6 +113,9 @@ public class SceneRenderer implements Renderer {
 		
 		//Draw birds.
 		birdsRenderer.render(gc, g, sceneDrawingContext);
+
+		//Draw snowflakes.
+		snowflakesRenderer.render(gc, g, sceneDrawingContext);
 
 		//Draw Daytime mask.
 		daytimeColorFilterRenderer.render(gc, g, null);

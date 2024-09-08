@@ -1823,3 +1823,7 @@ endingBackground;data/endingBackground.png;640;300;[0/0/10000];false;false
 
 
 unchartedMapTile;data/uncharted_map_tile.png;16;16;[0/0/10000];false;false
+
+snowflake0;data/snowflakes0.png;640;480;[0/0/10000];false;false
+snowflake1;data/snowflakes1.png;640;480;[0/0/10000];false;false
+snowflake2;data/snowflakes2.png;640;480;[0/0/10000];false;false
