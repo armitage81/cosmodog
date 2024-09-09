@@ -16,12 +16,11 @@ public class SnowflakesDecoration {
 
 	public static SnowflakesDecoration instance = null;
 
-	private long initialTimestamp;
+	private final long initialTimestamp;
 
-	private List<Function<Long, Vector>> movementFunctions = Lists.newArrayList();
-	private List<ParticlePattern> particlePatterns = Lists.newArrayList();
-	private Rectangle particlePatternSurface = Rectangle.fromSize(3840, 2160);
-	private List<OffsetCalculator> offsetCalculators = Lists.newArrayList();
+    private final Rectangle particlePatternSurface = Rectangle.fromSize(3840, 2160);
+	private final List<OffsetCalculator> offsetCalculators = Lists.newArrayList();
+	private final List<String> animationIds = Lists.newArrayList();
 
 	public static SnowflakesDecoration instance() {
 		if (instance == null) {
@@ -32,24 +31,44 @@ public class SnowflakesDecoration {
 
 	private SnowflakesDecoration() {
 		initialTimestamp = System.currentTimeMillis();
+		List<Function<Long, Vector>> movementFunctions = Lists.newArrayList();
 
 		AbstractMovementFunction l;
 		AbstractMovementFunction s;
 		ComposedMovementFunction c;
 
-		l = new LinearMovementFunction(1f, 40);
+		l = new LinearMovementFunction(3f, 40);
 		s = new SinusMovementFunction(20f, 20f, 0, 800f);
 		c = new ComposedMovementFunction();
 		c.getElements().add(l);
 		c.getElements().add(s);
 		movementFunctions.add(c);
+		animationIds.add("snowflake0");
 
-		l = new LinearMovementFunction(0.7f, 30);
+		l = new LinearMovementFunction(3.5f, 60);
+		s = new SinusMovementFunction(15f, 20f, 320, 600f);
+		c = new ComposedMovementFunction();
+		c.getElements().add(l);
+		c.getElements().add(s);
+		movementFunctions.add(c);
+		animationIds.add("snowflake0");
+
+		l = new LinearMovementFunction(4f, 80);
 		s = new SinusMovementFunction(20f, 15f, 0, 800f);
 		c = new ComposedMovementFunction();
 		c.getElements().add(l);
 		c.getElements().add(s);
 		movementFunctions.add(c);
+		animationIds.add("snowflake1");
+
+		l = new LinearMovementFunction(4.5f, 90);
+		s = new SinusMovementFunction(10f, 30f, 320, 800f);
+		c = new ComposedMovementFunction();
+		c.getElements().add(l);
+		c.getElements().add(s);
+		movementFunctions.add(c);
+		animationIds.add("snowflake1");
+
 
 		l = new LinearMovementFunction(0.75f, 20);
 		s = new SinusMovementFunction(20f, 10f, 0, 800f);
@@ -57,9 +76,24 @@ public class SnowflakesDecoration {
 		c.getElements().add(l);
 		c.getElements().add(s);
 		movementFunctions.add(c);
+		animationIds.add("snowflake2");
 
-		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
+		l = new LinearMovementFunction(0.85f, 20);
+		s = new SinusMovementFunction(20f, 10f, 320, 800f);
+		c = new ComposedMovementFunction();
+		c.getElements().add(l);
+		c.getElements().add(s);
+		movementFunctions.add(c);
+		animationIds.add("snowflake2");
+
+
+
+        List<ParticlePattern> particlePatterns = Lists.newArrayList();
         particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
+        particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
+		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
+		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
+		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
 		particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));
 
 		for (int i = 0; i < particlePatterns.size(); i++) {
@@ -83,4 +117,7 @@ public class SnowflakesDecoration {
 		return particlePatternSurface;
 	}
 
+	public List<String> getAnimationIds() {
+		return animationIds;
+	}
 }

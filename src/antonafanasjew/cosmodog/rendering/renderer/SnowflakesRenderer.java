@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.particlepattern.model.Particle;
 import antonafanasjew.particlepattern.model.ParticlePattern;
+import com.google.common.collect.Lists;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -62,6 +63,7 @@ public class SnowflakesRenderer extends AbstractRenderer {
 		view = PlacedRectangle.fromAnchorAndSize(newMin.getX(), newMin.getY(), view.width(), view.height());
 		
 		List<ParticlePattern> currentPatterns = snowflakeDecoration.particlePatternsForPlaceAndTime(view);
+		List<String> animationIds = snowflakeDecoration.getAnimationIds();
 
 		for (int i = 0; i < currentPatterns.size(); i++) {
 			ParticlePattern currentPattern = currentPatterns.get(i);
@@ -80,7 +82,7 @@ public class SnowflakesRenderer extends AbstractRenderer {
 
 			graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
 
-			Animation a = applicationContext.getAnimations().get("snowflake" + i);
+			Animation a = applicationContext.getAnimations().get(animationIds.get(i));
 
 			for (Particle particle : particles) {
 				a.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), a.getWidth() * cam.getZoomFactor(), a.getHeight() * cam.getZoomFactor());
