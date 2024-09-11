@@ -69,7 +69,6 @@ public class SnowflakesDecoration {
 		movementFunctions.add(c);
 		animationIds.add("snowflake1");
 
-
 		l = new LinearMovementFunction(0.75f, 20);
 		s = new SinusMovementFunction(20f, 10f, 0, 800f);
 		c = new ComposedMovementFunction();
@@ -85,8 +84,6 @@ public class SnowflakesDecoration {
 		c.getElements().add(s);
 		movementFunctions.add(c);
 		animationIds.add("snowflake2");
-
-
 
         List<ParticlePattern> particlePatterns = Lists.newArrayList();
         particlePatterns.add(new GridParticlePatternBuilder(768, 540).build(particlePatternSurface));

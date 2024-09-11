@@ -2,10 +2,14 @@ package antonafanasjew.particlepattern.movement;
 
 import antonafanasjew.cosmodog.topology.Vector;
 
+/**
+ * Represents a linear movement function. Depending on the given time, the offset vector will increase in a linear way.
+ * The function is defined by a rising factor and an offset constant. (y = risingFactor * x + offsetConstant)
+ */
 public class LinearMovementFunction extends AbstractMovementFunction {
 
-	private float risingFactor;
-	private float offsetConstant;
+	private final float risingFactor;
+	private final float offsetConstant;
 	
 	public LinearMovementFunction(float risingFactor, float offsetConstant, int millisecondsInUnit) {
 		super(millisecondsInUnit);
@@ -19,9 +23,8 @@ public class LinearMovementFunction extends AbstractMovementFunction {
 	
 	@Override
 	public Vector applyInternal(float units) {
-		float x = units;
-		float y = risingFactor * x + offsetConstant;
-		return new Vector(x, y);
+        float y = risingFactor * units + offsetConstant;
+		return new Vector(units, y);
 	}
 
 }

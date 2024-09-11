@@ -15,7 +15,6 @@ public class OffsetCalculator {
 	private ParticlePattern particlePattern;
 
 	public ParticlePattern particlePatternForPlaceAndTime(PlacedRectangle cam, Long timeOffset) {
-		Math.cos(Math.PI);
 		Preconditions.checkState(cam != null);
 		Preconditions.checkState(movementOffsetFunction != null);
 		Preconditions.checkState(particlePattern != null);

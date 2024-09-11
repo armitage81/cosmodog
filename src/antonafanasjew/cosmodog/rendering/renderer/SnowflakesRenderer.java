@@ -69,7 +69,7 @@ public class SnowflakesRenderer extends AbstractRenderer {
 			ParticlePattern currentPattern = currentPatterns.get(i);
 			Set<Particle> particles = currentPattern.particlesSet();
 
-			//Note: particles are defined related to the particle pattern, but we draw related to the cam size.
+			//Note: particles are defined related to the particle pattern surface, but we draw related to the cam size.
 			//Hence we need to translate the difference first.
 
 			Rectangle particlePatternSurface = snowflakeDecoration.getParticlePatternSurface();

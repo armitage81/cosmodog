@@ -2,6 +2,9 @@ package antonafanasjew.particlepattern.model;
 
 import antonafanasjew.cosmodog.topology.Rectangle;
 
+/**
+ * Holds the common logic for all particle pattern builders. Is currently empty.
+ */
 public abstract class AbstractParticlePatternBuilder implements ParticlePatternBuilder {
 
 	@Override

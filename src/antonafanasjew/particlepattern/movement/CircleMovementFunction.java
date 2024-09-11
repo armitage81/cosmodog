@@ -6,12 +6,19 @@ import antonafanasjew.cosmodog.topology.Vector;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * Represents a movement function that moves in a circle.
+ * The radius of the circle can be set. The function can be set to move clockwise or counter-clockwise.
+ * The function can be scaled in the horizontal and vertical direction to produce elliptical movement.
+ * <p>
+ * This movement function can be used to move particles in a circular pattern. Example: things whirling by in a tornado.
+ */
 public class CircleMovementFunction extends AbstractMovementFunction {
 
-	private float radius;
-	private boolean clockwise;
-	private float horizontalScale;
-	private float verticalScale;
+	private final float radius;
+	private final boolean clockwise;
+	private final float horizontalScale;
+	private final float verticalScale;
 	
 	public CircleMovementFunction(int millisecondsInUnit) {
 		this(1f, false, millisecondsInUnit);
