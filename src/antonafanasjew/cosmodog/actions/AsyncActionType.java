@@ -4,7 +4,9 @@ package antonafanasjew.cosmodog.actions;
  * Domain values of the action types set.
  */
 public enum AsyncActionType {
-	
+
+	SNOWFALL_CHANGE(false, false, false),
+
 	FOUND_TOOL_JINGLE(false, false, false),
 	
 	/**

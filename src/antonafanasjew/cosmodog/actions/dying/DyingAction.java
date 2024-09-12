@@ -1,6 +1,9 @@
 package antonafanasjew.cosmodog.actions.dying;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.snowfall.SnowfallChangeAction;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -174,6 +177,12 @@ public class DyingAction extends FixedLengthAsyncAction {
 		player.setPositionY((int)respawnPosition.getY());
 		player.decontaminate();
 		player.resetTurnsWormAlerted();
+
+		SnowfallChangeAction snowfallChangeAction = (SnowfallChangeAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
+		if (snowfallChangeAction != null) {
+			snowfallChangeAction.resetRate();
+		}
+
 		PlayerMovementCache.getInstance().afterMovement(player, player.getPositionX(), player.getPositionY(), player.getPositionX(), player.getPositionY(), ApplicationContext.instance());
 		cam.focusOnPiece(cosmodogMap, 0, 0, player);
 		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);

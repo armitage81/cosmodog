@@ -1,10 +1,13 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.snowfall.SnowfallChangeAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.decoration.BirdsDecoration;
 import antonafanasjew.cosmodog.rendering.decoration.SnowflakesDecoration;
@@ -15,6 +18,7 @@ import antonafanasjew.particlepattern.model.Particle;
 import antonafanasjew.particlepattern.model.ParticlePattern;
 import com.google.common.collect.Lists;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -22,10 +26,11 @@ import java.util.List;
 import java.util.Set;
 
 public class SnowflakesRenderer extends AbstractRenderer {
-		
+
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
-		
+
+
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
@@ -33,7 +38,17 @@ public class SnowflakesRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
+
+		float snowfallChangeRate;
+
+		SnowfallChangeAction snowfallChangeAction = (SnowfallChangeAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
+		if (snowfallChangeAction == null) {
+			return;
+		} else {
+			snowfallChangeRate = snowfallChangeAction.getChangeRate();
+		}
 
 		SnowflakesDecoration snowflakeDecoration = SnowflakesDecoration.instance();
 		
@@ -85,7 +100,7 @@ public class SnowflakesRenderer extends AbstractRenderer {
 			Animation a = applicationContext.getAnimations().get(animationIds.get(i));
 
 			for (Particle particle : particles) {
-				a.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), a.getWidth() * cam.getZoomFactor(), a.getHeight() * cam.getZoomFactor());
+				a.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), a.getWidth() * cam.getZoomFactor(), a.getHeight() * cam.getZoomFactor(), new Color(1, 1, 1, snowfallChangeRate));
 			}
 
 			graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());

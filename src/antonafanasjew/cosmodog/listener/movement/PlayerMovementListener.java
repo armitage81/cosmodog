@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.actions.cutscenes.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
+import antonafanasjew.cosmodog.actions.snowfall.SnowfallChangeAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
@@ -149,6 +150,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
+		updateSnowfall();
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
@@ -179,6 +181,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		refillWater(applicationContext);
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
+		updateSnowfall();
 		changeLettersOnLetterPlates(applicationContext);
 	}
 
@@ -196,6 +199,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
+		updateSnowfall();
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
@@ -634,5 +638,31 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);
 		
 		return retVal;
+	}
+
+	private void updateSnowfall() {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+		TiledObjectGroup weatherObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_WEATHER);
+		TiledObject snowfallRegion = weatherObjectGroup.getObjects().get("Snowfall");
+		TiledObject snowfallBorderRegion = weatherObjectGroup.getObjects().get("Snowfall_border");
+		boolean inSnowfall = RegionUtils.tileInRegion(player.getPositionX(), player.getPositionY(), snowfallRegion, map.getTileWidth(), map.getTileHeight());
+		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPositionX(), player.getPositionY(), snowfallBorderRegion, map.getTileWidth(), map.getTileHeight());
+		SnowfallChangeAction snowfallChangeAction =  (SnowfallChangeAction) game.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
+
+		if (inSnowfall) {
+			if (snowfallChangeAction == null) {
+				snowfallChangeAction = SnowfallChangeAction.fadingInActionInstance(3000);
+				game.getActionRegistry().registerAction(AsyncActionType.SNOWFALL_CHANGE, snowfallChangeAction);
+			} else {
+				snowfallChangeAction.setFadesInNotOut(true);
+			}
+		} else if (!inSnowfallBorder) {
+			if (snowfallChangeAction != null) {
+				snowfallChangeAction.setFadesInNotOut(false);
+			}
+		}
+
 	}
 }

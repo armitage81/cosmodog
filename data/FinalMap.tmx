@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="89" nextobjectid="867">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="90" nextobjectid="869">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="5157" columns="9">
   <image source="tiles.png" width="144" height="9168"/>
  </tileset>
@@ -1974,6 +1974,14 @@
     <property name="sokobanGoalsX" value="179"/>
     <property name="sokobanGoalsY" value="63"/>
    </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="89" name="Weather">
+  <object id="867" name="Snowfall" x="4.66667" y="4899.33">
+   <polygon points="0,0 0.666667,1498 6384,1494 6382,-254.667 6304,-254 5914,70 5794,74 5642.67,152 5540,-16.6667 5508.67,-117.333 5145.33,-130.667 4966,32 4960.67,104.667 5061.33,148.667 5043.33,388 4708,604 4709.33,746.667 4935.33,1394 4932,1450 4802,1461.33 4638,1450.67 4720.67,1356 4684,986 4356.67,710.667 4009.33,734.667 3803.33,618 3656.67,674 3530,860.667 3520,1025.33 3338.67,1080 3219.33,1014 2629.33,1016.67 2573.33,970 2480,961.333 2100.67,1080.67 1980,1052 1817.33,802.667 1500.33,804 956.667,535.333 768.667,539.333 520,644 412.667,742.667 314.667,721.333 304.667,453.333"/>
+  </object>
+  <object id="868" name="Snowfall_border" x="4" y="4879.33">
+   <polygon points="0,0 52.6667,-4 364.667,466 374.667,620 536.667,584 722,500 1036,480.667 1531.33,729.667 1883.67,729.666 2051.33,908 2454.67,863.333 2776,905.333 3372,899.333 3548.67,636 3828.67,502.667 4044.67,626.667 4528,669.333 4746,475.333 4909.33,203.333 4884.67,83.3333 4964.67,-124.667 5179.33,-197.333 5625.33,-164.667 5769.33,27.3333 6062,-64.6667 6312,-232 6391.33,-230 6394,1517.33 6,1512.67"/>
   </object>
  </objectgroup>
 </map>
