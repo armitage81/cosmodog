@@ -640,6 +640,9 @@ public class Mappings {
 		
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.GRASS_OBJECT_FLOWER);
 		TILE_TYPES_TO_BE_ANIMATED.add(TileType.TRAFFIC_LIGHT);
+
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.FAN_ON_A_WALL);
+		TILE_TYPES_TO_BE_ANIMATED.add(TileType.FAN_ON_A_ROOF);
 				
 	}
 	
