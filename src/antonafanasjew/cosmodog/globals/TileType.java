@@ -25,6 +25,9 @@ import com.google.common.collect.Lists;
  */
 public enum TileType {
 
+	FAN_ON_A_WALL(Layers.LAYER_RUINS, 1047),
+	FAN_ON_A_ROOF(Layers.LAYER_TOWERS_TOP, 4059),
+
 	GRASS_OBJECT_FLOWER(Layers.LAYER_GRASS_OBJECTS_PASSABLE, 688),
 	TRAFFIC_LIGHT(Layers.LAYER_ROADS_OBJECTS_MANUAL, 1613),
 
