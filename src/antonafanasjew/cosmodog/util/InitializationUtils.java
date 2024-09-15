@@ -638,64 +638,6 @@ public class InitializationUtils {
 		atTheBeginningActions.add(new SetGameProgressPropertyAction(GameProgress.GAME_PROGRESS_PROPERTY_AFTERLANDING, "true"));
 		atTheBeginningActions.addAll(tutorialActions);
 
-		//DELETE IT - ONLY FOR TEST - BEGIN
-//		List<String> cutscenes = Lists.newArrayList(
-//				"memories/memory001",
-//				"memories/memory002",
-//				"maryharper/001",
-//				"memories/memory003",
-//				"memories/memory004",
-//				"memories/memory005",
-//				"maryharper/002",
-//				"memories/memory006",
-//				"memories/memory007",
-//				"maryharper/003",
-//				"memories/memory008",
-//				"memories/memory009",
-//				"memories/memory010",
-//				"maryharper/004",
-//				"memories/memory011",
-//				"memories/memory012",
-//				"maryharper/005",
-//				"memories/memory013",
-//				"maryharper/006",
-//				"memories/memory014",
-//				"maryharper/007",
-//				"memories/memory015",
-//				"maryharper/008",
-//				"memories/memory016",
-//				"maryharper/009",
-//				"memories/memory017",
-//				"maryharper/010",
-//				"memories/memory018",
-//				"maryharper/011",
-//				"memories/memory019",
-//				"maryharper/012",	
-//				"memories/memory020"
-//		);
-//		
-//		RuleAction cutsceneAction = null;
-//		
-//		for (int i = 0; i < cutscenes.size(); i++) {
-//			String series = cutscenes.get(i).split("/")[0];
-//			String logId = cutscenes.get(i).split("/")[1];
-//			GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
-//			GameLog gameLog = gameLogs.getGameLogBySeriesAndId(series, logId);
-//			AsyncAction asyncAction = new MonolithNarrationAction(gameLog);
-//			if (cutsceneAction == null) {
-//				cutsceneAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);		
-//			} else {
-//				cutsceneAction = BlockAction.block(cutsceneAction, new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction));
-//			}
-//		}
-//		atTheBeginningActions.add(cutsceneAction);
-		//DELETE IT - ONLY FOR TEST - END
-
-		
-		
-		
-		
-		
 		Rule rule = new Rule(Rule.RULE_DIALOG_AFTER_LANDING, new NewGameTrigger(), BlockAction.block(atTheBeginningActions));
 		ruleBook.put(rule.getId(), rule);
 
