@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -44,6 +45,7 @@ public class MoveableGroup implements Serializable {
 	private Position playerStartPosition;
 	private List<SecretDoor> secretDoors = Lists.newArrayList();
 	private boolean solvedStatus = false;
+	private boolean resetable = false;
 	
 	
 	public TiledObject getRegion() {
@@ -77,7 +79,15 @@ public class MoveableGroup implements Serializable {
 	public List<SecretDoor> getSecretDoors() {
 		return secretDoors;
 	}
-	
+
+	public boolean isResetable() {
+		return resetable;
+	}
+
+	public void setResetable(boolean resetable) {
+		this.resetable = resetable;
+	}
+
 	public boolean solved() {
 		List<Position> moveablePositions = moveables
 				.stream()
@@ -102,6 +112,17 @@ public class MoveableGroup implements Serializable {
 		}
 		
 		if (moveableGroupAroundPlayer != null) {
+
+			if (!moveableGroupAroundPlayer.isResetable()) {
+				return;
+			}
+
+			if (moveableGroupAroundPlayer.solved()) {
+				return;
+			}
+
+			OverheadNotificationAction.registerOverheadNotification(player, "Reset");
+
 			for (int i = 0; i < moveableGroupAroundPlayer.moveables.size(); i++) {
 				MoveableDynamicPiece moveable = moveableGroupAroundPlayer.getMoveables().get(i);
 				Position originalPosition = moveableGroupAroundPlayer.getOriginalPositions().get(i);

@@ -33,6 +33,7 @@ public class InterfaceOnSceneRenderer implements Renderer {
 	private Renderer infobitsRenderer = new InfobitsRenderer();
 	private Renderer textFrameRenderer = new TextFrameRenderer();
 	private Renderer onScreenNotificationRenderer = new OnScreenNotificationRenderer();
+	private Renderer gameHintRenderer = new GameHintRenderer();
 	private Renderer gameLogRenderer = new GameLogRenderer();
 	private Renderer cutsceneRenderer = new CutsceneRenderer();
 	private Renderer memoriesRenderer = new MemoriesRenderer();
@@ -120,7 +121,7 @@ public class InterfaceOnSceneRenderer implements Renderer {
 
 		//Draws onscreen notifications
 		onScreenNotificationRenderer.render(gc, g, null);
-		
+		gameHintRenderer.render(gc, g, null);
 		positionDebugInfoRenderer.render(gc, g, null);
 	}
 

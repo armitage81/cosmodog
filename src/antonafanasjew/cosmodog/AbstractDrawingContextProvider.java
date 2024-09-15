@@ -76,6 +76,7 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext logPlayerTitleDrawingContext;
 	protected DrawingContext logPlayerControlsHintDrawingContext;
 	protected DrawingContext logPlayerTextDrawingContext;
+	protected DrawingContext gameHintDrawingContext;
 	
 	
 	public DrawingContext gameContainerDrawingContext() {
@@ -270,6 +271,10 @@ public abstract class AbstractDrawingContextProvider {
 
 	public DrawingContext logPlayerTextDrawingContext() {
 		return logPlayerTextDrawingContext;
+	}
+
+	public DrawingContext gameHintDrawingContext() {
+		return gameHintDrawingContext;
 	}
 
 	public static AbstractDrawingContextProvider createDrawingContextProviderForResolution(int width, int height) {

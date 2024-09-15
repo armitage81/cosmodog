@@ -135,7 +135,8 @@ public class DrawingContextProvider1280x720 extends AbstractDrawingContextProvid
 		logPlayerTitleDrawingContext = new TileDrawingContext(logPlayerHeaderDrawingContext, 1, 2, 0, 0);
 		logPlayerControlsHintDrawingContext = new TileDrawingContext(logPlayerHeaderDrawingContext, 1, 2, 0, 1);
 		logPlayerTextDrawingContext = new TileDrawingContext(logContentDrawingContext, 1, 7, 0, 1, 1, 6);
-		
+
+		gameHintDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 6, 0, 1);
 	}
 	
 }

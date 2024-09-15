@@ -457,8 +457,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		if (input.isKeyPressed(Input.KEY_R)) {
 			MoveableGroup.resetMoveableGroup(cosmodogGame);
-			OverheadNotificationAction.registerOverheadNotification(player, "Reset");
-			
+
 		}
 
 	}

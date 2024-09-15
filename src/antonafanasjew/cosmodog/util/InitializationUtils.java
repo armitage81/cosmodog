@@ -269,6 +269,9 @@ public class InitializationUtils {
 			int x = Integer.valueOf(moveableGroupRegion.getProperties().get("playerStartPosX"));
 			int y = Integer.valueOf(moveableGroupRegion.getProperties().get("playerStartPosY"));
 			Position playerStartPosition = Position.fromCoordinates(x, y);
+
+			String resetableValue = (String)moveableGroupRegion.getProperties().get("resetable");
+			boolean resetable = resetableValue == null || Boolean.parseBoolean(resetableValue);
 			
 			MoveableGroup moveableGroup = new MoveableGroup();
 			moveableGroup.setRegion(moveableGroupRegion);
@@ -277,6 +280,7 @@ public class InitializationUtils {
 			moveableGroup.getGoalPositions().addAll(sokobanGoalsPositions);
 			moveableGroup.getSecretDoors().addAll(secretDoorsInRegion);
 			moveableGroup.setPlayerStartPosition(playerStartPosition);
+			moveableGroup.setResetable(resetable);
 			map.getMoveableGroups().add(moveableGroup);
 			
 		}

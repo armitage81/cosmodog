@@ -29,6 +29,7 @@ public class FontProvider {
 		HudLabels(FontType.HudLabels, FontType.HudLabels_LowRes),
 		HudValues(FontType.HudValues, FontType.HudValues_LowRes),
 		Debug(FontType.Debug, FontType.Debug_LowRes),
+		GameHint(FontType.GameHint, FontType.GameHint_LowRes),
 		;
 		
 		private FontType fontType;

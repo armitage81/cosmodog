@@ -117,7 +117,17 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
 		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
 	}
-	
+
+	@Override
+	public void afterRespawn(Actor actor, ApplicationContext applicationContext) {
+		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+	}
+
+	@Override
+	public void afterWaiting(Actor actor, ApplicationContext applicationContext) {
+		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+	}
+
 	private void recalculateEnemiesInRange() {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();

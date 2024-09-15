@@ -31,7 +31,8 @@ public enum FontType {
 	HudLabels(new TrueTypeFont(new Font("Arial", Font.BOLD, 16), false), Color.orange),
 	HudValues(new TrueTypeFont(new Font("Courier", Font.BOLD, 20), false), Color.orange),
 	Debug(new TrueTypeFont(new Font("Courier", Font.BOLD, 36), false), Color.red),
-	
+	GameHint(new TrueTypeFont(new Font("Courier", Font.BOLD, 24), false), Color.red),
+
 	Overhead_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), true), new Color(0.0f, 0.7f, 0.0f)),
 	OverheadCritical_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), true), Color.red),
 	LoadingOrGameOverOrTheEnd_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
@@ -53,8 +54,9 @@ public enum FontType {
 	OverheadNotification_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.green),
 	HudLabels_LowRes(new TrueTypeFont(new Font("Arial", Font.BOLD, 10), false), Color.orange),
 	HudValues_LowRes(new TrueTypeFont(new Font("Courier", Font.BOLD, 14), false), Color.orange),
-	Debug_LowRes(new TrueTypeFont(new Font("Courier", Font.BOLD, 36), false), Color.red);
-	
+	Debug_LowRes(new TrueTypeFont(new Font("Courier", Font.BOLD, 36), false), Color.red),
+	GameHint_LowRes(new TrueTypeFont(new Font("Courier", Font.BOLD, 16), false), Color.red);
+
 	private TrueTypeFont font;
 	
 	private Color color;
