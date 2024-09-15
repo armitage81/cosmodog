@@ -1,9 +1,8 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.topology.Position;
+import org.newdawn.slick.*;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -16,6 +15,8 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TilesetUtils;
+
+import java.util.Map;
 
 public class MiniMapRenderer implements Renderer {
 
@@ -84,7 +85,31 @@ public class MiniMapRenderer implements Renderer {
 					}
 				}
 			}
+		}
 
+		boolean evenPhaseOfBlinking = System.currentTimeMillis() / 200 % 2 == 0;
+
+		Map<Position, Piece> insights = map.getInsights();
+		for (Position insightPosition : insights.keySet()) {
+			int x = (int)insightPosition.getX();
+			int y = (int)insightPosition.getY();
+
+			if (x < firstTileToRenderX) {
+				continue;
+			}
+			if (x >= firstTileToRenderX + minimapPieceWidthInTiles) {
+				continue;
+			}
+			if (y < firstTileToRenderY) {
+				continue;
+			}
+			if (y >= firstTileToRenderY + minimapPieceHeightInTiles) {
+				continue;
+			}
+
+			DrawingContext tileDc = new TileDrawingContext(drawingContext, minimapPieceWidthInTiles, minimapPieceHeightInTiles, x - firstTileToRenderX, y - firstTileToRenderY);
+			graphics.setColor(evenPhaseOfBlinking ? Color.red: Color.orange);
+			graphics.fillRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
 		}
 
 	}
