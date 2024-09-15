@@ -85,12 +85,11 @@ public class MapRenderer implements Renderer {
 			int posInChartPieceY = posY - visibleYFrom;
 			TileDrawingContext playerPositionDrawingContext = new TileDrawingContext(mapAreaQuadraticDrawingContext, chartPieceWidth, chartPieceHeight, posInChartPieceX, posInChartPieceY);
 			long timestamp = System.currentTimeMillis();
-			if ((timestamp / 100) % 2 == 0) {
+			if ((timestamp / 200) % 2 == 0) {
 				graphics.setColor(Color.orange);
-			} else {
-				graphics.setColor(Color.red);
+				graphics.fillRect(playerPositionDrawingContext.x(), playerPositionDrawingContext.y(), playerPositionDrawingContext.w(), playerPositionDrawingContext.h());
 			}
-			graphics.fillRect(playerPositionDrawingContext.x(), playerPositionDrawingContext.y(), playerPositionDrawingContext.w(), playerPositionDrawingContext.h());
+
 		}
 		
 		String text = "Use arrow keys to scroll through the map. Find map pieces to chart the map.";

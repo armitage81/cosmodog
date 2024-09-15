@@ -87,7 +87,7 @@ public class MiniMapRenderer implements Renderer {
 			}
 		}
 
-		boolean evenPhaseOfBlinking = System.currentTimeMillis() / 200 % 2 == 0;
+		boolean evenPhaseOfBlinking = (System.currentTimeMillis() / 200) % 2 == 0;
 
 		Map<Position, Piece> insights = map.getInsights();
 		for (Position insightPosition : insights.keySet()) {
@@ -108,7 +108,7 @@ public class MiniMapRenderer implements Renderer {
 			}
 
 			DrawingContext tileDc = new TileDrawingContext(drawingContext, minimapPieceWidthInTiles, minimapPieceHeightInTiles, x - firstTileToRenderX, y - firstTileToRenderY);
-			graphics.setColor(evenPhaseOfBlinking ? Color.red: Color.orange);
+			graphics.setColor(evenPhaseOfBlinking ? Color.green: Color.red);
 			graphics.fillRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
 		}
 
