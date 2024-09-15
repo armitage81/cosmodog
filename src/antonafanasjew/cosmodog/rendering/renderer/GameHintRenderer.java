@@ -26,10 +26,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameHintRenderer extends AbstractRenderer {
@@ -40,14 +37,23 @@ public class GameHintRenderer extends AbstractRenderer {
 		Player player = ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer();
 		PlayerMovementCache playerMovementCache = PlayerMovementCache.getInstance();
 
+		Optional<String> resetHint = Optional.empty();
+
+		//When in a Sokoban puzzle
 		MoveableGroup moveableGroup = playerMovementCache.getActiveMoveableGroup();
-
-		int blinkingDuration = 1000;
-
 		if (moveableGroup != null && moveableGroup.isResetable() && !moveableGroup.solved()) {
+			resetHint = Optional.of("Press R to reset.");
+		}
 
+		if (player.getTurnsWormAlerted() > 0) {
+			int turnsUntilWormAttack = player.getGameProgress().getTurnsTillWormAppears() - player.getTurnsWormAlerted();
+			resetHint = Optional.of(String.format("Snow worm appears in %s turns!", turnsUntilWormAttack));
+		}
 
-			String resetHint = "Press R to reset.";
+		if (resetHint.isPresent()) {
+
+			boolean evenPhase = System.currentTimeMillis() / 250 % 2 == 0;
+
 			DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameHintDrawingContext();
 			dc = new TileDrawingContext(dc, 1, 5, 0, 0);
 			dc = new CenteredDrawingContext(dc, 400, 50);
@@ -55,12 +61,13 @@ public class GameHintRenderer extends AbstractRenderer {
 			graphics.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
 			graphics.setColor(Color.orange);
 			graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
-
-			FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontProvider.FontTypeName.GameHint);
-			Book textBook = TextPageConstraints.fromDc(dc).textToBook(resetHint, fontRefToFontTypeMap);
-			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
-
+			if (evenPhase) {
+				FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontProvider.FontTypeName.GameHint);
+				Book textBook = TextPageConstraints.fromDc(dc).textToBook(resetHint.get(), fontRefToFontTypeMap);
+				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
+			}
 		}
+
 
 	}
 
