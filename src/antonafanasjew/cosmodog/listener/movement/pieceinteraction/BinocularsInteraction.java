@@ -30,7 +30,7 @@ public class BinocularsInteraction extends ToolInteraction {
 
 	@Override
 	protected String text() {
-		return "You found the binoculars. You can see distant things now. Press Y and Z to zoom in and out.";
+		return "You found the binoculars. You can see distant things now. Press [Z] to zoom in and out.";
 	}
 	
 	

@@ -368,14 +368,11 @@ public class InGameInputHandler extends AbstractInputHandler {
 		InventoryItem binoculars = player.getInventory().get(InventoryItemType.BINOCULARS);
 		
 		if (binoculars != null) {
-		
-			if (input.isKeyDown(Input.KEY_Z)) {
+			if (input.isKeyPressed(Input.KEY_Z)) {
 				if (cam.getZoomFactor() != Cam.ZOOM_FACTOR_FAR) {
 					cam.zoomOut();
 					cam.focusOnPiece(map, 0, 0, player);
-				}
-			} else {
-				if (cam.getZoomFactor() != Cam.ZOOM_FACTOR_CLOSE) {
+				} else {
 					cam.zoomIn();
 					cam.focusOnPiece(map, 0, 0, player);
 				}

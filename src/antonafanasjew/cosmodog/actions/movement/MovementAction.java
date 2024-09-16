@@ -140,6 +140,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 * Then triggers the movement of the player, the moveable block and enemies.
 	 * <p>
 	 * Interesting are cases when the player exits a vehicle or the platform.
+	 * <p>
+	 * Take note: In case the player is using the binoculars to see far, the movement will reset the zoom.
 	 */
 	@Override
 	public void onTrigger() {

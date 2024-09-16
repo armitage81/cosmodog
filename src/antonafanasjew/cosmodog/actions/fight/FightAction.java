@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.List;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.camera.Cam;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -154,6 +155,8 @@ public class FightAction extends PhaseBasedAction {
 	 * player attacking enemies, enemies attacking the player, the destruction of enemies, ranged attacks by artillery units etc.
 	 * <p>
 	 * At the end of this method, the fight is decided and its execution is prepared. The fight is then played in the onUpdate method.
+	 * <p>
+	 * Take note: In case the player uses the binoculars to zoom out, the fight action will reset the zoom.
 	 */
 	@Override
 	public void onTrigger() {

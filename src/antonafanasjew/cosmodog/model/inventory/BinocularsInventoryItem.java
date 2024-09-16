@@ -17,7 +17,7 @@ public class BinocularsInventoryItem extends InventoryItem {
 	
 	@Override
 	public String description() {
-		return "These military binoculars are very useful as they let you survey the area farther than your eyes can do. "
-				+ "Press [Z] and [Y] zo zoom in and out.";
+		return "These military binoculars are very useful as they let you survey the area better than your eyes can do. "
+				+ "Press [Z] zo zoom in and out.";
 	}
 }
