@@ -2,8 +2,10 @@ package antonafanasjew.cosmodog.listener.movement.consumer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
 
 public class FoodConsumer implements ResourceConsumer {
 
@@ -14,8 +16,10 @@ public class FoodConsumer implements ResourceConsumer {
 		
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
-		
-		if (hasVehicle || hasPlatform) {
+		MoveableGroup moveableGroupAroundPlayer = PlayerMovementCache.getInstance().getActiveMoveableGroup();
+		boolean inRiddleArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
+
+		if (hasVehicle || hasPlatform || inRiddleArea) {
 			return 0;
 		}
 		

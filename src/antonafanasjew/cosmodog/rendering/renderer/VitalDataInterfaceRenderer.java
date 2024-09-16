@@ -1,5 +1,9 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -31,20 +35,24 @@ public class VitalDataInterfaceRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;
 		}
-		
+
+		//Check if water and food consumption should be halted.
+		//This must be in sync with the water and food consumers.
+		Player player = ApplicationContextUtils.getPlayer();
+		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
+		MoveableGroup moveableGroupAroundPlayer = PlayerMovementCache.getInstance().getActiveMoveableGroup();
+		boolean inRiddleArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
+		boolean resourceConsumptionHalted = hasVehicle || hasPlatform || inRiddleArea;
+
 		DrawingContext vitalDataDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().vitalDataDrawingContext();
-		
+
 		long timestamp = System.currentTimeMillis();
 		boolean flick = (timestamp / Constants.FLICKING_RATE_IN_MILLIS) % 2 == 0;
 		
-		ApplicationContext applicationContext = ApplicationContext.instance();
-		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		Player player = cosmodogGame.getPlayer();
-				
 		g.translate(vitalDataDrawingContext.x(), vitalDataDrawingContext.y());
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.75f));
 		g.fillRect(0, 0, vitalDataDrawingContext.w(), vitalDataDrawingContext.h());
@@ -60,8 +68,7 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		
 		SimpleDrawingContext thirstLabelDrawingContext = new SimpleDrawingContext(thirstDrawingContext, 0, 0, LABEL_WIDTH, thirstDrawingContext.h());
 		SimpleDrawingContext thirstBarsDrawingContext = new SimpleDrawingContext(thirstDrawingContext, LABEL_WIDTH, 0, thirstDrawingContext.w() - LABEL_WIDTH, thirstDrawingContext.h());
-		
-		
+
 		Book textBook;
 		
 		FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.HudLabels);
@@ -90,9 +97,14 @@ public class VitalDataInterfaceRenderer implements Renderer {
 			g.fillRect(0, 0, maxWaterBarWidth, thirstBarDrawingContext.h());
 			
 			boolean waterBarLow = ((float)player.getWater()) / player.getCurrentMaxWater() <= Constants.FLICKING_THRESHOLD;
-			 
-			if (flick || !waterBarLow) {
-				ApplicationContext.instance().getAnimations().get("waterBar").draw(0, 0, currentWaterBarWidth, thirstBarDrawingContext.h());
+
+			if (!resourceConsumptionHalted) {
+
+				if (flick || !waterBarLow) {
+					ApplicationContext.instance().getAnimations().get("waterBar").draw(0, 0, currentWaterBarWidth, thirstBarDrawingContext.h());
+				}
+			} else {
+				ApplicationContext.instance().getAnimations().get("waterBar").draw(0, 0, currentWaterBarWidth, thirstBarDrawingContext.h(), new Color(1, 1, 1, 0.2f));
 			}
 			
 			g.setColor(Color.black);
@@ -138,9 +150,15 @@ public class VitalDataInterfaceRenderer implements Renderer {
 			g.fillRect(0, 0, maxFoodBarWidth, hungerBarDrawingContext.h());
 			
 			boolean foodBarLow = ((float)player.getFood()) / player.getCurrentMaxFood() <= Constants.FLICKING_THRESHOLD;
-			 
-			if (flick || !foodBarLow) {
-				ApplicationContext.instance().getAnimations().get("foodBar").draw(0, 0, currentFoodBarWidth, hungerBarDrawingContext.h());
+
+			if (!resourceConsumptionHalted) {
+
+				if (flick || !foodBarLow) {
+					ApplicationContext.instance().getAnimations().get("foodBar").draw(0, 0, currentFoodBarWidth, hungerBarDrawingContext.h());
+				}
+
+			} else {
+				ApplicationContext.instance().getAnimations().get("foodBar").draw(0, 0, currentFoodBarWidth, hungerBarDrawingContext.h(), new Color(1, 1, 1, 0.2f));
 			}
 			
 			g.setColor(Color.black);
