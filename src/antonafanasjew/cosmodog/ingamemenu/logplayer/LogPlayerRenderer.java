@@ -26,11 +26,19 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class LogPlayerRenderer implements Renderer {
 
+	/**
+	 * The maximum number of logs that can be displayed in one row.
+	 */
 	private static final int MAX_NUMBER_OF_LOGS_IN_SERIES = 20;
+
+	/**
+	 * There can be maximally that many log series.
+	 */
 	private static final int MAX_NUMBER_OF_SERIES = 20;
 	private static final String[] LOG_CATEGORY_LABELS = new String[] {"Tutorials", "Story", "Logs", "Other"};
 	private static final int ROWS_FOR_LABEL = 2;
- 	
+
+
 	private static final Function<Short, Short> entryPositionsByIndexes = x -> {
 		if (x == 0) return (short)(x + 1 * ROWS_FOR_LABEL);
 		if (x >= 1 && x < 4) return (short)(x + 2 * ROWS_FOR_LABEL);
@@ -40,39 +48,53 @@ public class LogPlayerRenderer implements Renderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
-		
+
+		//Drawing context for the whole game menu frame.
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
+
+		//Drawing context for the part of the game menu frame that shows the log overview (left hand).
 		DrawingContext logOverviewDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().logOverviewDrawingContext();
-		
+
+		//Contains ALL game logs (not only the found ones).
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
-		
+
+		//The log player that contains all collected logs by the player.
 		LogPlayer logPlayer = ApplicationContextUtils.getPlayer().getLogPlayer();
-		
+
+		//The player can scroll through the log list and turn pages. The state of their input is stored in this object.
 		LogPlayerInputState logPlayerInputState = (LogPlayerInputState)renderingParameter;
-		
+
+		//Currently selected series of logs (row).
 		int seriesNumber = logPlayerInputState.getSeriesNumber();
+
+		//Currently selected log in a series (column).
 		int logNumber = logPlayerInputState.getLogNumber();
-		
+
+		//Draws the bluish frame around the log overview. It contains two sections: the log overview and the log content.
 		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamelogs", inGameMenuContentDrawingContext);
-		
+
+		//The log overview contains blocks for each log series, but also labels for log categories ("Hints", "Story", "Logs", "Other").
+		//A label can use a block of 2 or more rows.
+		//Example: There are 8 series, 4 categories, and 2 rows per label. This means that there are 16 rows in total.
 		int numberOfRows = MAX_NUMBER_OF_SERIES + LOG_CATEGORY_LABELS.length * ROWS_FOR_LABEL;
-		
+
+		//The number of log series, regardless of categories.
 		int noOfSeries = gameLogs.getSeriesNames().size();
 		
-		
-		TileDrawingContext labelHintsDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 0, 1, 2);
-		TileDrawingContext labelStoryDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 3, 1, 2);
-		TileDrawingContext labelLogsDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 8, 1, 2);
-		TileDrawingContext labelMiscDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 19, 1, 2);
-		
+		//Drawing contexts for log category labels. Their vertical position depends on how many series are in each category.
+		//Example: Category "Hints" has 1 series, "Story" comes afterward. So the "Hints" label starts at row 0 and takes two rows.
+		//Then, the series takes one row. "Story" label starts at row 3 (and takes two rows) and so on.
+		TileDrawingContext labelHintsDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 0, 1, ROWS_FOR_LABEL);
+		TileDrawingContext labelStoryDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 3, 1, ROWS_FOR_LABEL);
+		TileDrawingContext labelLogsDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 8, 1, ROWS_FOR_LABEL);
+		TileDrawingContext labelMiscDrawingContext = new TileDrawingContext(logOverviewDrawingContext, 1, numberOfRows, 0, 19, 1, ROWS_FOR_LABEL);
+
+		//Labels are rendered within their own drawing contexts.
 		FontRefToFontTypeMap subHeaderFontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
-		
 		Book hints = TextPageConstraints.fromDc(labelHintsDrawingContext).textToBook("Hints", subHeaderFontType);
 		Book story = TextPageConstraints.fromDc(labelStoryDrawingContext).textToBook("Story", subHeaderFontType);
 		Book logs = TextPageConstraints.fromDc(labelLogsDrawingContext).textToBook("Logs", subHeaderFontType);
 		Book other = TextPageConstraints.fromDc(labelMiscDrawingContext).textToBook("Other", subHeaderFontType);
-		
-		
 		TextBookRendererUtils.renderLeftAlignedLabel(gameContainer, graphics, hints);
 		TextBookRendererUtils.renderLeftAlignedLabel(gameContainer, graphics, story);
 		TextBookRendererUtils.renderLeftAlignedLabel(gameContainer, graphics, logs);
