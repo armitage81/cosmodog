@@ -106,7 +106,7 @@ public class Mappings {
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_14, "trappedinacave");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_15, "openedgate");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_16, "guardiandeactivation");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_17, "tobedefined018");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_17, "flowersandmines");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_18, "tobedefined019");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_19, "tobedefined020");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_20, "tobedefined021");
