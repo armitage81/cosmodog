@@ -26,6 +26,10 @@ import antonafanasjew.cosmodog.util.Mappings;
 
 import com.google.common.collect.Maps;
 
+/**
+ * Renders the arsenal interface that shows the weapons and their ammunition.
+ * Appears on the bottom of the screen. The selected weapon is highlighted.
+ */
 public class ArsenalInterfaceRenderer implements Renderer {
 
 	/*
