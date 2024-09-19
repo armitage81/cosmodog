@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.camera;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.newdawn.slick.util.Log;
@@ -11,12 +12,15 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Rectangle;
 
 /**
- * The camera class defines possible positioning of the view as related to the observed scene.
+ * Represents the information about the part of the scene that is visible on the screen.
+ * (The scene is the complete map. It can be bigger or smaller depending on zoom factor.
+ * The camera is the part of the map that is visible on the screen).
+ * <p>
+ * Take note: The camera is equivalent to the screen size (or its part in case the map view is not drawn on the whole screen).
  */
 public class Cam implements Serializable {
 
-
-
+	@Serial
 	private static final long serialVersionUID = -8932980175152168004L;
 
 	public static final int ZOOM_FACTOR_FAR = 3;
@@ -41,16 +45,25 @@ public class Cam implements Serializable {
 	 * Free camera mode. No restrictions on camera movement.
 	 */
 	public static final int CAM_MODE_FREE = 3;
-	
-	private int mode;
-	
+
+	/**
+	 * Camera mode that is used in the game. Defines how far the view can be placed from the scene.
+	 */
+	private final int mode;
+
+
 	private float zoomFactor = 1.0f;
+
+	/**
+	 * Information about the scene's width and height. The scene can be zoomed in and out, hence changing its size.
+	 */
+	private final Rectangle scene;
 	
-	//The scene that can be viewed by the cam. As the cam is only interested in placement
-	//of the view related to the scene, the actual scene is not placed.
-	private Rectangle scene;
-	
-	//The visible cam view. It is placed related to scene
+	/**
+	 * The visible camera view. It is placed related to scene.
+	 * The size of the view will never change (it correlates to the screen size). Zooming is done by scaling the scene.
+	 * The position of the view, though, will change when scrolling through the scene.
+	 */
 	private PlacedRectangle view;
 
 	/*
@@ -61,7 +74,7 @@ public class Cam implements Serializable {
 		PlacedRectangle placedScene = PlacedRectangle.fromAnchorAndSize(0, 0, scene.getWidth(), scene.getHeight());
 		PlacedRectangle sceneViewIntersection = placedScene.intersection(view);
 		if (mode == CAM_MODE_COMPLETELY_IN_SCENE) {
-			if (sceneViewIntersection == null || sceneViewIntersection.equals(view) == false) {
+			if (sceneViewIntersection == null || !sceneViewIntersection.equals(view)) {
 				throw new CamPositioningException();
 			}
 		}
@@ -197,7 +210,6 @@ public class Cam implements Serializable {
 	
 	/**
 	 * Zooms in by multiplying the scene size by a default factor.
-	 * See also {@link #closerZoomLevel()}.
 	 */
 	public void zoomIn() {
 		zoom(ZOOM_FACTOR_CLOSE);
@@ -205,7 +217,6 @@ public class Cam implements Serializable {
 	
 	/**
 	 * Zooms out by dividing the scene size by a default coefficient.
-	 * See also {@link #furtherZoomLevel()}.
 	 */
 	public void zoomOut() {
 		zoom(ZOOM_FACTOR_FAR);
@@ -273,7 +284,6 @@ public class Cam implements Serializable {
 	 * @param offsetX Horizontal offset that should be applied. (Normally used to focus on a moving piece, like the walking player)
 	 * @param offsetY Vertical offset that should be applied. (Normally used to focus on a moving piece, like the walking player)
 	 * @param piece The piece which coordinates the camera will focus on.
-	 * @param padding The minimal allowed distance between the piece and the view bounds. (Normally used to be able to look a bit ahead in players direction) 
 	 */
 	public void focusOnPiece(CosmodogMap map, float offsetX, float offsetY, Piece piece) {
 		
