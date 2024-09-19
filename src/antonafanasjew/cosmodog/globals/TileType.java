@@ -25,6 +25,8 @@ import com.google.common.collect.Lists;
  */
 public enum TileType {
 
+	STRUTS_IN_WATER(Layers.LAYER_RUINS, 1082),
+
 	FAN_ON_A_WALL(Layers.LAYER_RUINS, 1047),
 	FAN_ON_A_ROOF(Layers.LAYER_TOWERS_TOP, 4059),
 

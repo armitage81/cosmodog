@@ -1172,6 +1172,8 @@ tile.REV_RIVER_DELTA_E;data/rivers.png;16;16;[15/9/200,15/8/200,15/7/200,15/6/20
 tile.REV_RIVER_BRIDGE_VERT;data/rivers.png;16;16;[6/9/200,6/8/200,6/7/200,6/6/200,6/5/200,6/4/200,6/3/200,6/2/200];true;true
 tile.REV_RIVER_BRIDGE_HOR;data/rivers.png;16;16;[8/9/200,8/8/200,8/7/200,8/6/200,8/5/200,8/4/200,8/3/200,8/2/200];true;true
 
+tile.STRUTS_IN_WATER;data/water.png;16;16;[41/0/300,41/1/300,41/2/300,41/3/300,41/2/300,41/1/300];false;true
+
 tile.FAN_ON_A_WALL;data/fan.png;16;16;[0/0/150,1/0/150,2/0/150,3/0/150];false;true
 tile.FAN_ON_A_ROOF;data/fan.png;16;16;[0/1/150,1/1/150,2/1/150,3/1/150];false;true
 
