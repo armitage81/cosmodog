@@ -10,7 +10,7 @@ import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import org.newdawn.slick.SlickException;
 
-public class TestTeleportSokobanEndToWormArea {
+public class TestSmallFirs {
 
 	public static void main(String[] args) throws SlickException {
 		
@@ -18,12 +18,14 @@ public class TestTeleportSokobanEndToWormArea {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(335);
-				player.setPositionY(303);
-				player.setLife(1);
+				player.setPositionX(378);
+				player.setPositionY(320);
+				player.setMaxLife(100);
+				player.setLife(100);
+				player.getGameProgress().setWormActive(false);
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
-				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("111/355;111/357;111/349"));
+				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("378/320"));
 			}
 		};
 
