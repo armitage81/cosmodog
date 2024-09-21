@@ -3,3 +3,4 @@ ALISAENTERS;alisaenters;cutscenes/001.meetingalisa;true;alisaenters
 NOBODYTHERE;nobodythere;cutscenes/002.silence;true;nobodythere
 GHOSTTOWN;ghosttown;cutscenes/003.ghosttown;true;ghosttown
 ENTERINGALIENBASE;enteringalienbase;cutscenes/004.enteringthebase;true;enteringthebase
+ENTERING6000iNFOBITSBARRIER;alisaspast;cutscenes/005.entering6000infobitsbarrier;true;alisaspast

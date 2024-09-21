@@ -24,7 +24,7 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		
 		String gameLogSeries = GameLogs.SERIES_CUTSCENES;
-		String gameLogId = "005.decision";
+		String gameLogId = "006.decision";
 		
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
