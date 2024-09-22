@@ -164,6 +164,7 @@ public class GameState extends CosmodogAbstractState {
 		dyingPlayerRenderer.render(gc, g, null);
 		wrongSequenceRenderer.render(gc, g, null);
 		inGameMenuRenderer.render(gc, g, null);
+
 	}
 
 	@Override
