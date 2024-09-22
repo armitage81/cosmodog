@@ -35,12 +35,15 @@ public class WaterConsumer implements ResourceConsumer {
 		
 		boolean onSand = TileType.GROUND_TYPE_SAND.getTileId() == tileId;
 		boolean atNight = game.getPlanetaryCalendar().isNight();
-		
+
+		int turnCosts;
 		if (onSand) {
-			return atNight ? DEFAULT_WATER_CONSUMPTION_PER_TURN : DESERT_WATER_CONSUMPTION_PER_TURN;
+			turnCosts = atNight ? DEFAULT_WATER_CONSUMPTION_PER_TURN : DESERT_WATER_CONSUMPTION_PER_TURN;
 		} else {
-			return DEFAULT_WATER_CONSUMPTION_PER_TURN;
+			turnCosts = DEFAULT_WATER_CONSUMPTION_PER_TURN;
 		}
+
+		return turnCosts;
 		
 	}
 

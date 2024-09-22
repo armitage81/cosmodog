@@ -377,6 +377,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.machete.name(), new MacheteInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.archeologistsJournal.name(), new ArcheologistsJournalInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.weaponFirmwareUpgrade.name(), new WeaponFirmwareUpgradeInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.nutrients.name(), new NutrientsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.axe.name(), new AxeInteraction());
 		
 		

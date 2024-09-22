@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.structures.MoveableGroup;
 public class FoodConsumer implements ResourceConsumer {
 
 	private static final int DEFAULT_FOOD_CONSUMPTION_PER_TURN = 2;
+	private static final int FOOD_CONSUMPTION_PER_TURN_WHEN_FOUND_NUTRIENTS = 1;
 	
 	@Override
 	public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
@@ -22,8 +23,9 @@ public class FoodConsumer implements ResourceConsumer {
 		if (hasVehicle || hasPlatform || inRiddleArea) {
 			return 0;
 		}
-		
-		return DEFAULT_FOOD_CONSUMPTION_PER_TURN;
+
+		boolean foundNutrients = player.getInventory().get(InventoryItemType.NUTRIENTS) != null;
+		return foundNutrients ? FOOD_CONSUMPTION_PER_TURN_WHEN_FOUND_NUTRIENTS : DEFAULT_FOOD_CONSUMPTION_PER_TURN;
 	}
 
 }

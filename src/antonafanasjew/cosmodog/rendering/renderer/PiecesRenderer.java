@@ -68,6 +68,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleTool.ToolType.machete.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.archeologistsJournal.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.weaponFirmwareUpgrade.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.nutrients.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.minedetector.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.pick.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.ski.name(), new ToolRenderer());

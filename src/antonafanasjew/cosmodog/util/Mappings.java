@@ -50,6 +50,7 @@ public class Mappings {
 		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.machete, InventoryItemType.MACHETE);
 		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.archeologistsJournal, InventoryItemType.ARCHEOLOGISTS_JOURNAL);
 		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.weaponFirmwareUpgrade, InventoryItemType.WEAPON_FIRMWARE_UPGRADE);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.nutrients, InventoryItemType.NUTRIENTS);
 
 	}
 
@@ -145,6 +146,7 @@ public class Mappings {
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.MACHETE, ToolType.machete);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.ARCHEOLOGISTS_JOURNAL, ToolType.archeologistsJournal);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.WEAPON_FIRMWARE_UPGRADE, ToolType.weaponFirmwareUpgrade);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.NUTRIENTS, ToolType.nutrients);
 	}
 	
 	public static Map<TileType, GoodieType> MAP_TILE_TO_GOODIE_TYPE = Maps.newHashMap();
@@ -358,6 +360,8 @@ public class Mappings {
 			return "inventoryItemArcheologistsJournal";
 		} else if (tool.getToolType() == ToolType.weaponFirmwareUpgrade) {
 			return "inventoryItemWeaponFirmwareUpgrade";
+		} else if (tool.getToolType() == ToolType.nutrients) {
+			return "inventoryItemNutrients";
 		}
 		
 		return "infobit";
@@ -392,6 +396,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.KEY_RING, "inventoryItemKeyRing");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.ARCHEOLOGISTS_JOURNAL, "inventoryItemArcheologistsJournal");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.WEAPON_FIRMWARE_UPGRADE, "inventoryItemWeaponFirmwareUpgrade");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.NUTRIENTS, "inventoryItemNutrients");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DEBUGGER, "inventoryItemCosmodog");
 	}
 	
