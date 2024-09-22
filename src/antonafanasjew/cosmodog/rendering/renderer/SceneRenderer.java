@@ -36,7 +36,9 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer playerRenderer = new PlayerRenderer();
 	private AbstractRenderer npcRenderer = new NpcRenderer();
 	private AbstractRenderer platformPiecesRenderer = new PiecesRenderer(true, true);
-	
+
+	private AbstractRenderer radiationRenderer = new RadiationRenderer();
+
 	private AbstractRenderer cloudRenderer = new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
 	private AbstractRenderer birdsRenderer = new BirdsRenderer();
 	private AbstractRenderer snowflakesRenderer = new SnowflakesRenderer();
@@ -98,7 +100,10 @@ public class SceneRenderer implements Renderer {
 		
 		//Draw Snow sparks covering the worm.
 		wormSnowSparkRenderer.render(gc, g, sceneDrawingContext);
-		
+
+		//Draw the radiation clouds.
+		radiationRenderer.render(gc, g, sceneDrawingContext);
+
 		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, sceneDrawingContext);
 		

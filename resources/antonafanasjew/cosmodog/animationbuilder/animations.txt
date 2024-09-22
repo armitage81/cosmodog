@@ -1834,4 +1834,4 @@ snowflake0;data/snowflakes0.png;640;480;[0/0/10000];false;false
 snowflake1;data/snowflakes1.png;640;480;[0/0/10000];false;false
 snowflake2;data/snowflakes2.png;640;480;[0/0/10000];false;false
 
-radiation;data/radiation.png;16;16;[0/0/225,1/0/225,2/0/225,3/0/225,4/0/225,5/0/225,6/0/225];false;true
+radiation;data/radiation.png;16;16;[0/0/300,1/0/300,2/0/300,3/0/300,4/0/300,5/0/300,6/0/300];false;true
