@@ -116,7 +116,10 @@ public class RadiationRenderer extends AbstractRenderer {
 		TiledMapLayer radiationLayer = map.getCustomTiledMap().getMapLayersByNames().get("Meta_radiation");
 		TiledTile tile = radiationLayer.getTile(tilePosX, tilePosY);
 
-		if (tile == null || tile.getGid() != TileType.RADIATION.getTileId()) {
+		if (tile == null) {
+			return;
+		}
+		if (tile.getGid() != TileType.RADIATION.getTileId() && tile.getGid() != TileType.RADIATION_SAFE_ZONE.getTileId()) {
 			return;
 		}
 

@@ -37,7 +37,7 @@ public class RadiationDamageAction extends FixedLengthAsyncAction {
 	/**
 	 * Defines the damage taken when stepped into a radiation field.
 	 */
-	public static final int DAMAGE = 5;
+	public static final int DAMAGE = 9;
 
 	/**
 	 * Represents a transition that is used to render the radiation damage on the screen.
