@@ -22,7 +22,7 @@ public class DynamiteInteraction extends ToolInteraction {
 
 	@Override
 	protected String text() {
-		return "You found the dynamite. Weak structures can be destroyed with it.";
+		return "You found dynamite. Weak structures can be destroyed with it.";
 	}
 	
 }
