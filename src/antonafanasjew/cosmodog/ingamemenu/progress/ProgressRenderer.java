@@ -239,7 +239,6 @@ public class ProgressRenderer implements Renderer {
 				DrawingContext iconDc;
 
 				List<WeaponType> weaponTypes = player.getArsenal().getWeaponsOrder().subList(1, player.getArsenal().getWeaponsOrder().size());
-				List<Integer> weaponWidthScales = List.of(2, 3, 3, 2, 2);
 				for (int j = 0; j < weaponTypes.size(); j++) {
 					iconDc = new TileDrawingContext(contentDc, weaponTypes.size(), 1, j, 0);
 
@@ -255,8 +254,8 @@ public class ProgressRenderer implements Renderer {
 						hasSecondAmmoUpgrade = false;
 					} else {
 						hasWeapon = true;
-						hasFirstAmmoUpgrade = weapon.getAmmunition() > weapon.getWeaponType().getMaxAmmo();
-						hasSecondAmmoUpgrade = weapon.getAmmunition() > weapon.getWeaponType().getMaxAmmo() + 1;
+						hasFirstAmmoUpgrade = weapon.getMaxAmmunition() > weapon.getWeaponType().getMaxAmmo();
+						hasSecondAmmoUpgrade = weapon.getMaxAmmunition() > weapon.getWeaponType().getMaxAmmo() + 1;
 					}
 
 					if (!hasWeapon) {
