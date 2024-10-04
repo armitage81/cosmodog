@@ -32,19 +32,14 @@ public class PageBasedIntervalsCalculator {
 					begin = wordIndex;
 					end = wordIndex;
 
-					if (begin > 0) {
-						begin--;
-					}
+					boolean withinBreak = word.lineBreak;
+
 					while (begin > 0 && words.get(begin).lineBreak) {
 						begin--;
 					}
 					
 					if (!words.get(begin).lineBreak) {
 						begin++;
-					}
-					
-					if (end > 0) {
-						end--;
 					}
 					
 					while (end < words.size() && words.get(end).lineBreak) {
