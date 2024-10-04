@@ -16,7 +16,7 @@ public class Vision {
         return elements;
     }
 
-    public Set<Position> visiblePositions(Actor observer) {
+    public Set<Position> visiblePositions(Actor observer, int mapWidth, int mapHeight) {
         DirectionType directionType = observer.getDirection();
 
         Set<Position> retVal = new HashSet<Position>();
@@ -38,6 +38,14 @@ public class Vision {
             }
             visionElementX = observer.getPositionX() + visionElementX;
             visionElementY = observer.getPositionY() + visionElementY;
+
+            if (visionElementX < 0 || visionElementX >= mapWidth) {
+                continue;
+            }
+
+            if (visionElementY < 0 || visionElementY >= mapHeight) {
+                continue;
+            }
 
             retVal.add(Position.fromCoordinates(visionElementX, visionElementY));
         }
