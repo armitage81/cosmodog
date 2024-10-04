@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,9 +40,9 @@ public class VisionTest {
             }
         };
 
-        VisionElement element1 = new VisionElement(0, 1);
-        VisionElement element2 = new VisionElement(0, 2);
-        VisionElement element3 = new VisionElement(0, 3);
+        Position element1 = Position.fromCoordinates(0f, 1f);
+        Position element2 = Position.fromCoordinates(0f, 2f);
+        Position element3 = Position.fromCoordinates(0f, 3f);
 
         //The observer is on pos 2/7 and looks up.
         //Visible positions are 2/6, 2/5, 2/4.
