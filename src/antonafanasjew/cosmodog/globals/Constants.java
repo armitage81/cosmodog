@@ -136,9 +136,9 @@ public class Constants {
 
 	public static final int NUMBER_OF_FUEL_TANK_PIECES_IN_GAME = 6;
 
-	public static final int NUMBER_OF_BOTTLES_IN_GAME = 3;
+	public static final int NUMBER_OF_BOTTLES_IN_GAME = 2;
 
-	public static final int NUMBER_OF_FOOD_COMPARTMENTS_IN_GAME = 3;
+	public static final int NUMBER_OF_FOOD_COMPARTMENTS_IN_GAME = 2;
 	
 	public static final int NUMBER_OF_SOULESSENSE_PIECES_IN_GAME = 18;
 	
