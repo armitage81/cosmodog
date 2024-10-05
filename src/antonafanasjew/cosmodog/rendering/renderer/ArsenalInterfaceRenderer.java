@@ -123,8 +123,8 @@ public class ArsenalInterfaceRenderer implements Renderer {
 				animation.draw(weaponDc.x(), weaponDc.y(), weaponDc.w(), weaponDc.h());
 				
 				if (weaponType != WeaponType.FISTS) {
-					DrawingContext ammoDc = new TileDrawingContext(weaponDc, 1, 8, 0, 6, 1, 2);
-					ammoDc = new CenteredDrawingContext(ammoDc, 40, ammoDc.h());
+					DrawingContext ammoDc = new TileDrawingContext(weaponDc, 1, 10, 0, 8, 1, 2);
+					ammoDc = new CenteredDrawingContext(ammoDc, 60, ammoDc.h());
 					float currentVsMaxAmmoRatio = weapon.getAmmunition() / (float) weapon.getMaxAmmunition();
 					g.setColor(Color.lightGray);
 					g.fillRect(ammoDc.x(), ammoDc.y(), ammoDc.w(), 10);
