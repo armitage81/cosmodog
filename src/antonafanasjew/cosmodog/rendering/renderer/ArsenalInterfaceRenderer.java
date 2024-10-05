@@ -132,6 +132,14 @@ public class ArsenalInterfaceRenderer implements Renderer {
 					g.fillRect(ammoDc.x(), ammoDc.y(), ammoDc.w() * currentVsMaxAmmoRatio, 10);
 					g.setColor(Color.black);
 					g.drawRect(ammoDc.x(), ammoDc.y(), ammoDc.w(), 10);
+
+					int maxAmmo = weapon.getMaxAmmunition();
+
+					for (int i = 0; i < maxAmmo; i++) {
+						DrawingContext oneAmmoDc = new TileDrawingContext(ammoDc, maxAmmo, 1, i, 0);
+						g.setColor(Color.black);
+						g.drawRect(oneAmmoDc.x(), oneAmmoDc.y(), oneAmmoDc.w(), 10);
+					}
 				}
 				
 				
