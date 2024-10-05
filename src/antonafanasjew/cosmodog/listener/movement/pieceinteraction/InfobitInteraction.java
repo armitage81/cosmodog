@@ -18,7 +18,7 @@ public class InfobitInteraction extends AbstractPieceInteraction {
 			public void run() {
 				player.getGameProgress().addInfobit();
 				if (player.getGameProgress().getInfobits() == Constants.NUMBER_OF_INFOBITS_IN_GAME) {
-					cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction("Congratulation! You found all infobits of the game. You are definitely the best expert of Phaeton in all the valley."));
+					cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction("Strange feeling overcomes you. It is as if you suddenly knew everything about the valley. There must be a reward somewhere for all that knowledge."));
 				}
 			}
 
