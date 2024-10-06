@@ -403,7 +403,11 @@ public class InGameInputHandler extends AbstractInputHandler {
 				player.getGameProgress().addInfobank();
 							
 			}
-			
+
+			if (input.isKeyPressed(Input.KEY_5)) {
+				cosmodogGame.getPlanetaryCalendar().addMinutes(60);
+			}
+
 			if (input.isKeyPressed(Input.KEY_9)) {
 				debugger.setPositionDisplayed(!debugger.isPositionDisplayed());
 			}
