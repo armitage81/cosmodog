@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -69,7 +70,6 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.ResourceWrapperBuilder;
-import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.EnemyFactoryBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.ItemNotificationRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.MultiInstancePieceRuleBuilder;
 import antonafanasjew.cosmodog.resourcehandling.builder.rules.RegionDependentDialogRuleBuilder;
@@ -852,7 +852,7 @@ public class InitializationUtils {
 	}
 
 	private static Map<UnitType, EnemyFactory> initializeEnemyFactories() {
-		ResourceWrapperBuilder<EnemyFactory> enemyFactoryBuilder = new EnemyFactoryBuilder();
+		ResourceWrapperBuilder<EnemyFactory> enemyFactoryBuilder = new JsonBasedEnemyFactoryBuilder();
 		Map<String, GenericResourceWrapper<EnemyFactory>> enemyFactories = enemyFactoryBuilder.build();
 		Map<UnitType, EnemyFactory> retVal = Maps.newHashMap();
 		for (String key : enemyFactories.keySet()) {

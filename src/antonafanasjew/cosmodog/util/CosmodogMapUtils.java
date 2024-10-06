@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.sight.Sight;
-import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -40,7 +39,7 @@ public class CosmodogMapUtils {
 					//artillery units have now an inner distance in which they cannot attack,
 					//adding them to this list would be problematic since adjacent enemies always attack.
 					//Actually, it should be valid for all units who have inner sight distance > 0.
-					if (enemy.getSights().stream().anyMatch(e -> e.getInnerDistance() > 0)) {
+					if (enemy.getUnitType() == UnitType.ARTILLERY) {
 						continue;
 					}
 
@@ -57,13 +56,12 @@ public class CosmodogMapUtils {
 		
 		List<Enemy> retVal = Lists.newArrayList();
 		
-		SightModifier sightModifier = ApplicationContextUtils.getCosmodog().getSightModifier();
 		PlanetaryCalendar planetaryCalendar = ApplicationContextUtils.getCosmodogGame().getPlanetaryCalendar();
 		
 		Set<Enemy> enemies = map.getEnemies();
 		for (Enemy enemy : enemies) {
 		
-			if (enemy.getUnitType().isRangedUnit() == false) {
+			if (!enemy.getUnitType().isRangedUnit()) {
 				continue;
 			}
 			
@@ -73,15 +71,11 @@ public class CosmodogMapUtils {
 			
 			boolean playerInSightRange = false;
 			
-			Set<Sight> sights = enemy.getSights();
 
-			for (Sight sight : sights) {
-				Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
-				VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, map.getTileWidth(), map.getTileHeight());
-				playerInSightRange = visibilityCalculator.visible(player, map.getTileWidth(), map.getTileHeight());
-				if (playerInSightRange) {
-					retVal.add(enemy);
-				}
+			VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(enemy.getDefaultVision(), enemy.getNightVision(), enemy.getStealthVision());
+			playerInSightRange = visibilityCalculator.visible(enemy, planetaryCalendar, map, player);
+			if (playerInSightRange) {
+				retVal.add(enemy);
 			}
 		}
 		

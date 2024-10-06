@@ -5,8 +5,8 @@ import java.util.Set;
 import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
-import antonafanasjew.cosmodog.sight.Sight;
 
+import antonafanasjew.cosmodog.sight.Vision;
 import com.google.common.collect.Sets;
 
 /**
@@ -31,7 +31,9 @@ public class Enemy extends NpcActor {
 	 */
 	private boolean activeAtDayTimeOnly = false;
 	
-	private Set<Sight> sights = Sets.newHashSet();
+	private Vision defaultVision = new Vision();
+	private Vision nightVision = new Vision();
+	private Vision stealthVision = new Vision();
 	
 	public WeaponType getWeaponType() {
 		return weaponType;
@@ -70,12 +72,16 @@ public class Enemy extends NpcActor {
 		return this.unitType + " at (" + getPositionX() + "/" + getPositionY() + ")";
 	}
 
-	/**
-	 * Returns a set of sight objects, each of which is representing a sight cone.
-	 * @return Set of sight objects representing enemies range of view.
-	 */
-	public Set<Sight> getSights() {
-		return sights;
+	public Vision getDefaultVision() {
+		return defaultVision;
+	}
+
+	public Vision getNightVision() {
+		return nightVision;
+	}
+
+	public Vision getStealthVision() {
+		return stealthVision;
 	}
 
 	public int getAlertLevel() {

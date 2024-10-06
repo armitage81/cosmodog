@@ -15,7 +15,6 @@ import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
-import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.waterplaces.WaterValidator;
 
 import com.google.common.collect.Maps;
@@ -35,7 +34,6 @@ public class Cosmodog extends CosmodogModel {
 	private CollisionValidator collisionValidatorForPlayer;
 	private CollisionValidator collisionValidatorForMoveable;
     private WaterValidator waterValidator;
-    private SightModifier sightModifier;
     private PathFinder pathFinder;
     
     private ResourceConsumer fuelConsumer;
@@ -136,13 +134,6 @@ public class Cosmodog extends CosmodogModel {
 		return pieceInteractionMap;
 	}
 	
-	public SightModifier getSightModifier() {
-		return sightModifier;
-	}
-	
-	public void setSightModifier(SightModifier sightModifier) {
-		this.sightModifier = sightModifier;
-	}
 	public PlayerBuilder getPlayerBuilder() {
 		return playerBuilder;
 	}

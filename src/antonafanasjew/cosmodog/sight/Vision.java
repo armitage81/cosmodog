@@ -1,19 +1,25 @@
 package antonafanasjew.cosmodog.sight;
 
+import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Describes the vision of an enemy, that is all tiles that are visible to that enemy.
  */
-public class Vision {
+public class Vision implements Serializable {
 
-    private Set<Position> elements = new HashSet<>();
+    private final Set<Position> elements = new HashSet<>();
 
     public Set<Position> getElements() {
         return elements;
@@ -32,11 +38,11 @@ public class Vision {
                 visionElementY = -visionElementY;
             } else if (directionType == DirectionType.LEFT) {
                 float temp = visionElementX;
-                visionElementX = -visionElementY;
+                visionElementX = visionElementY;
                 visionElementY = temp;
             } else if (directionType == DirectionType.RIGHT) {
                 float temp = visionElementX;
-                visionElementX = visionElementY;
+                visionElementX = -visionElementY;
                 visionElementY = temp;
             }
             visionElementX = observer.getPositionX() + visionElementX;
@@ -58,5 +64,20 @@ public class Vision {
 
     public boolean visible(Actor observer, Position observable, int mapWidth, int mapHeight) {
         return visiblePositions(observer, mapWidth, mapHeight).contains(observable);
+    }
+
+    public static boolean playerHidden(CosmodogMap map, Player player) {
+        boolean retVal;
+        int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+        retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
+        return retVal;
+    }
+
+    public static boolean playerNotHiddenAndItIsNight(PlanetaryCalendar planetaryCalendar, CosmodogMap map, Player player) {
+        return !playerHidden(map, player) && planetaryCalendar.isNight();
+    }
+
+    public static boolean playerNotHiddenAndItIsDay(PlanetaryCalendar planetaryCalendar, CosmodogMap map, Player player) {
+        return !playerHidden(map, player) && !planetaryCalendar.isNight();
     }
 }

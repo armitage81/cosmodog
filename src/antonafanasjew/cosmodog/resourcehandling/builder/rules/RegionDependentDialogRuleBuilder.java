@@ -6,7 +6,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
-import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
+import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
@@ -18,7 +18,7 @@ import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 
-public class RegionDependentDialogRuleBuilder extends AbstractResourceWrapperBuilder<Rule> {
+public class RegionDependentDialogRuleBuilder extends AbstractCsvBasedResourceWrapperBuilder<Rule> {
 	
 	@Override
 	protected Rule build(String line) {

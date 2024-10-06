@@ -43,8 +43,6 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
-import antonafanasjew.cosmodog.sight.Sight;
-import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -790,35 +788,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 		}
 	}
 
-	/**
-	 * States whether the player is visible to the given enemy.
-	 * <p>
-	 * Note how all sight modifiers are considered, especially nightly reduction of the vision and hiding in high grass.
-	 *
-	 * @param enemy Enemy for which the visibility should be checked.
-	 * @param player The player who is either visible to the enemy, or not.
-	 * @return true if the player is visible to the enemy, false otherwise.
-	 */
 	private boolean playerInVisibilityRange(Enemy enemy, Player player) {
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		
-		SightModifier sightModifier = cosmodog.getSightModifier();
 		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
 		
-		Set<Sight> sights = enemy.getSights();
-		
-		for (Sight sight : sights) {
-			Sight modifiedSight = sightModifier.modifySight(sight, planetaryCalendar);
-			VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(modifiedSight, enemy, map.getTileWidth(), map.getTileHeight());
-			if (visibilityCalculator.visible(player, map.getTileWidth(), map.getTileHeight())) {
-				return true;
-			}
-		}
-		return false;
-	}
+		VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(enemy.getDefaultVision(), enemy.getNightVision(), enemy.getStealthVision());
+        return visibilityCalculator.visible(enemy, planetaryCalendar, map, player);
+    }
 
 	/**
 	 * Handles the case when an enemy ends up alerted and adjacent to the player after the movement.

@@ -10,7 +10,7 @@ import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
 import antonafanasjew.cosmodog.model.menu.MenuItem;
 import antonafanasjew.cosmodog.model.menu.MenuLabel;
-import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
+import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -22,7 +22,7 @@ import com.google.common.collect.Maps;
  * 
  * Also all menu elements of a menu have to be in order of their appearance.
  */
-public class MenuBuilder extends AbstractResourceWrapperBuilder<MenuElement> {
+public class MenuBuilder extends AbstractCsvBasedResourceWrapperBuilder<MenuElement> {
 
 	private Map<String, MenuAction> menuActionsById;
 	private Map<String, MenuLabel> menuLabelsById;

@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
-import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
+import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
@@ -21,7 +21,7 @@ import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
  * Builds rules for dialogs, which are based on the number of previous collection of the piece type.
  * Example: For each collection of the insight piece, there will be a new dialog option with always the same order.
  */
-public class MultiInstancePieceRuleBuilder extends AbstractResourceWrapperBuilder<Rule> {
+public class MultiInstancePieceRuleBuilder extends AbstractCsvBasedResourceWrapperBuilder<Rule> {
 
 	@Override
 	protected Rule build(String line) {

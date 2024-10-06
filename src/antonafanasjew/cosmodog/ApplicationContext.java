@@ -73,8 +73,6 @@ import antonafanasjew.cosmodog.resourcehandling.dyinghints.DyingHintsBuilder;
 import antonafanasjew.cosmodog.resourcehandling.dyinghints.DyingHintsBuilderImpl;
 import antonafanasjew.cosmodog.resourcehandling.gamelogs.GameLogBuilder;
 import antonafanasjew.cosmodog.resourcehandling.gamelogs.GameLogBuilderImpl;
-import antonafanasjew.cosmodog.sight.GeneralSightModifier;
-import antonafanasjew.cosmodog.sight.SightModifier;
 import antonafanasjew.cosmodog.text.DefaultLetterBuilder;
 import antonafanasjew.cosmodog.text.Letter;
 import antonafanasjew.cosmodog.text.LetterBuilder;
@@ -379,11 +377,6 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.weaponFirmwareUpgrade.name(), new WeaponFirmwareUpgradeInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.nutrients.name(), new NutrientsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.axe.name(), new AxeInteraction());
-		
-		
-		SightModifier sightModifier = new GeneralSightModifier();
-		cosmodog.setSightModifier(sightModifier);
-		
 		
 		this.setCosmodog(cosmodog);
 		

@@ -5,9 +5,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.util.Log;
 
-import antonafanasjew.cosmodog.resourcehandling.AbstractResourceWrapperBuilder;
+import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
 
-public class AnimationBuilder extends AbstractResourceWrapperBuilder<Animation> {
+public class AnimationBuilder extends AbstractCsvBasedResourceWrapperBuilder<Animation> {
 
 	@Override
 	protected Animation build(String line) {

@@ -1,189 +1,145 @@
 [
   {
-    "enemyType": "ROBOT",
+    "id": "ROBOT",
     "armorType": "LIGHT",
     "weaponType": "ENEMY_PISTOL",
     "chaussieType": "FEET",
     "maxLife": 15,
     "speedFactor": 1,
-    "sights": "[80/0/45/0]",
-	"vision": [
-	  {
-	    "x": 0,
-        "y": -1,
-		"nightSight": true,
-		"stealthSight": true
-	  },
-	  {
-	    "x": 0,
-        "y": -2,
-		"nightSight": true,
-	  },
-	  {
-	    "x": -1,
-        "y": -3,
-		"nightSight": true,
-	  },
-	  {
-	    "x": 0,
-        "y": -3,
-		"nightSight": true,
-	  },
-	  {
-	    "x": 1,
-        "y": -3,
-		"nightSight": true,
-	  },
-	  {
-	    "x": -1,
-        "y": -4,
-	  },
-	  {
-	    "x": 0,
-        "y": -4,
-		"nightSight": true,
-	  },
-	  {
-	    "x": 1,
-        "y": -4,
-	  },
-	  {
-	    "x": 0,
-        "y": -5,
-	  },
-	]
+	"vision": {
+	  "stealth": "0/-1",
+	  "night": "0/-2 -1/-3 0/-3 1/-3 0/-4",
+	  "full": "-1/-4 1/-4 0/-5"
+	}
   },
   {
-    "enemyType": "LIGHT_TANK",
+    "id": "LIGHT_TANK",
     "armorType": "HEAVY",
     "weaponType": "ENEMY_DOUBLEGUN",
     "chaussieType": "TRACKS",
     "maxLife": 30,
     "speedFactor": 2,
-    "sights": "[48/0/90/0]",
-	"vision": [
-	  {
-	    "x": -1,
-        "y": -1,
-		"nightSight": true,
-	  },
-	  {
-	    "x": 0,
-        "y": -1,
-		"nightSight": true,
-		"stealthSight": true
-	  },
-	  {
-	    "x": 1,
-        "y": -1,
-		"nightSight": true,
-	  },
-	  {
-	    "x": -2,
-        "y": -2,
-	  },
-	  {
-	    "x": -1,
-        "y": -2,
-	  },
-	  {
-	    "x": 0,
-        "y": -2,
-		"nightSight": true,
-	  },
-	  {
-	    "x": 1,
-        "y": -2,
-	  },
-	  {
-	    "x": 2,
-        "y": -2,
-	  },
-	  {
-	    "x": 0,
-        "y": -3,
-	  },
-	]
+	"vision": {
+	  "stealth": "0/-1",
+	  "night": "-1/-1 1/-1 0/-2",
+	  "full": "-2/-2 -1/-2 1/-2 2/-2 0/-3"
+	}
   },
   {
-    "enemyType": "DRONE",
+    "id": "DRONE",
     "armorType": "LIGHT",
     "weaponType": "ENEMY_MACHINEGUN",
     "chaussieType": "FLYING",
     "maxLife": 20,
     "speedFactor": 3,
-    "sights": "[96/0/90/0]"
+	"vision": {
+	  "stealth": "0/-1",
+	  "night": "-1/-1 1/-1 -2/-2 -1/-2 0/-2 1/-2 2/-2 -3/-3 -2/-3 -1/-3 0/-3 1/-3 2/-3 3/-3 -3/-4 -2/-4 -1/-4 0/-4 1/-4 2/-4 3/-4 0/-5",
+	  "full": "-4/-4 4/-4 -3/-5 -2/-5 -1/-5 1/-5 2/-5 3/-5 0/-6"
+	}
   },
   {
-    "enemyType": "TURRET",
+    "id": "TURRET",
     "armorType": "FORTIFIED",
     "weaponType": "ENEMY_TURRET",
     "chaussieType": "STATIONARY",
     "maxLife": 50,
     "speedFactor": 0,
-    "sights": "[16/0/360/0]"
+    "vision": {
+	  "stealth": "0/1 -1/0 1/0 0/-1",
+	  "night": "",
+	  "full": ""
+	}
   },
   {
-    "enemyType": "PIGRAT",
+    "id": "PIGRAT",
     "armorType": "NONE",
     "weaponType": "ENEMY_CLAWS",
     "chaussieType": "FEET",
     "maxLife": 50,
     "speedFactor": 1,
-    "sights": "[64/0/180/0]"
+	"vision": {
+	  "stealth": "-1/0 1/0 0/-1",
+	  "night": "-3/0 -2/0 2/0 3/0 -2/-1 -1/-1 1/-1 2/-1 -2/-2 -1/-2 0/-2 1/-2 2/-2 0/-3",
+	  "full": "-4/0 4/0 -3/-1 3/-1 -3/-2 3/-2 -2/-3 -1/-3 1/-3 2/-3 0/-4"
+	}
   },
   {
-    "enemyType": "ARTILLERY",
+    "id": "ARTILLERY",
     "armorType": "MEDIUM",
     "weaponType": "ENEMY_ROCKETS",
     "chaussieType": "WHEELS",
     "maxLife": 25,
     "speedFactor": 1,
-    "sights": "[64/16/360/0]"
+	"vision": {
+	  "stealth": "",
+	  "night": "0/3 -2/2 -1/2 0/2 1/2 2/2 -2/1 -1/1 1/1 2/1 -3/0 -2/0 2/0 3/0 -2/-1 -1/-1 1/-1 2/-1 -2/-2 -1/-2 0/-2 1/-2 2/-2 0/-3",
+	  "full": "0/4 -2/3 -1/3 1/3 2/3 -3/2 3/2 -3/1 3/1 -4/0 4/0 -3/-1 3/-1 -3/-2 3/-2 -2/-3 -1/-3 1/-3 2/-3 0/-4"
+	}
   },
   {
-    "enemyType": "SCOUT",
+    "id": "SCOUT",
     "armorType": "LIGHT",
     "weaponType": "ENEMY_RAILGUN",
     "chaussieType": "WHEELS",
     "maxLife": 10,
     "speedFactor": 2,
-    "sights": "[64/0/45/0,64/0/10/180]"
+	"vision": {
+	  "stealth": "0/1 0/-1",
+	  "night": "0/3 0/2 0/-1 0/-2 0/-3",
+	  "full": "-1/-3 1/-3 0/-4"
+	}
   },
   {
-    "enemyType": "FLOATER",
+    "id": "FLOATER",
     "armorType": "HEAVY",
     "weaponType": "ENEMY_SHOCKER",
     "chaussieType": "FLYING",
     "maxLife": 20,
     "speedFactor": 2,
-    "sights": "[80/0/30/0]"
+	"vision": {
+	  "stealth": "0/-1",
+	  "night": "0/-1 0/-2 0/-3",
+	  "full": "-1/-3 1/-3 0/-4"
+	}
   },
   {
-    "enemyType": "CONDUCTOR",
+    "id": "CONDUCTOR",
     "armorType": "FORTIFIED",
     "weaponType": "ENEMY_SHOCKER",
     "chaussieType": "STATIONARY",
     "maxLife": 30,
     "speedFactor": 0,
-    "sights": "[32/0/360/0]"
+	"vision": {
+	  "stealth": "0/1 -1/0 1/0 0/-1",
+	  "night": "",
+	  "full": "0/2 -1/1 1/1 -2/0 2/0 -1/-1 1/-1 0/-2"
+	}
   },
   {
-    "enemyType": "GUARDIAN",
+    "id": "GUARDIAN",
     "armorType": "MEDIUM",
     "weaponType": "ENEMY_TELEPATHIC",
     "chaussieType": "STATIONARY",
     "maxLife": 300,
     "speedFactor": 0,
-    "sights": "[16/0/270/0]"
+	"vision": {
+	  "stealth": "0/1 -1/0 1/0 0/-1",
+	  "night": "",
+	  "full": ""
+	}
   },
   {
-    "enemyType": "SOLARTANK",
+    "id": "SOLARTANK",
     "armorType": "HEAVY",
     "weaponType": "ENEMY_LASER",
     "chaussieType": "HOVERING",
     "maxLife": 40,
     "speedFactor": 2,
-    "sights": "[64/0/270/0]"
+	"vision": {
+	  "stealth": "0/-1",
+	  "night": "",
+	  "full": "-3/2 -2/2 2/2 3/2 -3/1 -2/1 -1/1 1/1 2/1 3/1 -4/0 -3/0 -2/0 -1/0 1/0 2/0 3/0 4/0 -3/-1 -2/-1 -1/-1 1/-1 2/-1 3/-1 -3/-2 -2/-2 -1/-2 0/-2 1/-2 2/-2 3/-2 -2/-3 -1/-3 0/-3 1/-3 2/-3 0/-4"
+	}
   }
 ]
