@@ -1055,6 +1055,11 @@ tile.GRASS_OBJECT_FLOWER;data/bees.png;16;16;[0/0/150,1/0/150,2/0/150,3/0/150,4/
 
 tile.TRAFFIC_LIGHT;data/trafficlight.png;16;16;[0/0/750,1/0/750];true;true
 
+tile.CLIFF_WESTERN_EDGE;data/Cliffs.png;16;16;[0/0/500,0/1/500,0/2/500,0/1/500];false;true
+tile.CLIFF_SOUTHERN_EDGE;data/Cliffs.png;16;16;[1/0/500,1/1/500,1/2/500,1/1/500];false;true
+tile.CLIFF_EASTERN_EDGE;data/Cliffs.png;16;16;[2/0/500,2/1/500,2/2/500,2/1/500];false;true
+tile.CLIFF_WESTERN_CORNER;data/Cliffs.png;16;16;[3/0/500,3/1/500,3/2/500,3/1/500];false;true
+tile.CLIFF_EASTERN_CORNER;data/Cliffs.png;16;16;[4/0/500,4/1/500,4/2/500,4/1/500];false;true
 
 tile.LAVA_CENTER;data/lava.png;16;16;[1/1/500,1/4/500,1/7/500,1/4/500];true;true
 tile.LAVA_BORDER_W;data/lava.png;16;16;[0/1/500,0/4/500,0/7/500,0/4/500];true;true
