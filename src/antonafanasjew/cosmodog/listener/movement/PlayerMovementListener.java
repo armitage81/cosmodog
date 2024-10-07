@@ -52,8 +52,6 @@ import antonafanasjew.cosmodog.waterplaces.WaterValidator;
  */
 public class PlayerMovementListener extends MovementListenerAdapter {
 
-	private static final int TURNS_BEFORE_DEATH_BY_POISON = 3;
-
 	private static final long serialVersionUID = -1789226092040648128L;
 
 	
@@ -391,7 +389,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		if (!player.isPoisoned()) {
 			String text = "<font:critical> Contaminated!";
 			OverheadNotificationAction.registerOverheadNotification(player, text);
-			text = "<font:critical> Death by poison in " + TURNS_BEFORE_DEATH_BY_POISON + " turns !!!";
+			text = "<font:critical> Death by poison in " + Constants.TURNS_BEFORE_DEATH_BY_POISON + " turns !!!";
 			OverheadNotificationAction.registerOverheadNotification(player, text);
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_POISONED).play();
 		}
@@ -595,7 +593,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		int turnsPoisoned = player.getTurnsPoisoned();
 		if (turnsPoisoned != 0) {
 			
-			int turnsTillDeath = TURNS_BEFORE_DEATH_BY_POISON - turnsPoisoned;
+			int turnsTillDeath = Constants.TURNS_BEFORE_DEATH_BY_POISON - turnsPoisoned;
 			if (turnsTillDeath > 0) {
 				String text = "<font:critical> DEATH BY POISON IN " + turnsTillDeath + " TURNS !!!";
 				OverheadNotificationAction.registerOverheadNotification(player, text);

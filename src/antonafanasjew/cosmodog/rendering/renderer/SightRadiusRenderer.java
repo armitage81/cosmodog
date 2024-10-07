@@ -14,7 +14,6 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
@@ -42,7 +41,6 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		
-		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		

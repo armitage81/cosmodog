@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction;
 import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction.OnScreenNotificationTransition;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider;
 import antonafanasjew.cosmodog.model.*;
@@ -27,7 +28,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GameHintRenderer extends AbstractRenderer {
 
@@ -37,22 +37,54 @@ public class GameHintRenderer extends AbstractRenderer {
 		Player player = ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer();
 		PlayerMovementCache playerMovementCache = PlayerMovementCache.getInstance();
 
-		Optional<String> resetHint = Optional.empty();
+		List<String> hints = new ArrayList<>();
+
+		boolean starving = player.starving();
+		boolean dehydrating = player.dehydrating();
+		boolean freezing = player.getLifeLentForFrost() > 0;
+
+		List<String> conditions = new ArrayList<>();
+		if (starving) {
+			conditions.add("starving");
+		}
+		if (dehydrating) {
+			conditions.add("dehydrating");
+		}
+		if (freezing) {
+			conditions.add("freezing");
+		}
+		if (!conditions.isEmpty()) {
+			String conditionHint;
+			if (conditions.size() == 1) {
+				conditionHint = String.format("You are %s!", conditions.getFirst());
+			} else if (conditions.size() == 2) {
+				conditionHint = String.format("You are %s and %s!", conditions.get(0), conditions.get(1));
+			} else {
+				conditionHint = String.format("You are %s, %s and %s!", conditions.get(0), conditions.get(1), conditions.get(2));
+			}
+			hints.add(conditionHint);
+		}
+
+
+		boolean poisoned = player.isPoisoned();
+
+		if (poisoned) {
+			int turnsTillDeath = Constants.TURNS_BEFORE_DEATH_BY_POISON - player.getTurnsPoisoned();
+			hints.add(String.format("Death by poison in %s turns!", turnsTillDeath));
+		}
 
 		//When in a Sokoban puzzle
 		MoveableGroup moveableGroup = playerMovementCache.getActiveMoveableGroup();
 		if (moveableGroup != null && moveableGroup.isResetable() && !moveableGroup.solved()) {
-			resetHint = Optional.of("Press R to reset.");
+			hints.add("Press R to reset.");
 		}
 
 		if (player.getTurnsWormAlerted() > 0) {
 			int turnsUntilWormAttack = player.getGameProgress().getTurnsTillWormAppears() - player.getTurnsWormAlerted();
-			resetHint = Optional.of(String.format("Snow worm appears in %s turns!", turnsUntilWormAttack));
+			hints.add(String.format("Snow worm appears in %s turns!", turnsUntilWormAttack));
 		}
 
-		if (resetHint.isPresent()) {
-
-			boolean evenPhase = System.currentTimeMillis() / 250 % 2 == 0;
+		if (!hints.isEmpty()) {
 
 			DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameHintDrawingContext();
 			dc = new TileDrawingContext(dc, 1, 5, 0, 0);
@@ -61,13 +93,17 @@ public class GameHintRenderer extends AbstractRenderer {
 			graphics.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
 			graphics.setColor(Color.orange);
 			graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
-			if (evenPhase) {
+
+			int loopPhase = (int)((System.currentTimeMillis() / 1000) % (2 * hints.size()));
+
+			if (loopPhase % 2 == 1) {
+				String hint = hints.get(loopPhase / 2);
 				FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontProvider.FontTypeName.GameHint);
-				Book textBook = TextPageConstraints.fromDc(dc).textToBook(resetHint.get(), fontRefToFontTypeMap);
+				Book textBook = TextPageConstraints.fromDc(dc).textToBook(hint, fontRefToFontTypeMap);
 				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
 			}
-		}
 
+		}
 
 	}
 

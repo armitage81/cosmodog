@@ -150,6 +150,8 @@ public class Constants {
 	
 	public static final int NUMBER_OF_CHARTS_IN_GAME = 64;
 
+	public static final int TURNS_BEFORE_DEATH_BY_POISON = 3;
+
 	public static final Position DEFAULT_RESPAWN_POSITION = Position.fromCoordinates(28, 58);
 
 }
