@@ -72,9 +72,13 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		EnemiesUtils.removeInactiveUnits(enemies);
 				
 		Set<TiledObject> roofsOverPlayer = PlayerMovementCache.getInstance().getRoofRegionsOverPlayer();
-		
-		for (Enemy enemy : enemies) {
+		Set<TiledObject> roofRemovalBlockersOverPlayer = PlayerMovementCache.getInstance().getRoofRemovalBlockerRegionsOverPlayer();
 
+		if (!roofRemovalBlockersOverPlayer.isEmpty()) {
+			return;
+		}
+
+		for (Enemy enemy : enemies) {
 
 			Set<TiledObject> roofsOverEnemy = PlayerMovementCache.getInstance().getEnemiesInRangeWithRoofsOverThem().get(enemy);
 
