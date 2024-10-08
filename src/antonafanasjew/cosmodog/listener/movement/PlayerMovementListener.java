@@ -22,11 +22,7 @@ import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.Objects;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
-import antonafanasjew.cosmodog.model.Cosmodog;
-import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.DynamicPiece;
-import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -647,18 +643,19 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		TiledObject snowfallBorderRegion = weatherObjectGroup.getObjects().get("Snowfall_border");
 		boolean inSnowfall = RegionUtils.tileInRegion(player.getPositionX(), player.getPositionY(), snowfallRegion, map.getTileWidth(), map.getTileHeight());
 		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPositionX(), player.getPositionY(), snowfallBorderRegion, map.getTileWidth(), map.getTileHeight());
+		boolean underRoof = !RegionUtils.roofsOverPiece(player, map).isEmpty() && RegionUtils.roofRemovalBlockersOverPiece(player, map).isEmpty();
 		SnowfallChangeAction snowfallChangeAction =  (SnowfallChangeAction) game.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
 
-		if (inSnowfall) {
+		if (underRoof || !inSnowfallBorder) {
+			if (snowfallChangeAction != null) {
+				snowfallChangeAction.setFadesInNotOut(false);
+			}
+		} else if (inSnowfall) {
 			if (snowfallChangeAction == null) {
 				snowfallChangeAction = SnowfallChangeAction.fadingInActionInstance(3000);
 				game.getActionRegistry().registerAction(AsyncActionType.SNOWFALL_CHANGE, snowfallChangeAction);
 			} else {
 				snowfallChangeAction.setFadesInNotOut(true);
-			}
-		} else if (!inSnowfallBorder) {
-			if (snowfallChangeAction != null) {
-				snowfallChangeAction.setFadesInNotOut(false);
 			}
 		}
 

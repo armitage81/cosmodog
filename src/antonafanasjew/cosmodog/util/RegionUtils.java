@@ -1,10 +1,18 @@
 package antonafanasjew.cosmodog.util;
 
+import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Block;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class RegionUtils {
 
@@ -54,5 +62,37 @@ public class RegionUtils {
 		PlacedRectangle playerTileRectangle = PlacedRectangle.fromAnchorAndSize(x, y, tileWidth, tileHeight);
 		return playerTileRectangle;
 	}
-	
+
+	public static Set<TiledObject> roofsOverPiece(Piece piece, CosmodogMap map) {
+
+		Set<TiledObject> roofs = new HashSet<>();
+
+		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_ROOFS).getObjects();
+
+		for (TiledObject roofRegion : roofRegions.values()) {
+
+			if (RegionUtils.pieceInRegion(piece, roofRegion, map.getTileWidth(), map.getTileHeight())) {
+				roofs.add(roofRegion);
+			}
+		}
+
+		return roofs;
+	}
+
+	public static Set<TiledObject> roofRemovalBlockersOverPiece(Piece piece, CosmodogMap map) {
+
+		Set<TiledObject> roofRemovalBlockers = new HashSet<>();
+
+		Map<String, TiledObject> regions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_ROOF_REMOVAL_BLOCKERS).getObjects();
+
+		for (TiledObject region : regions.values()) {
+
+			if (RegionUtils.pieceInRegion(piece, region, map.getTileWidth(), map.getTileHeight())) {
+				roofRemovalBlockers.add(region);
+			}
+		}
+
+		return roofRemovalBlockers;
+
+	}
 }

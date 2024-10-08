@@ -97,7 +97,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		recalculateClosestSupplyAndMedkitPosition(actor, x1, y1, x2, y2, applicationContext);
 		recalculateclosestPieceInterestingForDebugging(actor, x1, y1, x2, y2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
-		recalculateRoofRegions(actor, roofRegionsOverPlayer);
+		recalculateRoofsOverPlayer();
 		recalculateRoofRemovalBlockerRegions(actor);
 		recalculateDynamicPieces();
 		recalculateVisibleDynamicPieces();
@@ -143,10 +143,18 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		}
 	}
 
+	private void recalculateRoofsOverPlayer() {
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		Player player = ApplicationContextUtils.getPlayer();
+		roofRegionsOverPlayer.clear();
+		roofRegionsOverPlayer.addAll(RegionUtils.roofsOverPiece(player, map));
+	}
+
 	private void recalculateRoofsOverEnemiesInRange() {
+		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		for (Enemy enemy : enemiesInRange) {
 			Set<TiledObject> roofs = Sets.newHashSet();
-			recalculateRoofRegions(enemy, roofs);
+			roofs = RegionUtils.roofsOverPiece(enemy, map);
 			Set<TiledObject> oldRoofs = enemiesInRangeWithRoofsOverThem.get(enemy);
 			if (oldRoofs == null) {
 				if (roofs.isEmpty() == false) {
@@ -263,37 +271,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 //		}
 	}
 	
-	private void recalculateRoofRegions(Actor actor, Set<TiledObject> roofs) {
-		
-		roofs.clear();
-		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		
-		Map<String, TiledObject> roofRegions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_ROOFS).getObjects();
-		
-		for (TiledObject roofRegion : roofRegions.values()) {
-		
-			if (RegionUtils.pieceInRegion(actor, roofRegion, map.getTileWidth(), map.getTileHeight())) {
-				roofs.add(roofRegion);
-			}
-		}
-		
-	}
-	
 	private void recalculateRoofRemovalBlockerRegions(Actor actor) {
-		
-		roofRemovalBlockerRegionsOverPlayer.clear();
-		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		
-		Map<String, TiledObject> regions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_ROOF_REMOVAL_BLOCKERS).getObjects();
-		
-		for (TiledObject region : regions.values()) {
-		
-			if (RegionUtils.pieceInRegion((Player)actor, region, map.getTileWidth(), map.getTileHeight())) {
-				roofRemovalBlockerRegionsOverPlayer.add(region);
-			}
-		}
+		roofRemovalBlockerRegionsOverPlayer.clear();
+		roofRemovalBlockerRegionsOverPlayer.addAll(RegionUtils.roofRemovalBlockersOverPiece(actor, map));
 		
 	}
 
