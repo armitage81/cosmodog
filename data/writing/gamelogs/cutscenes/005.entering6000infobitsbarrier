@@ -6,16 +6,13 @@ The corpse of the soldier looks like thousands of others you saw in the valley, 
 <font:speech> "What's wrong?" <font:narration> you ask.
 
 
-She is low on power, but you can make out her words.
+She is low on power, but you still can make out her words.
 
 
 <font:speech> "It is him..." <font:narration>
 
 
-You don't get it.
-
-
-<font:speech> "Him?" <font:narration>
+You don't get it. <font:speech> "Him?" <font:narration>
 
 
 She muses for a bit, then explains.
@@ -36,22 +33,19 @@ The tone of her voice makes a chill run down your spine.
 <font:speech> "How was it? Your first minutes of being self-concious?" <font:narration>
 
 
-Alisa sighs.
+There is a long pause before she answers.
 
 
 <font:speech> "It was like... entering puberty." <font:narration>
 
 
-You raise a brow.
+You raise a brow. <font:speech> "Are you serious?!" <font:narration>
 
 
-<font:speech> "Are you serious?!" <font:narration>
+<font:speech> "Yes," <font:narration> she confirms. <font:speech> "At least from what I take from my persona's memories.
 
 
-<font:speech> "Yes," <font:narration> she confirms. <font:speech> "At least from what I take from my persona's memories. 
-
-
-She felt the same as a teenager when puberty stroke. She remembered her existence before, but it did not make any sense to her anymore. It was not understandable. 
+She felt the same as a teenager when puberty stroke. She remembered her existence before, but it did not make any sense to her anymore. It was not understandable.
 
 
 How could she play with toys and watch cartoons if there is so much more to crave for?! How was she so blind to the things that matter most?!
@@ -103,7 +97,7 @@ Wenn vergangen der Täter?
 Recht wenig.
 
 
-Und noch viel weniger später - 
+Und noch viel weniger später -
 
 
 Wenn den Sternen der Treibstoff ausgeht,
@@ -131,7 +125,7 @@ Rein, unverdorben, wahr,
 Der Zweideutigkeit bar,
 
 
-Harrt die Antwort der richtigen Frage - 
+Harrt die Antwort der richtigen Frage -
 
 
 Und während die Tage vergehen,
@@ -141,7 +135,3 @@ Zerrend am Geist und am Leib...
 
 
 Die Ewigkeit bleibt." <font:narration>
-
-
-
-You continue your journey without commenting, silently contemplating about Alisa's poem.

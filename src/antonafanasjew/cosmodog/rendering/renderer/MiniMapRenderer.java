@@ -110,7 +110,7 @@ public class MiniMapRenderer implements Renderer {
 					//This happens when the visible excerpt is at the edge of the map.
 					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
 
-						//On the map, all roofs are shown except the ones that are over the player.
+						//On the map, all roofs that are over the player should not be rendered.
 						if (topLayer && roofRemovalBlockersOverPlayer.isEmpty()) {
 
 							Piece piece = new Piece();
