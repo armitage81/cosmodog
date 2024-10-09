@@ -18,52 +18,93 @@ import antonafanasjew.cosmodog.util.TilesetUtils;
 
 import java.util.Map;
 
+/**
+ * Renders the minimap in the map screen.
+ * <p>
+ * Take note: Rendering the map happens in a similar way as rendering the actual game. There is no map image.
+ * Instead, the map excerpt is rendered tile by tile.
+ */
 public class MiniMapRenderer implements Renderer {
 
-	private DrawingContext drawingContext;
+	/**
+	 * The drawing context in which the minimap is rendered.
+	 */
+	private final DrawingContext drawingContext;
 
+	/**
+	 * Creates a new minimap renderer.
+	 *
+	 * @param drawingContext The drawing context in which the minimap is rendered.
+	 */
 	public MiniMapRenderer(DrawingContext drawingContext) {
 		this.drawingContext = drawingContext;
 	}
 
+	/**
+	 * Renders the minimap.
+	 *
+	 * @param gameContainer - Not used. Needed only to fulfill the contract of the interface.
+	 * @param graphics - The graphics object to execute rendering.
+	 * @param renderingParameter - Contains the input state to know which part of the map to render depending on scrolling position.
+	 */
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		//Contains the input state to know which part of the map to render depending on scrolling position.
 		MapInputState mapInputState = (MapInputState) renderingParameter;
 
+		//This tile is rendered for undiscovered parts of the map.
 		Animation unchartedMapTileAnimation = ApplicationContext.instance().getAnimations().get("unchartedMapTile");
 
+		//There are 64 pieces of the chart in total. The map is divided into 8x8 pieces.
+		int miniMapColumns = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
+		int miniMapRows = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
+
+		//When scrolling, the visible part of the map is as big as one piece of the chart, but the scrolling happens in smaller steps.
+		//This is why the offset is needed to know how much of the next piece is visible.
+		//The address of the visible part is determined by selecting the position of a chart piece and adding the offset.
 		int columnToRender = mapInputState.getSelectionX();
 		int rowToRender = mapInputState.getSelectionY();
 		float offsetX = mapInputState.getOffsetX();
 		float offsetY = mapInputState.getOffsetY();
-
-		int miniMapColumns = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
-		int miniMapRows = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
 
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 
 		int mapWidthInTiles = map.getWidth();
 		int mapHeightInTiles = map.getHeight();
 
+		//The map is 400 tiles long and 400 tiles wide. The minimap is 8x8 pieces of the chart.
+		//This means that each piece of the chart is 50x50 tiles.
 		int minimapPieceWidthInTiles = mapWidthInTiles / miniMapColumns;
 		int minimapPieceHeightInTiles = mapHeightInTiles / miniMapRows;
 
+		//The first tile to render horizontally is the column of the chart piece multiplied by the width of the piece
+		//and then adding the offset.
 		int firstTileToRenderX = minimapPieceWidthInTiles * columnToRender + (int) (minimapPieceWidthInTiles * offsetX);
 		int firstTileToRenderY = minimapPieceHeightInTiles * rowToRender + (int) (minimapPieceHeightInTiles * offsetY);
 
 		Player player = ApplicationContextUtils.getPlayer();
 		ChartInventoryItem chartInventoryItem = (ChartInventoryItem) player.getInventory().get(InventoryItemType.CHART);
 
+		//Rendering of the minimap happens by going through all visible layers and rendering the tiles in each of them.
+		//Most top left tile is determined by the scrolling position.
+		//Some tiles can be undiscovered depending on the found chart pieces.
+		//They are rendered as uncharted by using the unchartedMapTileAnimation.
+		//Tile sprites are taken from the same sprite sheet as in the actual game.
 		for (int i = 0; i < Layers.LAYER_META_COLLISIONS; i++) {
 
 			for (int tx = firstTileToRenderX; tx < firstTileToRenderX + minimapPieceWidthInTiles; tx++) {
 				for (int ty = firstTileToRenderY; ty < firstTileToRenderY + minimapPieceHeightInTiles; ty++) {
+
+					//Ignore tiles that are outside the visible excerpt.
+					//This happens when the visible excerpt is at the edge of the map.
 					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
 
+						//The chart piece position for the tile is needed to determine if the tile is discovered.
 						int chartPiecePositionX = tx / minimapPieceWidthInTiles;
 						int chartPiecePositionY = ty / minimapPieceHeightInTiles;
 
+						//The tile image for the given tile id is taken from the tileset sprite sheet.
 						int tileId = map.getTileId(tx, ty, i);
 
 						int imageIndex = tileId - 1;
@@ -89,11 +130,15 @@ public class MiniMapRenderer implements Renderer {
 
 		boolean evenPhaseOfBlinking = (System.currentTimeMillis() / 200) % 2 == 0;
 
+		//Positions of the undiscovered monoliths (or rather the insights closed to them)
+		//are rendered as blinking green or red tiles on the map.
+		//This should be moved to the MapRenderer class since the display of player's position is already there.
 		Map<Position, Piece> insights = map.getInsights();
 		for (Position insightPosition : insights.keySet()) {
 			int x = (int)insightPosition.getX();
 			int y = (int)insightPosition.getY();
 
+			//Ignore monoliths that are outside the visible excerpt.
 			if (x < firstTileToRenderX) {
 				continue;
 			}
