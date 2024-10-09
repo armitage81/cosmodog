@@ -102,23 +102,18 @@ public class CosmodogGamePersistor {
 			 */
 			try {
 				CosmodogMap map = game.getMap();
+				float oldZoomFactor = game.getCam().getZoomFactor();
 				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
-				cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
 				cam.focusOnPiece(map, 0, 0, game.getPlayer());
+				cam.zoom(oldZoomFactor);
 				game.setCam(cam);
 			} catch (CamPositioningException e) {
 				Log.error("Camera positioning could not be established", e);
 			}
-			
-			
 			return game;
-		} catch (ClassNotFoundException ex) {
-			Log.error("Could not restore game", ex);
-			System.exit(1);
-			return null;
-		} catch (IOException ex) {
+		} catch (ClassNotFoundException | IOException ex) {
 			Log.error("Could not restore game", ex);
 			System.exit(1);
 			return null;
