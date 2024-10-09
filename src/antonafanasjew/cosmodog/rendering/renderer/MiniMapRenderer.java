@@ -111,7 +111,7 @@ public class MiniMapRenderer implements Renderer {
 					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
 
 						//On the map, all roofs are shown except the ones that are over the player.
-						if (topLayer) {
+						if (topLayer && roofRemovalBlockersOverPlayer.isEmpty()) {
 
 							Piece piece = new Piece();
 							piece.setPositionX(tx);
