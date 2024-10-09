@@ -1,10 +1,10 @@
 package antonafanasjew.cosmodog.globals;
 
-import java.util.List;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
+import java.util.List;
 
 /**
  * Tiled map layer constants.

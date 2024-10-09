@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.RegionUtils;
 import org.newdawn.slick.*;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -17,6 +20,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TilesetUtils;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Renders the minimap in the map screen.
@@ -91,7 +95,13 @@ public class MiniMapRenderer implements Renderer {
 		//Some tiles can be undiscovered depending on the found chart pieces.
 		//They are rendered as uncharted by using the unchartedMapTileAnimation.
 		//Tile sprites are taken from the same sprite sheet as in the actual game.
+
+		Set<TiledObject> roofsOverPlayer = RegionUtils.roofsOverPiece(player, map);
+		Set<TiledObject> roofRemovalBlockersOverPlayer = PlayerMovementCache.getInstance().getRoofRemovalBlockerRegionsOverPlayer();
+
 		for (int i = 0; i < Layers.LAYER_META_COLLISIONS; i++) {
+
+			boolean topLayer = i >= Layers.LAYER_FOREST_TOP;
 
 			for (int tx = firstTileToRenderX; tx < firstTileToRenderX + minimapPieceWidthInTiles; tx++) {
 				for (int ty = firstTileToRenderY; ty < firstTileToRenderY + minimapPieceHeightInTiles; ty++) {
@@ -99,6 +109,20 @@ public class MiniMapRenderer implements Renderer {
 					//Ignore tiles that are outside the visible excerpt.
 					//This happens when the visible excerpt is at the edge of the map.
 					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
+
+						//On the map, all roofs are shown except the ones that are over the player.
+						if (topLayer) {
+
+							Piece piece = new Piece();
+							piece.setPositionX(tx);
+							piece.setPositionY(ty);
+
+							Set<TiledObject> roofsOverTile = RegionUtils.roofsOverPiece(piece, map);
+							roofsOverTile.retainAll(roofsOverPlayer);
+							if (!roofsOverTile.isEmpty()) {
+								continue;
+							}
+						}
 
 						//The chart piece position for the tile is needed to determine if the tile is discovered.
 						int chartPiecePositionX = tx / minimapPieceWidthInTiles;
