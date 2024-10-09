@@ -20,7 +20,7 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 
 	public static final int SIMPLE_PLAYER_DAMAGE = 1;
 	
-	private PlanetaryCalendar planetaryCalendar;
+	private final PlanetaryCalendar planetaryCalendar;
 	
 	public SimplePlayerAttackDamageCalculator(PlanetaryCalendar planetaryCalendar) {
 		this.planetaryCalendar = planetaryCalendar;
