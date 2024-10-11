@@ -265,8 +265,6 @@ fuelBar;data/various_icons.png;16;16;[0/8/10000];true;true
 
 
 
-markFuel;data/markedTile.png;16;16;[0/0/100,1/0/100,2/0/100,3/0/100,4/0/100,3/0/100,2/0/100,1/0/100];true;true
-
 nextDialogBox;data/interface.png;16;16;[0/0/150,1/0/150,2/0/150,1/0/150];true;true
 closeDialogBox;data/interface.png;16;16;[0/1/150,1/1/150,2/1/150,1/1/150];true;true
 

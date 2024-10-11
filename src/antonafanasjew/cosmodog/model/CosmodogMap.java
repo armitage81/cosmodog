@@ -179,18 +179,6 @@ public class CosmodogMap extends CosmodogModel {
 	public DynamicPiece dynamicPieceAtPosition(int x, int y) {
 		return PlayerMovementCache.getInstance().getDynamicPieces().get(Position.fromCoordinates(x, y));
 	}
-	
-	public Set<Piece> visibleMarkedTilePieces(int x, int y, int width, int height, int grace) {
-		Set<Piece> retVal = Sets.newHashSet();
-		for (Piece piece : markedTilePieces) {
-			if (piece.getPositionX() >= x - grace && piece.getPositionX() < x + width + grace) {
-				if (piece.getPositionY() >= y - grace && piece.getPositionY() < y + height + grace) {
-					retVal.add(piece);
-				}
-			}
-		}
-		return retVal;
-	}
 
 	public Set<Enemy> getEnemies() {
 		return enemies;

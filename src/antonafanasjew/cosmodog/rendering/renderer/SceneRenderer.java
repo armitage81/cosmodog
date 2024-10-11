@@ -48,7 +48,6 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer effectsRenderer = new EffectsRenderer();
 	private AbstractRenderer overheadNotificationRenderer = new OverheadNotificationRenderer();
 	private Renderer daytimeColorFilterRenderer = new DayTimeFilterRenderer();
-	private Renderer markedTileRenderer = new MarkedTileRenderer();
 	private AbstractRenderer sightRadiusRenderer = new SightRadiusRenderer();
 	
 	@Override
@@ -124,9 +123,6 @@ public class SceneRenderer implements Renderer {
 
 		//Draw Daytime mask.
 		daytimeColorFilterRenderer.render(gc, g, null);
-		
-		//Draw marked tiles, e.g. "fuel" sign
-		markedTileRenderer.render(gc, g, null);
 		
 		//Draw overhead notifications, e.g. "blocked" warning.
 		overheadNotificationRenderer.render(gc, g, sceneDrawingContext);

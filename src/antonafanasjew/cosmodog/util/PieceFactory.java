@@ -11,7 +11,6 @@ import antonafanasjew.cosmodog.model.CollectibleLog;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
-import antonafanasjew.cosmodog.model.Mark;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -79,13 +78,6 @@ public class PieceFactory {
 		if (TileType.LOG_CARD_SERIES_0.getTileId() <= tileType.getTileId() && tileType.getTileId() <= TileType.LOG_CARD_SERIES_17.getTileId()) {
 			CollectibleLog collectibleLog = new CollectibleLog(Mappings.MAP_TILE_TO_LOG_SERIES.get(tileType), "<irrelevant>");
 			piece = collectibleLog;
-		}
-		
-		
-		
-		if (TileType.FUEL.getTileId() == tileType.getTileId()) {
-			Mark m = new Mark(Mark.FUEL_MARK_TYPE);
-			piece = m;
 		}
 		
 		return piece;

@@ -38,7 +38,6 @@ import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Effect;
-import antonafanasjew.cosmodog.model.Mark;
 import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
@@ -305,20 +304,16 @@ public class InitializationUtils {
 					piece.setPositionX(k);
 					piece.setPositionY(l);
 
-					if (piece instanceof Mark) {
-						map.getMarkedTilePieces().add(piece);
-					} else {
-						if (piece instanceof Collectible) {
-							Enemy enemy = map.enemyAtTile(k, l);
-							if (enemy != null) {
-								InventoryItem inventoryItem = InventoryItemFactory.createInventoryItem((Collectible)piece);
-								enemy.setInventoryItem(inventoryItem);
-							} else {
-								map.getMapPieces().put(Position.fromPiece(piece), piece);	
-							}
+					if (piece instanceof Collectible) {
+						Enemy enemy = map.enemyAtTile(k, l);
+						if (enemy != null) {
+							InventoryItem inventoryItem = InventoryItemFactory.createInventoryItem((Collectible)piece);
+							enemy.setInventoryItem(inventoryItem);
 						} else {
 							map.getMapPieces().put(Position.fromPiece(piece), piece);
 						}
+					} else {
+						map.getMapPieces().put(Position.fromPiece(piece), piece);
 					}
 				}
 			}
