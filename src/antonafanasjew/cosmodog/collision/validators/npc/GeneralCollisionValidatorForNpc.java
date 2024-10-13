@@ -27,7 +27,8 @@ public class GeneralCollisionValidatorForNpc extends AbstractCollisionValidator 
 		CollisionValidator c6 = new PlayerInPlatformAsObstacleCollisionValidatorForNpc(playerMovementActionResult);
 		CollisionValidator c7 = new DynamicPieceCollisionValidatorForNpc();
 		CollisionValidator c8 = new MoveableTargetCollisionValidatorForNpc(moveableActionResult);
-		collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4, c5, c6, c7, c8));
+		CollisionValidator c9 = new EnergyWallCollisionValidatorForNpc();
+		collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4, c5, c6, c7, c8, c9));
 	}
 	
 	public static GeneralCollisionValidatorForNpc instance(MovementActionResult playerMovementActionResult, MovementActionResult moveableActionResult, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
