@@ -82,34 +82,25 @@ public class StatisticsState extends CosmodogAbstractState {
 		Book statistics = TextPageConstraints.fromDc(topContainerDrawingContext).textToBook("Statistics", fontTypeMainHeader);
 		TextBookRendererUtils.renderCenteredLabel(gc, g, statistics);
 		
-		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 0);
+		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 0);
 		renderLabelAndValue(gc, g, scoreDc, "Score", String.valueOf(score));
 		
-		DrawingContext infobitsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 1);
+		DrawingContext infobitsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 1);
 		renderLabelAndValue(gc, g, infobitsDc, "Found infobits", String.valueOf(noInfobits) + "/" + String.valueOf(maxInfobits));
 		
-		DrawingContext softwareDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 2);
+		DrawingContext softwareDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 2);
 		renderLabelAndValue(gc, g, softwareDc, "Found software pieces", String.valueOf(noSoftware) + "/" + String.valueOf(maxSoftware));
 		
-		DrawingContext armorDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 3);
-		renderLabelAndValue(gc, g, armorDc, "Found armor plates", String.valueOf(noArmor) + "/" + String.valueOf(maxArmor));
-		
-		DrawingContext soulEssencesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 4);
-		renderLabelAndValue(gc, g, soulEssencesDc, "Found soul essences", String.valueOf(noSoulEssenses) + "/" + String.valueOf(maxSoulEssenses));
-		
-		DrawingContext chartsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 5);
+		DrawingContext chartsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 3);
 		renderLabelAndValue(gc, g, chartsDc, "Found map pieces", String.valueOf(noCharts) + "/" + String.valueOf(maxMaps));
 		
-		DrawingContext artifactsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 6);
-		renderLabelAndValue(gc, g, artifactsDc, "Found monoliths", String.valueOf(noInsights) + "/" + String.valueOf(maxInsights));
-		
-		DrawingContext secretsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 7);
+		DrawingContext secretsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 4);
 		renderLabelAndValue(gc, g, secretsDc, "Found secrets", String.valueOf(noSecrets) + "/" + String.valueOf(maxSecrets));
 		
-		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 8);
+		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 5);
 		renderLabelAndValue(gc, g, enemiesDc, "Enemies left", String.valueOf(enemiesLeft));
 		
-		DrawingContext playTimeDc = new TileDrawingContext(centerContainerDrawingContext, 1, 10, 0, 9);
+		DrawingContext playTimeDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 6);
 		renderLabelAndValue(gc, g, playTimeDc, "Play time", playTimeRepresentation);
 		
 		DrawingContext bottomContainerDrawingContext = new TileDrawingContext(dc, 1, 10, 0, 9, 1, 1);
