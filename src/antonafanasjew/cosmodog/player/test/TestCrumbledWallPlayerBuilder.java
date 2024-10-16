@@ -5,14 +5,14 @@ import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class TestCrumbledWallPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPositionX(24);
-		player.setPositionY(103);
+		player.setPosition(Position.fromCoordinates(24, 103));
 		
 		player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
 		player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());

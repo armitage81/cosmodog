@@ -9,14 +9,14 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class TestVehicleOnPlatformBugPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPositionX(24);
-		player.setPositionY(103);
+		player.setPosition(Position.fromCoordinates(24, 103));
 		
 		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
@@ -37,10 +37,6 @@ public class TestVehicleOnPlatformBugPlayerBuilder extends AbstractPlayerBuilder
 		
 		VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());
 		player.getInventory().put(InventoryItemType.VEHICLE, vii);
-		
-		player.setPositionX(351);
-		player.setPositionY(386);
-		
 		
 	}
 

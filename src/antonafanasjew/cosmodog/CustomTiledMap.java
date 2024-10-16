@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledTile;
 import antonafanasjew.cosmodog.tiledmap.Tileset;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
@@ -259,9 +260,9 @@ public class CustomTiledMap {
 	 * the tile is not set, 1 for the tile at the location 0/0 in the sprite sheet etc.
 	 * 
 	 */
-	public int getTileId(int x, int y, int layerIndex) {
+	public int getTileId(Position position, int layerIndex) {
 		TiledMapLayer layer = mapLayers.get(layerIndex);
-		TiledTile tile = layer.getTile(x, y);
+		TiledTile tile = layer.getTile(position);
 		return tile == null ? 0 : tile.getGid();
 	}
 

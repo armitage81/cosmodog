@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 
 /***
  * 
@@ -24,8 +25,7 @@ public class TestFullyEquippedPlayerBuilder extends AbstractPlayerBuilder {
 	protected void updatePlayer(Player player) {
 		player.setMaxLife(100);
 		player.setLife(100);
-		player.setPositionX(7);
-		player.setPositionY(22);
+		player.setPosition(Position.fromCoordinates(7, 22));
 		
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());

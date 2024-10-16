@@ -45,7 +45,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 
 		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
 		
-		Player player = Player.fromPosition(1, 1);
+		Player player = Player.fromPosition(Position.fromCoordinates(1, 1));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
@@ -211,7 +211,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		
 		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
 		
-		Player player = Player.fromPosition(1, 1);
+		Player player = Player.fromPosition(Position.fromCoordinates(1, 1));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));

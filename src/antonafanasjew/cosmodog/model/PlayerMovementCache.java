@@ -288,7 +288,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		return closestPieceInterestingForDebugging;
 	}
 
-	private void recalculateClosestSupplyAndMedkitPosition(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	private void recalculateClosestSupplyAndMedkitPosition(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
 		Collection<Piece> supplies = map.getSupplies().values();
 		Collection<Piece> medkits = map.getMedkits().values();
@@ -322,7 +322,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 
 	
-	private void recalculateclosestPieceInterestingForDebugging(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	private void recalculateclosestPieceInterestingForDebugging(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
 		Collection<Piece> pieces = map.getMapPieces().values();
 		

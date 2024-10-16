@@ -8,14 +8,14 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class TestDamagingLastBossPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPositionX(231);
-		player.setPositionY(258);
+		player.setPosition(Position.fromCoordinates(231, 258));
 		player.setMaxLife(100);
 		player.setLife(100);
 		

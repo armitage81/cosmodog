@@ -2,14 +2,14 @@ package antonafanasjew.cosmodog.player.test;
 
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class TestWormPlayerBuilder extends AbstractPlayerBuilder {
 
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPositionX(324);
-		player.setPositionY(348);
+		player.setPosition(Position.fromCoordinates(324, 348));
 				
 	}
 

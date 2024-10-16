@@ -1,31 +1,33 @@
 package antonafanasjew.cosmodog.model.mapmodifications;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.TileType;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Maps;
 
 public class MapModificationImpl extends AbstractMapModification {
 
 	
+	@Serial
 	private static final long serialVersionUID = 7838421344982306133L;
 
 
 	static class TileAddress implements Serializable {
 		
+		@Serial
 		private static final long serialVersionUID = 4907188271296115453L;
 
-		public int x;
-		public int y;
+		public Position position;
 		public int layerIndex;
 		
-		public static TileAddress fromCoordinates(int x, int y, int layerIndex) {
+		public static TileAddress fromCoordinates(Position position, int layerIndex) {
 			TileAddress tileAddress = new TileAddress();
-			tileAddress.x = x;
-			tileAddress.y = y;
+			tileAddress.position = position;
 			tileAddress.layerIndex = layerIndex;
 			return tileAddress;
 		}
@@ -33,11 +35,11 @@ public class MapModificationImpl extends AbstractMapModification {
 		@Override
 		public int hashCode() {
 			final int prime = 31;
-			int result = 1;
+			float result = 1;
 			result = prime * result + layerIndex;
-			result = prime * result + x;
-			result = prime * result + y;
-			return result;
+			result = prime * result + position.getX();
+			result = prime * result + position.getY();
+			return (int)result;
 		}
 		
 		@Override
@@ -51,9 +53,7 @@ public class MapModificationImpl extends AbstractMapModification {
 			TileAddress other = (TileAddress) obj;
 			if (layerIndex != other.layerIndex)
 				return false;
-			if (x != other.x)
-				return false;
-			if (y != other.y)
+			if (!this.position.equals(other.position))
 				return false;
 			return true;
 		}
@@ -64,16 +64,16 @@ public class MapModificationImpl extends AbstractMapModification {
 	
 	
 	@Override
-	protected int getTileIdInternal(CustomTiledMap tiledMap, int x, int y, int layerIndex) {
-		TileAddress tileAddress = TileAddress.fromCoordinates(x, y, layerIndex);
+	protected int getTileIdInternal(CustomTiledMap tiledMap, Position position, int layerIndex) {
+		TileAddress tileAddress = TileAddress.fromCoordinates(position, layerIndex);
 		TileType tileType = modifications.get(tileAddress);
-		return tileType == null ? tiledMap.getTileId(x, y, layerIndex) : tileType.getTileId();
+		return tileType == null ? tiledMap.getTileId(position, layerIndex) : tileType.getTileId();
 	}
 
 
 	@Override
-	protected void modifyTileInternal(int x, int y, int layerIndex, TileType tileType) {
-		TileAddress tileAddress = TileAddress.fromCoordinates(x, y, layerIndex);
+	protected void modifyTileInternal(Position position, int layerIndex, TileType tileType) {
+		TileAddress tileAddress = TileAddress.fromCoordinates(position, layerIndex);
 		modifications.put(tileAddress, tileType);
 	}
 

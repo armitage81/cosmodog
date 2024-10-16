@@ -28,9 +28,9 @@ public class RegionUtils {
 		
 	}
 	
-	public static final boolean tileInRegion(int tilePosX, int tilePosY, TiledObject region, int tileWidth, int tileHeight) {
+	public static boolean tileInRegion(Position position, TiledObject region, int tileWidth, int tileHeight) {
 		//The actual piece implementation does not matter. We just need a type of a piece to satisfy the method signature.
-		Piece piece = Block.create(tilePosX, tilePosY);
+		Piece piece = Block.create(position);
 		PlacedRectangle playerTileRectangle = pieceRectangle(piece, tileWidth, tileHeight);
 		return CollisionUtils.intersects(playerTileRectangle, region);
 		
@@ -38,7 +38,7 @@ public class RegionUtils {
 
 	/**
 	 * Indicates whether the player rectangle is covering the given position (not the tile position, but the geometrical position)
-	 * @param player Player.
+	 * @param piece Piece.
 	 * @param position A position as x/y pair.
 	 * @param tileWidth The width of all tiles.
 	 * @param tileHeight The height of all tiles.
@@ -53,14 +53,13 @@ public class RegionUtils {
 	 * Returns the placed rectangle for the player figure.
 	 */
 	private static PlacedRectangle pieceRectangle(Piece piece, int tileWidth, int tileHeight) {
-		int posX = piece.getPositionX();
-		int posY = piece.getPositionY();
+		int posX = (int)piece.getPosition().getX();
+		int posY = (int)piece.getPosition().getY();
 		
 		int x = posX * tileWidth;
 		int y = posY * tileHeight;
-		
-		PlacedRectangle playerTileRectangle = PlacedRectangle.fromAnchorAndSize(x, y, tileWidth, tileHeight);
-		return playerTileRectangle;
+
+        return PlacedRectangle.fromAnchorAndSize(x, y, tileWidth, tileHeight);
 	}
 
 	public static Set<TiledObject> roofsOverPiece(Piece piece, CosmodogMap map) {

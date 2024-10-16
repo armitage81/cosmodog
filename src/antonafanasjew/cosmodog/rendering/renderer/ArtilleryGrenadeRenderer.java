@@ -52,18 +52,12 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
 		Player player = ApplicationContextUtils.getPlayer();
 
-		int playerPosX = player.getPositionX();
-		int playerPosY = player.getPositionY();
-
-		for (Enemy enemy : map.nearbyEnemies(player.getPositionX(), player.getPositionY(), 20)) {
+		for (Enemy enemy : map.nearbyEnemies(player.getPosition(), 20)) {
 
 			// We are only interested in ranged units here.
-			if (enemy.getUnitType().isRangedUnit() == false) {
+			if (!enemy.getUnitType().isRangedUnit()) {
 				continue;
 			}
-
-			int enemyPosX = enemy.getPositionX();
-			int enemyPosY = enemy.getPositionY();
 
 			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
 
@@ -87,9 +81,9 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float animationWidth = risingGrenade.getWidth();
 			float animationHeight = risingGrenade.getHeight();
 
-			float enemyX1 = (enemyPosX - tileNoX) * tileWidth;
+			float enemyX1 = (enemy.getPosition().getX() - tileNoX) * tileWidth;
 			float enemyX2 = enemyX1 + tileWidth;
-			float enemyY1 = (enemyPosY - tileNoY) * tileHeight;
+			float enemyY1 = (enemy.getPosition().getY() - tileNoY) * tileHeight;
 
 			int leftRightOffset = 4;
 			
@@ -99,9 +93,9 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float risingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
 			float maxVerticalRisingGrenadeDistance = risingGrenadeY1Max - risingGrenadeY1Min;
 
-			float playerX1 = (playerPosX - tileNoX) * tileWidth;
+			float playerX1 = (player.getPosition().getX() - tileNoX) * tileWidth;
 			float playerX2 = playerX1 + tileWidth;
-			float playerY1 = (playerPosY - tileNoY) * tileHeight;
+			float playerY1 = (player.getPosition().getY() - tileNoY) * tileHeight;
 
 			float fallingLeftGrenadeX1 = playerX1 - (leftRightOffset);
 			float fallingRightGrenadeX1 = playerX2 - animationWidth + (leftRightOffset);
@@ -112,26 +106,25 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-			for (int i = 0; i < grenadeTransitions.size(); i++) {
-				GrenadeTransition gt = grenadeTransitions.get(i);
-				float relativeHeight = gt.relativeHeight;
-				float grenadeY1;
-				float grenadeX1;
-				Animation animation;
+            for (GrenadeTransition gt : grenadeTransitions) {
+                float relativeHeight = gt.relativeHeight;
+                float grenadeY1;
+                float grenadeX1;
+                Animation animation;
 
-				if (gt.risingNotFalling) {
-					grenadeY1 = risingGrenadeY1Max - (maxVerticalRisingGrenadeDistance * relativeHeight);
-					grenadeX1 = gt.leftNotRight ? risingLeftGrenadeX1 : risingRightGrenadeX1;
-					animation = risingGrenade;
-				} else {
-					grenadeY1 = fallingGrenadeY1Max - (maxVerticalfallingGrenadeDistance * relativeHeight);
-					grenadeX1 = gt.leftNotRight ? fallingLeftGrenadeX1 : fallingRightGrenadeX1;
-					animation = fallingGrenade;
-				}
+                if (gt.risingNotFalling) {
+                    grenadeY1 = risingGrenadeY1Max - (maxVerticalRisingGrenadeDistance * relativeHeight);
+                    grenadeX1 = gt.leftNotRight ? risingLeftGrenadeX1 : risingRightGrenadeX1;
+                    animation = risingGrenade;
+                } else {
+                    grenadeY1 = fallingGrenadeY1Max - (maxVerticalfallingGrenadeDistance * relativeHeight);
+                    grenadeX1 = gt.leftNotRight ? fallingLeftGrenadeX1 : fallingRightGrenadeX1;
+                    animation = fallingGrenade;
+                }
 
-				animation.draw(grenadeX1, grenadeY1, animation.getWidth(), animation.getHeight());
+                animation.draw(grenadeX1, grenadeY1, animation.getWidth(), animation.getHeight());
 
-			}
+            }
 
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-x, -y);

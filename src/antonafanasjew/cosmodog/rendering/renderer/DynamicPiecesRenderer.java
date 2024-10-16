@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Collection;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -89,7 +90,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
+		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(Position.fromCoordinates(tileNoX, tileNoY), tilesW, tilesH, 2);
 
 		Collection<DynamicPiece> blocks = dynamicPieces.get(Block.class);
 
@@ -115,8 +116,8 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			}
 			
 			applicationContext.getAnimations().get(animationId).draw(
-					((piece.getPositionX() - tileNoX) * tileWidth) + pieceOffsetX, 
-					((piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight) + pieceOffsetY
+					((piece.getPosition().getX() - tileNoX) * tileWidth) + pieceOffsetX,
+					((piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight) + pieceOffsetY
 			);
 		}
 		
@@ -131,7 +132,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = door.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdStil + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
 
 		}
 		
@@ -140,7 +141,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		for (DynamicPiece piece : guideTerminals) {
 			if (dynamicPiecerenderingParam.isBottomNotTop()) {
 				String animationId = "dynamicPieceGuideTerminal";
-				applicationContext.getAnimations().get(animationId).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+				applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
 			}
 		}
 

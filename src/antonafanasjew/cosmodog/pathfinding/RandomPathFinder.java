@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
@@ -27,8 +28,8 @@ public class RandomPathFinder extends AbstractPathFinder {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		//Throw a number from 0 to 3. Select the according step (up, down, left, right) and cycle through all 4 directions starting with the thrown index till the collision validator accepts it (if not, just do not move).
-		int xSteps[] = new int[] {enemy.getPositionX(), enemy.getPositionX(), enemy.getPositionX() - 1, enemy.getPositionX() + 1};
-		int ySteps[] = new int[] {enemy.getPositionY() + 1, enemy.getPositionY() - 1, enemy.getPositionY(), enemy.getPositionY()};
+		float[] xSteps = new float[] {enemy.getPosition().getX(), enemy.getPosition().getX(), enemy.getPosition().getX() - 1, enemy.getPosition().getX() + 1};
+		float[] ySteps = new float[] {enemy.getPosition().getY() + 1, enemy.getPosition().getY() - 1, enemy.getPosition().getY(), enemy.getPosition().getY()};
 		
 		int x = -1;
 		int y = -1;
@@ -53,14 +54,14 @@ public class RandomPathFinder extends AbstractPathFinder {
 			
 			for (int i = 0; i < 4; i++) {
 				int index = (firstIndex + i) % 4;
-				int xAtIndex = xSteps[index];
-				int yAtIndex = ySteps[index];
+				float xAtIndex = xSteps[index];
+				float yAtIndex = ySteps[index];
 				
-				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, xAtIndex, yAtIndex);
+				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, Position.fromCoordinates(xAtIndex, yAtIndex));
 				
 				if (collisionStatus.isPassable()) {
-					x = xAtIndex;
-					y = yAtIndex;
+					x = (int)xAtIndex;
+					y = (int)yAtIndex;
 					break;
 				}
 			}
@@ -70,7 +71,7 @@ public class RandomPathFinder extends AbstractPathFinder {
 		if (x != -1 && y != -1) {
 			
     		Path path = new Path();
-    		path.appendStep(enemy.getPositionX(), enemy.getPositionY());
+    		path.appendStep((int)enemy.getPosition().getX(), (int)enemy.getPosition().getY());
     		path.appendStep(x, y);
     		retVal = MovementActionResult.instance(path);
 		

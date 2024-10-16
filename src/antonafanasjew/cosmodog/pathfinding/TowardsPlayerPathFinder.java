@@ -46,14 +46,14 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		
 		//Adding the actors position as the first step in the path in any case.
 		Path path = new Path();
-		path.appendStep(enemy.getPositionX(), enemy.getPositionY());
+		path.appendStep((int)enemy.getPosition().getX(), (int)enemy.getPosition().getY());
 
 		//Selecting the best match for the target position. It can be null. (See the comment of the method for exact algorithm).
 		Position actorTarget = nextFreePositionNearbyPlayer(actor, player, playerMovementActionResult, collisionValidator);
 		
 		//If there is a target position, calculate the path (if possible)
 		if (actorTarget != null) {
-			Path wholePath = pathFinder.findPath(null, enemy.getPositionX(), enemy.getPositionY(), (int) actorTarget.getX(), (int) actorTarget.getY());
+			Path wholePath = pathFinder.findPath(null, (int)enemy.getPosition().getX(), (int)enemy.getPosition().getY(), (int) actorTarget.getX(), (int) actorTarget.getY());
 
 			if (wholePath != null) {
 				int tilesToMove = Math.min(enemy.getSpeedFactor(), wholePath.getLength() - 1);
@@ -87,8 +87,8 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		//If the player did not move, we take his real coordinates as target.
-		int x = player.getPositionX();
-		int y = player.getPositionY();
+		int x = (int)player.getPosition().getX();
+		int y = (int)player.getPosition().getY();
 		
 		//If the player has moved, we take his movement action result as target.
 		if (playerMovementActionResult != null) {
@@ -114,7 +114,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		List<Position> notBlockedPositions = Lists.newArrayList();
 		for (int i = 0; i < xs.length; i++) {
 			//Log.debug("Target candidate: " + xs[i] + "/" + ys[i]);
-			if (collisionValidator.collisionStatus(game, actor, map, xs[i], ys[i]).isPassable()) {
+			if (collisionValidator.collisionStatus(game, actor, map, Position.fromCoordinates(xs[i], ys[i])).isPassable()) {
 				//Log.debug("It is NOT blocked");
 				notBlockedPositions.add(Position.fromCoordinates(xs[i], ys[i]));
 			}
@@ -142,13 +142,13 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 					//Log.debug("Result is -1");
 					return -1;
 				} else {
-					float de1 = distanceToActorTargetPosition(p1, Position.fromCoordinates(actor.getPositionX(), actor.getPositionY()));
+					float de1 = distanceToActorTargetPosition(p1, actor.getPosition());
 					//Log.debug("Distance of p1 to actor: " + de1);
 					
-					float de2 = distanceToActorTargetPosition(p2, Position.fromCoordinates(actor.getPositionX(), actor.getPositionY()));
+					float de2 = distanceToActorTargetPosition(p2, actor.getPosition());
 					//Log.debug("Distance of p2 to actor: " + de2);
 					
-					int result = (de1 < de2) ? 1 : ((de1 > de2) ? -1 : 0);
+					int result = Float.compare(de2, de1);
 					//Log.debug("Result is " + result);
 					return result;
 				}

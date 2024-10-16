@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.inventory.KeyRingInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Key;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class TestLastBossBalancePlayerBuilder extends AbstractPlayerBuilder {
 
@@ -17,8 +18,7 @@ public class TestLastBossBalancePlayerBuilder extends AbstractPlayerBuilder {
 	protected void updatePlayer(Player player) {
 		player.setMaxLife(70);
 		player.setLife(70);
-		player.setPositionX(227);
-		player.setPositionY(258);
+		player.setPosition(Position.fromCoordinates(227, 258));
 		
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));

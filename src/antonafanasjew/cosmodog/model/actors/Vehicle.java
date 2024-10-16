@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.actors;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.topology.Position;
 
 
 public class Vehicle extends Transport {
@@ -23,10 +24,9 @@ public class Vehicle extends Transport {
 		this.setDirection(DirectionType.DOWN);
 	}
 	
-	public static Vehicle fromPosition(int positionX, int positionY) {
+	public static Vehicle fromPosition(Position position) {
 		Vehicle vehicle = new Vehicle();
-		vehicle.setPositionX(positionX);
-		vehicle.setPositionY(positionY);
+		vehicle.setPosition(position);
 		return vehicle;
 	}
 

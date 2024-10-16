@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.tiledmap;
 
+import antonafanasjew.cosmodog.topology.Position;
+
 import java.util.List;
 
 public class TiledMapLayer {
@@ -68,8 +70,8 @@ public class TiledMapLayer {
 		this.opacity = opacity;
 	}
 	
-	public TiledTile getTile(int x, int y) {
-		return this.getData().get(y * getWidth() + x);
+	public TiledTile getTile(Position position) {
+		return this.getData().get((int)(position.getY() * getWidth() + position.getX()));
 	}
 
 	@Override
