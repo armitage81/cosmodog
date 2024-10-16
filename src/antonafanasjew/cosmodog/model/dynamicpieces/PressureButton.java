@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a dynamic tile that is apressure button.
@@ -38,10 +39,9 @@ public class PressureButton extends DynamicPiece {
 		return state == STATE_DEACTIVATED;
 	}
 	
-	public static PressureButton create(int x, int y) {
+	public static PressureButton create(Position position) {
 		PressureButton button = new PressureButton();
-		button.setPositionX(x);
-		button.setPositionY(y);
+		button.setPosition(position);
 		return button;
 	}
 	

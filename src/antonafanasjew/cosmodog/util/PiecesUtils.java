@@ -40,18 +40,17 @@ public class PiecesUtils {
 	}
 	
 	public static float distanceBetweenPieces(Piece piece1, Piece piece2) {
-		Position p1 = Position.fromCoordinates(piece1.getPositionX(), piece1.getPositionY());
-		Position p2 = Position.fromCoordinates(piece2.getPositionX(), piece2.getPositionY());
+		Position p1 = piece1.getPosition();
+		Position p2 = piece2.getPosition();
 		return CosmodogMapUtils.distanceBetweenPositions(p1, p2);
 	}
 	
 	public static String pieceType(Piece piece) {
 		String pieceType;
-		if (piece instanceof Collectible) {
+		if (piece instanceof Collectible collectible) {
 
-			Collectible collectible = (Collectible) piece;
-			Collectible.CollectibleType collectibleType = collectible.getCollectibleType();
-			
+            Collectible.CollectibleType collectibleType = collectible.getCollectibleType();
+
 			if (collectibleType == Collectible.CollectibleType.COMPOSED) {
 				pieceType = CollectibleComposed.class.getSimpleName();
 			} else  if (collectibleType == Collectible.CollectibleType.TOOL) {
@@ -67,14 +66,14 @@ public class PiecesUtils {
 			} else if (collectibleType == Collectible.CollectibleType.LOG) {
 				pieceType = CollectibleLog.class.getSimpleName();
 			}
-			
+
 			else {
-				
+
 				CollectibleGoodie goodie = (CollectibleGoodie)collectible;
-				
+
 				pieceType = goodie.getGoodieType().name();
 			}
-			
+
 		} else if (piece instanceof Vehicle) {
 			pieceType = Vehicle.class.getSimpleName();
 		} else if (piece instanceof Platform) {

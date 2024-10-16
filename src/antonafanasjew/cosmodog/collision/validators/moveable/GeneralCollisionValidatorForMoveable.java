@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.collision.validators.moveable;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
@@ -12,7 +13,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 
 public class GeneralCollisionValidatorForMoveable extends AbstractCollisionValidator {
 
-	private CollisionValidator collisionValidator;
+	private final CollisionValidator collisionValidator;
 
 	public GeneralCollisionValidatorForMoveable() {
 		
@@ -27,8 +28,8 @@ public class GeneralCollisionValidatorForMoveable extends AbstractCollisionValid
 	}
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		return collisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		return collisionValidator.collisionStatus(cosmodogGame, actor, map, position);
 	}
 	
 }

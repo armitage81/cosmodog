@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Defines collision for swimming vehicles, which is only water.  
@@ -15,12 +16,11 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public class SailingCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
-		boolean waterTile = TileType.COLLISION_WATER.getTileId() == tileId;
-		boolean passable = waterTile;
-		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.PASSABLE;
-		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
+        boolean passable = TileType.COLLISION_WATER.getTileId() == tileId;
+		PassageBlockerType passageBlocker = PassageBlockerType.PASSABLE;
+		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
 	}
 
 }

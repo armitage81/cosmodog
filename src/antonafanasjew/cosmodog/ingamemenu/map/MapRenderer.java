@@ -33,15 +33,14 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
 public class MapRenderer implements Renderer {
 
-	private DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
-	private DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(inGameMenuContentDrawingContext);
-	private DrawingContext descriptionDrawingContext = descriptionDrawingContext(inGameMenuContentDrawingContext);
-	//private DrawingContext coordinatesDrawingContext = new CenteredDrawingContext(new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 0), 20);
-	private DrawingContext hintsDrawingContext = new CenteredDrawingContext(new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 1, 1, 2), 20);
-	private DrawingContext fullMapDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 3, 1, 3);
-	private float mapAreaContextLength = mapAreaDrawingContext.w() < mapAreaDrawingContext.h() ? mapAreaDrawingContext.w() : mapAreaDrawingContext.h();
-	private DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
-	private MiniMapRenderer miniMapRenderer = new MiniMapRenderer(mapAreaQuadraticDrawingContext);
+	private final DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
+	private final DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(inGameMenuContentDrawingContext);
+	private final DrawingContext descriptionDrawingContext = descriptionDrawingContext(inGameMenuContentDrawingContext);
+	private final DrawingContext hintsDrawingContext = new CenteredDrawingContext(new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 1, 1, 2), 20);
+	private final DrawingContext fullMapDrawingContext = new TileDrawingContext(descriptionDrawingContext, 1, 6, 0, 3, 1, 3);
+	private final float mapAreaContextLength = Math.min(mapAreaDrawingContext.w(), mapAreaDrawingContext.h());
+	private final DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
+	private final MiniMapRenderer miniMapRenderer = new MiniMapRenderer(mapAreaQuadraticDrawingContext);
 	
 	
 	@Override
@@ -64,7 +63,7 @@ public class MapRenderer implements Renderer {
 		//Render the map section for the selected chart piece (if discovered).
 		Player player = ApplicationContextUtils.getPlayer();
 		ChartInventoryItem chartInventoryItem = (ChartInventoryItem)player.getInventory().get(InventoryItemType.CHART);
-		float mapAreaContextLength = mapAreaDrawingContext.w() < mapAreaDrawingContext.h() ? mapAreaDrawingContext.w() : mapAreaDrawingContext.h();
+		float mapAreaContextLength = Math.min(mapAreaDrawingContext.w(), mapAreaDrawingContext.h());
 		DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
 		miniMapRenderer.render(gameContainer, graphics, mapInputState);
 		
@@ -72,8 +71,8 @@ public class MapRenderer implements Renderer {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		int mapWidth = map.getWidth();
 		int mapHeight = map.getHeight();
-		int posX = player.getPositionX();
-		int posY = player.getPositionY();
+		int posX = (int)player.getPosition().getX();
+		int posY = (int)player.getPosition().getY();
 		int chartPieceWidth = mapWidth / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
 		int chartPieceHeight = mapHeight / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
 		int visibleXFrom = (int)((mapVisiblePositionX + offsetX) * chartPieceWidth);

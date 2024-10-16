@@ -3,12 +3,16 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
+
+import java.io.Serial;
 
 /**
  * Represents a dynamic tile that is a crate.
  */
 public class Crate extends DynamicPiece {
 
+	@Serial
 	private static final long serialVersionUID = 5708806596326635656L;
 
 	public static final short STATE_WHOLE = 0;
@@ -20,7 +24,7 @@ public class Crate extends DynamicPiece {
 	private static short shapeLoopCounter = 0;
 
 	private short state = STATE_WHOLE;
-	private short shapeNumber = (short) ((shapeLoopCounter++) % NUMBER_OF_SHAPES);
+	private final short shapeNumber = (short) ((shapeLoopCounter++) % NUMBER_OF_SHAPES);
 
 	public short getState() {
 		return state;
@@ -30,10 +34,9 @@ public class Crate extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 
-	public static Crate create(int x, int y) {
+	public static Crate create(Position position) {
 		Crate stone = new Crate();
-		stone.setPositionX(x);
-		stone.setPositionY(y);
+		stone.setPosition(position);
 		return stone;
 	}
 

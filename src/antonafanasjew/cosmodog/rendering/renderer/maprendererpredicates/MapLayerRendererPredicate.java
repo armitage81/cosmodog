@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates;
 
+import antonafanasjew.cosmodog.topology.Position;
+
 public interface MapLayerRendererPredicate {
 	
 	/**
@@ -7,11 +9,10 @@ public interface MapLayerRendererPredicate {
 	 * to switch off top layers when a player enters a building.
 	 * 
 	 * @param layerIndex Whic layer is the tile on.
-	 * @param tileX X coordinate of the tile.
-	 * @param tileY Y coordinate of the tile.
+	 * @param position position of the tile.
 	 * @return true, if the tile should be rendered, false otherwise.
 	 */
-	boolean tileShouldBeRendered(int layerIndex, int tileX, int tileY);
+	boolean tileShouldBeRendered(int layerIndex, Position position);
 	
 	
 }

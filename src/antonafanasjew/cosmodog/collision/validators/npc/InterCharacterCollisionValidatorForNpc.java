@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.collision.validators.npc;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 
@@ -24,7 +25,7 @@ import com.google.common.collect.Sets;
  * to prioritize the targets of the characters.
  * 
  * Take note: This validator will be mostly called at the beginning of movement actions to define whether the target tile of an NPC is free of other characters,
- * but it will not consern itself with the actual character positions, but with their target positions.
+ * but it will not concern itself with the actual character positions, but with their target positions.
  * 
  * Example: Player wants to move from 0/0 to 0/1. During the movement action, his position will be still 0/0. 0/1 will be stored as players target.
  * After triggering the movement action, three nearby enemies want to move as following:
@@ -55,7 +56,7 @@ public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionVal
 	}
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		Player player = cosmodogGame.getPlayer();
 		Set<Enemy> enemies = cosmodogMap.getEnemiesInRange();
@@ -69,25 +70,22 @@ public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionVal
 			
 			MovementActionResult oneActorsMovementActionResult = (oneActor instanceof Player) ? playerMovementActionResult : enemyMovementActionResults.get(oneActor);
 			
-			int blockedPosX;
-			int blockedPosY;
-			
+			Position blockedPos;
+
 			if (oneActorsMovementActionResult == null) { //Actor is not moving, so his position tile is blocked.
-				blockedPosX = oneActor.getPositionX();
-				blockedPosY = oneActor.getPositionY();
-			} else { //Actor is moving, so his target tile is blocked. 
+				blockedPos = oneActor.getPosition();
+			} else { //Actor is moving, so his target tile is blocked.
 				Path oneActorsPath = oneActorsMovementActionResult.getPath();
 				Step oneActorsLastStep = oneActorsPath.getStep(oneActorsPath.getLength() - 1);
-				blockedPosX = oneActorsLastStep.getX();
-				blockedPosY = oneActorsLastStep.getY();
+				blockedPos = Position.fromCoordinates(oneActorsLastStep.getX(), oneActorsLastStep.getY());
 			}
 			
 			
-			if (blockedPosX == tileX && blockedPosY == tileY) {
-				return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
+			if (blockedPos.equals(position)) {
+				return CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
 			}
 		}
-		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+		return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 	}
 
 }

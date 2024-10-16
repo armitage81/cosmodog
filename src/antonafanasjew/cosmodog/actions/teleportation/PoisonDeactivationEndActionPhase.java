@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.teleportation;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
@@ -57,7 +58,7 @@ public class PoisonDeactivationEndActionPhase extends FixedLengthAsyncAction {
 		float currentY = initialCamY + verticalDiff * completion * cam.getZoomFactor();
 		
 		try {
-			cam.move(currentX, currentY);
+			cam.move(Position.fromCoordinates(currentX, currentY));
 		} catch (CamPositioningException e) {
 			Log.error("Cam out of bounds: " + currentX + "/" + currentY);
 		}

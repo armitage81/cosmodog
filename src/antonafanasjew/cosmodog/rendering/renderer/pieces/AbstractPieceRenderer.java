@@ -17,7 +17,7 @@ public abstract class AbstractPieceRenderer implements PieceRenderer {
 		
 		// Don't render the collectible if it is wrapped by a dynamic piece, such as a crate.
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(piece.getPositionX(), piece.getPositionY());
+		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(piece.getPosition());
 		
 		if (dynamicPiece == null || dynamicPiece.wrapsCollectible() == false) {
 			render(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
@@ -38,7 +38,7 @@ public abstract class AbstractPieceRenderer implements PieceRenderer {
 		CollectibleGoodie goodie = (CollectibleGoodie) piece;
 		String goodieTypeRepr = goodie.getGoodieType().name();
 		Animation animation = applicationContext.getAnimations().get(goodieTypeRepr);
-		animation.draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+		animation.draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
 
 	}
 

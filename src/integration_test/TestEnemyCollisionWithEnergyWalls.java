@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestEnemyCollisionWithEnergyWalls {
@@ -18,8 +19,7 @@ public class TestEnemyCollisionWithEnergyWalls {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(34);
-				player.setPositionY(107);
+				player.setPosition(Position.fromCoordinates(34, 207));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());

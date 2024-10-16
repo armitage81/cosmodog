@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Blocks passage by car over inactive collectibles.
@@ -21,13 +22,13 @@ import antonafanasjew.cosmodog.model.actors.Player;
 public class NonInteractivePieceCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		Piece piece = cosmodogMap.pieceAtTile(tileX, tileY);
+		Piece piece = cosmodogMap.pieceAtTile(position);
 		boolean passable = piece == null || piece.interactive(piece, ApplicationContext.instance(), cosmodogGame, (Player)actor);
 
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_INACTIVE_PIECE;
-		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
 	}
 
 }

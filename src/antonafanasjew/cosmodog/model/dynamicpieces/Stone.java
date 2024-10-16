@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a dynamic tile that is a stone that can be destroyed by the player.
@@ -33,10 +34,9 @@ public class Stone extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 	
-	public static Stone create(int x, int y) {
+	public static Stone create(Position position) {
 		Stone stone = new Stone();
-		stone.setPositionX(x);
-		stone.setPositionY(y);
+		stone.setPosition(position);
 		return stone;
 	}
 	

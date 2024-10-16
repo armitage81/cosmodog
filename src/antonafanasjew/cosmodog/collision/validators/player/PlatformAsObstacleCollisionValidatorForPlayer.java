@@ -138,7 +138,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 	 * 
 	 */
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		
 		boolean blocked = false;
 		
@@ -158,14 +158,14 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 		if (platform != null) { //It is null, if collected, that is if the player is sitting inside of it. 
 		
 			if (PiecesUtils.distanceBetweenPieces(actor, platform) <= 10) {
-				int actorOffsetX = actor.getPositionX() - platform.getPositionX();
-				int actorOffsetY = actor.getPositionY() - platform.getPositionY();
+				float actorOffsetX = actor.getPosition().getX() - platform.getPosition().getX();
+				float actorOffsetY = actor.getPosition().getY() - platform.getPosition().getY();
 				Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY);
 				
 				Collection<BlockInfo> blockInfosForActorsPosition = COLLISIONDATA.get(offsetPosition);
 				
 				if (blockInfosForActorsPosition != null) { //It will be null, if no collisions are defined, so it would be fine to pass.
-					DirectionType movementAttemptDirection = PositionUtils.targetDirection(actor, tileX, tileY);
+					DirectionType movementAttemptDirection = PositionUtils.targetDirection(actor, position);
 					for (BlockInfo blockInfo : blockInfosForActorsPosition) {
 						if (blockInfo.directionType.equals(movementAttemptDirection)) {
 							
@@ -173,7 +173,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 							
 							if (actor instanceof Player) {
 								VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)(((Player)actor).getInventory().get(InventoryItemType.VEHICLE));
-								if (vehicleInventoryItem != null && vehicleInventoryItem.isExiting() == false) {
+								if (vehicleInventoryItem != null && !vehicleInventoryItem.isExiting()) {
 									inCar = true;
 								}
 							}
@@ -198,7 +198,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 				}
 			}
 		}
-		return CollisionStatus.instance(actor, map, tileX, tileY, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
+		return CollisionStatus.instance(actor, map, position, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
 		
 	}
 

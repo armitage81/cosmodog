@@ -54,7 +54,7 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		float pieceOffsetX = 0;
 		float pieceOffsetY = 0;
 
-		if (playerInPlatform && piece instanceof Platform == false && CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
+		if (playerInPlatform && !(piece instanceof Platform) && CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
 		
 			if (playerIsMoving) {
 				pieceOffsetX = tileWidth * playerTransition.getTransitionalOffsetX();
@@ -126,7 +126,7 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		DirectionType direction = vehicle.getDirection();
 		String animationKey = vehicleDirection2animationKey.get(direction);
 		Animation vehicleAnimation = applicationContext.getAnimations().get(animationKey);
-		vehicleAnimation.draw((vehicle.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (vehicle.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+		vehicleAnimation.draw((vehicle.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (vehicle.getPosition().getY() - tileNoY) * tileHeight + pieceOffsetY);
 	}
 
 }

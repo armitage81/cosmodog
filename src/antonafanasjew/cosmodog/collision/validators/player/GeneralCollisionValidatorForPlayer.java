@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.player;
 
 import java.util.List;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
@@ -24,12 +25,12 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
  */
 public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
-	private CollisionValidator otherVehicleCollisionValidator;
-	private CollisionValidator defaultCollisionValidator;
-	private CollisionValidator vehicleCollisionValidator;
-	private FuelCollisionValidatorForPlayer fuelCollisionValidator;
-	private PlatformAsVehicleCollisionValidatorForPlayer platformAsVehicleCollisionValidator;
-	private CollisionValidator platformAsObstacleCollisionValidator;
+	private final CollisionValidator otherVehicleCollisionValidator;
+	private final CollisionValidator defaultCollisionValidator;
+	private final CollisionValidator vehicleCollisionValidator;
+	private final FuelCollisionValidatorForPlayer fuelCollisionValidator;
+	private final PlatformAsVehicleCollisionValidatorForPlayer platformAsVehicleCollisionValidator;
+	private final CollisionValidator platformAsObstacleCollisionValidator;
 
 	public GeneralCollisionValidatorForPlayer() {
 		
@@ -59,7 +60,7 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 	 * on foot. 
 	 */
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		
 		Player player = (Player)actor;
 		
@@ -71,31 +72,31 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 		
 		//To check whether the player can move outside the platform, he or the target need to be on the platform.
 		//If we'd check only for target, the player could jump from the border of the platform as the target is not part of it
-		boolean platformAsObstacleCollision = !platformAsVehicleCollision && (CosmodogMapUtils.isTileOnPlatform(tileX, tileY) || CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));
+		boolean platformAsObstacleCollision = !platformAsVehicleCollision && (CosmodogMapUtils.isTileOnPlatform(position) || CosmodogMapUtils.isTileOnPlatform(actor.getPosition()));
 		boolean vehicleCollision = vehicleInventoryItem != null && !vehicleInventoryItem.isExiting(); 
 
 		//Check fuel collision
-		CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-		if (fuelCollisionStatus.isPassable() == false) {
+		CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+		if (!fuelCollisionStatus.isPassable()) {
 			return fuelCollisionStatus;
 		}
 		
 		//Check vehicle collision.
-		CollisionStatus otherVehicleCollisionStatus = otherVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-		if (otherVehicleCollisionStatus.isPassable() == false) {
+		CollisionStatus otherVehicleCollisionStatus = otherVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+		if (!otherVehicleCollisionStatus.isPassable()) {
 			return otherVehicleCollisionStatus;
 		}
 		
 		//Check exiting platform collision. It is always PASSABLE
 		if (exitingPlatformCollision) {
-			return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+			return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 		}
 			
 		//All cases when player or the target tile is on platform (and not driving)
 		if (platformAsObstacleCollision) {
 			
 			//Only check platform obstacles
-			CollisionStatus platformCollisionStatus = platformAsObstacleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			CollisionStatus platformCollisionStatus = platformAsObstacleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
 			
 			//If platform blocks passage return IMPASSABLE
 			if (!platformCollisionStatus.isPassable()) {
@@ -103,20 +104,20 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 			}
 			
 			//If no platform obstacles and target tile on platform, there is no need to check for the terrain type collisions, so return PASSABLE
-			if (CosmodogMapUtils.isTileOnPlatform(tileX, tileY)) {
+			if (CosmodogMapUtils.isTileOnPlatform(position)) {
 				return platformCollisionStatus;
 			}
 		} 
 		
 		if (vehicleCollision) {
-			return vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			return vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
 		} 
 		
 		if (platformAsVehicleCollision) {
-			return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+			return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
 		} 
 		
-		return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+		return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
 	}
 
 

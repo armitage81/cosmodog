@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Blocks passage over collectibles.
@@ -16,12 +17,12 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public class CollectibleCollisionValidatorForMoveable extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		Piece piece = cosmodogMap.pieceAtTile(tileX, tileY);
-		boolean passable = piece == null || (piece instanceof Collectible) == false;
+		Piece piece = cosmodogMap.pieceAtTile(position);
+		boolean passable = !(piece instanceof Collectible);
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
-		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
 	}
 
 }

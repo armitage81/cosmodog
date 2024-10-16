@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.actions.movement;
 
 import java.util.List;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import com.google.common.collect.Lists;
@@ -61,16 +62,14 @@ public class MovementActionResult {
 	 * <p>
 	 * Take note: The start position and the target position can be equal if the player does not move (skip turn).
 	 *
-	 * @param startPosX x position of the actor before the movement.
-	 * @param startPosY y position of the actor before the movement.
-	 * @param targetPosX Target x position of the actor.
-	 * @param targetPosY Target y position of the actor.
+	 * @param startPosition Position of the actor before the movement.
+	 * @param targetPosition Target position of the actor.
 	 * @return Movement action result.
 	 */
-	public static MovementActionResult instance(int startPosX, int startPosY, int targetPosX, int targetPosY) {
+	public static MovementActionResult instance(Position startPosition, Position targetPosition) {
 		Path path = new Path();
-		path.appendStep(startPosX, startPosY);
-		path.appendStep(targetPosX, targetPosY);
+		path.appendStep((int)startPosition.getX(), (int)startPosition.getY());
+		path.appendStep((int)targetPosition.getX(), (int)targetPosition.getY());
 		return instance(path);
 	}
 

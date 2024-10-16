@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
@@ -18,23 +19,24 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
  */
 public class PlayerInPlatformAsObstacleCollisionValidatorForNpc extends AbstractCollisionValidator {
 
-	private MovementActionResult playerMovementActionResult;
+	private final MovementActionResult playerMovementActionResult;
 
 	public PlayerInPlatformAsObstacleCollisionValidatorForNpc(MovementActionResult playerMovementActionResult) {
 		this.playerMovementActionResult = playerMovementActionResult;
 	}
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		
 		boolean blocked = false;
 		
 		PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)ApplicationContextUtils.getPlayer().getInventory().get(InventoryItemType.PLATFORM);
 		
-		if (platformInventoryItem != null) { //That is, the player is "having" it, or sitting in it, and hence being the obstacle itself 
-			blocked = CosmodogMapUtils.isTileOnPlatform(tileX, tileY, playerMovementActionResult.getPath().getX(1), playerMovementActionResult.getPath().getY(1));
+		if (platformInventoryItem != null) { //That is, the player is "having" it, or sitting in it, and hence being the obstacle itself
+			Position firstPathPosition = Position.fromCoordinates(playerMovementActionResult.getPath().getX(1), playerMovementActionResult.getPath().getY(1));
+			blocked = CosmodogMapUtils.isTileOnPlatform(position, firstPathPosition);
 		}
-		return CollisionStatus.instance(actor, map, tileX, tileY, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
+		return CollisionStatus.instance(actor, map, position, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
 		
 	}
 

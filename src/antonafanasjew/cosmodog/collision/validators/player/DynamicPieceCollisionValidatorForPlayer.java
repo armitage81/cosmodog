@@ -33,15 +33,16 @@ import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.KeyRingInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Key;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
 public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
-		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(tileX, tileY);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(position);
 		if (dynamicPiece != null) {
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
@@ -60,8 +61,8 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 				Actor moveableActor = moveable.asActor();
 				CollisionValidator collisionValidatorForMoveable = ApplicationContextUtils.getCosmodog().getCollisionValidatorForMoveable();
 				DirectionType directionType = PositionUtils.targetDirection(actor, moveableActor);
-				int newMoveablePosX = moveableActor.getPositionX();
-				int newMoveablePosY = moveableActor.getPositionY();
+				int newMoveablePosX = (int)moveableActor.getPosition().getX();
+				int newMoveablePosY = (int)moveableActor.getPosition().getY();
 				if (directionType == DirectionType.UP) {
 					newMoveablePosY--;
 				}
@@ -74,23 +75,23 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 				if (directionType == DirectionType.RIGHT) {
 					newMoveablePosX++;
 				}
-				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, newMoveablePosX, newMoveablePosY);
+				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, Position.fromCoordinates(newMoveablePosX, newMoveablePosY));
 				if (collisionStatusForMoveable.isPassable()) {
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+					retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 				} else {
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 				
 			} else if (dynamicPiece instanceof Terminal) {
 				DirectionType directionType = PositionUtils.targetDirection(actor, dynamicPiece);
 				String blockReasonParam = directionType == DirectionType.UP ? "" : "Blocked";
-				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 			} else if (dynamicPiece instanceof BinaryIndicator) {
-				retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			} else if (dynamicPiece instanceof Stone) {
 				Stone stone = (Stone)dynamicPiece;
 				if (stone.getState() != Stone.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof HardStone) {
 				HardStone hardStone = (HardStone)dynamicPiece;
@@ -101,7 +102,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					if (inventory.get(InventoryItemType.PICK) == null) {
 						blockReasonParam = "Pick required";
 					}
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			} else if (dynamicPiece instanceof Tree) {
 				Tree tree = (Tree)dynamicPiece;
@@ -112,7 +113,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					if (inventory.get(InventoryItemType.AXE) == null) {
 						blockReasonParam = "Axe required";
 					}
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			} else if (dynamicPiece instanceof Bamboo) {
 				Bamboo bamboo = (Bamboo)dynamicPiece;
@@ -123,7 +124,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					if (inventory.get(InventoryItemType.MACHETE) == null) {
 						blockReasonParam = "Machete required";
 					}
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			} else if (dynamicPiece instanceof CrumbledWall) {
 				CrumbledWall wall = (CrumbledWall)dynamicPiece;
@@ -134,24 +135,24 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					if (inventory.get(InventoryItemType.DYNAMITE) == null) {
 						blockReasonParam = "Dynamite required";
 					}
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			} else if (dynamicPiece instanceof Gate) {
 				Gate gate = (Gate)dynamicPiece;
 				if (!gate.isLowered()) {
 					String blockReasonParam = "Gate is closed";
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			} else if (dynamicPiece instanceof SecretDoor) {
 				SecretDoor door = (SecretDoor)dynamicPiece;
 				if (!door.isOpen()) {
 					String blockReasonParam = "Door is closed";
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			} else if (dynamicPiece instanceof Crate) {
 				Crate crate = (Crate)dynamicPiece;
 				if (crate.getState() != Crate.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Door) {
 				Door door = (Door)dynamicPiece;
@@ -173,11 +174,10 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 						blockReasonParam = "Requires " + doorType.getKeyDescription();
 					}
 						
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				} 
-			} else if (dynamicPiece instanceof AlienBaseBlockade) {
-				AlienBaseBlockade alienBaseBlockade = (AlienBaseBlockade)dynamicPiece;
-				if (alienBaseBlockade.closed()) {
+			} else if (dynamicPiece instanceof AlienBaseBlockade alienBaseBlockade) {
+                if (alienBaseBlockade.closed()) {
 					String blockReasonParam = "Your alien knowledge opens the door.";
 					Player player = (Player) actor;
 					Inventory inventory = player.getInventory();
@@ -186,7 +186,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					if (insightInventoryItem == null || insightInventoryItem.getNumber() < Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
 						blockReasonParam = "Requires " +  String.valueOf(Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) + " insights to open.";
 					}
-					retVal = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -78,27 +79,16 @@ public class MapLayerRenderer extends AbstractRenderer {
 			for (int tilePositionOnMapX = camPositionOnMapInTilesX; tilePositionOnMapX < camPositionOnMapInTilesX + camViewWidthInTiles; tilePositionOnMapX++) {
 				for (int tilePositionOnMapY = camPositionOnMapInTilesY; tilePositionOnMapY < camPositionOnMapInTilesY + camViewHeightInTiles; tilePositionOnMapY++) {
 
-					if (tilePositionOnMapX < 0) {
+					Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY);
+					if (!tilePosition.inMapBounds(map)) {
 						continue;
 					}
 
-					if (tilePositionOnMapY < 0) {
+					if (!rendererPredicate.tileShouldBeRendered(i, tilePosition)) {
 						continue;
 					}
 
-					if (tilePositionOnMapX >= map.getWidth()) {
-						continue;
-					}
-
-					if (tilePositionOnMapY >= map.getHeight()) {
-						continue;
-					}
-
-					if (!rendererPredicate.tileShouldBeRendered(i, tilePositionOnMapX, tilePositionOnMapY)) {
-						continue;
-					}
-
-					render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileWidthInPixels, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileHeightInPixels, tilePositionOnMapX, tilePositionOnMapY, i);
+					render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileWidthInPixels, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileHeightInPixels, tilePosition, i);
 				}
 			}
 			
@@ -112,11 +102,11 @@ public class MapLayerRenderer extends AbstractRenderer {
 		
 	}
 
-	private void render(CosmodogMap map, int offsetX, int offsetY, int tilePosX, int tilePosY, int layerIndex) {
+	private void render(CosmodogMap map, int offsetX, int offsetY, Position tilePosition, int layerIndex) {
 		
 		Animation animation = null;
 		
-		int tileId = map.getTileId(tilePosX, tilePosY, layerIndex);
+		int tileId = map.getTileId(tilePosition, layerIndex);
 		TileType tileType = TileType.getByLayerAndTileId(layerIndex, tileId);
 		if (Mappings.TILE_TYPES_TO_BE_ANIMATED.contains(tileType)) {
 			animation = ApplicationContext.instance().getAnimations().get("tile." + tileType.name());

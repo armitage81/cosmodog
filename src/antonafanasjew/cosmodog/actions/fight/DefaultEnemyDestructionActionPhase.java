@@ -143,7 +143,7 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 					dropped = newCollectible;
 				}
 				
-				cosmodogMap.getMapPieces().put(Position.fromPiece(dropped), dropped);
+				cosmodogMap.getMapPieces().put(dropped.getPosition(), dropped);
 			}
 		}
 		cosmodogMap.getEnemies().remove(getEnemy());

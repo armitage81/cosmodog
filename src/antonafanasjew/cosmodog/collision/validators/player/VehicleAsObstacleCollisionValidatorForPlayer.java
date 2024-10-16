@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * This collision validator will always pass if the player is not in a vehicle.
@@ -23,18 +24,18 @@ public class VehicleAsObstacleCollisionValidatorForPlayer extends AbstractCollis
 	public static int N = 0;
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 		Player player = (Player) actor;
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			if (!vehicleInventoryItem.isExiting()) {
 				CosmodogMap cosmodogMap = cosmodogGame.getMap();
-				Piece piece = cosmodogMap.pieceAtTile(tileX, tileY);
+				Piece piece = cosmodogMap.pieceAtTile(position);
 				boolean vehicleOnTile = piece instanceof Vehicle;
 				boolean resultingPassageFlag = !vehicleOnTile;
 				PassageBlockerType passageBlocker = resultingPassageFlag ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_VEHICLE_COLLECTIBLE;
-				retVal = CollisionStatus.instance(actor, map, tileX, tileY, resultingPassageFlag, passageBlocker);
+				retVal = CollisionStatus.instance(actor, map, position, resultingPassageFlag, passageBlocker);
 			}
 		}
 		return retVal;

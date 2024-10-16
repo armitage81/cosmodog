@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.collision.PassageBlockerType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Uses underlying collision validators to validate collision. If at least one is blocking, the result of this validator will block. 
@@ -25,20 +26,17 @@ public class OneBlocksAllCollisionValidator implements CollisionValidator {
 	}
 	
 	@Override
-	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		
-		
-		Iterator<CollisionValidator> it = underlyings.iterator();
-		
-		while(it.hasNext()) {
-			CollisionValidator underlying = it.next();
-			CollisionStatus underlyingCollisionStatus = underlying.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
-			if (underlyingCollisionStatus.isPassable() == false) {
-				return underlyingCollisionStatus;
-			}
-		}
+	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+
+
+        for (CollisionValidator underlying : underlyings) {
+            CollisionStatus underlyingCollisionStatus = underlying.collisionStatus(cosmodogGame, actor, map, position);
+            if (!underlyingCollisionStatus.isPassable()) {
+                return underlyingCollisionStatus;
+            }
+        }
 			
-		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+		return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 	}
 
 }

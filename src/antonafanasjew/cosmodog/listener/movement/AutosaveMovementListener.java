@@ -4,19 +4,23 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PathUtils;
+
+import java.io.Serial;
 
 public class AutosaveMovementListener extends MovementListenerAdapter {
 
 	public static final int AUTOSAVE_INTERVAL_IN_TURNS = 20;
 	
+	@Serial
 	private static final long serialVersionUID = -4664038701486172215L;
 
 	
 	
 	@Override
-	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void afterMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		if (timeToAutosave()) {
 			autosave();
 		}

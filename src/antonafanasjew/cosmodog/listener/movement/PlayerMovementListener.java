@@ -74,7 +74,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 	}
 
-	private void updateFuel(int x1, int y1, int x2, int y2) {
+	private void updateFuel(Position position1, Position position2) {
 		
 		ApplicationContext appCx = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
@@ -84,7 +84,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
-			int fuelCosts = cosmodog.getFuelConsumer().turnCosts(x1, y1, x2, y2, player, map, appCx);
+			int fuelCosts = cosmodog.getFuelConsumer().turnCosts(position1, position2, player, map, appCx);
 			vehicle.decreaseFuel(fuelCosts);
 		}
 	}
@@ -100,14 +100,14 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		player.decreaseWater(waterCosts);
 	}
 	
-	private void updateFood(int x1, int y1, int x2, int y2) {
+	private void updateFood(Position position1, Position position2) {
 		
 		ApplicationContext appCx = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		int foodCosts = cosmodog.getFoodConsumer().turnCosts(x1, y1, x2, y2, player, map, appCx);
+		int foodCosts = cosmodog.getFoodConsumer().turnCosts(position1, position2, player, map, appCx);
 		player.decreaseFood(foodCosts);
 	}
 	
@@ -137,7 +137,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	}
 	
 	@Override
-	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void afterMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		checkStarvation(applicationContext);
 		checkDehydration(applicationContext);
 		checkTemperature(applicationContext);
@@ -364,14 +364,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void checkContamination(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		DynamicPiece piece = map.dynamicPieceAtPosition(player.getPositionX(), player.getPositionY());
-		if (piece == null || !(piece instanceof Poison)) {
+		DynamicPiece piece = map.dynamicPieceAtPosition(player.getPosition());
+		if (!(piece instanceof Poison poison)) {
 			return;
 		}
-		
-		Poison poison = (Poison)piece;
-		
-		if (poison.isDeactivated()) {
+
+        if (poison.isDeactivated()) {
 			return;
 		}
 		

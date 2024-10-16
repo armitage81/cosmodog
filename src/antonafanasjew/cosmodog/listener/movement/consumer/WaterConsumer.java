@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class WaterConsumer implements ResourceConsumer {
@@ -18,7 +19,7 @@ public class WaterConsumer implements ResourceConsumer {
 	private static final int DESERT_WATER_CONSUMPTION_PER_TURN = DEFAULT_WATER_CONSUMPTION_PER_TURN * 3;
 	
 	@Override
-	public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+	public int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		
@@ -31,7 +32,7 @@ public class WaterConsumer implements ResourceConsumer {
 			return 0;
 		}
 		
-		int tileId = map.getTileId(x2, y2, Layers.LAYER_META_GROUNDTYPES);
+		int tileId = map.getTileId(position2, Layers.LAYER_META_GROUNDTYPES);
 		
 		boolean onSand = TileType.GROUND_TYPE_SAND.getTileId() == tileId;
 		boolean atNight = game.getPlanetaryCalendar().isNight();

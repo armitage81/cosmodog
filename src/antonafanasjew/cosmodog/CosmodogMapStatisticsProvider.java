@@ -36,9 +36,8 @@ public class CosmodogMapStatisticsProvider {
 
 			List<GoodieType> goodieTypes = Lists.newArrayList();
 
-			if (e instanceof Collectible) {
-				Collectible collectible = (Collectible) e;
-				if (collectible.getCollectibleType() == CollectibleType.GOODIE) {
+			if (e instanceof Collectible collectible) {
+                if (collectible.getCollectibleType() == CollectibleType.GOODIE) {
 					CollectibleGoodie goodie = (CollectibleGoodie) collectible;
 					if (goodie.getGoodieType() == GoodieType.infobit || goodie.getGoodieType() == GoodieType.infobyte || goodie.getGoodieType() == GoodieType.infobank) {
 						goodieTypes.add(goodie.getGoodieType());
@@ -53,18 +52,16 @@ public class CosmodogMapStatisticsProvider {
 						}
 					}
 				}
-			} else if (e instanceof Enemy) {
-				Enemy enemy = (Enemy) e;
-				InventoryItem inventoryItem = enemy.getInventoryItem();
-				if (inventoryItem instanceof GoodieInventoryItem) {
-					GoodieInventoryItem goodieInventoryItem = (GoodieInventoryItem) inventoryItem;
-					if (goodieInventoryItem.getGoodieType() == GoodieType.infobit || goodieInventoryItem.getGoodieType() == GoodieType.infobyte || goodieInventoryItem.getGoodieType() == GoodieType.infobank) {
+			} else if (e instanceof Enemy enemy) {
+                InventoryItem inventoryItem = enemy.getInventoryItem();
+				if (inventoryItem instanceof GoodieInventoryItem goodieInventoryItem) {
+                    if (goodieInventoryItem.getGoodieType() == GoodieType.infobit || goodieInventoryItem.getGoodieType() == GoodieType.infobyte || goodieInventoryItem.getGoodieType() == GoodieType.infobank) {
 						goodieTypes.add(goodieInventoryItem.getGoodieType());
 					}
 				}
 			}
 
-			int value = goodieTypes.stream().mapToInt(el -> {
+            return goodieTypes.stream().mapToInt(el -> {
 				if (el == GoodieType.infobit) {
 					return 1;
 				} else if (el == GoodieType.infobyte) {
@@ -75,8 +72,6 @@ public class CosmodogMapStatisticsProvider {
 					return 0;
 				}
 			}).sum();
-
-			return value;
 
 		};
 	}
@@ -92,12 +87,12 @@ public class CosmodogMapStatisticsProvider {
 		mapPieces.putAll(collectibles);
 
 		for (Enemy enemy : enemies) {
-			mapPieces.put(Position.fromCoordinates(enemy.getPositionX(), enemy.getPositionY()), enemy);
+			mapPieces.put(enemy.getPosition(), enemy);
 		}
 
 		Function<Piece, Integer> valueFunction = pieceValueInInfobitsFunction();
 
-		Map<Position, Integer> pieceValues = mapPieces.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> valueFunction.apply(e.getValue())));
+		Map<Position, Integer> pieceValues = mapPieces.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> valueFunction.apply(e.getValue())));
 
 		Map<Position, Integer> mapPieceValuePerChartPiece = Maps.newHashMap();
 		for (Position position : pieceValues.keySet()) {

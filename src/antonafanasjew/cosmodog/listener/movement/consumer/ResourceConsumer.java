@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.listener.movement.consumer;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * As consumption of resources (water, food, fuel) is more complex now,
@@ -12,6 +13,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
  */
 public interface ResourceConsumer {
 
-	int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx);
+	int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx);
 	
 }

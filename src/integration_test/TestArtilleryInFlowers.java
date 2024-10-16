@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestArtilleryInFlowers {
@@ -17,8 +18,7 @@ public class TestArtilleryInFlowers {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(57);
-				player.setPositionY(150);
+				player.setPosition(Position.fromCoordinates(57, 150));
 				player.setMaxLife(100);
 				player.setLife(100);
 

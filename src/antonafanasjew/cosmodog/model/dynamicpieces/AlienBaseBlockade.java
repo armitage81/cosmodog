@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class AlienBaseBlockade extends DynamicPiece {
@@ -41,8 +42,7 @@ public class AlienBaseBlockade extends DynamicPiece {
 
 	public static AlienBaseBlockade create(int x, int y) {
 		AlienBaseBlockade retVal = new AlienBaseBlockade();
-		retVal.setPositionX(x);
-		retVal.setPositionY(y);
+		retVal.setPosition(Position.fromCoordinates(x, y));
 		retVal.opened = false;
 		return retVal;
 	}

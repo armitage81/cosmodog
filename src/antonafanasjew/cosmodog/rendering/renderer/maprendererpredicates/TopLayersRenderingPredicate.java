@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CollisionUtils;
 
@@ -19,7 +20,7 @@ import com.google.common.collect.Lists;
 public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 
 	@Override
-	public boolean tileShouldBeRendered(int layerIndex, int tileX, int tileY) {
+	public boolean tileShouldBeRendered(int layerIndex, Position position) {
 		
 		//We can ignore all layers that are not top at this point of time.
 		boolean topLayer = layerIndex > Layers.LAYER_RUINS_TIPS && layerIndex < Layers.LAYER_META_COLLISIONS;
@@ -32,7 +33,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		//No need to calculate the region intersection if the tile is empty anyway.
-		if (map.getTileId(tileX, tileY, layerIndex) == 0) {
+		if (map.getTileId(position, layerIndex) == 0) {
 			return false;
 		}
 		
@@ -50,17 +51,17 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 			return true;
 		}
 		
-		boolean retVal = !tileCoversPlayer(roofRegionsOverPlayer, map, tileX, tileY, layerIndex);
+		boolean retVal = !tileCoversPlayer(roofRegionsOverPlayer, map, position, layerIndex);
 		
 		return retVal;
 		
 		
 	}
 	
-	private boolean tileCoversPlayer(Set<TiledObject> regionsOverPlayer, CosmodogMap map, int tilePosX, int tilePosY, int layerIndex) {
+	private boolean tileCoversPlayer(Set<TiledObject> regionsOverPlayer, CosmodogMap map, Position position, int layerIndex) {
 		
-		int x = tilePosX * map.getTileWidth();
-		int y = tilePosY * map.getTileHeight();
+		int x = (int)(position.getX() * map.getTileWidth());
+		int y = (int)(position.getY() * map.getTileHeight());
 		int w = map.getTileWidth();
 		int h = map.getTileHeight();
 		

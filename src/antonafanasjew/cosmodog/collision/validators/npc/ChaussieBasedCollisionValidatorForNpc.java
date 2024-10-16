@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Maps;
 
 /**
@@ -34,7 +35,7 @@ public class ChaussieBasedCollisionValidatorForNpc extends AbstractCollisionVali
 
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		
 		NpcActor npcActor = (NpcActor)actor;
 		
@@ -44,7 +45,7 @@ public class ChaussieBasedCollisionValidatorForNpc extends AbstractCollisionVali
 			collisionValidator = defaulCollisionValidator;
 		}
 		
-		return collisionValidator.collisionStatus(cosmodogGame, npcActor, map, tileX, tileY);
+		return collisionValidator.collisionStatus(cosmodogGame, npcActor, map, position);
 	}
 
 }

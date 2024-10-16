@@ -8,6 +8,7 @@ import java.util.Map;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
@@ -280,7 +281,7 @@ public class ApplicationContext {
 		
 		ResourceConsumer fuelConsumer = Features.getInstance().featureOn(Features.FEATURE_FUEL) ? new FuelConsumer() : new ResourceConsumer() {
 			@Override
-			public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+			public int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
 				return 0;
 			}
 		};
@@ -289,7 +290,7 @@ public class ApplicationContext {
 		
 		ResourceConsumer waterConsumer = Features.getInstance().featureOn(Features.FEATURE_THIRST) ? new WaterConsumer() : new ResourceConsumer() {
 			@Override
-			public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+			public int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
 				return 0;
 			}
 		};
@@ -298,7 +299,7 @@ public class ApplicationContext {
 		
 		ResourceConsumer foodConsumer = Features.getInstance().featureOn(Features.FEATURE_HUNGER) ? new FoodConsumer() : new ResourceConsumer() {
 			@Override
-			public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+			public int turnCosts(Position positioin1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
 				return 0;
 			}
 		};

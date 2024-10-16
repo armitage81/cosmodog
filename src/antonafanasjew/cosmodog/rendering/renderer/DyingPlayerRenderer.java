@@ -92,7 +92,7 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth, (player.getPositionY() - tileNoY) * tileHeight);
+		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth, (player.getPosition().getY() - tileNoY) * tileHeight);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.LoadingOrGameOverOrTheEnd);

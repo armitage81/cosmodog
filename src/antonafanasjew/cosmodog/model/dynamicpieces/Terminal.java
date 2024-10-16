@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
@@ -61,10 +62,9 @@ public class Terminal extends DynamicPiece {
 		return false;
 	}
 
-	public static Terminal create(int x, int y) {
+	public static Terminal create(Position position) {
 		Terminal terminal = new Terminal();
-		terminal.setPositionX(x);
-		terminal.setPositionY(y);
+		terminal.setPosition(position);
 		return terminal;
 	}
 	

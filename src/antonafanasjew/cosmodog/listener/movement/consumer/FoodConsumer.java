@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class FoodConsumer implements ResourceConsumer {
 
@@ -13,7 +14,7 @@ public class FoodConsumer implements ResourceConsumer {
 	private static final int FOOD_CONSUMPTION_PER_TURN_WHEN_FOUND_NUTRIENTS = 1;
 	
 	@Override
-	public int turnCosts(int x1, int y1, int x2, int y2, Player player, CosmodogMap map, ApplicationContext cx) {
+	public int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
 		
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;

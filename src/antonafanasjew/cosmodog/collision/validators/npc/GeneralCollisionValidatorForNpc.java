@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.npc;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
@@ -37,8 +38,8 @@ public class GeneralCollisionValidatorForNpc extends AbstractCollisionValidator 
 	
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		return collisionValidator.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		return collisionValidator.collisionStatus(cosmodogGame, actor, map, position);
 	}
 
 

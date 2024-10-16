@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.collision;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Returns the collision status for a given tile based on actors properties. The status is basically the information
@@ -20,11 +21,10 @@ public interface CollisionValidator {
 	 * 
 	 * @param cosmodogGame The cosmodog game object
 	 * @param actor The actor object. (f.i. the player figure)
-	 * @param map The tiled map object to retrieve the tile informations.
-	 * @param tileX The horizontal coordinate of the tile (in tiles, not in pixels)
-	 * @param tileY The vertical coordinate of the tile (in tiles, not in pixels)
+	 * @param cosmodogMap The tiled map object to retrieve the tile informations.
+	 * @param position The position of the tile (in tiles, not in pixels)
 	 * @return The collision status object. It contains all information about the tiles as well as the passable/not passable property.
 	 */
-	CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap cosmodogMap, int tileX, int tileY);
+	CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap cosmodogMap, Position position);
 	
 }

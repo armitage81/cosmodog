@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 /**
@@ -36,10 +37,9 @@ public class Tree extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 	
-	public static Tree create(int x, int y) {
+	public static Tree create(Position position) {
 		Tree tree = new Tree();
-		tree.setPositionX(x);
-		tree.setPositionY(y);
+		tree.setPosition(position);
 		return tree;
 	}
 	

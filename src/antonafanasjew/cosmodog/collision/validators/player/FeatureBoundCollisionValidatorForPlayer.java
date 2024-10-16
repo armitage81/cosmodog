@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * The only purpose of this validator is to switch off collision in case this feature is deactivated.
@@ -17,7 +18,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
  */
 public class FeatureBoundCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
-	private CollisionValidator delegate;
+	private final CollisionValidator delegate;
 	
 	/**
 	 * Initialized with the delegate.
@@ -28,15 +29,15 @@ public class FeatureBoundCollisionValidatorForPlayer extends AbstractCollisionVa
 	}
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		
-		CollisionStatus defaultCollisionStatus = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+		CollisionStatus defaultCollisionStatus = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 		
 		return Features.getInstance().<CollisionStatus>featureBoundFunction(Features.FEATURE_COLLISION, new Callable<CollisionStatus>() {
 
 			@Override
 			public CollisionStatus call() throws Exception {
-				return delegate.collisionStatus(cosmodogGame, actor, map, tileX, tileY);
+				return delegate.collisionStatus(cosmodogGame, actor, map, position);
 			}
 			
 		}, defaultCollisionStatus);

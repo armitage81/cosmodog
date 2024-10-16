@@ -23,30 +23,32 @@ public class CosmodogMapUtils {
 		
 		List<Enemy> retVal = Lists.newArrayList();
 		
-		int[] adjacentPositionsX = new int[]{player.getPositionX() - 1, player.getPositionX(), player.getPositionX(), player.getPositionX() + 1};
-		int[] adjacentPositionsY = new int[]{player.getPositionY(), player.getPositionY() - 1, player.getPositionY() + 1, player.getPositionY()};
-		
+		Position[] adjacentPositions = new Position[] {
+				player.getPosition().shifted(-1, 0),
+				player.getPosition().shifted(0, -1),
+				player.getPosition().shifted(0, 1),
+				player.getPosition().shifted(1, 0)
+		};
+
 		Set<Enemy> enemies = map.getEnemies();
 		for (Enemy enemy : enemies) {
-			for (int i = 0; i < adjacentPositionsX.length; i++) {
-				int adjacentX = adjacentPositionsX[i];
-				int adjacentY = adjacentPositionsY[i];
-				
-				if (enemy.getPositionX() == adjacentX && enemy.getPositionY() == adjacentY) {
+            for (Position adjacentPosition : adjacentPositions) {
 
-					//Artillery units should be excluded from adjacent enemies since they will be added
-					//as adjacent ranged enemies anyway. It did not matter in the past, but since
-					//artillery units have now an inner distance in which they cannot attack,
-					//adding them to this list would be problematic since adjacent enemies always attack.
-					//Actually, it should be valid for all units who have inner sight distance > 0.
-					if (enemy.getUnitType() == UnitType.ARTILLERY) {
-						continue;
-					}
+                if (enemy.getPosition().equals(adjacentPosition)) {
 
-					retVal.add(enemy);
-				}
-				
-			}
+                    //Artillery units should be excluded from adjacent enemies since they will be added
+                    //as adjacent ranged enemies anyway. It did not matter in the past, but since
+                    //artillery units have now an inner distance in which they cannot attack,
+                    //adding them to this list would be problematic since adjacent enemies always attack.
+                    //Actually, it should be valid for all units who have inner sight distance > 0.
+                    if (enemy.getUnitType() == UnitType.ARTILLERY) {
+                        continue;
+                    }
+
+                    retVal.add(enemy);
+                }
+
+            }
 		}
 		
 		return retVal;
@@ -83,8 +85,8 @@ public class CosmodogMapUtils {
 	}
 	
 	public static float distanceBetweenPositions(Piece p1, Piece p2) {
-		Position pos1 = Position.fromCoordinates(p1.getPositionX(), p1.getPositionY());
-		Position pos2 = Position.fromCoordinates(p2.getPositionX(), p2.getPositionY());
+		Position pos1 = p1.getPosition();
+		Position pos2 = p2.getPosition();
 		return distanceBetweenPositions(pos1, pos2);
 	}
 	
@@ -104,7 +106,7 @@ public class CosmodogMapUtils {
 		
 	}
 	
-	private static Set<Position> PLATFORMDATA = Sets.newHashSet();
+	private static final Set<Position> PLATFORMDATA = Sets.newHashSet();
 	
 	static {
 		PLATFORMDATA.add(Position.fromCoordinates(-1, -3));
@@ -161,20 +163,20 @@ public class CosmodogMapUtils {
 	/**
 	 * Use this to define whether the target tile is part of the platform or not. 
 	 */
-	public static boolean isTileOnPlatform(int tileX, int tileY) {
+	public static boolean isTileOnPlatform(Position tilePosition) {
 		boolean retVal = false;
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Platform platform = cosmodogGame.getMap().getCachedPlatform(cosmodogGame);
 		if (platform != null) {
-			return isTileOnPlatform(tileX, tileY, platform.getPositionX(), platform.getPositionY());
+			return isTileOnPlatform(tilePosition, platform.getPosition());
 		}
 		return retVal;
 	}
 	
-	public static boolean isTileOnPlatform(int tileX, int tileY, int platformX, int platformY) {
+	public static boolean isTileOnPlatform(Position tilePosition, Position platformPosition) {
 		boolean retVal = false;
-		int actorOffsetX = tileX - platformX;
-		int actorOffsetY = tileY - platformY;
+		int actorOffsetX = (int)(tilePosition.getX() - platformPosition.getX());
+		int actorOffsetY = (int)(tilePosition.getY() - platformPosition.getY());
 		Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY);
 		retVal = PLATFORMDATA.contains(offsetPosition);
 		return retVal;

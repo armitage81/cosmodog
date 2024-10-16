@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -36,8 +37,8 @@ public class MapImageGenerator {
 			for (int tx = 0; tx < map.getWidth(); tx++) {
 				for (int ty = 0; ty < map.getHeight(); ty++) {
 					TileDrawingContext tileDc = new TileDrawingContext(mapDrawingContext, map.getWidth(), map.getHeight(), tx, ty);
-					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
-						render(map, tileDc, mapCacheGraphics, tx, ty, i);
+					if (tx < map.getWidth() && ty < map.getHeight()) {
+						render(map, tileDc, mapCacheGraphics, Position.fromCoordinates(tx, ty), i);
 					}
 				}
 			}
@@ -47,10 +48,10 @@ public class MapImageGenerator {
 		return mapImage;
 	}
 	
-	private static void render(CosmodogMap map, DrawingContext dc, Graphics g, int tilePosX, int tilePosY, int layerIndex) {
+	private static void render(CosmodogMap map, DrawingContext dc, Graphics g, Position position, int layerIndex) {
 		
 		
-		int tileId = map.getTileId(tilePosX, tilePosY, layerIndex);
+		int tileId = map.getTileId(position, layerIndex);
 
 		int imageIndex = tileId - 1;
 

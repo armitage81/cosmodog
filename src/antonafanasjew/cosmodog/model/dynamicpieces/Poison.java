@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a dynamic tile that is an poison spot.
@@ -38,10 +39,9 @@ public class Poison extends DynamicPiece {
 		return state == STATE_DEACTIVATED;
 	}
 	
-	public static Poison create(int x, int y) {
+	public static Poison create(Position position) {
 		Poison poison = new Poison();
-		poison.setPositionX(x);
-		poison.setPositionY(y);
+		poison.setPosition(position);
 		return poison;
 	}
 	

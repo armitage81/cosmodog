@@ -248,7 +248,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		//Preparing the future results of the enemy movements.
 		Set<Enemy> movingEnemies = Sets.newHashSet();
 		
-		movingEnemies.addAll(cosmodogMap.nearbyEnemies(player.getPositionX(), player.getPositionY(), Constants.ENEMY_ACTIVATION_DISTANCE));
+		movingEnemies.addAll(cosmodogMap.nearbyEnemies(player.getPosition(), Constants.ENEMY_ACTIVATION_DISTANCE));
 		
 		EnemiesUtils.removeInactiveUnits(movingEnemies);
 		
@@ -290,10 +290,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int moveablePosY = lastStep.getY();
 		
 		//If a moveable is there, we calculate its target position (always away from the player as he pushes it)
-		DynamicPiece dynamicPiece = cosmodogMap.dynamicPieceAtPosition(moveablePosX, moveablePosY);
+		DynamicPiece dynamicPiece = cosmodogMap.dynamicPieceAtPosition(Position.fromCoordinates(moveablePosX, moveablePosY));
 		if (dynamicPiece instanceof MoveableDynamicPiece) {
-			int newMoveablePosX = dynamicPiece.getPositionX();
-			int newMoveablePosY = dynamicPiece.getPositionY();
+			int newMoveablePosX = (int)dynamicPiece.getPosition().getX();
+			int newMoveablePosY = (int)dynamicPiece.getPosition().getY();
 			DirectionType directionType = player.getDirection();
 			if (directionType == DirectionType.UP) {
 				newMoveablePosY--;
@@ -308,7 +308,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 				newMoveablePosX++;
 			}
 			
-			retVal = MovementActionResult.instance(moveablePosX, moveablePosY, newMoveablePosX, newMoveablePosY);
+			retVal = MovementActionResult.instance(
+					Position.fromCoordinates(moveablePosX, moveablePosY),
+					Position.fromCoordinates(newMoveablePosX, newMoveablePosY));
 		}
 		return retVal;
 		
@@ -373,6 +375,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 			int resultX = playerMovementActionResult.getPath().getX(1);
 			int resultY = playerMovementActionResult.getPath().getY(1);
 
+			Position resultPosition = Position.fromCoordinates(resultX, resultY);
+
 			Set<Enemy> destroyedEnemies = Sets.newHashSet();
 			
 			for (Enemy enemy : enemyMovementActionResults.keySet()) {
@@ -381,14 +385,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 				int pathLength = enemyMovementActionResult.getPath().getLength();
 				int enemyX = enemyMovementActionResult.getPath().getX(pathLength - 1);
 				int enemyY = enemyMovementActionResult.getPath().getY(pathLength - 1);
-				
-				if (CosmodogMapUtils.isTileOnPlatform(enemyX, enemyY, resultX, resultY)) {
+
+				Position enemyPosition = Position.fromCoordinates(enemyX, enemyY);
+
+				if (CosmodogMapUtils.isTileOnPlatform(enemyPosition, resultPosition)) {
 					destroyedEnemies.add(enemy);
 				}
 			}
 			
 			for (Enemy enemy : map.getEnemies()) {
-				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPositionX(), enemy.getPositionY(), resultX, resultY)) {
+				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), resultPosition)) {
 					destroyedEnemies.add(enemy);
 				}
 			}
@@ -479,8 +485,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		int targetPosX = playerMovementActionResult.getPath().getStep(1).getX();
 		int targetPosY = playerMovementActionResult.getPath().getStep(1).getY();
+		Position targetPosition = Position.fromCoordinates(targetPosX, targetPosY);
 
-		ActorTransition playerTransition = ActorTransition.fromActor(player, targetPosX, targetPosY);
+		ActorTransition playerTransition = ActorTransition.fromActor(player, targetPosition);
 		if (verticalNotHorizontal) {
 			playerTransition.setTransitionalOffsetY(positiveNotNegative ? ratio : -ratio);
 		} else {
@@ -531,9 +538,12 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
 		int targetPosY = path.getY(1);
 
+		Position position = Position.fromCoordinates(posX, posY);
+		Position targetPosition = Position.fromCoordinates(targetPosX, targetPosY);
+
 		MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils
 				.getCosmodogMap()
-				.dynamicPieceAtPosition(posX, posY);
+				.dynamicPieceAtPosition(position);
 
 		float ratio = (float)timePassed / getDuration();
 		ratio = Math.min(ratio, 1.0f);
@@ -555,7 +565,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			positiveNotNegative = true;
 		}
 
-		ActorTransition moveableTransition = ActorTransition.fromActor(moveable.asActor(), targetPosX, targetPosY);
+		ActorTransition moveableTransition = ActorTransition.fromActor(moveable.asActor(), targetPosition);
 		if (verticalNotHorizontal) {
 			moveableTransition.setTransitionalOffsetY(positiveNotNegative ? ratio : -ratio);
 		} else {
@@ -617,12 +627,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 			int transitionalTargetPosX = path.getX(movedDistanceInTiles + 1);
 			int transitionalTargetPosY = path.getY(movedDistanceInTiles + 1);
 
+			Position transitionalPosition = Position.fromCoordinates(transitionalPosX, transitionalPosY);
+
 			ActorTransitionRegistry transitionRegistry = game.getActorTransitionRegistry();
 			ActorTransition enemyTransition = transitionRegistry.get(enemy);
 
-			ActorTransition newEnemyTransition = ActorTransition.fromActor(enemy, transitionalTargetPosX, transitionalTargetPosY);
-			newEnemyTransition.setTransitionalPosX(transitionalPosX);
-			newEnemyTransition.setTransitionalPosY(transitionalPosY);
+			ActorTransition newEnemyTransition = ActorTransition.fromActor(enemy, transitionalPosition);
+			newEnemyTransition.setTransitionalPosition(transitionalPosition);
 
 			if (transitionalPosX < transitionalTargetPosX) {
 				newEnemyTransition.setTransitionalOffsetX(ratioForNextStep);
@@ -676,16 +687,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 			Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
 			
 			for (Piece piece : cosmodogGame.getMap().getMapPieces().values()) {
-				if (CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY(), player.getPositionX(), player.getPositionY())) {
+				if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
 					
 					//As we move the piece on the platform, we need to update it in the mapValues cache
-					Position position = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
+					Position position = piece.getPosition();
 					oldPositionsForPiecesOnPlatform.put(position, piece);
 					
 					if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
-						piece.setPositionY(piece.getPositionY() + (player.getDirection() == DirectionType.UP ? -1 : 1));
+						piece.getPosition().shift(0, player.getDirection() == DirectionType.UP ? -1 : 1);
 					} else {
-						piece.setPositionX(piece.getPositionX() + (player.getDirection() == DirectionType.LEFT ? -1 : 1));
+						piece.getPosition().shift(player.getDirection() == DirectionType.LEFT ? -1 : 1, 0);
 					}
 				}
 			}
@@ -697,7 +708,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			
 			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
 				Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
-				Position newPosition = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
+				Position newPosition = piece.getPosition();
 				cosmodogGame.getMap().getMapPieces().put(newPosition, piece);
 			}
 		}
@@ -729,17 +740,20 @@ public class MovementAction extends FixedLengthAsyncAction {
 				
 				int posX = path.getX(0);
 				int posY = path.getY(0);
+
+				Position position = Position.fromCoordinates(posX, posY);
+
 				int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
 				int targetPosY = path.getY(1);
+				Position targetPosition = Position.fromCoordinates(targetPosX, targetPosY);
 				
-				MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils.getCosmodogMap().dynamicPieceAtPosition(posX, posY);
+				MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils.getCosmodogMap().dynamicPieceAtPosition(position);
 				
 				ActorTransitionRegistry actorTransitionRegistry = cosmodogGame.getActorTransitionRegistry();
 				actorTransitionRegistry.remove(moveable.asActor());
 				
-				moveable.setPositionX(targetPosX);
-				moveable.setPositionY(targetPosY);
-										
+				moveable.setPosition(targetPosition);
+
 			}
 		}
 	}
@@ -773,8 +787,8 @@ public class MovementAction extends FixedLengthAsyncAction {
     			Path path = movementActionResult.getPath();
     			int lastPathPosX = path.getX(path.getLength() - 1);
     			int lastPathPosY = path.getY(path.getLength() - 1);
-    			enemy.setPositionX(lastPathPosX);
-    			enemy.setPositionY(lastPathPosY);
+				Position lastPathPosition = Position.fromCoordinates(lastPathPosX, lastPathPosY);
+    			enemy.setPosition(lastPathPosition);
     			if (enemyTransition != null) {
     				enemy.setDirection(enemyTransition.getTransitionalDirection());
     			}
@@ -857,6 +871,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int startY = playerMovementActionResult.getPath().getY(0);
 		int targetX = playerMovementActionResult.getPath().getX(1);
 		int targetY = playerMovementActionResult.getPath().getY(1);
+
+		Position startPosition = Position.fromCoordinates(startX, startY);
+		Position targetPosition = Position.fromCoordinates(targetX, targetY);
 		
 		boolean noMovement = startX == targetX && startY == targetY;
 
@@ -869,11 +886,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 		for (Class<?> pieceType : pieces.keySet()) {
 			Collection<DynamicPiece> piecesOfOneType = pieces.get(pieceType);
 			for (DynamicPiece piece : piecesOfOneType) {
-				if (piece.getPositionX() == targetX && piece.getPositionY() == targetY) {
+				if (piece.getPosition().equals(targetPosition)) {
 					piece.interactWhenSteppingOn();
 				}
 				
-				if (piece.getPositionX() == startX && piece.getPositionY() == startY) {
+				if (piece.getPosition().equals(startPosition)) {
 					piece.interactWhenLeaving();
 				}
 			}

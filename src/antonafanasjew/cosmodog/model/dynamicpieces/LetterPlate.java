@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.LetterPlateSequence;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class LetterPlate extends DynamicPiece {
@@ -41,11 +42,10 @@ public class LetterPlate extends DynamicPiece {
 	
 	private static short shapeLoopCounter = 0;
 	private short shapeNumber = (short)((shapeLoopCounter++) % NUMBER_OF_SHAPES);
-	
-	public static LetterPlate create(int x, int y, String characters) {
+
+	public static LetterPlate create(Position position, String characters) {
 		LetterPlate letterPlate = new LetterPlate(characters);
-		letterPlate.setPositionX(x);
-		letterPlate.setPositionY(y);
+		letterPlate.setPosition(position);
 		return letterPlate;
 	}
 	
@@ -101,7 +101,7 @@ public class LetterPlate extends DynamicPiece {
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
 				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> Something is wrong.");
 				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> I must start anew.");
-				RespawnAction wrongSequenceConsequenceAction = new RespawnAction(218, 191, true, true);
+				RespawnAction wrongSequenceConsequenceAction = new RespawnAction(Position.fromCoordinates(218, 191), true, true);
 				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, wrongSequenceConsequenceAction);
 			}
 		}

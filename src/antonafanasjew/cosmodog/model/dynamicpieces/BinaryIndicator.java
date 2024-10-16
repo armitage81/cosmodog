@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a dynamic tile that is a binary indicator (e.g. trafic light with green and red statuses).
@@ -23,10 +24,9 @@ public class BinaryIndicator extends DynamicPiece {
 		return state == STATE_TRUE;
 	}
 	
-	public static BinaryIndicator create(int x, int y) {
+	public static BinaryIndicator create(Position position) {
 		BinaryIndicator binaryIndicator = new BinaryIndicator();
-		binaryIndicator.setPositionX(x);
-		binaryIndicator.setPositionY(y);
+		binaryIndicator.setPosition(position);
 		return binaryIndicator;
 	}
 	

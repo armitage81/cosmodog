@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class Block extends MoveableDynamicPiece {
 
@@ -16,8 +17,8 @@ public class Block extends MoveableDynamicPiece {
 	private static final short NUMBER_OF_SHAPES = 3;
 	private static short shapeLoopCounter = 0;
 	
-	private short state = STATE_DEFAULT;
-	private short shapeNumber = (short)((shapeLoopCounter++) % NUMBER_OF_SHAPES);
+	private final short state = STATE_DEFAULT;
+	private final short shapeNumber = (short)((shapeLoopCounter++) % NUMBER_OF_SHAPES);
 	
 	private String stil;
 	
@@ -25,10 +26,9 @@ public class Block extends MoveableDynamicPiece {
 		return state;
 	}
 	
-	public static Block create(int x, int y) {
+	public static Block create(Position position) {
 		Block block = new Block();
-		block.setPositionX(x);
-		block.setPositionY(y);
+		block.setPosition(position);
 		return block;
 	}
 	

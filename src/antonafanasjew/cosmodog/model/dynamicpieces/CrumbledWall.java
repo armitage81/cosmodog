@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 /**
@@ -37,10 +38,9 @@ public class CrumbledWall extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 	
-	public static CrumbledWall create(int x, int y, short shapeNumber) {
+	public static CrumbledWall create(Position position, short shapeNumber) {
 		CrumbledWall wall = new CrumbledWall();
-		wall.setPositionX(x);
-		wall.setPositionY(y);
+		wall.setPosition(position);
 		wall.shapeNumber = shapeNumber;
 		return wall;
 	}
@@ -61,7 +61,7 @@ public class CrumbledWall extends DynamicPiece {
 		InventoryItem dynamite = inventory.get(InventoryItemType.DYNAMITE);
 		if (dynamite != null) {
 			if (state < STATE_DESTROYED) {
-				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, getPositionX(), getPositionY()));
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, getPosition()));
 				state++;
 			}
 		} else {

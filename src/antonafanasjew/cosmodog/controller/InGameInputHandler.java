@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.controller;
 
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -157,19 +158,19 @@ public class InGameInputHandler extends AbstractInputHandler {
     			player.setDirection(DirectionType.DOWN);
     		} 
     		
-    		int newX = player.getPositionX();
-    		int newY = player.getPositionY();
+    		float newX = player.getPosition().getX();
+    		float newY = player.getPosition().getY();
     		
     		if (player.getDirection() == DirectionType.LEFT) {
-    			newX = player.getPositionX() - 1;
+    			newX = player.getPosition().getX() - 1;
     		} else if (player.getDirection() == DirectionType.RIGHT) {
-    			newX = player.getPositionX() + 1;
+    			newX = player.getPosition().getX() + 1;
     		} else if (player.getDirection() == DirectionType.UP) {
-    			newY = player.getPositionY() - 1;
+    			newY = player.getPosition().getY() - 1;
     		} else if (player.getDirection() == DirectionType.DOWN) {
-    			newY = player.getPositionY() + 1;
-    		} 
-    		  		
+    			newY = player.getPosition().getY() + 1;
+    		}
+			Position newPosition = Position.fromCoordinates(newX, newY);
     		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.
     		Set<Enemy> enemies = map.getEnemies();
     		Enemy meleeTargetEnemy = null;
@@ -177,17 +178,17 @@ public class InGameInputHandler extends AbstractInputHandler {
     		for (Enemy enemy : enemies) {
     			
     			if (platformItem != null && !platformItem.isExiting()) {
-    				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPositionX(), enemy.getPositionY(), newX, newY)) {
+    				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), newPosition)) {
     					platformTargetEnemies.add(enemy);
         			}
     			} else {
-	    			if (enemy.getPositionX() == newX && enemy.getPositionY() == newY) {
+	    			if (enemy.getPosition().equals(newPosition)) {
 	    				meleeTargetEnemy = enemy;
 	    			}
     			}
     		}
     		
-    		if (platformTargetEnemies.isEmpty() == false) {
+    		if (!platformTargetEnemies.isEmpty()) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
     			ar.registerAction(AsyncActionType.FIGHT_FROM_PLATFORM, new FightFromPlatformAction(platformTargetEnemies));
@@ -207,16 +208,15 @@ public class InGameInputHandler extends AbstractInputHandler {
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
     		
-	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newX, newY);
+	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newPosition);
 	    		
 				if (collisionStatus.isPassable()) {
 					
 					if (vehicleItem != null) {
 						if (vehicleItem.isExiting()) {
 							Vehicle vehicle = vehicleItem.getVehicle();
-							vehicle.setPositionX(player.getPositionX());
-							vehicle.setPositionY(player.getPositionY());
-							map.getMapPieces().put(Position.fromPiece(vehicle), vehicle);
+							vehicle.setPosition(player.getPosition());
+							map.getMapPieces().put(vehicle.getPosition(), vehicle);
 							player.getInventory().remove(InventoryItemType.VEHICLE);
 							Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 							if (carmotor.playing()) {
@@ -231,9 +231,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 						
 						if (platformItem.isExiting()) {
 							Platform platform = platformItem.getPlatform();
-							platform.setPositionX(player.getPositionX());
-							platform.setPositionY(player.getPositionY());
-							map.getMapPieces().put(Position.fromPiece(platform), platform);
+							platform.setPosition(player.getPosition());
+							map.getMapPieces().put(platform.getPosition(), platform);
 							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
@@ -256,18 +255,19 @@ public class InGameInputHandler extends AbstractInputHandler {
 						}
 					}
 					
-					final int finalNewX = newX;
-					final int finalNewY = newY;
+					final float finalNewX = newX;
+					final float finalNewY = newY;
 					
 					AsyncAction blockingAction = new FixedLengthAsyncAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION) {
 	
+						@Serial
 						private static final long serialVersionUID = 1663061093630885138L;
 						
 						@Override
 						public void onTrigger() {
 							
 							
-							DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(finalNewX, finalNewY); 
+							DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
 							if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
 								applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
 							}
@@ -282,6 +282,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					
 					AsyncAction movementAttemptAction = new FixedLengthAsyncAction(250) {
 
+						@Serial
 						private static final long serialVersionUID = 1663061093630885138L;
 						
 						private boolean interactedWithDynamicPieceAlready = false;
@@ -298,12 +299,12 @@ public class InGameInputHandler extends AbstractInputHandler {
 							fracture = fracture > 1 ? 1 : fracture;
 							cosmodogGame.getMovementAttemptTransition().completion = fracture;
 							
-							if (fracture >= 0.5f && interactedWithDynamicPieceAlready == false) {
+							if (fracture >= 0.5f && !interactedWithDynamicPieceAlready) {
 								//Now handle the case of interacting with dynamic pieces (e.g. destroying a stone)
 								//BTW, this part is not entirely correct, as interaction with dynamic pieces will happen only in 
 								//case if they are blocking passage (e.g. not destroyed stones)
 								//But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
-								DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(finalNewX, finalNewY);
+								DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
 								if (dynamicPiece != null) {
 									dynamicPiece.interact();
 								}
@@ -387,8 +388,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 			
 			if (input.isKeyPressed(Input.KEY_1)) {
 				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextPosition();
-				player.setPositionX(playerPosition.x);
-				player.setPositionY(playerPosition.y);
+				player.setPosition(player.getPosition());
 				cam.focusOnPiece(map, 0, 0, player);
 			}
 			

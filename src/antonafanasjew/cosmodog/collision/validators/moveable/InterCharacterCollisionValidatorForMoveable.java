@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.moveable;
 
 import java.util.Set;
 
+import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
@@ -20,7 +21,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 public class InterCharacterCollisionValidatorForMoveable extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		Set<Enemy> enemies = cosmodogMap.getEnemiesInRange();
 		
@@ -30,14 +31,13 @@ public class InterCharacterCollisionValidatorForMoveable extends AbstractCollisi
 		
 		for (Actor oneActor : allActors) {
 			
-			int blockedPosX = oneActor.getPositionX();
-			int blockedPosY = oneActor.getPositionY();
-			
-			if (blockedPosX == tileX && blockedPosY == tileY) {
-				return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
+			Position blockedPos = oneActor.getPosition();
+
+			if (blockedPos.equals(position)) {
+				return CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
 			}
 		}
-		return CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+		return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 	}
 
 }

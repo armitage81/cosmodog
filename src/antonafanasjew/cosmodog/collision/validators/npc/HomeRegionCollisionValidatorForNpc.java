@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.collision.validators.npc;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
@@ -22,10 +23,10 @@ import antonafanasjew.cosmodog.util.CollisionUtils;
 public class HomeRegionCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 
-		CollisionStatus passable = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
-		CollisionStatus notPassable = CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.OUT_OF_HOME_REGION);
+		CollisionStatus passable = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+		CollisionStatus notPassable = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.OUT_OF_HOME_REGION);
 		
 		NpcActor npcActor = (NpcActor)actor;
 		String homeRegionName = npcActor.getHomeRegionName();
@@ -41,8 +42,8 @@ public class HomeRegionCollisionValidatorForNpc extends AbstractCollisionValidat
 			return passable;
 		}
 		
-		int x = tileX * map.getTileWidth();
-		int y = tileY * map.getTileHeight();
+		int x = (int)(position.getX() * map.getTileWidth());
+		int y = (int)(position.getY() * map.getTileHeight());
 		int w = map.getTileWidth();
 		int h = map.getTileHeight();
 		

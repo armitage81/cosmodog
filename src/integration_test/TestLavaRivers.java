@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestLavaRivers {
@@ -23,8 +24,7 @@ public class TestLavaRivers {
 			@Override
 			protected void updatePlayer(Player player) {
 				Features.getInstance().setFeature(Features.FEATURE_GODFISTS, true);
-				player.setPositionX(230);
-				player.setPositionY(174);
+				player.setPosition(Position.fromCoordinates(230, 174));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());

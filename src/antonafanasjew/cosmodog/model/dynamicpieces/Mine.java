@@ -1,12 +1,16 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
+
+import java.io.Serial;
 
 /**
  * Represents a dynamic tile that is an infantry mine that can be deactivated by the player.
  */
 public class Mine extends DynamicPiece {
 
+	@Serial
 	private static final long serialVersionUID = 5708806596326635656L;
 	
 	
@@ -37,10 +41,9 @@ public class Mine extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 	
-	public static Mine create(int x, int y) {
+	public static Mine create(Position position) {
 		Mine mine = new Mine();
-		mine.setPositionX(x);
-		mine.setPositionY(y);
+		mine.setPosition(position);
 		return mine;
 	}
 	

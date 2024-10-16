@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * This validator will pass for players without vehicles and will fail if player has a vehicle and it is out of fuel.
@@ -20,15 +21,15 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 public class FuelCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, tileX, tileY, true, PassageBlockerType.PASSABLE);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 		Player player = (Player) actor;
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			if (!vehicleInventoryItem.isExiting()) {
 				Vehicle vehicle = vehicleInventoryItem.getVehicle();
 				if (vehicle.outOfFuel()) {
-					return CollisionStatus.instance(actor, map, tileX, tileY, false, PassageBlockerType.FUEL_EMPTY);
+					return CollisionStatus.instance(actor, map, position, false, PassageBlockerType.FUEL_EMPTY);
 				}
 			}
 		}

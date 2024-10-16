@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.topology;
 
 import java.io.Serializable;
 
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 
 /**
@@ -71,6 +72,9 @@ public class Position implements Serializable {
 		return distance(pos.getX(), pos.getY());
 	}
 
+	public boolean inMapBounds(CosmodogMap map) {
+		return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

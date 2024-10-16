@@ -93,9 +93,9 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private MoveableGroup activeMoveableGroup;
 	
 	@Override
-	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
-		recalculateClosestSupplyAndMedkitPosition(actor, x1, y1, x2, y2, applicationContext);
-		recalculateclosestPieceInterestingForDebugging(actor, x1, y1, x2, y2, applicationContext);
+	public void afterMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
+		recalculateClosestSupplyAndMedkitPosition(actor, position1, position2, applicationContext);
+		recalculateclosestPieceInterestingForDebugging(actor, position1, position2, applicationContext);
 		recalculateWhetherPlayerIsOnPlatform(actor);
 		recalculateRoofsOverPlayer();
 		recalculateRoofRemovalBlockerRegions(actor);
@@ -110,22 +110,22 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	@Override
 	public void afterFight(Actor actor, ApplicationContext applicationContext) {
-		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+		afterMovement(actor, actor.getPosition(), actor.getPosition(), applicationContext);
 	}
 
 	@Override
 	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
-		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+		afterMovement(actor, actor.getPosition(), actor.getPosition(), applicationContext);
 	}
 
 	@Override
 	public void afterRespawn(Actor actor, ApplicationContext applicationContext) {
-		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+		afterMovement(actor, actor.getPosition(), actor.getPosition(), applicationContext);
 	}
 
 	@Override
 	public void afterWaiting(Actor actor, ApplicationContext applicationContext) {
-		afterMovement(actor, actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY(), applicationContext);
+		afterMovement(actor, actor.getPosition(), actor.getPosition(), applicationContext);
 	}
 
 	private void recalculateEnemiesInRange() {
@@ -214,12 +214,10 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		for (Class<?> key : map.getDynamicPieces().keySet()) {
 			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
 			if (piecesForKey != null) {
-				Iterator<DynamicPiece> it = piecesForKey.iterator();
-				while (it.hasNext()) {
-					DynamicPiece piece = it.next();
-					Position position = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
-					dynamicPieces.put(position, piece);
-				}
+                for (DynamicPiece piece : piecesForKey) {
+                    Position position = piece.getPosition();
+                    dynamicPieces.put(position, piece);
+                }
 			}
 		}
 	}
@@ -300,14 +298,14 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 			@Override
 			public int compare(Piece o1, Piece o2) {
-				Position o1Pos = Position.fromCoordinates(o1.getPositionX(), o1.getPositionY());
-				Position o2Pos = Position.fromCoordinates(o2.getPositionX(), o2.getPositionY());
-				Position playerPos = Position.fromCoordinates(actor.getPositionX(), actor.getPositionY());
+				Position o1Pos = o1.getPosition();
+				Position o2Pos = o2.getPosition();
+				Position playerPos = actor.getPosition();
 				
 				float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
 				float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
 				
-				return distance1 > distance2 ? 1 : (distance1 < distance2 ? -1 : 0);
+				return Float.compare(distance1, distance2);
 			}
 
 		};
@@ -378,14 +376,14 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 			@Override
 			public int compare(Piece o1, Piece o2) {
-				Position o1Pos = Position.fromCoordinates(o1.getPositionX(), o1.getPositionY());
-				Position o2Pos = Position.fromCoordinates(o2.getPositionX(), o2.getPositionY());
-				Position playerPos = Position.fromCoordinates(actor.getPositionX(), actor.getPositionY());
+				Position o1Pos = o1.getPosition();
+				Position o2Pos = o2.getPosition();
+				Position playerPos = actor.getPosition();
 				
 				float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
 				float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
 				
-				return distance1 > distance2 ? 1 : (distance1 < distance2 ? -1 : 0);
+				return Float.compare(distance1, distance2);
 			}
 
 		});
@@ -397,7 +395,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	
 	
 	private void recalculateWhetherPlayerIsOnPlatform(Actor actor) {
-		setPlayerOnPlatform(CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY()));
+		setPlayerOnPlatform(CosmodogMapUtils.isTileOnPlatform(actor.getPosition()));
 	}
 
 	private void recalculateInfobitsInGame() {

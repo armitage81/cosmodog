@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -20,8 +21,7 @@ public class TestFastExitAfterLongMarchInRadioactiveLabyrinth {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(107);
-				player.setPositionY(153);
+				player.setPosition(Position.fromCoordinates(107, 153));
 				player.setMaxLife(100);
 				player.setLife(100);
 

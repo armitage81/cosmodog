@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Defines collision for flying vehicles, which is everything what is not accessible by wheels, foot or boat.  
@@ -15,13 +16,13 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public class FlyingCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, int tileX, int tileY) {
-		int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
 		boolean collisionTile = TileType.COLLISION.getTileId() == tileId;
 		boolean passable = !collisionTile;
 
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
-		return CollisionStatus.instance(actor, map, tileX, tileY, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
 		
 	}
 

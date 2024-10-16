@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestLetterPlates {
@@ -18,8 +19,7 @@ public class TestLetterPlates {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(218);
-				player.setPositionY(191);
+				player.setPosition(Position.fromCoordinates(218, 191));
 				player.setMaxLife(10);
 				player.setLife(1);
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("205/182;218/191;325/114"));

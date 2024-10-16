@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -19,8 +20,7 @@ public class TestWaterObjectAnimations {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(266);
-				player.setPositionY(17);
+				player.setPosition(Position.fromCoordinates(266, 17));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
