@@ -69,7 +69,7 @@ public class Enemy extends NpcActor {
 	
 	@Override
 	public String toString() {
-		return this.unitType + " at (" + getPositionX() + "/" + getPositionY() + ")";
+		return this.unitType + " at (" + getPosition() + ")";
 	}
 
 	public Vision getDefaultVision() {

@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.actions.generic.FadingAction;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class RespawnAction extends PhaseBasedAction {
@@ -12,14 +13,13 @@ public class RespawnAction extends PhaseBasedAction {
     public static final int FADING_OUT_DURATION = 3000;
     public static final int FADING_IN_DURATION = 1000;
 
-    private final int respawnPositionX;
-    private final int respawnPositionY;
+    private final Position respawnPosition;
+
     private final boolean showPlayerWhenFadingOut;
     private final boolean showPlayerWhenFadingIn;
 
-    public RespawnAction(int respawnPositionX, int respawnPositionY, boolean showPlayerWhenFadingOut, boolean showPlayerWhenFadingIn) {
-        this.respawnPositionX = respawnPositionX;
-        this.respawnPositionY = respawnPositionY;
+    public RespawnAction(Position respawnPosition, boolean showPlayerWhenFadingOut, boolean showPlayerWhenFadingIn) {
+        this.respawnPosition = respawnPosition;
         this.showPlayerWhenFadingOut = showPlayerWhenFadingOut;
         this.showPlayerWhenFadingIn = showPlayerWhenFadingIn;
     }
@@ -49,8 +49,7 @@ public class RespawnAction extends PhaseBasedAction {
             @Override
             public void onEnd() {
                 Player player = ApplicationContextUtils.getPlayer();
-                player.setPositionX(respawnPositionX);
-                player.setPositionY(respawnPositionY);
+                player.setPosition(respawnPosition);
                 player.endRespawn();
                 ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(ApplicationContextUtils.getCosmodogMap(), 0, 0, player);
             }

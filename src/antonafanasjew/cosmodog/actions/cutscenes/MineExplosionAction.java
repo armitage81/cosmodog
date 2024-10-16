@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -54,14 +55,9 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 	public static class MineExplosionTransition {
 
 		/**
-		 * Horizontal position of the explosion in tile coordinates.
+		 * Position of the explosion in tile coordinates.
 		 */
-		public int positionX;
-
-		/**
-		 * Vertical position of the explosion in tile coordinates.
-		 */
-		public int positionY;
+		public Position position;
 
 		/**
 		 * Completion rate of the explosion effect.
@@ -89,8 +85,7 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 		super(duration);
 		Player player = ApplicationContextUtils.getPlayer();
 		this.transition = new MineExplosionTransition();
-		this.transition.positionX = player.getPositionX();
-		this.transition.positionY = player.getPositionY();
+		this.transition.position = player.getPosition();
 	}
 
 	/**
@@ -155,7 +150,7 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 			Vehicle vehicle = item.getVehicle();
 			vehicle.setLife(vehicle.getLife() - Mine.DAMAGE_TO_PLAYER);
 			if (vehicle.dead()) {
-				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPositionX(), player.getPositionY()));
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPosition()));
 				player.getInventory().remove(InventoryItemType.VEHICLE);
 			}
 		} else {

@@ -110,8 +110,8 @@ public class PlacedRectangle implements Serializable {
 		this.topLeftAnchor.shift(offsetX, offsetY);
 	}
 	
-	public void move(float x, float y) {
-		this.topLeftAnchor.move(x, y);
+	public void move(Position position) {
+		this.topLeftAnchor.move(position.getX(), position.getY());
 	}	
 	
 	/**

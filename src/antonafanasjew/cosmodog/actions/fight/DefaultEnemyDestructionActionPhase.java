@@ -131,17 +131,15 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 				
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DROPPED_ITEM).play();
 
-				dropped.setPositionX(enemy.getPositionX());
-				dropped.setPositionY(enemy.getPositionY());
-				
-				Piece piece = cosmodogMap.pieceAtTile(enemy.getPositionX(), enemy.getPositionY());
+				dropped.setPosition(enemy.getPosition());
+
+				Piece piece = cosmodogMap.pieceAtTile(enemy.getPosition());
 				if (piece instanceof Collectible) {
 					CollectibleComposed newCollectible = new CollectibleComposed();
-					newCollectible.setPositionX(enemy.getPositionX());
-					newCollectible.setPositionY(enemy.getPositionY());
+					newCollectible.setPosition(enemy.getPosition());
 					newCollectible.addElement((Collectible)piece);
 					newCollectible.addElement(dropped);
-					cosmodogMap.getMapPieces().remove(Position.fromCoordinates(piece.getPositionX(), piece.getPositionY()));
+					cosmodogMap.getMapPieces().remove(piece.getPosition());
 					dropped = newCollectible;
 				}
 				

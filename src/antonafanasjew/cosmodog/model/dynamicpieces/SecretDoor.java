@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a dynamic tile that is a secret door that can be opened.
@@ -47,10 +48,9 @@ public class SecretDoor extends DynamicPiece {
 		return state == STATE_OPEN;
 	}
 	
-	public static SecretDoor create(int x, int y) {
+	public static SecretDoor create(Position position) {
 		SecretDoor door = new SecretDoor();
-		door.setPositionX(x);
-		door.setPositionY(y);
+		door.setPosition(position);
 		return door;
 	}
 	

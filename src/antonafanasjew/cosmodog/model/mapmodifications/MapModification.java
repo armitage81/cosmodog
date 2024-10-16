@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a persistent modification of a tiled map.
@@ -17,8 +18,8 @@ import antonafanasjew.cosmodog.globals.TileType;
  */
 public interface MapModification extends Serializable {
 
-	int getTileId(CustomTiledMap tiledMap, int x, int y, int layerIndex);
+	int getTileId(CustomTiledMap tiledMap, Position position, int layerIndex);
 	
-	void modifyTile(int x, int y, int layerIndex, TileType tileType);
+	void modifyTile(Position position, int layerIndex, TileType tileType);
 	
 }

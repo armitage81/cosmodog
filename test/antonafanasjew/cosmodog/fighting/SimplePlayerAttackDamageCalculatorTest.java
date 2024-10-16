@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.fighting;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.ArmorType;
@@ -13,7 +12,10 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.WeaponFirmwareUpgradeInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
-import org.junit.jupiter.api.Test;
+import antonafanasjew.cosmodog.topology.Position;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SimplePlayerAttackDamageCalculatorTest {
 
@@ -25,12 +27,11 @@ public class SimplePlayerAttackDamageCalculatorTest {
 
 		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, true);
 		
-		Player player = Player.fromPosition(1, 1);
+		Player player = Player.fromPosition(Position.fromCoordinates(1, 1));
 		player.setDirection(DirectionType.RIGHT);
 		
 		Enemy enemy = new Enemy();
-		enemy.setPositionX(2);
-		enemy.setPositionY(1);
+		enemy.setPosition(Position.fromCoordinates(2, 1));
 		enemy.setDirection(DirectionType.LEFT);
 		
 		int damage = out.damage(player, enemy);
@@ -55,8 +56,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		int damage;
 		
 		Enemy enemy = new Enemy();
-		enemy.setPositionX(2);
-		enemy.setPositionY(1);
+		enemy.setPosition(Position.fromCoordinates(2, 1));
 		enemy.setUnitType(UnitType.PIGRAT);
 		enemy.setDirection(DirectionType.LEFT);
 
@@ -222,8 +222,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		int damage;
 		
 		Enemy enemy = new Enemy();
-		enemy.setPositionX(2);
-		enemy.setPositionY(1);
+		enemy.setPosition(Position.fromCoordinates(2, 1));
 		enemy.setUnitType(UnitType.PIGRAT);
 		enemy.setDirection(DirectionType.LEFT);
 		enemy.setArmorType(ArmorType.NONE);
@@ -265,7 +264,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		
 		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
 		
-		Player player = Player.fromPosition(1, 1);
+		Player player = Player.fromPosition(Position.fromCoordinates(1, 1));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
@@ -276,8 +275,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		int damage;
 		
 		Enemy enemy = new Enemy();
-		enemy.setPositionX(2);
-		enemy.setPositionY(1);
+		enemy.setPosition(Position.fromCoordinates(2, 1));
 		enemy.setUnitType(UnitType.PIGRAT);
 		enemy.setDirection(DirectionType.LEFT);
 		enemy.setArmorType(ArmorType.NONE);
@@ -307,7 +305,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		
 		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
 		
-		Player player = Player.fromPosition(1, 1);
+		Player player = Player.fromPosition(Position.fromCoordinates(1, 1));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
@@ -318,8 +316,7 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		int damage;
 		
 		Enemy enemy = new Enemy();
-		enemy.setPositionX(2);
-		enemy.setPositionY(1);
+		enemy.setPosition(Position.fromCoordinates(2, 1));
 		enemy.setUnitType(UnitType.PIGRAT);
 		enemy.setDirection(DirectionType.LEFT);
 

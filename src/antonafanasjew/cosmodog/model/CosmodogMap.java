@@ -129,13 +129,13 @@ public class CosmodogMap extends CosmodogModel {
 		return supplies;
 	}
 	
-	public Map<Position, Piece> visibleMapPieces(int x, int y, int width, int height, int grace) {
+	public Map<Position, Piece> visibleMapPieces(Position ref, int width, int height, int grace) {
 		
 		Map<Position, Piece> retVal = Maps.newHashMap();
 		
 		for (Position position : mapPieces.keySet()) {
-			if (position.getX() >= x - grace && position.getX() < x + width + grace) {
-				if (position.getY() >= y - grace && position.getY() < y + height + grace) {
+			if (position.getX() >= ref.getX() - grace && position.getX() < ref.getX() + width + grace) {
+				if (position.getY() >= ref.getY() - grace && position.getY() < ref.getY() + height + grace) {
 					retVal.put(position, mapPieces.get(position));
 				}
 			}
@@ -144,14 +144,14 @@ public class CosmodogMap extends CosmodogModel {
 		return retVal;
 	}
 	
-	public Piece pieceAtTile(int x, int y) {
-		return mapPieces.get(Position.fromCoordinates(x, y));
+	public Piece pieceAtTile(Position position) {
+		return mapPieces.get(position);
 	}
 	
-	public Enemy enemyAtTile(int x, int y) {
+	public Enemy enemyAtTile(Position ref) {
 		Enemy retVal = null;
 		for (Enemy enemy : enemies) {
-			if (enemy.getPositionX() == x && enemy.getPositionY() == y) {
+			if (enemy.getPosition().equals(ref)) {
 				retVal = enemy;
 			}
 		}
@@ -159,11 +159,11 @@ public class CosmodogMap extends CosmodogModel {
 	}
 
 	
-	public Set<Piece> visibleEffectPieces(int x, int y, int width, int height, int grace) {
+	public Set<Piece> visibleEffectPieces(Position ref, int width, int height, int grace) {
 		Set<Piece> retVal = Sets.newHashSet();
 		for (Piece piece : effectPieces) {
-			if (piece.getPositionX() >= x - grace && piece.getPositionX() < x + width + grace) {
-				if (piece.getPositionY() >= y - grace && piece.getPositionY() < y + height + grace) {
+			if (piece.getPosition().getX() >= ref.getX() - grace && piece.getPosition().getX() < ref.getX() + width + grace) {
+				if (piece.getPosition().getY() >= ref.getY() - grace && piece.getPosition().getY() < ref.getY() + height + grace) {
 					retVal.add(piece);
 				}
 			}
@@ -171,13 +171,13 @@ public class CosmodogMap extends CosmodogModel {
 		return retVal;
 	}
 	
-	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(int x, int y, int width, int height, int grace) {
+	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(Position position, int width, int height, int grace) {
 		return PlayerMovementCache.getInstance().getVisibleDynamicPieces();
 	}
 	
 	
-	public DynamicPiece dynamicPieceAtPosition(int x, int y) {
-		return PlayerMovementCache.getInstance().getDynamicPieces().get(Position.fromCoordinates(x, y));
+	public DynamicPiece dynamicPieceAtPosition(Position position) {
+		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
 	}
 
 	public Set<Enemy> getEnemies() {
@@ -188,10 +188,10 @@ public class CosmodogMap extends CosmodogModel {
 		return PlayerMovementCache.getInstance().getEnemiesInRange();
 	}
 	
-	public Set<Enemy> nearbyEnemies(int x, int y, int maxDistance) {
+	public Set<Enemy> nearbyEnemies(Position ref, int maxDistance) {
 		Set<Enemy> retVal = Sets.newHashSet();
 		for (Enemy enemy : enemies) {
-			float enemyDistance = CosmodogMapUtils.distanceBetweenPositions(Position.fromCoordinates(x, y), Position.fromCoordinates(enemy.getPositionX(), enemy.getPositionY()));
+			float enemyDistance = CosmodogMapUtils.distanceBetweenPositions(ref, enemy.getPosition());
 			if (enemyDistance <= maxDistance) {
 				retVal.add(enemy);
 			}
@@ -199,11 +199,11 @@ public class CosmodogMap extends CosmodogModel {
 		return retVal;		
 	}
 	
-	public Set<Enemy> visibleEnemies(int x, int y, int width, int height, int grace) {
+	public Set<Enemy> visibleEnemies(Position ref, int width, int height, int grace) {
 		Set<Enemy> retVal = Sets.newHashSet();
 		for (Enemy enemy : enemies) {
-			if (enemy.getPositionX() >= x - grace && enemy.getPositionX() < x + width + grace) {
-				if (enemy.getPositionY() >= y - grace && enemy.getPositionY() < y + height + grace) {
+			if (enemy.getPosition().getX() >= ref.getX() - grace && enemy.getPosition().getX() < ref.getX() + width + grace) {
+				if (enemy.getPosition().getY() >= ref.getY() - grace && enemy.getPosition().getY() < ref.getY() + height + grace) {
 					retVal.add(enemy);
 				}
 			}
@@ -252,8 +252,8 @@ public class CosmodogMap extends CosmodogModel {
 		return this.getCustomTiledMap().getTileHeight();
 	}
 
-	public int getTileId(int x, int y, int layerIndex) {
-		return this.mapModification.getTileId(this.getCustomTiledMap(), x, y, layerIndex);
+	public int getTileId(Position position, int layerIndex) {
+		return this.mapModification.getTileId(this.getCustomTiledMap(), position, layerIndex);
 	}
 	
 	public Map<String, TiledObjectGroup> getObjectGroups() {

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -45,14 +46,12 @@ public class ExplosionAction extends FixedLengthAsyncAction {
 	 * The position of the explosion is given in tile coordinates.
 	 *
 	 * @param duration Duration of the action in milliseconds.
-	 * @param positionX Horizontal position of the explosion in tile coordinates.
-	 * @param positionY Vertical position of the explosion in tile coordinates.
+	 * @param position position of the explosion in tile coordinates.
 	 */
-	public ExplosionAction(int duration, int positionX, int positionY) {
+	public ExplosionAction(int duration, Position position) {
 		super(duration);
 		this.transition = new MineExplosionTransition();
-		this.transition.positionX = positionX;
-		this.transition.positionY = positionY;
+		this.transition.position = position;
 	}
 
 	/**

@@ -45,8 +45,8 @@ public class Vision implements Serializable {
                 visionElementX = -visionElementY;
                 visionElementY = temp;
             }
-            visionElementX = observer.getPositionX() + visionElementX;
-            visionElementY = observer.getPositionY() + visionElementY;
+            visionElementX = observer.getPosition().getX() + visionElementX;
+            visionElementY = observer.getPosition().getY() + visionElementY;
 
             if (visionElementX < 0 || visionElementX >= mapWidth) {
                 continue;
@@ -68,7 +68,7 @@ public class Vision implements Serializable {
 
     public static boolean playerHidden(CosmodogMap map, Player player) {
         boolean retVal;
-        int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+        int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_GROUNDTYPES);
         retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
         return retVal;
     }

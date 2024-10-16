@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.view.transitions;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents an actors transition on the map that happens during the movement.
@@ -13,23 +14,19 @@ import antonafanasjew.cosmodog.model.actors.Actor;
  */
 public class ActorTransition extends AbstractTransition {
 
-	public static ActorTransition fromActor(Actor actor, int targetPositionX, int targetPositionY) {
+	public static ActorTransition fromActor(Actor actor, Position targetPosition) {
 		ActorTransition actorTransition = new ActorTransition();
 		actorTransition.setActor(actor);
-		actorTransition.setTransitionalPosX(actor.getPositionX());
-		actorTransition.setTransitionalPosY(actor.getPositionY());
-		actorTransition.targetPosX = targetPositionX;
-		actorTransition.targetPosY = targetPositionY;
+		actorTransition.setTransitionalPosition(actor.getPosition());
+		actorTransition.targetPosition = targetPosition;
 		return actorTransition;
 	}
 	
 	private Actor actor;
 	
-	private int transitionalPosX;
-	private int transitionalPosY;
+	private Position transitionalPosition;
 	
-	private int targetPosX;
-	private int targetPosY;
+	private Position targetPosition;
 	
 	private float transitionalOffsetX;
 	private float transitionalOffsetY;
@@ -52,38 +49,20 @@ public class ActorTransition extends AbstractTransition {
 	
 	/**
 	 * NPC actors can move multiple fields within one player turn.
-	 * This method returns the X coordinate of the field the NPC reached
+	 * This method returns the field the NPC reached
 	 * during the transition.
-	 * @return X coordinate of the field the actor reached during the transition
+	 * @return The field the actor reached during the transition
 	 */
-	public int getTransitionalPosX() {
-		return transitionalPosX;
+	public Position getTransitionalPosition() {
+		return transitionalPosition;
 	}
 	
 	/**
-	 * Sets the X coordinate of the field the actor reached in the transition.
-	 * @param transitionalPosX X coordinate of the reached field during the transition.
+	 * Sets the field the actor reached in the transition.
+	 * @param transitionalPosition reached field during the transition.
 	 */
-	public void setTransitionalPosX(int transitionalPosX) {
-		this.transitionalPosX = transitionalPosX;
-	}
-	
-	/**
-	 * NPC actors can move multiple fields within one player turn.
-	 * This method returns the Y coordinate of the field the NPC reached
-	 * during the transition.
-	 * @return Y coordinate of the field the actor reached during the transition
-	 */
-	public int getTransitionalPosY() {
-		return transitionalPosY;
-	}
-	
-	/**
-	 * Sets the Y coordinate of the field the actor reached in the transition.
-	 * @param transitionalPosY Y coordinate of the reached field during the transition.
-	 */
-	public void setTransitionalPosY(int transitionalPosY) {
-		this.transitionalPosY = transitionalPosY;
+	public void setTransitionalPosition(Position transitionalPosition) {
+		this.transitionalPosition = transitionalPosition;
 	}
 	
 	/**
@@ -134,15 +113,11 @@ public class ActorTransition extends AbstractTransition {
 	
 	@Override
 	public String toString() {
-		return transitionalPosX + "/" + transitionalPosY + "/" + transitionalOffsetX + "/" + transitionalOffsetY;
+		return transitionalPosition + "/" + transitionalOffsetX + "/" + transitionalOffsetY;
 	}
 
-	public int getTargetPosX() {
-		return targetPosX;
-	}
-
-	public int getTargetPosY() {
-		return targetPosY;
+	public Position getTargetPosition() {
+		return targetPosition;
 	}
 
 }

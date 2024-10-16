@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a dynamic tile that is a gate that can be opened.
@@ -33,10 +34,9 @@ public class Gate extends DynamicPiece {
 		return state == STATE_LOWERED;
 	}
 	
-	public static Gate create(int x, int y) {
+	public static Gate create(Position position) {
 		Gate gate = new Gate();
-		gate.setPositionX(x);
-		gate.setPositionY(y);
+		gate.setPosition(position);
 		return gate;
 	}
 	

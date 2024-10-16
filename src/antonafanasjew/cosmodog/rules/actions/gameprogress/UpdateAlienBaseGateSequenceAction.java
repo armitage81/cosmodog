@@ -16,6 +16,7 @@ import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
@@ -98,7 +99,7 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 				
 				
 				AsyncAction asyncAction = new LowerGateAction(2000, "GatesToLaunchPodInAlienBase");
-				asyncAction = new CamCenteringDecoratorAction(1000, 237, 289, asyncAction, ApplicationContextUtils.getCosmodogGame());
+				asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(237, 289), asyncAction, ApplicationContextUtils.getCosmodogGame());
 				
 				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 				actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);

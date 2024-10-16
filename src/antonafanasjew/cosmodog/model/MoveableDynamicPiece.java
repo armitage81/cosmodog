@@ -26,8 +26,7 @@ public class MoveableDynamicPiece extends DynamicPiece {
 	
 	//We need an actor to use the collision validator.
 	public Actor asActor() {
-		moveableAsActor.setPositionX(this.getPositionX());
-		moveableAsActor.setPositionY(this.getPositionY());
+		moveableAsActor.setPosition(this.getPosition());
 		return moveableAsActor;
 	}
 	

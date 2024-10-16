@@ -233,13 +233,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 		//Preparing static data.
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
-		Position playerPosition = Position.fromCoordinates(player.getPositionX(), player.getPositionY());
+		Position playerPosition = player.getPosition();
 		
 		//Calculating the target position.
-		Position targetPos = skipTurn ? playerPosition : PositionUtils.neighbourPositionInFacingDirection(player);
+		Position targetPosition = skipTurn ? playerPosition : PositionUtils.neighbourPositionInFacingDirection(player);
 		
 		//Calculating the future result of the player movement.
-		this.playerMovementActionResult = MovementActionResult.instance(player.getPositionX(), player.getPositionY(), (int)targetPos.getX(), (int)targetPos.getY());
+		this.playerMovementActionResult = MovementActionResult.instance(playerPosition, targetPosition);
 		
 		//There could be a moveable block in player's path. In this case, it also would be moved (collision has been checked already.)
 		//Take care: Player's movement has to be calculated before this.

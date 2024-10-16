@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.actors;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class Platform extends Transport {
 
@@ -12,11 +13,10 @@ public class Platform extends Transport {
 	public Platform() {
 		this.setDirection(DirectionType.DOWN);
 	}
-	
-	public static Platform fromPosition(int positionX, int positionY) {
+
+	public static Platform fromPosition(Position position) {
 		Platform platform = new Platform();
-		platform.setPositionX(positionX);
-		platform.setPositionY(positionY);
+		platform.setPosition(position);
 		return platform;
 	}
 	

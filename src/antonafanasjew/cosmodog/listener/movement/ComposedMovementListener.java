@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class ComposedMovementListener implements MovementListener {
 
@@ -16,38 +17,38 @@ public class ComposedMovementListener implements MovementListener {
 	}
 	
 	@Override
-	public void beforeMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void beforeMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
         for (MovementListener l : underlyingMovementListeners) {
-            l.beforeMovement(actor, x1, y1, x2, y2, applicationContext);
+            l.beforeMovement(actor, position1, position2, applicationContext);
         }
 		
 	}
 
 	@Override
-	public void onLeavingTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void onLeavingTile(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
         for (MovementListener l : underlyingMovementListeners) {
-            l.onLeavingTile(actor, x1, y1, x2, y2, applicationContext);
+            l.onLeavingTile(actor, position1, position2, applicationContext);
         }
 	}
 
 	@Override
-	public void onEnteringTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void onEnteringTile(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
         for (MovementListener l : underlyingMovementListeners) {
-            l.onEnteringTile(actor, x1, y1, x2, y2, applicationContext);
+            l.onEnteringTile(actor, position1, position2, applicationContext);
         }
 	}
 
 	@Override
-	public void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void onInteractingWithTile(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
         for (MovementListener l : underlyingMovementListeners) {
-            l.onInteractingWithTile(actor, x1, y1, x2, y2, applicationContext);
+            l.onInteractingWithTile(actor, position1, position2, applicationContext);
         }
 	}
 
 	@Override
-	public void afterMovement(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void afterMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
         for (MovementListener l : underlyingMovementListeners) {
-            l.afterMovement(actor, x1, y1, x2, y2, applicationContext);
+            l.afterMovement(actor, position1, position2, applicationContext);
         }
 	}
 

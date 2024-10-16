@@ -103,8 +103,8 @@ public class MapInputState implements InGameMenuInputState {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		int mapWidth = map.getWidth();
 		int mapHeight = map.getHeight();
-		int posX = player.getPositionX();
-		int posY = player.getPositionY();
+		int posX = (int)player.getPosition().getX();
+		int posY = (int)player.getPosition().getY();
 		
 		int chartPieceWidthInTiles = mapWidth / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
 		int chartPieceHeightInTiles = mapHeight / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;

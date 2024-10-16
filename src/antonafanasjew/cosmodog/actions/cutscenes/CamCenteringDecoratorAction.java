@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.actions.cutscenes;
 
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -39,16 +40,10 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 	private final int camMovementDuration;
 
 	/*
-	 * Horizontal component of the point in the world to which the center of the camera will be moved.
+	 * The point in the world to which the center of the camera will be moved.
 	 * It is given in unscaled world coordinates.
 	 */
-	private final float camCenteringX;
-
-	/*
-	 * Vertical component of the point in the world to which the center of the camera will be moved.
-	 * It is given in unscaled world coordinates.
-	 */
-	private final float camCenteringY;
+	private final Position camCenteringPosition;
 
 	/*
 	* This action will be executed after the camera moves to its target position, and before it moves back to the player.
@@ -70,24 +65,24 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 	 *
 	 * @param camMovementDuration The duration of the camera movement to the target in milliseconds.
 	 * The same time will be spent on the movement back to the player.
-	 * @param positionX The horizontal component of the tile position to which the center of the camera will be moved.
-	 * @param positionY The vertical component of the tile position to which the center of the camera will be moved.
+	 * @param position The tile position to which the center of the camera will be moved.
 	 * @param underlyingAsyncAction Underlying action that will be executed after the camera moves to its target position, and before it moves back to the player.
 	 * It will be registered as a phase in the phase registry of the actual action.
 	 * @param cosmodogGame The game instance. Used to retrieve global game objects, like the camera and the map.
 	 */
 	public CamCenteringDecoratorAction(
 			int camMovementDuration,
-			int positionX,
-			int positionY,
+			Position position,
 			AsyncAction underlyingAsyncAction,
 			CosmodogGame cosmodogGame) {
 
 		this.camMovementDuration = camMovementDuration;
 		float tileWidth = cosmodogGame.getMap().getTileWidth();
 		float tileHeight = cosmodogGame.getMap().getTileHeight();
-		this.camCenteringX = positionX * tileWidth + tileWidth / 2;
-		this.camCenteringY = positionY * tileHeight + tileHeight / 2;
+		this.camCenteringPosition = Position.fromCoordinates(
+				position.getX() * tileWidth + tileWidth / 2,
+				position.getY() * tileHeight + tileHeight / 2
+		);
 		this.underlyingAsyncAction = underlyingAsyncAction;
 		this.cosmodogGame = cosmodogGame;
 	}
@@ -107,39 +102,8 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 	 * @param cosmodogGame The game instance. Used to retrieve global game objects, like the camera and the map.
 	 */
 	public CamCenteringDecoratorAction(int camMovementDuration, Piece piece, AsyncAction underlyingAsyncAction, CosmodogGame cosmodogGame) {
-		this(camMovementDuration, piece.getPositionX(), piece.getPositionY(), underlyingAsyncAction, cosmodogGame);
+		this(camMovementDuration, piece.getPosition(), underlyingAsyncAction, cosmodogGame);
 
-	}
-
-	/**
-	 * Creates the action instance by defining where the camera should be pointed on the map,
-	 * how long the camera movement should take,
-	 * and what underlying action should be executed after the camera movement.
-	 * <p>
-	 * The camera target is defined as a point in the world.
-	 * <p>
-	 * Take note: Zooming is irrelevant for the target point in the world.
-	 * In Cosmodog, zooming means that the scene is scaled while the view's size stays the same.
-	 * But here, camCenteringX and camCenteringY are given in the unscaled world's coordinate system.
-	 * <p>
-	 * Example: Scene is 40x40 pixels big and the view is 10x10 pixels big. The camera must be moved to the middle of the scene.
-	 * Without zoom, the target point is 20/20. With zoom factor 2.0, the target point would be 40/40.
-	 * But since zooming is not considered, the target point is still 20/20.
-	 *
-	 * @param camMovementDuration The duration of the camera movement to the target in milliseconds.
-	 * The same time will be spent on the movement back to the player.
-	 * @param camCenteringX The horizontal component of the point in the world to which the center of the camera will be moved.
-	 * @param camCenteringY The vertical component of the point in the world to which the center of the camera will be moved.
-	 * @param underlyingAsyncAction Underlying action that will be executed after the camera moves to its target position, and before it moves back to the player.
-	 * It will be registered as a phase in the phase registry of the actual action.
-	 * @param cosmodogGame The game instance. Used to retrieve global game objects, like the camera and the map.
-	 */
-	public CamCenteringDecoratorAction(int camMovementDuration, float camCenteringX, float camCenteringY, AsyncAction underlyingAsyncAction, CosmodogGame cosmodogGame) {
-		this.camMovementDuration = camMovementDuration;
-		this.camCenteringX = camCenteringX;
-		this.camCenteringY = camCenteringY;
-		this.underlyingAsyncAction = underlyingAsyncAction;
-		this.cosmodogGame = cosmodogGame;
 	}
 
 	/**
@@ -162,9 +126,11 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 		float initialCamX = cosmodogGame.getCam().viewCopy().centerX() / cosmodogGame.getCam().getZoomFactor();
 		float initialCamY = cosmodogGame.getCam().viewCopy().centerY() / cosmodogGame.getCam().getZoomFactor();
 
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, camCenteringX, camCenteringY, cosmodogGame));
+		Position initialCamPosition = Position.fromCoordinates(initialCamX, initialCamY);
+
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, camCenteringPosition, cosmodogGame));
 		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, initialCamX, initialCamY, cosmodogGame));
+		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, initialCamPosition, cosmodogGame));
 
 	}
 

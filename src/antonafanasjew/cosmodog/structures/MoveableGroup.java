@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.model.Piece;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -91,8 +92,8 @@ public class MoveableGroup implements Serializable {
 	public boolean solved() {
 		List<Position> moveablePositions = moveables
 				.stream()
-				.map(e -> Position.fromCoordinates(e.getPositionX(), e.getPositionY()))
-				.collect(Collectors.toList())
+				.map(Piece::getPosition)
+				.toList()
 		;
 		
 		return moveablePositions.containsAll(goalPositions);
@@ -126,13 +127,11 @@ public class MoveableGroup implements Serializable {
 			for (int i = 0; i < moveableGroupAroundPlayer.moveables.size(); i++) {
 				MoveableDynamicPiece moveable = moveableGroupAroundPlayer.getMoveables().get(i);
 				Position originalPosition = moveableGroupAroundPlayer.getOriginalPositions().get(i);
-				moveable.setPositionX((int)originalPosition.getX());
-				moveable.setPositionY((int)originalPosition.getY());
+				moveable.setPosition(originalPosition);
 			}
 			player.beginTeleportation();
 			Position playerStartingPosition = moveableGroupAroundPlayer.getPlayerStartingPosition();
-			player.setPositionX((int)playerStartingPosition.getX());
-			player.setPositionY((int)playerStartingPosition.getY());
+			player.setPosition(playerStartingPosition);
 			player.endTeleportation();
 			cam.focusOnPiece(map, 0, 0, player);
 		}

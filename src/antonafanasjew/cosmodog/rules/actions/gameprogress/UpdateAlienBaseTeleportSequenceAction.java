@@ -16,6 +16,7 @@ import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
 
@@ -90,7 +91,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		
 		if (CORRECT_SEQUENCE.equals(currentSequence)) {
 			AsyncAction asyncAction = new SwitchingIndicatorAction(2000, "AlienBaseTeleportIndicator", true);
-			asyncAction = new CamCenteringDecoratorAction(1000, 204, 310, asyncAction, ApplicationContextUtils.getCosmodogGame());
+			asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(204, 310), asyncAction, ApplicationContextUtils.getCosmodogGame());
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		}

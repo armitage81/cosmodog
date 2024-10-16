@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Represents a piece on the map. It could be an item, an actor or the player.
@@ -10,23 +11,14 @@ public class Piece extends CosmodogModel {
 
 	private static final long serialVersionUID = -7878012563623429751L;
 
-	private int positionX;
-	private int positionY;
+	private Position position;
 
-	public int getPositionX() {
-		return positionX;
+	public Position getPosition() {
+		return position;
 	}
 
-	public int getPositionY() {
-		return positionY;
-	}
-
-	public void setPositionX(int positionX) {
-		this.positionX = positionX;
-	}
-
-	public void setPositionY(int positionY) {
-		this.positionY = positionY;
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
 	public boolean interactive(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {

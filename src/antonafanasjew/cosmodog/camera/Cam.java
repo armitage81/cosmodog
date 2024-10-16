@@ -190,13 +190,12 @@ public class Cam implements Serializable {
 	
 	/**
 	 * Places the camera view on the scene (Direct view positioning related to the scene). 
-	 * @param x Absolute x coordinate related to the scene.
-	 * @param y Absolute y coordinate related to the scene.
-	 * 
+	 * @param position Absolute position related to the scene.
+	 *
 	 * @throws CamPositioningException Thrown if the positioning locates the view out of scene bounds.
 	 */
-	public void move(float x, float y) throws CamPositioningException {
-		this.view.move(x, y);
+	public void move(Position position) throws CamPositioningException {
+		this.view.move(position);
 		assertPositioning();
 	}
 	
@@ -290,8 +289,8 @@ public class Cam implements Serializable {
 		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
 		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);
 		
-		float pieceX = piece.getPositionX() * zoomedTileWidth + offsetX * zoomFactor;
-		float pieceY = piece.getPositionY() * zoomedTileHeight + offsetY * zoomFactor;
+		float pieceX = piece.getPosition().getX() * zoomedTileWidth + offsetX * zoomFactor;
+		float pieceY = piece.getPosition().getY() * zoomedTileHeight + offsetY * zoomFactor;
 		
 		int pieceWidth = zoomedTileWidth;
 		int pieceHeight = zoomedTileHeight;
@@ -301,9 +300,11 @@ public class Cam implements Serializable {
 		
 		float newCamX = pieceX + pieceWidth / 2.0f - camWidth / 2.0f;
 		float newCamY = pieceY + pieceHeight / 2.0f - camHeight / 2.0f;
+
+		Position newCamPosition = Position.fromCoordinates(newCamX, newCamY);
 		
 		try {
-			this.move(newCamX, newCamY);
+			this.move(newCamPosition);
 		} catch (CamPositioningException e) {
 			//This will never happen as the pieces are always parts of the map
 			//and the cam focuses on them.

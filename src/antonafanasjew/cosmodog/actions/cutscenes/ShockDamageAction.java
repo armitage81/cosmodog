@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -49,13 +50,10 @@ public class ShockDamageAction extends FixedLengthAsyncAction {
 	 */
 	public static class ShockDamageTransition {
 		/**
-		 * Horizontal position of the shock damage effect in tile coordinates.
+		 * Position of the shock damage effect in tile coordinates.
 		 */
-		public int positionX;
-		/**
-		 * Vertical position of the shock damage effect in tile coordinates.
-		 */
-		public int positionY;
+		public Position position;
+
 		/**
 		 * The completion rate of the shock damage effect. It is a value between 0.0 and 1.0.
 		 */
@@ -79,8 +77,7 @@ public class ShockDamageAction extends FixedLengthAsyncAction {
 		super(duration);
 		Player player = ApplicationContextUtils.getPlayer();
 		this.transition = new ShockDamageTransition();
-		this.transition.positionX = player.getPositionX();
-		this.transition.positionY = player.getPositionY();
+		this.transition.position = player.getPosition();
 	}
 
 	/**

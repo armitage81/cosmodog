@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.cutscenes;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
@@ -29,28 +30,16 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 	private static final long serialVersionUID = -2679131506727529121L;
 
 	/*
-	 * Horizontal component of the point in the world at which the center of the camera is located before the movement.
+	 * The point in the world at which the center of the camera is located before the movement.
 	 * It is given in unscaled world coordinates.
 	 */
-	private float initialCamX;
+	private Position initialCamPosition;
 
 	/*
-	 * Vertical component of the point in the world at which the center of the camera is located before the movement.
+	 * The point in the world to which the center of the camera will be moved.
 	 * It is given in unscaled world coordinates.
 	 */
-	private float initialCamY;
-
-	/*
-	 * Horizontal component of the point in the world to which the center of the camera will be moved.
-	 * It is given in unscaled world coordinates.
-	 */
-	private final float targetCamX;
-
-	/*
-	 * Vertical component of the point in the world to which the center of the camera will be moved.
-	 * It is given in unscaled world coordinates.
-	 */
-	private final float targetCamY;
+	private final Position targetCamPosition;
 
 	/*
 	 * The game instance. Used to retrieve global game objects, like the camera and the map.
@@ -72,14 +61,12 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 	 * But since zooming is not considered, the target point is still 20/20.
 	 *
 	 * @param duration The duration of the camera movement to the target in milliseconds.
-	 * @param targetCamX The horizontal component of the point in the world to which the center of the camera will be moved.
-	 * @param targetCamY The vertical component of the point in the world to which the center of the camera will be moved.
+	 * @param targetCamPosition The point in the world to which the center of the camera will be moved.
 	 * @param cosmodogGame The game instance. Used to retrieve global game objects, like the camera and the map.
 	 */
-	public CamMovementAction(int duration, float targetCamX, float targetCamY, CosmodogGame cosmodogGame) {
+	public CamMovementAction(int duration, Position targetCamPosition, CosmodogGame cosmodogGame) {
 		super(duration);
-		this.targetCamX = targetCamX;
-		this.targetCamY = targetCamY;
+		this.targetCamPosition = targetCamPosition;
 		this.cosmodogGame = cosmodogGame;
 	}
 
@@ -93,8 +80,10 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 	@Override
 	public void onTrigger() {
 		Cam cam = cosmodogGame.getCam();
-		initialCamX = cam.viewCopy().centerX() / cam.getZoomFactor();
-		initialCamY = cam.viewCopy().centerY() / cam.getZoomFactor();
+		initialCamPosition = Position.fromCoordinates(
+				cam.viewCopy().centerX() / cam.getZoomFactor(),
+				cam.viewCopy().centerY() / cam.getZoomFactor()
+		);
 	}
 
 	/**
@@ -126,13 +115,13 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 			completion = 1;
 		}
 
-		Point startPoint = new Point(initialCamX, initialCamY);
-		Point endPoint = new Point(targetCamX, targetCamY);
+		Point startPoint = new Point(initialCamPosition.getX(), initialCamPosition.getY());
+		Point endPoint = new Point(targetCamPosition.getX(), targetCamPosition.getY());
 		float horizontalDiff = endPoint.x - startPoint.x;
 		float verticalDiff = endPoint.y - startPoint.y;
 
-		float currentX = initialCamX + horizontalDiff * completion;
-		float currentY = initialCamY + verticalDiff * completion;
+		float currentX = initialCamPosition.getX() + horizontalDiff * completion;
+		float currentY = initialCamPosition.getY() + verticalDiff * completion;
 
 		currentX *= cam.getZoomFactor();
 		currentY *= cam.getZoomFactor();
@@ -141,7 +130,7 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 		currentY = currentY - cam.viewCopy().height() / 2;
 
 		try {
-			cam.move(currentX, currentY);
+			cam.move(Position.fromCoordinates(currentX, currentY));
 		} catch (CamPositioningException e) {
 			Log.error("Cam out of bounds: " + currentX + "/" + currentY);
 		}

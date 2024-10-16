@@ -173,7 +173,7 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 			Vehicle vehicle = item.getVehicle();
 			vehicle.setLife(vehicle.getLife() - damage);
 			if (vehicle.dead()) {
-				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPositionX(), player.getPositionY()));
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPosition()));
 				player.getInventory().remove(InventoryItemType.VEHICLE);
 			}
 		} else {

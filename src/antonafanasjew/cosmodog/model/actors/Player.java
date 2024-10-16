@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class Player extends Actor {
 
@@ -38,12 +39,11 @@ public class Player extends Actor {
 	
 	private int turnsPoisoned = 0;
 	
-	public static Player fromPosition(int positionX, int positionY) {
+	public static Player fromPosition(Position position) {
 		Player player = new Player();
 		player.setMaxLife(INITIAL_LIFE);
 		player.setLife(player.getMaxLife());
-		player.setPositionX(positionX);
-		player.setPositionY(positionY);
+		player.setPosition(position);
 		player.setDirection(DirectionType.RIGHT);
 		return player;
 	}

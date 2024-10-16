@@ -173,8 +173,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 		player.setFood(player.getCurrentMaxFood());
 		player.setWater(player.getCurrentMaxWater());
 		player.resetLife();
-		player.setPositionX((int)respawnPosition.getX());
-		player.setPositionY((int)respawnPosition.getY());
+		player.setPosition(respawnPosition);
 		player.decontaminate();
 		player.resetTurnsWormAlerted();
 
@@ -183,7 +182,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 			snowfallChangeAction.resetRate();
 		}
 
-		PlayerMovementCache.getInstance().afterMovement(player, player.getPositionX(), player.getPositionY(), player.getPositionX(), player.getPositionY(), ApplicationContext.instance());
+		PlayerMovementCache.getInstance().afterMovement(player, player.getPosition(), player.getPosition(), ApplicationContext.instance());
 		cam.focusOnPiece(cosmodogMap, 0, 0, player);
 		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
 		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");

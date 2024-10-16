@@ -13,21 +13,14 @@ public class Position implements Serializable {
 
 	private float x;
 	private float y;
-	
+
 	public static Position fromCoordinates(float x, float y) {
 		Position position = new Position();
 		position.x = x;
 		position.y = y;
 		return position;
 	}
-	
-	public static Position fromPiece(Piece piece) {
-		Position position = new Position();
-		position.x = piece.getPositionX();
-		position.y = piece.getPositionY();
-		return position;
-	}
-	
+
 	private Position() {
 
 	}
@@ -49,7 +42,13 @@ public class Position implements Serializable {
 		this.x += offsetX;
 		this.y += offsetY;
 	}
-	
+
+	public Position shifted(float offsetX, float offsetY) {
+		Position shiftedPosition = Position.fromCoordinates(this.x, this.y);
+		shiftedPosition.shift(offsetX, offsetY);
+		return shiftedPosition;
+	}
+
 	/**
 	 * Moves the position to given location.
 	 * RESULTING POSITION IS ABSOLUTE!!!

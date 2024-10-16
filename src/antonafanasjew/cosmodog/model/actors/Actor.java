@@ -1,7 +1,5 @@
 package antonafanasjew.cosmodog.model.actors;
 
-import java.util.List;
-
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.listener.life.ComposedLifeListener;
@@ -9,9 +7,11 @@ import antonafanasjew.cosmodog.listener.life.LifeListener;
 import antonafanasjew.cosmodog.listener.movement.ComposedMovementListener;
 import antonafanasjew.cosmodog.listener.movement.MovementListener;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.PositionUtils;
-
 import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * Actors are movable pieces on the map that also have a direction.
@@ -65,31 +65,35 @@ public abstract class Actor extends Piece {
 	}
 	
 	public void shiftHorizontal(int positionOffset) {
-		int x1 = this.getPositionX();
-		int y1 = this.getPositionY();
-		int x2 = this.getPositionX() + positionOffset;
-		int y2 = this.getPositionY();
-		composedMovementListener.beforeMovement(this, x1, y1, x2, y2, ApplicationContext.instance());
-		composedMovementListener.onLeavingTile(this, x1, y1, x2, y2, ApplicationContext.instance());
-		this.setPositionX(this.getPositionX() + positionOffset);
+		Position position1 = this.getPosition();
+		Position position2 = this.getPosition();
+		position2.shift(positionOffset, 0);
+
+		composedMovementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
+		composedMovementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
+
+		this.setPosition(position2);
 		this.setDirection(positionOffset < 0 ? DirectionType.LEFT : DirectionType.RIGHT);
-		composedMovementListener.onEnteringTile(this, x1, y1, x2, y2, ApplicationContext.instance());
-		composedMovementListener.onInteractingWithTile(this, x1, y1, x2, y2, ApplicationContext.instance());
-		composedMovementListener.afterMovement(this, x1, y1, x2, y2, ApplicationContext.instance());
+
+		composedMovementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
+		composedMovementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
+		composedMovementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
 	}
 
 	public void shiftVertical(int positionOffset) {
-		int x1 = this.getPositionX();
-		int y1 = this.getPositionY();
-		int x2 = this.getPositionX();
-		int y2 = this.getPositionY() + positionOffset;
-		composedMovementListener.beforeMovement(this, x1, y1, x2, y2, ApplicationContext.instance());
-		composedMovementListener.onLeavingTile(this, x1, y1, x2, y2, ApplicationContext.instance());
-		this.setPositionY(this.getPositionY() + positionOffset);
+		Position position1 = this.getPosition();
+		Position position2 = this.getPosition();
+		position2.shift(0, positionOffset);
+
+		composedMovementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
+		composedMovementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
+
+		this.setPosition(position2);
 		this.setDirection(positionOffset < 0 ? DirectionType.UP : DirectionType.DOWN);
-		composedMovementListener.onEnteringTile(this, x1, y1, x2, y2, ApplicationContext.instance());
-		composedMovementListener.onInteractingWithTile(this, x1, y1, x2, y2, ApplicationContext.instance());
-		composedMovementListener.afterMovement(this, x1, y1, x2, y2, ApplicationContext.instance());
+
+		composedMovementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
+		composedMovementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
+		composedMovementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
 	}
 
 

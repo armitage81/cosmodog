@@ -37,6 +37,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
@@ -58,7 +59,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private int oldTurnsWormAlerted = -1;
 	
 	@Override
-	public void onEnteringTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void onEnteringTile(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
 		oldWater = player.getWater();
 		oldDehydrating = player.dehydrating();
@@ -67,9 +68,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		addTime();
 		updateWormAlert(player, applicationContext );
 		updatePoisonCount(player, applicationContext);
-		updateWater(x1, y1, x2, y2);
-		updateFood(x1, y1, x2, y2);
-		updateFuel(x1, y1, x2, y2);
+		updateWater(position1, position2);
+		updateFood(position1, position2);
+		updateFuel(position1, position2);
 		
 	}
 
@@ -88,14 +89,14 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		}
 	}
 	
-	private void updateWater(int x1, int y1, int x2, int y2) {
+	private void updateWater(Position position1, Position position2) {
 		
 		ApplicationContext appCx = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		int waterCosts = cosmodog.getWaterConsumer().turnCosts(x1, y1, x2, y2, player, map, appCx);
+		int waterCosts = cosmodog.getWaterConsumer().turnCosts(position1, position2, player, map, appCx);
 		player.decreaseWater(waterCosts);
 	}
 	
@@ -117,14 +118,14 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		addTime();
 		updateWormAlert(player, applicationContext );
 		updatePoisonCount(player, applicationContext);
-		updateWater(actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY());
-		updateFood(actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY());
-		updateFuel(actor.getPositionX(), actor.getPositionY(), actor.getPositionX(), actor.getPositionY());
+		updateWater(actor.getPosition(), actor.getPosition());
+		updateFood(actor.getPosition(), actor.getPosition());
+		updateFuel(actor.getPosition(), actor.getPosition());
 	}
 	
 	
 	@Override
-	public void onInteractingWithTile(Actor actor, int x1, int y1, int x2, int y2, ApplicationContext applicationContext) {
+	public void onInteractingWithTile(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		collectCollectibles(applicationContext);
 		refillWater(applicationContext);
 		refillFuel(applicationContext);
@@ -212,7 +213,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		while (it.hasNext()) {
 			Piece piece = it.next();
 			
-			if (piece.getPositionX() == player.getPositionX() && piece.getPositionY() == player.getPositionY()) {
+			if (piece.getPosition().equals(player.getPosition())) {
 				
 				String pieceType = PiecesUtils.pieceType(piece);
 				
@@ -242,7 +243,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		WaterValidator waterValidator = cosmodog.getWaterValidator();
 		
-		boolean hasWaterAccess = waterValidator.waterInReach(player, map, player.getPositionX(), player.getPositionY());
+		boolean hasWaterAccess = waterValidator.waterInReach(player, map, player.getPosition());
 		
 		if (hasWaterAccess) {
 			if (oldWater < player.getCurrentMaxWater()) {
@@ -265,7 +266,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = cosmodog.getCosmodogGame().getPlayer();
 
-		int collectiblesLayerTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLECTIBLES);
+		int collectiblesLayerTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_COLLECTIBLES);
 		if (TileType.FUEL.getTileId() == collectiblesLayerTileId) {
 			String notificationText = null;
 			if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
@@ -302,7 +303,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		for (DynamicPiece piece : letterPlates) {
 			LetterPlate letterPlate = (LetterPlate)piece;
 
-			if (letterPlate.getPositionX() == player.getPositionX() && letterPlate.getPositionY() == player.getPositionY()) {
+			if (letterPlate.getPosition().equals(player.getPosition())) {
 				continue;
 			}
 			
@@ -347,7 +348,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		for (DynamicPiece piece : buttons) {
 			PressureButton button = (PressureButton)piece;
 			
-			if (button.getPositionX() == player.getPositionX() && button.getPositionY() == player.getPositionY()) {
+			if (button.getPosition().equals(player.getPosition())) {
 				if (button.getState() == PressureButton.STATE_DEACTIVATED) {
 					button.setState(PressureButton.STATE_ACTIVATED);
 				}
@@ -405,7 +406,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void checkDecontamination(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		boolean onDecontaminationSpot = TileType.DECONTAMINATION_SPOT.getTileId() == map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_GEAR);
+		boolean onDecontaminationSpot = TileType.DECONTAMINATION_SPOT.getTileId() == map.getTileId(player.getPosition(), Layers.LAYER_GEAR);
 		if (onDecontaminationSpot) {
 			
 			if (player.isPoisoned()) {
@@ -459,7 +460,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 				
 				Player player = cosmodog.getCosmodogGame().getPlayer();
-				int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_TEMPERATURE);
+				int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_TEMPERATURE);
 				
 				boolean coldTile = TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD;
 				boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
@@ -491,7 +492,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
-		int radiationTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
+		int radiationTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_RADIATION);
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) == null) {
@@ -510,7 +511,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		Player player = ApplicationContextUtils.getPlayer();
 		
-		int electricityTileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_RADIATION);
+		int electricityTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_RADIATION);
 		
 		if (TileType.ELECTRICITY.getTileId() == electricityTileId) {
 			if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
@@ -533,7 +534,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
 		boolean inWormRegion = RegionUtils.pieceInRegion(player, wormsSouthEastObject, map.getTileWidth(), map.getTileHeight());
 		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player);
-		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPositionX(), player.getPositionY());
+		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPosition());
 		boolean inPlatform = player.getInventory().hasPlatform();
 		boolean wormActive = player.getGameProgress().isWormActive();
 		boolean wormAlerted = wormActive && inWormRegion && inSnow && !onPlatform && !inPlatform;
@@ -610,7 +611,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		for (DynamicPiece piece : mines) {
 			Mine mine = (Mine)piece;
-			if (mine.getPositionX() == player.getPositionX() && mine.getPositionY() == player.getPositionY()) {
+			if (mine.getPosition().equals(player.getPosition())) {
 				mineUnderPlayer = mine;
 				break;
 			}
@@ -628,7 +629,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	private boolean isPlayerOnGroundTypeTile(TileType tileType, CosmodogMap map, Player player) {
 		boolean retVal = false;
-		int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+		int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_GROUNDTYPES);
 		retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);
 		
 		return retVal;
@@ -641,8 +642,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		TiledObjectGroup weatherObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_WEATHER);
 		TiledObject snowfallRegion = weatherObjectGroup.getObjects().get("Snowfall");
 		TiledObject snowfallBorderRegion = weatherObjectGroup.getObjects().get("Snowfall_border");
-		boolean inSnowfall = RegionUtils.tileInRegion(player.getPositionX(), player.getPositionY(), snowfallRegion, map.getTileWidth(), map.getTileHeight());
-		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPositionX(), player.getPositionY(), snowfallBorderRegion, map.getTileWidth(), map.getTileHeight());
+		boolean inSnowfall = RegionUtils.tileInRegion(player.getPosition(), snowfallRegion, map.getTileWidth(), map.getTileHeight());
+		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPosition(), snowfallBorderRegion, map.getTileWidth(), map.getTileHeight());
 		boolean underRoof = !RegionUtils.roofsOverPiece(player, map).isEmpty() && RegionUtils.roofRemovalBlockersOverPiece(player, map).isEmpty();
 		SnowfallChangeAction snowfallChangeAction =  (SnowfallChangeAction) game.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
 
