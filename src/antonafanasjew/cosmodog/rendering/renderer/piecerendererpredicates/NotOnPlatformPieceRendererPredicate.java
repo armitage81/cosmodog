@@ -11,7 +11,7 @@ public class NotOnPlatformPieceRendererPredicate implements PieceRendererPredica
 
 	@Override
 	public boolean pieceShouldBeRendered(Piece piece) {
-		return piece instanceof Platform || !CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY());
+		return piece instanceof Platform || !CosmodogMapUtils.isTileOnPlatform(piece.getPosition());
 	}
 
 }

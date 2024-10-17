@@ -9,7 +9,7 @@ public class CollectibleComposedRenderer extends AbstractPieceRenderer {
 	@Override
 	protected void render(ApplicationContext applicationContext, int tileWidth, int tileHeight, int tileNoX, int tileNoY, Piece piece) {
 		String goodieTypeRepr = GoodieType.supplies.name();
-		applicationContext.getAnimations().get(goodieTypeRepr).draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+		applicationContext.getAnimations().get(goodieTypeRepr).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
 	}
 
 }

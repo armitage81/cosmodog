@@ -20,8 +20,8 @@ public class WeaponRenderer extends AbstractPieceRenderer {
 		String animationId = Mappings.WEAPON_TYPE_2_ANIMATION_ID.get(weaponType);
 		Animation animation = applicationContext.getAnimations().get(animationId);
 		
-		int tileXCenter = (piece.getPositionX() - tileNoX) * tileWidth + (tileWidth / 2);
-		int tileYCenter = (piece.getPositionY() - tileNoY) * tileHeight + (tileHeight / 2);
+		int tileXCenter = (int)((piece.getPosition().getX() - tileNoX) * tileWidth + (tileWidth / 2));
+		int tileYCenter = (int)((piece.getPosition().getY() - tileNoY) * tileHeight + (tileHeight / 2));
 		
 		float animationScaleFactor = 0.5f;
 		

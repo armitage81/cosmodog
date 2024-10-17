@@ -32,6 +32,6 @@ public class PlatformRenderer extends AbstractPieceRenderer {
 		DirectionType direction = platform.getDirection();
 		String animationKey = platformDirection2animationKey.get(direction);
 		Animation platformAnimation = applicationContext.getAnimations().get(animationKey);
-		platformAnimation.draw((platform.getPositionX() - tileNoX - 3) * tileWidth, (platform.getPositionY() - tileNoY - 3) * tileHeight);	}
+		platformAnimation.draw((platform.getPosition().getX() - tileNoX - 3) * tileWidth, (platform.getPosition().getY() - tileNoY - 3) * tileHeight);	}
 
 }

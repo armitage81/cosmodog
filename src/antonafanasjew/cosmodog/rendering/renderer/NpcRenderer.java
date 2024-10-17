@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -76,14 +77,14 @@ public class NpcRenderer extends AbstractRenderer {
 		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
 		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
 		
-		
-		Set<Enemy> enemies = map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2);
+		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY);
+
+		Set<Enemy> enemies = map.visibleEnemies(tilePosition, tilesW, tilesH, 2);
 		
 		for (Enemy enemy : enemies) {
 			
-			int enemyPosX = enemy.getPositionX();
-			int enemyPosY = enemy.getPositionY();
-			
+			Position enemyPosition = enemy.getPosition();
+
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
 						
@@ -133,8 +134,7 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			
 			if (enemyActionType == NpcActionType.ANIMATE) {
-				enemyPosX = enemyTransition.getTransitionalPosX();
-				enemyPosY = enemyTransition.getTransitionalPosY();
+				enemyPosition = enemyTransition.getTransitionalPosition();
 				pieceOffsetX = tileWidth * enemyTransition.getTransitionalOffsetX();
 				pieceOffsetY = tileHeight * enemyTransition.getTransitionalOffsetY();
 			} 
@@ -201,13 +201,13 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 
 			
-			enemyAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + animationSizeCorrectionOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + animationSizeCorrectionOffsetY);
+			enemyAnimation.draw((enemyPosition.getX() - tileNoX) * tileWidth + pieceOffsetX + animationSizeCorrectionOffsetX, (enemyPosition.getY() - tileNoY) * tileHeight + pieceOffsetY + animationSizeCorrectionOffsetY);
 			
 			if (enemyDamaged && enemyRobotic) {
 				int smokeOffsetX = 8;
-				int smokeOffseetY = -8;
+				int smokeOffsetY = -8;
 				Animation smokeAnimation = ApplicationContext.instance().getAnimations().get("smoke");
-				smokeAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX  + animationSizeCorrectionOffsetX + smokeOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + animationSizeCorrectionOffsetY + smokeOffseetY);
+				smokeAnimation.draw((enemyPosition.getX() - tileNoX) * tileWidth + pieceOffsetX  + animationSizeCorrectionOffsetX + smokeOffsetX, (enemyPosition.getY() - tileNoY) * tileHeight + pieceOffsetY + animationSizeCorrectionOffsetY + smokeOffsetY);
 			}
 			
 			if (enemyIsExploding && enemyRobotic) {
@@ -215,7 +215,7 @@ public class NpcRenderer extends AbstractRenderer {
 				float completion = fightPhaseTransition.getCompletion();
 				int animationFrame = (int)(explosionAnimation.getFrameCount() * completion);
 				explosionAnimation.setCurrentFrame(animationFrame);
-				explosionAnimation.draw((enemyPosX - tileNoX) * tileWidth - tileWidth, (enemyPosY - tileNoY) * tileHeight -tileHeight);
+				explosionAnimation.draw((enemyPosition.getX() - tileNoX) * tileWidth - tileWidth, (enemyPosition.getY() - tileNoY) * tileHeight -tileHeight);
 			}
 						
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
@@ -228,9 +228,8 @@ public class NpcRenderer extends AbstractRenderer {
 		//This is another rendering loop to render the overhead markers over the enemies.
 		for (Enemy enemy : enemies) {
 			
-			int enemyPosX = enemy.getPositionX();
-			int enemyPosY = enemy.getPositionY();
-			
+			Position enemyPosition = enemy.getPosition();
+
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
 						
@@ -258,8 +257,7 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 						
 			if (enemyActionType == NpcActionType.ANIMATE) {
-				enemyPosX = enemyTransition.getTransitionalPosX();
-				enemyPosY = enemyTransition.getTransitionalPosY();
+				enemyPosition = enemyTransition.getTransitionalPosition();
 				pieceOffsetX = tileWidth * enemyTransition.getTransitionalOffsetX();
 				pieceOffsetY = tileHeight * enemyTransition.getTransitionalOffsetY();
 			} 
@@ -322,14 +320,14 @@ public class NpcRenderer extends AbstractRenderer {
 					float signOffsetX = (tileWidth - signWidth) / 2;
 					float signOffseetY = -8;
 					Animation sleepingAnimation = ApplicationContext.instance().getAnimations().get("enemySleeping");
-					sleepingAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
+					sleepingAnimation.draw((enemyPosition.getX() - tileNoX) * tileWidth + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosition.getY() - tileNoY) * tileHeight + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
 				} else if (enemy.getAlertLevel() > 0 && !enemyIsExploding) {
 					float signWidth = 8;
 					float signHeight = 8;
 					float signOffsetX = (tileWidth - signWidth) / 2;
-					float signOffseetY = -signHeight;
+					float signOffsetY = -signHeight;
 					Animation alertedAnimation = ApplicationContext.instance().getAnimations().get("enemyAlerted");
-					alertedAnimation.draw((enemyPosX - tileNoX) * tileWidth + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosY - tileNoY) * tileHeight + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
+					alertedAnimation.draw((enemyPosition.getX() - tileNoX) * tileWidth + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosition.getY() - tileNoY) * tileHeight + pieceOffsetY + signOffsetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
 				}
 			}
 			

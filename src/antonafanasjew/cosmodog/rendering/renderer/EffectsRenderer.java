@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.List;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Sound;
@@ -32,7 +33,7 @@ public class EffectsRenderer extends AbstractRenderer {
 		public static EffectsRendererParam FOR_GROUND_EFFECTS = new EffectsRendererParam(Lists.newArrayList(Effect.EFFECT_TYPE_ELECTRICITY, Effect.EFFECT_TYPE_TELEPORT));
 		public static EffectsRendererParam FOR_TOP_EFFECTS = new EffectsRendererParam(Lists.newArrayList(Effect.EFFECT_TYPE_SMOKE, Effect.EFFECT_TYPE_BIRDS, Effect.EFFECT_TYPE_FIRE, Effect.EFFECT_TYPE_ENERGYWALL));
 
-		private List<String> effectTypes;
+		private final List<String> effectTypes;
 
 		public EffectsRendererParam(List<String> effectTypes) {
 			this.effectTypes = effectTypes;
@@ -47,7 +48,7 @@ public class EffectsRenderer extends AbstractRenderer {
 	
 
 	//We need it to calculate whether to render the energy wall effect or not.
-	private EnergyWallCollisionValidatorForPlayer energyWallCollisionValidator = new EnergyWallCollisionValidatorForPlayer();
+	private final EnergyWallCollisionValidatorForPlayer energyWallCollisionValidator = new EnergyWallCollisionValidatorForPlayer();
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
@@ -85,8 +86,10 @@ public class EffectsRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		
-		Set<Piece> effectPieces = map.visibleEffectPieces(tileNoX, tileNoY, tilesW, tilesH, 2);
+
+		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY);
+
+		Set<Piece> effectPieces = map.visibleEffectPieces(tilePosition, tilesW, tilesH, 2);
 		
 		
 		
@@ -95,32 +98,31 @@ public class EffectsRenderer extends AbstractRenderer {
 		boolean audibleFire = false;
 		
 		for (Piece piece : effectPieces) {
-			if (piece instanceof Effect) {
-				Effect effect = (Effect) piece;
-				if (effectsToRender.contains(effect.getEffectType())) {
+			if (piece instanceof Effect effect) {
+                if (effectsToRender.contains(effect.getEffectType())) {
 					
 					if (effect.getEffectType().equals(Effect.EFFECT_TYPE_TELEPORT)) {
-    					applicationContext.getAnimations().get("teleportEffect").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+    					applicationContext.getAnimations().get("teleportEffect").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
     				}
 					
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_FIRE)) {
     					audibleFire = true;
-    					applicationContext.getAnimations().get("fire").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * (tileHeight - 1));
+    					applicationContext.getAnimations().get("fire").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * (tileHeight - 1));
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_SMOKE)) {
-    					applicationContext.getAnimations().get("smoke").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+    					applicationContext.getAnimations().get("smoke").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY)) {
     					audibleElectricity = true;
-    					applicationContext.getAnimations().get("electricity").draw((piece.getPositionX() - tileNoX - 2) * tileWidth, (piece.getPositionY() - tileNoY - 1) * tileHeight);
+    					applicationContext.getAnimations().get("electricity").draw((piece.getPosition().getX() - tileNoX - 2) * tileWidth, (piece.getPosition().getY() - tileNoY - 1) * tileHeight);
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ENERGYWALL)) {
     					//Only render, if the energy wall is not passable.
-    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), map, piece.getPositionX(), piece.getPositionY());
+    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), map, piece.getPosition());
     					
-    					if (energyWallCollisionStatus.isPassable() == false) {
+    					if (!energyWallCollisionStatus.isPassable()) {
     						audibleEnergyWall = true;
-    						applicationContext.getAnimations().get("energywall").draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY - 1) * (tileHeight));
+    						applicationContext.getAnimations().get("energywall").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - 1) * (tileHeight));
     					}
 
     					

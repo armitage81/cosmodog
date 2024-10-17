@@ -98,7 +98,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			
 			//Actor's X position in tiles related to the camera's left corner.
-			int actorTileNoXOnVisibleMap = actor.getPositionX() - tileNoX;
+			int actorTileNoXOnVisibleMap = (int)(actor.getPosition().getX() - tileNoX);
 			
 			//Actor's X position in pixels corresponding to the tile position calculated above.
 			int actorPosXOnVisibleMap = actorTileNoXOnVisibleMap * tileWidth;
@@ -110,7 +110,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			float actorPosXOnVisibleMapInclMovementInclScale = actorPosXOnVisibleMapInclMovement * cam.getZoomFactor();
 			
 			//The same for Y position.
-			int actorTileNoYOnVisibleMap = actor.getPositionY() - tileNoY;
+			int actorTileNoYOnVisibleMap = (int)(actor.getPosition().getY() - tileNoY);
 			int actorPosYOnVisibleMap = actorTileNoYOnVisibleMap * tileHeight;
 			float actorPosYOnVisibleMapInclMovement = actorPosYOnVisibleMap + movementOffsetY;
 			float actorPosYOnVisibleMapInclMovementInclScale = actorPosYOnVisibleMapInclMovement * cam.getZoomFactor();

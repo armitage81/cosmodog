@@ -161,7 +161,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-			platformAnimation.draw((player.getPositionX() - tileNoX - 3) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY - 3) * tileHeight + pieceOffsetY);			
+			platformAnimation.draw((player.getPosition().getX() - tileNoX - 3) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY - 3) * tileHeight + pieceOffsetY);
 
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-x, -y);

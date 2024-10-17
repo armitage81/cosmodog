@@ -11,8 +11,7 @@ public class OnPlatformPieceRendererPredicate implements PieceRendererPredicate 
 
 	@Override
 	public boolean pieceShouldBeRendered(Piece piece) {
-		boolean retVal = (piece instanceof Platform == false) && CosmodogMapUtils.isTileOnPlatform(piece.getPositionX(), piece.getPositionY());
-		return retVal;
+        return (!(piece instanceof Platform)) && CosmodogMapUtils.isTileOnPlatform(piece.getPosition());
 	}
 
 }

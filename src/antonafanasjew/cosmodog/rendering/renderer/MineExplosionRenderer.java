@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -56,9 +57,8 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
 		
-		int posX = explosionTransition.positionX;
-		int posY = explosionTransition.positionY;
-		
+		Position position = explosionTransition.position;
+
 		Cam cam = cosmodogGame.getCam();
 		
 		int tileWidth = map.getTileWidth();
@@ -87,7 +87,7 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		image.draw((posX - tileNoX) * tileWidth + offsetX, (posY - tileNoY) * tileHeight + offsetY);
+		image.draw((position.getX() - tileNoX) * tileWidth + offsetX, (position.getY() - tileNoY) * tileHeight + offsetY);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

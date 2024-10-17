@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.rendering.renderer.pieces.*;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -159,8 +160,10 @@ public class PiecesRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		
-		Collection<Piece> mapPieces = map.visibleMapPieces(tileNoX, tileNoY, tilesW, tilesH, 5).values();
+
+		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY);
+
+		Collection<Piece> mapPieces = map.visibleMapPieces(tilePosition, tilesW, tilesH, 5).values();
 		
 		
 		
@@ -169,7 +172,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		for (Piece piece : mapPieces) {
 						
 			if (renderingPredicate == null || renderingPredicate.pieceShouldBeRendered(piece)) {
-				boolean pieceIsNorthFromPlayer = piece.getPositionY() < player.getPositionY();
+				boolean pieceIsNorthFromPlayer = piece.getPosition().getX() < player.getPosition().getY();
 				boolean northernPiecesDrawingPhase = northFromPlayer;
 				boolean southernPiecesDrawingPhase = southFromPlayer;
 				
@@ -186,7 +189,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		}
 		
 		//Sort the remaining pieces so that northern pieces come before the southern ones. This allows proper rendering (so, for instance, the platform does not cover a vehicle which is in front of it.)
-		filteredMapPieces = filteredMapPieces.stream().sorted((p1, p2) -> p1.getPositionY() - p2.getPositionY()).collect(Collectors.toList());
+		filteredMapPieces = filteredMapPieces.stream().sorted((p1, p2) -> (int)(p1.getPosition().getY() - p2.getPosition().getY())).collect(Collectors.toList());
 		
 		for (Piece piece : filteredMapPieces) {
 			
@@ -206,9 +209,9 @@ public class PiecesRenderer extends AbstractRenderer {
 			
 			PieceRenderer pieceRenderer = pieceRendererMap.get(elementType);
 			if (pieceRenderer != null) {
-				Enemy enemyOnTile = map.enemyAtTile(piece.getPositionX(), piece.getPositionY());
+				Enemy enemyOnTile = map.enemyAtTile(piece.getPosition());
 				boolean enemyIsOnTile = enemyOnTile != null;
-				boolean playerIsOnTile = player.getPositionX() == piece.getPositionX() && player.getPositionY() == piece.getPositionY();
+				boolean playerIsOnTile = player.getPosition().equals(piece.getPosition());
 				boolean shouldRender = (piece instanceof Vehicle) || (piece instanceof Platform) || (!enemyIsOnTile && !playerIsOnTile);
 				if (shouldRender) {
 

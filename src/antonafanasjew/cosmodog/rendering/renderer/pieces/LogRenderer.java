@@ -14,7 +14,7 @@ public class LogRenderer extends AbstractPieceRenderer {
 		
 		Animation animation = applicationContext.getAnimations().get(animationId);
 		
-		animation.draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+		animation.draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
 		
 	}
 

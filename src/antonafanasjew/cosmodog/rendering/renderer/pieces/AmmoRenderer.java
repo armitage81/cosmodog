@@ -25,9 +25,9 @@ public class AmmoRenderer extends AbstractPieceRenderer {
 		Animation animation = applicationContext.getAnimations().get(animationId);
 		
 		if (interactive) {
-			animation.draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight);
+			animation.draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
 		} else {
-			animation.draw((piece.getPositionX() - tileNoX) * tileWidth, (piece.getPositionY() - tileNoY) * tileHeight, new Color(1f, 1f, 1f, 0.33f));
+			animation.draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight, new Color(1f, 1f, 1f, 0.33f));
 		}
 		
 	}

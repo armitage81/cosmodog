@@ -35,8 +35,8 @@ public class GeigerCounterViewRenderer implements Renderer {
 		//Calculate radiation around the player.
 		boolean radiationAdjacent = false;
 		boolean[][] radiationInfos = new boolean[3][3];
-		int posX = player.getPositionX();
-		int posY = player.getPositionY();
+		int posX = (int)player.getPosition().getX();
+		int posY = (int)player.getPosition().getY();
 		int xMin = posX - 1;
 		int xMax = posX + 1;
 		int yMin = posY - 1;
