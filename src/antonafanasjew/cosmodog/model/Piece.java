@@ -18,7 +18,7 @@ public class Piece extends CosmodogModel {
 	}
 
 	public void setPosition(Position position) {
-		this.position = position;
+		this.position = position.copy();
 	}
 
 	public boolean interactive(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
