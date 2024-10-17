@@ -13,10 +13,14 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SoftwareInventoryItem;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
+import java.io.Serial;
 
 public class DamageLastBossAction extends AbstractRuleAction {
 
+	@Serial
 	private static final long serialVersionUID = 3007391459686874738L;
 
 	@Override
@@ -27,7 +31,7 @@ public class DamageLastBossAction extends AbstractRuleAction {
 
 		//Check if the boss has been destroyed already.
 		boolean bossDestroyed = false;
-		Enemy lastBoss = map.enemyAtTile(227, 254);
+		Enemy lastBoss = map.enemyAtTile(Position.fromCoordinates(227, 254));
 		if (lastBoss == null) {
 			bossDestroyed = true;
 		}

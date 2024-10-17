@@ -13,14 +13,15 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.WeaponFirmwareUpgradeInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.topology.Position;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimplePlayerAttackDamageCalculatorTest {
 
-	private PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
-	private SimplePlayerAttackDamageCalculator out = new SimplePlayerAttackDamageCalculator(planetaryCalendar);
+	private final PlanetaryCalendar planetaryCalendar = new PlanetaryCalendar();
+
+	private final SimplePlayerAttackDamageCalculator out = new SimplePlayerAttackDamageCalculator(planetaryCalendar);
 	
 	@Test
 	public void testGodFists() {

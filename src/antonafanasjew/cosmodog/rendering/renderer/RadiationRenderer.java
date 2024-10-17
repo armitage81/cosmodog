@@ -14,6 +14,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledTile;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TilesetUtils;
@@ -97,8 +98,8 @@ public class RadiationRenderer extends AbstractRenderer {
 				if (tilePositionOnMapY >= map.getHeight()) {
 					continue;
 				}
-
-				render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileWidthInPixels, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileHeightInPixels, tilePositionOnMapX, tilePositionOnMapY);
+				Position position = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY);
+				render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileWidthInPixels, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileHeightInPixels, position);
 			}
 		}
 
@@ -111,10 +112,10 @@ public class RadiationRenderer extends AbstractRenderer {
 
 	}
 
-	private void render(CosmodogMap map, int offsetX, int offsetY, int tilePosX, int tilePosY) {
+	private void render(CosmodogMap map, int offsetX, int offsetY, Position tilePosition) {
 
 		TiledMapLayer radiationLayer = map.getCustomTiledMap().getMapLayersByNames().get("Meta_radiation");
-		TiledTile tile = radiationLayer.getTile(tilePosX, tilePosY);
+		TiledTile tile = radiationLayer.getTile(tilePosition);
 
 		if (tile == null) {
 			return;

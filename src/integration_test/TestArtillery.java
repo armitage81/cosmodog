@@ -1,6 +1,7 @@
 package integration_test;
 
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -19,8 +20,7 @@ public class TestArtillery {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(293);
-				player.setPositionY(101);
+				player.setPosition(Position.fromCoordinates(293, 101));
 				player.setMaxLife(100);
 				player.setLife(100);
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());

@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -20,8 +21,7 @@ public class TestSnowEdges {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(7);
-				player.setPositionY(3);
+				player.setPosition(Position.fromCoordinates(7, 3));
 				player.setMaxLife(100);
 				player.setLife(100);
 

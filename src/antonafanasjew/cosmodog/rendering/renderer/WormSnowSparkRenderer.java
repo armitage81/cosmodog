@@ -66,7 +66,7 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		applicationContext.getAnimations().get("wormAttackSnowSpark").draw((player.getPositionX() - tileNoX) * tileWidth - 1f * tileWidth, (player.getPositionY() - tileNoY) * tileHeight);
+		applicationContext.getAnimations().get("wormAttackSnowSpark").draw((player.getPosition().getX() - tileNoX) * tileWidth - 1f * tileWidth, (player.getPosition().getY() - tileNoY) * tileHeight);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

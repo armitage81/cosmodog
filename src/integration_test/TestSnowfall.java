@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestSnowfall {
@@ -18,8 +19,7 @@ public class TestSnowfall {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(111);
-				player.setPositionY(349);
+				player.setPosition(Position.fromCoordinates(111, 349));
 				player.setLife(1);
 				for (int i = 0; i < 64; i++) {
 					player.getGameProgress().addInfobank();

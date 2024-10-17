@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestWrongRiverRendering {
@@ -17,8 +18,7 @@ public class TestWrongRiverRendering {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(90);
-				player.setPositionY(30);
+				player.setPosition(Position.fromCoordinates(90, 30));
 				player.setMaxLife(100);
 				player.setLife(100);
 			}

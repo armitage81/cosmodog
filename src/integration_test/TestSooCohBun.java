@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestSooCohBun {
@@ -16,8 +17,7 @@ public class TestSooCohBun {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(302);
-				player.setPositionY(180);
+				player.setPosition(Position.fromCoordinates(302, 180));
 				player.setMaxLife(100);
 				player.setLife(100);
 			}

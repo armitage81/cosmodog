@@ -405,7 +405,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 			if (!skipTurn) {
 				int resultX = playerMovementActionResult.getPath().getX(1);
 				int resultY = playerMovementActionResult.getPath().getY(1);
-				String footStepsSoundType = FootstepUtils.footStepsSoundType(resultX, resultY);
+				Position position = Position.fromCoordinates(resultX, resultY);
+				String footStepsSoundType = FootstepUtils.footStepsSoundType(position);
 				applicationContext.getSoundResources().get(footStepsSoundType).play();
 			}
 		}

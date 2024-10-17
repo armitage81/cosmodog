@@ -32,7 +32,7 @@ public class VisibilityCalculator {
 
 		Vision vision = getVision(cal, map, player);
 
-		Position piecePosition = Position.fromCoordinates(piece.getPositionX(), piece.getPositionY());
+		Position piecePosition = piece.getPosition();
 
 		return vision.visible(observer, piecePosition, map.getWidth(), map.getHeight());
 	}

@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestSokobanResetHint {
@@ -20,8 +21,7 @@ public class TestSokobanResetHint {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(242);
-				player.setPositionY(187);
+				player.setPosition(Position.fromCoordinates(242, 187));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));

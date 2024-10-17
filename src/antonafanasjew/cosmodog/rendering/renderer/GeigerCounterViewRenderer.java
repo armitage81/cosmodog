@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -44,7 +45,8 @@ public class GeigerCounterViewRenderer implements Renderer {
 		for (int i = xMin; i <= xMax; i++) {
 			for (int j = yMin; j <= yMax; j++) {
 				radiationInfos[i - xMin][j - yMin] = false;
-				int radiationTileId = map.getTileId(i, j, Layers.LAYER_META_RADIATION);
+				Position position = Position.fromCoordinates(i, j);
+				int radiationTileId = map.getTileId(position, Layers.LAYER_META_RADIATION);
 				if (TileType.RADIATION.getTileId() == radiationTileId) {
 					radiationInfos[i - xMin][j - yMin] = true;
 					radiationAdjacent = true;

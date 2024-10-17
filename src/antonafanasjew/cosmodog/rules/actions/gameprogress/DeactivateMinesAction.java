@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
+import java.io.Serial;
 import java.util.Collection;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -15,8 +16,10 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class DeactivateMinesAction extends AbstractRuleAction {
 
+	@Serial
 	private static final long serialVersionUID = 8620572862854412890L;
-	private QuadrandType quadrandType;
+
+	private final QuadrandType quadrandType;
 
 	private int minX;
 	private int maxX;
@@ -54,8 +57,8 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 	}
 
 	private boolean inQuadrand(Mine mine, QuadrandType quadrandType, CosmodogMap map) {
-		int posX = mine.getPositionX();
-		int posY = mine.getPositionY();
+		int posX = (int)mine.getPosition().getX();
+		int posY = (int)mine.getPosition().getY();
 		return posX >= minX && posX < maxX && posY >= minY && posY < maxY;
 	}
 

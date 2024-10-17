@@ -60,7 +60,7 @@ public class MapModificationImpl extends AbstractMapModification {
 		
 	}
 	
-	private Map<TileAddress, TileType> modifications = Maps.newHashMap();
+	private final Map<TileAddress, TileType> modifications = Maps.newHashMap();
 	
 	
 	@Override

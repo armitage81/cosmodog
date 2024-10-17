@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestFuelTank {
@@ -18,8 +19,7 @@ public class TestFuelTank {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(19);
-				player.setPositionY(54);
+				player.setPosition(Position.fromCoordinates(19, 54));
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());
 				player.getInventory().put(InventoryItemType.VEHICLE, vii);
 				//All six locations of the fuel tanks can be teleported to by pressing the key 1.

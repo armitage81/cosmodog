@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 /**
@@ -17,9 +18,9 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 public class DefaultWaterValidator extends AbstractWaterValidator {
 
 	@Override
-	protected boolean waterInReachInternal(Actor actor, CosmodogMap map, int tileX, int tileY) {
+	protected boolean waterInReachInternal(Actor actor, CosmodogMap map, Position position) {
 		
-		boolean isOnPlatform = CosmodogMapUtils.isTileOnPlatform(actor.getPositionX(), actor.getPositionY());
+		boolean isOnPlatform = CosmodogMapUtils.isTileOnPlatform(actor.getPosition());
 		boolean isInPlatform = actor instanceof Player && ((Player)actor).getInventory().get(InventoryItemType.PLATFORM) != null;
 		
 		if (isOnPlatform) {
@@ -30,7 +31,7 @@ public class DefaultWaterValidator extends AbstractWaterValidator {
 			return false;
 		}
 		
-		int waterLayerTileId = map.getTileId(actor.getPositionX(), actor.getPositionY(), Layers.LAYER_META_WATERPLACES);
+		int waterLayerTileId = map.getTileId(actor.getPosition(), Layers.LAYER_META_WATERPLACES);
 		return  (TileType.WATERPLACE.getTileId() == waterLayerTileId || TileType.NEAR_WATERPLACE.getTileId() == waterLayerTileId);
 	}
 

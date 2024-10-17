@@ -1,9 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.newdawn.slick.GameContainer;
@@ -40,7 +37,7 @@ public class PositionDebugInfoRenderer extends AbstractRenderer {
 
 		List<Position> enemiesHoldingItems = ApplicationContext.instance().getCosmodog().getCosmodogGame().getMap().getEnemies().stream().filter(e -> {
 			return e.getInventoryItem() != null;
-		}).map(e -> Position.fromCoordinates(e.getPositionX(), e.getPositionY())).collect(Collectors.toList());
+		}).map(Piece::getPosition).toList();
 		
 		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().getMap().getMapPieces().entrySet().stream().filter(e -> {
 			Piece piece = e.getValue();
@@ -52,10 +49,10 @@ public class PositionDebugInfoRenderer extends AbstractRenderer {
 			boolean weapon = piece instanceof CollectibleWeapon;
 			boolean log = piece instanceof CollectibleLog;
 			boolean relevantCollectible = tool || (goodie && !supplies && !cognition) || weapon || log;
-			
+
 			return relevantCollectible;
 			
-		}).map(e -> e.getKey()).collect(Collectors.toList());
+		}).map(Map.Entry::getKey).toList();
 		
 		List<Position> relevantPositions = new ArrayList<>();
 		relevantPositions.addAll(collectiblePositions);
@@ -67,21 +64,21 @@ public class PositionDebugInfoRenderer extends AbstractRenderer {
 			public int compare(Position o1, Position o2) {
 				Position o1Pos = Position.fromCoordinates(o1.getX(), o1.getY());
 				Position o2Pos = Position.fromCoordinates(o2.getX(), o2.getY());
-				Position playerPos = Position.fromCoordinates(player.getPositionX(), player.getPositionY());
+				Position playerPos = player.getPosition();
 				
 				float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
 				float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
 				
-				return distance1 > distance2 ? 1 : (distance1 < distance2 ? -1 : 0);
+				return Float.compare(distance1, distance2);
 			}
 
 		});
 		
-		String closestCollectiblePosition = relevantPositions.size() == 0 ? "No Collectibles" : relevantPositions.get(0).toString();
+		String closestCollectiblePosition = relevantPositions.isEmpty() ? "No Collectibles" : relevantPositions.getFirst().toString();
 		
 		if (debugger != null) {
 			if (debugger.isPositionDisplayed()) {
-				String positionInfo = String.format("Pos: %s/%s, Closest Coll: %s", player.getPositionX(), player.getPositionY(), closestCollectiblePosition);
+				String positionInfo = String.format("Pos: %s, Closest Coll: %s", player.getPosition().toString(), closestCollectiblePosition);
 				DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 				FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Debug);
 				Book textBook = TextPageConstraints.fromDc(dc).textToBook(positionInfo, fontRefToFontTypeMap);

@@ -66,8 +66,10 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		 
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
-		
-		Set<Enemy> enemies = map.visibleEnemies(tileNoX, tileNoY, tilesW, tilesH, 2);
+
+		Position position = Position.fromCoordinates(tileNoX, tileNoY);
+
+		Set<Enemy> enemies = map.visibleEnemies(position, tilesW, tilesH, 2);
 		
 		EnemiesUtils.removeInactiveUnits(enemies);
 				
@@ -121,11 +123,14 @@ public class SightRadiusRenderer extends AbstractRenderer {
 
 			int maxDistance = visibilityCalculator.maxVisibilityRange(planetaryCalendar, map, player);
 
-			for (int i = enemy.getPositionX() - maxDistance; i <= enemy.getPositionX() + maxDistance; i++) {
+			int enemyPosX = (int)enemy.getPosition().getX();
+			int enemyPosY = (int)enemy.getPosition().getY();
 
-				for (int j = enemy.getPositionY() - maxDistance; j <= enemy.getPositionY() + maxDistance; j++) {
+			for (int i = enemyPosX - maxDistance; i <= enemyPosX + maxDistance; i++) {
 
-					if (i == enemy.getPositionX() && j == enemy.getPositionY()) {
+				for (int j = enemyPosY - maxDistance; j <= enemyPosY + maxDistance; j++) {
+
+					if (i == enemyPosX && j == enemyPosY) {
 						continue;
 					}
 

@@ -25,13 +25,8 @@ public class VisionTest {
     public void testGetVisibleRectangle() throws CamPositioningException {
         Actor actor = new Actor() {
             @Override
-            public int getPositionX() {
-                return 2;
-            }
-
-            @Override
-            public int getPositionY() {
-                return 7;
+            public Position getPosition() {
+                return Position.fromCoordinates(2, 7);
             }
 
             @Override

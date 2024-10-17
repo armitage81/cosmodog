@@ -11,11 +11,11 @@ public class RenderingUtils {
 	public static boolean isActorOnGroundTypeTile(TileType tileType, CosmodogMap map, Actor actor, ActorTransition actorTransition) {
 		boolean retVal = false;
 		if (actorTransition == null) {
-			int tileId = map.getTileId(actor.getPositionX(), actor.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+			int tileId = map.getTileId(actor.getPosition(), Layers.LAYER_META_GROUNDTYPES);
 			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(tileType);
 		} else {
-			int startTileId = map.getTileId(actorTransition.getTransitionalPosX(), actorTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
-			int targetTileId = map.getTileId(actorTransition.getTargetPosX(), actorTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
+			int startTileId = map.getTileId(actorTransition.getTransitionalPosition(), Layers.LAYER_META_GROUNDTYPES);
+			int targetTileId = map.getTileId(actorTransition.getTargetPosition(), Layers.LAYER_META_GROUNDTYPES);
 			
 			boolean startTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, startTileId).equals(tileType);
 			boolean targetTileIdIsHighGrassTile = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, targetTileId).equals(tileType);
@@ -25,10 +25,10 @@ public class RenderingUtils {
 				retVal = true;
 			} else if (!startTileIdIsHighGrassTile && !targetTileIdIsHighGrassTile) {
 				retVal = false;
-			} else if (startTileIdIsHighGrassTile && !targetTileIdIsHighGrassTile) {
+			} else if (startTileIdIsHighGrassTile) {
 				float transitionalOffset = actorTransition.getTransitionalOffsetX() + actorTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else if (!startTileIdIsHighGrassTile && targetTileIdIsHighGrassTile) {
+			} else {
 				float transitionalOffset = actorTransition.getTransitionalOffsetX() + actorTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
 			}
@@ -40,15 +40,15 @@ public class RenderingUtils {
 	public static boolean isActorOnSoftGroundType(CosmodogMap map, Actor actor, ActorTransition actorTransition) {
 		boolean retVal = false;
 		if (actorTransition == null) {
-			int tileId = map.getTileId(actor.getPositionX(), actor.getPositionY(), Layers.LAYER_META_GROUNDTYPES);
+			int tileId = map.getTileId(actor.getPosition(), Layers.LAYER_META_GROUNDTYPES);
 			retVal = tileIdRepresentsSoftGroundType(tileId);
 			
 		} else {
 			
-			int startTileId = map.getTileId(actorTransition.getTransitionalPosX(), actorTransition.getTransitionalPosY(), Layers.LAYER_META_GROUNDTYPES);
+			int startTileId = map.getTileId(actorTransition.getTransitionalPosition(), Layers.LAYER_META_GROUNDTYPES);
 			boolean startTileSoft = tileIdRepresentsSoftGroundType(startTileId);
 			
-			int targetTileId = map.getTileId(actorTransition.getTargetPosX(), actorTransition.getTargetPosY(), Layers.LAYER_META_GROUNDTYPES);
+			int targetTileId = map.getTileId(actorTransition.getTargetPosition(), Layers.LAYER_META_GROUNDTYPES);
 			boolean targetTileSoft = tileIdRepresentsSoftGroundType(targetTileId);
 			
 			
@@ -56,10 +56,10 @@ public class RenderingUtils {
 				retVal = true;
 			} else if (!startTileSoft && !targetTileSoft) {
 				retVal = false;
-			} else if (startTileSoft && !targetTileSoft) {
+			} else if (startTileSoft) {
 				float transitionalOffset = actorTransition.getTransitionalOffsetX() + actorTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else if (!startTileSoft && targetTileSoft) {
+			} else {
 				float transitionalOffset = actorTransition.getTransitionalOffsetX() + actorTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
 			}

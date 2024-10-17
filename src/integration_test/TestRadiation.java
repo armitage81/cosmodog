@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -21,8 +22,7 @@ public class TestRadiation {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(39);
-				player.setPositionY(212);
+				player.setPosition(Position.fromCoordinates(39, 212));
 				player.setMaxLife(100);
 				player.setLife(100);
 

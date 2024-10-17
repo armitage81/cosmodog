@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -21,8 +22,7 @@ public class TestLastInfobit {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(5);
-				player.setPositionY(3);
+				player.setPosition(Position.fromCoordinates(5, 3));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getGameProgress().setWormActive(false);

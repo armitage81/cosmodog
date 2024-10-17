@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.waterplaces;
 
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.topology.Position;
 
 /**
  * Contains the common logic for water place validators.
@@ -9,10 +10,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public abstract class AbstractWaterValidator implements WaterValidator {
 
 	@Override
-	public boolean waterInReach(Actor actor, CosmodogMap map, int tileX, int tileY) {
-		return waterInReachInternal(actor, map, tileX, tileY);
+	public boolean waterInReach(Actor actor, CosmodogMap map, Position position) {
+		return waterInReachInternal(actor, map, position);
 	}
 
-	protected abstract boolean waterInReachInternal(Actor actor, CosmodogMap map, int tileX, int tileY);
+	protected abstract boolean waterInReachInternal(Actor actor, CosmodogMap map, Position position);
 
 }

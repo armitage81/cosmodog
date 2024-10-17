@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestTeleportSokobanEndToWormArea {
@@ -18,8 +19,7 @@ public class TestTeleportSokobanEndToWormArea {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(335);
-				player.setPositionY(303);
+				player.setPosition(Position.fromCoordinates(335, 303));
 				player.setLife(1);
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());

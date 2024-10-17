@@ -44,6 +44,10 @@ public class Position implements Serializable {
 		this.y += offsetY;
 	}
 
+	public Position copy() {
+        return Position.fromCoordinates(this.x, this.y);
+	}
+
 	public Position shifted(float offsetX, float offsetY) {
 		Position shiftedPosition = Position.fromCoordinates(this.x, this.y);
 		shiftedPosition.shift(offsetX, offsetY);
@@ -75,6 +79,9 @@ public class Position implements Serializable {
 	public boolean inMapBounds(CosmodogMap map) {
 		return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
 	}
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

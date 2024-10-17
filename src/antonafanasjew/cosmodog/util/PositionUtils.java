@@ -9,7 +9,7 @@ public class PositionUtils {
 
 	public static Position neighbourPositionInFacingDirection(Actor actor) {
 		
-		Position position = Position.fromCoordinates(actor.getPositionX(), actor.getPositionY());
+		Position position = actor.getPosition().copy();
 		
 		if (actor.getDirection() == DirectionType.DOWN) {
 			position.shift(0, 1);
@@ -34,11 +34,11 @@ public class PositionUtils {
 	
 	public static DirectionType targetDirection(Piece reference, Piece target) {
 		
-		int refX = reference.getPositionX();
-		int refY = reference.getPositionY();
+		int refX = (int)reference.getPosition().getX();
+		int refY = (int)reference.getPosition().getY();
 		
-		int x = target.getPositionX();
-		int y = target.getPositionY();
+		int x = (int)target.getPosition().getX();
+		int y = (int)target.getPosition().getY();
 		
 		int diffX = x - refX;
 		int diffY = y - refY;
@@ -64,12 +64,12 @@ public class PositionUtils {
 	}
 	
 	public static float exactTargetDirection(Piece reference, Piece target) {
-		
-		int refX = reference.getPositionX();
-		int refY = reference.getPositionY();
-		
-		int x = target.getPositionX();
-		int y = target.getPositionY();
+
+		int refX = (int)reference.getPosition().getX();
+		int refY = (int)reference.getPosition().getY();
+
+		int x = (int)target.getPosition().getX();
+		int y = (int)target.getPosition().getY();
 		
 		float diffX = x - refX;
 		float diffY = y - refY;

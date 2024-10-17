@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestIssue48WrongWaterCollision {
@@ -18,8 +19,7 @@ public class TestIssue48WrongWaterCollision {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(38);
-				player.setPositionY(269);
+				player.setPosition(Position.fromCoordinates(38, 269));
 				player.setMaxLife(100);
 				player.setLife(100);
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());

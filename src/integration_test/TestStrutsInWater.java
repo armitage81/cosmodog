@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestStrutsInWater {
@@ -19,8 +20,7 @@ public class TestStrutsInWater {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(336);
-				player.setPositionY(46);
+				player.setPosition(Position.fromCoordinates(336, 46));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());

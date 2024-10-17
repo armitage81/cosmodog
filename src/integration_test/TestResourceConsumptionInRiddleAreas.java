@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestResourceConsumptionInRiddleAreas {
@@ -17,8 +18,7 @@ public class TestResourceConsumptionInRiddleAreas {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(242);
-				player.setPositionY(187);
+				player.setPosition(Position.fromCoordinates(242, 187));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());

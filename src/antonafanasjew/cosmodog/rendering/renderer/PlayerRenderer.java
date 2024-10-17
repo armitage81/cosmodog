@@ -141,7 +141,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki && !playerIsOnPlatform && !playerIsInPlatform;
 		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerTransition);
 		boolean playerIsMoving = playerTransition != null;
-		boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
+		boolean playerIsFighting = fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 		boolean playerIsTakingDamage = false;
 		
@@ -289,9 +289,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileHeight + pieceOffsetY);
 		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY) * tileHeight + pieceOffsetY);
+			playerWeaponAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileHeight + pieceOffsetY);
 		}
 		
 		if (playerIsHoldingUpItem) {
@@ -300,7 +300,7 @@ public class PlayerRenderer extends AbstractRenderer {
 				String animationId = Mappings.collectibleToolToAnimationId(tool);
 				Animation foundToolAnimation = ApplicationContext.instance().getAnimations().get(animationId);
 				if (foundToolAnimation != null) {
-					foundToolAnimation.draw((player.getPositionX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPositionY() - tileNoY - 1) * tileHeight + pieceOffsetY);
+					foundToolAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY - 1) * tileHeight + pieceOffsetY);
 				}
 			}
 		}
@@ -324,11 +324,11 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean retVal = false;
 		
 		if (playerTransition == null) {
-			int tileId = map.getTileId(player.getPositionX(), player.getPositionY(), Layers.LAYER_META_COLLISIONS);
+			int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_COLLISIONS);
 			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 		} else {
-			int startTileId = map.getTileId(playerTransition.getTransitionalPosX(), playerTransition.getTransitionalPosY(), Layers.LAYER_META_COLLISIONS);
-			int targetTileId = map.getTileId(playerTransition.getTargetPosX(), playerTransition.getTargetPosY(), Layers.LAYER_META_COLLISIONS);
+			int startTileId = map.getTileId(playerTransition.getTransitionalPosition(), Layers.LAYER_META_COLLISIONS);
+			int targetTileId = map.getTileId(playerTransition.getTargetPosition(), Layers.LAYER_META_COLLISIONS);
 			
 			boolean startTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, startTileId).equals(TileType.COLLISION_WATER);
 			boolean targetTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, targetTileId).equals(TileType.COLLISION_WATER);
@@ -337,10 +337,10 @@ public class PlayerRenderer extends AbstractRenderer {
 				retVal = true;
 			} else if (!startTileIdIsWaterTile && !targetTileIdIsWaterTile) {
 				retVal = false;
-			} else if (startTileIdIsWaterTile && !targetTileIdIsWaterTile) {
+			} else if (startTileIdIsWaterTile) {
 				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else if (!startTileIdIsWaterTile && targetTileIdIsWaterTile) {
+			} else {
 				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
 				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
 			}

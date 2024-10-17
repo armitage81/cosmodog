@@ -73,7 +73,7 @@ public class WormAttackRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		wormImage.draw((player.getPositionX() - tileNoX) * tileWidth + wormAttackOffsetX, (player.getPositionY() - tileNoY) * tileHeight + wormAttackOffsetY);
+		wormImage.draw((player.getPosition().getX() - tileNoX) * tileWidth + wormAttackOffsetX, (player.getPosition().getY() - tileNoY) * tileHeight + wormAttackOffsetY);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

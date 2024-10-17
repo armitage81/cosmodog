@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestStatisticsScreen {
@@ -17,8 +18,7 @@ public class TestStatisticsScreen {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPositionX(210);
-				player.setPositionY(250);
+				player.setPosition(Position.fromCoordinates(210, 250));
 
 			}
 		};

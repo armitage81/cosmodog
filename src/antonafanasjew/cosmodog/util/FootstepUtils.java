@@ -4,67 +4,62 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.topology.Position;
 
 public class FootstepUtils {
 
-	public static String footStepsSoundType(int positionX, int positionY) {
-		if (targetInWater(positionX, positionY)) {
+	public static String footStepsSoundType(Position position) {
+		if (targetInWater(position)) {
 			return SoundResources.SOUND_FOOTSTEPS_WATER;
-		} else if (targetInHighGrass(positionX, positionY)) {
+		} else if (targetInHighGrass(position)) {
 			return SoundResources.SOUND_FOOTSTEPS_HIGH_GRASS;
-		} else if (targetInGrass(positionX, positionY)) {
+		} else if (targetInGrass(position)) {
 			return SoundResources.SOUND_FOOTSTEPS_GRASS;
-		} else if (targetInSand(positionX, positionY)) {
+		} else if (targetInSand(position)) {
 			return SoundResources.SOUND_FOOTSTEPS_SAND;
-		} else if (targetInSnow(positionX, positionY)) {
+		} else if (targetInSnow(position)) {
 			return SoundResources.SOUND_FOOTSTEPS_SNOW;
-		} else if (targetInSolidTerrain(positionX, positionY)) {
+		} else if (targetInSolidTerrain(position)) {
 			return SoundResources.SOUND_FOOTSTEPS_ROAD;
 		} else {
 			return SoundResources.SOUND_FOOTSTEPS;
 		}
 	}
 	
-	public static final boolean targetInWater(int positionX, int positionY) {
+	public static boolean targetInWater(Position position) {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int tileId = map.getTileId(positionX, positionY, Layers.LAYER_META_COLLISIONS);
-		boolean retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
-		return retVal;
+		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
+        return TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 	}
 	
-	public static final boolean targetInHighGrass(int positionX, int positionY) {
+	public static boolean targetInHighGrass(Position position) {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int tileId = map.getTileId(positionX, positionY, Layers.LAYER_META_GROUNDTYPES);
-		boolean retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
-		return retVal;
+		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
+        return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
 	}
 	
-	public static final boolean targetInSnow(int positionX, int positionY) {
+	public static boolean targetInSnow(Position position) {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int tileId = map.getTileId(positionX, positionY, Layers.LAYER_META_GROUNDTYPES);
-		boolean retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SNOW);
-		return retVal;
+		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
+        return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SNOW);
 	}
 	
-	public static final boolean targetInSand(int positionX, int positionY) {
+	public static boolean targetInSand(Position position) {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int tileId = map.getTileId(positionX, positionY, Layers.LAYER_META_GROUNDTYPES);
-		boolean retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SAND);
-		return retVal;
+		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
+        return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SAND);
 	}
 	
-	public static final boolean targetInGrass(int positionX, int positionY) {
+	public static boolean targetInGrass(Position position) {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int tileId = map.getTileId(positionX, positionY, Layers.LAYER_META_GROUNDTYPES);
-		boolean retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_GRASS);
-		return retVal;
+		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
+        return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_GRASS);
 	}
 	
-	public static final boolean targetInSolidTerrain(int positionX, int positionY) {
+	public static boolean targetInSolidTerrain(Position position) {
 		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int tileId = map.getTileId(positionX, positionY, Layers.LAYER_META_TERRAINTYPES);
-		boolean retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_ROAD);
-		return retVal;
+		int tileId = map.getTileId(position, Layers.LAYER_META_TERRAINTYPES);
+        return TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_ROAD);
 	}
 	
 }

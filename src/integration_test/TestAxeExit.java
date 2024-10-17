@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
+import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
 public class TestAxeExit {
@@ -16,8 +17,7 @@ public class TestAxeExit {
 
             @Override
             protected void updatePlayer(Player player) {
-                player.setPositionX(119);
-                player.setPositionY(209);
+                player.setPosition(Position.fromCoordinates(119, 209));
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("119/203;119/209"));
