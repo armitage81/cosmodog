@@ -66,8 +66,7 @@ public abstract class Actor extends Piece {
 	
 	public void shiftHorizontal(int positionOffset) {
 		Position position1 = this.getPosition();
-		Position position2 = this.getPosition();
-		position2.shift(positionOffset, 0);
+		Position position2 = this.getPosition().shifted(positionOffset, 0);
 
 		composedMovementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
 		composedMovementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());

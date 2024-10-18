@@ -100,7 +100,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.PICK) == null) {
-						blockReasonParam = "Pick required";
+						blockReasonParam = "Requires pick";
 					}
 					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
@@ -111,7 +111,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.AXE) == null) {
-						blockReasonParam = "Axe required";
+						blockReasonParam = "Requires axe";
 					}
 					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
@@ -122,7 +122,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.MACHETE) == null) {
-						blockReasonParam = "Machete required";
+						blockReasonParam = "Requires machete";
 					}
 					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
@@ -133,7 +133,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.DYNAMITE) == null) {
-						blockReasonParam = "Dynamite required";
+						blockReasonParam = "Requires dynamite";
 					}
 					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
