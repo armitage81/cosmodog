@@ -81,8 +81,7 @@ public abstract class Actor extends Piece {
 
 	public void shiftVertical(int positionOffset) {
 		Position position1 = this.getPosition();
-		Position position2 = this.getPosition();
-		position2.shift(0, positionOffset);
+		Position position2 = this.getPosition().shifted(0, positionOffset);
 
 		composedMovementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
 		composedMovementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());

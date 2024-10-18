@@ -94,10 +94,12 @@ public class GameHintRenderer extends AbstractRenderer {
 			graphics.setColor(Color.orange);
 			graphics.drawRect(dc.x(), dc.y(), dc.w(), dc.h());
 
-			int loopPhase = (int)((System.currentTimeMillis() / 1000) % (2 * hints.size()));
+			long time = System.currentTimeMillis();
 
-			if (loopPhase % 2 == 1) {
-				String hint = hints.get(loopPhase / 2);
+			int loopPhase = (int)(time / 1000) % (hints.size());
+
+			if (time / 200 % 5 > 0) {
+				String hint = hints.get(loopPhase);
 				FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontProvider.FontTypeName.GameHint);
 				Book textBook = TextPageConstraints.fromDc(dc).textToBook(hint, fontRefToFontTypeMap);
 				TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
