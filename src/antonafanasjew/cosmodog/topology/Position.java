@@ -1,12 +1,15 @@
 package antonafanasjew.cosmodog.topology;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 
 /**
- * 2D Position of a point
+ * Position of a point
+ * Represents a point in 2D space and the name of the map it is on.
  */
 public class Position implements Serializable {
 
@@ -14,11 +17,17 @@ public class Position implements Serializable {
 
 	private float x;
 	private float y;
+	private MapType mapType;
 
 	public static Position fromCoordinates(float x, float y) {
+		return fromCoordinates(x, y, MapType.MAIN);
+	}
+
+	public static Position fromCoordinates(float x, float y, MapType mapType) {
 		Position position = new Position();
 		position.x = x;
 		position.y = y;
+		position.mapType = mapType;
 		return position;
 	}
 
@@ -33,6 +42,10 @@ public class Position implements Serializable {
 	public float getY() {
 		return y;
 	}
+
+	public MapType getMapType() {
+		return mapType;
+	}
 	
 	/**
 	 * Moves the position at given offsets.
@@ -45,11 +58,11 @@ public class Position implements Serializable {
 	}
 
 	public Position copy() {
-        return Position.fromCoordinates(this.x, this.y);
+        return Position.fromCoordinates(this.x, this.y, this.mapType);
 	}
 
 	public Position shifted(float offsetX, float offsetY) {
-		Position shiftedPosition = Position.fromCoordinates(this.x, this.y);
+		Position shiftedPosition = Position.fromCoordinates(this.x, this.y, this.mapType);
 		shiftedPosition.shift(offsetX, offsetY);
 		return shiftedPosition;
 	}
@@ -80,33 +93,19 @@ public class Position implements Serializable {
 		return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
 	}
 
-
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Position position = (Position) o;
+		return Float.compare(x, position.x) == 0 && Float.compare(y, position.y) == 0 && mapType == position.mapType;
+	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Float.floatToIntBits(x);
-		result = prime * result + Float.floatToIntBits(y);
-		return result;
+		return Objects.hash(x, y, mapType);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Position other = (Position) obj;
-		if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))
-			return false;
-		if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
-			return false;
-		return true;
-	}
-	
 	@Override
 	public String toString() {
 		return x + "/" + y;

@@ -130,7 +130,7 @@ public class TestStarter extends StateBasedGame {
 
 		//Set up features for the test scenario.
 		System.setProperty("cosmodog.fullscreen", "true");
-		System.setProperty("cosmodog.mapFile", "finalMap.tmx");
+		System.setProperty("cosmodog.mapFile", "map_main.tmx");
 		System.setProperty("cosmodog.features.music", "true");
 		System.setProperty("cosmodog.features.godfists", "false");
 		System.setProperty("cosmodog.features.logo", "false");

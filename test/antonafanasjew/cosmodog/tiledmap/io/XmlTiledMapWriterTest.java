@@ -5,8 +5,8 @@ import antonafanasjew.cosmodog.CustomTiledMap;
 class XmlTiledMapWriterTest {
 
 	public static void main(String[] args) throws TiledMapIoException {
-		String originalMapFile = "C:\\Workspaces\\cosmodog\\data\\FinalMap.tmx";
-		String resultingMapFile = "C:\\Temp\\FinalMap.stored.tmx";
+		String originalMapFile = "C:\\Workspaces\\cosmodog\\data\\maps\\map_main.tmx";
+		String resultingMapFile = "C:\\Temp\\map_main.stored.tmx";
 		
 		TiledMapReader originalReader = new XmlTiledMapReader(originalMapFile);
 		TiledMapWriter writer = new XmlTiledMapWriter(resultingMapFile);

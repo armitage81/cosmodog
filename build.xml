@@ -48,7 +48,7 @@
 			</manifest>
 		</jar>
 		<copy todir="${dist}/data">
-			<fileset dir="${data}" excludes="**/*.xcf FinalMapInProgress.tmx grassmap.tmx sprites.png.bak tiles.png tools_lib/ temp/" />
+			<fileset dir="${data}" excludes="**/*.xcf grassmap.tmx sprites.png.bak tiles.png tools_lib/ temp/" />
 		</copy>
 		<copy todir="${dist}/jre">
 			<fileset dir="${jre}" />

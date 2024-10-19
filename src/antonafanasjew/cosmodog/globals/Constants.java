@@ -36,9 +36,9 @@ public class Constants {
 	public static Supplier<String> pathToTiledMapSupplier = () -> {
 		String mapFile = System.getProperty("cosmodog.mapFile");
 		if (mapFile != null) {
-			return "data/" + mapFile;
+			return "data/maps" + mapFile;
 		}
-		return "data/FinalMap.tmx";
+		return "data/maps/map_main.tmx";
 	};
 	
 	/**
