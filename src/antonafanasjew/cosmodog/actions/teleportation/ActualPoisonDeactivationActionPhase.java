@@ -52,7 +52,7 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DRAIN_POISON).play();
 			
-			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+			CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 			
 			Point endPoint = poisonSwitchConnection.getPoints().get(1);
 			PlacedRectangle rectangleAroundEndPoint = PlacedRectangle.fromAnchorAndSize(endPoint.x, endPoint.y, 1, 1);

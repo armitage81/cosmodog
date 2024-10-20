@@ -38,7 +38,7 @@ public class PatrolingPathFinder extends AbstractPathFinder {
 	@Override
 	protected MovementActionResult calculateMovementResultInternal(Actor enemy, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		//Throw a number from 0 to 3. Select the according step (up, down, left, right) and cycle through all 4 directions starting with the thrown index till the collision validator accepts it (if not, just do not move).
 		float[] xSteps = new float[] {enemy.getPosition().getX(), enemy.getPosition().getX(), enemy.getPosition().getX() - 1, enemy.getPosition().getX() + 1};

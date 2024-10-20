@@ -78,7 +78,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		ApplicationContext appCx = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
@@ -93,7 +93,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		ApplicationContext appCx = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		int waterCosts = cosmodog.getWaterConsumer().turnCosts(position1, position2, player, map, appCx);
@@ -104,7 +104,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		
 		ApplicationContext appCx = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		int foodCosts = cosmodog.getFoodConsumer().turnCosts(position1, position2, player, map, appCx);
@@ -205,7 +205,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		Player player = cosmodog.getCosmodogGame().getPlayer();
-		CosmodogMap cosmodogMap = cosmodog.getCosmodogGame().getMap();
+		CosmodogMap cosmodogMap = cosmodog.getCosmodogGame().mapOfPlayerLocation();
 		
 		Collection<Piece> pieces = cosmodogMap.getMapPieces().values();
 		Iterator<Piece> it = pieces.iterator();
@@ -238,7 +238,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void refillWater(ApplicationContext applicationContext) {
 		
 		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = cosmodog.getCosmodogGame().getPlayer();
 		
 		WaterValidator waterValidator = cosmodog.getWaterValidator();
@@ -263,7 +263,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void refillFuel(ApplicationContext applicationContext) {
 		
 		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = cosmodog.getCosmodogGame().getPlayer();
 
 		int collectiblesLayerTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_COLLECTIBLES);
@@ -296,7 +296,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void changeLettersOnLetterPlates(ApplicationContext applicationContext) {
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Collection<DynamicPiece> letterPlates = map.getDynamicPieces().get(LetterPlate.class);
 		
@@ -317,7 +317,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	private void detectMines(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		MineDetectorInventoryItem mineDetector = (MineDetectorInventoryItem)player.getInventory().get(InventoryItemType.MINEDETECTOR);
 		
 		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
@@ -342,7 +342,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void activatePressureButton(ApplicationContext applicationContext) {
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Collection<DynamicPiece> buttons = map.getDynamicPieces().get(PressureButton.class);
 		
 		for (DynamicPiece piece : buttons) {
@@ -363,8 +363,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	 */
 	private void checkContamination(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		DynamicPiece piece = map.dynamicPieceAtPosition(player.getPosition());
+		DynamicPiece piece = ApplicationContextUtils.getCosmodogGame().dynamicPieceAtPosition(player.getPosition());
 		if (!(piece instanceof Poison poison)) {
 			return;
 		}
@@ -403,7 +402,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	 */
 	private void checkDecontamination(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		boolean onDecontaminationSpot = TileType.DECONTAMINATION_SPOT.getTileId() == map.getTileId(player.getPosition(), Layers.LAYER_GEAR);
 		if (onDecontaminationSpot) {
 			
@@ -455,7 +454,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			@Override
 			public void run() {
 				Cosmodog cosmodog = applicationContext.getCosmodog();
-				CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+				CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 				
 				Player player = cosmodog.getCosmodogGame().getPlayer();
 				int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_TEMPERATURE);
@@ -487,7 +486,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void checkRadiation(ApplicationContext applicationContext) {
 
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		int radiationTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_RADIATION);
@@ -506,7 +505,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	
 	private void checkElectricity(ApplicationContext applicationContext) {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		int electricityTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_RADIATION);
@@ -526,7 +525,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 	private void updateWormAlert(Player player, ApplicationContext applicationContext) {
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		TiledObjectGroup wormsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
 		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
@@ -602,7 +601,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	private void checkMine(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
 		
 		Mine mineUnderPlayer = null;
@@ -635,7 +634,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 	private void updateSnowfall() {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		TiledObjectGroup weatherObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_WEATHER);
 		TiledObject snowfallRegion = weatherObjectGroup.getObjects().get("Snowfall");

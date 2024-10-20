@@ -2,16 +2,16 @@ package antonafanasjew.cosmodog.actions.cutscenes;
 
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.state.StateBasedGame;
 
-import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.io.Serial;
 
@@ -27,6 +27,7 @@ import java.io.Serial;
  * The camera movement to the focus and the movement back are themselves async actions with fixed length.
  * Being components of this async action, they are considered phases and registered in the phase registry of this action.
  * The same happens with the underlying action.
+ *
  */
 public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 
@@ -77,11 +78,13 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 			CosmodogGame cosmodogGame) {
 
 		this.camMovementDuration = camMovementDuration;
-		float tileWidth = cosmodogGame.getMap().getTileWidth();
-		float tileHeight = cosmodogGame.getMap().getTileHeight();
+		CosmodogMap map = cosmodogGame.getMaps().get(position.getMapType());
+		float tileWidth = map.getTileWidth();
+		float tileHeight = map.getTileHeight();
 		this.camCenteringPosition = Position.fromCoordinates(
 				position.getX() * tileWidth + tileWidth / 2,
-				position.getY() * tileHeight + tileHeight / 2
+				position.getY() * tileHeight + tileHeight / 2,
+				position.getMapType()
 		);
 		this.underlyingAsyncAction = underlyingAsyncAction;
 		this.cosmodogGame = cosmodogGame;
@@ -139,10 +142,17 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 	 * <p>
 	 * This step must be executed to make the precise focus on the player after the camera has moved to the target point and back.
 	 * Otherwise, the last call of the update method would not provide the exact focus.
+	 * <p>
+	 * Note: With the introduction of the "map" dimension in a position, the camera movement can happen on a map different
+	 * to the one where player is located. Example: Pressing a switch in a space station map, can open a door on the land map and
+	 * the camera can go there on this different map to show the door opening. When returning back, the camera must switch
+	 * to the player's map again. This happens in this method.
 	 */
 	@Override
 	public void onEnd() {
-		cosmodogGame.getCam().focusOnPiece(cosmodogGame.getMap(), 0, 0, cosmodogGame.getPlayer());
+		Player player = cosmodogGame.getPlayer();
+		MapType mapType = player.getPosition().getMapType();
+		cosmodogGame.getCam().focusOnPiece(0, 0, player);
 	}
 
 	/**

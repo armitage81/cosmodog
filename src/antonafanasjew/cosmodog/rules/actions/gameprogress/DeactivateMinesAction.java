@@ -6,6 +6,7 @@ import java.util.Collection;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -42,16 +43,21 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		gameProgress.getMinesDeactivationInfo().put(quadrandType, Boolean.TRUE);
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+		for (MapType mapType : MapType.values()) {
 
-		for (DynamicPiece piece : mines) {
-			Mine mine = (Mine) piece;
-			if (inQuadrand(mine, quadrandType, map)) {
-				if (mine.getState() != Mine.STATE_DESTROYED) {
-					mine.setState(Mine.STATE_DEACTIVATED);
+
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+			Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+
+			for (DynamicPiece piece : mines) {
+				Mine mine = (Mine) piece;
+				if (inQuadrand(mine, quadrandType, map)) {
+					if (mine.getState() != Mine.STATE_DESTROYED) {
+						mine.setState(Mine.STATE_DEACTIVATED);
+					}
 				}
 			}
+
 		}
 
 	}
@@ -66,7 +72,7 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 
 		if (!initialized) {
 
-			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(MapType.MAIN);
 
 			int mapWidht = map.getWidth();
 			int mapHeight = map.getHeight();

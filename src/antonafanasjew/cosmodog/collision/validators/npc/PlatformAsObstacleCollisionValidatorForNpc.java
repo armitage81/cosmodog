@@ -23,7 +23,7 @@ public class PlatformAsObstacleCollisionValidatorForNpc extends AbstractCollisio
 		
 		boolean blocked = false;
 		
-		Platform platform = cosmodogGame.getMap().getCachedPlatform(cosmodogGame);
+		Platform platform = cosmodogGame.mapOfPlayerLocation().getCachedPlatform(cosmodogGame);
 		
 		if (platform != null) { //It is null, if collected, that is if the player is sitting inside of it. 
 		

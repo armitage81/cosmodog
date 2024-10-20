@@ -69,7 +69,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Prepare the globals.
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = cosmodogGame.getMap();
+		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		CollisionValidator collisionValidator = cosmodog.getCollisionValidatorForPlayer();
@@ -267,7 +267,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 						public void onTrigger() {
 							
 							
-							DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
+							DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
 							if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
 								applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
 							}
@@ -304,7 +304,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 								//BTW, this part is not entirely correct, as interaction with dynamic pieces will happen only in 
 								//case if they are blocking passage (e.g. not destroyed stones)
 								//But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
-								DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
+								DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
 								if (dynamicPiece != null) {
 									dynamicPiece.interact();
 								}
@@ -372,10 +372,10 @@ public class InGameInputHandler extends AbstractInputHandler {
 			if (input.isKeyPressed(Input.KEY_Z)) {
 				if (cam.getZoomFactor() != Cam.ZOOM_FACTOR_FAR) {
 					cam.zoomOut();
-					cam.focusOnPiece(map, 0, 0, player);
+					cam.focusOnPiece(0, 0, player);
 				} else {
 					cam.zoomIn();
-					cam.focusOnPiece(map, 0, 0, player);
+					cam.focusOnPiece(0, 0, player);
 				}
 			}
 			
@@ -389,7 +389,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 			if (input.isKeyPressed(Input.KEY_1)) {
 				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextPosition();
 				player.setPosition(player.getPosition());
-				cam.focusOnPiece(map, 0, 0, player);
+				cam.focusOnPiece(0, 0, player);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_2)) {

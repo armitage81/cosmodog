@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -101,7 +102,7 @@ public class MoveableGroup implements Serializable {
 	
 	public static void resetMoveableGroup(CosmodogGame game) {
 		Player player = game.getPlayer();
-		CosmodogMap map = game.getMap();
+		CosmodogMap map = game.mapOfPlayerLocation();
 		Cam cam = game.getCam();
 		MoveableGroup moveableGroupAroundPlayer = null;
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
@@ -133,7 +134,7 @@ public class MoveableGroup implements Serializable {
 			Position playerStartingPosition = moveableGroupAroundPlayer.getPlayerStartingPosition();
 			player.setPosition(playerStartingPosition);
 			player.endTeleportation();
-			cam.focusOnPiece(map, 0, 0, player);
+			cam.focusOnPiece(0, 0, player);
 		}
 	}
 

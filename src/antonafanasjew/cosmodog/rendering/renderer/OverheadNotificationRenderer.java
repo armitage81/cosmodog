@@ -34,7 +34,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
 		
 		OverheadNotificationAction action = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);

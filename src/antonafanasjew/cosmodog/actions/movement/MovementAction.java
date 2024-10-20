@@ -231,7 +231,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	 */
 	private void initMovementActionResults() {
 		//Preparing static data.
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		Position playerPosition = player.getPosition();
 		
@@ -279,8 +279,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		if (skipTurn) {
 			return retVal;
 		}
-		
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		//We check if the position to which the player moves contains a moveable.
@@ -290,7 +290,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int moveablePosY = lastStep.getY();
 		
 		//If a moveable is there, we calculate its target position (always away from the player as he pushes it)
-		DynamicPiece dynamicPiece = cosmodogMap.dynamicPieceAtPosition(Position.fromCoordinates(moveablePosX, moveablePosY));
+		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinatesOnPlayerLocationMap(moveablePosX, moveablePosY));
 		if (dynamicPiece instanceof MoveableDynamicPiece) {
 			int newMoveablePosX = (int)dynamicPiece.getPosition().getX();
 			int newMoveablePosY = (int)dynamicPiece.getPosition().getY();
@@ -309,8 +309,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 			}
 			
 			retVal = MovementActionResult.instance(
-					Position.fromCoordinates(moveablePosX, moveablePosY),
-					Position.fromCoordinates(newMoveablePosX, newMoveablePosY));
+					Position.fromCoordinatesOnPlayerLocationMap(moveablePosX, moveablePosY),
+					Position.fromCoordinatesOnPlayerLocationMap(newMoveablePosX, newMoveablePosY));
 		}
 		return retVal;
 		
@@ -371,11 +371,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 				applicationContext.getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
 			}
 			
-			CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 			int resultX = playerMovementActionResult.getPath().getX(1);
 			int resultY = playerMovementActionResult.getPath().getY(1);
 
-			Position resultPosition = Position.fromCoordinates(resultX, resultY);
+			Position resultPosition = Position.fromCoordinatesOnPlayerLocationMap(resultX, resultY);
 
 			Set<Enemy> destroyedEnemies = Sets.newHashSet();
 			
@@ -386,7 +386,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 				int enemyX = enemyMovementActionResult.getPath().getX(pathLength - 1);
 				int enemyY = enemyMovementActionResult.getPath().getY(pathLength - 1);
 
-				Position enemyPosition = Position.fromCoordinates(enemyX, enemyY);
+				Position enemyPosition = Position.fromCoordinatesOnPlayerLocationMap(enemyX, enemyY);
 
 				if (CosmodogMapUtils.isTileOnPlatform(enemyPosition, resultPosition)) {
 					destroyedEnemies.add(enemy);
@@ -405,7 +405,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			if (!skipTurn) {
 				int resultX = playerMovementActionResult.getPath().getX(1);
 				int resultY = playerMovementActionResult.getPath().getY(1);
-				Position position = Position.fromCoordinates(resultX, resultY);
+				Position position = Position.fromCoordinatesOnPlayerLocationMap(resultX, resultY);
 				String footStepsSoundType = FootstepUtils.footStepsSoundType(position);
 				applicationContext.getSoundResources().get(footStepsSoundType).play();
 			}
@@ -452,7 +452,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		}
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		
 		Cam cam = cosmodogGame.getCam();
 
@@ -486,7 +486,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		int targetPosX = playerMovementActionResult.getPath().getStep(1).getX();
 		int targetPosY = playerMovementActionResult.getPath().getStep(1).getY();
-		Position targetPosition = Position.fromCoordinates(targetPosX, targetPosY);
+		Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetPosX, targetPosY);
 
 		ActorTransition playerTransition = ActorTransition.fromActor(player, targetPosition);
 		if (verticalNotHorizontal) {
@@ -497,7 +497,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		cosmodogGame.getActorTransitionRegistry().put(player, playerTransition);
 		
-		cam.focusOnPiece(map, movementOffsetX, movementOffsetY, player);
+		cam.focusOnPiece(movementOffsetX, movementOffsetY, player);
 	}
 
 	/**
@@ -530,6 +530,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			return;
 		}
 
+		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
 		Path path = moveableMovementActionResult.getPath();
@@ -539,11 +540,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
 		int targetPosY = path.getY(1);
 
-		Position position = Position.fromCoordinates(posX, posY);
-		Position targetPosition = Position.fromCoordinates(targetPosX, targetPosY);
+		Position position = Position.fromCoordinatesOnPlayerLocationMap(posX, posY);
+		Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetPosX, targetPosY);
 
 		MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils
-				.getCosmodogMap()
+				.getCosmodogGame()
 				.dynamicPieceAtPosition(position);
 
 		float ratio = (float)timePassed / getDuration();
@@ -600,7 +601,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		}
 
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		Set<Enemy> enemies = enemyMovementActionResults.keySet();
 		for (Enemy enemy : enemies) {
 
@@ -628,7 +629,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			int transitionalTargetPosX = path.getX(movedDistanceInTiles + 1);
 			int transitionalTargetPosY = path.getY(movedDistanceInTiles + 1);
 
-			Position transitionalPosition = Position.fromCoordinates(transitionalPosX, transitionalPosY);
+			Position transitionalPosition = Position.fromCoordinatesOnPlayerLocationMap(transitionalPosX, transitionalPosY);
 
 			ActorTransitionRegistry transitionRegistry = game.getActorTransitionRegistry();
 			ActorTransition enemyTransition = transitionRegistry.get(enemy);
@@ -687,7 +688,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			
 			Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
 			
-			for (Piece piece : cosmodogGame.getMap().getMapPieces().values()) {
+			for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().values()) {
 				if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
 					
 					//As we move the piece on the platform, we need to update it in the mapValues cache
@@ -704,13 +705,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 			
 			//When we modify positions of pieces on platform, we need to modify the mapPieces cache as well.
 			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
-				cosmodogGame.getMap().getMapPieces().remove(oldPosition);
+				cosmodogGame.mapOfPlayerLocation().getMapPieces().remove(oldPosition);
 			}
 			
 			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
 				Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
 				Position newPosition = piece.getPosition();
-				cosmodogGame.getMap().getMapPieces().put(newPosition, piece);
+				cosmodogGame.mapOfPlayerLocation().getMapPieces().put(newPosition, piece);
 			}
 		}
 		
@@ -742,13 +743,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 				int posX = path.getX(0);
 				int posY = path.getY(0);
 
-				Position position = Position.fromCoordinates(posX, posY);
+				Position position = Position.fromCoordinatesOnPlayerLocationMap(posX, posY);
 
 				int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
 				int targetPosY = path.getY(1);
-				Position targetPosition = Position.fromCoordinates(targetPosX, targetPosY);
+				Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetPosX, targetPosY);
 				
-				MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils.getCosmodogMap().dynamicPieceAtPosition(position);
+				MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils.getCosmodogGame().dynamicPieceAtPosition(position);
 				
 				ActorTransitionRegistry actorTransitionRegistry = cosmodogGame.getActorTransitionRegistry();
 				actorTransitionRegistry.remove(moveable.asActor());
@@ -776,7 +777,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	private void onEndForEnemies() {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		Set<Enemy> enemies = map.getEnemies();
 		for (Enemy enemy : enemies) {
@@ -788,7 +789,7 @@ public class MovementAction extends FixedLengthAsyncAction {
     			Path path = movementActionResult.getPath();
     			int lastPathPosX = path.getX(path.getLength() - 1);
     			int lastPathPosY = path.getY(path.getLength() - 1);
-				Position lastPathPosition = Position.fromCoordinates(lastPathPosX, lastPathPosY);
+				Position lastPathPosition = Position.fromCoordinatesOnPlayerLocationMap(lastPathPosX, lastPathPosY);
     			enemy.setPosition(lastPathPosition);
     			if (enemyTransition != null) {
     				enemy.setDirection(enemyTransition.getTransitionalDirection());
@@ -807,7 +808,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		PlanetaryCalendar planetaryCalendar = cosmodogGame.getPlanetaryCalendar();
 		
 		VisibilityCalculator visibilityCalculator = VisibilityCalculator.create(enemy.getDefaultVision(), enemy.getNightVision(), enemy.getStealthVision());
@@ -873,8 +874,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		int targetX = playerMovementActionResult.getPath().getX(1);
 		int targetY = playerMovementActionResult.getPath().getY(1);
 
-		Position startPosition = Position.fromCoordinates(startX, startY);
-		Position targetPosition = Position.fromCoordinates(targetX, targetY);
+		Position startPosition = Position.fromCoordinatesOnPlayerLocationMap(startX, startY);
+		Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetX, targetY);
 		
 		boolean noMovement = startX == targetX && startY == targetY;
 
@@ -882,7 +883,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			return;
 		}
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Multimap<Class<?>, DynamicPiece> pieces = map.getDynamicPieces();
 		for (Class<?> pieceType : pieces.keySet()) {
 			Collection<DynamicPiece> piecesOfOneType = pieces.get(pieceType);

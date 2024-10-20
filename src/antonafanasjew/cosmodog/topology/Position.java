@@ -6,6 +6,7 @@ import java.util.Objects;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 /**
  * Position of a point
@@ -21,6 +22,11 @@ public class Position implements Serializable {
 
 	public static Position fromCoordinates(float x, float y) {
 		return fromCoordinates(x, y, MapType.MAIN);
+	}
+
+	public static Position fromCoordinatesOnPlayerLocationMap(float x, float y) {
+		MapType mapType = ApplicationContextUtils.getPlayer().getPosition().mapType;
+		return fromCoordinates(x, y, mapType);
 	}
 
 	public static Position fromCoordinates(float x, float y, MapType mapType) {

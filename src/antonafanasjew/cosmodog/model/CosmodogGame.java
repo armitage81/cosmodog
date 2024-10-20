@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.timing.Timer;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
@@ -18,6 +19,7 @@ import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
+import com.google.common.collect.Maps;
 
 import java.util.Map;
 
@@ -69,7 +71,7 @@ public class CosmodogGame extends CosmodogModel {
 
 	private Player player;
 
-	private Map<MapType, CosmodogMap> maps;
+	private Map<MapType, CosmodogMap> maps = Maps.newHashMap();
 
 	private Cam cam;
 
@@ -103,6 +105,10 @@ public class CosmodogGame extends CosmodogModel {
 
 	public CosmodogMap mapOfPlayerLocation() {
 		return maps.get(player.getPosition().getMapType());
+	}
+
+	public MapType mapTypeOfPlayerLocation() {
+		return player.getPosition().getMapType();
 	}
 
 	public Cam getCam() {
@@ -255,5 +261,9 @@ public class CosmodogGame extends CosmodogModel {
 	
 	public void setEndingTransition(EndingTransition endingTransition) {
 		this.endingTransition = endingTransition;
+	}
+
+	public DynamicPiece dynamicPieceAtPosition(Position position) {
+		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
 	}
 }

@@ -41,7 +41,7 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		
 		
 		Player player = cosmodogGame.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		
 		DyingAction dyingAction = (DyingAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.DYING);

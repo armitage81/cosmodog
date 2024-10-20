@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -39,7 +40,7 @@ public class CosmodogMap extends CosmodogModel {
 	private static final long serialVersionUID = -7464038323408300703L;
 
 	private transient CustomTiledMap customTiledMap;
-	
+
 	private Set<Enemy> enemies = Sets.newHashSet();
 	private Map<Position, Piece> mapPieces = Maps.newHashMap();
 	private Set<Piece> effectPieces = Sets.newHashSet();
@@ -173,11 +174,6 @@ public class CosmodogMap extends CosmodogModel {
 	
 	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(Position position, int width, int height, int grace) {
 		return PlayerMovementCache.getInstance().getVisibleDynamicPieces();
-	}
-	
-	
-	public DynamicPiece dynamicPieceAtPosition(Position position) {
-		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
 	}
 
 	public Set<Enemy> getEnemies() {

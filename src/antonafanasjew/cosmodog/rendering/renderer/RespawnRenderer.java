@@ -32,7 +32,7 @@ public class RespawnRenderer extends AbstractRenderer {
 
 
         Player player = cosmodogGame.getPlayer();
-        CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+        CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
 
         RespawnAction respawnAction = (RespawnAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.RESPAWNING);

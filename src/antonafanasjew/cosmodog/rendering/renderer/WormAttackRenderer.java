@@ -45,7 +45,7 @@ public class WormAttackRenderer extends AbstractRenderer {
 		
 		Animation wormAttackAnimation = applicationContext.getAnimations().get("wormAttack");
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();

@@ -92,7 +92,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		
 		Player player = cosmodogGame.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		
 		Cam cam = cosmodogGame.getCam();

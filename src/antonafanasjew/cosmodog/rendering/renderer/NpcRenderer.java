@@ -55,7 +55,7 @@ public class NpcRenderer extends AbstractRenderer {
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Cam cam = cosmodogGame.getCam();
 		

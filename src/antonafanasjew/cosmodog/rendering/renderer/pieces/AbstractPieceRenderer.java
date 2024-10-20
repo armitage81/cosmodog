@@ -16,10 +16,9 @@ public abstract class AbstractPieceRenderer implements PieceRenderer {
 	public void renderPiece(ApplicationContext applicationContext, int tileWidth, int tileHeight, int tileNoX, int tileNoY, Piece piece) {
 		
 		// Don't render the collectible if it is wrapped by a dynamic piece, such as a crate.
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(piece.getPosition());
+		DynamicPiece dynamicPiece = ApplicationContextUtils.getCosmodogGame().dynamicPieceAtPosition(piece.getPosition());
 		
-		if (dynamicPiece == null || dynamicPiece.wrapsCollectible() == false) {
+		if (dynamicPiece == null || !dynamicPiece.wrapsCollectible()) {
 			render(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
 		}
 	}

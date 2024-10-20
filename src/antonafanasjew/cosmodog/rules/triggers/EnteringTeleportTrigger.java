@@ -43,7 +43,7 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 		

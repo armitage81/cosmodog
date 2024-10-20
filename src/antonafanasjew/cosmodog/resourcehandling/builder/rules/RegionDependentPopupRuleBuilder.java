@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
@@ -26,9 +27,10 @@ public class RegionDependentPopupRuleBuilder extends AbstractCsvBasedResourceWra
 		String text = values[2];
 		String onlyOnceFlag = values[3];
 		String gameProgressProperty = values[4];
+		MapType mapType = MapType.valueOf(values[5]);
 		
 		
-		RuleTrigger trigger = new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
+		RuleTrigger trigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
 		boolean onlyOnce = Boolean.valueOf(onlyOnceFlag);
 		
 		if (onlyOnce) {

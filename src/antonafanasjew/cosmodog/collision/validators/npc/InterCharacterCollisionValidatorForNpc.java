@@ -57,7 +57,7 @@ public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionVal
 	
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		Player player = cosmodogGame.getPlayer();
 		Set<Enemy> enemies = cosmodogMap.getEnemiesInRange();
 		

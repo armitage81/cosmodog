@@ -29,7 +29,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		
 		InventoryItem item = player.getInventory().get(InventoryItemType.INSIGHT);
 

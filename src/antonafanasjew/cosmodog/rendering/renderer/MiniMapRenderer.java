@@ -72,7 +72,7 @@ public class MiniMapRenderer implements Renderer {
 		float offsetX = mapInputState.getOffsetX();
 		float offsetY = mapInputState.getOffsetY();
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 
 		int mapWidthInTiles = map.getWidth();
 		int mapHeightInTiles = map.getHeight();

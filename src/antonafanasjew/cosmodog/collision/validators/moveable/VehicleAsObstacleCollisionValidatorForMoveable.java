@@ -17,7 +17,7 @@ public class VehicleAsObstacleCollisionValidatorForMoveable extends AbstractColl
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		Piece piece = cosmodogMap.pieceAtTile(position);
 		boolean vehicleOnTile = piece instanceof Vehicle;
 		boolean resultingPassageFlag = !vehicleOnTile;

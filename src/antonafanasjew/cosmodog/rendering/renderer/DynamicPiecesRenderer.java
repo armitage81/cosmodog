@@ -66,7 +66,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = cosmodogGame.getMap();
+		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		Cam cam = cosmodogGame.getCam();
 
 		int tileWidth = map.getTileWidth();

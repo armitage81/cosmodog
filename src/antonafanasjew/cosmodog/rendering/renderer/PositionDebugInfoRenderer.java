@@ -35,11 +35,11 @@ public class PositionDebugInfoRenderer extends AbstractRenderer {
 		
 		DebuggerInventoryItem debugger = (DebuggerInventoryItem)player.getInventory().get(InventoryItemType.DEBUGGER);
 
-		List<Position> enemiesHoldingItems = ApplicationContext.instance().getCosmodog().getCosmodogGame().getMap().getEnemies().stream().filter(e -> {
+		List<Position> enemiesHoldingItems = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getEnemies().stream().filter(e -> {
 			return e.getInventoryItem() != null;
 		}).map(Piece::getPosition).toList();
 		
-		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().getMap().getMapPieces().entrySet().stream().filter(e -> {
+		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getMapPieces().entrySet().stream().filter(e -> {
 			Piece piece = e.getValue();
 			
 			boolean tool =  piece instanceof CollectibleTool;

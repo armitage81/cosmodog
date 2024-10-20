@@ -205,6 +205,7 @@ public class ApplicationContext {
 	public Map<MapType, CustomTiledMap> getCustomTiledMaps() {
 		if (this.customTiledMaps == null) {
 			try {
+				this.customTiledMaps = Maps.newHashMap();
 				for (MapType mapType : MapType.values()) {
 					CustomTiledMap map = getTiledMapReader().readTiledMap(Constants.mapPathsSupplier.get().get(mapType));
 					customTiledMaps.put(mapType, map);

@@ -166,7 +166,7 @@ public class CosmodogMapUtils {
 	public static boolean isTileOnPlatform(Position tilePosition) {
 		boolean retVal = false;
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		Platform platform = cosmodogGame.getMap().getCachedPlatform(cosmodogGame);
+		Platform platform = cosmodogGame.getMaps().get(tilePosition.getMapType()).getCachedPlatform(cosmodogGame);
 		if (platform != null) {
 			return isTileOnPlatform(tilePosition, platform.getPosition());
 		}

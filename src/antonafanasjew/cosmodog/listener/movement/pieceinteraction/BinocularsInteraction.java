@@ -16,10 +16,10 @@ public class BinocularsInteraction extends ToolInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 		Cam cam = cosmodogGame.getCam();
-		cam.focusOnPiece(map, 0, 0, player);
+		cam.focusOnPiece(0, 0, player);
 		cam.zoomOut();
 	}
 

@@ -67,7 +67,7 @@ public class LetterPlate extends DynamicPiece {
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_LETTER_PLATE).play();
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		
 		//The previously entered letter sequence is stored in the game progress object. We add the letter of the plate we step on to the sequence.

@@ -30,7 +30,7 @@ public class PlatformAsVehicleCollisionValidatorForPlayer extends AbstractCollis
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		
 		Set<Enemy> enemies = cosmodogMap.getEnemies();
 		//Check blocking enemies

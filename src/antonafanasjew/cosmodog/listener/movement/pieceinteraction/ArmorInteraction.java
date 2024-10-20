@@ -17,7 +17,7 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		
 		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().values();
 		

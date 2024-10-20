@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.statetransitions;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,9 +19,11 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
+import java.util.Map;
+
 public class LoadingTransition implements Transition {
 
-	private CustomTiledMap tiledMap = null;
+	private Map<MapType, CustomTiledMap> tiledMaps = null;
 	
 	private DrawingContext mainDrawingContext;
 	
@@ -37,7 +40,7 @@ public class LoadingTransition implements Transition {
 
 	@Override
 	public boolean isComplete() {
-		return tiledMap != null;
+		return tiledMaps != null;
 	}
 
 	
@@ -65,8 +68,8 @@ public class LoadingTransition implements Transition {
 
 		gc.getInput().clearKeyPressedRecord();
 		
-		if (startedLoading == false) {
-			tiledMap = ApplicationContext.instance().getCustomTiledMap();
+		if (!startedLoading) {
+			tiledMaps = ApplicationContext.instance().getCustomTiledMaps();
 			startedLoading = true;
 		}
 

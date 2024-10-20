@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rules.triggers;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
@@ -17,10 +18,12 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 
 	private static final long serialVersionUID = 1280404774181149596L;
 
+	private MapType mapType;
 	private String layerName;
 	private String regionName;
 	
-	public EnteringRegionTrigger(String layerName, String regionName) {
+	public EnteringRegionTrigger(MapType mapType, String layerName, String regionName) {
+		this.mapType = mapType;
 		this.layerName = layerName;
 		this.regionName = regionName;
 	}
@@ -28,11 +31,11 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 	@Override
 	public boolean accept(GameEvent event) {
 		
-		if (event instanceof GameEventChangedPosition == false) {
+		if (!(event instanceof GameEventChangedPosition)) {
 			return false;
 		}
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		

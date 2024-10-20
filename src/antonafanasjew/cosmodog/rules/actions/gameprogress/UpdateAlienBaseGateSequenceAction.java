@@ -37,7 +37,7 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		

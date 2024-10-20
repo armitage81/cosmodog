@@ -42,7 +42,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
-		DynamicPiece dynamicPiece = map.dynamicPieceAtPosition(position);
+		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(position);
 		if (dynamicPiece != null) {
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.

@@ -100,7 +100,7 @@ public class MapInputState implements InGameMenuInputState {
 	@Override
 	public void initializeState() {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		int mapWidth = map.getWidth();
 		int mapHeight = map.getHeight();
 		int posX = (int)player.getPosition().getX();

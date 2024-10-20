@@ -27,37 +27,37 @@ public class FootstepUtils {
 	}
 	
 	public static boolean targetInWater(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
         return TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 	}
 	
 	public static boolean targetInHighGrass(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
         return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_PLANTS);
 	}
 	
 	public static boolean targetInSnow(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
         return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SNOW);
 	}
 	
 	public static boolean targetInSand(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
         return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_SAND);
 	}
 	
 	public static boolean targetInGrass(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int tileId = map.getTileId(position, Layers.LAYER_META_GROUNDTYPES);
         return TileType.getByLayerAndTileId(Layers.LAYER_META_GROUNDTYPES, tileId).equals(TileType.GROUND_TYPE_GRASS);
 	}
 	
 	public static boolean targetInSolidTerrain(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int tileId = map.getTileId(position, Layers.LAYER_META_TERRAINTYPES);
         return TileType.getByLayerAndTileId(Layers.LAYER_META_TERRAINTYPES, tileId).equals(TileType.TERRAIN_TYPE_ROAD);
 	}

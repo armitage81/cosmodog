@@ -54,6 +54,7 @@ public class Cosmodog extends CosmodogModel {
     public void setUser(User user) {
         this.user = user;
     }
+
     public CosmodogGame getCosmodogGame() {
         return cosmodogGame;
     }

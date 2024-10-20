@@ -39,7 +39,7 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		TiledObjectGroup poisonSwitchConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_SWITCH_CONNECTORS);
 		

@@ -30,7 +30,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		//No need to calculate the region intersection if the tile is empty anyway.
 		if (map.getTileId(position, layerIndex) == 0) {

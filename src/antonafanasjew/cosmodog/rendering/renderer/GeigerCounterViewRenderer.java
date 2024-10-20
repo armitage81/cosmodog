@@ -31,7 +31,7 @@ public class GeigerCounterViewRenderer implements Renderer {
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();	
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
 		//Calculate radiation around the player.
 		boolean radiationAdjacent = false;

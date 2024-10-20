@@ -74,7 +74,7 @@ public class LowerGateAction extends FixedLengthAsyncAction {
 	 */
 	@Override
 	public void onTrigger() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		TiledObjectGroup regions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		TiledObject region = regions.getObjects().get(regionName);
 		Collection<DynamicPiece> gates = map.getDynamicPieces().get(Gate.class);

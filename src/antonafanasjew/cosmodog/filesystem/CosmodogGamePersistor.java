@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -102,11 +103,12 @@ public class CosmodogGamePersistor {
 			 */
 			try {
 				CosmodogMap map = game.mapOfPlayerLocation();
+				MapType mapType = game.mapTypeOfPlayerLocation();
 				float oldZoomFactor = game.getCam().getZoomFactor();
 				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
-				cam.focusOnPiece(map, 0, 0, game.getPlayer());
+				cam.focusOnPiece(0, 0, game.getPlayer());
 				cam.zoom(oldZoomFactor);
 				game.setCam(cam);
 			} catch (CamPositioningException e) {

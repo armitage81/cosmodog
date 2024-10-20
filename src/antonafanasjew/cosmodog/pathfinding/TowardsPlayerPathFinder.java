@@ -31,7 +31,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		//Preparing static data.
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		TileBasedMapFactory tileBasedMapFactory = cosmodog.getTileBasedMapFactory();
 		
@@ -84,7 +84,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 	private Position nextFreePositionNearbyPlayer(Actor actor, Player player, MovementActionResult playerMovementActionResult, CollisionValidator collisionValidator) {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		//If the player did not move, we take his real coordinates as target.
 		int x = (int)player.getPosition().getX();

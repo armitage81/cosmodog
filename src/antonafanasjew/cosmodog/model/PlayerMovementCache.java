@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -82,9 +83,6 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	private Set<Enemy> enemiesInRange = Sets.newHashSet();
 	private Map<Enemy, Set<TiledObject>> enemiesInRangeWithRoofsOverThem = Maps.newHashMap();
 	
-	//Positions here are not tile positions but map piece positions.
-	private List<Position> insightChartPiecePositions = Lists.newArrayList();
-	
 	/*
 	 * When the player is in the moveable group region (Sokoban riddle), a hint will be shown how to reset the riddle.
 	 * Instead of checking every time if the player is in such a region, we will use the value from the cache,
@@ -104,7 +102,6 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		recalculateInfobitsInGame();
 		recalculateEnemiesInRange();
 		recalculateRoofsOverEnemiesInRange();
-		recalculateRemainingInsightsMapPiecePositions();
 		recalculateActiveMoveableGroup();
 	}
 	
@@ -130,7 +127,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	private void recalculateEnemiesInRange() {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		enemiesInRange.clear();
 		
@@ -144,14 +141,14 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 
 	private void recalculateRoofsOverPlayer() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		roofRegionsOverPlayer.clear();
 		roofRegionsOverPlayer.addAll(RegionUtils.roofsOverPiece(player, map));
 	}
 
 	private void recalculateRoofsOverEnemiesInRange() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		for (Enemy enemy : enemiesInRange) {
 			Set<TiledObject> roofs = Sets.newHashSet();
 			roofs = RegionUtils.roofsOverPiece(enemy, map);
@@ -171,44 +168,9 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		}
 	}
 	
-	private void recalculateRemainingInsightsMapPiecePositions() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		List<Position> insightTilePositions = map.getMapPieces().entrySet().stream().filter(e -> {
-			Piece piece = e.getValue();
-			return 
-					piece instanceof Collectible 
-					&& 
-					((Collectible)piece).getCollectibleType() == CollectibleType.GOODIE
-					&& ((CollectibleGoodie)piece).getGoodieType() == GoodieType.insight;
-					
-		
-		}).map(e -> e.getKey()).collect(Collectors.toList());
-		
-		Function<Position, Position> tilePositionToChartPiecePosition = e -> {
-			int tilePositionX = (int)e.getX();
-			int tilePositionY = (int)e.getY();
-			
-			int chartPieceWidth = map.getWidth() / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
-			int chartPieceHeight = map.getHeight() / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_Y;
-			
-			int chartPiecePositionX = tilePositionX / chartPieceWidth;
-			int chartPiecePositionY = tilePositionY / chartPieceHeight;
-			
-			Position insightChartPiecePosition = Position.fromCoordinates(chartPiecePositionX, chartPiecePositionY);
-			return insightChartPiecePosition;
-			
-		};
-		
-		this.insightChartPiecePositions.clear();
-		this.insightChartPiecePositions.addAll(insightTilePositions
-				.stream()
-				.map(tilePositionToChartPiecePosition)
-				.collect(Collectors.toList()));
-	}
-	
 	private void recalculateDynamicPieces() {
 	
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		dynamicPieces.clear();
 		for (Class<?> key : map.getDynamicPieces().keySet()) {
@@ -229,7 +191,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		//Commented the logic and showing all pieces instead to avoid the problem.
 		//This has a bad impact on performance and should be tackled.
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
 		visibleDynamicPieces = map.getDynamicPieces();
 
@@ -270,7 +232,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 	
 	private void recalculateRoofRemovalBlockerRegions(Actor actor) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		roofRemovalBlockerRegionsOverPlayer.clear();
 		roofRemovalBlockerRegionsOverPlayer.addAll(RegionUtils.roofRemovalBlockersOverPiece(actor, map));
 		
@@ -289,7 +251,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 
 	private void recalculateClosestSupplyAndMedkitPosition(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
-		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
+		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
 		Collection<Piece> supplies = map.getSupplies().values();
 		Collection<Piece> medkits = map.getMedkits().values();
 		
@@ -323,7 +285,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	
 	private void recalculateclosestPieceInterestingForDebugging(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
-		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
+		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
 		Collection<Piece> pieces = map.getMapPieces().values();
 		
 		pieces = Lists.newArrayList(Iterables.filter(pieces, new Predicate<Piece>() {
@@ -399,32 +361,40 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 
 	private void recalculateInfobitsInGame() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
-		int noInfobits = map.getInfobits().size();
-		int noInfoBytes = map.getInfobytes().size();
-		int noInfobanks = map.getInfobanks().size();
-		
-		int inInventories = 0;
-		
-		Set<Enemy> enemies = map.getEnemies();
-		for (Enemy enemy : enemies) {
-			InventoryItem item = enemy.getInventoryItem();
-			if (item instanceof GoodieInventoryItem) {
-				GoodieInventoryItem goodie = (GoodieInventoryItem)item;
-				GoodieType goodieType = goodie.getGoodieType();
-				if (goodieType == GoodieType.infobit) {
-					inInventories += 1;
-				}
-				if (goodieType == GoodieType.infobyte) {
-					inInventories += 5;
-				}
-				if (goodieType == GoodieType.infobank) {
-					inInventories += 25;
+
+		numberInfobitsInGame = 0;
+
+		for (MapType mapType : MapType.values()) {
+
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+
+			int noInfobits = map.getInfobits().size();
+			int noInfoBytes = map.getInfobytes().size();
+			int noInfobanks = map.getInfobanks().size();
+
+			int inInventories = 0;
+
+			Set<Enemy> enemies = map.getEnemies();
+			for (Enemy enemy : enemies) {
+				InventoryItem item = enemy.getInventoryItem();
+				if (item instanceof GoodieInventoryItem) {
+					GoodieInventoryItem goodie = (GoodieInventoryItem) item;
+					GoodieType goodieType = goodie.getGoodieType();
+					if (goodieType == GoodieType.infobit) {
+						inInventories += 1;
+					}
+					if (goodieType == GoodieType.infobyte) {
+						inInventories += 5;
+					}
+					if (goodieType == GoodieType.infobank) {
+						inInventories += 25;
+					}
 				}
 			}
+
+			numberInfobitsInGame += (inInventories + noInfobits + (5 * noInfoBytes) + (25 * noInfobanks));
+
 		}
-		
-		numberInfobitsInGame = inInventories + noInfobits + (5 * noInfoBytes) + (25 * noInfobanks);
 	}
 	
 	public boolean isPlayerOnPlatform() {
@@ -463,10 +433,6 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		return enemiesInRange;
 	}
 	
-	public List<Position> getInsightChartPiecePositions() {
-		return insightChartPiecePositions;
-	}
-	
 	public MoveableGroup getActiveMoveableGroup() {
 		return activeMoveableGroup;
 	}
@@ -476,7 +442,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 	}
 	
 	private void recalculateActiveMoveableGroup() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		MoveableGroup moveableGroupAroundPlayer = null;
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();

@@ -42,7 +42,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Cam cam = cosmodogGame.getCam();
 		

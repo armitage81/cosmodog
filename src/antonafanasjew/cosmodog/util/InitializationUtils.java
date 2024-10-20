@@ -674,7 +674,7 @@ public class InitializationUtils {
 			
 			//Trigger: Not yet deactivated AND entered region AND having deactivation codes.
 			RuleTrigger deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
-			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1), deactivateMinesForQuadrandTrigger);
 			//Action: Deactivate mines AND set deactivated property to true AND print notification.
 			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". You deactivate the mines.");
@@ -687,7 +687,7 @@ public class InitializationUtils {
 			
 			//Trigger: Not yet deactivated AND entered region AND NOT having deactivation codes.
 			deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
-			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
 			RuleTrigger notHavingDeactivationCodesTrigger = new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1);
 			notHavingDeactivationCodesTrigger = InvertedTrigger.not(notHavingDeactivationCodesTrigger);
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(notHavingDeactivationCodesTrigger, deactivateMinesForQuadrandTrigger);
@@ -702,7 +702,7 @@ public class InitializationUtils {
 
 		// Worm delay rules
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
-		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
+		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
 		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will have harder time to locate you.");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
@@ -711,7 +711,7 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 		
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
-		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
+		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
 		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will have even harder time to locate you.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
@@ -720,7 +720,7 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 		
 		RuleTrigger switchOnDrillsTrigger = new GameProgressPropertyTrigger("WormAreaDrillOn", "false");
-		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
+		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
 		asyncAction = new PopUpNotificationAction("This is the control panel for the underground drill machines. You activate it. The worm cannot locate you anymore.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction switchOnDrillAction = new DeactivateWormAction();
@@ -730,7 +730,7 @@ public class InitializationUtils {
 
 		//Pickup blue keycard rule.
 		RuleTrigger approachBlueKeyCardTrigger = new GameProgressPropertyTrigger("CollectedBlueKeyCard", "false");
-		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
+		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
 		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf. You grab the item. It is a key card for the mass hall (blue).");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
 		RuleAction pickUpBlueKeyCardAction = new PickupKeyAction(DoorType.blueKeycardDoor);
@@ -742,11 +742,11 @@ public class InitializationUtils {
 		
 		//Open gate rule.
 		RuleTrigger openGateTrigger = OrTrigger.or(
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch1"), 
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch2"),
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch3"),
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch4"),
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch5")
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch1"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch2"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch3"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch4"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch5")
 				);
 		
 		RuleAction updateAlienBaseGateSequenceAction = new UpdateAlienBaseGateSequenceAction();
@@ -755,10 +755,10 @@ public class InitializationUtils {
 		
 		
 		RuleTrigger activateTeleportTrigger = OrTrigger.or(
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole1"), 
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole2"),
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole3"),
-				new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole4")
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole1"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole2"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole3"),
+				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole4")
 				);
 		
 		RuleAction updateTeleportSequenceAction = new UpdateAlienBaseTeleportSequenceAction();
@@ -767,36 +767,36 @@ public class InitializationUtils {
 		
 		
 		
-		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
+		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
 		RuleAction damageLastBossAction = new DamageLastBossAction();
 		rule = new Rule(Rule.RULE_DAMAGE_LAST_BOSS, Lists.newArrayList(GameEventChangedPosition.class), damageLastBossTrigger, damageLastBossAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 		
-		
-		CosmodogMap map = cosmodogGame.getMap();
-		TiledObjectGroup secretsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_SECRETS);
-		Map<String, TiledObject> secretObjects = secretsObjectGroup.getObjects();
-		for (String secretObjectKey : secretObjects.keySet()) {
-			RuleTrigger secretEntranceTrigger = new EnteringRegionTrigger(ObjectGroups.OBJECT_GROUP_SECRETS, secretObjectKey);
-			secretEntranceTrigger = AndTrigger.and(secretEntranceTrigger, new GameProgressPropertyTrigger("SecretCollected." + secretObjectKey, "false")); 
-			
-			RuleAction action = new SetGameProgressPropertyAction("SecretCollected." + secretObjectKey, "true");
-			asyncAction = new OnScreenNotificationAction("Secret found", 1500, SoundResources.SOUND_SECRET_FOUND);
-			RuleAction updateGameProgress = new AbstractRuleAction() {
-				
-				private static final long serialVersionUID = 3465808157964130895L;
+		for (MapType mapType : MapType.values()) {
+			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+			TiledObjectGroup secretsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_SECRETS);
+			Map<String, TiledObject> secretObjects = secretsObjectGroup.getObjects();
+			for (String secretObjectKey : secretObjects.keySet()) {
+				RuleTrigger secretEntranceTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_SECRETS, secretObjectKey);
+				secretEntranceTrigger = AndTrigger.and(secretEntranceTrigger, new GameProgressPropertyTrigger("SecretCollected." + secretObjectKey, "false"));
 
-				@Override
-				public void execute(GameEvent event) {
-					Player player = ApplicationContextUtils.getPlayer();
-					player.getGameProgress().increaseNumberOfFoundSecrets();
-				}
-			};
-			action = BlockAction.block(new AsyncActionRegistrationRuleAction(AsyncActionType.ONSCREEN_NOTIFICATION, asyncAction, false), updateGameProgress, action);
-			rule = new Rule(Rule.RULE_FOUND_SECRET + "." + secretObjectKey, Lists.newArrayList(GameEventChangedPosition.class), secretEntranceTrigger, action, Rule.RULE_PRIORITY_LATEST);
-			ruleBook.put(rule.getId(), rule);
+				RuleAction action = new SetGameProgressPropertyAction("SecretCollected." + secretObjectKey, "true");
+				asyncAction = new OnScreenNotificationAction("Secret found", 1500, SoundResources.SOUND_SECRET_FOUND);
+				RuleAction updateGameProgress = new AbstractRuleAction() {
+
+					private static final long serialVersionUID = 3465808157964130895L;
+
+					@Override
+					public void execute(GameEvent event) {
+						Player player = ApplicationContextUtils.getPlayer();
+						player.getGameProgress().increaseNumberOfFoundSecrets();
+					}
+				};
+				action = BlockAction.block(new AsyncActionRegistrationRuleAction(AsyncActionType.ONSCREEN_NOTIFICATION, asyncAction, false), updateGameProgress, action);
+				rule = new Rule(Rule.RULE_FOUND_SECRET + "." + secretObjectKey, Lists.newArrayList(GameEventChangedPosition.class), secretEntranceTrigger, action, Rule.RULE_PRIORITY_LATEST);
+				ruleBook.put(rule.getId(), rule);
+			}
 		}
-		
 		//Check sokoban solution rule
 		RuleTrigger sokobanSolutionCheckTrigger = new TrueTrigger();
 		RuleAction sokobanSolutionAction = new OperateSecretDoorsInSokobanAction();

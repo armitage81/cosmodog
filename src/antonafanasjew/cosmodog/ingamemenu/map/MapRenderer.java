@@ -68,7 +68,7 @@ public class MapRenderer implements Renderer {
 		miniMapRenderer.render(gameContainer, graphics, mapInputState);
 		
 		//Render players position in the selected chart piece.
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int mapWidth = map.getWidth();
 		int mapHeight = map.getHeight();
 		int posX = (int)player.getPosition().getX();

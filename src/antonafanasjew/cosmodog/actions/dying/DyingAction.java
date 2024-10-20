@@ -166,7 +166,6 @@ public class DyingAction extends FixedLengthAsyncAction {
 		
 		Cosmodog cosmodog = ApplicationContext.instance().getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 
@@ -177,13 +176,17 @@ public class DyingAction extends FixedLengthAsyncAction {
 		player.decontaminate();
 		player.resetTurnsWormAlerted();
 
+		//The map should be taken AFTER changing the player's position
+		//because respawning could move him to a different map. (Example: Dying in space, respawning on land.)
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
+
 		SnowfallChangeAction snowfallChangeAction = (SnowfallChangeAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
 		if (snowfallChangeAction != null) {
 			snowfallChangeAction.resetRate();
 		}
 
 		PlayerMovementCache.getInstance().afterMovement(player, player.getPosition(), player.getPosition(), ApplicationContext.instance());
-		cam.focusOnPiece(cosmodogMap, 0, 0, player);
+		cam.focusOnPiece(0, 0, player);
 		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
 		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");
 	}

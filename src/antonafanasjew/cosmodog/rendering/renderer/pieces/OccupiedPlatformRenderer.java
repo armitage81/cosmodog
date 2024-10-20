@@ -46,7 +46,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 		
 		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		int tileWidth = map.getTileWidth();
 		int tileHeight = map.getTileHeight();

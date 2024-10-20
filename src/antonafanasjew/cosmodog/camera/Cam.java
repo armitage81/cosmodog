@@ -3,6 +3,8 @@ package antonafanasjew.cosmodog.camera;
 import java.io.Serial;
 import java.io.Serializable;
 
+import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -279,27 +281,25 @@ public class Cam implements Serializable {
 	 * The map parameter is needed as the piece does not contain any real coordinates, so the tile width and height
 	 * need to be considered.
 	 * 
-	 * @param map The tiled map object to identify the width and the height of a tile.
 	 * @param offsetX Horizontal offset that should be applied. (Normally used to focus on a moving piece, like the walking player)
 	 * @param offsetY Vertical offset that should be applied. (Normally used to focus on a moving piece, like the walking player)
 	 * @param piece The piece which coordinates the camera will focus on.
 	 */
-	public void focusOnPiece(CosmodogMap map, float offsetX, float offsetY, Piece piece) {
-		
+	public void focusOnPiece(float offsetX, float offsetY, Piece piece) {
+
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(piece.getPosition().getMapType());
+
 		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
 		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);
 		
 		float pieceX = piece.getPosition().getX() * zoomedTileWidth + offsetX * zoomFactor;
 		float pieceY = piece.getPosition().getY() * zoomedTileHeight + offsetY * zoomFactor;
-		
-		int pieceWidth = zoomedTileWidth;
-		int pieceHeight = zoomedTileHeight;
-		
-		int camWidth = (int)this.viewCopy().width();
+
+        int camWidth = (int)this.viewCopy().width();
 		int camHeight = (int)this.viewCopy().height();
 		
-		float newCamX = pieceX + pieceWidth / 2.0f - camWidth / 2.0f;
-		float newCamY = pieceY + pieceHeight / 2.0f - camHeight / 2.0f;
+		float newCamX = pieceX + zoomedTileWidth / 2.0f - camWidth / 2.0f;
+		float newCamY = pieceY + zoomedTileHeight / 2.0f - camHeight / 2.0f;
 
 		Position newCamPosition = Position.fromCoordinates(newCamX, newCamY);
 		
@@ -309,7 +309,7 @@ public class Cam implements Serializable {
 			//This will never happen as the pieces are always parts of the map
 			//and the cam focuses on them.
 			Log.error("This is a programming error. Coordinates: " + newCamX + "/" + newCamY + " are not supposed to be out of the scene in no case.", e);
-			Log.error(pieceX + "/" + pieceY + "/" + pieceWidth + "/" + pieceHeight + "/" + camWidth + "/" + camHeight + "/" + newCamX + "/" + newCamY);
+			Log.error(pieceX + "/" + pieceY + "/" + zoomedTileWidth + "/" + zoomedTileHeight + "/" + camWidth + "/" + camHeight + "/" + newCamX + "/" + newCamY);
 			System.exit(1);
 		}
 		

@@ -198,7 +198,7 @@ public class FightAction extends PhaseBasedAction {
 	 */
 	private void initFightActionResult() {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
 		//As the fight action result is prepared, the ammunition of the selected weapon must be considered.
 		//It could be that only one shot is left while being surrounded by up to 4 enemies.

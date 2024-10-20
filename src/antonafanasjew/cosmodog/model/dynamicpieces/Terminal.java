@@ -41,7 +41,7 @@ public class Terminal extends DynamicPiece {
 	}
 	
 	private TiledObject terminalRegion() {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get("GuideTerminals");
 		

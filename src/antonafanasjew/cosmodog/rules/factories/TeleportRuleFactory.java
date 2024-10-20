@@ -38,7 +38,7 @@ public class TeleportRuleFactory implements RuleFactory {
 	public Map<String, Rule> buildRules(CosmodogGame cosmodogGame) {
 
 		//Do not take the map from the application context at this point as it is not defined there yet.
-		CosmodogMap map = cosmodogGame.getMap();
+		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		
 		Map<String, Rule> retVal = Maps.newHashMap();
 		

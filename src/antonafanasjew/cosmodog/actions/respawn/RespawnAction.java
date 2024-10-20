@@ -51,7 +51,7 @@ public class RespawnAction extends PhaseBasedAction {
                 Player player = ApplicationContextUtils.getPlayer();
                 player.setPosition(respawnPosition);
                 player.endRespawn();
-                ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(ApplicationContextUtils.getCosmodogMap(), 0, 0, player);
+                ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(0, 0, player);
             }
         };
 

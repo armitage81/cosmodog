@@ -55,7 +55,7 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		
 		Animation mineExplosionAnimation = applicationContext.getAnimations().get("explosion");
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Position position = explosionTransition.position;
 

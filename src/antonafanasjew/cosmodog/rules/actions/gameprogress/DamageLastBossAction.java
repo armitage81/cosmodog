@@ -26,7 +26,7 @@ public class DamageLastBossAction extends AbstractRuleAction {
 	@Override
 	public void execute(GameEvent event) {
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 
 		//Check if the boss has been destroyed already.

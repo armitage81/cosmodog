@@ -119,7 +119,7 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 	 */
 	@Override
 	public void onEnd() {
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogMap();
+		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		
 		Enemy enemy = getEnemy();
 		
