@@ -64,7 +64,14 @@ public class StatisticsState extends CosmodogAbstractState {
 		int noSecrets = player.getGameProgress().getNumberOfFoundSecrets();
 		int maxSecrets = Constants.NUMBER_OF_SECRETS_IN_GAME;
 		
-		int enemiesLeft = cosmodogGame.getMap().getEnemies().size();
+		int enemiesLeft = cosmodogGame
+				.getMaps()
+				.values()
+				.stream()
+				.mapToInt(cosmodogMap -> cosmodogMap.getEnemies()
+						.size())
+				.sum();
+
 		String playTimeRepresentation = cosmodogGame.getTimer().playTimeRepresentationDaysHoursMinutesSeconds("%s D %s H %s M %s S");
 		
 		

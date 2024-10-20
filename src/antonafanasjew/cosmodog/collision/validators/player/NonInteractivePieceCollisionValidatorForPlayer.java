@@ -23,8 +23,7 @@ public class NonInteractivePieceCollisionValidatorForPlayer extends AbstractColl
 
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		Piece piece = cosmodogMap.pieceAtTile(position);
+		Piece piece = map.pieceAtTile(position);
 		boolean passable = piece == null || piece.interactive(piece, ApplicationContext.instance(), cosmodogGame, (Player)actor);
 
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_INACTIVE_PIECE;

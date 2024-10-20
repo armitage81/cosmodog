@@ -37,22 +37,8 @@ import antonafanasjew.cosmodog.tiledmap.Tileset;
 
 public class XmlTiledMapReader implements TiledMapReader {
 
-	private String fileName;
-
-	public XmlTiledMapReader(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
 	@Override
-	public CustomTiledMap readTiledMap() throws TiledMapIoException {
+	public CustomTiledMap readTiledMap(String fileName) throws TiledMapIoException {
 		SAXBuilder builder = new SAXBuilder();
 		File xmlFile = new File(fileName);
 		try {

@@ -18,8 +18,7 @@ public class CollectibleCollisionValidatorForMoveable extends AbstractCollisionV
 
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
-		Piece piece = cosmodogMap.pieceAtTile(position);
+		Piece piece = map.pieceAtTile(position);
 		boolean passable = !(piece instanceof Collectible);
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
 		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);

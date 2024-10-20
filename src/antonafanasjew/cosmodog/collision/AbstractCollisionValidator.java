@@ -19,7 +19,7 @@ public abstract class AbstractCollisionValidator implements CollisionValidator {
 		
 		CollisionStatus notPassable = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED);
 		
-		if (!position.inMapBounds(cosmodogGame.getMap())) {
+		if (!position.inMapBounds(cosmodogGame.mapOfPlayerLocation())) {
 			return notPassable;
 		}
 		

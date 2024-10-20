@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -129,10 +130,11 @@ public class InitializationUtils {
 
 	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
 
-	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, Map<MapType, CustomTiledMap> customTiledMaps, String userName) throws SlickException, TiledMapIoException {
 		
-		CosmodogMap cosmodogMap = initializeCosmodogMap(customTiledMap);
-		cosmodogGame.setMap(cosmodogMap);
+		Map<MapType, CosmodogMap> cosmodogMaps = initializeCosmodogMaps(customTiledMaps);
+		cosmodogGame.getMaps().clear();
+		cosmodogGame.getMaps().putAll(cosmodogMaps);
 		
 		User user = new User();
 		user.setUserName(userName);
@@ -159,7 +161,10 @@ public class InitializationUtils {
 
 	public static void initializeCosmodogGameTransient(CosmodogGame cosmodogGame) {
 
-		cosmodogGame.getMap().setCustomTiledMap(ApplicationContextUtils.getCustomTiledMap());
+		for (MapType mapType : MapType.values()) {
+			cosmodogGame.getMaps().get(mapType).setCustomTiledMap(ApplicationContextUtils.getCustomTiledMaps().get(mapType));
+		}
+
 		cosmodogGame.setActionRegistry(new ActionRegistry());
 		cosmodogGame.setAmbientSoundRegistry(new AmbientSoundRegistry());
 		cosmodogGame.setInterfaceActionRegistry(new ActionRegistry());
@@ -186,33 +191,41 @@ public class InitializationUtils {
 
 	}
 
-	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, CustomTiledMap customTiledMap, String userName) throws SlickException, TiledMapIoException {
+	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, Map<MapType, CustomTiledMap> customTiledMaps, String userName) throws SlickException, TiledMapIoException {
 
 		//We just have to initialize this heavy-weight enum to avoid lazy loading with delays in game.
 		@SuppressWarnings("unused")
 		FontType fontType = FontProvider.getInstance().fontType(FontTypeName.LicenseText);	
 		CosmodogGame cosmodogGame = new CosmodogGame();
 
-		initializeCosmodogGameNonTransient(cosmodogGame, game, customTiledMap, userName);
+		initializeCosmodogGameNonTransient(cosmodogGame, game, customTiledMaps, userName);
 		initializeCosmodogGameTransient(cosmodogGame);
 
 		return cosmodogGame;
 	}
 
-	public static CosmodogMap initializeCosmodogMap(CustomTiledMap customTiledMap) throws SlickException, TiledMapIoException {
+	public static Map<MapType, CosmodogMap> initializeCosmodogMaps(Map<MapType, CustomTiledMap> customTiledMaps) throws SlickException, TiledMapIoException {
 
-		CosmodogMap map = new CosmodogMap(customTiledMap);
-		
-		initializeEffects(customTiledMap, map);
-		initializeTiledMapObjects(customTiledMap, map);
-		initializeEnemies(customTiledMap, map);
-		initializeDynamicTiles(customTiledMap, map);
-		//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
-		initializeMoveableGroups(customTiledMap, map);
-		//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
-		initializeCollectibles(customTiledMap, map);
+		Map<MapType, CosmodogMap> retVal = Maps.newHashMap();
 
-		return map;
+		for (MapType mapType : MapType.values()) {
+
+			CustomTiledMap customTiledMap = customTiledMaps.get(mapType);
+			CosmodogMap map = new CosmodogMap(customTiledMap);
+
+			initializeEffects(customTiledMap, map);
+			initializeTiledMapObjects(customTiledMap, map);
+			initializeEnemies(customTiledMap, map);
+			initializeDynamicTiles(customTiledMap, map);
+			//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
+			initializeMoveableGroups(customTiledMap, map);
+			//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
+			initializeCollectibles(customTiledMap, map);
+
+			retVal.put(mapType, map);
+		}
+
+		return retVal;
 
 	}
 

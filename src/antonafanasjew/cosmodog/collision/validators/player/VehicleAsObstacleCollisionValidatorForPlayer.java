@@ -30,8 +30,7 @@ public class VehicleAsObstacleCollisionValidatorForPlayer extends AbstractCollis
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			if (!vehicleInventoryItem.isExiting()) {
-				CosmodogMap cosmodogMap = cosmodogGame.getMap();
-				Piece piece = cosmodogMap.pieceAtTile(position);
+				Piece piece = map.pieceAtTile(position);
 				boolean vehicleOnTile = piece instanceof Vehicle;
 				boolean resultingPassageFlag = !vehicleOnTile;
 				PassageBlockerType passageBlocker = resultingPassageFlag ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_VEHICLE_COLLECTIBLE;

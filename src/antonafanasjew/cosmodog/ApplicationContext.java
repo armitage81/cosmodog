@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
@@ -119,9 +120,10 @@ public class ApplicationContext {
 	private Cosmodog cosmodog;
 	
 	/*
-	 * Data of the map as loaded from the Tiled format. The prefix "Custom" indicates that it is my class and not the one from the framework.
+	 * Data of maps as loaded from the Tiled format.
+	 * The prefix "Custom" indicates that it is custom class and not the one from the framework.
 	 */
-	private CustomTiledMap customTiledMap;
+	private Map<MapType, CustomTiledMap> customTiledMaps;
 	
 	/*
 	 * All log data (cutscenes, monolith interactions, found logs) as texts. 
@@ -158,7 +160,7 @@ public class ApplicationContext {
 	 */
 	private Images images = new Images();
 	private SpriteSheets spriteSheets = new SpriteSheets();
-	private TiledMapReader tiledMapReader = new XmlTiledMapReader(Constants.pathToTiledMapSupplier.get());
+	private TiledMapReader tiledMapReader = new XmlTiledMapReader();
 	
 	private Map<Character, Letter> characterLetters = Maps.newHashMap();
 	
@@ -192,22 +194,26 @@ public class ApplicationContext {
 	}
 	
 	/**
-	 * Returns the custom tiled map object. Take note: The custom tiled map is the initial information about the map.
+	 * Returns custom tiled map objects for all map types. Take note: A custom tiled map is the initial information about the map.
 	 * It cannot be modified throughout the game. All modifyable parts of the map should be stored in the CosmodogMap object.
 	 * The initialization of the custom tiled map happens within the getter as a type of lazy loading.
-	 * Take note: This object replicates the data in the TiledMap property (see tiledMap). The mid term goal is to get rid of the TiledMap dependency at all,
+	 * Take note: This object replicates the data in the TiledMap property (see tiledMap).
+	 * The mid term goal is to get rid of the TiledMap dependency at all,
 	 * and use only the CosmodogTiledMap class.
 	 * @return Custom Tiled Map as the initial state of the map.
 	 */
-	public CustomTiledMap getCustomTiledMap() {
-		if (this.customTiledMap == null) {
+	public Map<MapType, CustomTiledMap> getCustomTiledMaps() {
+		if (this.customTiledMaps == null) {
 			try {
-				this.customTiledMap = getTiledMapReader().readTiledMap();
+				for (MapType mapType : MapType.values()) {
+					CustomTiledMap map = getTiledMapReader().readTiledMap(Constants.mapPathsSupplier.get().get(mapType));
+					customTiledMaps.put(mapType, map);
+				}
 			} catch (TiledMapIoException e) {
 				Log.error("Lazy loading of the custom tiled map has failed: " + e.getLocalizedMessage(), e);
 			}
 		}
-		return this.customTiledMap;
+		return this.customTiledMaps;
 	}
 	
 	/**

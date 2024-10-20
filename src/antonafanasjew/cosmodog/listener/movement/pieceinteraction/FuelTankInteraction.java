@@ -17,14 +17,13 @@ public class FuelTankInteraction extends AbstractPieceInteraction {
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 
-		CosmodogMap cosmodogMap = cosmodogGame.getMap();
+		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 
 		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().values();
 
 		for (Piece piece2 : mapPieces) {
-			if (piece2 instanceof Vehicle) {
-				Vehicle vehicle = ((Vehicle)piece2);
-				vehicle.upgradeMaxFuel();
+			if (piece2 instanceof Vehicle vehicle) {
+                vehicle.upgradeMaxFuel();
 			}
 		}
 

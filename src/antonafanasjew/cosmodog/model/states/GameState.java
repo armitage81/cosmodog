@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.states;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.rendering.renderer.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -31,6 +32,8 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.GameEventUtils;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
+
+import java.util.Map;
 
 /**
  * This class implements the loop where the actual game takes place.
@@ -78,12 +81,12 @@ public class GameState extends CosmodogAbstractState {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		if (cosmodog.getGameLifeCycle().isStartNewGame()) {
 
-			CustomTiledMap customTiledMap = applicationContext.getCustomTiledMap();
+			Map<MapType, CustomTiledMap> customTiledMap = applicationContext.getCustomTiledMaps();
 
 			CosmodogGame cosmodogGame;
 
 			try {
-				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMap, "Armitage");
+				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMaps, "Armitage");
 				cosmodogGame.setGameName(cosmodog.getGameLifeCycle().getGameName());
 				CosmodogMap map = cosmodogGame.getMap();
 				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));

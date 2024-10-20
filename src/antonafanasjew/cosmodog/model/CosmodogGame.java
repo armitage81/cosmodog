@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.model;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
@@ -17,6 +18,8 @@ import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
+
+import java.util.Map;
 
 /**
  * Model of a game session. This will contain the data about the map, actors and
@@ -66,7 +69,7 @@ public class CosmodogGame extends CosmodogModel {
 
 	private Player player;
 
-	private CosmodogMap map;
+	private Map<MapType, CosmodogMap> maps;
 
 	private Cam cam;
 
@@ -94,12 +97,12 @@ public class CosmodogGame extends CosmodogModel {
 		this.player = player;
 	}
 
-	public CosmodogMap getMap() {
-		return map;
+	public Map<MapType, CosmodogMap> getMaps() {
+		return maps;
 	}
 
-	public void setMap(CosmodogMap map) {
-		this.map = map;
+	public CosmodogMap mapOfPlayerLocation() {
+		return maps.get(player.getPosition().getMapType());
 	}
 
 	public Cam getCam() {

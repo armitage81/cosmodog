@@ -26,7 +26,7 @@ public class OperateSecretDoorsInSokobanAction extends AbstractRuleAction {
 	public void execute(GameEvent event) {
 		
 		ApplicationContext applicationContext = ApplicationContext.instance();
-		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().getMap();
+		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
 		Player player = applicationContext.getCosmodog().getCosmodogGame().getPlayer();
 		
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();

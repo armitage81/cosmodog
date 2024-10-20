@@ -142,7 +142,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 		
 		boolean blocked = false;
 		
-		Platform platform = cosmodogGame.getMap().getCachedPlatform(cosmodogGame);
+		Platform platform = map.getCachedPlatform(cosmodogGame);
 
 //		//Take care: If exiting, platforms position is not updated. At this point of time, it is still an inventory item.
 //		//So its position is still the one that was when the player entered it.

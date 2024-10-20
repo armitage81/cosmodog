@@ -101,7 +101,7 @@ public class CosmodogGamePersistor {
 			 * That's why we fix it here after the restoration process.
 			 */
 			try {
-				CosmodogMap map = game.getMap();
+				CosmodogMap map = game.mapOfPlayerLocation();
 				float oldZoomFactor = game.getCam().getZoomFactor();
 				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();

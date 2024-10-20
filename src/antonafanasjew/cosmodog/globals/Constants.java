@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.globals;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.topology.Position;
+import com.google.common.collect.Maps;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class Constants {
@@ -29,16 +32,21 @@ public class Constants {
 	public static final int FLICKING_RATE_IN_MILLIS = 500;
 	public static final float FLICKING_THRESHOLD = 0.2f;
 	
-	/**
-	 * Provides the relative path to the tiled map document.
-	 * The map file be overridden by a system property cosmodog.mapFile
-	 */
-	public static Supplier<String> pathToTiledMapSupplier = () -> {
-		String mapFile = System.getProperty("cosmodog.mapFile");
-		if (mapFile != null) {
-			return "data/maps" + mapFile;
+	public static Supplier<Map<MapType, String>> mapPathsSupplier = () -> {
+
+		Map<MapType, String> retVal = Maps.newHashMap();
+		for (MapType mapType : MapType.values()) {
+			String mapFile = System.getProperty("cosmodog.mapFile." + mapType.name());
+			String mapPath;
+			if (mapFile != null) {
+				mapPath = "data/maps/" + mapFile;
+			} else {
+				mapPath = mapType.getMapPath();
+			}
+			retVal.put(mapType, mapPath);
 		}
-		return "data/maps/map_main.tmx";
+
+		return retVal;
 	};
 	
 	/**
