@@ -4,6 +4,7 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.teleportation.PoisonDeactivationAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -40,33 +41,35 @@ public class PoisonDeactivationRuleFactory implements RuleFactory {
 	@Override
 	public Map<String, Rule> buildRules(CosmodogGame cosmodogGame) {
 
-		//Do not take the map from the application context at this point as it is not defined there yet.
-		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
-		
 		Map<String, Rule> retVal = Maps.newHashMap();
-		
-		TiledObjectGroup poisonConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_SWITCH_CONNECTORS);
-		
-		
-		Map<String, TiledObject> poisonConnectionObjects = poisonConnectionObjectGroup.getObjects();
-		
-		for (String poisonConnectionName : poisonConnectionObjects.keySet()) {
-			
-			TiledPolylineObject poisonConnection = (TiledPolylineObject)poisonConnectionObjects.get(poisonConnectionName);
-			String gameProgressProperty = "PoisonSwitchTriggered." + poisonConnection.getName();
-			
-			RuleTrigger trigger = new EnteringPoisonDeactivationSwitchTrigger(poisonConnectionName);
-			RuleTrigger notTriggeredYet = new GameProgressPropertyTrigger(gameProgressProperty, "false");
-			trigger = AndTrigger.and(trigger, notTriggeredYet);
-			
-			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.CUTSCENE, new PoisonDeactivationAction(poisonConnection), false);
-			action = BlockAction.block(action, new SetGameProgressPropertyAction(gameProgressProperty, "true"));
-			
-			Rule rule = new Rule("poisonDeactivation." + poisonConnection, trigger, action);
-			
-			retVal.put(rule.getId(), rule);
+
+		for (MapType mapType : MapType.values()) {
+
+			//Do not take the map from the application context at this point as it is not defined there yet.
+			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+
+			TiledObjectGroup poisonConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_SWITCH_CONNECTORS);
+
+
+			Map<String, TiledObject> poisonConnectionObjects = poisonConnectionObjectGroup.getObjects();
+
+			for (String poisonConnectionName : poisonConnectionObjects.keySet()) {
+
+				TiledPolylineObject poisonConnection = (TiledPolylineObject)poisonConnectionObjects.get(poisonConnectionName);
+				String gameProgressProperty = "PoisonSwitchTriggered." + poisonConnection.getName();
+
+				RuleTrigger trigger = new EnteringPoisonDeactivationSwitchTrigger(mapType, poisonConnectionName);
+				RuleTrigger notTriggeredYet = new GameProgressPropertyTrigger(gameProgressProperty, "false");
+				trigger = AndTrigger.and(trigger, notTriggeredYet);
+
+				RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.CUTSCENE, new PoisonDeactivationAction(poisonConnection), false);
+				action = BlockAction.block(action, new SetGameProgressPropertyAction(gameProgressProperty, "true"));
+
+				Rule rule = new Rule("poisonDeactivation." + poisonConnection, trigger, action);
+
+				retVal.put(rule.getId(), rule);
+			}
 		}
-		
 		return retVal;
 	}
 

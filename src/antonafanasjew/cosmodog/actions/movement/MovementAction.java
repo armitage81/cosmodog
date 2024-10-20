@@ -497,7 +497,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		cosmodogGame.getActorTransitionRegistry().put(player, playerTransition);
 		
-		cam.focusOnPiece(movementOffsetX, movementOffsetY, player);
+		cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
 	}
 
 	/**

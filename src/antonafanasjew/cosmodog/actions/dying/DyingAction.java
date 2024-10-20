@@ -186,7 +186,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 		}
 
 		PlayerMovementCache.getInstance().afterMovement(player, player.getPosition(), player.getPosition(), ApplicationContext.instance());
-		cam.focusOnPiece(0, 0, player);
+		cam.focusOnPiece(cosmodogGame, 0, 0, player);
 		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
 		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");
 	}

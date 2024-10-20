@@ -87,6 +87,7 @@ public class GameState extends CosmodogAbstractState {
 
 			try {
 				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMaps, "Armitage");
+				applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 				cosmodogGame.setGameName(cosmodog.getGameLifeCycle().getGameName());
 				CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
@@ -101,13 +102,13 @@ public class GameState extends CosmodogAbstractState {
 				Player player = cosmodogGame.getPlayer();
 				Cam cam = cosmodogGame.getCam();
 				cam.zoom(Constants.DEFAULT_CAM_ZOOM_FACTOR);
-				cam.focusOnPiece(0, 0, player);
+				cam.focusOnPiece(cosmodogGame, 0, 0, player);
 
 			} catch (TiledMapIoException e1) {
 				throw new SlickException("Error while reading the cosmodog map", e1);
 			}
 
-			applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
+
 
 			// Check for the rules of the new game event
 			GameEventUtils.throwEvent(new GameEventNewGame());

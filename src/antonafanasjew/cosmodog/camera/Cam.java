@@ -2,8 +2,10 @@ package antonafanasjew.cosmodog.camera;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.util.Log;
 
@@ -285,9 +287,9 @@ public class Cam implements Serializable {
 	 * @param offsetY Vertical offset that should be applied. (Normally used to focus on a moving piece, like the walking player)
 	 * @param piece The piece which coordinates the camera will focus on.
 	 */
-	public void focusOnPiece(float offsetX, float offsetY, Piece piece) {
+	public void focusOnPiece(CosmodogGame cosmodogGame, float offsetX, float offsetY, Piece piece) {
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(piece.getPosition().getMapType());
+		CosmodogMap map = cosmodogGame.getMaps().get(piece.getPosition().getMapType());
 
 		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
 		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);
@@ -314,4 +316,5 @@ public class Cam implements Serializable {
 		}
 		
 	}
+
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -37,39 +38,38 @@ public class TeleportRuleFactory implements RuleFactory {
 	@Override
 	public Map<String, Rule> buildRules(CosmodogGame cosmodogGame) {
 
-		//Do not take the map from the application context at this point as it is not defined there yet.
-		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
-		
 		Map<String, Rule> retVal = Maps.newHashMap();
-		
-		TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
-		
-		
-		Map<String, TiledObject> teleportConnectionObjects = teleportConnectionObjectGroup.getObjects();
-		
-		for (String teleportConnectionName : teleportConnectionObjects.keySet()) {
-			
-			TiledPolylineObject teleportConnection = (TiledPolylineObject)teleportConnectionObjects.get(teleportConnectionName);
-			
-			RuleTrigger trigger = new EnteringTeleportTrigger(teleportConnectionName);
 
-			//Some teleports can be activated. This is the way to ignore them until the activation property is set.
-			String conditionPropertyName = teleportConnection.getProperties().get("conditionPropertyName");
-			String conditionPropertyValue = teleportConnection.getProperties().get("conditionPropertyValue");
-			
-			if (conditionPropertyName != null && conditionPropertyValue != null && conditionPropertyName.isEmpty() == false) {
-				GameProgressPropertyTrigger gameProgressPropertyTrigger = new GameProgressPropertyTrigger(conditionPropertyName, conditionPropertyValue);
-				trigger = AndTrigger.and(trigger, gameProgressPropertyTrigger);
+		for (MapType mapType : MapType.values()) {
+
+			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+
+			TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
+
+			Map<String, TiledObject> teleportConnectionObjects = teleportConnectionObjectGroup.getObjects();
+
+			for (String teleportConnectionName : teleportConnectionObjects.keySet()) {
+
+				TiledPolylineObject teleportConnection = (TiledPolylineObject) teleportConnectionObjects.get(teleportConnectionName);
+
+				RuleTrigger trigger = new EnteringTeleportTrigger(mapType, teleportConnectionName);
+
+				//Some teleports can be activated. This is the way to ignore them until the activation property is set.
+				String conditionPropertyName = teleportConnection.getProperties().get("conditionPropertyName");
+				String conditionPropertyValue = teleportConnection.getProperties().get("conditionPropertyValue");
+
+				if (conditionPropertyName != null && conditionPropertyValue != null && !conditionPropertyName.isEmpty()) {
+					GameProgressPropertyTrigger gameProgressPropertyTrigger = new GameProgressPropertyTrigger(conditionPropertyName, conditionPropertyValue);
+					trigger = AndTrigger.and(trigger, gameProgressPropertyTrigger);
+				}
+
+				RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection), false);
+
+				Rule rule = new Rule("teleport." + teleportConnectionName, trigger, action);
+
+				retVal.put(rule.getId(), rule);
 			}
-			
-			
-			RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection), false);
-			
-			Rule rule = new Rule("teleport." + teleportConnectionName, trigger, action);
-			
-			retVal.put(rule.getId(), rule);
 		}
-		
 		return retVal;
 	}
 

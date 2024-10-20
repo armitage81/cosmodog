@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rules.triggers;
 import java.util.List;
 import java.util.Map;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -25,9 +26,12 @@ import antonafanasjew.cosmodog.util.RegionUtils;
 public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger {
 
 	private static final long serialVersionUID = 9096030493555091756L;
+
+	private MapType mapType;
 	private String connectorName;
 
-	public EnteringPoisonDeactivationSwitchTrigger(String connectorName) {
+	public EnteringPoisonDeactivationSwitchTrigger(MapType mapType, String connectorName) {
+		this.mapType = mapType;
 		this.connectorName = connectorName;
 	}
 	
@@ -39,7 +43,7 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
 		
 		TiledObjectGroup poisonSwitchConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_SWITCH_CONNECTORS);
 		

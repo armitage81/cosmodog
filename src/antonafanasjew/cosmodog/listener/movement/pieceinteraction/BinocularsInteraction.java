@@ -19,7 +19,7 @@ public class BinocularsInteraction extends ToolInteraction {
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 		Cam cam = cosmodogGame.getCam();
-		cam.focusOnPiece(0, 0, player);
+		cam.focusOnPiece(cosmodogGame,0, 0, player);
 		cam.zoomOut();
 	}
 

@@ -134,7 +134,7 @@ public class MoveableGroup implements Serializable {
 			Position playerStartingPosition = moveableGroupAroundPlayer.getPlayerStartingPosition();
 			player.setPosition(playerStartingPosition);
 			player.endTeleportation();
-			cam.focusOnPiece(0, 0, player);
+			cam.focusOnPiece(game,0, 0, player);
 		}
 	}
 

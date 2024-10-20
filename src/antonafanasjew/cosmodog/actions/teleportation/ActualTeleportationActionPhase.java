@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.actions.teleportation;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -70,8 +71,9 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 	@Override
 	public void onEnd() {
 
-		MapType mapType = ApplicationContextUtils.getCosmodogGame().mapTypeOfPlayerLocation();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		MapType mapType = cosmodogGame.mapTypeOfPlayerLocation();
+		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		
 		Point endPoint = teleportConnection.getPoints().get(1);
 		
@@ -83,7 +85,7 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 		
 		player.setPosition(Position.fromCoordinates(targetPosX, targetPosY));
 
-		cam.focusOnPiece(0, 0, player);
+		cam.focusOnPiece(cosmodogGame, 0, 0, player);
 	}
 
 }

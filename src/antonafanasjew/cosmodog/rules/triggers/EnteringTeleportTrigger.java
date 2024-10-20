@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rules.triggers;
 import java.util.List;
 import java.util.Map;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -25,13 +26,16 @@ import antonafanasjew.cosmodog.util.RegionUtils;
 public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 
 	private static final long serialVersionUID = 9096030493555091756L;
+
+	private MapType mapType;
 	private String teleportName;
 
 	/**
 	 * Initialized with the teleport name.
 	 * @param teleportName The name of the teleport connection as defined on the teleport connection group in the tiled map.
 	 */
-	public EnteringTeleportTrigger(String teleportName) {
+	public EnteringTeleportTrigger(MapType mapType, String teleportName) {
+		this.mapType = mapType;
 		this.teleportName = teleportName;
 	}
 	
@@ -43,7 +47,7 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
 		
 		TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 		

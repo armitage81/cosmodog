@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.HashSet;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -372,15 +373,21 @@ public class InGameInputHandler extends AbstractInputHandler {
 			if (input.isKeyPressed(Input.KEY_Z)) {
 				if (cam.getZoomFactor() != Cam.ZOOM_FACTOR_FAR) {
 					cam.zoomOut();
-					cam.focusOnPiece(0, 0, player);
+					cam.focusOnPiece(cosmodogGame, 0, 0, player);
 				} else {
 					cam.zoomIn();
-					cam.focusOnPiece(0, 0, player);
+					cam.focusOnPiece(cosmodogGame, 0, 0, player);
 				}
 			}
 			
 		}
-		
+
+		//TODO: This is a test for plane change. Remove it later.
+		if (input.isKeyPressed(Input.KEY_P)) {
+			MapType currentMapType = player.getPosition().getMapType();
+			player.setPosition(Position.fromCoordinates(player.getPosition().getX(), player.getPosition().getY(), currentMapType == MapType.MAIN ? MapType.ALTERNATIVE : MapType.MAIN));
+		}
+
 		//Handle debugging
 		DebuggerInventoryItem debugger = (DebuggerInventoryItem)player.getInventory().get(InventoryItemType.DEBUGGER);
 		
@@ -389,7 +396,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 			if (input.isKeyPressed(Input.KEY_1)) {
 				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextPosition();
 				player.setPosition(player.getPosition());
-				cam.focusOnPiece(0, 0, player);
+				cam.focusOnPiece(cosmodogGame,0, 0, player);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_2)) {

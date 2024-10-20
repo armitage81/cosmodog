@@ -4,6 +4,8 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.actions.generic.FadingAction;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -35,6 +37,8 @@ public class RespawnAction extends PhaseBasedAction {
     @Override
     public void onTrigger() {
 
+        CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+
         Player player = ApplicationContextUtils.getPlayer();
 
         FadingAction fadingOutAction = new FadingAction(FADING_OUT_DURATION, false);
@@ -51,7 +55,7 @@ public class RespawnAction extends PhaseBasedAction {
                 Player player = ApplicationContextUtils.getPlayer();
                 player.setPosition(respawnPosition);
                 player.endRespawn();
-                ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(0, 0, player);
+                ApplicationContextUtils.getCosmodogGame().getCam().focusOnPiece(cosmodogGame, 0, 0, player);
             }
         };
 

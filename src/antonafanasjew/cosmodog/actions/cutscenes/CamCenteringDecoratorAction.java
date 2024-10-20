@@ -151,8 +151,9 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 	@Override
 	public void onEnd() {
 		Player player = cosmodogGame.getPlayer();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		MapType mapType = player.getPosition().getMapType();
-		cosmodogGame.getCam().focusOnPiece(0, 0, player);
+		cosmodogGame.getCam().focusOnPiece(cosmodogGame, 0, 0, player);
 	}
 
 	/**
