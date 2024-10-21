@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 /**
  * This trigger applies when a game event of typed "changed position" was thrown and the player
@@ -38,10 +39,11 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 	
 	@Override
 	public boolean accept(GameEvent event) {
-		if (event instanceof GameEventChangedPosition == false) {
+
+		if (!(event instanceof GameEventChangedPosition)) {
 			return false;
 		}
-		
+
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
 		
@@ -54,11 +56,11 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 		
 		List<Point> connectionPoints = poisonSwitchConnectionObject.getPoints();
 		
-		Point startPoint = connectionPoints.get(0);
+		Point startPoint = connectionPoints.getFirst();
 		
-		Position switchPosition = Position.fromCoordinates(startPoint.x, startPoint.y);
+		Position switchPosition = Position.fromCoordinates(startPoint.x, startPoint.y, MapType.MAIN);
 		
-		return RegionUtils.playerOnPosition(player, switchPosition, map.getTileWidth(), map.getTileHeight());
+		return RegionUtils.playerOnPosition(player, switchPosition);
 		
 	}
 

@@ -69,8 +69,8 @@ public class MapRenderer implements Renderer {
 		
 		//Render players position in the selected chart piece.
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		int mapWidth = map.getWidth();
-		int mapHeight = map.getHeight();
+		int mapWidth = map.getMapType().getWidth();
+		int mapHeight = map.getMapType().getHeight();
 		int posX = (int)player.getPosition().getX();
 		int posY = (int)player.getPosition().getY();
 		int chartPieceWidth = mapWidth / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;

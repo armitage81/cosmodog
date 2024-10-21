@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.states;
 
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.rendering.renderer.*;
+import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -28,10 +29,6 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.GameEventUtils;
-import antonafanasjew.cosmodog.util.InitializationUtils;
-import antonafanasjew.cosmodog.util.MusicUtils;
 
 import java.util.Map;
 
@@ -86,11 +83,13 @@ public class GameState extends CosmodogAbstractState {
 			CosmodogGame cosmodogGame;
 
 			try {
+				int tileLength = TileUtils.tileLengthSupplier.get();
+
 				cosmodogGame = InitializationUtils.initializeCosmodogGame(game, customTiledMaps, "Armitage");
 				applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 				cosmodogGame.setGameName(cosmodog.getGameLifeCycle().getGameName());
 				CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
-				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
+				Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
 
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 

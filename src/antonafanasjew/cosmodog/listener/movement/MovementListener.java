@@ -25,6 +25,9 @@ public interface MovementListener extends Serializable {
 
 	void beforeRespawn(Actor actor, ApplicationContext applicationContext);
 	void afterRespawn(Actor actor, ApplicationContext applicationContext);
+
+	void beforeSwitchingPlane(Actor actor, ApplicationContext applicationContext);
+	void afterSwitchingPlane(Actor actor, ApplicationContext applicationContext);
 	
 	
 }

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -26,6 +27,8 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		//The whole screen
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
@@ -60,26 +63,21 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			
 			Cam cam = cosmodogGame.getCam();
 			
-			//Tile size in pixels, probably 16 for both width and height.
-			int tileWidth = map.getTileWidth();
-			int tileHeight = map.getTileHeight();
-	
 			//Tile size in pixels considering zooming.
-			int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-			int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
-	
+			int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
+
 			//Camera position in pixel.
 			int camX = (int) cam.viewCopy().x();
 			int camY = (int) cam.viewCopy().y();
 	
 			//Camera offset which is 0 if the camera location matches tile sizes.
 			//If the tile width is 16 and camera starts horizontally at 35, then the offset is -3.
-			int x = -(int) ((camX % scaledTileWidth));
-			int y = -(int) ((camY % scaledTileHeight));
+			int x = -(int) ((camX % scaledTileLength));
+			int y = -(int) ((camY % scaledTileLength));
 	
 			//Camera position in tiles.
-			int tileNoX = camX / scaledTileWidth;
-			int tileNoY = camY / scaledTileHeight;
+			int tileNoX = camX / scaledTileLength;
+			int tileNoY = camY / scaledTileLength;
 	
 			//Actors move smoothly between tiles. This offset represents this.
 			float movementOffsetX = 0;
@@ -89,8 +87,8 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			ActorTransition actorTransition = cosmodogGame.getActorTransitionRegistry().get(actor);
 			
 			if (actorTransition != null) {
-				movementOffsetX = tileWidth * actorTransition.getTransitionalOffsetX();
-				movementOffsetY = tileHeight * actorTransition.getTransitionalOffsetY();
+				movementOffsetX = tileLength * actorTransition.getTransitionalOffsetX();
+				movementOffsetY = tileLength * actorTransition.getTransitionalOffsetY();
 			}
 			
 			//Going to the beginning of the tile where camera top left corner is located.
@@ -101,7 +99,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			int actorTileNoXOnVisibleMap = (int)(actor.getPosition().getX() - tileNoX);
 			
 			//Actor's X position in pixels corresponding to the tile position calculated above.
-			int actorPosXOnVisibleMap = actorTileNoXOnVisibleMap * tileWidth;
+			int actorPosXOnVisibleMap = actorTileNoXOnVisibleMap * tileLength;
 			
 			//X Position in pixels considering the movement of the actor.
 			float actorPosXOnVisibleMapInclMovement = actorPosXOnVisibleMap + movementOffsetX;
@@ -111,14 +109,14 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			
 			//The same for Y position.
 			int actorTileNoYOnVisibleMap = (int)(actor.getPosition().getY() - tileNoY);
-			int actorPosYOnVisibleMap = actorTileNoYOnVisibleMap * tileHeight;
+			int actorPosYOnVisibleMap = actorTileNoYOnVisibleMap * tileLength;
 			float actorPosYOnVisibleMapInclMovement = actorPosYOnVisibleMap + movementOffsetY;
 			float actorPosYOnVisibleMapInclMovementInclScale = actorPosYOnVisibleMapInclMovement * cam.getZoomFactor();
 			
 			float textWidth = 500;
 			
 			//If the scaled tile is 32 pixels wide and the text line is 50 pixels wide, then the x offset is (32 - 50) / 2 = -9
-			float textOffsetX = (scaledTileWidth - textWidth) / 2;
+			float textOffsetX = (scaledTileLength - textWidth) / 2;
 			
 			//Actor's movement offset is added to keep the text centered over their head.
 			float textPosX = actorPosXOnVisibleMapInclMovementInclScale + textOffsetX;

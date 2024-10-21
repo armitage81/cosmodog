@@ -108,4 +108,17 @@ public class ComposedMovementListener implements MovementListener {
         }
 	}
 
+	@Override
+	public void beforeSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
+		for (MovementListener l : underlyingMovementListeners) {
+			l.beforeSwitchingPlane(actor, applicationContext);
+		}
+	}
+
+	@Override
+	public void afterSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
+		for (MovementListener l : underlyingMovementListeners) {
+			l.afterSwitchingPlane(actor, applicationContext);
+		}
+	}
 }

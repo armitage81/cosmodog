@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -22,6 +23,8 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
@@ -48,25 +51,21 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
 
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
 
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		applicationContext.getAnimations().get("wormAttackSnowSpark").draw((player.getPosition().getX() - tileNoX) * tileWidth - 1f * tileWidth, (player.getPosition().getY() - tileNoY) * tileHeight);
+		applicationContext.getAnimations().get("wormAttackSnowSpark").draw((player.getPosition().getX() - tileNoX) * tileLength - 1f * tileLength, (player.getPosition().getY() - tileNoY) * tileLength);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		

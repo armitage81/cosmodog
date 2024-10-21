@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -101,7 +102,7 @@ public class SwitchingIndicatorAction extends FixedLengthAsyncAction {
 		Collection<DynamicPiece> binaryIndicators = map.getDynamicPieces().get(BinaryIndicator.class);
         for (DynamicPiece indicator : binaryIndicators) {
             BinaryIndicator binaryIndicator = (BinaryIndicator) indicator;
-            if (RegionUtils.pieceInRegion(binaryIndicator, region, map.getTileWidth(), map.getTileHeight())) {
+            if (RegionUtils.pieceInRegion(binaryIndicator, map.getMapType(), region)) {
                 indicatorsInRegion.add(binaryIndicator);
             }
         }

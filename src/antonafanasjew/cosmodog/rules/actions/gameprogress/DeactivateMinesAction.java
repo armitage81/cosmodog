@@ -72,10 +72,8 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 
 		if (!initialized) {
 
-			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(MapType.MAIN);
-
-			int mapWidht = map.getWidth();
-			int mapHeight = map.getHeight();
+			int mapWidht = MapType.MAIN.getWidth();
+			int mapHeight = MapType.MAIN.getHeight();
 
 			minX = 0;
 			minY = 0;

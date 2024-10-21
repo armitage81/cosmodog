@@ -11,6 +11,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -34,10 +35,6 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.PiecesUtils;
-import antonafanasjew.cosmodog.util.RegionUtils;
 
 /**
  * This class holds values that need to be calculated only once per player movement.
@@ -117,6 +114,11 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 
 	@Override
 	public void afterRespawn(Actor actor, ApplicationContext applicationContext) {
+		afterMovement(actor, actor.getPosition(), actor.getPosition(), applicationContext);
+	}
+
+	@Override
+	public void afterSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
 		afterMovement(actor, actor.getPosition(), actor.getPosition(), applicationContext);
 	}
 
@@ -447,7 +449,7 @@ public class PlayerMovementCache extends MovementListenerAdapter {
 		MoveableGroup moveableGroupAroundPlayer = null;
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
 		for (MoveableGroup moveableGroup : moveableGroups) {
-			if (RegionUtils.pieceInRegion(player, moveableGroup.getRegion(), map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), moveableGroup.getRegion())) {
 				moveableGroupAroundPlayer = moveableGroup;
 				break;
 			}

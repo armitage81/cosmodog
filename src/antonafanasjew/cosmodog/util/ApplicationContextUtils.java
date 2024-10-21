@@ -13,27 +13,27 @@ import java.util.Map;
 
 public class ApplicationContextUtils {
 
-	public static final Player getPlayer() {
+	public static Player getPlayer() {
 		return ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer();
 	}
 
-	public static final CosmodogMap mapOfPlayerLocation() {
+	public static CosmodogMap mapOfPlayerLocation() {
 		return ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation();
 	}
 	
-	public static final Map<MapType, CustomTiledMap> getCustomTiledMaps() {
+	public static Map<MapType, CustomTiledMap> getCustomTiledMaps() {
 		return ApplicationContext.instance().getCustomTiledMaps();
 	}
 	
-	public static final CosmodogGame getCosmodogGame() {
+	public static CosmodogGame getCosmodogGame() {
 		return ApplicationContext.instance().getCosmodog().getCosmodogGame();
 	}
 	
-	public static final Cosmodog getCosmodog() {
+	public static Cosmodog getCosmodog() {
 		return ApplicationContext.instance().getCosmodog();
 	}
 	
-	public static final GameProgress getGameProgress() {
+	public static GameProgress getGameProgress() {
 		return ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer().getGameProgress();
 	}
 	

@@ -31,6 +31,8 @@ public class SightRadiusRenderer extends AbstractRenderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
@@ -46,23 +48,19 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
 		
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
 
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
+		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
 		 
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
@@ -134,7 +132,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 						continue;
 					}
 
-					if (i < 0 || i >= map.getWidth() || j < 0 || j >= map.getHeight()) {
+					if (i < 0 || i >= map.getMapType().getWidth() || j < 0 || j >= map.getMapType().getHeight()) {
 						continue;
 					}
 
@@ -158,7 +156,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			
-			sightRadiusMarkerAnimation.draw((alertMarker.getX() - tileNoX) * tileWidth, (alertMarker.getY() - tileNoY) * tileHeight);
+			sightRadiusMarkerAnimation.draw((alertMarker.getX() - tileNoX) * tileLength, (alertMarker.getY() - tileNoY) * tileLength);
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-x, -y);
@@ -170,7 +168,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			
-			sightRadiusMarkerAnimation.draw((sightMarker.getX() - tileNoX) * tileWidth, (sightMarker.getY() - tileNoY) * tileHeight);
+			sightRadiusMarkerAnimation.draw((sightMarker.getX() - tileNoX) * tileLength, (sightMarker.getY() - tileNoY) * tileLength);
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-x, -y);

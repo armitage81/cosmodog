@@ -186,7 +186,7 @@ public class InitializationUtils {
 		player.getLifeListeners().clear();
 		player.getLifeListeners().add(playerLifeListener);
 		
-		cosmodogGame.getTimer().setReferenceTimeSupplier(() -> System.currentTimeMillis());
+		cosmodogGame.getTimer().setReferenceTimeSupplier(System::currentTimeMillis);
 		cosmodogGame.getTimer().initLastUpdateTime();
 
 	}
@@ -213,6 +213,7 @@ public class InitializationUtils {
 			CustomTiledMap customTiledMap = customTiledMaps.get(mapType);
 			CosmodogMap map = new CosmodogMap(customTiledMap);
 
+			map.setMapType(mapType);
 			initializeEffects(customTiledMap, map);
 			initializeTiledMapObjects(customTiledMap, map);
 			initializeEnemies(customTiledMap, map);
@@ -230,6 +231,7 @@ public class InitializationUtils {
 	}
 
 	private static void initializeMoveableGroups(CustomTiledMap customTiledMap, CosmodogMap map) {
+
 		TiledObjectGroup moveableGroupObjectGroup = customTiledMap.getObjectGroups().get("MoveableGroups");
 		Map<String, TiledObject> moveableGroupRegions = moveableGroupObjectGroup.getObjects();
 		Set<String> moveableGroupRegionNames = moveableGroupRegions.keySet();
@@ -242,7 +244,7 @@ public class InitializationUtils {
 					.values()
 					.stream()
 					.filter(e -> (e instanceof MoveableDynamicPiece))
-					.filter(e -> RegionUtils.pieceInRegion(e, moveableGroupRegion, map.getTileWidth(), map.getTileHeight()))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
 					.map(e -> (MoveableDynamicPiece)e)
 					.toList();
 
@@ -258,8 +260,8 @@ public class InitializationUtils {
 			String sokobanGoalsY = moveableGroupRegion.getProperties().get("sokobanGoalsY");
 			
 			if (sokobanGoalsX != null && sokobanGoalsY != null) {
-				List<Integer> positionsX = Arrays.asList(sokobanGoalsX.split(",")).stream().map(e -> Integer.valueOf(e)).collect(Collectors.toList());
-				List<Integer> positionsY = Arrays.asList(sokobanGoalsY.split(",")).stream().map(e -> Integer.valueOf(e)).collect(Collectors.toList());
+				List<Integer> positionsX = Arrays.stream(sokobanGoalsX.split(",")).map(Integer::valueOf).toList();
+				List<Integer> positionsY = Arrays.stream(sokobanGoalsY.split(",")).map(Integer::valueOf).toList();
 				for (int i = 0; i < positionsX.size(); i++) {
 					int posX = positionsX.get(i);
 					int posY = positionsY.get(i);
@@ -273,13 +275,13 @@ public class InitializationUtils {
 					.values()
 					.stream()
 					.filter(e -> (e instanceof SecretDoor))
-					.filter(e -> RegionUtils.pieceInRegion(e, moveableGroupRegion, map.getTileWidth(), map.getTileHeight()))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
 					.map(e -> (SecretDoor)e)
-					.collect(Collectors.toList());
+					.toList();
 
 			
-			int x = Integer.valueOf(moveableGroupRegion.getProperties().get("playerStartPosX"));
-			int y = Integer.valueOf(moveableGroupRegion.getProperties().get("playerStartPosY"));
+			int x = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosX"));
+			int y = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosY"));
 			Position playerStartPosition = Position.fromCoordinates(x, y);
 
 			String resetableValue = (String)moveableGroupRegion.getProperties().get("resetable");
@@ -301,8 +303,8 @@ public class InitializationUtils {
 	private static void initializeCollectibles(CustomTiledMap customTiledMap, CosmodogMap map) {
 
 		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
-		int mapWidth = map.getWidth();
-		int mapHeight = map.getHeight();
+		int mapWidth = map.getMapType().getWidth();
+		int mapHeight = map.getMapType().getHeight();
 
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
@@ -337,8 +339,8 @@ public class InitializationUtils {
 	}
 
 	private static void initializeEffects(CustomTiledMap customTiledMap, CosmodogMap map) {
-		int mapWidth = map.getWidth();
-		int mapHeight = map.getHeight();
+		int mapWidth = map.getMapType().getWidth();
+		int mapHeight = map.getMapType().getHeight();
 
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {

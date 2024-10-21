@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.rendering.renderer.pieces.*;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -125,7 +126,9 @@ public class PiecesRenderer extends AbstractRenderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
-		
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
@@ -139,23 +142,19 @@ public class PiecesRenderer extends AbstractRenderer {
 		Cam cam = cosmodogGame.getCam();
 		Player player = cosmodogGame.getPlayer();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
 		
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
 		
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
+		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
 		
 		
 		graphics.translate(x, y);
@@ -218,7 +217,7 @@ public class PiecesRenderer extends AbstractRenderer {
 					if (!piece.interactive(piece, applicationContext, cosmodogGame, player)) {
 
 					}
-					pieceRenderer.renderPiece(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, element);
+					pieceRenderer.renderPiece(applicationContext, tileLength, tileLength, tileNoX, tileNoY, element);
 				}
 			}
 			

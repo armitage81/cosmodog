@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.generic.FadingAction;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
+import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -33,10 +34,6 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.Mappings;
-import antonafanasjew.cosmodog.util.RenderingUtils;
-import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
@@ -50,6 +47,8 @@ public class PlayerRenderer extends AbstractRenderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
@@ -97,20 +96,16 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
 
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
 
 		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
 		
@@ -222,8 +217,8 @@ public class PlayerRenderer extends AbstractRenderer {
 
 		
 		if (playerIsMoving) {
-			pieceOffsetX = tileWidth * playerTransition.getTransitionalOffsetX();
-			pieceOffsetY = tileHeight * playerTransition.getTransitionalOffsetY();
+			pieceOffsetX = tileLength * playerTransition.getTransitionalOffsetX();
+			pieceOffsetY = tileLength * playerTransition.getTransitionalOffsetY();
 		}
 		
 		if (playerIsFighting) {
@@ -236,7 +231,7 @@ public class PlayerRenderer extends AbstractRenderer {
 				completion = 1.0f - completion;
 			}
 			
-			fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+			fightOffset = (tileLength * cam.getZoomFactor()) / 10.0f * completion;
 			
 			if (player.getDirection() == DirectionType.DOWN) {
 				pieceOffsetY = fightOffset;
@@ -267,7 +262,7 @@ public class PlayerRenderer extends AbstractRenderer {
 				completion = 1.0f - completion;
 			}
 				
-			movementAttemptOffset = (tileWidth * cam.getZoomFactor()) / 16.0f * completion;
+			movementAttemptOffset = (tileLength * cam.getZoomFactor()) / 16.0f * completion;
 				
 			
 			if (player.getDirection() == DirectionType.DOWN) {
@@ -289,9 +284,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileHeight + pieceOffsetY);
+		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileLength + pieceOffsetY);
 		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileHeight + pieceOffsetY);
+			playerWeaponAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileLength + pieceOffsetY);
 		}
 		
 		if (playerIsHoldingUpItem) {
@@ -300,7 +295,7 @@ public class PlayerRenderer extends AbstractRenderer {
 				String animationId = Mappings.collectibleToolToAnimationId(tool);
 				Animation foundToolAnimation = ApplicationContext.instance().getAnimations().get(animationId);
 				if (foundToolAnimation != null) {
-					foundToolAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY - 1) * tileHeight + pieceOffsetY);
+					foundToolAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY - 1) * tileLength + pieceOffsetY);
 				}
 			}
 		}

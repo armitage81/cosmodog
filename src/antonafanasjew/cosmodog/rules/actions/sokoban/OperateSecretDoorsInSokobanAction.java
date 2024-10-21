@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.rules.events.GameEvent;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 public class OperateSecretDoorsInSokobanAction extends AbstractRuleAction {
 
@@ -24,7 +25,9 @@ public class OperateSecretDoorsInSokobanAction extends AbstractRuleAction {
 
 	@Override
 	public void execute(GameEvent event) {
-		
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
 		Player player = applicationContext.getCosmodog().getCosmodogGame().getPlayer();
@@ -32,7 +35,7 @@ public class OperateSecretDoorsInSokobanAction extends AbstractRuleAction {
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
 		MoveableGroup groupAroundPlayer = null;
 		for (MoveableGroup group : moveableGroups) {
-			if (RegionUtils.pieceInRegion(player, group.getRegion(), map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), group.getRegion())) {
 				groupAroundPlayer = group;
 				break;
 			}

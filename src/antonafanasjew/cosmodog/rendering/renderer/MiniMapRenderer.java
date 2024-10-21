@@ -74,8 +74,8 @@ public class MiniMapRenderer implements Renderer {
 
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 
-		int mapWidthInTiles = map.getWidth();
-		int mapHeightInTiles = map.getHeight();
+		int mapWidthInTiles = map.getMapType().getWidth();
+		int mapHeightInTiles = map.getMapType().getHeight();
 
 		//The map is 400 tiles long and 400 tiles wide. The minimap is 8x8 pieces of the chart.
 		//This means that each piece of the chart is 50x50 tiles.
@@ -108,7 +108,7 @@ public class MiniMapRenderer implements Renderer {
 
 					//Ignore tiles that are outside the visible excerpt.
 					//This happens when the visible excerpt is at the edge of the map.
-					if (tx >= 0 && ty >= 0 && tx < map.getWidth() && ty < map.getHeight()) {
+					if (tx >= 0 && ty >= 0 && tx < map.getMapType().getWidth() && ty < map.getMapType().getHeight()) {
 
 						//On the map, all roofs that are over the player should not be rendered.
 						if (topLayer && roofRemovalBlockersOverPlayer.isEmpty()) {

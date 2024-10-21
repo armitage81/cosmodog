@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer.pieces;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -40,7 +41,9 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
-		
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
@@ -48,11 +51,9 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
 
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
+		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
@@ -92,8 +93,8 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 
 			
 			if (playerIsMoving) {
-				pieceOffsetX = tileWidth * playerTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileHeight * playerTransition.getTransitionalOffsetY();
+				pieceOffsetX = tileLength * playerTransition.getTransitionalOffsetX();
+				pieceOffsetY = tileLength * playerTransition.getTransitionalOffsetY();
 			}
 			
 			if (playerIsFighting) {
@@ -106,7 +107,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 					completion = 1.0f - completion;
 				}
 				
-				fightOffset = (tileWidth * cam.getZoomFactor()) / 10.0f * completion;
+				fightOffset = (tileLength * cam.getZoomFactor()) / 10.0f * completion;
 					
 				
 				if (player.getDirection() == DirectionType.DOWN) {
@@ -138,7 +139,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 					completion = 1.0f - completion;
 				}
 					
-				movementAttemptOffset = (tileWidth * cam.getZoomFactor()) / 16.0f * completion;
+				movementAttemptOffset = (tileLength * cam.getZoomFactor()) / 16.0f * completion;
 					
 				
 				if (player.getDirection() == DirectionType.DOWN) {
@@ -161,7 +162,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-			platformAnimation.draw((player.getPosition().getX() - tileNoX - 3) * tileWidth + pieceOffsetX, (player.getPosition().getY() - tileNoY - 3) * tileHeight + pieceOffsetY);
+			platformAnimation.draw((player.getPosition().getX() - tileNoX - 3) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY - 3) * tileLength + pieceOffsetY);
 
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-x, -y);

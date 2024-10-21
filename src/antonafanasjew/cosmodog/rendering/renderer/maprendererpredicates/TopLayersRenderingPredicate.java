@@ -15,6 +15,7 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CollisionUtils;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import com.google.common.collect.Lists;
 
 public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
@@ -59,11 +60,11 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 	}
 	
 	private boolean tileCoversPlayer(Set<TiledObject> regionsOverPlayer, CosmodogMap map, Position position, int layerIndex) {
-		
-		int x = (int)(position.getX() * map.getTileWidth());
-		int y = (int)(position.getY() * map.getTileHeight());
-		int w = map.getTileWidth();
-		int h = map.getTileHeight();
+		int tileLength = TileUtils.tileLengthSupplier.get();
+		int x = (int)(position.getX() * tileLength);
+		int y = (int)(position.getY() * tileLength);
+		int w = tileLength;
+		int h = tileLength;
 		
 		TiledMapLayer layer = map.getMapLayers().get(layerIndex);
 		String layerName = layer.getName();

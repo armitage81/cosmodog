@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
 import antonafanasjew.cosmodog.actions.loweringgate.LowerGateAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -19,6 +20,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 
@@ -26,7 +28,9 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 
 	@Override
 	public void execute(GameEvent event) {
-		
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		String value = gameProgress.getProgressProperties().get(GameProgress.GAME_PROGRESS_ALIEN_BASE_GATE_SEQUENCE);
 		int currentSequenceNumber = value == null ? -1 : Integer.valueOf(value);
@@ -37,7 +41,7 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 		
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(MapType.MAIN);
 		Player player = ApplicationContextUtils.getPlayer();
 		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		
@@ -47,11 +51,11 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 		TiledObject region4 = regionsObjectGroup.getObjects().get("AlienBaseGateSwitch4");
 		TiledObject region5 = regionsObjectGroup.getObjects().get("AlienBaseGateSwitch5");
 		
-		boolean inRegion1 = RegionUtils.pieceInRegion(player, region1, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion2 = RegionUtils.pieceInRegion(player, region2, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion3 = RegionUtils.pieceInRegion(player, region3, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion4 = RegionUtils.pieceInRegion(player, region4, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion5 = RegionUtils.pieceInRegion(player, region5, map.getTileWidth(), map.getTileHeight());
+		boolean inRegion1 = RegionUtils.pieceInRegion(player, MapType.MAIN, region1);
+		boolean inRegion2 = RegionUtils.pieceInRegion(player, MapType.MAIN, region2);
+		boolean inRegion3 = RegionUtils.pieceInRegion(player, MapType.MAIN, region3);
+		boolean inRegion4 = RegionUtils.pieceInRegion(player, MapType.MAIN, region4);
+		boolean inRegion5 = RegionUtils.pieceInRegion(player, MapType.MAIN, region5);
 		
 		int nextSequenceNumber = -2;
 		

@@ -38,10 +38,7 @@ import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.PiecesUtils;
-import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.*;
 import antonafanasjew.cosmodog.waterplaces.WaterValidator;
 
 /**
@@ -198,6 +195,16 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
+	}
+
+	@Override
+	public void afterSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
+		collectCollectibles(applicationContext);
+		refillWater(applicationContext);
+		refillFuel(applicationContext);
+		detectMines(applicationContext);
+		updateSnowfall();
+		changeLettersOnLetterPlates(applicationContext);
 	}
 
 	private void collectCollectibles(ApplicationContext applicationContext) {
@@ -525,11 +532,13 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 	private void updateWormAlert(Player player, ApplicationContext applicationContext) {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		TiledObjectGroup wormsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
 		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
-		boolean inWormRegion = RegionUtils.pieceInRegion(player, wormsSouthEastObject, map.getTileWidth(), map.getTileHeight());
+		boolean inWormRegion = RegionUtils.pieceInRegion(player, map.getMapType(), wormsSouthEastObject);
 		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player);
 		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPosition());
 		boolean inPlatform = player.getInventory().hasPlatform();
@@ -633,14 +642,17 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	}
 
 	private void updateSnowfall() {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		TiledObjectGroup weatherObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_WEATHER);
 		TiledObject snowfallRegion = weatherObjectGroup.getObjects().get("Snowfall");
 		TiledObject snowfallBorderRegion = weatherObjectGroup.getObjects().get("Snowfall_border");
-		boolean inSnowfall = RegionUtils.tileInRegion(player.getPosition(), snowfallRegion, map.getTileWidth(), map.getTileHeight());
-		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPosition(), snowfallBorderRegion, map.getTileWidth(), map.getTileHeight());
+		boolean inSnowfall = RegionUtils.tileInRegion(player.getPosition(), map.getMapType(), snowfallRegion);
+		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPosition(), map.getMapType(), snowfallBorderRegion);
 		boolean underRoof = !RegionUtils.roofsOverPiece(player, map).isEmpty() && RegionUtils.roofRemovalBlockersOverPiece(player, map).isEmpty();
 		SnowfallChangeAction snowfallChangeAction =  (SnowfallChangeAction) game.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
 

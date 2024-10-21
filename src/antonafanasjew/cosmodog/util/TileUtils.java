@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.util;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.structures.TileCoordinates;
@@ -8,6 +9,10 @@ import antonafanasjew.cosmodog.structures.TileCoordinates;
 import com.google.common.collect.Sets;
 
 public class TileUtils {
+
+	public static Supplier<Integer> tileLengthSupplier = () -> {
+		return 16;
+	};
 
 	public static Set<TileCoordinates> getConnectedElements(int x, int y, int layerIndex, CosmodogMap map, com.google.common.base.Predicate<TileCoordinates> predicate) {
 		Set<TileCoordinates> markedElements = Sets.newHashSet();
@@ -31,7 +36,7 @@ public class TileUtils {
 				processElementAndNeighboursRecursively(e.westNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
-			if (x < map.getWidth() - 1 && !checkedElements.contains(e.eastNeighbour())) {
+			if (x < map.getMapType().getWidth() - 1 && !checkedElements.contains(e.eastNeighbour())) {
 				processElementAndNeighboursRecursively(e.eastNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
@@ -39,7 +44,7 @@ public class TileUtils {
 				processElementAndNeighboursRecursively(e.northNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
-			if (y < map.getHeight() - 1 && !checkedElements.contains(e.southNeighbour())) {
+			if (y < map.getMapType().getHeight() - 1 && !checkedElements.contains(e.southNeighbour())) {
 				processElementAndNeighboursRecursively(e.southNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 		}

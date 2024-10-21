@@ -24,8 +24,8 @@ public class ChartInteraction extends AbstractPieceInteraction {
 		int playerPositionX = (int)player.getPosition().getX();
 		int playerPositionY = (int)player.getPosition().getY();
 		
-		int chartPieceWidth = cosmodogGame.mapOfPlayerLocation().getWidth() / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
-		int chartPieceHeight = cosmodogGame.mapOfPlayerLocation().getHeight() / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
+		int chartPieceWidth = cosmodogGame.mapOfPlayerLocation().getMapType().getWidth() / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
+		int chartPieceHeight = cosmodogGame.mapOfPlayerLocation().getMapType().getHeight() / ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
 		
 		int chartPiecePositionX = playerPositionX / chartPieceWidth;
 		int chartPiecePositionY = playerPositionY / chartPieceHeight;

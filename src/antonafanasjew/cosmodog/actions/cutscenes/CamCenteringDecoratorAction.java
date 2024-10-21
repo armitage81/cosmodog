@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 import java.io.Serial;
 
@@ -79,11 +80,10 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 
 		this.camMovementDuration = camMovementDuration;
 		CosmodogMap map = cosmodogGame.getMaps().get(position.getMapType());
-		float tileWidth = map.getTileWidth();
-		float tileHeight = map.getTileHeight();
+		float tileLength = TileUtils.tileLengthSupplier.get();
 		this.camCenteringPosition = Position.fromCoordinates(
-				position.getX() * tileWidth + tileWidth / 2,
-				position.getY() * tileHeight + tileHeight / 2,
+				position.getX() * tileLength + tileLength / 2,
+				position.getY() * tileLength + tileLength / 2,
 				position.getMapType()
 		);
 		this.underlyingAsyncAction = underlyingAsyncAction;

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.collision.validators.npc;
 
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
@@ -25,6 +26,8 @@ public class HomeRegionCollisionValidatorForNpc extends AbstractCollisionValidat
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		CollisionStatus passable = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 		CollisionStatus notPassable = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.OUT_OF_HOME_REGION);
 		
@@ -42,12 +45,10 @@ public class HomeRegionCollisionValidatorForNpc extends AbstractCollisionValidat
 			return passable;
 		}
 		
-		int x = (int)(position.getX() * map.getTileWidth());
-		int y = (int)(position.getY() * map.getTileHeight());
-		int w = map.getTileWidth();
-		int h = map.getTileHeight();
-		
-		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h);
+		int x = (int)(position.getX() * tileLength);
+		int y = (int)(position.getY() * tileLength);
+
+		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength);
 		
 		boolean intersects = CollisionUtils.intersects(r, homeRegion);
 		

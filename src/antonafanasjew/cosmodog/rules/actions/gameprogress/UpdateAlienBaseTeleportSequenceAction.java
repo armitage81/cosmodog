@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.switchingindicator.SwitchingIndicatorAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -19,11 +20,13 @@ import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
+
+import java.io.Serial;
 
 public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 
 	private static final String CORRECT_SEQUENCE = "131322143";
-	//private static final String CORRECT_SEQUENCE = "1";
 	private static final int SEQUENCE_LENGTH = CORRECT_SEQUENCE.length();
 	
 	private static final String CONSOLE1_TEXT = "Gravity impulse";
@@ -31,6 +34,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 	private static final String CONSOLE3_TEXT = "Ignition";
 	private static final String CONSOLE4_TEXT = "Space warp";
 	
+	@Serial
 	private static final long serialVersionUID = 3007391459686874738L;
 
 	@Override
@@ -46,7 +50,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 		
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(MapType.MAIN);
 		Player player = ApplicationContextUtils.getPlayer();
 		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		
@@ -55,10 +59,10 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		TiledObject region3 = regionsObjectGroup.getObjects().get("TeleportConsole3");
 		TiledObject region4 = regionsObjectGroup.getObjects().get("TeleportConsole4");
 		
-		boolean inRegion1 = RegionUtils.pieceInRegion(player, region1, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion2 = RegionUtils.pieceInRegion(player, region2, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion3 = RegionUtils.pieceInRegion(player, region3, map.getTileWidth(), map.getTileHeight());
-		boolean inRegion4 = RegionUtils.pieceInRegion(player, region4, map.getTileWidth(), map.getTileHeight());
+		boolean inRegion1 = RegionUtils.pieceInRegion(player, MapType.MAIN, region1);
+		boolean inRegion2 = RegionUtils.pieceInRegion(player, MapType.MAIN, region2);
+		boolean inRegion3 = RegionUtils.pieceInRegion(player, MapType.MAIN, region3);
+		boolean inRegion4 = RegionUtils.pieceInRegion(player, MapType.MAIN, region4);
 		
 		String reactionText = "";
 		

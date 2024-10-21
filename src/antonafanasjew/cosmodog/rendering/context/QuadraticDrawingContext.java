@@ -7,7 +7,7 @@ public class QuadraticDrawingContext extends AbstractDrawingContext {
 
 	public QuadraticDrawingContext(DrawingContext parentDrawingContext) {
 		super(parentDrawingContext);
-		this.w = parentDrawingContext.w() < parentDrawingContext.h() ? parentDrawingContext.w() : parentDrawingContext.h();
+		this.w = Math.min(parentDrawingContext.w(), parentDrawingContext.h());
 		this.h = w;
 	}
 	

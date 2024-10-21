@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -29,6 +30,8 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 		
@@ -63,11 +66,8 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 			
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
+		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
@@ -92,7 +92,7 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileWidth, (player.getPosition().getY() - tileNoY) * tileHeight);
+		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength, (player.getPosition().getY() - tileNoY) * tileLength);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 		graphics.translate(-x, -y);
 		FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.LoadingOrGameOverOrTheEnd);

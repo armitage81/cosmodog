@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Sound;
@@ -43,7 +44,6 @@ public class EffectsRenderer extends AbstractRenderer {
 			return effectTypes;
 		}
 
-		
 	}
 	
 
@@ -52,6 +52,8 @@ public class EffectsRenderer extends AbstractRenderer {
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
@@ -66,23 +68,19 @@ public class EffectsRenderer extends AbstractRenderer {
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		Cam cam = cosmodogGame.getCam();
 		
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
 		
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
 		
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
+		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
 		
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
@@ -102,19 +100,19 @@ public class EffectsRenderer extends AbstractRenderer {
                 if (effectsToRender.contains(effect.getEffectType())) {
 					
 					if (effect.getEffectType().equals(Effect.EFFECT_TYPE_TELEPORT)) {
-    					applicationContext.getAnimations().get("teleportEffect").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
+    					applicationContext.getAnimations().get("teleportEffect").draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY) * tileLength);
     				}
 					
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_FIRE)) {
     					audibleFire = true;
-    					applicationContext.getAnimations().get("fire").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * (tileHeight - 1));
+    					applicationContext.getAnimations().get("fire").draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY) * (tileLength - 1));
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_SMOKE)) {
-    					applicationContext.getAnimations().get("smoke").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
+    					applicationContext.getAnimations().get("smoke").draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY) * tileLength);
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY)) {
     					audibleElectricity = true;
-    					applicationContext.getAnimations().get("electricity").draw((piece.getPosition().getX() - tileNoX - 2) * tileWidth, (piece.getPosition().getY() - tileNoY - 1) * tileHeight);
+    					applicationContext.getAnimations().get("electricity").draw((piece.getPosition().getX() - tileNoX - 2) * tileLength, (piece.getPosition().getY() - tileNoY - 1) * tileLength);
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ENERGYWALL)) {
     					//Only render, if the energy wall is not passable.
@@ -122,7 +120,7 @@ public class EffectsRenderer extends AbstractRenderer {
     					
     					if (!energyWallCollisionStatus.isPassable()) {
     						audibleEnergyWall = true;
-    						applicationContext.getAnimations().get("energywall").draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - 1) * (tileHeight));
+    						applicationContext.getAnimations().get("energywall").draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - 1) * (tileLength));
     					}
 
     					

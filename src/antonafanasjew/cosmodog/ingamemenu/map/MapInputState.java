@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.ingamemenu.map;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import com.google.common.collect.Maps;
 
 import antonafanasjew.cosmodog.CosmodogMapStatisticsProvider;
@@ -101,8 +102,8 @@ public class MapInputState implements InGameMenuInputState {
 	public void initializeState() {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
-		int mapWidth = map.getWidth();
-		int mapHeight = map.getHeight();
+		int mapWidth = map.getMapType().getWidth();
+		int mapHeight = map.getMapType().getHeight();
 		int posX = (int)player.getPosition().getX();
 		int posY = (int)player.getPosition().getY();
 		

@@ -72,4 +72,15 @@ public class MovementListenerAdapter implements MovementListener {
 	public void afterRespawn(Actor actor, ApplicationContext applicationContext) {
 
 	}
+
+	@Override
+	public void beforeSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
+
+	}
+
+	@Override
+	public void afterSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
+		
+	}
 }
+

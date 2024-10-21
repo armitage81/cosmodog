@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.topology;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
  */
 public class Position implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 703260030937304215L;
 
 	private float x;
@@ -96,7 +98,7 @@ public class Position implements Serializable {
 	}
 
 	public boolean inMapBounds(CosmodogMap map) {
-		return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
+		return x >= 0 && y >= 0 && x < map.getMapType().getWidth() && y < map.getMapType().getHeight();
 	}
 
 	@Override

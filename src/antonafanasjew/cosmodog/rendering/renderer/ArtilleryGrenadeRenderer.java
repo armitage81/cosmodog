@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.List;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -25,6 +26,8 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
@@ -35,11 +38,8 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
 		Cam cam = cosmodogGame.getCam();
 
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
+		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
@@ -81,9 +81,9 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float animationWidth = risingGrenade.getWidth();
 			float animationHeight = risingGrenade.getHeight();
 
-			float enemyX1 = (enemy.getPosition().getX() - tileNoX) * tileWidth;
-			float enemyX2 = enemyX1 + tileWidth;
-			float enemyY1 = (enemy.getPosition().getY() - tileNoY) * tileHeight;
+			float enemyX1 = (enemy.getPosition().getX() - tileNoX) * tileLength;
+			float enemyX2 = enemyX1 + tileLength;
+			float enemyY1 = (enemy.getPosition().getY() - tileNoY) * tileLength;
 
 			int leftRightOffset = 4;
 			
@@ -93,13 +93,13 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float risingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
 			float maxVerticalRisingGrenadeDistance = risingGrenadeY1Max - risingGrenadeY1Min;
 
-			float playerX1 = (player.getPosition().getX() - tileNoX) * tileWidth;
-			float playerX2 = playerX1 + tileWidth;
-			float playerY1 = (player.getPosition().getY() - tileNoY) * tileHeight;
+			float playerX1 = (player.getPosition().getX() - tileNoX) * tileLength;
+			float playerX2 = playerX1 + tileLength;
+			float playerY1 = (player.getPosition().getY() - tileNoY) * tileLength;
 
 			float fallingLeftGrenadeX1 = playerX1 - (leftRightOffset);
 			float fallingRightGrenadeX1 = playerX2 - animationWidth + (leftRightOffset);
-			float fallingGrenadeY1Max = playerY1 + tileHeight - animationHeight;
+			float fallingGrenadeY1Max = playerY1 + tileLength - animationHeight;
 			float fallingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
 			float maxVerticalfallingGrenadeDistance = fallingGrenadeY1Max - fallingGrenadeY1Min;
 

@@ -39,12 +39,12 @@ public class TileBasedMapAdapter implements TileBasedMap {
 
 	@Override
 	public int getHeightInTiles() {
-		return map.getHeight();
+		return map.getMapType().getHeight();
 	}
 
 	@Override
 	public int getWidthInTiles() {
-		return map.getWidth();
+		return map.getMapType().getWidth();
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.pathfinding.Path;
@@ -45,11 +46,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.pathfinding.PathFinder;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.util.EnemiesUtils;
-import antonafanasjew.cosmodog.util.FootstepUtils;
-import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 
@@ -456,7 +452,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		Cam cam = cosmodogGame.getCam();
 
-		int tileWidth = map.getTileWidth();
+		int tileLength = TileUtils.tileLengthSupplier.get();
 		
 		float movementOffsetX = 0;
 		float movementOffsetY = 0;
@@ -466,7 +462,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		//Take care: This works only because the tiles are square.
 		float ratio = (float)timePassed / getDuration();
 		ratio = Math.min(ratio, 1.0f);
-		float offset = tileWidth * ratio;
+		float offset = tileLength * ratio;
 		boolean verticalNotHorizontal = true;
 		boolean positiveNotNegative = true;
 		

@@ -41,6 +41,7 @@ public class CosmodogMap extends CosmodogModel {
 
 	private transient CustomTiledMap customTiledMap;
 
+	private MapType mapType;
 	private Set<Enemy> enemies = Sets.newHashSet();
 	private Map<Position, Piece> mapPieces = Maps.newHashMap();
 	private Set<Piece> effectPieces = Sets.newHashSet();
@@ -176,6 +177,14 @@ public class CosmodogMap extends CosmodogModel {
 		return PlayerMovementCache.getInstance().getVisibleDynamicPieces();
 	}
 
+	public MapType getMapType() {
+		return mapType;
+	}
+
+	public void setMapType(MapType mapType) {
+		this.mapType = mapType;
+	}
+
 	public Set<Enemy> getEnemies() {
 		return enemies;
 	}
@@ -230,22 +239,6 @@ public class CosmodogMap extends CosmodogModel {
 	public void clearPlatformCache() {
 		this.platformCacheInitialized = false;
 		this.cachedPlatform = null;
-	}
-
-	public int getWidth() {
-		return this.getCustomTiledMap().getWidth();
-	}
-	
-	public int getHeight() {
-		return this.getCustomTiledMap().getHeight();
-	}
-	
-	public int getTileWidth() {
-		return this.getCustomTiledMap().getTileWidth();
-	}
-	
-	public int getTileHeight() {
-		return this.getCustomTiledMap().getTileHeight();
 	}
 
 	public int getTileId(Position position, int layerIndex) {

@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.Collection;
 
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -37,25 +38,15 @@ import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
-	public static class DynamicPiecesRendererParam {
-
-		public static DynamicPiecesRendererParam BOTTOM = new DynamicPiecesRendererParam(true);
-		public static DynamicPiecesRendererParam TOP = new DynamicPiecesRendererParam(false);
-
-		private boolean bottomNotTop;
-
-		public DynamicPiecesRendererParam(boolean bottomNotTop) {
-			this.bottomNotTop = bottomNotTop;
-		}
-
-		public boolean isBottomNotTop() {
-			return bottomNotTop;
-		}
-
+	public record DynamicPiecesRendererParam(boolean bottomNotTop) {
+			public static DynamicPiecesRendererParam BOTTOM = new DynamicPiecesRendererParam(true);
+			public static DynamicPiecesRendererParam TOP = new DynamicPiecesRendererParam(false);
 	}
 
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 
@@ -67,25 +58,22 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
+
 		Cam cam = cosmodogGame.getCam();
 
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-
-		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		int camX = (int) cam.viewCopy().x();
 		int camY = (int) cam.viewCopy().y();
 
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
 
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
 
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
+		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
+		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
 
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
@@ -101,7 +89,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			String animationIdPrefix = "dynamicPiece";
 			String animationIdStil = block.getStil().substring(0, 1).toUpperCase() + block.getStil().substring(1);
 			String animationIdPrefixIndex = String.valueOf(block.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = block.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdStil + animationIdPrefixIndex + animationIdInfix + animationSuffix;
 
@@ -111,13 +99,13 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			ActorTransition moveableTransition = cosmodogGame.getActorTransitionRegistry().get(block.asActor());
 			boolean moveableIsMoving = moveableTransition != null;
 			if (moveableIsMoving) {
-				pieceOffsetX = tileWidth * moveableTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileHeight * moveableTransition.getTransitionalOffsetY();
+				pieceOffsetX = tileLength * moveableTransition.getTransitionalOffsetX();
+				pieceOffsetY = tileLength * moveableTransition.getTransitionalOffsetY();
 			}
 			
 			applicationContext.getAnimations().get(animationId).draw(
-					((piece.getPosition().getX() - tileNoX) * tileWidth) + pieceOffsetX,
-					((piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight) + pieceOffsetY
+					((piece.getPosition().getX() - tileNoX) * tileLength) + pieceOffsetX,
+					((piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength) + pieceOffsetY
 			);
 		}
 		
@@ -129,19 +117,19 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceSecretDoor";
 			String animationIdStil = door.getStil().substring(0, 1).toUpperCase() + door.getStil().substring(1);
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = door.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdStil + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 		
 		Collection<DynamicPiece> guideTerminals = dynamicPieces.get(Terminal.class);
 
 		for (DynamicPiece piece : guideTerminals) {
-			if (dynamicPiecerenderingParam.isBottomNotTop()) {
+			if (dynamicPiecerenderingParam.bottomNotTop()) {
 				String animationId = "dynamicPieceGuideTerminal";
-				applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+				applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - 0) * tileLength);
 			}
 		}
 
@@ -152,10 +140,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceStone";
 			String animationIdPrefixIndex = String.valueOf(stone.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = stone.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -166,10 +154,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceHardStone";
 			String animationIdPrefixIndex = String.valueOf(hardStone.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = hardStone.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -180,10 +168,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceTree";
 			String animationIdPrefixIndex = String.valueOf(tree.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = tree.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -194,10 +182,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceBamboo";
 			String animationIdPrefixIndex = String.valueOf(bamboo.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = bamboo.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -207,10 +195,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			BinaryIndicator binaryIndicator = (BinaryIndicator) piece;
 
 			String animationIdPrefix = "dynamicPieceAlienSwitch";
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = binaryIndicator.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -221,10 +209,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceCrumbledWall";
 			String animationIdPrefixIndex = String.valueOf(wall.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = wall.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -235,10 +223,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			Gate gate = (Gate) piece;
 
 			String animationIdPrefix = "dynamicPieceGate";
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = gate.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -249,10 +237,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceCrate";
 			String animationIdPrefixIndex = String.valueOf(crate.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = crate.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -263,10 +251,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPieceMine";
 			String animationIdPrefixIndex = String.valueOf(mine.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = mine.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -277,10 +265,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPiecePoison";
 			String animationIdPrefixIndex = String.valueOf(poison.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = poison.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -291,10 +279,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationIdPrefix = "dynamicPiecePressureButton";
 			String animationIdPrefixIndex = String.valueOf(pressureButton.getShapeNumber());
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = pressureButton.animationSuffixFromState();
 			String animationId = animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -302,7 +290,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 		for (DynamicPiece piece : letterPlates) {
 
-			if (dynamicPiecerenderingParam.isBottomNotTop()) {
+			if (dynamicPiecerenderingParam.bottomNotTop()) {
 
 				LetterPlate letterPlate = (LetterPlate) piece;
 				short shapeNumber = letterPlate.getShapeNumber();
@@ -313,7 +301,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 				} else {
 					letterPlateAnimationId = "dynamicPieceLetterPlate" + shapeNumber;
 				}
-				applicationContext.getAnimations().get(letterPlateAnimationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight);
+				applicationContext.getAnimations().get(letterPlateAnimationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY) * tileLength);
 
 				char character = letterPlate.getCharacter();
 				
@@ -324,7 +312,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 						String letterAnimationId = "dynamicPieceLetterPlateLetter" + offsetFromA;
 						//When button is pressed, we want to visualize it also on the letter's vertical position
 						int verticalOffset = letterPlate.isPressed() ? 1 : 0;
-						applicationContext.getAnimations().get(letterAnimationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY) * tileHeight + verticalOffset);
+						applicationContext.getAnimations().get(letterAnimationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY) * tileLength + verticalOffset);
 					}
 				}
 			}
@@ -336,10 +324,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			Door door = (Door) piece;
 
 			String animationIdPrefix = "dynamicPiece" + door.getDoorAppearanceType() + door.getExitDirectionType().getRepresentation();
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = door.isOpened() ? "Open" : "Closed";
 			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 
@@ -349,10 +337,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			AlienBaseBlockade alienBaseBlockade = (AlienBaseBlockade) piece;
 
 			String animationIdPrefix = "dynamicPieceAlienBaseBlockade";
-			String animationIdInfix = dynamicPiecerenderingParam.isBottomNotTop() ? "Bottom" : "Top";
+			String animationIdInfix = dynamicPiecerenderingParam.bottomNotTop() ? "Bottom" : "Top";
 			String animationSuffix = alienBaseBlockade.isOpened() ? "Open" : "Closed";
 			String animationId = animationIdPrefix + animationIdInfix + animationSuffix;
-			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileWidth, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.isBottomNotTop() ? 0 : 1)) * tileHeight);
+			applicationContext.getAnimations().get(animationId).draw((piece.getPosition().getX() - tileNoX) * tileLength, (piece.getPosition().getY() - tileNoY - (dynamicPiecerenderingParam.bottomNotTop() ? 0 : 1)) * tileLength);
 
 		}
 

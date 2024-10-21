@@ -7,6 +7,7 @@ import java.util.Map;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -289,10 +290,12 @@ public class Cam implements Serializable {
 	 */
 	public void focusOnPiece(CosmodogGame cosmodogGame, float offsetX, float offsetY, Piece piece) {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		CosmodogMap map = cosmodogGame.getMaps().get(piece.getPosition().getMapType());
 
-		int zoomedTileWidth = (int)(map.getTileWidth() * zoomFactor);
-		int zoomedTileHeight = (int)(map.getTileHeight() * zoomFactor);
+		int zoomedTileWidth = (int)(tileLength * zoomFactor);
+		int zoomedTileHeight = (int)(tileLength * zoomFactor);
 		
 		float pieceX = piece.getPosition().getX() * zoomedTileWidth + offsetX * zoomFactor;
 		float pieceY = piece.getPosition().getY() * zoomedTileHeight + offsetY * zoomFactor;

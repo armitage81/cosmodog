@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -80,7 +81,8 @@ public class LowerGateAction extends FixedLengthAsyncAction {
 		Collection<DynamicPiece> gates = map.getDynamicPieces().get(Gate.class);
         for (DynamicPiece dynamicPiece : gates) {
             Gate gate = (Gate) dynamicPiece;
-            if (RegionUtils.pieceInRegion(gate, region, map.getTileWidth(), map.getTileHeight())) {
+			int tileLength = TileUtils.tileLengthSupplier.get();
+            if (RegionUtils.pieceInRegion(gate, map.getMapType(), region)) {
                 gatesInRegion.add(gate);
             }
         }

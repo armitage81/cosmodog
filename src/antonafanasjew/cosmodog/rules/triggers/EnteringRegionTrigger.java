@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 /**
  * Indicates whether the player has entered a region as defined on the tiled map under given layer and name
@@ -30,11 +31,11 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 
 	@Override
 	public boolean accept(GameEvent event) {
-		
+
 		if (!(event instanceof GameEventChangedPosition)) {
 			return false;
 		}
-		
+
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
 		
 		Player player = ApplicationContextUtils.getPlayer();
@@ -44,7 +45,7 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 		TiledObject regionObject = regionsObjectGroup.getObjects().get(regionName);
 		
 		if (regionObject != null) {
-			return RegionUtils.pieceInRegion(player, regionObject, map.getTileWidth(), map.getTileHeight());
+			return RegionUtils.pieceInRegion(player, mapType, regionObject);
 		}
 		
 		return false;

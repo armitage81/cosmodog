@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 /**
  * This trigger applies when a game event of typed "changed position" was thrown and the player
@@ -42,10 +43,11 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 	
 	@Override
 	public boolean accept(GameEvent event) {
-		if (event instanceof GameEventChangedPosition == false) {
+
+		if (!(event instanceof GameEventChangedPosition)) {
 			return false;
 		}
-		
+
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
 		
@@ -58,13 +60,11 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		
 		List<Point> teleportConnectionPoints = teleportConnectionObject.getPoints();
 		
-		Point teleportStartPoint = teleportConnectionPoints.get(0);
+		Point teleportStartPoint = teleportConnectionPoints.getFirst();
 		
 		Position teleportStartPosition = Position.fromCoordinates(teleportStartPoint.x, teleportStartPoint.y);
-		
-		boolean inRegion = RegionUtils.playerOnPosition(player, teleportStartPosition, map.getTileWidth(), map.getTileHeight());
-		
-		return inRegion;
+
+        return RegionUtils.playerOnPosition(player, teleportStartPosition);
 		
 	}
 

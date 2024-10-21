@@ -15,9 +15,13 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
+
+import java.io.Serial;
 
 public class Terminal extends DynamicPiece {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -41,6 +45,9 @@ public class Terminal extends DynamicPiece {
 	}
 	
 	private TiledObject terminalRegion() {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get("GuideTerminals");
@@ -48,7 +55,7 @@ public class Terminal extends DynamicPiece {
 		TiledObject retVal = null;
 		
 		for (TiledObject region : regionsObjectGroup.getObjects().values()) {
-			if (RegionUtils.pieceInRegion(player, region, map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), region)) {
 				retVal = region;
 				break;
 			}

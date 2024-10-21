@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 import com.google.common.collect.Lists;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -101,13 +102,16 @@ public class MoveableGroup implements Serializable {
 	}
 	
 	public static void resetMoveableGroup(CosmodogGame game) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		Player player = game.getPlayer();
 		CosmodogMap map = game.mapOfPlayerLocation();
 		Cam cam = game.getCam();
 		MoveableGroup moveableGroupAroundPlayer = null;
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
 		for (MoveableGroup moveableGroup : moveableGroups) {
-			if (RegionUtils.pieceInRegion(player, moveableGroup.getRegion(), map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), moveableGroup.getRegion())) {
 				moveableGroupAroundPlayer = moveableGroup;
 				break;
 			}

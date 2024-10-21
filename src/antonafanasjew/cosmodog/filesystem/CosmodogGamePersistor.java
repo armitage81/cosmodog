@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -102,10 +103,10 @@ public class CosmodogGamePersistor {
 			 * That's why we fix it here after the restoration process.
 			 */
 			try {
+				int tileLength = TileUtils.tileLengthSupplier.get();
 				CosmodogMap map = game.mapOfPlayerLocation();
-				MapType mapType = game.mapTypeOfPlayerLocation();
 				float oldZoomFactor = game.getCam().getZoomFactor();
-				Rectangle scene = Rectangle.fromSize((float) (map.getWidth() * map.getTileWidth()), (float) (map.getHeight() * map.getTileHeight()));
+				Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 				cam.focusOnPiece(game, 0, 0, game.getPlayer());

@@ -17,6 +17,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledTile;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
+import antonafanasjew.cosmodog.util.TileUtils;
 import antonafanasjew.cosmodog.util.TilesetUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
 import com.google.common.collect.Multimap;
@@ -32,6 +33,8 @@ public class RadiationRenderer extends AbstractRenderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		//Start drawing at the beginning of the scene. Usually, it is the top left corner of the screen.
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
@@ -44,15 +47,10 @@ public class RadiationRenderer extends AbstractRenderer {
 
 		Cam cam = cosmodogGame.getCam();
 
-		//The original tile width and height. They are usually 16x16 pixels big.
-		int tileWidthInPixels = map.getTileWidth();
-		int tileHeightInPixels = map.getTileHeight();
-
 		//The scaled tile width and height.
 		//They are the original tile width and height multiplied by the zoom factor of the camera.
 		//Example: An 16x16 tile with a zoom factor of 2 will be drawn as a 32x32 tile.
-		int scaledTileWidthInPixels = (int) (tileWidthInPixels * cam.getZoomFactor());
-		int scaledTileHeightInPixels = (int) (tileHeightInPixels * cam.getZoomFactor());
+		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
 		//The position of the camera on the map in pixels.
 		//Example: Having the cam on the tile 5,5 and the tile width is 16 pixels, the cam position on the map in pixels is 80,80.
@@ -62,16 +60,16 @@ public class RadiationRenderer extends AbstractRenderer {
 
 		//While the player is moving between tiles, the cam will not be exactly on a tile, but between two tiles.
 		//These variables show the offset from the beginning of the tile during the movement.
-		int camOffsetFromTileBeginX = (int) ((camPositionOnMapInPixelsX % scaledTileWidthInPixels));
-		int camOffsetFromTileBeginY = (int) ((camPositionOnMapInPixelsY % scaledTileHeightInPixels));
+		int camOffsetFromTileBeginX = (int) ((camPositionOnMapInPixelsX % scaledTileLength));
+		int camOffsetFromTileBeginY = (int) ((camPositionOnMapInPixelsY % scaledTileLength));
 
 		//The position of the camera on the map in tiles. It ignores offsets while transitioning the cam from tile to tile.
-		int camPositionOnMapInTilesX = camPositionOnMapInPixelsX / scaledTileWidthInPixels;
-		int camPositionOnMapInTilesY = camPositionOnMapInPixelsY / scaledTileHeightInPixels;
+		int camPositionOnMapInTilesX = camPositionOnMapInPixelsX / scaledTileLength;
+		int camPositionOnMapInTilesY = camPositionOnMapInPixelsY / scaledTileLength;
 
 		//Defines how many (scaled) tiles fit in the camera's view. Adds two tiles to have some buffer.
-		int camViewWidthInTiles = (int) (cam.viewCopy().width()) / scaledTileWidthInPixels + 2;
-		int camViewHeightInTiles = (int) (cam.viewCopy().height()) / scaledTileHeightInPixels + 2;
+		int camViewWidthInTiles = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
+		int camViewHeightInTiles = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
 
 		//When the cam sits between two tiles (for instance when the player moves or teleports)
 		//the top row and/or the left column of tiles on the screen will be visible only partially.
@@ -91,15 +89,15 @@ public class RadiationRenderer extends AbstractRenderer {
 					continue;
 				}
 
-				if (tilePositionOnMapX >= map.getWidth()) {
+				if (tilePositionOnMapX >= map.getMapType().getWidth()) {
 					continue;
 				}
 
-				if (tilePositionOnMapY >= map.getHeight()) {
+				if (tilePositionOnMapY >= map.getMapType().getHeight()) {
 					continue;
 				}
 				Position position = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY);
-				render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileWidthInPixels, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileHeightInPixels, position);
+				render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileLength, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileLength, position);
 			}
 		}
 

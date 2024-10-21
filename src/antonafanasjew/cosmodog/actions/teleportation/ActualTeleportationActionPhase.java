@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.teleportation;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
@@ -71,8 +72,9 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 	@Override
 	public void onEnd() {
 
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		MapType mapType = cosmodogGame.mapTypeOfPlayerLocation();
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		
 		Point endPoint = teleportConnection.getPoints().get(1);
@@ -80,8 +82,8 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 		Player player = ApplicationContextUtils.getPlayer();
 		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
 		
-		int targetPosX = (int)endPoint.x / map.getTileWidth();
-		int targetPosY = (int)endPoint.y / map.getTileHeight();
+		int targetPosX = (int)endPoint.x / tileLength;
+		int targetPosY = (int)endPoint.y / tileLength;
 		
 		player.setPosition(Position.fromCoordinates(targetPosX, targetPosY));
 

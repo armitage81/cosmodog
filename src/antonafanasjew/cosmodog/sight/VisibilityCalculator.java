@@ -34,12 +34,12 @@ public class VisibilityCalculator {
 
 		Position piecePosition = piece.getPosition();
 
-		return vision.visible(observer, piecePosition, map.getWidth(), map.getHeight());
+		return vision.visible(observer, piecePosition, map.getMapType().getWidth(), map.getMapType().getHeight());
 	}
 
 	public Set<Position> allVisiblePositions(Actor observer, PlanetaryCalendar cal, CosmodogMap map, Player player) {
 		Vision vision = getVision(cal, map, player);
-		return vision.visiblePositions(observer, map.getWidth(), map.getHeight());
+		return vision.visiblePositions(observer, map.getMapType().getWidth(), map.getMapType().getHeight());
 	}
 	
 	public int maxVisibilityRange(PlanetaryCalendar cal, CosmodogMap map, Player player) {

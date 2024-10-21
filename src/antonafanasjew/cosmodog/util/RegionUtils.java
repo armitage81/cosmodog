@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.util;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -21,45 +22,58 @@ public class RegionUtils {
 	 * Take note: the region coordinates are real pixel coordinates on map and are not bound to tiles.
 	 * To calculate players real position, tile width and height from the tiled map are needed.
 	 */
-	public static final boolean pieceInRegion(Piece piece, TiledObject region, int tileWidth, int tileHeight) {
-		PlacedRectangle playerTileRectangle = pieceRectangle(piece, tileWidth, tileHeight);
+	public static boolean pieceInRegion(Piece piece, MapType regionMapType, TiledObject region) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
+		if (regionMapType != piece.getPosition().getMapType()) {
+			return false;
+		}
+
+		PlacedRectangle playerTileRectangle = pieceRectangle(piece);
 		
 		return CollisionUtils.intersects(playerTileRectangle, region);
 		
 	}
 	
-	public static boolean tileInRegion(Position position, TiledObject region, int tileWidth, int tileHeight) {
+	public static boolean tileInRegion(Position position, MapType regionMapType, TiledObject region) {
 		//The actual piece implementation does not matter. We just need a type of a piece to satisfy the method signature.
 		Piece piece = Block.create(position);
-		PlacedRectangle playerTileRectangle = pieceRectangle(piece, tileWidth, tileHeight);
+		PlacedRectangle playerTileRectangle = pieceRectangle(piece);
 		return CollisionUtils.intersects(playerTileRectangle, region);
 		
 	}
 
 	/**
 	 * Indicates whether the player rectangle is covering the given position (not the tile position, but the geometrical position)
-	 * @param piece Piece.
+	 * @param player Player.
 	 * @param position A position as x/y pair.
-	 * @param tileWidth The width of all tiles.
-	 * @param tileHeight The height of all tiles.
 	 * @return true if the player frame is covering the given position, false otherwise.
 	 */
-	public static final boolean playerOnPosition(Piece piece, Position position, int tileWidth, int tileHeight) {
-		PlacedRectangle playerTileRectangle = pieceRectangle(piece, tileWidth, tileHeight);
+	public static boolean playerOnPosition(Player player, Position position) {
+
+		if (player.getPosition().getMapType() != position.getMapType()) {
+			return false;
+		}
+
+		PlacedRectangle playerTileRectangle = pieceRectangle(player);
 		return CollisionUtils.intersects(playerTileRectangle, position);
 	}
 	
 	/*
 	 * Returns the placed rectangle for the player figure.
 	 */
-	private static PlacedRectangle pieceRectangle(Piece piece, int tileWidth, int tileHeight) {
+	private static PlacedRectangle pieceRectangle(Piece piece) {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
 		int posX = (int)piece.getPosition().getX();
 		int posY = (int)piece.getPosition().getY();
 		
-		int x = posX * tileWidth;
-		int y = posY * tileHeight;
+		int x = posX * tileLength;
+		int y = posY * tileLength;
 
-        return PlacedRectangle.fromAnchorAndSize(x, y, tileWidth, tileHeight);
+        return PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength);
 	}
 
 	public static Set<TiledObject> roofsOverPiece(Piece piece, CosmodogMap map) {
@@ -70,7 +84,7 @@ public class RegionUtils {
 
 		for (TiledObject roofRegion : roofRegions.values()) {
 
-			if (RegionUtils.pieceInRegion(piece, roofRegion, map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion(piece, map.getMapType(), roofRegion)) {
 				roofs.add(roofRegion);
 			}
 		}
@@ -86,7 +100,7 @@ public class RegionUtils {
 
 		for (TiledObject region : regions.values()) {
 
-			if (RegionUtils.pieceInRegion(piece, region, map.getTileWidth(), map.getTileHeight())) {
+			if (RegionUtils.pieceInRegion(piece, map.getMapType(), region)) {
 				roofRemovalBlockers.add(region);
 			}
 		}

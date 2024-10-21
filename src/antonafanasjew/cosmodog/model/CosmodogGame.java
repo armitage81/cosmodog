@@ -107,10 +107,6 @@ public class CosmodogGame extends CosmodogModel {
 		return maps.get(player.getPosition().getMapType());
 	}
 
-	public MapType mapTypeOfPlayerLocation() {
-		return player.getPosition().getMapType();
-	}
-
 	public Cam getCam() {
 		return cam;
 	}
