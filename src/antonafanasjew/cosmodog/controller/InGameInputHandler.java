@@ -171,7 +171,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     		} else if (player.getDirection() == DirectionType.DOWN) {
     			newY = player.getPosition().getY() + 1;
     		}
-			Position newPosition = Position.fromCoordinates(newX, newY);
+			Position newPosition = Position.fromCoordinates(newX, newY, player.getPosition().getMapType());
     		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.
     		Set<Enemy> enemies = map.getEnemies();
     		Enemy meleeTargetEnemy = null;
@@ -386,6 +386,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (input.isKeyPressed(Input.KEY_P)) {
 			MapType currentMapType = player.getPosition().getMapType();
 			player.setPosition(Position.fromCoordinates(player.getPosition().getX(), player.getPosition().getY(), currentMapType == MapType.MAIN ? MapType.ALTERNATIVE : MapType.MAIN));
+			player.endSwitchingPlane();
 		}
 
 		//Handle debugging

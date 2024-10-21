@@ -22,10 +22,6 @@ public class Position implements Serializable {
 	private float y;
 	private MapType mapType;
 
-	public static Position fromCoordinates(float x, float y) {
-		return fromCoordinates(x, y, MapType.MAIN);
-	}
-
 	public static Position fromCoordinatesOnPlayerLocationMap(float x, float y) {
 		MapType mapType = ApplicationContextUtils.getPlayer().getPosition().mapType;
 		return fromCoordinates(x, y, mapType);

@@ -96,7 +96,7 @@ public class RadiationRenderer extends AbstractRenderer {
 				if (tilePositionOnMapY >= map.getMapType().getHeight()) {
 					continue;
 				}
-				Position position = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY);
+				Position position = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY, map.getMapType());
 				render(map, (tilePositionOnMapX - camPositionOnMapInTilesX) * tileLength, (tilePositionOnMapY - camPositionOnMapInTilesY) * tileLength, position);
 			}
 		}

@@ -63,6 +63,10 @@ public abstract class Actor extends Piece {
 	public void endRespawn() {
 		composedMovementListener.afterRespawn(this, ApplicationContext.instance());
 	}
+
+	public void endSwitchingPlane() {
+		composedMovementListener.afterSwitchingPlane(this, ApplicationContext.instance());
+	}
 	
 	public void shiftHorizontal(int positionOffset) {
 		Position position1 = this.getPosition();

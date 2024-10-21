@@ -819,7 +819,7 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l);
+				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = customTiledMap.getTileId(position, enemyLayerIndex);
 
