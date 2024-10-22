@@ -395,8 +395,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (debugger != null) {
 			
 			if (input.isKeyPressed(Input.KEY_1)) {
-				DebuggerInventoryItem.PlayerPosition playerPosition = debugger.nextPosition();
-				player.setPosition(player.getPosition());
+				Position position = debugger.nextPosition();
+				player.setPosition(position);
+				player.shiftHorizontal(0); //Just to trigger the listeners.
 				cam.focusOnPiece(cosmodogGame,0, 0, player);
 			}
 			

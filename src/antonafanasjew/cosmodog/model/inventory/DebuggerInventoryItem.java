@@ -1,6 +1,10 @@
 package antonafanasjew.cosmodog.model.inventory;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,24 +14,9 @@ import java.util.stream.Collectors;
 
 public class DebuggerInventoryItem extends InventoryItem {
 
-	public static class PlayerPosition implements Serializable {
-
-		private static final long serialVersionUID = -1587744329942130741L;
-		
-		public int x;
-		public int y;
-		
-		public static PlayerPosition of(int x, int y) {
-			PlayerPosition playerPosition = new PlayerPosition();
-			playerPosition.x = x;
-			playerPosition.y = y;
-			return playerPosition;
-		}
-	}
-	
 	private static final long serialVersionUID = 1L;
 
-	private List<PlayerPosition> positions = new ArrayList<>();
+	private List<Position> positions = new ArrayList<>();
 	private int currentPositionIndex = 0;
 	
 	private boolean positionDisplayed = false;
@@ -40,59 +29,63 @@ public class DebuggerInventoryItem extends InventoryItem {
 			String[] parts = s.split("/");
 			int x = Integer.parseInt(parts[0]);
 			int y = Integer.parseInt(parts[1]);
-			return PlayerPosition.of(x, y);
+			MapType mapType = MapType.MAIN;
+			if (parts.length > 2) {
+				mapType = MapType.valueOf(parts[2]);
+			}
+			return Position.fromCoordinates(x, y, mapType);
 		}).forEach(p -> positions.add(p));
 	}
 
-	public DebuggerInventoryItem(List<PlayerPosition> positions) {
+	public DebuggerInventoryItem(List<Position> positions) {
 		super(InventoryItemType.DEBUGGER);
 		this.positions.addAll(positions);
 	}
 
 	public DebuggerInventoryItem() {
 		super(InventoryItemType.DEBUGGER);
-		positions.add(PlayerPosition.of(53, 29));
-		positions.add(PlayerPosition.of(140, 14));
-		positions.add(PlayerPosition.of(129, 34));
-		positions.add(PlayerPosition.of(299, 22));
-		positions.add(PlayerPosition.of(362, 46));
-		positions.add(PlayerPosition.of(180, 57));
-		positions.add(PlayerPosition.of(395, 69));
-		positions.add(PlayerPosition.of(331, 124));
-		positions.add(PlayerPosition.of(242, 100));
-		positions.add(PlayerPosition.of(95, 144));
-		positions.add(PlayerPosition.of(232, 132));
-		positions.add(PlayerPosition.of(379, 155));
-		positions.add(PlayerPosition.of(239, 159));
-		positions.add(PlayerPosition.of(42, 173));
-		positions.add(PlayerPosition.of(124, 219));
-		positions.add(PlayerPosition.of(188, 195));
-		positions.add(PlayerPosition.of(219, 214));
-		positions.add(PlayerPosition.of(268, 216));
-		positions.add(PlayerPosition.of(12, 263));
-		positions.add(PlayerPosition.of(29, 283));
-		positions.add(PlayerPosition.of(136, 278));
-		positions.add(PlayerPosition.of(284, 274));
-		positions.add(PlayerPosition.of(317, 271));
-		positions.add(PlayerPosition.of(385, 288));
-		positions.add(PlayerPosition.of(170, 316));
-		positions.add(PlayerPosition.of(140, 306));
-		positions.add(PlayerPosition.of(105, 285));
-		positions.add(PlayerPosition.of(270, 376));
-		positions.add(PlayerPosition.of(55, 363));
-		positions.add(PlayerPosition.of(6, 370));
-		positions.add(PlayerPosition.of(276, 395));
-		positions.add(PlayerPosition.of(364, 389));
+		positions.add(Position.fromCoordinates(53, 29, MapType.MAIN));
+		positions.add(Position.fromCoordinates(140, 14, MapType.MAIN));
+		positions.add(Position.fromCoordinates(129, 34, MapType.MAIN));
+		positions.add(Position.fromCoordinates(299, 22, MapType.MAIN));
+		positions.add(Position.fromCoordinates(362, 46, MapType.MAIN));
+		positions.add(Position.fromCoordinates(180, 57, MapType.MAIN));
+		positions.add(Position.fromCoordinates(395, 69, MapType.MAIN));
+		positions.add(Position.fromCoordinates(331, 124, MapType.MAIN));
+		positions.add(Position.fromCoordinates(242, 100, MapType.MAIN));
+		positions.add(Position.fromCoordinates(95, 144, MapType.MAIN));
+		positions.add(Position.fromCoordinates(232, 132, MapType.MAIN));
+		positions.add(Position.fromCoordinates(379, 155, MapType.MAIN));
+		positions.add(Position.fromCoordinates(239, 159, MapType.MAIN));
+		positions.add(Position.fromCoordinates(42, 173, MapType.MAIN));
+		positions.add(Position.fromCoordinates(124, 219, MapType.MAIN));
+		positions.add(Position.fromCoordinates(188, 195, MapType.MAIN));
+		positions.add(Position.fromCoordinates(219, 214, MapType.MAIN));
+		positions.add(Position.fromCoordinates(268, 216, MapType.MAIN));
+		positions.add(Position.fromCoordinates(12, 263, MapType.MAIN));
+		positions.add(Position.fromCoordinates(29, 283, MapType.MAIN));
+		positions.add(Position.fromCoordinates(136, 278, MapType.MAIN));
+		positions.add(Position.fromCoordinates(284, 274, MapType.MAIN));
+		positions.add(Position.fromCoordinates(317, 271, MapType.MAIN));
+		positions.add(Position.fromCoordinates(385, 288, MapType.MAIN));
+		positions.add(Position.fromCoordinates(170, 316, MapType.MAIN));
+		positions.add(Position.fromCoordinates(140, 306, MapType.MAIN));
+		positions.add(Position.fromCoordinates(105, 285, MapType.MAIN));
+		positions.add(Position.fromCoordinates(270, 376, MapType.MAIN));
+		positions.add(Position.fromCoordinates(55, 363, MapType.MAIN));
+		positions.add(Position.fromCoordinates(6, 370, MapType.MAIN));
+		positions.add(Position.fromCoordinates(276, 395, MapType.MAIN));
+		positions.add(Position.fromCoordinates(364, 389, MapType.MAIN));
 
-		positions.add(PlayerPosition.of(7, 9));
-		positions.add(PlayerPosition.of(7, 21));
-		positions.add(PlayerPosition.of(45, 58));
-		positions.add(PlayerPosition.of(238, 238));
-		positions.add(PlayerPosition.of(211, 249));
+		positions.add(Position.fromCoordinates(7, 9, MapType.MAIN));
+		positions.add(Position.fromCoordinates(7, 21, MapType.MAIN));
+		positions.add(Position.fromCoordinates(45, 58, MapType.MAIN));
+		positions.add(Position.fromCoordinates(238, 238, MapType.MAIN));
+		positions.add(Position.fromCoordinates(211, 249, MapType.MAIN));
 	}
 	
-	public PlayerPosition nextPosition() {
-		PlayerPosition pos = positions.get(currentPositionIndex);
+	public Position nextPosition() {
+		Position pos = positions.get(currentPositionIndex);
 		currentPositionIndex = currentPositionIndex >= positions.size() - 1 ? 0 : currentPositionIndex + 1;
 		return pos;
 	}
