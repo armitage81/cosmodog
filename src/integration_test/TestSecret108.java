@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -18,7 +19,7 @@ public class TestSecret108 {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(69, 384));
+				player.setPosition(Position.fromCoordinates(69, 384, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.AXE, new AxeInventoryItem());

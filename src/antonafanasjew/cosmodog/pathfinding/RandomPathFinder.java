@@ -57,7 +57,7 @@ public class RandomPathFinder extends AbstractPathFinder {
 				float xAtIndex = xSteps[index];
 				float yAtIndex = ySteps[index];
 				
-				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, Position.fromCoordinates(xAtIndex, yAtIndex));
+				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, Position.fromCoordinates(xAtIndex, yAtIndex, map.getMapType()));
 				
 				if (collisionStatus.isPassable()) {
 					x = (int)xAtIndex;

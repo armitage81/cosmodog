@@ -1,9 +1,6 @@
 package antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory;
 
-import antonafanasjew.cosmodog.domains.ArmorType;
-import antonafanasjew.cosmodog.domains.ChaussieType;
-import antonafanasjew.cosmodog.domains.UnitType;
-import antonafanasjew.cosmodog.domains.WeaponType;
+import antonafanasjew.cosmodog.domains.*;
 import antonafanasjew.cosmodog.listener.life.EnemyLifeListener;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.builder.AbstractEnemyFactory;
@@ -73,7 +70,7 @@ public class JsonBasedEnemyFactoryBuilder extends AbstractJsonBasedResourceWrapp
 			String[] xAndY = visionPart.split("/");
 			short x = (short)Integer.parseInt(xAndY[0]);
 			short y = (short)Integer.parseInt(xAndY[1]);
-			Position position = Position.fromCoordinates(x, y);
+			Position position = Position.fromCoordinates(x, y, null);
 			retVal.add(position);
 		}
 

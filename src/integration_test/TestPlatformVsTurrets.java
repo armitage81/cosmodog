@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -20,7 +21,7 @@ public class TestPlatformVsTurrets {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(94, 184));
+				player.setPosition(Position.fromCoordinates(94, 184, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				PlatformInventoryItem platform = new PlatformInventoryItem(new Platform());

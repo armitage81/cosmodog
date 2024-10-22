@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -109,55 +110,55 @@ public class CosmodogMapUtils {
 	private static final Set<Position> PLATFORMDATA = Sets.newHashSet();
 	
 	static {
-		PLATFORMDATA.add(Position.fromCoordinates(-1, -3));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, -3));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, -3, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, -3, MapType.MAIN));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, -2));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, -2));
-		PLATFORMDATA.add(Position.fromCoordinates( 0, -2));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, -2));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, -2));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, -2));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, -2));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 0, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, -2, MapType.MAIN));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-3, -1));
-		PLATFORMDATA.add(Position.fromCoordinates(-2, -1));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, -1));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, -1));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, -1));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, -1));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, -1));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, -1));
-		PLATFORMDATA.add(Position.fromCoordinates( 5, -1));
+		PLATFORMDATA.add(Position.fromCoordinates(-3, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 5, -1, MapType.MAIN));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, 0));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 0));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, 0));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 0));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 0));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 0));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, 0));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, 0, MapType.MAIN));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, 1));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 1));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, 1));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 1));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 1));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 1));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, 1));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, 1, MapType.MAIN));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, 2));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 2));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, 2));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 2));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 2));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 2));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, 2));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, 2, MapType.MAIN));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 3));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 3));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 3));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 3));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 3, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 3, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 3, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 3, MapType.MAIN));
 	}
 	
 	/**
@@ -175,10 +176,12 @@ public class CosmodogMapUtils {
 	
 	public static boolean isTileOnPlatform(Position tilePosition, Position platformPosition) {
 		boolean retVal = false;
-		int actorOffsetX = (int)(tilePosition.getX() - platformPosition.getX());
-		int actorOffsetY = (int)(tilePosition.getY() - platformPosition.getY());
-		Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY);
-		retVal = PLATFORMDATA.contains(offsetPosition);
+		if (tilePosition.getMapType() != platformPosition.getMapType()) {
+			int actorOffsetX = (int) (tilePosition.getX() - platformPosition.getX());
+			int actorOffsetY = (int) (tilePosition.getY() - platformPosition.getY());
+			Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, MapType.MAIN);
+			retVal = PLATFORMDATA.contains(offsetPosition);
+		}
 		return retVal;
 	}
 	

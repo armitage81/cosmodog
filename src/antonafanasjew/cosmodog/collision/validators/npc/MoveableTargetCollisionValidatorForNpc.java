@@ -27,7 +27,7 @@ public class MoveableTargetCollisionValidatorForNpc extends AbstractCollisionVal
 		if (moveableActionResult != null) {
 			int moveableTargetX = moveableActionResult.getPath().getX(1);
 			int moveableTargetY = moveableActionResult.getPath().getY(1);
-			Position moveableTargetPosition = Position.fromCoordinates(moveableTargetX, moveableTargetY);
+			Position moveableTargetPosition = Position.fromCoordinates(moveableTargetX, moveableTargetY, position.getMapType());
 			if (moveableTargetPosition.equals(position)) {
 				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.BLOCKED_DYNAMIC_PIECE));
 			}

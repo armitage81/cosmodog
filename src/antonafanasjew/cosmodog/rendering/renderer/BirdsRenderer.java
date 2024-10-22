@@ -59,7 +59,7 @@ public class BirdsRenderer extends AbstractRenderer {
 		PlacedRectangle view = cam.viewCopy();
 		Vector newCenter = new Vector(view.centerX() / cam.getZoomFactor(), view.centerY() / cam.getZoomFactor());
 		Vector newMin = newCenter.add(-view.width() / 2, -view.height() / 2);
-		view = PlacedRectangle.fromAnchorAndSize(newMin.getX(), newMin.getY(), view.width(), view.height());
+		view = PlacedRectangle.fromAnchorAndSize(newMin.getX(), newMin.getY(), view.width(), view.height(), view.getMapType());
 		
 		ParticlePattern currentPattern = birdsDecoration.particlePatternForPlaceAndTime(view);
 

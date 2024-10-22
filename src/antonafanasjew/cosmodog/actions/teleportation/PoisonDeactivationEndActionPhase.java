@@ -58,7 +58,7 @@ public class PoisonDeactivationEndActionPhase extends FixedLengthAsyncAction {
 		float currentY = initialCamY + verticalDiff * completion * cam.getZoomFactor();
 		
 		try {
-			cam.move(Position.fromCoordinates(currentX, currentY));
+			cam.move(Position.fromCoordinates(currentX, currentY, cam.viewCopy().getMapType()));
 		} catch (CamPositioningException e) {
 			Log.error("Cam out of bounds: " + currentX + "/" + currentY);
 		}

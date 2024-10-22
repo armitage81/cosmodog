@@ -129,7 +129,7 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 		float initialCamX = cosmodogGame.getCam().viewCopy().centerX() / cosmodogGame.getCam().getZoomFactor();
 		float initialCamY = cosmodogGame.getCam().viewCopy().centerY() / cosmodogGame.getCam().getZoomFactor();
 
-		Position initialCamPosition = Position.fromCoordinates(initialCamX, initialCamY);
+		Position initialCamPosition = Position.fromCoordinates(initialCamX, initialCamY, camCenteringPosition.getMapType());
 
 		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, camCenteringPosition, cosmodogGame));
 		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);

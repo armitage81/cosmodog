@@ -32,7 +32,7 @@ public class RegionUtils {
 
 		PlacedRectangle playerTileRectangle = pieceRectangle(piece);
 		
-		return CollisionUtils.intersects(playerTileRectangle, region);
+		return CollisionUtils.intersects(playerTileRectangle, regionMapType, region);
 		
 	}
 	
@@ -40,7 +40,7 @@ public class RegionUtils {
 		//The actual piece implementation does not matter. We just need a type of a piece to satisfy the method signature.
 		Piece piece = Block.create(position);
 		PlacedRectangle playerTileRectangle = pieceRectangle(piece);
-		return CollisionUtils.intersects(playerTileRectangle, region);
+		return CollisionUtils.intersects(playerTileRectangle, regionMapType, region);
 		
 	}
 
@@ -73,7 +73,7 @@ public class RegionUtils {
 		int x = posX * tileLength;
 		int y = posY * tileLength;
 
-        return PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength);
+        return PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, piece.getPosition().getMapType());
 	}
 
 	public static Set<TiledObject> roofsOverPiece(Piece piece, CosmodogMap map) {

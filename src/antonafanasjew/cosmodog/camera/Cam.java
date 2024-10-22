@@ -76,7 +76,7 @@ public class Cam implements Serializable {
 	 * considering the camera mode.
 	 */
 	private void assertPositioning() throws CamPositioningException {
-		PlacedRectangle placedScene = PlacedRectangle.fromAnchorAndSize(0, 0, scene.getWidth(), scene.getHeight());
+		PlacedRectangle placedScene = PlacedRectangle.fromAnchorAndSize(0, 0, scene.getWidth(), scene.getHeight(), view.getMapType());
 		PlacedRectangle sceneViewIntersection = placedScene.intersection(view);
 		if (mode == CAM_MODE_COMPLETELY_IN_SCENE) {
 			if (sceneViewIntersection == null || !sceneViewIntersection.equals(view)) {
@@ -108,10 +108,10 @@ public class Cam implements Serializable {
 	 * @param height The view height. (It will not change while zooming. Instead, the scene will be doubled).
 	 * @throws CamPositioningException Indicates the wrong positioning of the view on the scene.
 	 */
-	public Cam(int mode, Rectangle scene, float x, float y, float width, float height) throws CamPositioningException {
+	public Cam(int mode, Rectangle scene, float x, float y, float width, float height, MapType mapType) throws CamPositioningException {
 		this.mode = mode;
 		this.scene = scene;
-		this.view = PlacedRectangle.fromAnchorAndSize(x, y, width, height);
+		this.view = PlacedRectangle.fromAnchorAndSize(x, y, width, height, mapType);
 		assertPositioning();
 	}
 
@@ -209,7 +209,7 @@ public class Cam implements Serializable {
 	 * @return View copy.
 	 */
 	public PlacedRectangle viewCopy() {
-		return PlacedRectangle.fromAnchorAndSize(view.x(), view.y(), view.width(), view.height());
+		return PlacedRectangle.fromAnchorAndSize(view.x(), view.y(), view.width(), view.height(), view.getMapType());
 	}
 	
 	/**
@@ -258,7 +258,7 @@ public class Cam implements Serializable {
 		float newViewMinX = xCenterNew - view.width() / 2;
 		float newViewMinY = yCenterNew - view.height() / 2;
 		
-		this.view = PlacedRectangle.fromAnchorAndSize(newViewMinX, newViewMinY, this.view.width(), this.view.height());
+		this.view = PlacedRectangle.fromAnchorAndSize(newViewMinX, newViewMinY, this.view.width(), this.view.height(), view.getMapType());
 		
 	}
 	
@@ -306,7 +306,7 @@ public class Cam implements Serializable {
 		float newCamX = pieceX + zoomedTileWidth / 2.0f - camWidth / 2.0f;
 		float newCamY = pieceY + zoomedTileHeight / 2.0f - camHeight / 2.0f;
 
-		Position newCamPosition = Position.fromCoordinates(newCamX, newCamY);
+		Position newCamPosition = Position.fromCoordinates(newCamX, newCamY, map.getMapType());
 		
 		try {
 			this.move(newCamPosition);

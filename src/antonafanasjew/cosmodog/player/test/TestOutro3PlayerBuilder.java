@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -11,7 +12,7 @@ public class TestOutro3PlayerBuilder extends AbstractPlayerBuilder {
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPosition(Position.fromCoordinates(211, 250));
+		player.setPosition(Position.fromCoordinates(211, 250, MapType.MAIN));
 		
 		InsightInventoryItem insight = (InsightInventoryItem)player.getInventory().get(InventoryItemType.INSIGHT);
 		

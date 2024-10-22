@@ -29,7 +29,7 @@ public class TileBasedMapAdapter implements TileBasedMap {
 	@Override
 	public boolean blocked(PathFindingContext cx, int x, int y) {
 		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
-		return !collisionValidator.collisionStatus(cosmodogGame, actor, map, Position.fromCoordinates(x, y)).isPassable();
+		return !collisionValidator.collisionStatus(cosmodogGame, actor, map, Position.fromCoordinates(x, y, map.getMapType())).isPassable();
 	}
 
 	@Override

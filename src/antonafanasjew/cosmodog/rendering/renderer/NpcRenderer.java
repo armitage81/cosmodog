@@ -71,7 +71,7 @@ public class NpcRenderer extends AbstractRenderer {
 		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
 		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
 		
-		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY);
+		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY, map.getMapType());
 
 		Set<Enemy> enemies = map.visibleEnemies(tilePosition, tilesW, tilesH, 2);
 		

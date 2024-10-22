@@ -118,7 +118,7 @@ public class MapRenderer implements Renderer {
 				graphics.fillRect(x, y, gridW, gridH);
 				if (discovered && archeologistsJournal != null) {
 					DrawingContext cellDc = new SimpleDrawingContext(null, x, y, gridW, gridH);
-					Integer valueOfInfobitsForChartPiece = mapInputState.getInfobitNumbersByChartPiece().get(Position.fromCoordinates(i, j));
+					Integer valueOfInfobitsForChartPiece = mapInputState.getInfobitNumbersByChartPiece().get(Position.fromCoordinates(i, j, null));
 					valueOfInfobitsForChartPiece = valueOfInfobitsForChartPiece == null ? 0 : valueOfInfobitsForChartPiece;
 					if (valueOfInfobitsForChartPiece > 0) {
 						String infobitValueText = "" + valueOfInfobitsForChartPiece;

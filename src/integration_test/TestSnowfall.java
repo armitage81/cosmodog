@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -19,7 +20,7 @@ public class TestSnowfall {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(111, 349));
+				player.setPosition(Position.fromCoordinates(111, 349, MapType.MAIN));
 				player.setLife(1);
 				for (int i = 0; i < 64; i++) {
 					player.getGameProgress().addInfobank();

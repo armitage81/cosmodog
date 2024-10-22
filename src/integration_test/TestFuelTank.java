@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -19,7 +20,7 @@ public class TestFuelTank {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(19, 54));
+				player.setPosition(Position.fromCoordinates(19, 54, MapType.MAIN));
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());
 				player.getInventory().put(InventoryItemType.VEHICLE, vii);
 				//All six locations of the fuel tanks can be teleported to by pressing the key 1.

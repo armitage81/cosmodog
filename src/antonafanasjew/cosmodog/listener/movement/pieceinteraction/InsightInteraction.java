@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
 import antonafanasjew.cosmodog.actions.cutscenes.PauseDecoratorAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -44,7 +45,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 
 		// Now remove the electricity effect from the monolyth.
 		Position insightPosition = piece.getPosition();
-		Position effectPosition = Position.fromCoordinates(insightPosition.getX(), insightPosition.getY() - 1);
+		Position effectPosition = Position.fromCoordinates(insightPosition.getX(), insightPosition.getY() - 1, insightPosition.getMapType());
 
 		Set<Piece> effectPieces = cosmodogMap.getEffectPieces();
 		Iterator<Piece> effectPiecesIt = effectPieces.iterator();
@@ -86,7 +87,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		if (item != null && ((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
 			AsyncAction asyncAction2 = new PopUpNotificationAction("You can enter the alien base now.");
 			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);
-			asyncAction2 = new CamCenteringDecoratorAction(3000, Position.fromCoordinates(238, 238), asyncAction2, ApplicationContextUtils.getCosmodogGame());
+			asyncAction2 = new CamCenteringDecoratorAction(3000, Position.fromCoordinates(238, 238, MapType.MAIN), asyncAction2, ApplicationContextUtils.getCosmodogGame());
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction2);			
 		}

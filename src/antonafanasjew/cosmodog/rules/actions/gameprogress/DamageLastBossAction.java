@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.LastBossFightAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
@@ -31,7 +32,7 @@ public class DamageLastBossAction extends AbstractRuleAction {
 
 		//Check if the boss has been destroyed already.
 		boolean bossDestroyed = false;
-		Enemy lastBoss = map.enemyAtTile(Position.fromCoordinates(227, 254));
+		Enemy lastBoss = map.enemyAtTile(Position.fromCoordinates(227, 254, MapType.MAIN));
 		if (lastBoss == null) {
 			bossDestroyed = true;
 		}

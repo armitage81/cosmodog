@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -22,7 +23,7 @@ public class TestCactusesReplacement {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(5, 3));
+				player.setPosition(Position.fromCoordinates(5, 3, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getGameProgress().setWormActive(false);

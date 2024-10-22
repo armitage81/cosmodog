@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.actions.cutscenes;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -185,6 +186,6 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 	public void onEnd() {
 		transition = null;
 		ApplicationContextUtils.getPlayer().resetTurnsWormAlerted();
-		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, new RespawnAction(Position.fromCoordinates(321, 335), false, true));
+		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, new RespawnAction(Position.fromCoordinates(321, 335, MapType.MAIN), false, true));
 	}
 }

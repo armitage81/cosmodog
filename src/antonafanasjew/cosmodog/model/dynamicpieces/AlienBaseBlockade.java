@@ -40,9 +40,9 @@ public class AlienBaseBlockade extends DynamicPiece {
 		}
 	}
 
-	public static AlienBaseBlockade create(int x, int y) {
+	public static AlienBaseBlockade create(Position position) {
 		AlienBaseBlockade retVal = new AlienBaseBlockade();
-		retVal.setPosition(Position.fromCoordinates(x, y));
+		retVal.setPosition(position);
 		retVal.opened = false;
 		return retVal;
 	}

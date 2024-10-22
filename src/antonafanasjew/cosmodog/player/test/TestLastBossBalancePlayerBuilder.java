@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -18,7 +19,7 @@ public class TestLastBossBalancePlayerBuilder extends AbstractPlayerBuilder {
 	protected void updatePlayer(Player player) {
 		player.setMaxLife(70);
 		player.setLife(70);
-		player.setPosition(Position.fromCoordinates(227, 258));
+		player.setPosition(Position.fromCoordinates(227, 258, MapType.MAIN));
 		
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));

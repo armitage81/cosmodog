@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
@@ -12,7 +13,7 @@ public class TestVehiclePlayerBuilder extends AbstractPlayerBuilder {
 		for (int i = 0; i < 20; i++) {
 			player.getGameProgress().addInfobit();
 		}
-		player.setPosition(Position.fromCoordinates(7, 40));
+		player.setPosition(Position.fromCoordinates(7, 40, MapType.MAIN));
 		
 	}
 

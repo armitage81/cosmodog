@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -21,7 +22,7 @@ public class TestVision {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(7, 3));
+				player.setPosition(Position.fromCoordinates(7, 3, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 

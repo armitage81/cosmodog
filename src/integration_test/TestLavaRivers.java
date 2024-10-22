@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.globals.Features;
@@ -24,7 +25,7 @@ public class TestLavaRivers {
 			@Override
 			protected void updatePlayer(Player player) {
 				Features.getInstance().setFeature(Features.FEATURE_GODFISTS, true);
-				player.setPosition(Position.fromCoordinates(230, 174));
+				player.setPosition(Position.fromCoordinates(230, 174, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());

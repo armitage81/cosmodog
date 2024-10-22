@@ -103,7 +103,7 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 				
 				
 				AsyncAction asyncAction = new LowerGateAction(2000, "GatesToLaunchPodInAlienBase");
-				asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(237, 289), asyncAction, ApplicationContextUtils.getCosmodogGame());
+				asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(237, 289, MapType.MAIN), asyncAction, ApplicationContextUtils.getCosmodogGame());
 				
 				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 				actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);

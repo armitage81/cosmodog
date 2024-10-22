@@ -114,7 +114,7 @@ public class MiniMapRenderer implements Renderer {
 						if (topLayer && roofRemovalBlockersOverPlayer.isEmpty()) {
 
 							Piece piece = new Piece();
-							piece.setPosition(Position.fromCoordinates(tx, ty));
+							piece.setPosition(Position.fromCoordinates(tx, ty, map.getMapType()));
 							Set<TiledObject> roofsOverTile = RegionUtils.roofsOverPiece(piece, map);
 							roofsOverTile.retainAll(roofsOverPlayer);
 							if (!roofsOverTile.isEmpty()) {
@@ -127,7 +127,7 @@ public class MiniMapRenderer implements Renderer {
 						int chartPiecePositionY = ty / minimapPieceHeightInTiles;
 
 						//The tile image for the given tile id is taken from the tileset sprite sheet.
-						int tileId = map.getTileId(Position.fromCoordinates(tx, ty), i);
+						int tileId = map.getTileId(Position.fromCoordinates(tx, ty, map.getMapType()), i);
 
 						int imageIndex = tileId - 1;
 

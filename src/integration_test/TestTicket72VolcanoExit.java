@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -18,7 +19,7 @@ public class TestTicket72VolcanoExit {
 
             @Override
             protected void updatePlayer(Player player) {
-                player.setPosition(Position.fromCoordinates(185, 186));
+                player.setPosition(Position.fromCoordinates(185, 186, MapType.MAIN));
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("181/185;185/186"));

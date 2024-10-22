@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.topology;
 
+import antonafanasjew.cosmodog.domains.MapType;
+
 import java.io.Serializable;
 
 /**
@@ -12,10 +14,11 @@ public class PlacedRectangle implements Serializable {
 
 	private Position topLeftAnchor;
 	private Rectangle rectangle;
+	private MapType mapType;
 
-	public static PlacedRectangle fromAnchorAndSize(float topLeftX, float topLeftY, float width, float height) {
+	public static PlacedRectangle fromAnchorAndSize(float topLeftX, float topLeftY, float width, float height, MapType mapType) {
 		PlacedRectangle placedRectangle = new PlacedRectangle();
-		placedRectangle.topLeftAnchor = Position.fromCoordinates(topLeftX, topLeftY);
+		placedRectangle.topLeftAnchor = Position.fromCoordinates(topLeftX, topLeftY, mapType);
 		placedRectangle.rectangle = Rectangle.fromSize(width, height);
 		return placedRectangle;
 	}
@@ -66,28 +69,28 @@ public class PlacedRectangle implements Serializable {
 	
 	public Position topLeftPosition() {
 		return Position.fromCoordinates(topLeftAnchor.getX(),
-				topLeftAnchor.getY());
+				topLeftAnchor.getY(), mapType);
 	}
 
 	public Position topRightPosition() {
 		return Position.fromCoordinates(topLeftAnchor.getX() + this.width(),
-				topLeftAnchor.getY());
+				topLeftAnchor.getY(), mapType);
 	}
 
 	public Position bottomLeftPosition() {
 		return Position.fromCoordinates(topLeftAnchor.getX(),
-				topLeftAnchor.getY() + this.height());
+				topLeftAnchor.getY() + this.height(), mapType);
 	}
 
 	public Position bottomRightPosition() {
 		return Position.fromCoordinates(topLeftAnchor.getX() + this.width(),
-				topLeftAnchor.getY() + this.height());
+				topLeftAnchor.getY() + this.height(), mapType);
 	}
 
 	public Position centerPosition() {
 		return Position.fromCoordinates(
 				topLeftAnchor.getX() + this.width() / 2.0f,
-				topLeftAnchor.getY() + this.height() / 2.0f);
+				topLeftAnchor.getY() + this.height() / 2.0f, mapType);
 	}
 
 	public void scale(float scaleFactor) {
@@ -103,9 +106,13 @@ public class PlacedRectangle implements Serializable {
 		float widthNew = this.rectangle.getWidth();
 		float heightNew = this.rectangle.getHeight();
 		
-		this.topLeftAnchor = Position.fromCoordinates(xCenterNew - (widthNew / 2), yCenterNew - (heightNew / 2));
+		this.topLeftAnchor = Position.fromCoordinates(xCenterNew - (widthNew / 2), yCenterNew - (heightNew / 2), mapType);
 	}
-	
+
+	public MapType getMapType() {
+		return mapType;
+	}
+
 	public void shift(float offsetX, float offsetY) {
 		this.topLeftAnchor.shift(offsetX, offsetY);
 	}
@@ -129,7 +136,7 @@ public class PlacedRectangle implements Serializable {
 			float ymax2 = otherPlacedRectangle.y() + otherPlacedRectangle.height();
 			float ymax = Math.min(ymax1, ymax2);
 			if (ymax > ymin) {
-				return fromAnchorAndSize(xmin, ymin, xmax - xmin, ymax - ymin);
+				return fromAnchorAndSize(xmin, ymin, xmax - xmin, ymax - ymin, mapType);
 			}
 		}
 		return null;

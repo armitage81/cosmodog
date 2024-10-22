@@ -75,7 +75,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 				if (directionType == DirectionType.RIGHT) {
 					newMoveablePosX++;
 				}
-				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, Position.fromCoordinates(newMoveablePosX, newMoveablePosY));
+				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, Position.fromCoordinates(newMoveablePosX, newMoveablePosY, moveableActor.getPosition().getMapType()));
 				if (collisionStatusForMoveable.isPassable()) {
 					retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
 				} else {

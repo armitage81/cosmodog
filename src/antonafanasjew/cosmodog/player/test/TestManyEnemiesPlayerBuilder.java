@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -12,7 +13,7 @@ public class TestManyEnemiesPlayerBuilder extends AbstractPlayerBuilder {
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPosition(Position.fromCoordinates(33, 326));
+		player.setPosition(Position.fromCoordinates(33, 326, MapType.MAIN));
 		player.setMaxLife(100);
 		player.setLife(100);
 		VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());

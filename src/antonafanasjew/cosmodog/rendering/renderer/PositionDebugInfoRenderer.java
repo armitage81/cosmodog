@@ -58,21 +58,19 @@ public class PositionDebugInfoRenderer extends AbstractRenderer {
 		relevantPositions.addAll(collectiblePositions);
 		relevantPositions.addAll(enemiesHoldingItems);
 				
-		Collections.sort(relevantPositions, new Comparator<Position>() {
+		relevantPositions.sort(new Comparator<Position>() {
 
-			@Override
-			public int compare(Position o1, Position o2) {
-				Position o1Pos = Position.fromCoordinates(o1.getX(), o1.getY());
-				Position o2Pos = Position.fromCoordinates(o2.getX(), o2.getY());
-				Position playerPos = player.getPosition();
-				
-				float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
-				float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
-				
-				return Float.compare(distance1, distance2);
-			}
+            @Override
+            public int compare(Position o1, Position o2) {
+                Position playerPos = player.getPosition();
 
-		});
+                float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1, playerPos);
+                float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2, playerPos);
+
+                return Float.compare(distance1, distance2);
+            }
+
+        });
 		
 		String closestCollectiblePosition = relevantPositions.isEmpty() ? "No Collectibles" : relevantPositions.getFirst().toString();
 		

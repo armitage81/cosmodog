@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -15,7 +16,7 @@ public class TestDamagingLastBossPlayerBuilder extends AbstractPlayerBuilder {
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPosition(Position.fromCoordinates(231, 258));
+		player.setPosition(Position.fromCoordinates(231, 258, MapType.MAIN));
 		player.setMaxLife(100);
 		player.setLife(100);
 		

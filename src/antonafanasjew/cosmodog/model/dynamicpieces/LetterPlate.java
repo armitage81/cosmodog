@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -101,7 +102,7 @@ public class LetterPlate extends DynamicPiece {
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
 				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> Something is wrong.");
 				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> I must start anew.");
-				RespawnAction wrongSequenceConsequenceAction = new RespawnAction(Position.fromCoordinates(218, 191), true, true);
+				RespawnAction wrongSequenceConsequenceAction = new RespawnAction(Position.fromCoordinates(218, 191, MapType.MAIN), true, true);
 				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, wrongSequenceConsequenceAction);
 			}
 		}

@@ -265,7 +265,7 @@ public class InitializationUtils {
 				for (int i = 0; i < positionsX.size(); i++) {
 					int posX = positionsX.get(i);
 					int posY = positionsY.get(i);
-					sokobanGoalsPositions.add(Position.fromCoordinates(posX, posY));
+					sokobanGoalsPositions.add(Position.fromCoordinates(posX, posY, map.getMapType()));
 				}
 
 			}
@@ -282,7 +282,7 @@ public class InitializationUtils {
 			
 			int x = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosX"));
 			int y = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosY"));
-			Position playerStartPosition = Position.fromCoordinates(x, y);
+			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapType());
 
 			String resetableValue = (String)moveableGroupRegion.getProperties().get("resetable");
 			boolean resetable = resetableValue == null || Boolean.parseBoolean(resetableValue);
@@ -309,7 +309,7 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l);
+				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = map.getTileId(position, collectiblesLayerIndex);
 
@@ -345,7 +345,7 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l);
+				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = customTiledMap.getTileId(position, Layers.LAYER_META_EFFECTS);
 
@@ -392,7 +392,7 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l);
+				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
@@ -510,7 +510,7 @@ public class InitializationUtils {
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_ALIEN_BASE_BLOCKADE.getTileId()) {
-					AlienBaseBlockade alienBaseBlockade = AlienBaseBlockade.create(k, l);
+					AlienBaseBlockade alienBaseBlockade = AlienBaseBlockade.create(Position.fromCoordinates(k, l, map.getMapType()));
 					map.getDynamicPieces().put(AlienBaseBlockade.class, alienBaseBlockade);
 				}
 
@@ -843,9 +843,9 @@ public class InitializationUtils {
 						int w = customTiledMap.getTileWidth();
 						int h = customTiledMap.getTileHeight();
 
-						PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h);
+						PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h, enemy.getPosition().getMapType());
 
-						boolean intersects = CollisionUtils.intersects(r, homeRegion);
+						boolean intersects = CollisionUtils.intersects(r, enemy.getPosition().getMapType(), homeRegion);
 
 						if (intersects) {
 							enemy.setHomeRegionName(homeRegion.getName());

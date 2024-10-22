@@ -33,7 +33,7 @@ public class PlayerInPlatformAsObstacleCollisionValidatorForNpc extends Abstract
 		PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)ApplicationContextUtils.getPlayer().getInventory().get(InventoryItemType.PLATFORM);
 		
 		if (platformInventoryItem != null) { //That is, the player is "having" it, or sitting in it, and hence being the obstacle itself
-			Position firstPathPosition = Position.fromCoordinates(playerMovementActionResult.getPath().getX(1), playerMovementActionResult.getPath().getY(1));
+			Position firstPathPosition = Position.fromCoordinates(playerMovementActionResult.getPath().getX(1), playerMovementActionResult.getPath().getY(1), map.getMapType());
 			blocked = CosmodogMapUtils.isTileOnPlatform(position, firstPathPosition);
 		}
 		return CollisionStatus.instance(actor, map, position, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));

@@ -56,7 +56,11 @@ public class Vision implements Serializable {
                 continue;
             }
 
-            retVal.add(Position.fromCoordinates(visionElementX, visionElementY));
+            retVal.add(Position.fromCoordinates(
+                    visionElementX,
+                    visionElementY,
+                    observer.getPosition().getMapType()
+            ));
         }
 
         return retVal;

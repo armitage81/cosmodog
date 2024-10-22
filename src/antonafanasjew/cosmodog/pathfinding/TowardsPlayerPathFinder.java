@@ -114,9 +114,9 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		List<Position> notBlockedPositions = Lists.newArrayList();
 		for (int i = 0; i < xs.length; i++) {
 			//Log.debug("Target candidate: " + xs[i] + "/" + ys[i]);
-			if (collisionValidator.collisionStatus(game, actor, map, Position.fromCoordinates(xs[i], ys[i])).isPassable()) {
+			if (collisionValidator.collisionStatus(game, actor, map, Position.fromCoordinates(xs[i], ys[i], player.getPosition().getMapType())).isPassable()) {
 				//Log.debug("It is NOT blocked");
-				notBlockedPositions.add(Position.fromCoordinates(xs[i], ys[i]));
+				notBlockedPositions.add(Position.fromCoordinates(xs[i], ys[i], player.getPosition().getMapType()));
 			}
 		}
 		
@@ -130,9 +130,9 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 			public int compare(Position p1, Position p2) {
 				//Log.debug("Comparing positons: " + p1.getX() + "/" + p1.getY() + " and " + p2.getX() + "/" + p2.getY());
 				
-				float dp1 = distanceToActorTargetPosition(p1, Position.fromCoordinates(finalX, finalY));
+				float dp1 = distanceToActorTargetPosition(p1, Position.fromCoordinates(finalX, finalY, player.getPosition().getMapType()));
 				//Log.debug("Distance of p1 to player: " + dp1);
-				float dp2 = distanceToActorTargetPosition(p2, Position.fromCoordinates(finalX, finalY));
+				float dp2 = distanceToActorTargetPosition(p2, Position.fromCoordinates(finalX, finalY, player.getPosition().getMapType()));
 				//Log.debug("Distance of p2 to player: " + dp2);
 				
 				if (dp1 < dp2) {

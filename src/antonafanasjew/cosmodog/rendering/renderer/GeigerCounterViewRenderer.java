@@ -45,7 +45,7 @@ public class GeigerCounterViewRenderer implements Renderer {
 		for (int i = xMin; i <= xMax; i++) {
 			for (int j = yMin; j <= yMax; j++) {
 				radiationInfos[i - xMin][j - yMin] = false;
-				Position position = Position.fromCoordinates(i, j);
+				Position position = Position.fromCoordinates(i, j, map.getMapType());
 				int radiationTileId = map.getTileId(position, Layers.LAYER_META_RADIATION);
 				if (TileType.RADIATION.getTileId() == radiationTileId) {
 					radiationInfos[i - xMin][j - yMin] = true;

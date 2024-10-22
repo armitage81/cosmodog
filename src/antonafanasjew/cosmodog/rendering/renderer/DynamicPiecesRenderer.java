@@ -78,7 +78,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		graphics.translate(x, y);
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(Position.fromCoordinates(tileNoX, tileNoY), tilesW, tilesH, 2);
+		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(Position.fromCoordinates(tileNoX, tileNoY, map.getMapType()), tilesW, tilesH, 2);
 
 		Collection<DynamicPiece> blocks = dynamicPieces.get(Block.class);
 

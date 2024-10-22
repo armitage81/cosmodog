@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
@@ -16,7 +17,7 @@ public class TestVehicleOnPlatformBugPlayerBuilder extends AbstractPlayerBuilder
 	@Override
 	protected void updatePlayer(Player player) {
 
-		player.setPosition(Position.fromCoordinates(24, 103));
+		player.setPosition(Position.fromCoordinates(24, 103, MapType.MAIN));
 		
 		player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -12,7 +13,7 @@ public class TestAlertStatusPlayerBuilder extends AbstractPlayerBuilder {
 	protected void updatePlayer(Player player) {
 
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-		player.setPosition(Position.fromCoordinates(265, 374));
+		player.setPosition(Position.fromCoordinates(265, 374, MapType.MAIN));
 		player.setMaxLife(100);
 		player.setLife(100);
 		

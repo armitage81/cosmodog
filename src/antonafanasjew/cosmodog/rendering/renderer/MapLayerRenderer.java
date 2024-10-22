@@ -78,7 +78,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 			for (int tilePositionOnMapX = camPositionOnMapInTilesX; tilePositionOnMapX < camPositionOnMapInTilesX + camViewWidthInTiles; tilePositionOnMapX++) {
 				for (int tilePositionOnMapY = camPositionOnMapInTilesY; tilePositionOnMapY < camPositionOnMapInTilesY + camViewHeightInTiles; tilePositionOnMapY++) {
 
-					Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY);
+					Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY, map.getMapType());
 					if (!tilePosition.inMapBounds(map)) {
 						continue;
 					}

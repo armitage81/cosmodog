@@ -268,7 +268,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 						public void onTrigger() {
 							
 							
-							DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
+							DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY, player.getPosition().getMapType()));
 							if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
 								applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
 							}
@@ -305,7 +305,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 								//BTW, this part is not entirely correct, as interaction with dynamic pieces will happen only in 
 								//case if they are blocking passage (e.g. not destroyed stones)
 								//But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
-								DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY));
+								DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY, player.getPosition().getMapType()));
 								if (dynamicPiece != null) {
 									dynamicPiece.interact();
 								}

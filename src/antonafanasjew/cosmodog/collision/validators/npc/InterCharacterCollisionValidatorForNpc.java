@@ -77,7 +77,7 @@ public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionVal
 			} else { //Actor is moving, so his target tile is blocked.
 				Path oneActorsPath = oneActorsMovementActionResult.getPath();
 				Step oneActorsLastStep = oneActorsPath.getStep(oneActorsPath.getLength() - 1);
-				blockedPos = Position.fromCoordinates(oneActorsLastStep.getX(), oneActorsLastStep.getY());
+				blockedPos = Position.fromCoordinates(oneActorsLastStep.getX(), oneActorsLastStep.getY(), map.getMapType());
 			}
 			
 			

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.player.test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.AntidoteInventoryItem;
@@ -25,7 +26,7 @@ public class TestFullyEquippedPlayerBuilder extends AbstractPlayerBuilder {
 	protected void updatePlayer(Player player) {
 		player.setMaxLife(100);
 		player.setLife(100);
-		player.setPosition(Position.fromCoordinates(7, 22));
+		player.setPosition(Position.fromCoordinates(7, 22, MapType.MAIN));
 		
 		player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 		player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new GeigerZaehlerInventoryItem());

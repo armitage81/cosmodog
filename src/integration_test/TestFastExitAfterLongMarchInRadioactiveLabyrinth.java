@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -21,7 +22,7 @@ public class TestFastExitAfterLongMarchInRadioactiveLabyrinth {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(107, 153));
+				player.setPosition(Position.fromCoordinates(107, 153, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 

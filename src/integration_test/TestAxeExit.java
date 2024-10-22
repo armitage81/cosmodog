@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -17,7 +18,7 @@ public class TestAxeExit {
 
             @Override
             protected void updatePlayer(Player player) {
-                player.setPosition(Position.fromCoordinates(119, 209));
+                player.setPosition(Position.fromCoordinates(119, 209, MapType.MAIN));
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("119/203;119/209"));

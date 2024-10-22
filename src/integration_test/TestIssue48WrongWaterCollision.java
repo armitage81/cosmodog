@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -19,7 +20,7 @@ public class TestIssue48WrongWaterCollision {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(38, 269));
+				player.setPosition(Position.fromCoordinates(38, 269, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());

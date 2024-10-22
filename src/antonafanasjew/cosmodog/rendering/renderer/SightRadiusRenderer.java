@@ -65,7 +65,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
 
-		Position position = Position.fromCoordinates(tileNoX, tileNoY);
+		Position position = Position.fromCoordinates(tileNoX, tileNoY, map.getMapType());
 
 		Set<Enemy> enemies = map.visibleEnemies(position, tilesW, tilesH, 2);
 		
@@ -136,12 +136,12 @@ public class SightRadiusRenderer extends AbstractRenderer {
 						continue;
 					}
 
-					Position tilePosition = Position.fromCoordinates(i, j);
+					Position tilePosition = Position.fromCoordinates(i, j, enemy.getPosition().getMapType());
 					if (visiblePositions.contains(tilePosition)) {
 						if (playerInSightRange) {
-							alertMarkers.add(Position.fromCoordinates(i, j));
+							alertMarkers.add(Position.fromCoordinates(i, j, enemy.getPosition().getMapType()));
 						} else {
-							sightMarkers.add(Position.fromCoordinates(i, j));
+							sightMarkers.add(Position.fromCoordinates(i, j, enemy.getPosition().getMapType()));
 						}
 					}
 				}

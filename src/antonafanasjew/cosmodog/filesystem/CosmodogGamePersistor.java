@@ -108,7 +108,7 @@ public class CosmodogGamePersistor {
 				float oldZoomFactor = game.getCam().getZoomFactor();
 				Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
-				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapType());
 				cam.focusOnPiece(game, 0, 0, game.getPlayer());
 				cam.zoom(oldZoomFactor);
 				game.setCam(cam);
