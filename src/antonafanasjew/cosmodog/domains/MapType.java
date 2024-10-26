@@ -3,7 +3,8 @@ package antonafanasjew.cosmodog.domains;
 public enum MapType {
 
     MAIN("data/maps/map_main.tmx", 400, 400),
-    ALTERNATIVE("data/maps/map_alternative.tmx", 400, 400);
+    ALTERNATIVE("data/maps/map_alternative.tmx", 400, 400),
+    SPACE("data/maps/map_space.tmx", 400, 400);
 
     private final String mapPath;
     private final int width;

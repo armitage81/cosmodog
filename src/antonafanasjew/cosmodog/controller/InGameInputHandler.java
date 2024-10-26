@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.controller;
 
 import java.io.Serial;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -385,7 +386,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//TODO: This is a test for plane change. Remove it later.
 		if (input.isKeyPressed(Input.KEY_P)) {
 			MapType currentMapType = player.getPosition().getMapType();
-			player.setPosition(Position.fromCoordinates(player.getPosition().getX(), player.getPosition().getY(), currentMapType == MapType.MAIN ? MapType.ALTERNATIVE : MapType.MAIN));
+			int next = (Arrays.stream(MapType.values()).toList().indexOf(currentMapType) + 1) % MapType.values().length;
+			player.setPosition(Position.fromCoordinates(player.getPosition().getX(), player.getPosition().getY(), Arrays.stream(MapType.values()).toList().get(next)));
 			player.endSwitchingPlane();
 		}
 
