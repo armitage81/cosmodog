@@ -61,6 +61,10 @@ public class Position implements Serializable {
 		this.y += offsetY;
 	}
 
+	public void switchPlane(MapType mapType) {
+		this.mapType = mapType;
+	}
+
 	public Position copy() {
         return Position.fromCoordinates(this.x, this.y, this.mapType);
 	}

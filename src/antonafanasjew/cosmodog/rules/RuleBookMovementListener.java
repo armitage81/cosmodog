@@ -30,5 +30,5 @@ public class RuleBookMovementListener extends MovementListenerAdapter {
 	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
 		GameEventUtils.throwEvent(new GameEventTeleported());
 	}
-	
+
 }

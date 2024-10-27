@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.actors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.listener.life.ComposedLifeListener;
 import antonafanasjew.cosmodog.listener.life.LifeListener;
 import antonafanasjew.cosmodog.listener.movement.ComposedMovementListener;
@@ -67,7 +68,12 @@ public abstract class Actor extends Piece {
 	public void endSwitchingPlane() {
 		composedMovementListener.afterSwitchingPlane(this, ApplicationContext.instance());
 	}
-	
+
+	public void switchPlane(MapType mapType) {
+		this.getPosition().switchPlane(mapType);
+		endSwitchingPlane();
+	}
+
 	public void shiftHorizontal(int positionOffset) {
 		Position position1 = this.getPosition();
 		Position position2 = this.getPosition().shifted(positionOffset, 0);

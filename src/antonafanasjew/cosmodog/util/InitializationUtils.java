@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
 import org.newdawn.slick.SlickException;
@@ -601,36 +602,66 @@ public class InitializationUtils {
 		ResourceWrapperBuilder<Rule> ruleBuilder;
 		Map<String, GenericResourceWrapper<Rule>> ruleResourceWrappers;
 
-		// Add all region dependent dialog rules.
+		//Space lift rules
+		for (MapType mapType : MapType.values()) {
+
+			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+
+			TiledObjectGroup liftObjectGroup = map.getCustomTiledMap().getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_LIFTS);
+
+			if (liftObjectGroup == null) {
+				continue;
+			}
+
+			List<TiledObject> liftRegions = liftObjectGroup.getObjects().values().stream().toList();
+
+			for (TiledObject liftRegion : liftRegions) {
+				RuleTrigger enterLiftTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_LIFTS, liftRegion.getName());
+				AsyncAction notificationAsyncAction = new PopUpNotificationAction("Initializing the space lift.");
+				RuleAction notificationRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, notificationAsyncAction);
+				AsyncAction changePositionAsyncAction = new FixedLengthAsyncAction(500) {
+					@Override
+					public void onEnd() {
+						Player player = ApplicationContextUtils.getPlayer();
+						MapType targetMapType = MapType.valueOf(liftRegion.getProperties().get("targetMap"));
+						player.switchPlane(targetMapType);
+					}
+				};
+				RuleAction changePositionAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, changePositionAsyncAction);
+				RuleAction composedAction = new BlockAction(notificationRuleAction, changePositionAction);
+				Rule spaceliftAtCosmodromRule = new Rule("SpaceLiftRule_" + mapType + "." + liftRegion.getName(), Lists.newArrayList(GameEventChangedPosition.class), enterLiftTrigger, composedAction, Rule.RULE_PRIORITY_LATEST);
+				ruleBook.put(spaceliftAtCosmodromRule.getId(), spaceliftAtCosmodromRule);
+			}
+		}
+		// Region dependent dialog rules.
 		ruleBuilder = new RegionDependentDialogRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 
-		// Add all region dependent popup rules (e.g. tutorial messages)
+		// Region dependent popup rules (e.g. tutorial messages)
 		ruleBuilder = new RegionDependentPopupRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 
-		// Add all multiinstance piece collection dialog rules.
+		// Multiinstance piece collection dialog rules.
 		ruleBuilder = new MultiInstancePieceRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 
-		// Add all item notification rules.
+		// Item notification rules.
 		ruleBuilder = new ItemNotificationRuleBuilder();
 		ruleResourceWrappers = ruleBuilder.build();
 		for (String s : ruleResourceWrappers.keySet()) {
 			ruleBook.put(s, ruleResourceWrappers.get(s).getEntity());
 		}
 
-		// Beginning of the game.
-
+		// Tutorials at the beginning of the game.
 		List<RuleAction> tutorialActions = Lists.newArrayList();
 
 		for (int i = 0; i < TutorialUtils.INITIAL_TUTORIAL_TEXTS.size(); i++) {
@@ -643,15 +674,9 @@ public class InitializationUtils {
 			tutorialRegistrationAction = new FeatureBoundAction(Features.FEATURE_TUTORIAL, tutorialRegistrationAction);
 			tutorialActions.add(tutorialRegistrationAction);
 		}
-
-		
-		
-		
-		
 		List<RuleAction> atTheBeginningActions = Lists.newArrayList();
 		atTheBeginningActions.add(new SetGameProgressPropertyAction(GameProgress.GAME_PROGRESS_PROPERTY_AFTERLANDING, "true"));
 		atTheBeginningActions.addAll(tutorialActions);
-
 		Rule rule = new Rule(Rule.RULE_DIALOG_AFTER_LANDING, new NewGameTrigger(), BlockAction.block(atTheBeginningActions));
 		ruleBook.put(rule.getId(), rule);
 
@@ -740,8 +765,6 @@ public class InitializationUtils {
 		rule = new Rule(Rule.RULE_PICK_UP_BLUE_KEYCARD, Lists.newArrayList(GameEventChangedPosition.class), approachBlueKeyCardTrigger, pickUpBlueKeyCardAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 		
-		
-		
 		//Open gate rule.
 		RuleTrigger openGateTrigger = OrTrigger.or(
 				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch1"),
@@ -754,8 +777,7 @@ public class InitializationUtils {
 		RuleAction updateAlienBaseGateSequenceAction = new UpdateAlienBaseGateSequenceAction();
 		rule = new Rule(Rule.RULE_OPEN_GATE_TO_LAUNCH_POD, Lists.newArrayList(GameEventChangedPosition.class), openGateTrigger, updateAlienBaseGateSequenceAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
-		
-		
+
 		RuleTrigger activateTeleportTrigger = OrTrigger.or(
 				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole1"),
 				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole2"),
@@ -768,12 +790,13 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 		
 		
-		
+		// Last boss damage.
 		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
 		RuleAction damageLastBossAction = new DamageLastBossAction();
 		rule = new Rule(Rule.RULE_DAMAGE_LAST_BOSS, Lists.newArrayList(GameEventChangedPosition.class), damageLastBossTrigger, damageLastBossAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
-		
+
+		// Secret found
 		for (MapType mapType : MapType.values()) {
 			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
 			TiledObjectGroup secretsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_SECRETS);
