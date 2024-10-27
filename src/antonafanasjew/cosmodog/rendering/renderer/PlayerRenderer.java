@@ -42,6 +42,8 @@ import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.impl.PlayerAttackingFightPhaseTransition;
 
+import java.util.Optional;
+
 public class PlayerRenderer extends AbstractRenderer {
 
 	
@@ -73,13 +75,13 @@ public class PlayerRenderer extends AbstractRenderer {
 
 		RespawnAction respawnAction = (RespawnAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.RESPAWNING);
 		if (respawnAction != null) {
-			AsyncAction phase = respawnAction.getActionPhaseRegistry().getRegisteredAction(AsyncActionType.CUTSCENE);
+			Optional<AsyncAction> phase = respawnAction.getPhaseRegistry().currentPhase();
 
-			if (phase == null && !respawnAction.isShowPlayerWhenFadingOut()) {
+			if (phase.isEmpty() && !respawnAction.isShowPlayerWhenFadingOut()) {
 				return;
 			}
 
-			if (phase instanceof FadingAction fadingPhase) {
+			if (phase.isPresent() && phase.get() instanceof FadingAction fadingPhase) {
 				if (fadingPhase.isFadingInNotFadingOut() && !respawnAction.isShowPlayerWhenFadingIn()) {
 					return;
 				};

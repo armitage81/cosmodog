@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.swing.JFrame;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.topology.Vector;
@@ -91,7 +92,7 @@ public class StartParticleFrame {
 				while (true) {
 					
 					long timeOffset = new Date().getTime() - INITIAL_TIMESTAMP;
-					PlacedRectangle cam = PlacedRectangle.fromAnchorAndSize(CAM_OFFSET.getX(), CAM_OFFSET.getY(), frame.getContentPane().getWidth(), frame.getContentPane().getHeight());
+					PlacedRectangle cam = PlacedRectangle.fromAnchorAndSize(CAM_OFFSET.getX(), CAM_OFFSET.getY(), frame.getContentPane().getWidth(), frame.getContentPane().getHeight(), MapType.MAIN);
 					CURRENT_PARTICLE_PATTERN = newPattern(MOVEMENT_FUNCTION, cam, timeOffset);
 										
 					frame.invalidate();

@@ -125,15 +125,15 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 	 * That means that the initial point includes the zoom factor. That's why it must be divided by the latter.
 	 */
 	@Override
-	public void onTrigger() {
+	public void onTriggerInternal() {
 		float initialCamX = cosmodogGame.getCam().viewCopy().centerX() / cosmodogGame.getCam().getZoomFactor();
 		float initialCamY = cosmodogGame.getCam().viewCopy().centerY() / cosmodogGame.getCam().getZoomFactor();
 
 		Position initialCamPosition = Position.fromCoordinates(initialCamX, initialCamY, camCenteringPosition.getMapType());
 
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, camCenteringPosition, cosmodogGame));
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new CamMovementAction(camMovementDuration, initialCamPosition, cosmodogGame));
+		getPhaseRegistry().registerPhase(new CamMovementAction(camMovementDuration, camCenteringPosition, cosmodogGame));
+		getPhaseRegistry().registerPhase(underlyingAsyncAction);
+		getPhaseRegistry().registerPhase(new CamMovementAction(camMovementDuration, initialCamPosition, cosmodogGame));
 
 	}
 
@@ -156,15 +156,4 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 		cosmodogGame.getCam().focusOnPiece(cosmodogGame, 0, 0, player);
 	}
 
-	/**
-	 * States whether the action is finished.
-	 * <p>
-	 * This is the case when the last phase of the action has been unregistered and the phase registry is empty.
-	 *
-	 * @return true if the action has finished, false otherwise.
-	 */
-	@Override
-	public boolean hasFinished() {
-		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.CUTSCENE);
-	}
 }

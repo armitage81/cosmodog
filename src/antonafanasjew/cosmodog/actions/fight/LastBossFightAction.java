@@ -72,19 +72,10 @@ public class LastBossFightAction extends PhaseBasedAction {
 	 * Take note: There is no actual fight in this action, the destruction action is just reused.
 	 */
 	@Override
-	public void onTrigger() {
+	public void onTriggerInternal() {
 		Player player = ApplicationContextUtils.getPlayer();
 		EnemyDestructionActionPhase enemyDestructionActionPhase = new DefaultEnemyDestructionActionPhase(player, guardian);
-		getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT, enemyDestructionActionPhase);
+		getPhaseRegistry().registerPhase(enemyDestructionActionPhase);
 	}
 
-	/**
-	 * Returns true if the action is finished.
-	 * The action is finished when the phase registry does not contain any phases of type FIGHT.
-	 * Since there is currently only one phase, the action is finished when the destruction phase is finished.
-	 */
-	@Override
-	public boolean hasFinished() {
-		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.FIGHT);
-	}
 }

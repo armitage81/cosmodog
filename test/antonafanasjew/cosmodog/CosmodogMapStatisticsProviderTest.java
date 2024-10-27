@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog;
 import java.util.Map;
 import java.util.function.Function;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -76,10 +77,10 @@ public class CosmodogMapStatisticsProviderTest {
 		int chartPieceWidthInTiles = 2;
 		int chartPieceHeightInTiles = 2;
 		CollectibleGoodie g = new CollectibleGoodie(GoodieType.infobit);
-		Position p1 = Position.fromCoordinates(0, 0);
-		Position p2 = Position.fromCoordinates(1, 1);
-		Position p3 = Position.fromCoordinates(2, 0);
-		Position p4 = Position.fromCoordinates(0, 2);
+		Position p1 = Position.fromCoordinates(0, 0, MapType.MAIN);
+		Position p2 = Position.fromCoordinates(1, 1, MapType.MAIN);
+		Position p3 = Position.fromCoordinates(2, 0, MapType.MAIN);
+		Position p4 = Position.fromCoordinates(0, 2, MapType.MAIN);
 		Map<Position, Piece> map = Maps.newHashMap();
 		map.put(p1,  g);
 		map.put(p2,  g);
@@ -87,10 +88,10 @@ public class CosmodogMapStatisticsProviderTest {
 		map.put(p4,  g);
 		Map<Position, Integer> result = CosmodogMapStatisticsProvider.getInstance().infobitValuePerChartPiece(map, Sets.newHashSet(), chartPieceWidthInTiles, chartPieceHeightInTiles);
 		
-		Position m1 = Position.fromCoordinates(0f, 0f);
-		Position m2 = Position.fromCoordinates(0f, 1f);
-		Position m3 = Position.fromCoordinates(1f, 0f);
-		Position m4 = Position.fromCoordinates(1f, 1f);
+		Position m1 = Position.fromCoordinates(0f, 0f, MapType.MAIN);
+		Position m2 = Position.fromCoordinates(0f, 1f, MapType.MAIN);
+		Position m3 = Position.fromCoordinates(1f, 0f, MapType.MAIN);
+		Position m4 = Position.fromCoordinates(1f, 1f, MapType.MAIN);
 		
 		assertEquals(2, (int)result.get(m1));
 		assertEquals(1, (int)result.get(m2));

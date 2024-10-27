@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.camera.test;
 
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +19,8 @@ public class CamTest {
 	@BeforeEach
 	public void init() throws CamPositioningException {
 		originalScene = Rectangle.fromSize(1000, 1000);
-		originalView = PlacedRectangle.fromAnchorAndSize(0, 0, 50, 50);
-		cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, originalScene, 0, 0, originalView.width(), originalView.height());
+		originalView = PlacedRectangle.fromAnchorAndSize(0, 0, 50, 50, MapType.MAIN);
+		cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, originalScene, 0, 0, originalView.width(), originalView.height(), MapType.MAIN);
 	}
 	
 	//Slightly shift.

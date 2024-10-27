@@ -54,12 +54,12 @@ public class TeleportationAction extends PhaseBasedAction {
 	 * of the teleportation are registered in the local action phase registry.
 	 */
 	@Override
-	public void onTrigger() {
+	public void onTriggerInternal() {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.beginTeleportation();
-		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new TeleportStartActionPhase(1000));
-		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new ActualTeleportationActionPhase(1000, teleportConnection));
-		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new TeleportEndActionPhase(1000));
+		getPhaseRegistry().registerPhase(new TeleportStartActionPhase(1000));
+		getPhaseRegistry().registerPhase(new ActualTeleportationActionPhase(1000, teleportConnection));
+		getPhaseRegistry().registerPhase(new TeleportEndActionPhase(1000));
 	}
 
 	/**
@@ -72,13 +72,4 @@ public class TeleportationAction extends PhaseBasedAction {
 		player.endTeleportation();
 	}
 
-	/**
-	 * The action ends when there are no phases with the type TELEPORTATION registered in the action phase registry.
-	 *
-	 * @return True if there are no phases with the type TELEPORTATION registered in the action phase registry. False otherwise.
-	 */
-	@Override
-	public boolean hasFinished() {
-		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.TELEPORTATION);
-	}
 }

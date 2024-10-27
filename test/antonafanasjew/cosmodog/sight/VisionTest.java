@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.sight;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
@@ -26,7 +27,7 @@ public class VisionTest {
         Actor actor = new Actor() {
             @Override
             public Position getPosition() {
-                return Position.fromCoordinates(2, 7);
+                return Position.fromCoordinates(2, 7, MapType.MAIN);
             }
 
             @Override
@@ -35,9 +36,9 @@ public class VisionTest {
             }
         };
 
-        Position element1 = Position.fromCoordinates(0f, 1f);
-        Position element2 = Position.fromCoordinates(0f, 2f);
-        Position element3 = Position.fromCoordinates(0f, 3f);
+        Position element1 = Position.fromCoordinates(0f, 1f, MapType.MAIN);
+        Position element2 = Position.fromCoordinates(0f, 2f, MapType.MAIN);
+        Position element3 = Position.fromCoordinates(0f, 3f, MapType.MAIN);
 
         //The observer is on pos 2/7 and looks up.
         //Visible positions are 2/6, 2/5, 2/4.

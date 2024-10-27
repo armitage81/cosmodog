@@ -20,15 +20,10 @@ public class PoisonDeactivationAction extends PhaseBasedAction {
 	}
 	
 	@Override
-	public void onTrigger() {
-		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new PoisonDeactivationStartActionPhase(1000, connection));
-		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new ActualPoisonDeactivationActionPhase(1000, connection));
-		getActionPhaseRegistry().registerAction(AsyncActionType.TELEPORTATION, new PoisonDeactivationEndActionPhase(300, connection));
+	public void onTriggerInternal() {
+		getPhaseRegistry().registerPhase(new PoisonDeactivationStartActionPhase(1000, connection));
+		getPhaseRegistry().registerPhase(new ActualPoisonDeactivationActionPhase(1000, connection));
+		getPhaseRegistry().registerPhase(new PoisonDeactivationEndActionPhase(300, connection));
 	}
 	
-	@Override
-	public boolean hasFinished() {
-		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.TELEPORTATION);
-	}
-
 }

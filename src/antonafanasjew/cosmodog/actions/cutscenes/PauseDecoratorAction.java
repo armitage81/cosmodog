@@ -58,22 +58,10 @@ public class PauseDecoratorAction  extends PhaseBasedAction {
 	 * be executed in order.
 	 */
 	@Override
-	public void onTrigger() {
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new WaitAction(durationBefore));
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, underlyingAsyncAction);
-		getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, new WaitAction(durationAfter));
+	public void onTriggerInternal() {
+		getPhaseRegistry().registerPhase(new WaitAction(durationBefore));
+		getPhaseRegistry().registerPhase(underlyingAsyncAction);
+		getPhaseRegistry().registerPhase(new WaitAction(durationAfter));
 	}
 
-	/**
-	 * States whether the action is finished.
-	 * <p>
-	 * This is the case when the last phase of the action has been unregistered and the phase registry is empty.
-	 *
-	 * @return true if the action has finished, false otherwise.
-	 */
-	@Override
-	public boolean hasFinished() {
-		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.CUTSCENE);
-	}
-	
 }

@@ -67,7 +67,7 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 	 * At the end of this method, the fight is decided and its execution is prepared. The fight is then played in the onUpdate method.
 	 */
 	@Override
-	public void onTrigger() {
+	public void onTriggerInternal() {
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		player.beginFight();
@@ -88,18 +88,6 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 	public void onEnd() {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.endFight();
-	}
-
-	/**
-	 * States whether the action is finished.
-	 * <p>
-	 * This is the case when the last phase of the action has been unregistered and the phase registry is empty.
-	 *
-	 * @return true if the action has finished, false otherwise.
-	 */
-	@Override
-	public boolean hasFinished() {
-		return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.FIGHT_FROM_PLATFORM);
 	}
 
 	/**
@@ -148,9 +136,9 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 			}
 			
 			AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(phaseResult);
-			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT_FROM_PLATFORM, attackActionPhase);
+			getPhaseRegistry().registerPhase(attackActionPhase);
 			EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy());
-			getActionPhaseRegistry().registerAction(AsyncActionType.FIGHT_FROM_PLATFORM, enemyDestructionActionPhase);
+			getPhaseRegistry().registerPhase(enemyDestructionActionPhase);
 		}
 	}
 }

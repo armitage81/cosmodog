@@ -17,6 +17,8 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
+import java.util.Optional;
+
 public class RespawnRenderer extends AbstractRenderer {
 
     @Override
@@ -42,13 +44,13 @@ public class RespawnRenderer extends AbstractRenderer {
         }
 
         float opacity = 1f;
-        AsyncAction currentAction = respawnAction.getActionPhaseRegistry().getRegisteredAction(AsyncActionType.CUTSCENE);
+        Optional<AsyncAction> currentAction = respawnAction.getPhaseRegistry().currentPhase();
 
-        if (currentAction == null) {
+        if (currentAction.isEmpty()) {
             opacity = 0;
         }
 
-        if (currentAction instanceof FadingAction fadingAction) {
+        if (currentAction.isPresent() && currentAction.get() instanceof FadingAction fadingAction) {
             opacity = fadingAction.getTransition().getValue();
 
             if (fadingAction.isFadingInNotFadingOut()) {

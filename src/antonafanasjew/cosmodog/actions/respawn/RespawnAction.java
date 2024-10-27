@@ -35,7 +35,7 @@ public class RespawnAction extends PhaseBasedAction {
     }
 
     @Override
-    public void onTrigger() {
+    public void onTriggerInternal() {
 
         CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
@@ -61,14 +61,9 @@ public class RespawnAction extends PhaseBasedAction {
 
         FadingAction fadingInAction = new FadingAction(FADING_IN_DURATION, true);
 
-        getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, fadingOutAction);
-        getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, respawnAction);
-        getActionPhaseRegistry().registerAction(AsyncActionType.CUTSCENE, fadingInAction);
-    }
-
-    @Override
-    public boolean hasFinished() {
-        return !getActionPhaseRegistry().isActionRegistered(AsyncActionType.CUTSCENE);
+        getPhaseRegistry().registerPhase(fadingOutAction);
+        getPhaseRegistry().registerPhase(respawnAction);
+        getPhaseRegistry().registerPhase(fadingInAction);
     }
 
 }
