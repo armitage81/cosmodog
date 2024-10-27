@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.fight;
 
+import com.google.common.collect.Lists;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,29 +17,21 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.view.transitions.AttackingFightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhaseTransition;
 
 import java.io.Serial;
+import java.util.List;
 
-/**
- * Represent an artillery attack action phase.
- * <p>
- * This class is in the hierarchy of EnemyAttackActionPhase, AttackActionPhase, AbstractFightActionPhase and FixedLengthAsyncAction.
- * <p>
- * At the beginning of the phase, the artillery shots sound is played and the artillery unit is turned south.
- * <p>
- * During the execution, 4 milestones are reached at 60%, 70%, 80% and 90% completion. These are the times where the hit sound is played.
- * (Visually, four grenades are hitting the player at the same time.)
- * <p>
- * During the whole phase, the fight phase transition is updated so the renderer can display the action.
- * <p>
- * At the end of the action, the damage is applied to the player. If the player has a vehicle, the vehicle's armor is decreased and potentially it explodes.
- * If the player does not have a vehicle, the player's life is decreased. (The death is handled by the life listener.)
- * Finally, the fight phase transition is set to null.
- */
 public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
+
+	private static final float VISIBLE_SALVE_TIME = 0.45f;
+
+	private static final float RISING_COMPLETION_THRESHOLD = VISIBLE_SALVE_TIME;
+	private static final float FALLING_COMPLETION_THRESHOLD = 1f - VISIBLE_SALVE_TIME;
+
+	private static final float VISIBLE_GRENADE_TIME = 0.1f;
+	private static final int MAX_GRENADES = 4;
+
+	private static final float TIME_INTERVAL_BETWEEN_GRENADES = (VISIBLE_SALVE_TIME - VISIBLE_GRENADE_TIME) / (MAX_GRENADES - 1);
 
 	@Serial
 	private static final long serialVersionUID = -847770758457510559L;
@@ -63,77 +56,38 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 	 */
 	private boolean milestone4 = false;
 
-	/**
-	 * Creates an artillery attack action phase from a fight phase result.
-	 * <p>
-	 * The fight phase result includes the attacker, the target and the damage dealt.
-	 * The duration of the action is hardcoded in the constant RANGED_ENEMY_ATTACK_ACTION_DURATION.
-	 *
-	 * @param fightPhaseResult Fight phase result including the attacker, the target and the damage dealt.
-	 */
 	public ArtilleryAttackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
 		super(Constants.RANGED_ENEMY_ATTACK_ACTION_DURATION, fightPhaseResult);
 	}
 	
 	
-	/**
-	 * Initializes the artillery attack action phase.
-	 * <p>
-	 * The artillery shots sound is played and the artillery unit is turned south.
-	 * <p>
-	 * The fight phase transition (defined as property of the superclass) is set to a new artillery attacking fight phase transition.
-	 * The player and the enemy are set in the transition.
-	 * The completion of the transition is set to 0.0f.
-	 */
 	@Override
 	public void onTrigger() {
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_ARTILLERY_SHOTS).play();
-		AttackingFightPhaseTransition fightPhaseTransition = new ArtilleryAttackingFightPhaseTransition();
-		fightPhaseTransition.setPlayer(getFightPhaseResult().getPlayer());
-		fightPhaseTransition.setEnemy(getFightPhaseResult().getEnemy());
-		fightPhaseTransition.setCompletion(0.0f);
-		setFightPhaseTransition(fightPhaseTransition);
 		getFightPhaseResult().getEnemy().setDirection(DirectionType.DOWN);
 	}
 
-	/**
-	 * Updates the artillery attack action phase.
-	 * <p>
-	 * The completion of the fight phase transition is updated in a linear fashion and is in the interval 0..1.
-	 * <p>
-	 * During the execution, 4 milestones are reached at 60%, 70%, 80% and 90% completion. These are the times where the hit sound is played.
-	 * (Visually, four grenades are hitting the player at the same time.)
-	 * <p>
-	 * The hit sound is played only once for each milestone.
-	 *
-	 * @param before Time offset of the last update as compared to the start of the action.
-	 * @param after Time offset of the current update. after - before = time passed since the last update.
-	 * @param gc GameContainer instance forwarded by the game state's update method.
-	 * @param sbg StateBasedGame instance forwarded by the game state's update method.
-	 */
 	@Override
-	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		
-		float completion = Math.min(getFightPhaseTransition().getCompletion(), 1.0f);
+	public void onUpdateInternal(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
 		boolean playSound = false;
 		
-		if (!milestone1 && (completion >= 0.6)) {
+		if (!milestone1 && (getCompletionRate() >= 0.6)) {
 			playSound = true;
 			milestone1 = true;
 		}
 		
-		if (!milestone2 && (completion >= 0.7)) {
+		if (!milestone2 && (getCompletionRate() >= 0.7)) {
 			playSound = true;
 			milestone2 = true;
 		}
 		
-		if (!milestone3 && (completion >= 0.8)) {
+		if (!milestone3 && (getCompletionRate() >= 0.8)) {
 			playSound = true;
 			milestone3 = true;
 		}
 		
-		if (!milestone4 && (completion >= 0.9)) {
+		if (!milestone4 && (getCompletionRate() >= 0.9)) {
 			playSound = true;
 			milestone4 = true;
 		}
@@ -142,22 +96,8 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
 		}
 
-		updateCompletion(before, after, gc, sbg);
 	}
 
-	/**
-	 * At the end of the action, the damage is applied to the player. If the player has a vehicle, the vehicle's armor is decreased and potentially it explodes.
-	 * If the player does not have a vehicle, the player's life is decreased. (The death is handled by the life listener.)
-	 * Finally, the fight phase transition is set to null.
-	 * <p>
-	 * The damage dealt is displayed as an overhead notification.
-	 * The explosion action is registered if the vehicle is destroyed.
-	 * The vehicle is removed from the player's inventory if it is destroyed.
-	 * <p>
-	 * Take note: The explosion of the vehicle is registered in the global action registry as an action.
-	 * TODO: Does it mean that the explosion is queued up after the whole fight action is finished? That would imply that the explosion happens only after all enemies have shot.
-	 * Take note: The explosion action is registered under the key AsyncActionType.MINE_EXPLOSION.
-	 */
 	@Override
 	public void onEnd() {
 		
@@ -180,6 +120,55 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 			player.decreaseLife(damage);
 		}
 		
-		setFightPhaseTransition(null);
+	}
+
+	public static class Grenade {
+		public boolean risingNotFalling; //Describes a rising grenade if true, falling otherwise;
+		public boolean leftNotRight; //Describes the grenade from the left cannon if true, right cannon otherwise.
+		public float relativeHeight; //Describes the relative height. 0f means just shot or landed, 1f means reached the max height
+
+		public String toString() {
+			return "Rising:" + (risingNotFalling ? "Yes" : "No") + " Left:" + (leftNotRight ? "Yes" : "No") + " RelH:" + relativeHeight;
+		}
+	}
+
+
+	public List<Grenade> grenades() {
+
+		List<Grenade> retVal = Lists.newArrayList();
+
+		float completion = getCompletionRate();
+
+		if (completion < RISING_COMPLETION_THRESHOLD) {
+			int numberOfVisibleGrenades = (int)(completion / TIME_INTERVAL_BETWEEN_GRENADES) + 1;
+			numberOfVisibleGrenades = Math.min(numberOfVisibleGrenades, MAX_GRENADES);
+			for (int i = 0; i < numberOfVisibleGrenades; i++) {
+				Grenade grenadeTransition = new Grenade();
+				grenadeTransition.leftNotRight = i % 2 == 0;
+				grenadeTransition.risingNotFalling = true;
+				grenadeTransition.relativeHeight = (completion - i * TIME_INTERVAL_BETWEEN_GRENADES) / VISIBLE_GRENADE_TIME;
+				if (grenadeTransition.relativeHeight <= 1.0f) {
+					retVal.add(grenadeTransition);
+				}
+			}
+		} else if (completion >= FALLING_COMPLETION_THRESHOLD) {
+			int numberOfVisibleGrenades = (int)((completion - FALLING_COMPLETION_THRESHOLD) / TIME_INTERVAL_BETWEEN_GRENADES) + 1;
+			numberOfVisibleGrenades = Math.min(numberOfVisibleGrenades, MAX_GRENADES);
+			for (int i = 0; i < numberOfVisibleGrenades; i++) {
+				Grenade grenadeTransition = new Grenade();
+				grenadeTransition.leftNotRight = i % 2 == 0;
+				grenadeTransition.risingNotFalling = false;
+				grenadeTransition.relativeHeight = 1 - ((completion - FALLING_COMPLETION_THRESHOLD - i * TIME_INTERVAL_BETWEEN_GRENADES) / VISIBLE_GRENADE_TIME);
+				if (grenadeTransition.relativeHeight >= 0f) {
+					retVal.add(grenadeTransition);
+				}
+			}
+		}
+
+		return retVal;
+	}
+
+	public boolean playerTakingDamage() {
+		return getCompletionRate() >= FALLING_COMPLETION_THRESHOLD;
 	}
 }

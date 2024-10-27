@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.rendering.renderer.pieces;
 
 import java.util.Map;
+import java.util.Optional;
 
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -22,15 +25,13 @@ import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
-import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.PlayerAttackingFightPhaseTransition;
 
 import com.google.common.collect.Maps;
 
 public class OccupiedPlatformRenderer extends AbstractRenderer {
 
-	private Map<DirectionType, String> platformDirection2animationKey = Maps.newHashMap();
+	private final Map<DirectionType, String> platformDirection2animationKey = Maps.newHashMap();
 	
 	public OccupiedPlatformRenderer() {
 		platformDirection2animationKey.put(DirectionType.RIGHT, "platformRight");
@@ -71,13 +72,13 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 			
 			ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
-			
-			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+
+			Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 			
 			MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 			
 			boolean playerIsMoving = playerTransition != null;
-			boolean playerIsFighting = fightPhaseTransition != null && fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
+			boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
 			boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 			
 			PlatformInventoryItem item = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
@@ -99,7 +100,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			
 			if (playerIsFighting) {
 									
-				float completion = fightPhaseTransition.getCompletion();
+				float completion = optFightPhase.get().getCompletionRate();
 
 				float fightOffset = 0.0f;
 				

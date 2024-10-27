@@ -38,6 +38,8 @@ public abstract class AttackActionPhase extends AbstractFightActionPhase {
 	public AttackActionPhase(int duration, FightActionResult.FightPhaseResult fightPhaseResult) {
 		super(duration);
 		this.fightPhaseResult = fightPhaseResult;
+		getProperties().put("player", getFightPhaseResult().getPlayer());
+		getProperties().put("enemy", getFightPhaseResult().getEnemy());
 	}
 
 	/**

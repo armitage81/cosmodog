@@ -2,6 +2,10 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncAction;
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.ArtilleryAttackActionPhase;
+import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
+import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.actions.generic.FadingAction;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import antonafanasjew.cosmodog.util.*;
@@ -34,12 +38,8 @@ import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.view.transitions.ActorTransition;
-import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.PlayerAttackingFightPhaseTransition;
 
 import java.util.Optional;
 
@@ -106,8 +106,8 @@ public class PlayerRenderer extends AbstractRenderer {
 		int tileNoY = camY / scaledTileLength;
 
 		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
-		
-		FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+
+		Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 		
 		Object action = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
 		MineExplosionAction mineExplosionAction = null;
@@ -134,7 +134,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki && !playerIsOnPlatform && !playerIsInPlatform;
 		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerTransition);
 		boolean playerIsMoving = playerTransition != null;
-		boolean playerIsFighting = fightPhaseTransition instanceof PlayerAttackingFightPhaseTransition;
+		boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 		boolean playerIsTakingDamage = false;
 		
@@ -144,10 +144,10 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerIsTakingDamage = true;
 		} else if (mineExplosionAction != null) {
 			playerIsTakingDamage = true;
-		} else if (fightPhaseTransition != null) {
-			if (fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition) {
-				if (fightPhaseTransition instanceof ArtilleryAttackingFightPhaseTransition) {
-					playerIsTakingDamage = ((ArtilleryAttackingFightPhaseTransition)fightPhaseTransition).playerTakingDamage();
+		} else if (optFightPhase.isPresent()) {
+			if (optFightPhase.get() instanceof EnemyAttackActionPhase) {
+				if (optFightPhase.get() instanceof ArtilleryAttackActionPhase) {
+					playerIsTakingDamage = ((ArtilleryAttackActionPhase)optFightPhase.get()).playerTakingDamage();
 				} else {
 					playerIsTakingDamage = true;
 				}
@@ -221,7 +221,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		if (playerIsFighting) {
 								
-			float completion = fightPhaseTransition.getCompletion();
+			float completion = optFightPhase.get().getCompletionRate();
 
 			float fightOffset = 0.0f;
 				

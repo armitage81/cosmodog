@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import java.util.Optional;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -23,8 +26,6 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.view.transitions.EnemyAttackingFightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
 
 public class SightRadiusRenderer extends AbstractRenderer {
 
@@ -92,15 +93,17 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			}
 
 
-			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+			Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 
 
-			if (fightPhaseTransition != null) {
-				if (fightPhaseTransition.getEnemy().equals(enemy)) {
+			if (optFightPhase.isPresent()) {
 
-					float completion = fightPhaseTransition.getCompletion();
+				Enemy fightPhaseEnemy = (Enemy)optFightPhase.get().getProperties().get("enemy");
+				if (fightPhaseEnemy.equals(enemy)) {
 
-					if (fightPhaseTransition instanceof EnemyAttackingFightPhaseTransition) {
+					float completion = optFightPhase.get().getCompletionRate();
+
+					if (optFightPhase.get() instanceof EnemyAttackActionPhase) {
 
 						if (completion > 0.5f) {
 							completion = 1.0f - completion;

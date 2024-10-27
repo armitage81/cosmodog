@@ -1,7 +1,10 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.List;
+import java.util.Optional;
 
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.ArtilleryAttackActionPhase;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -17,9 +20,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
-import antonafanasjew.cosmodog.view.transitions.FightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhaseTransition;
-import antonafanasjew.cosmodog.view.transitions.impl.ArtilleryAttackingFightPhaseTransition.GrenadeTransition;
 
 public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
@@ -59,21 +59,24 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 				continue;
 			}
 
-			FightPhaseTransition fightPhaseTransition = TransitionUtils.currentFightPhaseTransition();
+			Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 
-			boolean enemyIsFighting = fightPhaseTransition != null && fightPhaseTransition.getEnemy().equals(enemy); 
-			boolean enemyIsShooting = enemyIsFighting && fightPhaseTransition instanceof ArtilleryAttackingFightPhaseTransition;
+			boolean enemyIsFighting = optFightPhase.isPresent() && ((Enemy)optFightPhase.get().getProperties().get("enemy")).equals(enemy);
+			boolean enemyIsShooting = enemyIsFighting && (optFightPhase.get() instanceof ArtilleryAttackActionPhase);
 
 			if (!enemyIsShooting) {
 				continue;
 			}
 
+
+
 			// At this point we know that there is a ranged attack action
 			// currently going on where the attacker is the enemy and the
 			// defender is the player.
 
-			ArtilleryAttackingFightPhaseTransition artilleryAttackingFightPhaseTransition = (ArtilleryAttackingFightPhaseTransition) fightPhaseTransition;
-			List<GrenadeTransition> grenadeTransitions = artilleryAttackingFightPhaseTransition.grenadeTransitions();
+			ArtilleryAttackActionPhase artilleryAttackActionPhase = (ArtilleryAttackActionPhase)optFightPhase.get();
+
+			List<ArtilleryAttackActionPhase.Grenade> grenades = artilleryAttackActionPhase.grenades();
 
 			Animation risingGrenade = ApplicationContext.instance().getAnimations().get("artilleryGrenadeUp");
 			Animation fallingGrenade = ApplicationContext.instance().getAnimations().get("artilleryGrenadeDown");
@@ -106,19 +109,19 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			graphics.translate(x, y);
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-            for (GrenadeTransition gt : grenadeTransitions) {
-                float relativeHeight = gt.relativeHeight;
+            for (ArtilleryAttackActionPhase.Grenade grenade : grenades) {
+                float relativeHeight = grenade.relativeHeight;
                 float grenadeY1;
                 float grenadeX1;
                 Animation animation;
 
-                if (gt.risingNotFalling) {
+                if (grenade.risingNotFalling) {
                     grenadeY1 = risingGrenadeY1Max - (maxVerticalRisingGrenadeDistance * relativeHeight);
-                    grenadeX1 = gt.leftNotRight ? risingLeftGrenadeX1 : risingRightGrenadeX1;
+                    grenadeX1 = grenade.leftNotRight ? risingLeftGrenadeX1 : risingRightGrenadeX1;
                     animation = risingGrenade;
                 } else {
                     grenadeY1 = fallingGrenadeY1Max - (maxVerticalfallingGrenadeDistance * relativeHeight);
-                    grenadeX1 = gt.leftNotRight ? fallingLeftGrenadeX1 : fallingRightGrenadeX1;
+                    grenadeX1 = grenade.leftNotRight ? fallingLeftGrenadeX1 : fallingRightGrenadeX1;
                     animation = fallingGrenade;
                 }
 
