@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.actions.fight;
 
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
+import antonafanasjew.cosmodog.actions.generic.PhaseAndCompletionRateBasedTransition;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
