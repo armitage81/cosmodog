@@ -1393,6 +1393,9 @@
  <objectgroup id="81" name="CLEANER"/>
  <objectgroup id="82" name="Worms">
   <object id="227" name="WormsSouthEast" type="Worms" x="4737" y="5412" width="1" height="1">
+   <properties>
+    <property name="respawnPosition" value="321/335/MAIN"/>
+   </properties>
    <polygon points="0,0 -45,51 -55,285 177,981 1656,983 1655,-786 1587,-749 1358,-490 1134,-373 939,-288 872,-254 329,-253"/>
   </object>
  </objectgroup>

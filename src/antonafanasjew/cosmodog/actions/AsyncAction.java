@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.actions;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -59,4 +60,8 @@ public interface AsyncAction extends Serializable {
 	void update(int millis, GameContainer gc, StateBasedGame sbg);
 	
 	void cancel();
+
+	Map<String, Object> getProperties();
+
+	<T> T getProperty(String name);
 }

@@ -9,7 +9,6 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
-import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -42,9 +41,8 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 			return;
 		}
 		
-		WormAttackTransition wormAttackTransition = wormAttackAction.getTransition();
-		
-		if (wormAttackTransition.percentage < 0.2f) {
+
+		if (wormAttackAction.getCompletionRate() < 0.2f) {
 			return;
 		}
 		

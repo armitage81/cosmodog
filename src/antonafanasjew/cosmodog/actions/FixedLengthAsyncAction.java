@@ -1,5 +1,11 @@
 package antonafanasjew.cosmodog.actions;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.state.StateBasedGame;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This type of asynchronous actions defines a fixed length duration and finishes,
  * when the passed time reaches this duration.
@@ -12,14 +18,25 @@ public class FixedLengthAsyncAction extends AbstractAsyncAction {
 
 	private static final long serialVersionUID = -1032910058049587274L;
 
-	private int duration;
-	
+	private final int duration;
+
+	private float completionRate;
+
+	public float getCompletionRate() {
+		return completionRate;
+	}
+
+	public void setCompletionRate(float completionRate) {
+		this.completionRate = completionRate;
+	}
+
 	/**
 	 * Initializes the action with the fixed duration.
 	 * @param duration Fixed duration.
 	 */
 	public FixedLengthAsyncAction(int duration) {
 		this.duration = duration;
+		this.completionRate = 0.0f;
 	}
 
 	/**
@@ -28,6 +45,20 @@ public class FixedLengthAsyncAction extends AbstractAsyncAction {
 	 */
 	public int getDuration() {
 		return duration;
+	}
+
+	@Override
+	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
+		float actionPercentage = (float)after / (float)getDuration();
+		if (actionPercentage > 1.0f) {
+			actionPercentage = 1.0f;
+		}
+		completionRate = actionPercentage;
+		onUpdateInternal(before, after, gc, sbg);
+	}
+
+	protected void onUpdateInternal(int before, int after, GameContainer gc, StateBasedGame sbg) {
+
 	}
 
 	/**

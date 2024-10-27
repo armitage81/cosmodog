@@ -3,6 +3,9 @@ package antonafanasjew.cosmodog.actions;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Abstract implementation of an asynchronous action.
  * 
@@ -26,6 +29,16 @@ public abstract class AbstractAsyncAction implements AsyncAction {
 	private boolean triggered = false;
 	private boolean finished = false;
 
+	private final Map<String, Object> properties = new HashMap<>();
+
+	@Override
+	public <T> T getProperty(String name) {
+		return (T)properties.get(name);
+	}
+
+	public Map<String, Object> getProperties() {
+		return properties;
+	}
 
 	@Override
 	public int getPassedTime() {

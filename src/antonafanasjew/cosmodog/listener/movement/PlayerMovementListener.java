@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -40,6 +42,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.*;
 import antonafanasjew.cosmodog.waterplaces.WaterValidator;
+import com.google.common.collect.Lists;
 
 /**
  * Note: this class is not thread-save
@@ -530,15 +533,35 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		calendar.addMinutes(Constants.MINUTES_PER_TURN);
 	}
 
-	private void updateWormAlert(Player player, ApplicationContext applicationContext) {
+	private Optional<TiledObject> wormRegion (Player player, ApplicationContext applicationContext) {
+
+		Optional<TiledObject> retVal = Optional.empty();
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		
+
+		List<TiledObject> wormRegions = Lists.newArrayList();
+
 		TiledObjectGroup wormsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_WORMS);
-		TiledObject wormsSouthEastObject = wormsObjectGroup.getObjects().get(Objects.OBJECT_WORMS_SOUTH_EAST);
-		boolean inWormRegion = RegionUtils.pieceInRegion(player, map.getMapType(), wormsSouthEastObject);
+
+		wormRegions.addAll(wormsObjectGroup.getObjects().values());
+
+		for (TiledObject wormRegion : wormRegions) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), wormRegion)) {
+				retVal = Optional.of(wormRegion);
+				break;
+			}
+		}
+		return retVal;
+	}
+
+	private void updateWormAlert(Player player, ApplicationContext applicationContext) {
+
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+
+		boolean inWormRegion = wormRegion(player, applicationContext).isPresent();
+
 		boolean inSnow = isPlayerOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player);
 		boolean onPlatform = CosmodogMapUtils.isTileOnPlatform(player.getPosition());
 		boolean inPlatform = player.getInventory().hasPlatform();
@@ -583,8 +606,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 					String wormAlertText = "<font:critical> WORM ATTACK IN " + turnsUntilWormAttack + " TURNS !!!";
 					OverheadNotificationAction.registerOverheadNotification(player, wormAlertText);
 				} else {
+					TiledObject wormRegion = wormRegion(player, applicationContext).get(); //We now it is there since the turns till worm attack is > 0.
 					CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
-					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.WORM_ATTACK, new WormAttackAction(5000));
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.WORM_ATTACK, new WormAttackAction(5000, wormRegion));
 				}
 			
 			}

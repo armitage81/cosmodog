@@ -9,7 +9,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.dying.DyingAction;
-import antonafanasjew.cosmodog.actions.dying.DyingAction.DyingTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
@@ -81,13 +80,8 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		String animationKey = "playerDying";
 		Animation playerAnimation = applicationContext.getAnimations().get(animationKey);
 		
-		DyingTransition dyingTransition = dyingAction.getTransition();
-		int animationFrameIndex;
-		if (dyingTransition != null) {
-			animationFrameIndex = dyingTransition.animationFrameIndex();
-		} else {
-			animationFrameIndex = playerAnimation.getFrameCount() - 1;
-		}
+		int animationFrameIndex = dyingAction.animationFrameIndex();
+
 		playerAnimation.setCurrentFrame(animationFrameIndex);
 		
 		graphics.translate(x, y);

@@ -11,7 +11,6 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
-import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -42,9 +41,8 @@ public class WormAttackRenderer extends AbstractRenderer {
 		if (wormAttackAction == null) {
 			return;
 		}
-		WormAttackTransition wormAttackTransition = wormAttackAction.getTransition();
-		
-		float wormHeightPercentage = wormAttackTransition.wormHeightPercentage();
+
+		float wormHeightPercentage = wormAttackAction.wormHeightPercentage();
 		
 		Animation wormAttackAnimation = applicationContext.getAnimations().get("wormAttack");
 		

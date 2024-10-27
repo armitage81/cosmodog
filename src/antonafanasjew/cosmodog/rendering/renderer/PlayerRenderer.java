@@ -13,7 +13,6 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
-import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction.WormAttackTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -64,12 +63,9 @@ public class PlayerRenderer extends AbstractRenderer {
 		//Do not render the player if the worm is already eating him ;)
 		WormAttackAction wormAttackAction = (WormAttackAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.WORM_ATTACK);
 		if (wormAttackAction != null) {
-			WormAttackTransition wormAttackTransition = wormAttackAction.getTransition();
-			if (wormAttackTransition != null) {
-				float wormAttackTransitionPercentage = wormAttackTransition.percentage;
-				if (wormAttackTransitionPercentage >= 0.5) {
-					return;
-				}
+			float completionRate = wormAttackAction.getCompletionRate();
+			if (completionRate >= 0.5) {
+				return;
 			}
 		}
 

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 
+import antonafanasjew.cosmodog.actions.*;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
@@ -9,11 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.actions.ActionRegistry;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.ExplosionAction;
-import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
-import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction.MineExplosionTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -39,28 +35,19 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		
 		
 		ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-		Object action = actionRegistry.getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
+		FixedLengthAsyncAction action = (FixedLengthAsyncAction) actionRegistry.getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
 				
 		if (action == null) {
 			return;
 		}
 		
-		
-		MineExplosionTransition explosionTransition;
-		
-		//Yes, it's dirty. Refactor it. Mine explosion action should just reuse explosion action.
-		if (action instanceof MineExplosionAction) {
-			explosionTransition = ((MineExplosionAction)action).getTransition();
-		} else {
-			explosionTransition = ((ExplosionAction)action).getTransition();
-		}
-		
-		
+		Position position = action.getProperty("position");
+		float completionRate = action.getCompletionRate();
+
 		Animation mineExplosionAnimation = applicationContext.getAnimations().get("explosion");
 		
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
-		Position position = explosionTransition.position;
 
 		Cam cam = cosmodogGame.getCam();
 		
@@ -81,7 +68,7 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		float offsetY = -((mineExplosionAnimation.getHeight() - tileLength) / 2.0f);
 		
 		float percentagePerFrame = 1f / mineExplosionAnimation.getFrameCount();
-		int currentImageIndex = (int)(explosionTransition.percentage / percentagePerFrame);
+		int currentImageIndex = (int)(completionRate / percentagePerFrame);
 		
 		Image image = mineExplosionAnimation.getImage(currentImageIndex);
 		
