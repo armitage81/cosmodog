@@ -20,31 +20,31 @@ public class LadderActionTest {
 
     @Test
     public void testStep0() {
-        ladderAction.onUpdate(0);
-        assertEquals(0, ladderAction.getTransition().getValue(), 0.001);
+        ladderAction.onUpdate(0, 0, null, null);
+        assertEquals(0, (float)ladderAction.getProperty("value"), 0.001);
     }
 
     @Test
     public void testStep5() {
-        ladderAction.onUpdate(0.5f);
-        assertEquals(0.5f, ladderAction.getTransition().getValue(), 0.001);
+        ladderAction.onUpdate(0, 500, null, null);
+        assertEquals(0.5f, (float)ladderAction.getProperty("value"), 0.001);
     }
 
     @Test
     public void testStep9() {
-        ladderAction.onUpdate(0.99999f);
-        assertEquals(0.9f, ladderAction.getTransition().getValue(), 0.001);
+        ladderAction.onUpdate(0, 999, null, null);;
+        assertEquals(0.9f, (float)ladderAction.getProperty("value"), 0.001);
     }
 
     @Test
     public void testMaxCompletion() {
-        ladderAction.onUpdate(1f);
-        assertEquals(0.9f, ladderAction.getTransition().getValue(), 0.001);
+        ladderAction.onUpdate(0, 1000, null, null);
+        assertEquals(0.9f, (float)ladderAction.getProperty("value"), 0.001);
     }
 
     @Test
     public void testManySteps() {
-        ladderActionWithManySteps.onUpdate(0.5f);
-        assertEquals(0.5f, ladderActionWithManySteps.getTransition().getValue(), 0.001);
+        ladderActionWithManySteps.onUpdate(0, 500, null, null);
+        assertEquals(0.5f, (float)ladderActionWithManySteps.getProperty("value"), 0.001);
     }
 }

@@ -51,7 +51,7 @@ public class RespawnRenderer extends AbstractRenderer {
         }
 
         if (currentAction.isPresent() && currentAction.get() instanceof FadingAction fadingAction) {
-            opacity = fadingAction.getTransition().getValue();
+            opacity = fadingAction.getProperty("value");
 
             if (fadingAction.isFadingInNotFadingOut()) {
                 opacity = 1f - opacity;

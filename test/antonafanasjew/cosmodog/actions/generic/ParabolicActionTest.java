@@ -16,33 +16,33 @@ public class ParabolicActionTest {
 
     @Test
     public void testBeginning() {
-        parabolicAction.onUpdate(0);
-        assertEquals(0, parabolicAction.getTransition().getValue());
+        parabolicAction.onUpdate(0, 0, null, null);
+        assertEquals(0, (float)parabolicAction.getProperty("value"));
     }
 
     @Test
     public void testShortlyAfterBeginning() {
-        parabolicAction.onUpdate(0.1f);
-        float value = parabolicAction.getTransition().getValue();
+        parabolicAction.onUpdate(0, 100, null, null);
+        float value = parabolicAction.getProperty("value");
         assertTrue(value < 0.4f && value > 0.3f);
     }
 
     @Test
     public void testShortlyBeforePeak() {
-        parabolicAction.onUpdate(0.4f);
-        float value = parabolicAction.getTransition().getValue();
+        parabolicAction.onUpdate(0, 400, null, null);
+        float value = parabolicAction.getProperty("value");
         assertTrue(value < 1.0f && value > 0.95f);
     }
 
     @Test
     public void testPeak() {
-        parabolicAction.onUpdate(0.5f);
-        assertEquals(1, parabolicAction.getTransition().getValue());
+        parabolicAction.onUpdate(0, 500, null, null);
+        assertEquals(1, (float)parabolicAction.getProperty("value"));
     }
 
     @Test
     public void testEnd() {
-        parabolicAction.onUpdate(1.0f);
-        assertEquals(0, parabolicAction.getTransition().getValue());
+        parabolicAction.onUpdate(0, 1000, null, null);
+        assertEquals(0, (float)parabolicAction.getProperty("value"));
     }
 }

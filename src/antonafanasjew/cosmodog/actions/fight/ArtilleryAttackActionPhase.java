@@ -143,24 +143,24 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 			int numberOfVisibleGrenades = (int)(completion / TIME_INTERVAL_BETWEEN_GRENADES) + 1;
 			numberOfVisibleGrenades = Math.min(numberOfVisibleGrenades, MAX_GRENADES);
 			for (int i = 0; i < numberOfVisibleGrenades; i++) {
-				Grenade grenadeTransition = new Grenade();
-				grenadeTransition.leftNotRight = i % 2 == 0;
-				grenadeTransition.risingNotFalling = true;
-				grenadeTransition.relativeHeight = (completion - i * TIME_INTERVAL_BETWEEN_GRENADES) / VISIBLE_GRENADE_TIME;
-				if (grenadeTransition.relativeHeight <= 1.0f) {
-					retVal.add(grenadeTransition);
+				Grenade grenade = new Grenade();
+				grenade.leftNotRight = i % 2 == 0;
+				grenade.risingNotFalling = true;
+				grenade.relativeHeight = (completion - i * TIME_INTERVAL_BETWEEN_GRENADES) / VISIBLE_GRENADE_TIME;
+				if (grenade.relativeHeight <= 1.0f) {
+					retVal.add(grenade);
 				}
 			}
 		} else if (completion >= FALLING_COMPLETION_THRESHOLD) {
 			int numberOfVisibleGrenades = (int)((completion - FALLING_COMPLETION_THRESHOLD) / TIME_INTERVAL_BETWEEN_GRENADES) + 1;
 			numberOfVisibleGrenades = Math.min(numberOfVisibleGrenades, MAX_GRENADES);
 			for (int i = 0; i < numberOfVisibleGrenades; i++) {
-				Grenade grenadeTransition = new Grenade();
-				grenadeTransition.leftNotRight = i % 2 == 0;
-				grenadeTransition.risingNotFalling = false;
-				grenadeTransition.relativeHeight = 1 - ((completion - FALLING_COMPLETION_THRESHOLD - i * TIME_INTERVAL_BETWEEN_GRENADES) / VISIBLE_GRENADE_TIME);
-				if (grenadeTransition.relativeHeight >= 0f) {
-					retVal.add(grenadeTransition);
+				Grenade grenade = new Grenade();
+				grenade.leftNotRight = i % 2 == 0;
+				grenade.risingNotFalling = false;
+				grenade.relativeHeight = 1 - ((completion - FALLING_COMPLETION_THRESHOLD - i * TIME_INTERVAL_BETWEEN_GRENADES) / VISIBLE_GRENADE_TIME);
+				if (grenade.relativeHeight >= 0f) {
+					retVal.add(grenade);
 				}
 			}
 		}
