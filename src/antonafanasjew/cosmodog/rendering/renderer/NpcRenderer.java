@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -26,7 +27,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 
 import com.google.common.collect.Maps;
 
@@ -78,6 +79,8 @@ public class NpcRenderer extends AbstractRenderer {
 
 		Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 
+		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+
 		for (Enemy enemy : enemies) {
 			
 			Position enemyPosition = enemy.getPosition();
@@ -85,12 +88,16 @@ public class NpcRenderer extends AbstractRenderer {
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
 						
-			ActorTransition enemyTransition = cosmodogGame.getActorTransitionRegistry().get(enemy);
+			CrossTileMotion enemyMotion = null;
 
-			boolean enemyIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, enemy, enemyTransition);
-			boolean enemyIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, enemy, enemyTransition);
+			if (movementAction != null) {
+				enemyMotion = movementAction.getActorMotions().get(enemy);
+			}
+
+			boolean enemyIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, enemy, enemyMotion);
+			boolean enemyIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, enemy, enemyMotion);
 			
-			boolean enemyIsMoving = enemyTransition != null;
+			boolean enemyIsMoving = enemyMotion != null;
 			boolean enemyIsFighting = optFightPhase.isPresent() && ((Enemy)optFightPhase.get().getProperties().get("enemy")).equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
 			boolean enemyIsShooting = enemyIsFighting && optFightPhase.get() instanceof EnemyAttackActionPhase;
 			boolean enemyIsExploding = enemyIsFighting && optFightPhase.get() instanceof EnemyDestructionActionPhase;
@@ -119,7 +126,7 @@ public class NpcRenderer extends AbstractRenderer {
 			DirectionType enemyDirection = enemy.getDirection();
 			
 			if (enemyActionType == NpcActionType.ANIMATE) {
-				enemyDirection = enemyTransition.getTransitionalDirection();				
+				enemyDirection = enemyMotion.getMotionDirection();
 			}
 			
 			String animationId = Mappings.npcAnimationId(enemy.getUnitType(), enemyDirection, enemyActionType, enemyAppearanceType);
@@ -127,9 +134,9 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			
 			if (enemyActionType == NpcActionType.ANIMATE) {
-				enemyPosition = enemyTransition.getTransitionalPosition();
-				pieceOffsetX = tileLength * enemyTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileLength * enemyTransition.getTransitionalOffsetY();
+				enemyPosition = enemyMotion.getlastMidwayPosition();
+				pieceOffsetX = tileLength * enemyMotion.getCrossTileOffsetX();
+				pieceOffsetY = tileLength * enemyMotion.getCrossTileOffsetY();
 			} 
 			
 			if (enemyActionType == NpcActionType.SHOOTING) {
@@ -225,10 +232,14 @@ public class NpcRenderer extends AbstractRenderer {
 
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
-						
-			ActorTransition enemyTransition = cosmodogGame.getActorTransitionRegistry().get(enemy);
 
-			boolean enemyIsMoving = enemyTransition != null;
+			CrossTileMotion enemyMotion = null;
+
+			if (movementAction != null) {
+				enemyMotion = movementAction.getActorMotions().get(enemy);
+			}
+
+			boolean enemyIsMoving = enemyMotion != null;
 			boolean enemyIsFighting = optFightPhase.isPresent() && ((Enemy)optFightPhase.get().getProperties().get("enemy")).equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
 			boolean enemyIsShooting = enemyIsFighting && optFightPhase.get() instanceof EnemyAttackActionPhase;
 			boolean enemyIsExploding = enemyIsFighting && optFightPhase.get() instanceof EnemyDestructionActionPhase;
@@ -246,9 +257,9 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 						
 			if (enemyActionType == NpcActionType.ANIMATE) {
-				enemyPosition = enemyTransition.getTransitionalPosition();
-				pieceOffsetX = tileLength * enemyTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileLength * enemyTransition.getTransitionalOffsetY();
+				enemyPosition = enemyMotion.getlastMidwayPosition();
+				pieceOffsetX = tileLength * enemyMotion.getCrossTileOffsetX();
+				pieceOffsetY = tileLength * enemyMotion.getCrossTileOffsetY();
 			} 
 			
 			if (enemyActionType == NpcActionType.SHOOTING) {

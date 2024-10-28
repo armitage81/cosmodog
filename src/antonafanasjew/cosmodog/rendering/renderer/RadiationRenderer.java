@@ -3,30 +3,19 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.DynamicPiece;
-import antonafanasjew.cosmodog.model.dynamicpieces.*;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates.MapLayerRendererPredicate;
 import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledTile;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TileUtils;
-import antonafanasjew.cosmodog.util.TilesetUtils;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
-import com.google.common.collect.Multimap;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-
-import java.util.Collection;
 
 public class RadiationRenderer extends AbstractRenderer {
 

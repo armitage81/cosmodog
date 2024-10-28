@@ -1,27 +1,18 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction;
-import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction.OnScreenNotificationTransition;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.LetterTextRenderer.LetterTextRenderingParameter;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
-import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;

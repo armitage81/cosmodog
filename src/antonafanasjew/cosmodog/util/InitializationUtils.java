@@ -124,7 +124,6 @@ import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.timing.Timer;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 
 public class InitializationUtils {
@@ -170,7 +169,6 @@ public class InitializationUtils {
 		cosmodogGame.setAmbientSoundRegistry(new AmbientSoundRegistry());
 		cosmodogGame.setInterfaceActionRegistry(new ActionRegistry());
 		cosmodogGame.setTeleportationTransition(new TeleportationTransition());
-		cosmodogGame.setActorTransitionRegistry(new ActorTransitionRegistry());
 		cosmodogGame.setRuleBook(new RuleBook());
 
 		initializeRuleBook(cosmodogGame);

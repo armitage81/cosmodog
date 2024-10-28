@@ -12,7 +12,6 @@ import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.timing.Timer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.InitializationUtils;
-import antonafanasjew.cosmodog.view.transitions.ActorTransitionRegistry;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
 import antonafanasjew.cosmodog.view.transitions.EndingTransition;
 import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
@@ -41,8 +40,6 @@ public class CosmodogGame extends CosmodogModel {
 	
 	private transient TeleportationTransition teleportationTransition;
 	
-	private transient ActorTransitionRegistry actorTransitionRegistry;
-
 	private transient TextFrame textFrame;
 	
 	private transient Book openBook;
@@ -143,10 +140,6 @@ public class CosmodogGame extends CosmodogModel {
 		this.ruleBook = ruleBook;
 	}
 
-	public ActorTransitionRegistry getActorTransitionRegistry() {
-		return actorTransitionRegistry;
-	}
-
 	public MovementAttemptTransition getMovementAttemptTransition() {
 		return movementAttemptTransition;
 	}
@@ -213,10 +206,6 @@ public class CosmodogGame extends CosmodogModel {
 
 	public void setTeleportationTransition(TeleportationTransition teleportationTransition) {
 		this.teleportationTransition = teleportationTransition;
-	}
-
-	public void setActorTransitionRegistry(ActorTransitionRegistry actorTransitionRegistry) {
-		this.actorTransitionRegistry = actorTransitionRegistry;
 	}
 
 	public String getGameName() {

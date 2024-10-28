@@ -3,8 +3,10 @@ package antonafanasjew.cosmodog.rendering.renderer.pieces;
 import java.util.Map;
 import java.util.Optional;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import org.newdawn.slick.Animation;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -18,7 +20,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
 import com.google.common.collect.Maps;
@@ -41,13 +43,17 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		Player player = ApplicationContextUtils.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 
-		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
+		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+		CrossTileMotion playerMotion = null;
+		if (movementAction != null) {
+			playerMotion = movementAction.getActorMotions().get(player);
+		}
 
 		Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 		
 		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 
-		boolean playerIsMoving = playerTransition != null;
+		boolean playerIsMoving = playerMotion != null;
 		boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 		boolean playerInPlatform = player.getInventory().hasPlatform();
@@ -58,8 +64,8 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		if (playerInPlatform && !(piece instanceof Platform) && CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
 		
 			if (playerIsMoving) {
-				pieceOffsetX = tileWidth * playerTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileHeight * playerTransition.getTransitionalOffsetY();
+				pieceOffsetX = tileWidth * playerMotion.getCrossTileOffsetX();
+				pieceOffsetY = tileHeight * playerMotion.getCrossTileOffsetY();
 			}
 
 			if (playerIsFighting) {

@@ -3,8 +3,10 @@ package antonafanasjew.cosmodog.rendering.renderer.pieces;
 import java.util.Map;
 import java.util.Optional;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -24,7 +26,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
 import com.google.common.collect.Maps;
@@ -70,14 +72,20 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 		if (player.getInventory().hasPlatform()) {
 
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-			
-			ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
+
+			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+
+			CrossTileMotion playerMotion = null;
+
+			if (movementAction != null) {
+				playerMotion = movementAction.getActorMotions().get(player);
+			}
 
 			Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 			
 			MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
 			
-			boolean playerIsMoving = playerTransition != null;
+			boolean playerIsMoving = playerMotion != null;
 			boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
 			boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 			
@@ -94,8 +102,8 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 
 			
 			if (playerIsMoving) {
-				pieceOffsetX = tileLength * playerTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileLength * playerTransition.getTransitionalOffsetY();
+				pieceOffsetX = tileLength * playerMotion.getCrossTileOffsetX();
+				pieceOffsetY = tileLength * playerMotion.getCrossTileOffsetY();
 			}
 			
 			if (playerIsFighting) {

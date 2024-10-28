@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -7,7 +8,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
-import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction.OverheadNotificationTransition;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -21,7 +21,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 
 public class OverheadNotificationRenderer extends AbstractRenderer {
 
@@ -47,19 +47,19 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 		}
 		
 		//Holds the information of renderable texts, their location and over which heads they should appear.
-		OverheadNotificationTransition transition = action.getTransition();
+		OverheadNotificationAction.OverheadNotificationsState state = action.getProperty("state");
 		
-		if (transition == null) {
+		if (state == null) {
 			return;
 		}
 		
 		
-		for (int i = 0; i < transition.texts.size(); i++) {
+		for (int i = 0; i < state.texts.size(); i++) {
 
-			String text = transition.texts.get(i);
+			String text = state.texts.get(i);
 			
-			float completion = transition.completions.get(i);
-			Actor actor = transition.actors.get(i);
+			float completion = state.completions.get(i);
+			Actor actor = state.actors.get(i);
 			
 			Cam cam = cosmodogGame.getCam();
 			
@@ -82,13 +82,17 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			//Actors move smoothly between tiles. This offset represents this.
 			float movementOffsetX = 0;
 			float movementOffsetY = 0;
-			
+
 			//The information about the actor's movement is taken from its registered transition, if any.
-			ActorTransition actorTransition = cosmodogGame.getActorTransitionRegistry().get(actor);
-			
-			if (actorTransition != null) {
-				movementOffsetX = tileLength * actorTransition.getTransitionalOffsetX();
-				movementOffsetY = tileLength * actorTransition.getTransitionalOffsetY();
+			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+			CrossTileMotion actorMotion = null;
+			if (movementAction != null) {
+				actorMotion = movementAction.getActorMotions().get(actor);
+			}
+
+			if (actorMotion != null) {
+				movementOffsetX = tileLength * actorMotion.getCrossTileOffsetX();
+				movementOffsetY = tileLength * actorMotion.getCrossTileOffsetY();
 			}
 			
 			//Going to the beginning of the tile where camera top left corner is located.

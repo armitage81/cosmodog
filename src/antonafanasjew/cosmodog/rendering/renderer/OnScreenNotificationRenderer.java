@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction;
-import antonafanasjew.cosmodog.actions.notification.OnScreenNotificationAction.OnScreenNotificationTransition;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -24,11 +23,8 @@ public class OnScreenNotificationRenderer extends AbstractRenderer {
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		OnScreenNotificationAction action = (OnScreenNotificationAction)game.getActionRegistry().getRegisteredAction(AsyncActionType.ONSCREEN_NOTIFICATION);
 		if (action != null) {
-			OnScreenNotificationTransition transition = action.getTransition();
-			if (transition != null) {
-				LetterTextRenderer ltr = LetterTextRenderer.getInstance().withDrawingContext(secretFoundMessageDc);
-				ltr.render(gameContainer, graphics, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(action.getText(), transition.textScale(), LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
-			}
+			LetterTextRenderer ltr = LetterTextRenderer.getInstance().withDrawingContext(secretFoundMessageDc);
+			ltr.render(gameContainer, graphics, LetterTextRenderingParameter.fromTextScaleFactorAndAlignment(action.getText(), action.textScale(), LetterTextRenderingParameter.HOR_ALIGNMENT_CENTER, LetterTextRenderingParameter.VER_ALIGNMENT_CENTER));
 		}
 		
 	}

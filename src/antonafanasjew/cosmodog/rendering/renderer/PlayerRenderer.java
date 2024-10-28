@@ -1,12 +1,12 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.ArtilleryAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.actions.generic.FadingAction;
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
@@ -37,7 +37,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 
@@ -105,7 +105,11 @@ public class PlayerRenderer extends AbstractRenderer {
 		int tileNoX = camX / scaledTileLength;
 		int tileNoY = camY / scaledTileLength;
 
-		ActorTransition playerTransition = cosmodogGame.getActorTransitionRegistry().get(player);
+		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+		CrossTileMotion playerMotion = null;
+		if (movementAction != null) {
+			playerMotion = movementAction.getActorMotions().get(player);
+		}
 
 		Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 		
@@ -124,16 +128,16 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean playerIsInPlatform = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM) != null;
-		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(map, player, playerTransition);
+		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(map, player, playerMotion);
 		
 		boolean playerIsOnPlatform = PlayerMovementCache.getInstance().isPlayerOnPlatform();
 		
-		boolean playerIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, player, playerTransition);
-		boolean playerIsInSnow = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player, playerTransition);
+		boolean playerIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, player, playerMotion);
+		boolean playerIsInSnow = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player, playerMotion);
 		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
 		boolean playerIsOnSki = playerIsInSnow && playerHasSki && !playerIsOnPlatform && !playerIsInPlatform;
-		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerTransition);
-		boolean playerIsMoving = playerTransition != null;
+		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerMotion);
+		boolean playerIsMoving = playerMotion != null;
 		boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
 		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
 		boolean playerIsTakingDamage = false;
@@ -215,8 +219,8 @@ public class PlayerRenderer extends AbstractRenderer {
 
 		
 		if (playerIsMoving) {
-			pieceOffsetX = tileLength * playerTransition.getTransitionalOffsetX();
-			pieceOffsetY = tileLength * playerTransition.getTransitionalOffsetY();
+			pieceOffsetX = tileLength * playerMotion.getCrossTileOffsetX();
+			pieceOffsetY = tileLength * playerMotion.getCrossTileOffsetY();
 		}
 		
 		if (playerIsFighting) {
@@ -310,18 +314,18 @@ public class PlayerRenderer extends AbstractRenderer {
 		return boat != null;
 	}
 	
-	private boolean isWaterTile(CosmodogMap map, Player player, ActorTransition playerTransition) {
+	private boolean isWaterTile(CosmodogMap map, Player player, CrossTileMotion playerMotion) {
 		//int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
 		//return tileId == Tiles.WATER_TILE_ID;
 		
 		boolean retVal = false;
 		
-		if (playerTransition == null) {
+		if (playerMotion == null) {
 			int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_COLLISIONS);
 			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
 		} else {
-			int startTileId = map.getTileId(playerTransition.getTransitionalPosition(), Layers.LAYER_META_COLLISIONS);
-			int targetTileId = map.getTileId(playerTransition.getTargetPosition(), Layers.LAYER_META_COLLISIONS);
+			int startTileId = map.getTileId(playerMotion.getlastMidwayPosition(), Layers.LAYER_META_COLLISIONS);
+			int targetTileId = map.getTileId(playerMotion.getTargetPosition(), Layers.LAYER_META_COLLISIONS);
 			
 			boolean startTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, startTileId).equals(TileType.COLLISION_WATER);
 			boolean targetTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, targetTileId).equals(TileType.COLLISION_WATER);
@@ -331,10 +335,10 @@ public class PlayerRenderer extends AbstractRenderer {
 			} else if (!startTileIdIsWaterTile && !targetTileIdIsWaterTile) {
 				retVal = false;
 			} else if (startTileIdIsWaterTile) {
-				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
+				float transitionalOffset = playerMotion.getCrossTileOffsetX() + playerMotion.getCrossTileOffsetY();
 				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
 			} else {
-				float transitionalOffset = playerTransition.getTransitionalOffsetX() + playerTransition.getTransitionalOffsetY();
+				float transitionalOffset = playerMotion.getCrossTileOffsetX() + playerMotion.getCrossTileOffsetY();
 				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
 			}
 		}

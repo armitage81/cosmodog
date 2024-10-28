@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Collection;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
@@ -34,7 +36,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.view.transitions.ActorTransition;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
@@ -95,12 +97,19 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
-			
-			ActorTransition moveableTransition = cosmodogGame.getActorTransitionRegistry().get(block.asActor());
-			boolean moveableIsMoving = moveableTransition != null;
-			if (moveableIsMoving) {
-				pieceOffsetX = tileLength * moveableTransition.getTransitionalOffsetX();
-				pieceOffsetY = tileLength * moveableTransition.getTransitionalOffsetY();
+
+
+			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+
+			if (movementAction != null) {
+
+				CrossTileMotion moveableMotion = movementAction.getActorMotions().get(block.asActor());
+				boolean moveableIsMoving = moveableMotion != null;
+				if (moveableIsMoving) {
+					pieceOffsetX = tileLength * moveableMotion.getCrossTileOffsetX();
+					pieceOffsetY = tileLength * moveableMotion.getCrossTileOffsetY();
+				}
+
 			}
 			
 			applicationContext.getAnimations().get(animationId).draw(
