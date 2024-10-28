@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -27,7 +28,6 @@ import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
-import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
 import com.google.common.collect.Maps;
 
@@ -83,11 +83,11 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 
 			Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 			
-			MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
+			MovementAttemptAction movementAttemptAction = (MovementAttemptAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT_ATTEMPT);
 			
 			boolean playerIsMoving = playerMotion != null;
 			boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
-			boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
+			boolean playerIsAttemptingBlockedPassage = movementAttemptAction != null;
 			
 			PlatformInventoryItem item = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
 			Platform platform = item.getPlatform();
@@ -139,7 +139,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 			
 			if (playerIsAttemptingBlockedPassage) {
 				
-				float completion = movementAttemptTransition.completion;
+				float completion = movementAttemptAction.getCompletionRate();
 
 				float movementAttemptOffset = 0.0f;
 				

@@ -15,8 +15,6 @@ import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
 import antonafanasjew.cosmodog.view.transitions.EndingTransition;
 import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
-import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
-import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
 import com.google.common.collect.Maps;
 
@@ -35,10 +33,6 @@ public class CosmodogGame extends CosmodogModel {
 	private transient ActionRegistry interfaceActionRegistry;
 	
 	private transient AmbientSoundRegistry ambientSoundRegistry;
-	
-	private transient MovementAttemptTransition movementAttemptTransition;
-	
-	private transient TeleportationTransition teleportationTransition;
 	
 	private transient TextFrame textFrame;
 	
@@ -140,14 +134,6 @@ public class CosmodogGame extends CosmodogModel {
 		this.ruleBook = ruleBook;
 	}
 
-	public MovementAttemptTransition getMovementAttemptTransition() {
-		return movementAttemptTransition;
-	}
-
-	public void setMovementAttemptTransition(MovementAttemptTransition movementAttemptTransition) {
-		this.movementAttemptTransition = movementAttemptTransition;
-	}
-	
 	public ActionRegistry getInterfaceActionRegistry() {
 		return interfaceActionRegistry;
 	}
@@ -192,20 +178,12 @@ public class CosmodogGame extends CosmodogModel {
 		this.inGameMenu = inGameMenu;
 	}
 	
-	public TeleportationTransition getTeleportationTransition() {
-		return teleportationTransition;
-	}
-
 	public void setActionRegistry(ActionRegistry actionRegistry) {
 		this.actionRegistry = actionRegistry;
 	}
 
 	public void setInterfaceActionRegistry(ActionRegistry interfaceActionRegistry) {
 		this.interfaceActionRegistry = interfaceActionRegistry;
-	}
-
-	public void setTeleportationTransition(TeleportationTransition teleportationTransition) {
-		this.teleportationTransition = teleportationTransition;
 	}
 
 	public String getGameName() {

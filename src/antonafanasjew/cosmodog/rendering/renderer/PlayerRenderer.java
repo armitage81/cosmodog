@@ -7,7 +7,9 @@ import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.actions.generic.FadingAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
+import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -38,8 +40,6 @@ import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
-import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
-import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
 
 import java.util.Optional;
 
@@ -121,11 +121,16 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		Object radiationDamageAction = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.RADIATION_DAMAGE);
 		Object shockDamageAction = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SHOCK_DAMAGE);
-		
-		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
-		TeleportationTransition teleportationTransition = cosmodogGame.getTeleportationTransition();
-		
-		boolean playerIsBeingTeleportedAndInvisible = teleportationTransition.isBeingTeleported && !teleportationTransition.characterVisible; 
+
+		MovementAttemptAction movementAttemptAction = (MovementAttemptAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT_ATTEMPT);
+
+		TeleportationAction.TeleportationState teleportationState = null;
+		TeleportationAction teleportationAction = (TeleportationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.TELEPORTATION);
+		if (teleportationAction != null) {
+			teleportationState = teleportationAction.getProperty("state");
+		}
+
+		boolean playerIsBeingTeleportedAndInvisible = teleportationState != null && teleportationState.beingTeleported && !teleportationState.characterVisible;
 		boolean playerIsInVehicle = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean playerIsInPlatform = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(map, player, playerMotion);
@@ -139,7 +144,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerMotion);
 		boolean playerIsMoving = playerMotion != null;
 		boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
-		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
+		boolean playerIsAttemptingBlockedPassage = movementAttemptAction != null;
 		boolean playerIsTakingDamage = false;
 		
 		if (shockDamageAction != null) {
@@ -255,7 +260,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		if (playerIsAttemptingBlockedPassage) {
 			
-			float completion = movementAttemptTransition.completion;
+			float completion = movementAttemptAction.getCompletionRate();
 
 			float movementAttemptOffset = 0.0f;
 			

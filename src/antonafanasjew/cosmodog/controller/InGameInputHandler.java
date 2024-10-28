@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -57,7 +58,6 @@ import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
 
 /**
  * Standard game controls for usual actions, like movement, zooming, weapon scrolling.
@@ -259,7 +259,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					
 					final float finalNewX = newX;
 					final float finalNewY = newY;
-					
+
 					AsyncAction blockingAction = new FixedLengthAsyncAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION) {
 	
 						@Serial
@@ -282,49 +282,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 						
 					};
 					
-					AsyncAction movementAttemptAction = new FixedLengthAsyncAction(250) {
-
-						@Serial
-						private static final long serialVersionUID = 1663061093630885138L;
-						
-						private boolean interactedWithDynamicPieceAlready = false;
-						
-						@Override
-						public void onTrigger() {
-							MovementAttemptTransition movementAttemptTransition = new MovementAttemptTransition();
-							cosmodogGame.setMovementAttemptTransition(movementAttemptTransition);
-						}
-						
-						@Override
-						public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-							float fracture = (float)after / (float)getDuration();
-							fracture = fracture > 1 ? 1 : fracture;
-							cosmodogGame.getMovementAttemptTransition().completion = fracture;
-							
-							if (fracture >= 0.5f && !interactedWithDynamicPieceAlready) {
-								//Now handle the case of interacting with dynamic pieces (e.g. destroying a stone)
-								//BTW, this part is not entirely correct, as interaction with dynamic pieces will happen only in 
-								//case if they are blocking passage (e.g. not destroyed stones)
-								//But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
-								DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY, player.getPosition().getMapType()));
-								if (dynamicPiece != null) {
-									dynamicPiece.interact();
-								}
-								interactedWithDynamicPieceAlready = true;
-							}
-							
-							
-						}
-						
-						@Override
-						public void onEnd() {
-							cosmodogGame.setMovementAttemptTransition(null);
-						}
-						
-					};
-					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
-					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, movementAttemptAction);
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, new MovementAttemptAction(250, Position.fromCoordinatesOnPlayerLocationMap(newX, newY)));
 					
 				}
     		}

@@ -63,7 +63,7 @@ public class TeleportRuleFactory implements RuleFactory {
 					trigger = AndTrigger.and(trigger, gameProgressPropertyTrigger);
 				}
 
-				RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new TeleportationAction(teleportConnection), false);
+				RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.TELEPORTATION, new TeleportationAction(teleportConnection), false);
 
 				Rule rule = new Rule("teleport." + teleportConnectionName, trigger, action);
 

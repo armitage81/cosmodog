@@ -6,16 +6,17 @@ import org.newdawn.slick.state.StateBasedGame;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
-import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.view.transitions.TeleportationTransition;
+
+import java.io.Serial;
 
 public class TeleportEndActionPhase extends FixedLengthAsyncAction {
 
+	@Serial
 	private static final long serialVersionUID = -5683528278656049586L;
 
-	public TeleportEndActionPhase(int duration) {
+	public TeleportEndActionPhase(int duration, TeleportationAction.TeleportationState state) {
 		super(duration);
+		this.getProperties().put("state", state);
 	}
 	
 	@Override
@@ -33,20 +34,18 @@ public class TeleportEndActionPhase extends FixedLengthAsyncAction {
 		int slice = after / sliceDuration;
 		
 		boolean oddSlice = slice % 2 == 1;
-		
-		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		TeleportationTransition t = cosmodogGame.getTeleportationTransition();
-		
-		t.characterVisible = oddSlice;
+
+		TeleportationAction.TeleportationState state = this.getProperty("state");
+
+		state.characterVisible = oddSlice;
 		
 	}
 	
 	@Override
 	public void onEnd() {
-		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		TeleportationTransition t = cosmodogGame.getTeleportationTransition();
-		t.characterVisible = true;
-		t.isBeingTeleported = false;
+		TeleportationAction.TeleportationState state = this.getProperty("state");
+		state.characterVisible = true;
+		state.beingTeleported = false;
 	}
 
 

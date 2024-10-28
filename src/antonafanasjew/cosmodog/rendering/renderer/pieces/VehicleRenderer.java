@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import org.newdawn.slick.Animation;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -21,8 +22,6 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.TransitionUtils;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
-import antonafanasjew.cosmodog.view.transitions.MovementAttemptTransition;
-
 import com.google.common.collect.Maps;
 
 public class VehicleRenderer extends AbstractPieceRenderer {
@@ -51,11 +50,11 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 
 		Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
 		
-		MovementAttemptTransition movementAttemptTransition = cosmodogGame.getMovementAttemptTransition();
+		MovementAttemptAction movementAttemptAction = (MovementAttemptAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT_ATTEMPT);
 
 		boolean playerIsMoving = playerMotion != null;
 		boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
-		boolean playerIsAttemptingBlockedPassage = movementAttemptTransition != null;
+		boolean playerIsAttemptingBlockedPassage = movementAttemptAction != null;
 		boolean playerInPlatform = player.getInventory().hasPlatform();
 
 		float pieceOffsetX = 0;
@@ -101,7 +100,7 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 
 			if (playerIsAttemptingBlockedPassage) {
 
-				float completion = movementAttemptTransition.completion;
+				float completion = movementAttemptAction.getCompletionRate();
 
 				float movementAttemptOffset = 0.0f;
 

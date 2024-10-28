@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.actions.teleportation;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -19,17 +18,21 @@ import antonafanasjew.cosmodog.tiledmap.TiledLineObject.Point;
 import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
+import java.io.Serial;
+
 public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 
+	@Serial
 	private static final long serialVersionUID = -7801472349956706302L;
 
-	private TiledPolylineObject teleportConnection;
+	private final TiledPolylineObject teleportConnection;
 	private float initialCamX;
 	private float initialCamY;
 	
-	public ActualTeleportationActionPhase(int duration, TiledPolylineObject teleportConnection) {
+	public ActualTeleportationActionPhase(int duration, TiledPolylineObject teleportConnection, TeleportationAction.TeleportationState state) {
 		super(duration);
 		this.teleportConnection = teleportConnection;
+		this.getProperties().put("state", state);
 	}
 
 	@Override
