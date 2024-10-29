@@ -39,7 +39,7 @@ public class RegionDependentPopupRuleBuilder extends AbstractCsvBasedResourceWra
 		}
 		
 		AsyncAction asyncAction = new PopUpNotificationAction(text);
-		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		
 		if (onlyOnce) {
 			RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, "true");

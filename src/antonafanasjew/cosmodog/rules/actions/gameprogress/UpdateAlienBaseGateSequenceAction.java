@@ -106,7 +106,7 @@ public class UpdateAlienBaseGateSequenceAction extends AbstractRuleAction {
 				asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(237, 289, MapType.MAIN), asyncAction, ApplicationContextUtils.getCosmodogGame());
 				
 				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-				actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+				actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 				
 				nextSequenceNumber = 5;
 				

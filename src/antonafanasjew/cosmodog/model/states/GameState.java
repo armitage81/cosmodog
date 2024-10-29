@@ -135,11 +135,11 @@ public class GameState extends CosmodogAbstractState {
 
 		Input input = gc.getInput();
 
-		// Blocking interface actions, like text frames or dialog boxes, have their own
+		// Modal window actions, like text frames or dialog boxes, have their own
 		// modal input handling, so handle the input only in case they are not registered.
 		// Also the asyncronous actions from the action registry should be updated only
-		// if no blocking interface action is registered.
-		if (cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.BLOCKING_INTERFACE) == null) {
+		// if no modal window action is registered.
+		if (cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) == null) {
 			if (Features.getInstance().featureOn(Features.FEATURE_DEBUGGER)) {
 
 				if (input.isKeyPressed(Input.KEY_0)) {

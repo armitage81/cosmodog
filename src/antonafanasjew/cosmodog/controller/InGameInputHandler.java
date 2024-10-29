@@ -387,43 +387,43 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Handle in-game menu
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.MAP_INGAME_MENU_FRAME, InGameMenuFrame.LOG_PLAYER_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME, InGameMenuFrame.OPTIONS_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME, InGameMenuFrame.MAP_INGAME_MENU_FRAME, InGameMenuFrame.LOG_PLAYER_INGAME_MENU_FRAME, InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME, InGameMenuFrame.OPTIONS_INGAME_MENU_FRAME)));
 		}
 		
 		//Handle inventory
 		if (input.isKeyPressed(Input.KEY_I)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.INVENTORY_INGAME_MENU_FRAME)));
 		}
 		
 		//Handle map
 		if (input.isKeyPressed(Input.KEY_M)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.MAP_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.MAP_INGAME_MENU_FRAME)));
 		}
 		
 		//Handle log player
 		if (input.isKeyPressed(Input.KEY_L)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.LOG_PLAYER_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.LOG_PLAYER_INGAME_MENU_FRAME)));
 		}
 		
 		//Handle game progress
 		if (input.isKeyPressed(Input.KEY_P)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.PROGRESS_INGAME_MENU_FRAME)));
 		}
 		
 		//Handle help
 		if (input.isKeyPressed(Input.KEY_H)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.HELP_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.HELP_INGAME_MENU_FRAME)));
 		}
 		
 		//Handle save and quit
 		if (input.isKeyPressed(Input.KEY_Q)) {
 			ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new InGameMenuAction(new InGameMenu(InGameMenuFrame.OPTIONS_INGAME_MENU_FRAME)));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new InGameMenuAction(new InGameMenu(InGameMenuFrame.OPTIONS_INGAME_MENU_FRAME)));
 		}
 		
 		if (input.isKeyPressed(Input.KEY_R)) {

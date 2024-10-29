@@ -89,7 +89,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);
 			asyncAction2 = new CamCenteringDecoratorAction(3000, Position.fromCoordinates(238, 238, MapType.MAIN), asyncAction2, ApplicationContextUtils.getCosmodogGame());
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction2);			
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction2);
 		}
 		
 	}

@@ -22,7 +22,7 @@ public class VehicleInteraction extends AbstractPieceInteraction {
 		if (player.getInventory().get(InventoryItemType.FUEL_TANK) != null) {
 			
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction("You used the fuel canister to refuel the car."));
+			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction("You used the fuel canister to refuel the car."));
 
 			Vehicle vehicle = vehicleInventoryItem.getVehicle();
 

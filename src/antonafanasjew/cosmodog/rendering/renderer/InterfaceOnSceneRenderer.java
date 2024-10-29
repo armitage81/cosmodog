@@ -1,6 +1,9 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
+import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -19,8 +22,6 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextBookRenderer.Text
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition;
 
 public class InterfaceOnSceneRenderer implements Renderer {
 
@@ -104,14 +105,29 @@ public class InterfaceOnSceneRenderer implements Renderer {
 		
 				
 		if (cosmodogGame.getOpenBook() != null) {
-			
-			MonolithNarrationAction monolithNarrationAction = (MonolithNarrationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MONOLITH_INTERACTION);
-			DialogWithAlisaTransition dialogWithAlisaTransition = cosmodogGame.getDialogWithAlisaTransition();
-			EndingTransition endingTransition = cosmodogGame.getEndingTransition();
-			
-			if (endingTransition != null) {
+
+			MonolithNarrationAction monolithNarrationAction =
+					ApplicationContextUtils
+							.getCosmodogGame()
+							.getInterfaceActionRegistry()
+							.getRegisteredAction(AsyncActionType.MODAL_WINDOW, MonolithNarrationAction.class);
+
+			DialogWithAlisaNarrationAction dialogWithAlisaNarrationAction =
+					ApplicationContextUtils
+							.getCosmodogGame()
+							.getInterfaceActionRegistry()
+							.getRegisteredAction(AsyncActionType.MODAL_WINDOW, DialogWithAlisaNarrationAction.class);
+
+			EndingNarrationAction endingNarrationAction =
+					ApplicationContextUtils
+							.getCosmodogGame()
+							.getInterfaceActionRegistry()
+							.getRegisteredAction(AsyncActionType.MODAL_WINDOW, EndingNarrationAction.class);
+
+
+			if (endingNarrationAction != null) {
 				endingRenderer.render(gc, g, null);
-			} else if (dialogWithAlisaTransition != null) {
+			} else if (dialogWithAlisaNarrationAction != null) {
 				cutsceneRenderer.render(gc, g, null);
 			} else if (monolithNarrationAction != null) {
 				memoriesRenderer.render(gc, g, null);

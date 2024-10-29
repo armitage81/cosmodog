@@ -16,13 +16,30 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition.ActionPhase;
 
 public class EndingNarrationAction extends AbstractNarrationAction {
 
 	private static final long serialVersionUID = 2907704591362301531L;
-	
+
+	public static final int DURATION_DARKNESS = 3000;
+	public static final int DURATION_PICTURE_FADES_IN = 15000;
+	public static final int DURATION_PICTURE = 5000;
+	public static final int DURATION_PICTURE_FADES_OUT = 500;
+	public static final float INITIAL_PICTURE_OPACITY = 1f;
+	public static final float TEXT_PICTURE_OPACITY = 0.7f;
+
+	public enum ActionPhase {
+		DARKNESS,
+		PICTURE_FADES_IN,
+		PICTURE,
+		PICTURE_FADES_OUT,
+		TEXT
+	}
+
+	public ActionPhase phase = ActionPhase.DARKNESS;
+
+	public long phaseStart;
+
 	public EndingNarrationAction(GameLog gameLog) {
 		super(gameLog);
 	}
@@ -43,37 +60,33 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 		cosmodogGame.setOpenBook(book);
 		cosmodogGame.setOpenBookTitle(title);
 		
-		EndingTransition transition = new EndingTransition();
-		transition.phaseStart = referenceTime;
-		cosmodogGame.setEndingTransition(transition);
+		phaseStart = referenceTime;
 	}
 
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
-		boolean skipCutscenes = Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) == false;
+		boolean skipCutscenes = !Features.getInstance().featureOn(Features.FEATURE_CUTSCENES);
 		
 		long referenceTime = System.currentTimeMillis();
 		
-		EndingTransition transition = ApplicationContextUtils.getCosmodogGame().getEndingTransition();
+		ActionPhase prevActionPhase = phase;
 		
-		ActionPhase prevActionPhase = transition.phase;
-		
-		if (transition.phase == ActionPhase.DARKNESS) {
-			if (transition.phaseCompletion() >= 1.0f || skipCutscenes) {
-				transition.phase = ActionPhase.PICTURE_FADES_IN;
+		if (phase == ActionPhase.DARKNESS) {
+			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+				phase = ActionPhase.PICTURE_FADES_IN;
 			}
-		} else if (transition.phase == ActionPhase.PICTURE_FADES_IN) {
-			if (transition.phaseCompletion() >= 1.0f || skipCutscenes) {
-				transition.phase = ActionPhase.PICTURE;
+		} else if (phase == ActionPhase.PICTURE_FADES_IN) {
+			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+				phase = ActionPhase.PICTURE;
 			}
-		} else if (transition.phase == ActionPhase.PICTURE) {
-			if (transition.phaseCompletion() >= 1.0f || skipCutscenes) {
-				transition.phase = ActionPhase.PICTURE_FADES_OUT;
+		} else if (phase == ActionPhase.PICTURE) {
+			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+				phase = ActionPhase.PICTURE_FADES_OUT;
 			}
-		} else if (transition.phase == ActionPhase.PICTURE_FADES_OUT) {
-			if (transition.phaseCompletion() >= 1.0f || skipCutscenes) {
-				transition.phase = ActionPhase.TEXT;
+		} else if (phase == ActionPhase.PICTURE_FADES_OUT) {
+			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+				phase = ActionPhase.TEXT;
 				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 			}
@@ -83,8 +96,8 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 			cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME_GAMELOG).handleInput(gc, sbg, after - before, applicationContext);
 		}
 		
-		if (prevActionPhase != transition.phase) {
-			transition.phaseStart = referenceTime;
+		if (prevActionPhase != phase) {
+			phaseStart = referenceTime;
 		}
 		
 	}
@@ -93,6 +106,29 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 	public boolean hasFinished() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		return cosmodogGame.getOpenBook() == null;
+	}
+
+	public float phaseCompletion() {
+
+		float duration = System.currentTimeMillis() - phaseStart;
+
+		if (phase == ActionPhase.DARKNESS) {
+			return duration < DURATION_DARKNESS ? duration / DURATION_DARKNESS : 1.0f;
+		}
+
+		if (phase == ActionPhase.PICTURE_FADES_IN) {
+			return duration < DURATION_PICTURE_FADES_IN ? duration / DURATION_PICTURE_FADES_IN : 1.0f;
+		}
+
+		if (phase == ActionPhase.PICTURE) {
+			return duration < DURATION_PICTURE ? duration / DURATION_PICTURE : 1.0f;
+		}
+
+		if (phase == ActionPhase.PICTURE_FADES_OUT) {
+			return duration < DURATION_PICTURE_FADES_OUT ? duration / DURATION_PICTURE_FADES_OUT : 1.0f;
+		}
+
+		return 0.0f;
 	}
 
 }

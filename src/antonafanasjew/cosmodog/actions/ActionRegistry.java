@@ -70,7 +70,7 @@ public class ActionRegistry implements Serializable {
 		keysCopy.addAll(actions.keySet());
 
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		boolean interfaceBlocked = cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.BLOCKING_INTERFACE) != null;
+		boolean interfaceBlocked = cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) != null;
 		
 		for (AsyncActionType key : keysCopy) {
 
@@ -107,6 +107,12 @@ public class ActionRegistry implements Serializable {
 		List<AsyncAction> actionList = Lists.newArrayList(actions.get(actionType));
 		AsyncAction action = actionList.isEmpty() ? null : actionList.get(0);
 		return action;
+	}
+
+	public <T extends AsyncAction> T getRegisteredAction(AsyncActionType actionType, Class<T> clazz) {
+		List<AsyncAction> actionList = Lists.newArrayList(actions.get(actionType));
+		AsyncAction retVal = actionList.stream().filter(clazz::isInstance).findFirst().orElse(null);
+		return (T)retVal;
 	}
 	
 	/**

@@ -38,7 +38,7 @@ public class LogInteraction extends AbstractPieceInteraction {
 			concreteLog = logsForSeries.get(noOfFoundLogs); //it's the next one because list is zero-based.
 		}
 		
-		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new GameLogNarrationAction(concreteLog));
+		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new GameLogNarrationAction(concreteLog));
 		
 		
 	}

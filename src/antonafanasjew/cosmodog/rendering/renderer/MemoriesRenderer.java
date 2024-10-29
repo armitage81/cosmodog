@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import org.newdawn.slick.Animation;
@@ -40,12 +41,14 @@ public class MemoriesRenderer implements Renderer {
 			return;
 		}
 
-		MonolithNarrationAction monolithNarrationAction = (MonolithNarrationAction) ApplicationContextUtils.getCosmodogGame().getActionRegistry().getRegisteredAction(AsyncActionType.MONOLITH_INTERACTION);
-
+		MonolithNarrationAction monolithNarrationAction =
+				ApplicationContextUtils
+						.getCosmodogGame()
+						.getInterfaceActionRegistry()
+						.getRegisteredAction(AsyncActionType.MODAL_WINDOW, MonolithNarrationAction.class);
 
 		if (monolithNarrationAction != null) {
-			
-			
+
 			graphics.setColor(Color.black);
 			graphics.fillRect(
 					dc.x(),

@@ -74,21 +74,8 @@ public enum AsyncActionType {
 	 */
 	FIGHT_FROM_PLATFORM(true, true, true),
 	
-	
-	/**
-	 * Action type: Blocking interface. Is used for all interface actions that block the normal control flow.
-	 * F.i. Modal windows.
-	 */
-	BLOCKING_INTERFACE(true, true, false),
+	MODAL_WINDOW(true, true, false),
 
-	MONOLITH_INTERACTION(true, true, false),
-
-	/**
-	 * Action type: Non blocking interface. Used for all interface actions that do not block input.
-	 * F.i. Alisa's comments.
-	 */
-	NON_BLOCKING_INTERFACE(false, false, true),
-	
 	PRESENTING_NEW_TOOL(true, false, false),
 
 	RESPAWNING(true, false, false);

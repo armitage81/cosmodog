@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -15,8 +17,6 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition.ActionPhase;
 
 public class EndingRenderer implements Renderer {
 
@@ -40,9 +40,13 @@ public class EndingRenderer implements Renderer {
 			return;
 		}
 
-		EndingTransition transition = ApplicationContextUtils.getCosmodogGame().getEndingTransition();
+		EndingNarrationAction endingNarrationAction =
+				ApplicationContextUtils
+						.getCosmodogGame()
+						.getInterfaceActionRegistry()
+						.getRegisteredAction(AsyncActionType.MODAL_WINDOW, EndingNarrationAction.class);
 		
-		if (transition != null) {
+		if (endingNarrationAction != null) {
 			
 			graphics.setColor(Color.black);
 			graphics.fillRect(
@@ -60,10 +64,10 @@ public class EndingRenderer implements Renderer {
 					dc.h()
 			);
 			
-			ActionPhase phase = transition.phase;
-			float phaseCompletion = transition.phaseCompletion();
+			EndingNarrationAction.ActionPhase phase = endingNarrationAction.phase;
+			float phaseCompletion = endingNarrationAction.phaseCompletion();
 			
-			if (phase == ActionPhase.DARKNESS) {
+			if (phase == EndingNarrationAction.ActionPhase.DARKNESS) {
 				graphics.setColor(new Color(0f, 0f, 0f));
 				graphics.fillRect(
 						dc.x(), 
@@ -73,9 +77,9 @@ public class EndingRenderer implements Renderer {
 				);
 			}
 			
-			if (phase == ActionPhase.PICTURE_FADES_IN) {
+			if (phase == EndingNarrationAction.ActionPhase.PICTURE_FADES_IN) {
 				
-				float textPageOpacity = (float)((1 - phaseCompletion) * EndingTransition.INITIAL_PICTURE_OPACITY);
+				float textPageOpacity = (float)((1 - phaseCompletion) * EndingNarrationAction.INITIAL_PICTURE_OPACITY);
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
@@ -86,14 +90,10 @@ public class EndingRenderer implements Renderer {
 				);
 				
 			}
-			
-			if (phase == ActionPhase.PICTURE) {
 
-			}
-			
-			if (phase == ActionPhase.PICTURE_FADES_OUT) {
+            if (phase == EndingNarrationAction.ActionPhase.PICTURE_FADES_OUT) {
 				
-				float textPageOpacity = (float)(phaseCompletion * EndingTransition.INITIAL_PICTURE_OPACITY);
+				float textPageOpacity = (float)(phaseCompletion * EndingNarrationAction.INITIAL_PICTURE_OPACITY);
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
@@ -105,9 +105,9 @@ public class EndingRenderer implements Renderer {
 				
 			}
 			
-			if (phase == ActionPhase.TEXT) {
+			if (phase == EndingNarrationAction.ActionPhase.TEXT) {
 				
-				graphics.setColor(new Color(0f, 0f, 0f, EndingTransition.TEXT_PICTURE_OPACITY));
+				graphics.setColor(new Color(0f, 0f, 0f, EndingNarrationAction.TEXT_PICTURE_OPACITY));
 				graphics.fillRect(
 						dc.x(), 
 						dc.y(), 

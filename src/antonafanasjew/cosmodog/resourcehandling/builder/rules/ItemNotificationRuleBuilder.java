@@ -38,7 +38,7 @@ public class ItemNotificationRuleBuilder extends AbstractCsvBasedResourceWrapper
 		
 		
 		AsyncAction asyncAction = new PopUpNotificationAction(description);
-		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		
 		if (!valueIsAny) {
 			int value = Integer.valueOf(ifGameProgressPropertyValueIs);

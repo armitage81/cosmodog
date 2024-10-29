@@ -15,13 +15,30 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition.ActionPhase;
+
+import java.io.Serial;
 
 public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 
+	@Serial
 	private static final long serialVersionUID = -5431621300747840836L;
-	
+
+	public static final int DURATION_ARM_APPEARS = 1000;
+	public static final int DURATION_DEVICE_TURNS_ON = 1000;
+	public static final int DURATION_PICTURE_FADES = 10;
+	public static final float MAX_PICTURE_OPACITY = 0.9f;
+
+	public enum ActionPhase {
+		ARM_APPEARS,
+		DEVICE_TURNS_ON,
+		PICTURE_FADES,
+		TEXT
+	}
+
+	public ActionPhase phase = ActionPhase.ARM_APPEARS;
+
+	public long phaseStart;
+
 	public DialogWithAlisaNarrationAction(GameLog gameLog) {
 		super(gameLog);
 	}
@@ -41,9 +58,7 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 		cosmodogGame.setOpenBook(book);
 		cosmodogGame.setOpenBookTitle(title);
 
-		DialogWithAlisaTransition transition = new DialogWithAlisaTransition();
-		transition.phaseStart = referenceTime;
-		cosmodogGame.setDialogWithAlisaTransition(transition);
+		phaseStart = referenceTime;
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CUTSCENE_ALISASMESSAGE).play();
 	}
 
@@ -52,21 +67,19 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 		
 		long referenceTime = System.currentTimeMillis();
 
-		DialogWithAlisaTransition transition = ApplicationContextUtils.getCosmodogGame().getDialogWithAlisaTransition();
+		ActionPhase prevActionPhase = phase;
 		
-		ActionPhase prevActionPhase = transition.phase;
-		
-		if (transition.phase == ActionPhase.ARM_APPEARS) {
-			if (transition.phaseCompletion() >= 1.0f) {
-				transition.phase = ActionPhase.DEVICE_TURNS_ON;
+		if (phase == ActionPhase.ARM_APPEARS) {
+			if (phaseCompletion() >= 1.0f) {
+				phase = ActionPhase.DEVICE_TURNS_ON;
 			}
-		} else if (transition.phase == ActionPhase.DEVICE_TURNS_ON) {
-			if (transition.phaseCompletion() >= 1.0f) {
-				transition.phase = ActionPhase.PICTURE_FADES;
+		} else if (phase == ActionPhase.DEVICE_TURNS_ON) {
+			if (phaseCompletion() >= 1.0f) {
+				phase = ActionPhase.PICTURE_FADES;
 			}
-		} else if (transition.phase == ActionPhase.PICTURE_FADES) {
-			if (transition.phaseCompletion() >= 1.0f) {
-				transition.phase = ActionPhase.TEXT;
+		} else if (phase == ActionPhase.PICTURE_FADES) {
+			if (phaseCompletion() >= 1.0f) {
+				phase = ActionPhase.TEXT;
 				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 			}
@@ -76,8 +89,8 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 			cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME_GAMELOG).handleInput(gc, sbg, after - before, applicationContext);
 		}
 		
-		if (prevActionPhase != transition.phase) {
-			transition.phaseStart = referenceTime;
+		if (prevActionPhase != phase) {
+			phaseStart = referenceTime;
 		}
 		
 	}
@@ -85,7 +98,6 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 	@Override
 	public void onEnd() {
 		super.onEnd();
-		ApplicationContextUtils.getCosmodogGame().setDialogWithAlisaTransition(null);
 	}
 	
 	@Override
@@ -93,6 +105,22 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		return cosmodogGame.getOpenBook() == null;
 	}
-	
-	
+
+	public float phaseCompletion() {
+		float duration = System.currentTimeMillis() - phaseStart;
+
+		if (phase == ActionPhase.ARM_APPEARS) {
+			return duration < DURATION_ARM_APPEARS ? duration / DURATION_ARM_APPEARS : 1.0f;
+		}
+
+		if (phase == ActionPhase.DEVICE_TURNS_ON) {
+			return duration < DURATION_DEVICE_TURNS_ON ? duration / DURATION_DEVICE_TURNS_ON : 1.0f;
+		}
+
+		if (phase == ActionPhase.PICTURE_FADES) {
+			return duration < DURATION_PICTURE_FADES ? duration / DURATION_PICTURE_FADES : 1.0f;
+		}
+
+		return 0.0f;
+	}
 }

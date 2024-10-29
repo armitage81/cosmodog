@@ -12,11 +12,10 @@ import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
 import antonafanasjew.cosmodog.timing.Timer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.InitializationUtils;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
 import com.google.common.collect.Maps;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -25,6 +24,7 @@ import java.util.Map;
  */
 public class CosmodogGame extends CosmodogModel {
 
+	@Serial
 	private static final long serialVersionUID = 6194313671668632967L;
 
 	private transient ActionRegistry actionRegistry;
@@ -38,10 +38,6 @@ public class CosmodogGame extends CosmodogModel {
 	private transient Book openBook;
 	
 	private transient String openBookTitle;
-	
-	private transient DialogWithAlisaTransition dialogWithAlisaTransition;
-	
-	private transient EndingTransition endingTransition;
 	
 	private transient CollectibleTool currentlyFoundTool;
 	
@@ -59,7 +55,7 @@ public class CosmodogGame extends CosmodogModel {
 
 	private Player player;
 
-	private Map<MapType, CosmodogMap> maps = Maps.newHashMap();
+	private final Map<MapType, CosmodogMap> maps = Maps.newHashMap();
 
 	private Cam cam;
 
@@ -199,22 +195,6 @@ public class CosmodogGame extends CosmodogModel {
 		this.ambientSoundRegistry = ambientSoundRegistry;
 	}
 	
-	public DialogWithAlisaTransition getDialogWithAlisaTransition() {
-		return dialogWithAlisaTransition;
-	}
-	
-	public void setDialogWithAlisaTransition(DialogWithAlisaTransition dialogWithAlisaTransition) {
-		this.dialogWithAlisaTransition = dialogWithAlisaTransition;
-	}
-	
-	public EndingTransition getEndingTransition() {
-		return endingTransition;
-	}
-	
-	public void setEndingTransition(EndingTransition endingTransition) {
-		this.endingTransition = endingTransition;
-	}
-
 	public DynamicPiece dynamicPieceAtPosition(Position position) {
 		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
 	}

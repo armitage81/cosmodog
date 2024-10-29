@@ -614,7 +614,7 @@ public class InitializationUtils {
 			for (TiledObject liftRegion : liftRegions) {
 				RuleTrigger enterLiftTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_LIFTS, liftRegion.getName());
 				AsyncAction notificationAsyncAction = new PopUpNotificationAction("Initializing the space lift.");
-				RuleAction notificationRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, notificationAsyncAction);
+				RuleAction notificationRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, notificationAsyncAction);
 				AsyncAction changePositionAsyncAction = new FixedLengthAsyncAction(500) {
 					@Override
 					public void onEnd() {
@@ -623,7 +623,7 @@ public class InitializationUtils {
 						player.switchPlane(targetMapType);
 					}
 				};
-				RuleAction changePositionAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, changePositionAsyncAction);
+				RuleAction changePositionAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, changePositionAsyncAction);
 				RuleAction composedAction = new BlockAction(notificationRuleAction, changePositionAction);
 				Rule spaceliftAtCosmodromRule = new Rule("SpaceLiftRule_" + mapType + "." + liftRegion.getName(), Lists.newArrayList(GameEventChangedPosition.class), enterLiftTrigger, composedAction, Rule.RULE_PRIORITY_LATEST);
 				ruleBook.put(spaceliftAtCosmodromRule.getId(), spaceliftAtCosmodromRule);
@@ -661,12 +661,12 @@ public class InitializationUtils {
 		List<RuleAction> tutorialActions = Lists.newArrayList();
 
 		for (int i = 0; i < TutorialUtils.INITIAL_TUTORIAL_TEXTS.size(); i++) {
-			RuleAction pauseAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, new PauseAction(500));
+			RuleAction pauseAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, new PauseAction(500));
 			pauseAction = new FeatureBoundAction(Features.FEATURE_TUTORIAL, pauseAction);
 			tutorialActions.add(pauseAction);
 			String tutorialText = TutorialUtils.INITIAL_TUTORIAL_TEXTS.get(i);
 			AsyncAction tutorialAsyncAction = new PopUpNotificationAction(tutorialText);
-			RuleAction tutorialRegistrationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, tutorialAsyncAction);
+			RuleAction tutorialRegistrationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, tutorialAsyncAction);
 			tutorialRegistrationAction = new FeatureBoundAction(Features.FEATURE_TUTORIAL, tutorialRegistrationAction);
 			tutorialActions.add(tutorialRegistrationAction);
 		}
@@ -701,7 +701,7 @@ public class InitializationUtils {
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1), deactivateMinesForQuadrandTrigger);
 			//Action: Deactivate mines AND set deactivated property to true AND print notification.
 			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". You deactivate the mines.");
-			RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+			RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 			RuleAction deactivateMinesAction = new DeactivateMinesAction(quadrandType);
 			deactivateMinesAction = BlockAction.block(deactivateMinesAction, new SetGameProgressPropertyAction("MinesDeactivatedForQuadrand" + quadrandType, "true"), notificationAction);
 			//Create rule
@@ -716,7 +716,7 @@ public class InitializationUtils {
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(notHavingDeactivationCodesTrigger, deactivateMinesForQuadrandTrigger);
 			//Action: print notification that deactivation codes are missing.
 			asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". Unfortunately, you do not have the deactivation codes.");
-			notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+			notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 			//Create rule
 			rule = new Rule(deactivateMinesAction.getClass().getSimpleName() + ":" + quadrandType + "_NoDeactivationCodes", Lists.newArrayList(GameEventChangedPosition.class), deactivateMinesForQuadrandTrigger, notificationAction, Rule.RULE_PRIORITY_LATEST);
 			ruleBook.put(rule.getId(), rule);
@@ -727,7 +727,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
 		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
 		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will have harder time to locate you.");
-		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
 		switchOnVentilationAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE2, Lists.newArrayList(GameEventChangedPosition.class), switchOnVentilationTrigger, switchOnVentilationAction, Rule.RULE_PRIORITY_LATEST);
@@ -736,7 +736,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
 		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
 		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will have even harder time to locate you.");
-		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
 		switchOnSewageAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE3, Lists.newArrayList(GameEventChangedPosition.class), switchOnSewageTrigger, switchOnSewageAction, Rule.RULE_PRIORITY_LATEST);
@@ -745,7 +745,7 @@ public class InitializationUtils {
 		RuleTrigger switchOnDrillsTrigger = new GameProgressPropertyTrigger("WormAreaDrillOn", "false");
 		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
 		asyncAction = new PopUpNotificationAction("This is the control panel for the underground drill machines. You activate it. The worm cannot locate you anymore.");
-		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnDrillAction = new DeactivateWormAction();
 		switchOnDrillAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnDrillAction, new SetGameProgressPropertyAction("WormAreaDrillOn", "true"), notificationAction);
 		rule = new Rule(Rule.RULE_WORM_DELAY_PHASE4, Lists.newArrayList(GameEventChangedPosition.class), switchOnDrillsTrigger, switchOnDrillAction, Rule.RULE_PRIORITY_LATEST);
@@ -755,7 +755,7 @@ public class InitializationUtils {
 		RuleTrigger approachBlueKeyCardTrigger = new GameProgressPropertyTrigger("CollectedBlueKeyCard", "false");
 		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
 		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf. You grab the item. It is a key card for the mass hall (blue).");
-		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction pickUpBlueKeyCardAction = new PickupKeyAction(DoorType.blueKeycardDoor);
 		pickUpBlueKeyCardAction = BlockAction.block(pickUpBlueKeyCardAction, new SetGameProgressPropertyAction("CollectedBlueKeyCard", "true"), notificationAction);
 		rule = new Rule(Rule.RULE_PICK_UP_BLUE_KEYCARD, Lists.newArrayList(GameEventChangedPosition.class), approachBlueKeyCardTrigger, pickUpBlueKeyCardAction, Rule.RULE_PRIORITY_LATEST);

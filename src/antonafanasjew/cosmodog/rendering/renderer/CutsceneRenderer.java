@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -15,8 +17,6 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition.ActionPhase;
 
 public class CutsceneRenderer implements Renderer {
 
@@ -39,10 +39,14 @@ public class CutsceneRenderer implements Renderer {
 		if (openBook == null) {
 			return;
 		}
+
+		DialogWithAlisaNarrationAction dialogWithAlisaNarrationAction =
+				ApplicationContextUtils
+						.getCosmodogGame()
+						.getInterfaceActionRegistry()
+						.getRegisteredAction(AsyncActionType.MODAL_WINDOW, DialogWithAlisaNarrationAction.class);
 		
-		DialogWithAlisaTransition transition = ApplicationContextUtils.getCosmodogGame().getDialogWithAlisaTransition();
-		
-		if (transition != null) {
+		if (dialogWithAlisaNarrationAction != null) {
 			
 			graphics.setColor(Color.black);
 			graphics.fillRect(
@@ -53,10 +57,10 @@ public class CutsceneRenderer implements Renderer {
 
 			Animation cutsceneBackground = ApplicationContext.instance().getAnimations().get("cutsceneAlisa");
 			
-			ActionPhase phase = transition.phase;
-			float phaseCompletion = transition.phaseCompletion();
+			DialogWithAlisaNarrationAction.ActionPhase phase = dialogWithAlisaNarrationAction.phase;
+			float phaseCompletion = dialogWithAlisaNarrationAction.phaseCompletion();
 			
-			if (phase == ActionPhase.ARM_APPEARS) {
+			if (phase == DialogWithAlisaNarrationAction.ActionPhase.ARM_APPEARS) {
 				
 				float xOffset = -(dc.w() * (1 - phaseCompletion));
 				
@@ -69,7 +73,7 @@ public class CutsceneRenderer implements Renderer {
 				
 			}
 			
-			if (phase == ActionPhase.DEVICE_TURNS_ON) {
+			if (phase == DialogWithAlisaNarrationAction.ActionPhase.DEVICE_TURNS_ON) {
 				
 				cutsceneBackground.draw(
 						dc.x(), 
@@ -79,7 +83,7 @@ public class CutsceneRenderer implements Renderer {
 				);
 			}
 			
-			if (phase == ActionPhase.PICTURE_FADES) {
+			if (phase == DialogWithAlisaNarrationAction.ActionPhase.PICTURE_FADES) {
 				
 				cutsceneBackground.draw(
 						dc.x(), 
@@ -88,7 +92,7 @@ public class CutsceneRenderer implements Renderer {
 						dc.h()
 				);
 				
-				float textPageOpacity = (float)(phaseCompletion * DialogWithAlisaTransition.MAX_PICTURE_OPACITY);
+				float textPageOpacity = (float)(phaseCompletion * DialogWithAlisaNarrationAction.MAX_PICTURE_OPACITY);
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
@@ -99,7 +103,7 @@ public class CutsceneRenderer implements Renderer {
 				);
 			}
 			
-			if (phase == ActionPhase.TEXT) {
+			if (phase == DialogWithAlisaNarrationAction.ActionPhase.TEXT) {
 				
 				cutsceneBackground.draw(
 						dc.x(), 
@@ -109,7 +113,7 @@ public class CutsceneRenderer implements Renderer {
 				);
 				
 				
-				graphics.setColor(new Color(0f, 0f, 0f, DialogWithAlisaTransition.MAX_PICTURE_OPACITY));
+				graphics.setColor(new Color(0f, 0f, 0f, DialogWithAlisaNarrationAction.MAX_PICTURE_OPACITY));
 				graphics.fillRect(
 						dc.x(), 
 						dc.y(), 

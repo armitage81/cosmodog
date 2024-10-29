@@ -59,7 +59,7 @@ public class OperateSecretDoorsInSokobanAction extends AbstractRuleAction {
 					}
 					asyncAction = new CamCenteringDecoratorAction(1000, door, asyncAction, ApplicationContextUtils.getCosmodogGame());
 					ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-					actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+					actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 				}
 			}
 		}

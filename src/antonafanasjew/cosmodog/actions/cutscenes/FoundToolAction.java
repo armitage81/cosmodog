@@ -76,7 +76,7 @@ public class FoundToolAction extends FixedLengthAsyncAction {
 	@Override
 	public void onEnd() {
 		ApplicationContextUtils.getCosmodogGame().setCurrentlyFoundTool(null);
-		ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(text));
+		ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction(text));
 	}
 	
 }

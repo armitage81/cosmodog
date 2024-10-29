@@ -35,7 +35,7 @@ public class Terminal extends DynamicPiece {
 				String terminalText = guideTerminalRegion.getProperties().get("text");
 				if (terminalText != null) {
 					ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
-					actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(terminalText));
+					actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction(terminalText));
 				}
 			}
 			

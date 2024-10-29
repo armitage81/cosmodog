@@ -296,7 +296,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			if (notificationText != null) {
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_COLLECTED).play();
 				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry();
-				actionRegistry.registerAction(AsyncActionType.BLOCKING_INTERFACE, new PopUpNotificationAction(notificationText));
+				actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction(notificationText));
 			}
 			
 		}

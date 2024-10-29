@@ -31,8 +31,8 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 		
 		AsyncAction gameLogAction = new EndingNarrationAction(gameLog);
 
-		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, gameLogAction);
-		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.BLOCKING_INTERFACE, new FixedLengthAsyncAction(1000) {
+		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, gameLogAction);
+		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new FixedLengthAsyncAction(1000) {
 			private static final long serialVersionUID = -6998164781879026113L;
 
 			@Override

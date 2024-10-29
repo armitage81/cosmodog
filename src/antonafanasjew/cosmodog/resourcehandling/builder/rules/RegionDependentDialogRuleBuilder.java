@@ -48,7 +48,7 @@ public class RegionDependentDialogRuleBuilder extends AbstractCsvBasedResourceWr
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
 		
 		AsyncAction asyncAction = new DialogWithAlisaNarrationAction(gameLog);
-		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		
 		if (onlyOnce) {
 			RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, "true");

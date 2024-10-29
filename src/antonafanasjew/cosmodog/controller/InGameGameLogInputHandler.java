@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.controller;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
+import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -11,8 +13,6 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
-import antonafanasjew.cosmodog.view.transitions.EndingTransition;
 
 public class InGameGameLogInputHandler extends AbstractInputHandler {
 
@@ -23,18 +23,23 @@ public class InGameGameLogInputHandler extends AbstractInputHandler {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
-		/*
-		 * openBook can refer to one of the narration actions: dialog with Alisa, ending or monolith.
-		 * In these cases, one of the three transitions will not be null.
-		 * 
-		 * If all of the transitions are null, then openBook refers to a game log in a text frame.
-		 * 
-		 * openBook can also be null. In this case, the input must not need to be handeld.
-		 * 
-		 */
-		MonolithNarrationAction monolithNarrationAction = (MonolithNarrationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MONOLITH_INTERACTION);
-		DialogWithAlisaTransition dialogWithAlisaTransition = cosmodogGame.getDialogWithAlisaTransition();
-		EndingTransition endingTransition = cosmodogGame.getEndingTransition();
+		MonolithNarrationAction monolithNarrationAction =
+				ApplicationContextUtils
+						.getCosmodogGame()
+						.getInterfaceActionRegistry()
+						.getRegisteredAction(AsyncActionType.MODAL_WINDOW, MonolithNarrationAction.class);
+
+		DialogWithAlisaNarrationAction dialogWithAlisaNarrationAction =
+				ApplicationContextUtils
+						.getCosmodogGame()
+						.getInterfaceActionRegistry()
+						.getRegisteredAction(AsyncActionType.MODAL_WINDOW, DialogWithAlisaNarrationAction.class);
+
+		EndingNarrationAction endingNarrationAction =
+				ApplicationContextUtils
+						.getCosmodogGame()
+						.getInterfaceActionRegistry()
+						.getRegisteredAction(AsyncActionType.MODAL_WINDOW, EndingNarrationAction.class);
 
 		Book openBook = cosmodogGame.getOpenBook();
 		
@@ -43,10 +48,10 @@ public class InGameGameLogInputHandler extends AbstractInputHandler {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			
 			boolean monolithNarrationText = monolithNarrationAction != null && monolithNarrationAction.phase == MonolithNarrationAction.ActionPhase.TEXT;
-			boolean dialogTransitionText = dialogWithAlisaTransition != null && dialogWithAlisaTransition.phase == DialogWithAlisaTransition.ActionPhase.TEXT;
-			boolean endingTransitionText = endingTransition != null && endingTransition.phase == EndingTransition.ActionPhase.TEXT;
+			boolean dialogNarrationText = dialogWithAlisaNarrationAction != null && dialogWithAlisaNarrationAction.phase == DialogWithAlisaNarrationAction.ActionPhase.TEXT;
+			boolean endingNarrationText = endingNarrationAction != null && endingNarrationAction.phase == EndingNarrationAction.ActionPhase.TEXT;
 			
-			if (monolithNarrationText || dialogTransitionText || endingTransitionText) {
+			if (monolithNarrationText || dialogNarrationText || endingNarrationText) {
 				
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
 				
