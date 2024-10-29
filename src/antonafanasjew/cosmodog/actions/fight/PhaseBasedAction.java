@@ -20,8 +20,8 @@ public abstract class PhaseBasedAction extends VariableLengthAsyncAction {
 
 	@Override
 	public final void onTrigger() {
-		getPhaseRegistry().trigger();
 		onTriggerInternal();
+		getPhaseRegistry().trigger();
 	}
 
 	protected void onTriggerInternal() {

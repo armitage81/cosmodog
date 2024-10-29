@@ -5,6 +5,8 @@ package antonafanasjew.cosmodog.actions;
  */
 public enum AsyncActionType {
 
+	SPACE_LIFT(true, false, true),
+
 	SNOWFALL_CHANGE(false, false, false),
 
 	FOUND_TOOL_JINGLE(false, false, false),

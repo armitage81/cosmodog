@@ -1,5 +1,7 @@
 id;spriteSheetAddress;spriteWidth;spriteHeight;frames;autoUpdate;looping
 
+spaceliftGroundDoor;data/animations/spacelift/spacelift_animations.png;16;16;[0/0/100000];false;true
+
 playerDying;data/player.png;16;16;[0/37/500,1/37/500,2/37/500,3/37/500,4/37/500,5/37/500,6/37/1500,7/37/3000];false;false
 
 playerDefaultInanimatedRight;data/player.png;16;16;[0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300,0/0/2000,1/0/300];true;true

@@ -11,6 +11,9 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class SpaceLiftAction extends PhaseBasedAction {
 
+    public SpaceLiftAction() {
+
+    }
 
     @Override
     protected void onTriggerInternal() {
@@ -19,19 +22,19 @@ public class SpaceLiftAction extends PhaseBasedAction {
 
         Position playerPosition = ApplicationContextUtils.getPlayer().getPosition();
 
-        FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(1000);
-
-        LadderAction preparingLift = new LadderAction(2000, 4);
+        FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(100000);
         CamMovementAction focusingOnLift = new CamMovementAction(2000, playerPosition.shifted(0, -4), cosmodogGame);
+        LadderAction preparingLift = new LadderAction(2000, 4);
         ParabolicAction launchingLift = new ParabolicAction(5000);
         FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(5000);
-        
+
         ParabolicAction arriving = new ParabolicAction(5000);
         FixedLengthAsyncAction waiting = new FixedLengthAsyncAction(2000);
         CamMovementAction focusingOnPlayer = new CamMovementAction(2000, playerPosition, cosmodogGame);
         FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
 
         getPhaseRegistry().registerPhase(closingDoor);
+        /*
         getPhaseRegistry().registerPhase(focusingOnLift);
         getPhaseRegistry().registerPhase(preparingLift);
         getPhaseRegistry().registerPhase(launchingLift);
@@ -40,6 +43,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
         getPhaseRegistry().registerPhase(waiting);
         getPhaseRegistry().registerPhase(focusingOnPlayer);
         getPhaseRegistry().registerPhase(openingDoor);
+         */
     }
 
 }
