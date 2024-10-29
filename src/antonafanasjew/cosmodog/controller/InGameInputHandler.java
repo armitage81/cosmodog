@@ -343,7 +343,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		}
 
 		//TODO: This is a test for plane change. Remove it later.
-		if (input.isKeyPressed(Input.KEY_P)) {
+		if (input.isKeyPressed(Input.KEY_T)) {
 			MapType currentMapType = player.getPosition().getMapType();
 			int next = (Arrays.stream(MapType.values()).toList().indexOf(currentMapType) + 1) % MapType.values().length;
 			player.setPosition(Position.fromCoordinates(player.getPosition().getX(), player.getPosition().getY(), Arrays.stream(MapType.values()).toList().get(next)));
