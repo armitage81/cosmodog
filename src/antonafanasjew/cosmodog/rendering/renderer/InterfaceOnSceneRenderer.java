@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -19,7 +21,6 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
 import antonafanasjew.cosmodog.view.transitions.EndingTransition;
-import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 
 public class InterfaceOnSceneRenderer implements Renderer {
 
@@ -104,7 +105,7 @@ public class InterfaceOnSceneRenderer implements Renderer {
 				
 		if (cosmodogGame.getOpenBook() != null) {
 			
-			MonolithTransition monolithTransition = cosmodogGame.getMonolithTransition();
+			MonolithNarrationAction monolithNarrationAction = (MonolithNarrationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MONOLITH_INTERACTION);
 			DialogWithAlisaTransition dialogWithAlisaTransition = cosmodogGame.getDialogWithAlisaTransition();
 			EndingTransition endingTransition = cosmodogGame.getEndingTransition();
 			
@@ -112,7 +113,7 @@ public class InterfaceOnSceneRenderer implements Renderer {
 				endingRenderer.render(gc, g, null);
 			} else if (dialogWithAlisaTransition != null) {
 				cutsceneRenderer.render(gc, g, null);
-			} else if (monolithTransition != null) {
+			} else if (monolithNarrationAction != null) {
 				memoriesRenderer.render(gc, g, null);
 			} else {
 				gameLogRenderer.render(gc, g, null);

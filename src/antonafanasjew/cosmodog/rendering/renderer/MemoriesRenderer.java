@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -15,8 +17,6 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
-import antonafanasjew.cosmodog.view.transitions.MonolithTransition.ActionPhase;
 
 public class MemoriesRenderer implements Renderer {
 
@@ -39,10 +39,11 @@ public class MemoriesRenderer implements Renderer {
 		if (openBook == null) {
 			return;
 		}
-		
-		MonolithTransition transition = ApplicationContextUtils.getCosmodogGame().getMonolithTransition();
-		
-		if (transition != null) {
+
+		MonolithNarrationAction monolithNarrationAction = (MonolithNarrationAction) ApplicationContextUtils.getCosmodogGame().getActionRegistry().getRegisteredAction(AsyncActionType.MONOLITH_INTERACTION);
+
+
+		if (monolithNarrationAction != null) {
 			
 			
 			graphics.setColor(Color.black);
@@ -62,12 +63,12 @@ public class MemoriesRenderer implements Renderer {
 					dc.h()
 			);
 			
-			ActionPhase phase = transition.phase;
-			float phaseCompletion = transition.phaseCompletion();
+			MonolithNarrationAction.ActionPhase phase = monolithNarrationAction.phase;
+			float phaseCompletion = monolithNarrationAction.phaseCompletion();
 			
-			if (phase == ActionPhase.MONOLITH_FADES_IN) {
+			if (phase == MonolithNarrationAction.ActionPhase.MONOLITH_FADES_IN) {
 				
-				float textPageOpacity = (float)((1 - phaseCompletion) * MonolithTransition.MAX_PICTURE_OPACITY);
+				float textPageOpacity = (float)((1 - phaseCompletion) * MonolithNarrationAction.MAX_PICTURE_OPACITY);
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
@@ -79,13 +80,13 @@ public class MemoriesRenderer implements Renderer {
 				
 			}
 			
-			if (phase == ActionPhase.MONOLITH) {
+			if (phase == MonolithNarrationAction.ActionPhase.MONOLITH) {
 				
 			}
 			
-			if (phase == ActionPhase.PICTURE_FADES) {
+			if (phase == MonolithNarrationAction.ActionPhase.PICTURE_FADES) {
 
-				float textPageOpacity = (float)(phaseCompletion * MonolithTransition.MAX_PICTURE_OPACITY);
+				float textPageOpacity = (float)(phaseCompletion * MonolithNarrationAction.MAX_PICTURE_OPACITY);
 				
 				graphics.setColor(new Color(0f, 0f, 0f, textPageOpacity));
 				graphics.fillRect(
@@ -97,8 +98,8 @@ public class MemoriesRenderer implements Renderer {
 				
 			}
 			
-			if (phase == ActionPhase.TEXT) {
-				graphics.setColor(new Color(0f, 0f, 0f, MonolithTransition.MAX_PICTURE_OPACITY));
+			if (phase == MonolithNarrationAction.ActionPhase.TEXT) {
+				graphics.setColor(new Color(0f, 0f, 0f, MonolithNarrationAction.MAX_PICTURE_OPACITY));
 				
 				graphics.fillRect(
 						dc.x(), 

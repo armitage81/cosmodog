@@ -48,7 +48,7 @@ public class MultiInstancePieceRuleBuilder extends AbstractCsvBasedResourceWrapp
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
 		
 		AsyncAction asyncAction = new MonolithNarrationAction(gameLog);
-		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.BLOCKING_INTERFACE, asyncAction);
+		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.MONOLITH_INTERACTION, asyncAction);
 		
 		//action = new FeatureBoundAction(Features.FEATURE_STORY, action);
 		

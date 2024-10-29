@@ -14,7 +14,6 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.InitializationUtils;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
 import antonafanasjew.cosmodog.view.transitions.EndingTransition;
-import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
 import com.google.common.collect.Maps;
 
@@ -41,8 +40,6 @@ public class CosmodogGame extends CosmodogModel {
 	private transient String openBookTitle;
 	
 	private transient DialogWithAlisaTransition dialogWithAlisaTransition;
-	
-	private transient MonolithTransition monolithTransition;
 	
 	private transient EndingTransition endingTransition;
 	
@@ -208,14 +205,6 @@ public class CosmodogGame extends CosmodogModel {
 	
 	public void setDialogWithAlisaTransition(DialogWithAlisaTransition dialogWithAlisaTransition) {
 		this.dialogWithAlisaTransition = dialogWithAlisaTransition;
-	}
-	
-	public MonolithTransition getMonolithTransition() {
-		return monolithTransition;
-	}
-	
-	public void setMonolithTransition(MonolithTransition monolithTransition) {
-		this.monolithTransition = monolithTransition;
 	}
 	
 	public EndingTransition getEndingTransition() {

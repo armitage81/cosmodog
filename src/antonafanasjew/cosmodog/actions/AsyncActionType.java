@@ -80,7 +80,9 @@ public enum AsyncActionType {
 	 * F.i. Modal windows.
 	 */
 	BLOCKING_INTERFACE(true, true, false),
-	
+
+	MONOLITH_INTERACTION(true, true, false),
+
 	/**
 	 * Action type: Non blocking interface. Used for all interface actions that do not block input.
 	 * F.i. Alisa's comments.

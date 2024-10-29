@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.controller;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
@@ -11,7 +13,6 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.view.transitions.DialogWithAlisaTransition;
 import antonafanasjew.cosmodog.view.transitions.EndingTransition;
-import antonafanasjew.cosmodog.view.transitions.MonolithTransition;
 
 public class InGameGameLogInputHandler extends AbstractInputHandler {
 
@@ -31,7 +32,7 @@ public class InGameGameLogInputHandler extends AbstractInputHandler {
 		 * openBook can also be null. In this case, the input must not need to be handeld.
 		 * 
 		 */
-		MonolithTransition monolithTransition = cosmodogGame.getMonolithTransition();
+		MonolithNarrationAction monolithNarrationAction = (MonolithNarrationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MONOLITH_INTERACTION);
 		DialogWithAlisaTransition dialogWithAlisaTransition = cosmodogGame.getDialogWithAlisaTransition();
 		EndingTransition endingTransition = cosmodogGame.getEndingTransition();
 
@@ -41,11 +42,11 @@ public class InGameGameLogInputHandler extends AbstractInputHandler {
 
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			
-			boolean monolithTransitionText = monolithTransition != null && monolithTransition.phase == MonolithTransition.ActionPhase.TEXT;
+			boolean monolithNarrationText = monolithNarrationAction != null && monolithNarrationAction.phase == MonolithNarrationAction.ActionPhase.TEXT;
 			boolean dialogTransitionText = dialogWithAlisaTransition != null && dialogWithAlisaTransition.phase == DialogWithAlisaTransition.ActionPhase.TEXT;
 			boolean endingTransitionText = endingTransition != null && endingTransition.phase == EndingTransition.ActionPhase.TEXT;
 			
-			if (monolithTransitionText || dialogTransitionText || endingTransitionText) {
+			if (monolithNarrationText || dialogTransitionText || endingTransitionText) {
 				
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
 				
