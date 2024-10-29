@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.FoundToolAction;
+import antonafanasjew.cosmodog.actions.popup.FoundToolAction;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;

@@ -53,7 +53,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
-import antonafanasjew.cosmodog.rules.actions.async.InGameMenuAction;
+import antonafanasjew.cosmodog.actions.menu.InGameMenuAction;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;

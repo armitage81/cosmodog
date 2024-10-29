@@ -1,10 +1,9 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
-import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
-import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.DialogWithAlisaNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.EndingNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.MonolithNarrationAction;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

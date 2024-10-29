@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
+import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;

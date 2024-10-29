@@ -1,8 +1,8 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.actions.AsyncAction;
-import antonafanasjew.cosmodog.actions.generic.FadingAction;
-import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
+import antonafanasjew.cosmodog.actions.camera.FadingAction;
+import antonafanasjew.cosmodog.actions.death.RespawnAction;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

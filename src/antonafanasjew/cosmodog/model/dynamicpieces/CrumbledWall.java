@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.ExplosionAction;
+import antonafanasjew.cosmodog.actions.fight.ExplosionAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;

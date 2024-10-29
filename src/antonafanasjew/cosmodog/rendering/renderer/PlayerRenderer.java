@@ -1,14 +1,11 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.actions.AsyncAction;
-import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
-import antonafanasjew.cosmodog.actions.fight.ArtilleryAttackActionPhase;
-import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
-import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
-import antonafanasjew.cosmodog.actions.generic.FadingAction;
+import antonafanasjew.cosmodog.actions.fight.*;
+import antonafanasjew.cosmodog.actions.camera.FadingAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
-import antonafanasjew.cosmodog.actions.respawn.RespawnAction;
+import antonafanasjew.cosmodog.actions.death.RespawnAction;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
@@ -17,8 +14,8 @@ import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.MineExplosionAction;
-import antonafanasjew.cosmodog.actions.cutscenes.WormAttackAction;
+import antonafanasjew.cosmodog.actions.environmentaldamage.MineExplosionAction;
+import antonafanasjew.cosmodog.actions.death.WormAttackAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.ActorAppearanceType;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -111,7 +108,7 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerMotion = movementAction.getActorMotions().get(player);
 		}
 
-		Optional<AbstractFightActionPhase> optFightPhase = TransitionUtils.currentFightPhase();
+		Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
 		
 		Object action = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
 		MineExplosionAction mineExplosionAction = null;

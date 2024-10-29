@@ -5,12 +5,11 @@ import java.util.List;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.dying.DyingAction;
+import antonafanasjew.cosmodog.actions.death.DyingAction;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
 

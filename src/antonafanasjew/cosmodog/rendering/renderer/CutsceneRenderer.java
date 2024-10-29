@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.DialogWithAlisaNarrationAction;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;

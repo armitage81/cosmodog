@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.domains.MapType;
@@ -87,8 +86,8 @@ import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
-import antonafanasjew.cosmodog.rules.actions.async.PauseAction;
-import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
+import antonafanasjew.cosmodog.actions.popup.PauseAction;
+import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DamageLastBossAction;
 import antonafanasjew.cosmodog.rules.actions.gameprogress.DeactivateMinesAction;

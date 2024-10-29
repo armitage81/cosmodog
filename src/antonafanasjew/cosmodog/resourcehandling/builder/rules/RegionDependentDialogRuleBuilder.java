@@ -13,7 +13,7 @@ import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
-import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.DialogWithAlisaNarrationAction;
 import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;

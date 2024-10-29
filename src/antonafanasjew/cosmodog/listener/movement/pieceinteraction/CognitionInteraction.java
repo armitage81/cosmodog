@@ -16,7 +16,7 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
-import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.EndingNarrationAction;
 
 public class CognitionInteraction extends AbstractPieceInteraction {
 

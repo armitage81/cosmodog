@@ -6,9 +6,9 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.cutscenes.CamCenteringDecoratorAction;
+import antonafanasjew.cosmodog.actions.camera.CamCenteringDecoratorAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
-import antonafanasjew.cosmodog.actions.switchingindicator.SwitchingIndicatorAction;
+import antonafanasjew.cosmodog.actions.mechanism.SwitchingIndicatorAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -20,7 +20,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
-import antonafanasjew.cosmodog.util.TileUtils;
 
 import java.io.Serial;
 

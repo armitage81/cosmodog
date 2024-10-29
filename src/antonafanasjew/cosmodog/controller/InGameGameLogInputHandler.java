@@ -1,9 +1,9 @@
 package antonafanasjew.cosmodog.controller;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.rules.actions.async.DialogWithAlisaNarrationAction;
-import antonafanasjew.cosmodog.rules.actions.async.EndingNarrationAction;
-import antonafanasjew.cosmodog.rules.actions.async.MonolithNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.DialogWithAlisaNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.EndingNarrationAction;
+import antonafanasjew.cosmodog.actions.narration.MonolithNarrationAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;

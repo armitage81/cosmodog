@@ -7,7 +7,7 @@ import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
+import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 
 public class InfobitInteraction extends AbstractPieceInteraction {
 

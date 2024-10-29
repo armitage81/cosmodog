@@ -10,7 +10,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
-import antonafanasjew.cosmodog.rules.actions.async.PopUpNotificationAction;
+import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class VehicleInteraction extends AbstractPieceInteraction {
