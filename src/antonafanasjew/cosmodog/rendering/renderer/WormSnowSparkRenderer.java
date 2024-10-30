@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -48,24 +49,15 @@ public class WormSnowSparkRenderer extends AbstractRenderer {
 		
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
+
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+		Vector playerVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition(), camTilePosition);
 		
-		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
-
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileLength));
-		int y = -(int) ((camY % scaledTileLength));
-
-		int tileNoX = camX / scaledTileLength;
-		int tileNoY = camY / scaledTileLength;
-
-		
-		graphics.translate(x, y);
+		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		applicationContext.getAnimations().get("wormAttackSnowSpark").draw((player.getPosition().getX() - tileNoX) * tileLength - 1f * tileLength, (player.getPosition().getY() - tileNoY) * tileLength);
+		applicationContext.getAnimations().get("wormAttackSnowSpark").draw(playerVectorRelatedToCam.getX() - tileLength, playerVectorRelatedToCam.getY());
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-		graphics.translate(-x, -y);
+		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}

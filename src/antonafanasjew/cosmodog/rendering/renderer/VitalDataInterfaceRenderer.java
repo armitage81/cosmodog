@@ -116,12 +116,6 @@ public class VitalDataInterfaceRenderer implements Renderer {
 		}
 		
 
-		
-		
-		
-		
-		
-		
 		SimpleDrawingContext hungerLabelDrawingContext = new SimpleDrawingContext(hungerDrawingContext, 0, 0, LABEL_WIDTH, hungerDrawingContext.h());
 		SimpleDrawingContext hungerBarsDrawingContext = new SimpleDrawingContext(hungerDrawingContext, LABEL_WIDTH, 0, hungerDrawingContext.w() - LABEL_WIDTH, hungerDrawingContext.h());
 		

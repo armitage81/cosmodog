@@ -6,6 +6,7 @@ import java.util.Set;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -49,27 +50,15 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Cam cam = cosmodogGame.getCam();
-		
-		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileLength));
-		int y = -(int) ((camY % scaledTileLength));
-		
-		int tileNoX = camX / scaledTileLength;
-		int tileNoY = camY / scaledTileLength;
-
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 		 
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
 
-		Position position = Position.fromCoordinates(tileNoX, tileNoY, map.getMapType());
+		Position position = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
 
-		Set<Enemy> enemies = map.visibleEnemies(position, tilesW, tilesH, 2);
+		Set<Enemy> enemies = map.visibleEnemies(position, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2);
 		
 		EnemiesUtils.removeInactiveUnits(enemies);
 				
@@ -155,27 +144,33 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		sightMarkers.removeAll(alertMarkers);
 
 		for (Position alertMarker : alertMarkers) {
+
+			Vector alertMarkerVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(alertMarker, camTilePosition);
+
 			Animation sightRadiusMarkerAnimation = ApplicationContext.instance().getAnimations().get("sightRadiusAlertedMarker");
 			
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			
-			sightRadiusMarkerAnimation.draw((alertMarker.getX() - tileNoX) * tileLength, (alertMarker.getY() - tileNoY) * tileLength);
+			sightRadiusMarkerAnimation.draw(alertMarkerVectorRelatedToCam.getX(), alertMarkerVectorRelatedToCam.getY());
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-			graphics.translate(-x, -y);
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		}
 		
 		for (Position sightMarker : sightMarkers) {
+
+			Vector sightMarkerVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(sightMarker, camTilePosition);
+
 			Animation sightRadiusMarkerAnimation = ApplicationContext.instance().getAnimations().get("sightRadiusMarker");
 			
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			
-			sightRadiusMarkerAnimation.draw((sightMarker.getX() - tileNoX) * tileLength, (sightMarker.getY() - tileNoY) * tileLength);
+			sightRadiusMarkerAnimation.draw(sightMarkerVectorRelatedToCam.getX(), sightMarkerVectorRelatedToCam.getY());
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-			graphics.translate(-x, -y);
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		}
 		
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
