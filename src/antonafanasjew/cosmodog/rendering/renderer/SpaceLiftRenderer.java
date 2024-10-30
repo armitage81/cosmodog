@@ -59,7 +59,7 @@ public class SpaceLiftRenderer extends AbstractRenderer {
 
         Cam cam = cosmodogGame.getCam();
         Cam.CamTilePosition camTilePosition = cam.camTilePosition();
-        Vector playerVectorRelatedToCam = Cam.pieceVectorRelatedToCamTilePosition(player, camTilePosition);
+        Vector playerVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition(), camTilePosition);
 
         DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
         graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
