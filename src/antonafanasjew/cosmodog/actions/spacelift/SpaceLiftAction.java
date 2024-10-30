@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 public class SpaceLiftAction extends PhaseBasedAction {
 
@@ -18,13 +19,21 @@ public class SpaceLiftAction extends PhaseBasedAction {
     @Override
     protected void onTriggerInternal() {
 
+        int tileLength = TileUtils.tileLengthSupplier.get();
+
         CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
         Position playerPosition = ApplicationContextUtils.getPlayer().getPosition();
+        Position spaceLiftShaftPosition = playerPosition.shifted(-1, -5);
+        Position camCenterPixelPosition = Position.fromCoordinates(
+                spaceLiftShaftPosition.getX() * tileLength,
+                spaceLiftShaftPosition.getY() * tileLength,
+                playerPosition.getMapType());
+
 
         FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(1000);
         FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(5000);
-        CamMovementAction focusingOnLift = new CamMovementAction(2000, playerPosition.shifted(0, -4), cosmodogGame);
+        CamMovementAction focusingOnLift = new CamMovementAction(2000, camCenterPixelPosition, cosmodogGame);
         LadderAction preparingLift = new LadderAction(2000, 4);
         ParabolicAction launchingLift = new ParabolicAction(5000);
         FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(5000);
@@ -36,8 +45,9 @@ public class SpaceLiftAction extends PhaseBasedAction {
 
         getPhaseRegistry().registerPhase(closingDoor);
         getPhaseRegistry().registerPhase(suspenseWaiting);
-        /*
         getPhaseRegistry().registerPhase(focusingOnLift);
+
+        /*
         getPhaseRegistry().registerPhase(preparingLift);
         getPhaseRegistry().registerPhase(launchingLift);
         getPhaseRegistry().registerPhase(traveling);

@@ -107,8 +107,6 @@ public class GameState extends CosmodogAbstractState {
 				throw new SlickException("Error while reading the cosmodog map", e1);
 			}
 
-
-
 			// Check for the rules of the new game event
 			GameEventUtils.throwEvent(new GameEventNewGame());
 
