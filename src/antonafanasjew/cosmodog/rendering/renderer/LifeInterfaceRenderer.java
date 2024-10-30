@@ -36,7 +36,7 @@ public class LifeInterfaceRenderer implements Renderer {
 		DrawingContext robustnessDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().robustnessDrawingContext();
 		DrawingContext fuelDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().fuelDrawingContext();
 		
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;
 		}
 		

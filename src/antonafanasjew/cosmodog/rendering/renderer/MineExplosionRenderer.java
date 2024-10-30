@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.actions.*;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -47,22 +48,11 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		Animation mineExplosionAnimation = applicationContext.getAnimations().get("explosion");
 		
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		
 
 		Cam cam = cosmodogGame.getCam();
-		
-		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
-
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
-
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+		Vector positionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(position, camTilePosition);
 
 		float offsetX = -((mineExplosionAnimation.getWidth() - tileLength) / 2.0f);
 		float offsetY = -((mineExplosionAnimation.getHeight() - tileLength) / 2.0f);
@@ -72,11 +62,11 @@ public class MineExplosionRenderer extends AbstractRenderer {
 		
 		Image image = mineExplosionAnimation.getImage(currentImageIndex);
 		
-		graphics.translate(x, y);
+		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		image.draw((position.getX() - tileNoX) * tileLength + offsetX, (position.getY() - tileNoY) * tileLength + offsetY);
+		image.draw(positionVectorRelatedToCam.getX() + offsetX, positionVectorRelatedToCam.getY() + offsetY);
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-		graphics.translate(-x, -y);
+		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}

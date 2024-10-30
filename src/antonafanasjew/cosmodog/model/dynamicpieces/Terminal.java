@@ -74,5 +74,9 @@ public class Terminal extends DynamicPiece {
 		terminal.setPosition(position);
 		return terminal;
 	}
-	
+
+	@Override
+	public String animationId(boolean bottomNotTop) {
+        return "dynamicPieceGuideTerminal";
+	}
 }

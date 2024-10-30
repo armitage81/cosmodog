@@ -24,22 +24,22 @@ import antonafanasjew.cosmodog.util.ImageUtils;
 
 public class InterfaceOnSceneRenderer implements Renderer {
 
-	private Renderer sceneRenderer = new SceneRenderer();
-	private Renderer lifeInterfaceRenderer = new LifeInterfaceRenderer();
-	private Renderer arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
-	private Renderer vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
-	private Renderer geigerCounterViewRenderer = new GeigerCounterViewRenderer();
-	private Renderer supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
-	private Renderer timeRenderer = new TimeRenderer();
-	private Renderer infobitsRenderer = new InfobitsRenderer();
-	private Renderer textFrameRenderer = new TextFrameRenderer();
-	private Renderer onScreenNotificationRenderer = new OnScreenNotificationRenderer();
-	private Renderer gameHintRenderer = new GameHintRenderer();
-	private Renderer gameLogRenderer = new GameLogRenderer();
-	private Renderer cutsceneRenderer = new CutsceneRenderer();
-	private Renderer memoriesRenderer = new MemoriesRenderer();
-	private Renderer endingRenderer = new EndingRenderer();
-	private Renderer positionDebugInfoRenderer = new PositionDebugInfoRenderer();
+	private final Renderer sceneRenderer = new SceneRenderer();
+	private final Renderer lifeInterfaceRenderer = new LifeInterfaceRenderer();
+	private final Renderer arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
+	private final Renderer vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
+	private final Renderer geigerCounterViewRenderer = new GeigerCounterViewRenderer();
+	private final Renderer supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
+	private final Renderer timeRenderer = new TimeRenderer();
+	private final Renderer infobitsRenderer = new InfobitsRenderer();
+	private final Renderer textFrameRenderer = new TextFrameRenderer();
+	private final Renderer onScreenNotificationRenderer = new OnScreenNotificationRenderer();
+	private final Renderer gameHintRenderer = new GameHintRenderer();
+	private final Renderer gameLogRenderer = new GameLogRenderer();
+	private final Renderer cutsceneRenderer = new CutsceneRenderer();
+	private final Renderer memoriesRenderer = new MemoriesRenderer();
+	private final Renderer endingRenderer = new EndingRenderer();
+	private final Renderer positionDebugInfoRenderer = new PositionDebugInfoRenderer();
 		
 	@Override
 	public void render(GameContainer gc, Graphics g, Object renderingParameter) {

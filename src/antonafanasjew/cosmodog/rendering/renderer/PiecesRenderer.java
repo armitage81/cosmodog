@@ -30,7 +30,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates.PieceRendererPredicate;
+import antonafanasjew.cosmodog.rendering.piecerendererpredicates.PieceRendererPredicate;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 
 import com.google.common.collect.Lists;

@@ -49,6 +49,6 @@ public abstract class DynamicPiece extends Piece {
 	 */
 	public abstract boolean wrapsCollectible();
 
-	
+	public abstract String animationId(boolean bottomNotTop);
 	
 }

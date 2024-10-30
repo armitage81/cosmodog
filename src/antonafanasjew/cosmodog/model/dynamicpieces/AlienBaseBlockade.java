@@ -11,9 +11,12 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
+import java.io.Serial;
+
 public class AlienBaseBlockade extends DynamicPiece {
 
 
+	@Serial
 	private static final long serialVersionUID = -3679262029935812988L;
 	
 	private boolean opened;
@@ -60,4 +63,11 @@ public class AlienBaseBlockade extends DynamicPiece {
 		return !isOpened();
 	}
 
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceAlienBaseBlockade";
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = isOpened() ? "Open" : "Closed";
+        return animationIdPrefix + animationIdInfix + animationSuffix;
+	}
 }

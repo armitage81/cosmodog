@@ -56,4 +56,11 @@ public class Gate extends DynamicPiece {
 		return false;
 	}
 
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceGate";
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdInfix + animationSuffix;
+	}
 }

@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
 import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -59,30 +60,20 @@ public class NpcRenderer extends AbstractRenderer {
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
 		Cam cam = cosmodogGame.getCam();
+
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 		
-		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
+		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileLength));
-		int y = -(int) ((camY % scaledTileLength));
-
-		int tileNoX = camX / scaledTileLength;
-		int tileNoY = camY / scaledTileLength;
-
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
-		
-		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY, map.getMapType());
-
-		Set<Enemy> enemies = map.visibleEnemies(tilePosition, tilesW, tilesH, 2);
+		Set<Enemy> enemies = map.visibleEnemies(tilePosition, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2);
 
 		Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
 
 		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
 
 		for (Enemy enemy : enemies) {
+
+			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemy.getPosition(), camTilePosition);
 			
 			Position enemyPosition = enemy.getPosition();
 
@@ -184,7 +175,7 @@ public class NpcRenderer extends AbstractRenderer {
 			
 			boolean enemyDamaged = enemy.getActualLife() * 2 < enemy.getActualMaxLife();
 			boolean enemyRobotic = enemy.getUnitType().isRobotic();
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			if (enemyAnimation == null) {
 				throw new NullPointerException("Animation " + animationId + " does not exist.");
@@ -202,13 +193,13 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 
 			
-			enemyAnimation.draw((enemyPosition.getX() - tileNoX) * tileLength + pieceOffsetX + animationSizeCorrectionOffsetX, (enemyPosition.getY() - tileNoY) * tileLength + pieceOffsetY + animationSizeCorrectionOffsetY);
+			enemyAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY);
 			
 			if (enemyDamaged && enemyRobotic) {
 				int smokeOffsetX = 8;
 				int smokeOffsetY = -8;
 				Animation smokeAnimation = ApplicationContext.instance().getAnimations().get("smoke");
-				smokeAnimation.draw((enemyPosition.getX() - tileNoX) * tileLength + pieceOffsetX  + animationSizeCorrectionOffsetX + smokeOffsetX, (enemyPosition.getY() - tileNoY) * tileLength + pieceOffsetY + animationSizeCorrectionOffsetY + smokeOffsetY);
+				smokeAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX  + animationSizeCorrectionOffsetX + smokeOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY + smokeOffsetY);
 			}
 			
 			if (enemyIsExploding && enemyRobotic) {
@@ -216,19 +207,20 @@ public class NpcRenderer extends AbstractRenderer {
 				float completion = optFightPhase.get().getCompletionRate();
 				int animationFrame = (int)(explosionAnimation.getFrameCount() * completion);
 				explosionAnimation.setCurrentFrame(animationFrame);
-				explosionAnimation.draw((enemyPosition.getX() - tileNoX) * tileLength - tileLength, (enemyPosition.getY() - tileNoY) * tileLength - tileLength);
+				explosionAnimation.draw(npcPositionVectorRelatedToCam.getX() - tileLength, npcPositionVectorRelatedToCam.getY() - tileLength);
 			}
 						
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-			graphics.translate(-x, -y);
-			
-			
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
+
 		}
 		
 
 		//This is another rendering loop to render the overhead markers over the enemies.
 		for (Enemy enemy : enemies) {
-			
+
+			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemy.getPosition(), camTilePosition);
+
 			Position enemyPosition = enemy.getPosition();
 
 			float pieceOffsetX = 0.0f;
@@ -299,7 +291,7 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 						
 			
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 			
 			float animationSizeCorrectionOffsetX = 0.0f;
@@ -321,19 +313,19 @@ public class NpcRenderer extends AbstractRenderer {
 					float signOffsetX = (tileLength - signWidth) / 2;
 					float signOffseetY = -8;
 					Animation sleepingAnimation = ApplicationContext.instance().getAnimations().get("enemySleeping");
-					sleepingAnimation.draw((enemyPosition.getX() - tileNoX) * tileLength + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosition.getY() - tileNoY) * tileLength + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
-				} else if (enemy.getAlertLevel() > 0 && !enemyIsExploding) {
+					sleepingAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + signOffseetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
+				} else if (enemy.getAlertLevel() > 0) {
 					float signWidth = 8;
 					float signHeight = 8;
 					float signOffsetX = (tileLength - signWidth) / 2;
 					float signOffsetY = -signHeight;
 					Animation alertedAnimation = ApplicationContext.instance().getAnimations().get("enemyAlerted");
-					alertedAnimation.draw((enemyPosition.getX() - tileNoX) * tileLength + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, (enemyPosition.getY() - tileNoY) * tileLength + pieceOffsetY + signOffsetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
+					alertedAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + signOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + signOffsetY + animationSizeCorrectionOffsetY, signWidth, signHeight);
 				}
 			}
 			
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-			graphics.translate(-x, -y);
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 			
 			
 		}	

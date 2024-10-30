@@ -19,7 +19,7 @@ import com.google.common.collect.Multimap;
  */
 public class LayeredRenderer implements Renderer {
 
-	private Multimap<Integer, Renderer> underlyingRenderers = ArrayListMultimap.create();
+	private final Multimap<Integer, Renderer> underlyingRenderers = ArrayListMultimap.create();
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {

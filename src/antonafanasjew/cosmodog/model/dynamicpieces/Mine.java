@@ -64,5 +64,13 @@ public class Mine extends DynamicPiece {
 	public boolean wrapsCollectible() {
 		return false;
 	}
-	
+
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceMine";
+		String animationIdPrefixIndex = String.valueOf(getShapeNumber());
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+	}
 }

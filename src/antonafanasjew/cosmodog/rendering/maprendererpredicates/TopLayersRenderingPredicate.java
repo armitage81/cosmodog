@@ -1,4 +1,4 @@
-package antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates;
+package antonafanasjew.cosmodog.rendering.maprendererpredicates;
 
 import java.util.List;
 import java.util.Map;

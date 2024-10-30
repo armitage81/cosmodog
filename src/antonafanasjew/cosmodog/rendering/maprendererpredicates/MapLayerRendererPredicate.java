@@ -1,4 +1,4 @@
-package antonafanasjew.cosmodog.rendering.renderer.maprendererpredicates;
+package antonafanasjew.cosmodog.rendering.maprendererpredicates;
 
 import antonafanasjew.cosmodog.topology.Position;
 

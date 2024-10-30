@@ -1,4 +1,4 @@
-package antonafanasjew.cosmodog.rendering.renderer.piecerendererpredicates;
+package antonafanasjew.cosmodog.rendering.piecerendererpredicates;
 
 import antonafanasjew.cosmodog.model.Piece;
 

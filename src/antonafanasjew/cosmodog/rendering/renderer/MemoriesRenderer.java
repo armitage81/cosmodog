@@ -10,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
-import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
@@ -21,10 +20,6 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 public class MemoriesRenderer implements Renderer {
 
 	public static boolean firstLoop = true;
-	
-	public static class GameLogRenderingParameter {
-		public GameLog gameLog;
-	}
 	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
@@ -79,10 +74,6 @@ public class MemoriesRenderer implements Renderer {
 						dc.w(), 
 						dc.h()
 				);
-				
-			}
-			
-			if (phase == MonolithNarrationAction.ActionPhase.MONOLITH) {
 				
 			}
 			

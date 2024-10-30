@@ -37,7 +37,7 @@ public class MenuRenderer implements Renderer {
 		public Menu menu;
 	}
 	
-	private Cache<MenuElement, String> menuLabelCache = CacheBuilder.newBuilder().maximumSize(100).build();
+	private final Cache<MenuElement, String> menuLabelCache = CacheBuilder.newBuilder().maximumSize(100).build();
 	
 	public void resetMenuLabelCache() {
 		menuLabelCache.invalidateAll();
@@ -48,28 +48,8 @@ public class MenuRenderer implements Renderer {
 		
 		
 		DrawingContext startScreenMenuDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenMenuDrawingContext();
-		
-//		g.setColor(new Color(0f, 1f, 0f, 0.8f));
-//		g.fillRoundRect(
-//			startScreenMenuDrawingContext.x(), 
-//			startScreenMenuDrawingContext.y(), 
-//			startScreenMenuDrawingContext.w(), 
-//			startScreenMenuDrawingContext.h(), 
-//			5
-//		);
-//		
-//		g.setColor(Color.black);
-//		g.drawRoundRect(
-//				startScreenMenuDrawingContext.x(), 
-//				startScreenMenuDrawingContext.y(), 
-//				startScreenMenuDrawingContext.w(), 
-//				startScreenMenuDrawingContext.h(), 
-//				5
-//		);
-		
-		
+
 		Menu menu = ((MenuRenderingParam)renderingParameter).menu;
-		
 		
 		DrawingContext dcCursor = new TileDrawingContext(startScreenMenuDrawingContext, 15, 1, 0, 0, 1, 1);
 		DrawingContext dcMenu = new TileDrawingContext(startScreenMenuDrawingContext, 15, 1, 1, 0, 14, 1);

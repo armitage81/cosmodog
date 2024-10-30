@@ -6,6 +6,7 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.util.Log;
@@ -24,6 +25,8 @@ import antonafanasjew.cosmodog.topology.Rectangle;
  * Take note: The camera is equivalent to the screen size (or its part in case the map view is not drawn on the whole screen).
  */
 public class Cam implements Serializable {
+
+	public static record CamTilePosition(int tileX, int tileY, int offsetX, int offsetY, int widthInTiles, int heightInTiles) {}
 
 	@Serial
 	private static final long serialVersionUID = -8932980175152168004L;
@@ -318,6 +321,34 @@ public class Cam implements Serializable {
 			System.exit(1);
 		}
 		
+	}
+
+	public CamTilePosition camTilePosition() {
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
+		int scaledTileLength = (int) (tileLength * getZoomFactor());
+
+		int camX = (int) viewCopy().x();
+		int camY = (int) viewCopy().y();
+
+		int x = -(int) ((camX % scaledTileLength));
+		int y = -(int) ((camY % scaledTileLength));
+
+		int tileNoX = camX / scaledTileLength;
+		int tileNoY = camY / scaledTileLength;
+
+		int widthInTiles = (int) (viewCopy().width()) / scaledTileLength + 2;
+		int heightInTiles = (int) (viewCopy().height()) / scaledTileLength + 2;
+
+		return new CamTilePosition(tileNoX, tileNoY, x, y, widthInTiles, heightInTiles);
+	}
+
+	public static Vector positionVectorRelatedToCamTilePosition(Position position, CamTilePosition camTilePosition) {
+		int tileLength = TileUtils.tileLengthSupplier.get();
+		float x = (position.getX() - camTilePosition.tileX()) * tileLength;
+		float y = (position.getY() - camTilePosition.tileY()) * tileLength;
+		return new Vector(x, y);
 	}
 
 }

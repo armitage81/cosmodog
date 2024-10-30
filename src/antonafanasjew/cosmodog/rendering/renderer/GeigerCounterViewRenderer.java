@@ -26,7 +26,7 @@ public class GeigerCounterViewRenderer implements Renderer {
 		DrawingContext geigerCounterDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().geigerCounterDrawingContext();
 		
 		
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;
 		}
 		
@@ -65,7 +65,7 @@ public class GeigerCounterViewRenderer implements Renderer {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
 					Color color;
-					if (radiationInfos[i][j] == true) {
+					if (radiationInfos[i][j]) {
 						if ((timestamp / 250) % 2 == 0) {
 							color = Color.red;
 						} else {

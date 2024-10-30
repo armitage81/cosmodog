@@ -52,4 +52,14 @@ public class Block extends MoveableDynamicPiece {
 	public void setStil(String stil) {
 		this.stil = stil;
 	}
+
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPiece";
+		String animationIdStil = getStil().substring(0, 1).toUpperCase() + getStil().substring(1);
+		String animationIdPrefixIndex = String.valueOf(getShapeNumber());
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdStil + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+	}
 }

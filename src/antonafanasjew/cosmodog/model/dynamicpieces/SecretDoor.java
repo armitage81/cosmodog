@@ -70,4 +70,12 @@ public class SecretDoor extends DynamicPiece {
 		return false;
 	}
 
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceSecretDoor";
+		String animationIdStil = getStil().substring(0, 1).toUpperCase() + getStil().substring(1);
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdStil + animationIdInfix + animationSuffix;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.ArtilleryAttackActionPhase;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -31,28 +32,20 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
-		
-		
+
+
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
 		Cam cam = cosmodogGame.getCam();
-
-		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
-
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
-
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 
 		Player player = ApplicationContextUtils.getPlayer();
+		Vector playerVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition(), camTilePosition);
 
 		for (Enemy enemy : map.nearbyEnemies(player.getPosition(), 20)) {
+
+			Vector enemyVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemy.getPosition(), camTilePosition);
 
 			// We are only interested in ranged units here.
 			if (!enemy.getUnitType().isRangedUnit()) {
@@ -61,14 +54,12 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
 			Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
 
-			boolean enemyIsFighting = optFightPhase.isPresent() && ((Enemy)optFightPhase.get().getProperties().get("enemy")).equals(enemy);
+			boolean enemyIsFighting = optFightPhase.isPresent() && optFightPhase.get().getProperties().get("enemy").equals(enemy);
 			boolean enemyIsShooting = enemyIsFighting && (optFightPhase.get() instanceof ArtilleryAttackActionPhase);
 
 			if (!enemyIsShooting) {
 				continue;
 			}
-
-
 
 			// At this point we know that there is a ranged attack action
 			// currently going on where the attacker is the enemy and the
@@ -84,9 +75,9 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float animationWidth = risingGrenade.getWidth();
 			float animationHeight = risingGrenade.getHeight();
 
-			float enemyX1 = (enemy.getPosition().getX() - tileNoX) * tileLength;
+			float enemyX1 = enemyVectorRelatedToCam.getX();
 			float enemyX2 = enemyX1 + tileLength;
-			float enemyY1 = (enemy.getPosition().getY() - tileNoY) * tileLength;
+			float enemyY1 = enemyVectorRelatedToCam.getY();
 
 			int leftRightOffset = 4;
 			
@@ -96,17 +87,17 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 			float risingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
 			float maxVerticalRisingGrenadeDistance = risingGrenadeY1Max - risingGrenadeY1Min;
 
-			float playerX1 = (player.getPosition().getX() - tileNoX) * tileLength;
+			float playerX1 = playerVectorRelatedToCam.getX();
 			float playerX2 = playerX1 + tileLength;
-			float playerY1 = (player.getPosition().getY() - tileNoY) * tileLength;
+			float playerY1 = playerVectorRelatedToCam.getY();
 
 			float fallingLeftGrenadeX1 = playerX1 - (leftRightOffset);
 			float fallingRightGrenadeX1 = playerX2 - animationWidth + (leftRightOffset);
 			float fallingGrenadeY1Max = playerY1 + tileLength - animationHeight;
 			float fallingGrenadeY1Min = sceneDrawingContext.y() - animationHeight;
-			float maxVerticalfallingGrenadeDistance = fallingGrenadeY1Max - fallingGrenadeY1Min;
+			float maxVerticalFallingGrenadeDistance = fallingGrenadeY1Max - fallingGrenadeY1Min;
 
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
             for (ArtilleryAttackActionPhase.Grenade grenade : grenades) {
@@ -120,7 +111,7 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
                     grenadeX1 = grenade.leftNotRight ? risingLeftGrenadeX1 : risingRightGrenadeX1;
                     animation = risingGrenade;
                 } else {
-                    grenadeY1 = fallingGrenadeY1Max - (maxVerticalfallingGrenadeDistance * relativeHeight);
+                    grenadeY1 = fallingGrenadeY1Max - (maxVerticalFallingGrenadeDistance * relativeHeight);
                     grenadeX1 = grenade.leftNotRight ? fallingLeftGrenadeX1 : fallingRightGrenadeX1;
                     animation = fallingGrenade;
                 }
@@ -130,7 +121,7 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
             }
 
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-			graphics.translate(-x, -y);
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 
 		}
 

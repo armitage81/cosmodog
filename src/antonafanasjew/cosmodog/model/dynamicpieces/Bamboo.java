@@ -85,5 +85,12 @@ public class Bamboo extends DynamicPiece {
 		return state != STATE_DESTROYED;
 	}
 
-
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceBamboo";
+		String animationIdPrefixIndex = String.valueOf(getShapeNumber());
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+	}
 }

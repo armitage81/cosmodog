@@ -8,8 +8,8 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
 public class FeatureBoundRenderer implements Renderer {
 
-	private Renderer delegate;
-	private String feature;
+	private final Renderer delegate;
+	private final String feature;
 
 	public FeatureBoundRenderer(Renderer delegate, String feature) {
 		super();
@@ -17,10 +17,6 @@ public class FeatureBoundRenderer implements Renderer {
 		this.feature = feature;
 	}
 
-	public void render(GameContainer gameContainer, Graphics graphics, DrawingContext drawingContext) {
-		render(gameContainer, graphics, null);
-	}
-	
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		Features.getInstance().featureBoundProcedure(feature, new Runnable() {

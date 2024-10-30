@@ -125,5 +125,11 @@ public class Door extends DynamicPiece {
 		return doorAppearanceType;
 	}
 
-
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPiece" + getDoorAppearanceType() + getExitDirectionType().getRepresentation();
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = isOpened() ? "Open" : "Closed";
+        return animationIdPrefix + animationIdInfix + animationSuffix;
+	}
 }

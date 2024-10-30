@@ -82,5 +82,12 @@ public class Tree extends DynamicPiece {
 		return state != STATE_DESTROYED;
 	}
 
-	
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceTree";
+		String animationIdPrefixIndex = String.valueOf(getShapeNumber());
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+	}
 }

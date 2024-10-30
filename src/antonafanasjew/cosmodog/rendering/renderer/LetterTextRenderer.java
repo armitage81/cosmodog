@@ -13,7 +13,7 @@ import antonafanasjew.cosmodog.topology.Rectangle;
 
 public class LetterTextRenderer implements Renderer {
 
-	private static LetterTextRenderer instance = new LetterTextRenderer();
+	private static final LetterTextRenderer instance = new LetterTextRenderer();
 	
 	public static LetterTextRenderer getInstance() {
 		return instance;

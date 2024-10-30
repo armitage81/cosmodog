@@ -48,4 +48,11 @@ public class BinaryIndicator extends DynamicPiece {
 		this.state = state;
 	}
 
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPieceAlienSwitch";
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdInfix + animationSuffix;
+	}
 }

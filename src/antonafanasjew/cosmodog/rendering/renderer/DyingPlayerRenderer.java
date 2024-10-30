@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import antonafanasjew.cosmodog.util.TileUtils;
+import antonafanasjew.cosmodog.topology.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -30,8 +30,6 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
-		int tileLength = TileUtils.tileLengthSupplier.get();
-
 		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 		
 		DrawingContext bottomContainerDrawingContext = new TileDrawingContext(gameContainerDrawingContext, 1, 3, 0, 2);
@@ -43,9 +41,7 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		
 		
 		Player player = cosmodogGame.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		
-		
+
 		DyingAction dyingAction = (DyingAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.DYING);
 		boolean deathSequence = dyingAction != null;
 		
@@ -64,18 +60,9 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 		}
 			
 		Cam cam = cosmodogGame.getCam();
-		
-		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
-
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+		Vector playerVectorRelatedToCamTilePosition = Cam.positionVectorRelatedToCamTilePosition(player.getPosition(), camTilePosition);
 
 		String animationKey = "playerDying";
 		Animation playerAnimation = applicationContext.getAnimations().get(animationKey);
@@ -84,16 +71,15 @@ public class DyingPlayerRenderer extends AbstractRenderer {
 
 		playerAnimation.setCurrentFrame(animationFrameIndex);
 		
-		graphics.translate(x, y);
+		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength, (player.getPosition().getY() - tileNoY) * tileLength);
+		playerAnimation.draw(playerVectorRelatedToCamTilePosition.getX(), playerVectorRelatedToCamTilePosition.getY());
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-		graphics.translate(-x, -y);
+		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.LoadingOrGameOverOrTheEnd);
 		Book dyingHintBook = TextPageConstraints.fromDc(bottomContainerDrawingContext).textToBook(dyingAction.getDyingHint(), fontRefToFontTypeMap);
 		TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, dyingHintBook);
-		
-		
+
 	}
 
 	

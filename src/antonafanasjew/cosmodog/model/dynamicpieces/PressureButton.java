@@ -62,5 +62,13 @@ public class PressureButton extends DynamicPiece {
 	public boolean wrapsCollectible() {
 		return false;
 	}
-	
+
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		String animationIdPrefix = "dynamicPiecePressureButton";
+		String animationIdPrefixIndex = String.valueOf(getShapeNumber());
+		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+		String animationSuffix = animationSuffixFromState();
+        return animationIdPrefix + animationIdPrefixIndex + animationIdInfix + animationSuffix;
+	}
 }

@@ -23,7 +23,7 @@ public class InfobitsRenderer implements Renderer {
 		
 		DrawingContext infobitsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().infobitsDrawingContext();
 		
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;
 		}
 		

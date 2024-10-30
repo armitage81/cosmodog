@@ -161,5 +161,17 @@ public class LetterPlate extends DynamicPiece {
 	public void setPressed(boolean pressed) {
 		this.pressed = pressed;
 	}
-	
+
+	@Override
+	public String animationId(boolean bottomNotTop) {
+		short shapeNumber = getShapeNumber();
+
+		String animationId;
+		if (isPressed()) {
+			animationId = "dynamicPieceLetterPlatePressed" + shapeNumber;
+		} else {
+			animationId = "dynamicPieceLetterPlate" + shapeNumber;
+		}
+		return animationId;
+	}
 }
