@@ -613,8 +613,6 @@ public class InitializationUtils {
 
 			for (TiledObject liftRegion : liftRegions) {
 				RuleTrigger enterLiftTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_LIFTS, liftRegion.getName());
-				AsyncAction notificationAsyncAction = new PopUpNotificationAction("Initializing the space lift.");
-				RuleAction notificationRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, notificationAsyncAction);
 				/*
 				AsyncAction changePositionAsyncAction = new FixedLengthAsyncAction(500) {
 					@Override
@@ -629,7 +627,7 @@ public class InitializationUtils {
 				SpaceLiftAction spaceLiftAction = new SpaceLiftAction();
 
 				RuleAction changePositionAction = new AsyncActionRegistrationRuleAction(AsyncActionType.SPACE_LIFT, spaceLiftAction, false);
-				RuleAction composedAction = new BlockAction(notificationRuleAction, changePositionAction);
+				RuleAction composedAction = new BlockAction(changePositionAction);
 				Rule spaceliftAtCosmodromRule = new Rule("SpaceLiftRule_" + mapType + "." + liftRegion.getName(), Lists.newArrayList(GameEventChangedPosition.class), enterLiftTrigger, composedAction, Rule.RULE_PRIORITY_LATEST);
 				ruleBook.put(spaceliftAtCosmodromRule.getId(), spaceliftAtCosmodromRule);
 			}

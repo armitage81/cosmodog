@@ -22,7 +22,8 @@ public class SpaceLiftAction extends PhaseBasedAction {
 
         Position playerPosition = ApplicationContextUtils.getPlayer().getPosition();
 
-        FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(100000);
+        FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(1000);
+        FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(5000);
         CamMovementAction focusingOnLift = new CamMovementAction(2000, playerPosition.shifted(0, -4), cosmodogGame);
         LadderAction preparingLift = new LadderAction(2000, 4);
         ParabolicAction launchingLift = new ParabolicAction(5000);
@@ -34,6 +35,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
         FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
 
         getPhaseRegistry().registerPhase(closingDoor);
+        getPhaseRegistry().registerPhase(suspenseWaiting);
         /*
         getPhaseRegistry().registerPhase(focusingOnLift);
         getPhaseRegistry().registerPhase(preparingLift);
