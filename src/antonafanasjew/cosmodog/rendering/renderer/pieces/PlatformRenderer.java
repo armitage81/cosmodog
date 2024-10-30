@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer.pieces;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.rendering.renderer.OccupiedPlatformRenderer;
 import org.newdawn.slick.Animation;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -17,7 +18,7 @@ import com.google.common.collect.Maps;
  */
 public class PlatformRenderer extends AbstractPieceRenderer {
 
-	private Map<DirectionType, String> platformDirection2animationKey = Maps.newHashMap();
+	private final Map<DirectionType, String> platformDirection2animationKey = Maps.newHashMap();
 	
 	public PlatformRenderer() {
 		platformDirection2animationKey.put(DirectionType.RIGHT, "platformRight");

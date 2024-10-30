@@ -15,7 +15,6 @@ import antonafanasjew.cosmodog.rendering.maprendererpredicates.TipsLayersRenderi
 import antonafanasjew.cosmodog.rendering.maprendererpredicates.TopLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.piecerendererpredicates.NotOnPlatformPieceRendererPredicate;
 import antonafanasjew.cosmodog.rendering.piecerendererpredicates.OnPlatformPieceRendererPredicate;
-import antonafanasjew.cosmodog.rendering.renderer.pieces.OccupiedPlatformRenderer;
 
 /**
  * Renders the scene, that is the game map and everything on it.

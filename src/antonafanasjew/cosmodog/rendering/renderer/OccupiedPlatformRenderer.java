@@ -1,4 +1,4 @@
-package antonafanasjew.cosmodog.rendering.renderer.pieces;
+package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Map;
 import java.util.Optional;
@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.PlayerAttackActionPhase;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -24,7 +25,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
@@ -50,24 +50,13 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
-		
-		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
+
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		
-
-		int scaledTileWidth = (int) (tileLength * cam.getZoomFactor());
-		int scaledTileHeight = (int) (tileLength * cam.getZoomFactor());
-
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileWidth));
-		int y = -(int) ((camY % scaledTileHeight));
-
-		int tileNoX = camX / scaledTileWidth;
-		int tileNoY = camY / scaledTileHeight;
-		
 		Player player = ApplicationContextUtils.getPlayer();
+
+		Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+		Vector playerVectorRelativeToCamPosition = Cam.positionVectorRelatedToCamTilePosition(player.getPosition(), camTilePosition);
 		
 		if (player.getInventory().hasPlatform()) {
 
@@ -168,13 +157,13 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 				}
 			}
 			
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-			platformAnimation.draw((player.getPosition().getX() - tileNoX - 3) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY - 3) * tileLength + pieceOffsetY);
+			platformAnimation.draw(playerVectorRelativeToCamPosition.getX() - 3 * tileLength + pieceOffsetX,  playerVectorRelativeToCamPosition.getY() - 3 * tileLength + pieceOffsetY);
 
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-			graphics.translate(-x, -y);
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 			
 		}
 		
