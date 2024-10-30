@@ -62,22 +62,9 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			Actor actor = state.actors.get(i);
 			
 			Cam cam = cosmodogGame.getCam();
-			
-			//Tile size in pixels considering zooming.
-			int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
-			//Camera position in pixel.
-			int camX = (int) cam.viewCopy().x();
-			int camY = (int) cam.viewCopy().y();
-	
-			//Camera offset which is 0 if the camera location matches tile sizes.
-			//If the tile width is 16 and camera starts horizontally at 35, then the offset is -3.
-			int x = -(int) ((camX % scaledTileLength));
-			int y = -(int) ((camY % scaledTileLength));
-	
-			//Camera position in tiles.
-			int tileNoX = camX / scaledTileLength;
-			int tileNoY = camY / scaledTileLength;
+			Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+
 	
 			//Actors move smoothly between tiles. This offset represents this.
 			float movementOffsetX = 0;
@@ -97,10 +84,10 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			
 			//Going to the beginning of the tile where camera top left corner is located.
 			//The coordinates could be negative.
-			graphics.translate(x, y);
+			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 			
 			//Actor's X position in tiles related to the camera's left corner.
-			int actorTileNoXOnVisibleMap = (int)(actor.getPosition().getX() - tileNoX);
+			int actorTileNoXOnVisibleMap = (int)(actor.getPosition().getX() - camTilePosition.tileX());
 			
 			//Actor's X position in pixels corresponding to the tile position calculated above.
 			int actorPosXOnVisibleMap = actorTileNoXOnVisibleMap * tileLength;
@@ -112,7 +99,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			float actorPosXOnVisibleMapInclMovementInclScale = actorPosXOnVisibleMapInclMovement * cam.getZoomFactor();
 			
 			//The same for Y position.
-			int actorTileNoYOnVisibleMap = (int)(actor.getPosition().getY() - tileNoY);
+			int actorTileNoYOnVisibleMap = (int)(actor.getPosition().getY() - camTilePosition.tileY());
 			int actorPosYOnVisibleMap = actorTileNoYOnVisibleMap * tileLength;
 			float actorPosYOnVisibleMapInclMovement = actorPosYOnVisibleMap + movementOffsetY;
 			float actorPosYOnVisibleMapInclMovementInclScale = actorPosYOnVisibleMapInclMovement * cam.getZoomFactor();
@@ -120,7 +107,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			float textWidth = 500;
 			
 			//If the scaled tile is 32 pixels wide and the text line is 50 pixels wide, then the x offset is (32 - 50) / 2 = -9
-			float textOffsetX = (scaledTileLength - textWidth) / 2;
+			float textOffsetX = (cam.getZoomFactor() * tileLength - textWidth) / 2;
 			
 			//Actor's movement offset is added to keep the text centered over their head.
 			float textPosX = actorPosXOnVisibleMapInclMovementInclScale + textOffsetX;
@@ -140,7 +127,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook, true);
 			
 			//Returning back to the camera's left top corner.
-			graphics.translate(-x, -y);
+			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		}
 		
 		//Returning back to the left top corner of the screen.

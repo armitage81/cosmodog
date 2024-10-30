@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.actions.death.RespawnAction;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
+import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -90,17 +91,10 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 		
 		Cam cam = cosmodogGame.getCam();
-		
-		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+		Vector pieceVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition(), camTilePosition);
 
-		int x = -(int) ((camX % scaledTileLength));
-		int y = -(int) ((camY % scaledTileLength));
-
-		int tileNoX = camX / scaledTileLength;
-		int tileNoY = camY / scaledTileLength;
 
 		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
 		CrossTileMotion playerMotion = null;
@@ -286,11 +280,11 @@ public class PlayerRenderer extends AbstractRenderer {
 			}
 		}
 		
-		graphics.translate(x, y);
+		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
-		playerAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileLength + pieceOffsetY);
+		playerAnimation.draw(pieceVectorRelatedToCam.getX() + pieceOffsetX, pieceVectorRelatedToCam.getY() + pieceOffsetY);
 		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY) * tileLength + pieceOffsetY);
+			playerWeaponAnimation.draw(pieceVectorRelatedToCam.getX() + pieceOffsetX, pieceVectorRelatedToCam.getY() + pieceOffsetY);
 		}
 		
 		if (playerIsHoldingUpItem) {
@@ -299,13 +293,13 @@ public class PlayerRenderer extends AbstractRenderer {
 				String animationId = Mappings.collectibleToolToAnimationId(tool);
 				Animation foundToolAnimation = ApplicationContext.instance().getAnimations().get(animationId);
 				if (foundToolAnimation != null) {
-					foundToolAnimation.draw((player.getPosition().getX() - tileNoX) * tileLength + pieceOffsetX, (player.getPosition().getY() - tileNoY - 1) * tileLength + pieceOffsetY);
+					foundToolAnimation.draw(pieceVectorRelatedToCam.getX() + pieceOffsetX, pieceVectorRelatedToCam.getY() - tileLength + pieceOffsetY);
 				}
 			}
 		}
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-		graphics.translate(-x, -y);
+		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 		

@@ -44,8 +44,8 @@ public class PiecesRenderer extends AbstractRenderer {
 	 * The player sprite will cover the northern pieces when walking north
 	 * and will be covered by pieces if walking in them in south direction 
 	 */
-	private boolean northFromPlayer;
-	private boolean southFromPlayer;
+	private final boolean northFromPlayer;
+	private final boolean southFromPlayer;
 	
 	public PiecesRenderer(boolean northFromPlayer, boolean southFromPlayer) {
 		
@@ -54,7 +54,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		
 	}
 	
-	private static Map<String, PieceRenderer> pieceRendererMap = Maps.newHashMap();
+	private static final Map<String, PieceRenderer> pieceRendererMap = Maps.newHashMap();
 	
 	static {
 		
@@ -141,28 +141,16 @@ public class PiecesRenderer extends AbstractRenderer {
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		Cam cam = cosmodogGame.getCam();
 		Player player = cosmodogGame.getPlayer();
-		
-		int scaledTileLength = (int) (tileLength * cam.getZoomFactor());
 
-		int camX = (int) cam.viewCopy().x();
-		int camY = (int) cam.viewCopy().y();
-
-		int x = -(int) ((camX % scaledTileLength));
-		int y = -(int) ((camY % scaledTileLength));
-		
-		int tileNoX = camX / scaledTileLength;
-		int tileNoY = camY / scaledTileLength;
-		
-		int tilesW = (int) (cam.viewCopy().width()) / scaledTileLength + 2;
-		int tilesH = (int) (cam.viewCopy().height()) / scaledTileLength + 2;
+		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 		
 		
-		graphics.translate(x, y);
+		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Position tilePosition = Position.fromCoordinates(tileNoX, tileNoY, map.getMapType());
+		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
 
-		Collection<Piece> mapPieces = map.visibleMapPieces(tilePosition, tilesW, tilesH, 5).values();
+		Collection<Piece> mapPieces = map.visibleMapPieces(tilePosition, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 5).values();
 		
 		
 		
@@ -195,9 +183,8 @@ public class PiecesRenderer extends AbstractRenderer {
 			Piece element = null;
 			String elementType = null;
 			
-			if (piece instanceof CollectibleComposed) {
-				CollectibleComposed cc = (CollectibleComposed)piece;
-				List<Collectible> elements = cc.getElements();
+			if (piece instanceof CollectibleComposed cc) {
+                List<Collectible> elements = cc.getElements();
 				int numberOfElementToRender = (int)((System.currentTimeMillis() / 1000) % elements.size());
 				element = elements.get(numberOfElementToRender);
 				elementType = PiecesUtils.pieceType(element);
@@ -213,18 +200,14 @@ public class PiecesRenderer extends AbstractRenderer {
 				boolean playerIsOnTile = player.getPosition().equals(piece.getPosition());
 				boolean shouldRender = (piece instanceof Vehicle) || (piece instanceof Platform) || (!enemyIsOnTile && !playerIsOnTile);
 				if (shouldRender) {
-
-					if (!piece.interactive(piece, applicationContext, cosmodogGame, player)) {
-
-					}
-					pieceRenderer.renderPiece(applicationContext, tileLength, tileLength, tileNoX, tileNoY, element);
+					pieceRenderer.renderPiece(applicationContext, tileLength, tileLength, camTilePosition.tileX(), camTilePosition.tileY(), element);
 				}
 			}
 			
 		}
 		
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-		graphics.translate(-x, -y);
+		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		
 		
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
