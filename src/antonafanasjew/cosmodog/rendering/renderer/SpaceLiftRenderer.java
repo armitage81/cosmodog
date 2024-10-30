@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -49,6 +50,11 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         float visibleDoorHeight = tileLength;
 
         if (currentPhaseNumber == 0) {
+            Object playedSoundAlready = currentPhase.getProperties().get("playedSoundAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
+                currentPhase.getProperties().put("playedSoundAlready", true);
+            }
             float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
             verticalDoorOffset = tileLength - tileLength * completionRate;
             visibleDoorHeight = tileLength - verticalDoorOffset;
@@ -73,6 +79,21 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         Animation groundDoorAnimation = ApplicationContext.instance().getAnimations().get("spaceliftGroundDoor");
         Image doorImage = groundDoorAnimation.getCurrentFrame().getSubImage(0, 0, (int) (float) tileLength, (int)doorHeight);
         doorImage.draw(doorX, doorY, (float) tileLength, doorHeight);
+
+
+        if (currentPhaseNumber >= 3) {
+            Vector firstRayTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -4), camTilePosition);
+            Animation rayAnimation = ApplicationContext.instance().getAnimations().get("spaceliftRay");
+            for (int i = 0; i < 20; i++) {
+                float rayX = firstRayTileRelatedToCam.getX() + (float) (tileLength / 2);
+                float rayY = firstRayTileRelatedToCam.getY() - i * tileLength;
+                rayAnimation.draw(rayX, rayY);
+            }
+        }
+
+
+
+
 
         graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
         graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());

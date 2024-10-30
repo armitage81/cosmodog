@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.model;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 
-public class MoveableDynamicPiece extends DynamicPiece {
+public abstract class MoveableDynamicPiece extends DynamicPiece {
 
 	private Actor moveableAsActor;
 	
@@ -23,7 +23,7 @@ public class MoveableDynamicPiece extends DynamicPiece {
 	public boolean wrapsCollectible() {
 		return false;
 	}
-	
+
 	//We need an actor to use the collision validator.
 	public Actor asActor() {
 		moveableAsActor.setPosition(this.getPosition());

@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
@@ -22,7 +23,7 @@ public class TestSpacelift {
 				player.setPosition(Position.fromCoordinates(126, 47, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
-
+				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 			}
 		};
 
