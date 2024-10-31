@@ -43,30 +43,6 @@ public class SpaceLiftRenderer extends AbstractRenderer {
 
         int tileLength = TileUtils.tileLengthSupplier.get();
 
-        float verticalDoorOffset = 0;
-        float visibleDoorHeight = tileLength;
-
-        if (currentPhaseNumber == 0) {
-            Object playedSoundAlready = currentPhase.getProperties().get("playedSoundAlready");
-            if (playedSoundAlready == null) {
-                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
-                currentPhase.getProperties().put("playedSoundAlready", true);
-            }
-            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
-            verticalDoorOffset = tileLength - tileLength * completionRate;
-            visibleDoorHeight = tileLength - verticalDoorOffset;
-        }
-
-        float verticalCabinOffset = 0;
-        float visibleCabinHeight = 0;
-
-        if (currentPhaseNumber == 4) {
-            float exponentialValue = ((ExponentialAction)currentPhase).getProperty("value");
-            int maxCabinOffset = 20 * tileLength;
-            verticalCabinOffset = maxCabinOffset * exponentialValue;
-            visibleCabinHeight = Math.min(3 * tileLength, verticalCabinOffset);
-        }
-
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
@@ -80,6 +56,18 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
         //Drawing the spacelift door that is closing or already closed.
+        float verticalDoorOffset = 0;
+        float visibleDoorHeight = tileLength;
+        if (currentPhaseNumber == 0) {
+            Object playedSoundAlready = currentPhase.getProperties().get("playedSoundAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
+                currentPhase.getProperties().put("playedSoundAlready", true);
+            }
+            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
+            verticalDoorOffset = tileLength - tileLength * completionRate;
+            visibleDoorHeight = tileLength - verticalDoorOffset;
+        }
         float doorX = playerVectorRelatedToCam.getX();
         float doorY = playerVectorRelatedToCam.getY() + verticalDoorOffset;
         float doorHeight = visibleDoorHeight;
@@ -87,6 +75,7 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         Image doorImage = groundDoorAnimation.getCurrentFrame().getSubImage(0, 0, (int) (float) tileLength, (int)doorHeight);
         doorImage.draw(doorX, doorY, (float) tileLength, doorHeight);
 
+        //Drawing the spacelift ray.
         if (currentPhaseNumber >= 3) {
             Vector firstRayTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -4), camTilePosition);
             Animation rayAnimation = ApplicationContext.instance().getAnimations().get("spaceliftRay");
@@ -98,11 +87,20 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         }
 
         //Drawing the spacelift cabin that is rising in the stratosphere.
+        float verticalCabinOffset = 0;
+        float visibleCabinHeight = 0;
+        if (currentPhaseNumber == 4) {
+            float exponentialValue = currentPhase.getProperty("value");
+            int maxCabinOffset = 20 * tileLength;
+            verticalCabinOffset = maxCabinOffset * exponentialValue;
+            visibleCabinHeight = Math.min(3 * tileLength, verticalCabinOffset);
+        }
+
         Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
         float cabinX = initialCabinTileRelatedToCam.getX();
         float cabinY = initialCabinTileRelatedToCam.getY() - verticalCabinOffset;
         Animation cabinAnimation = ApplicationContext.instance().getAnimations().get("spaceliftCabin");
-        Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, (int) cabinAnimation.getWidth(), (int)visibleCabinHeight);
+        Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, cabinAnimation.getWidth(), (int)visibleCabinHeight);
         cabinImage.draw(cabinX, cabinY);
 
 
