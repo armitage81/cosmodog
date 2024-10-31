@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.spacelift;
 
+import antonafanasjew.cosmodog.actions.ExponentialAction;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.LadderAction;
 import antonafanasjew.cosmodog.actions.ParabolicAction;
@@ -35,7 +36,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
         FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(300);
         CamMovementAction focusingOnLift = new CamMovementAction(2000, camCenterPixelPosition, cosmodogGame);
         LadderAction preparingLift = new LadderAction(3000, 4);
-        ParabolicAction launchingLift = new ParabolicAction(5000);
+        ExponentialAction launchingLift = new ExponentialAction(5000);
         FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(5000);
 
         ParabolicAction arriving = new ParabolicAction(5000);
@@ -47,10 +48,11 @@ public class SpaceLiftAction extends PhaseBasedAction {
         getPhaseRegistry().registerPhase(suspenseWaiting);
         getPhaseRegistry().registerPhase(focusingOnLift);
         getPhaseRegistry().registerPhase(preparingLift);
+        getPhaseRegistry().registerPhase(launchingLift);
 
         /*
 
-        getPhaseRegistry().registerPhase(launchingLift);
+
         getPhaseRegistry().registerPhase(traveling);
         getPhaseRegistry().registerPhase(arriving);
         getPhaseRegistry().registerPhase(waiting);

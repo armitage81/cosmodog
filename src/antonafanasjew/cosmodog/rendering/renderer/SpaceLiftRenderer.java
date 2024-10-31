@@ -2,10 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
-import antonafanasjew.cosmodog.actions.ActionRegistry;
-import antonafanasjew.cosmodog.actions.AsyncAction;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
+import antonafanasjew.cosmodog.actions.*;
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
@@ -60,6 +57,16 @@ public class SpaceLiftRenderer extends AbstractRenderer {
             visibleDoorHeight = tileLength - verticalDoorOffset;
         }
 
+        float verticalCabinOffset = 0;
+        float visibleCabinHeight = 0;
+
+        if (currentPhaseNumber == 4) {
+            float exponentialValue = ((ExponentialAction)currentPhase).getProperty("value");
+            int maxCabinOffset = 20 * tileLength;
+            verticalCabinOffset = maxCabinOffset * exponentialValue;
+            visibleCabinHeight = Math.min(3 * tileLength, verticalCabinOffset);
+        }
+
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
@@ -80,7 +87,6 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         Image doorImage = groundDoorAnimation.getCurrentFrame().getSubImage(0, 0, (int) (float) tileLength, (int)doorHeight);
         doorImage.draw(doorX, doorY, (float) tileLength, doorHeight);
 
-
         if (currentPhaseNumber >= 3) {
             Vector firstRayTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -4), camTilePosition);
             Animation rayAnimation = ApplicationContext.instance().getAnimations().get("spaceliftRay");
@@ -91,7 +97,13 @@ public class SpaceLiftRenderer extends AbstractRenderer {
             }
         }
 
-
+        //Drawing the spacelift cabin that is rising in the stratosphere.
+        Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
+        float cabinX = initialCabinTileRelatedToCam.getX();
+        float cabinY = initialCabinTileRelatedToCam.getY() - verticalCabinOffset;
+        Animation cabinAnimation = ApplicationContext.instance().getAnimations().get("spaceliftCabin");
+        Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, (int) cabinAnimation.getWidth(), (int)visibleCabinHeight);
+        cabinImage.draw(cabinX, cabinY);
 
 
 
