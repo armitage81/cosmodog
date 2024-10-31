@@ -1,6 +1,6 @@
 id;spriteSheetAddress;spriteWidth;spriteHeight;frames;autoUpdate;looping
 
-spaceliftCabin;data/animations/spacelift/spacelift_animations.png;32;48;[2/0/10000];false;true
+spaceliftCabin;data/animations/spacelift/spacelift_animations.png;32;64;[2/0/10000];false;true
 spaceliftRay;data/animations/spacelift/spacelift_animations.png;16;16;[2/0/50,2/1/50];false;true
 spaceliftGroundDoor;data/animations/spacelift/spacelift_animations.png;16;16;[0/0/100000];false;true
 

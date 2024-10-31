@@ -93,7 +93,7 @@ public class SpaceLiftRenderer extends AbstractRenderer {
             float exponentialValue = currentPhase.getProperty("value");
             int maxCabinOffset = 20 * tileLength;
             verticalCabinOffset = maxCabinOffset * exponentialValue;
-            visibleCabinHeight = Math.min(3 * tileLength, verticalCabinOffset);
+            visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
         }
 
         Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
@@ -101,7 +101,7 @@ public class SpaceLiftRenderer extends AbstractRenderer {
         float cabinY = initialCabinTileRelatedToCam.getY() - verticalCabinOffset;
         Animation cabinAnimation = ApplicationContext.instance().getAnimations().get("spaceliftCabin");
         Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, cabinAnimation.getWidth(), (int)visibleCabinHeight);
-        cabinImage.draw(cabinX, cabinY);
+        cabinImage.draw(cabinX, cabinY, cabinImage.getWidth(), visibleCabinHeight);
 
 
 
