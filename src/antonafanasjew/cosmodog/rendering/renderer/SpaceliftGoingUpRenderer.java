@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.functions.SpaceLiftFadingFunction;
+import antonafanasjew.cosmodog.rendering.renderer.functions.SpaceLiftSkyTurningBlackFunction;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -151,11 +152,11 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         //Traveling in the stratosphere: Background, ray cabin.
         if (currentPhaseNumber == 6) {
             float completionRate = ((FixedLengthAsyncAction) currentPhase).getCompletionRate();
-            float skyOpacity = Math.max(1f - completionRate / 0.8f, 0);
+            float skyOpacity = 1 - SpaceLiftSkyTurningBlackFunction.instance(0.4f, 0.3f).apply(completionRate);
             float starOpacity = 1 - skyOpacity;
             graphics.setColor(Color.black);
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
-            Color skyColor = new Color(0.2f,0.5f,0.92f, skyOpacity);
+            Color skyColor = new Color(0f,0f,1f, skyOpacity);
             graphics.setColor(skyColor);
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 
@@ -178,7 +179,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             float cabinY = initialCabinTileRelatedToCam.getY();
             cabinAnimation.draw(cabinX, cabinY);
 
-            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.1f, 0.3f, 0.1f, 0.1f).apply(completionRate)));
+            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.1f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 
 

@@ -8,7 +8,6 @@ public class SpaceLiftFadingFunction implements Function<Float, Float> {
     private float completionRateDarknessAtEnd;
     private float completionRateFadingIn;
     private float completionRateFadingOut;
-    private float completionRateFullVisibility;
 
     public static SpaceLiftFadingFunction instance(float completionRateDaknessAtBegin, float completionRateDarknessAtEnd, float completionRateFadingIn, float completionRateFadingOut) {
         return new SpaceLiftFadingFunction(completionRateDaknessAtBegin, completionRateDarknessAtEnd, completionRateFadingIn, completionRateFadingOut);
@@ -19,7 +18,6 @@ public class SpaceLiftFadingFunction implements Function<Float, Float> {
         this.completionRateDarknessAtEnd = completionRateDarknessAtEnd;
         this.completionRateFadingIn = completionRateFadingIn;
         this.completionRateFadingOut = completionRateFadingOut;
-        this.completionRateFullVisibility = 1 - completionRateDaknessAtBegin - completionRateFadingIn - completionRateFadingOut - completionRateDarknessAtEnd;
     }
 
     @Override
