@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.renderer.functions.SpaceLiftFadingFunction;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -159,7 +160,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 
             graphics.setColor(new Color(1, 1, 1, starOpacity));
-            float starOffsetY = completionRate * 50;
+            float starOffsetY = completionRate * 100;
             for (int i = 0; i < starXPositions.size(); i++) {
                 float starX = starXPositions.get(i) / cam.getZoomFactor();
                 float starY = starYPositions.get(i) / cam.getZoomFactor();
@@ -176,6 +177,10 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             float cabinX = initialCabinTileRelatedToCam.getX();
             float cabinY = initialCabinTileRelatedToCam.getY();
             cabinAnimation.draw(cabinX, cabinY);
+
+            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.1f, 0.3f, 0.1f, 0.1f).apply(completionRate)));
+            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+
 
         }
 
