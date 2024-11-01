@@ -53,8 +53,10 @@ public class SpaceLiftAction extends PhaseBasedAction {
         FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(300);
         CamMovementAction focusingOnLift = new CamMovementAction(2000, camCenterPixelPosition, cosmodogGame);
         FixedLengthAsyncAction preparingLift = new FixedLengthAsyncAction(500);
-        ExponentialAction launchingLift = new ExponentialAction(4000);
+        ExponentialAction launchingLift = new ExponentialAction(2000);
         FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(15000);
+        FixedLengthAsyncAction coupling = new FixedLengthAsyncAction(3000);
+        FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
 
 
         FixedLengthAsyncAction changingPosition = new FixedLengthAsyncAction(1) {
@@ -71,11 +73,6 @@ public class SpaceLiftAction extends PhaseBasedAction {
             }
         };
 
-
-        //ParabolicAction arriving = new ParabolicAction(5000);
-        //FixedLengthAsyncAction waiting = new FixedLengthAsyncAction(2000);
-        //FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
-
         getPhaseRegistry().registerPhase(closingDoor);
         getPhaseRegistry().registerPhase(suspenseWaiting);
         getPhaseRegistry().registerPhase(focusingOnLift);
@@ -83,17 +80,9 @@ public class SpaceLiftAction extends PhaseBasedAction {
         getPhaseRegistry().registerPhase(launchingLift);
         getPhaseRegistry().registerPhase(changingPosition);
         getPhaseRegistry().registerPhase(traveling);
-
-
-        /*
-
-
-        getPhaseRegistry().registerPhase(traveling);
-        getPhaseRegistry().registerPhase(arriving);
-        getPhaseRegistry().registerPhase(waiting);
-        getPhaseRegistry().registerPhase(focusingOnPlayer);
+        getPhaseRegistry().registerPhase(coupling);
         getPhaseRegistry().registerPhase(openingDoor);
-         */
+
     }
 
 }

@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -12,16 +13,23 @@ import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
+import antonafanasjew.cosmodog.rendering.decoration.CloudsDecoration;
+import antonafanasjew.cosmodog.rendering.decoration.SpaceliftDecoration;
 import antonafanasjew.cosmodog.rendering.renderer.functions.SpaceLiftFadingFunction;
 import antonafanasjew.cosmodog.rendering.renderer.functions.SpaceLiftSkyTurningBlackFunction;
+import antonafanasjew.cosmodog.topology.PlacedRectangle;
+import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
+import antonafanasjew.particlepattern.model.Particle;
+import antonafanasjew.particlepattern.model.ParticlePattern;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class SpaceliftGoingUpRenderer extends AbstractRenderer {
 
@@ -78,17 +86,21 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
         Animation groundDoorAnimation = ApplicationContext.instance().getAnimations().get("spaceliftGroundDoor");
+        Animation spaceDoorAnimation = ApplicationContext.instance().getAnimations().get("spaceliftSpaceDoor");
         Animation rayAnimation = ApplicationContext.instance().getAnimations().get("spaceliftRay");
         Animation cabinAnimation = ApplicationContext.instance().getAnimations().get("spaceliftCabin");
+
+        SpriteSheet cloudSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS);
+        Image cloudImage = cloudSpriteSheet.getSprite(0, 0);
 
         //Door is closing, partial door, no ray, no cabin
         if (currentPhaseNumber == 0) {
             float verticalDoorOffset = 0;
             float visibleDoorHeight = tileLength;
-            Object playedSoundAlready = currentPhase.getProperties().get("playedSoundAlready");
+            Object playedSoundAlready = currentPhase.getProperties().get("playedClosingSoundAlready");
             if (playedSoundAlready == null) {
                 ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
-                currentPhase.getProperties().put("playedSoundAlready", true);
+                currentPhase.getProperties().put("playedClosingSoundAlready", true);
             }
             float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
             verticalDoorOffset = tileLength - tileLength * completionRate;
@@ -124,6 +136,13 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
 
         //Launching lift, door closed, ray, cabin
         if (currentPhaseNumber == 4) {
+
+            Object playedSoundAlready = currentPhase.getProperties().get("playedLiftInMotionAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT).play();
+                currentPhase.getProperties().put("playedLiftInMotionAlready", true);
+            }
+
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
 
             for (int i = 0; i < 20; i++) {
@@ -134,7 +153,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
 
             float verticalCabinOffset = 0;
             float visibleCabinHeight = 0;
-            float exponentialValue = currentPhase.getProperty("value");
+            float exponentialValue = 5f * (float)currentPhase.getProperty("value");
             int maxCabinOffset = 20 * tileLength;
             verticalCabinOffset = maxCabinOffset * exponentialValue;
             visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
@@ -144,10 +163,6 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, cabinAnimation.getWidth(), (int)visibleCabinHeight);
             cabinImage.draw(cabinX, cabinY, cabinImage.getWidth(), visibleCabinHeight);
         }
-
-        // 0   - 1
-        // 0.7 - 0
-        // 1.0 - 0
 
         //Traveling in the stratosphere: Background, ray cabin.
         if (currentPhaseNumber == 6) {
@@ -179,10 +194,57 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             float cabinY = initialCabinTileRelatedToCam.getY();
             cabinAnimation.draw(cabinX, cabinY);
 
-            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.1f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
+            if (completionRate <= 0.6) {
+                SpaceliftDecoration spaceliftDecoration = SpaceliftDecoration.instance();
+                PlacedRectangle view = cam.viewCopy();
+                ParticlePattern currentPattern = spaceliftDecoration.particlePatternForPlaceAndTime(view);
+                Set<Particle> particles = currentPattern.particlesSet();
+                //Note: particles are defined related to the particle pattern, but we draw related to the cam size.
+                //Hence we need to translate the difference first.
+                Rectangle particlePatternSurface = spaceliftDecoration.getParticlePatternSurface();
+                particlePatternSurface = Rectangle.fromSize(particlePatternSurface.getWidth() * cam.getZoomFactor(), particlePatternSurface.getHeight() * cam.getZoomFactor());
+                float centerOffsetX = -(particlePatternSurface.getWidth() - cam.viewCopy().width()) / 2f;
+                float centerOffsetY = -(particlePatternSurface.getHeight() - cam.viewCopy().height()) / 2f;
+                Vector particlePatternSurfaceOffsetRelatedToCam = new Vector(centerOffsetX, centerOffsetY);
+                graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
+                for (Particle particle : particles) {
+                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor());
+                }
+                graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
+            }
+            //Fading
+            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 
 
+        }
+
+        //Coupling lift
+        if (currentPhaseNumber == 7) {
+            Object playedSoundAlready = currentPhase.getProperties().get("playedCouplingAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT_LATCH).play();
+                currentPhase.getProperties().put("playedCouplingAlready", true);
+            }
+
+            spaceDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
+        }
+
+        //Opening door
+        if (currentPhaseNumber == 8) {
+            float visibleDoorWidth = tileLength;
+            Object playedSoundAlready = currentPhase.getProperties().get("playedOpeningSoundAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
+                currentPhase.getProperties().put("playedOpeningSoundAlready", true);
+            }
+
+            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
+            visibleDoorWidth = tileLength * (1 - completionRate);
+            float doorX = playerVectorRelatedToCam.getX();
+            float doorY = playerVectorRelatedToCam.getY();
+            Image doorImage = spaceDoorAnimation.getCurrentFrame().getSubImage((int)(tileLength - visibleDoorWidth), 0, (int)visibleDoorWidth, (int)tileLength);
+            doorImage.draw(doorX, doorY, (float) visibleDoorWidth, (float)tileLength);
         }
 
         graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());

@@ -414,8 +414,9 @@ public class ApplicationContext {
 			}
 			
 		});
-		
-		
+
+		Sound spaceliftLatch = new Sound("data/sound/spacelift_latch.wav");
+		Sound spacelift = new Sound("data/sound/spacelift.wav");
 		Sound collected = new Sound("data/sound/collected.wav");
 		Sound eaten = new Sound("data/sound/eaten.wav");
 		Sound drunk = new Sound("data/sound/drunk.wav");
@@ -499,8 +500,10 @@ public class ApplicationContext {
 		Sound secretDoorHydraulics = new Sound("data/sound/secretdoor_hydraulics.wav");
 		Sound secretDoorEnergy = new Sound("data/sound/secretdoor_energy.wav");
 		Sound secretDoorWall = new Sound("data/sound/secretdoor_wall.wav");
-		
-		
+
+
+		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
+		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT, spacelift);
 		this.getSoundResources().put(SoundResources.SOUND_COLLECTED, collected);
 		this.getSoundResources().put(SoundResources.SOUND_EATEN, eaten);
 		this.getSoundResources().put(SoundResources.SOUND_DRUNK, drunk);

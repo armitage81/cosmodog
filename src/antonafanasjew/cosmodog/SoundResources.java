@@ -10,7 +10,17 @@ import org.newdawn.slick.Sound;
 public class SoundResources extends HashMap<String, Sound> {
 
 	private static final long serialVersionUID = -2190800514837591016L;
-	
+
+	/**
+	 * Sound for: Spacelift when coupling.
+	 */
+	public static final String SOUND_SPACE_LIFT_LATCH = "sound.spacelift_latch";
+
+	/**
+	 * Sound for: Spacelift in motion.
+	 */
+	public static final String SOUND_SPACE_LIFT = "sound.spacelift";
+
 	/**
 	 * Sound for: Dropped Item.
 	 */
