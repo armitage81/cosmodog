@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class SpaceliftGoingUpRenderer extends AbstractRenderer {
+public class SpaceliftGoingDownRenderer extends AbstractRenderer {
 
     List<Float> starXPositions = new ArrayList<>();
     List<Float> starYPositions = new ArrayList<>();
 
-    public SpaceliftGoingUpRenderer() {
+    public SpaceliftGoingDownRenderer() {
         Random random = new Random(3);
         DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
         for (int i = 0; i < 30; i++) {
@@ -57,7 +57,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             return;
         }
 
-        if (!action.isUpNotDown()) {
+        if (action.isUpNotDown()) {
             return;
         }
 
@@ -92,55 +92,95 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         SpriteSheet cloudSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS);
         Image cloudImage = cloudSpriteSheet.getSprite(0, 0);
 
-        //Door is closing, partial door, no ray, no cabin
+        //Door is closing
         if (currentPhaseNumber == 0) {
-            float verticalDoorOffset = 0;
-            float visibleDoorHeight = tileLength;
+            float visibleDoorWidth = tileLength;
             Object playedSoundAlready = currentPhase.getProperties().get("playedClosingSoundAlready");
             if (playedSoundAlready == null) {
                 ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
                 currentPhase.getProperties().put("playedClosingSoundAlready", true);
             }
+
             float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
-            verticalDoorOffset = tileLength - tileLength * completionRate;
-            visibleDoorHeight = tileLength - verticalDoorOffset;
+            visibleDoorWidth = tileLength * completionRate;
             float doorX = playerVectorRelatedToCam.getX();
-            float doorY = playerVectorRelatedToCam.getY() + verticalDoorOffset;
-            float doorHeight = visibleDoorHeight;
-            Image doorImage = groundDoorAnimation.getCurrentFrame().getSubImage(0, 0, (int) (float) tileLength, (int)doorHeight);
-            doorImage.draw(doorX, doorY, (float) tileLength, doorHeight);
+            float doorY = playerVectorRelatedToCam.getY();
+            Image doorImage = spaceDoorAnimation.getCurrentFrame().getSubImage((int)(tileLength - visibleDoorWidth), 0, (int)visibleDoorWidth, tileLength);
+            doorImage.draw(doorX, doorY, visibleDoorWidth, (float)tileLength);
         }
 
-        //Suspense waiting, door closed, no ray, no cabin.
         if (currentPhaseNumber == 1) {
-            groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
-        }
 
-        //Camera movement, door closed, no ray, no cabin
-        if (currentPhaseNumber == 2) {
-            groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
-        }
-
-        //Ray appears, door closed, ray, no cabin
-        if (currentPhaseNumber == 3) {
-
-            groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
-
-            for (int i = 0; i < 20; i++) {
-                float rayX = firstVisibleRayTileRelatedToCam.getX() + (float) (tileLength / 2);
-                float rayY = firstVisibleRayTileRelatedToCam.getY() - i * tileLength;
-                rayAnimation.draw(rayX, rayY);
+            Object playedSoundAlready = currentPhase.getProperties().get("playedDecouplingAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT_LATCH).play();
+                currentPhase.getProperties().put("playedDecouplingAlready", true);
             }
+
+            spaceDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
         }
 
-        //Launching lift, door closed, ray, cabin
-        if (currentPhaseNumber == 4) {
+        if (currentPhaseNumber == 2) {
 
             Object playedSoundAlready = currentPhase.getProperties().get("playedLiftInMotionAlready");
             if (playedSoundAlready == null) {
                 ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT).play();
                 currentPhase.getProperties().put("playedLiftInMotionAlready", true);
             }
+
+            float completionRate = ((FixedLengthAsyncAction) currentPhase).getCompletionRate();
+            float skyOpacity = SpaceLiftSkyTurningBlackFunction.instance(0.4f, 0.3f).apply(completionRate);
+            float starOpacity = 1 - skyOpacity;
+            graphics.setColor(Color.black);
+            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+            Color skyColor = new Color(0f,0f,1f, skyOpacity);
+            graphics.setColor(skyColor);
+            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+
+            graphics.setColor(new Color(1, 1, 1, starOpacity));
+            float starOffsetY = 1- completionRate * 100;
+            for (int i = 0; i < starXPositions.size(); i++) {
+                float starX = starXPositions.get(i) / cam.getZoomFactor();
+                float starY = starYPositions.get(i) / cam.getZoomFactor();
+                graphics.fillRect(starX, starY + starOffsetY, 2, 2);
+            }
+
+            for (int i = -20; i < 20; i++) {
+                float rayX = firstVisibleRayTileRelatedToCam.getX() + (float) (tileLength / 2);
+                float rayY = firstVisibleRayTileRelatedToCam.getY() - i * tileLength;
+                rayAnimation.draw(rayX, rayY);
+            }
+
+            Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
+            float cabinX = initialCabinTileRelatedToCam.getX();
+            float cabinY = initialCabinTileRelatedToCam.getY();
+            cabinAnimation.draw(cabinX, cabinY);
+
+            if (completionRate >= 0.4) {
+                SpaceliftDecoration spaceliftDecoration = SpaceliftDecoration.instanceForGoingDown();
+                PlacedRectangle view = cam.viewCopy();
+                ParticlePattern currentPattern = spaceliftDecoration.particlePatternForPlaceAndTime(view);
+                Set<Particle> particles = currentPattern.particlesSet();
+                //Note: particles are defined related to the particle pattern, but we draw related to the cam size.
+                //Hence we need to translate the difference first.
+                Rectangle particlePatternSurface = spaceliftDecoration.getParticlePatternSurface();
+                particlePatternSurface = Rectangle.fromSize(particlePatternSurface.getWidth() * cam.getZoomFactor(), particlePatternSurface.getHeight() * cam.getZoomFactor());
+                float centerOffsetX = -(particlePatternSurface.getWidth() - cam.viewCopy().width()) / 2f;
+                float centerOffsetY = -(particlePatternSurface.getHeight() - cam.viewCopy().height()) / 2f;
+                Vector particlePatternSurfaceOffsetRelatedToCam = new Vector(centerOffsetX, centerOffsetY);
+                graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
+                for (Particle particle : particles) {
+                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor());
+                }
+                graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
+            }
+            //Fading
+            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.2f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
+            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+
+        }
+
+        if (currentPhaseNumber == 4) {
 
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
 
@@ -161,89 +201,6 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             float cabinY = initialCabinTileRelatedToCam.getY() - verticalCabinOffset;
             Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, cabinAnimation.getWidth(), (int)visibleCabinHeight);
             cabinImage.draw(cabinX, cabinY, cabinImage.getWidth(), visibleCabinHeight);
-        }
-
-        //Traveling in the stratosphere: Background, ray cabin.
-        if (currentPhaseNumber == 6) {
-            float completionRate = ((FixedLengthAsyncAction) currentPhase).getCompletionRate();
-            float skyOpacity = 1 - SpaceLiftSkyTurningBlackFunction.instance(0.4f, 0.3f).apply(completionRate);
-            float starOpacity = 1 - skyOpacity;
-            graphics.setColor(Color.black);
-            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
-            Color skyColor = new Color(0f,0f,1f, skyOpacity);
-            graphics.setColor(skyColor);
-            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
-
-            graphics.setColor(new Color(1, 1, 1, starOpacity));
-            float starOffsetY = completionRate * 100;
-            for (int i = 0; i < starXPositions.size(); i++) {
-                float starX = starXPositions.get(i) / cam.getZoomFactor();
-                float starY = starYPositions.get(i) / cam.getZoomFactor();
-                graphics.fillRect(starX, starY + starOffsetY, 2, 2);
-            }
-
-            for (int i = -20; i < 20; i++) {
-                float rayX = firstVisibleRayTileRelatedToCam.getX() + (float) (tileLength / 2);
-                float rayY = firstVisibleRayTileRelatedToCam.getY() - i * tileLength;
-                rayAnimation.draw(rayX, rayY);
-            }
-
-            Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
-            float cabinX = initialCabinTileRelatedToCam.getX();
-            float cabinY = initialCabinTileRelatedToCam.getY();
-            cabinAnimation.draw(cabinX, cabinY);
-
-            if (completionRate <= 0.6) {
-                SpaceliftDecoration spaceliftDecoration = SpaceliftDecoration.instanceForGoingUp();
-                PlacedRectangle view = cam.viewCopy();
-                ParticlePattern currentPattern = spaceliftDecoration.particlePatternForPlaceAndTime(view);
-                Set<Particle> particles = currentPattern.particlesSet();
-                //Note: particles are defined related to the particle pattern, but we draw related to the cam size.
-                //Hence we need to translate the difference first.
-                Rectangle particlePatternSurface = spaceliftDecoration.getParticlePatternSurface();
-                particlePatternSurface = Rectangle.fromSize(particlePatternSurface.getWidth() * cam.getZoomFactor(), particlePatternSurface.getHeight() * cam.getZoomFactor());
-                float centerOffsetX = -(particlePatternSurface.getWidth() - cam.viewCopy().width()) / 2f;
-                float centerOffsetY = -(particlePatternSurface.getHeight() - cam.viewCopy().height()) / 2f;
-                Vector particlePatternSurfaceOffsetRelatedToCam = new Vector(centerOffsetX, centerOffsetY);
-                graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
-                for (Particle particle : particles) {
-                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor());
-                }
-                graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
-            }
-            //Fading
-            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
-            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
-
-
-        }
-
-        //Coupling lift
-        if (currentPhaseNumber == 7) {
-            Object playedSoundAlready = currentPhase.getProperties().get("playedCouplingAlready");
-            if (playedSoundAlready == null) {
-                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT_LATCH).play();
-                currentPhase.getProperties().put("playedCouplingAlready", true);
-            }
-
-            spaceDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
-        }
-
-        //Opening door
-        if (currentPhaseNumber == 8) {
-            float visibleDoorWidth = tileLength;
-            Object playedSoundAlready = currentPhase.getProperties().get("playedOpeningSoundAlready");
-            if (playedSoundAlready == null) {
-                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
-                currentPhase.getProperties().put("playedOpeningSoundAlready", true);
-            }
-
-            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
-            visibleDoorWidth = tileLength * (1 - completionRate);
-            float doorX = playerVectorRelatedToCam.getX();
-            float doorY = playerVectorRelatedToCam.getY();
-            Image doorImage = spaceDoorAnimation.getCurrentFrame().getSubImage((int)(tileLength - visibleDoorWidth), 0, (int)visibleDoorWidth, (int)tileLength);
-            doorImage.draw(doorX, doorY, (float) visibleDoorWidth, (float)tileLength);
         }
 
         graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());

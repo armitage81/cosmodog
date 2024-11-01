@@ -46,6 +46,7 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer wormSnowSparkRenderer = new WormSnowSparkRenderer();
 	private AbstractRenderer effectsRenderer = new EffectsRenderer();
 	private AbstractRenderer spaceliftGoingUpRenderer = new SpaceliftGoingUpRenderer();
+	private AbstractRenderer spaceliftGoingDownRenderer = new SpaceliftGoingDownRenderer();
 
 
 	private AbstractRenderer overheadNotificationRenderer = new OverheadNotificationRenderer();
@@ -96,8 +97,9 @@ public class SceneRenderer implements Renderer {
 		//Draw top parts of the map, f.i. roofs, tops of the pillars and trees. They will cover both player and NPC
 		mapRenderer.render(gc, g, topsLayersPredicate);
 
-		//Render space lift going up animations
+		//Render space lift animations
 		spaceliftGoingUpRenderer.render(gc, g, sceneDrawingContext);
+		spaceliftGoingDownRenderer.render(gc, g, sceneDrawingContext);
 
 		//Draw attacking worm
 		wormAttackRenderer.render(gc, g, sceneDrawingContext);

@@ -12,23 +12,33 @@ public class SpaceliftDecoration {
 
 	private long initialTimestamp;
 
-	public static SpaceliftDecoration instance = null;
+	private boolean upNotDown;
+
+	public static SpaceliftDecoration instanceForGoingUp = null;
+	public static SpaceliftDecoration instanceForGoingDown = null;
 
 	private LinearMovementFunction movementFunction;
 	private ParticlePattern particlePattern;
 	private Rectangle particlePatternSurface = Rectangle.fromSize(1920, 1080);
 	private OffsetCalculator offsetCalculator;
 
-	public static SpaceliftDecoration instance() {
-		if (instance == null) {
-			instance = new SpaceliftDecoration();
+	public static SpaceliftDecoration instanceForGoingUp() {
+		if (instanceForGoingUp == null) {
+			instanceForGoingUp = new SpaceliftDecoration(true);
 		}
-		return instance;
+		return instanceForGoingUp;
 	}
 
-	private SpaceliftDecoration() {
+	public static SpaceliftDecoration instanceForGoingDown() {
+		if (instanceForGoingDown == null) {
+			instanceForGoingDown = new SpaceliftDecoration(false);
+		}
+		return instanceForGoingDown;
+	}
+
+	private SpaceliftDecoration(boolean upNotDown) {
 		initialTimestamp = System.currentTimeMillis();
-		movementFunction = new LinearMovementFunction(999999, 50);
+		movementFunction = new LinearMovementFunction(upNotDown ? 999999 : -999999, upNotDown ? 300 : 100);
 		particlePattern = new GridParticlePatternBuilder(96, 54).build(particlePatternSurface);
 		offsetCalculator = new OffsetCalculator();
 		offsetCalculator.setMovementOffsetFunction(movementFunction);
