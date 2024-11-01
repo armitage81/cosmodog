@@ -54,7 +54,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
         CamMovementAction focusingOnLift = new CamMovementAction(2000, camCenterPixelPosition, cosmodogGame);
         FixedLengthAsyncAction preparingLift = new FixedLengthAsyncAction(500);
         ExponentialAction launchingLift = new ExponentialAction(4000);
-        FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(5000);
+        FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(15000);
 
 
         FixedLengthAsyncAction changingPosition = new FixedLengthAsyncAction(1) {

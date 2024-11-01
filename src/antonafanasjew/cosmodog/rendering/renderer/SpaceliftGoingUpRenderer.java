@@ -17,7 +17,23 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class SpaceliftGoingUpRenderer extends AbstractRenderer {
+
+    List<Float> starXPositions = new ArrayList<>();
+    List<Float> starYPositions = new ArrayList<>();
+
+    public SpaceliftGoingUpRenderer() {
+        Random random = new Random(3);
+        DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+        for (int i = 0; i < 30; i++) {
+            starXPositions.add((float)(random.nextInt((int)sceneDrawingContext.w())));
+            starYPositions.add((float)(random.nextInt((int)sceneDrawingContext.h())));
+        }
+    }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
@@ -127,12 +143,28 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             cabinImage.draw(cabinX, cabinY, cabinImage.getWidth(), visibleCabinHeight);
         }
 
+        // 0   - 1
+        // 0.7 - 0
+        // 1.0 - 0
 
         //Traveling in the stratosphere: Background, ray cabin.
         if (currentPhaseNumber == 6) {
-            Color color = new Color(0, 0, 1 - ((FixedLengthAsyncAction)currentPhase).getCompletionRate());
-            graphics.setColor(color);
+            float completionRate = ((FixedLengthAsyncAction) currentPhase).getCompletionRate();
+            float skyOpacity = Math.max(1f - completionRate / 0.8f, 0);
+            float starOpacity = 1 - skyOpacity;
+            graphics.setColor(Color.black);
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+            Color skyColor = new Color(0.2f,0.5f,0.92f, skyOpacity);
+            graphics.setColor(skyColor);
+            graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
+
+            graphics.setColor(new Color(1, 1, 1, starOpacity));
+            float starOffsetY = completionRate * 50;
+            for (int i = 0; i < starXPositions.size(); i++) {
+                float starX = starXPositions.get(i) / cam.getZoomFactor();
+                float starY = starYPositions.get(i) / cam.getZoomFactor();
+                graphics.fillRect(starX, starY + starOffsetY, 2, 2);
+            }
 
             for (int i = -20; i < 20; i++) {
                 float rayX = firstVisibleRayTileRelatedToCam.getX() + (float) (tileLength / 2);
@@ -144,6 +176,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
             float cabinX = initialCabinTileRelatedToCam.getX();
             float cabinY = initialCabinTileRelatedToCam.getY();
             cabinAnimation.draw(cabinX, cabinY);
+
         }
 
         graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
