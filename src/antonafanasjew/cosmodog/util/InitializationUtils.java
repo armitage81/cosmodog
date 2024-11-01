@@ -613,19 +613,7 @@ public class InitializationUtils {
 
 			for (TiledObject liftRegion : liftRegions) {
 				RuleTrigger enterLiftTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_LIFTS, liftRegion.getName());
-				/*
-				AsyncAction changePositionAsyncAction = new FixedLengthAsyncAction(500) {
-					@Override
-					public void onEnd() {
-						Player player = ApplicationContextUtils.getPlayer();
-						MapType targetMapType = MapType.valueOf(liftRegion.getProperties().get("targetMap"));
-						player.switchPlane(targetMapType);
-					}
-				};
-				 */
-
-				SpaceLiftAction spaceLiftAction = new SpaceLiftAction();
-
+				SpaceLiftAction spaceLiftAction = new SpaceLiftAction(mapType == MapType.MAIN);
 				RuleAction changePositionAction = new AsyncActionRegistrationRuleAction(AsyncActionType.SPACE_LIFT, spaceLiftAction, false);
 				RuleAction composedAction = new BlockAction(changePositionAction);
 				Rule spaceliftAtCosmodromRule = new Rule("SpaceLiftRule_" + mapType + "." + liftRegion.getName(), Lists.newArrayList(GameEventChangedPosition.class), enterLiftTrigger, composedAction, Rule.RULE_PRIORITY_LATEST);

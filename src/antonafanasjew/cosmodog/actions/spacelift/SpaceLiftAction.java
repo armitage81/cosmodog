@@ -18,8 +18,14 @@ import antonafanasjew.cosmodog.util.TileUtils;
 
 public class SpaceLiftAction extends PhaseBasedAction {
 
-    public SpaceLiftAction() {
+    private boolean upNotDown;
 
+    public SpaceLiftAction(boolean upNotDown) {
+        this.upNotDown = upNotDown;
+    }
+
+    public boolean isUpNotDown() {
+        return upNotDown;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
         CamMovementAction focusingOnLift = new CamMovementAction(2000, camCenterPixelPosition, cosmodogGame);
         FixedLengthAsyncAction preparingLift = new FixedLengthAsyncAction(500);
         ExponentialAction launchingLift = new ExponentialAction(4000);
-        //FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(5000);
+        FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(5000);
 
 
         FixedLengthAsyncAction changingPosition = new FixedLengthAsyncAction(1) {
@@ -76,6 +82,8 @@ public class SpaceLiftAction extends PhaseBasedAction {
         getPhaseRegistry().registerPhase(preparingLift);
         getPhaseRegistry().registerPhase(launchingLift);
         getPhaseRegistry().registerPhase(changingPosition);
+        getPhaseRegistry().registerPhase(traveling);
+
 
         /*
 
