@@ -170,7 +170,9 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
                 Vector particlePatternSurfaceOffsetRelatedToCam = new Vector(centerOffsetX, centerOffsetY);
                 graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
                 for (Particle particle : particles) {
-                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor());
+                    float cloudOpacity = (completionRate - 0.4f) / 0.6f;
+                    Color cloudFilterColor = new Color(1, 1, 1, cloudOpacity);
+                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor(), cloudFilterColor);
                 }
                 graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
             }

@@ -8,9 +8,11 @@ import antonafanasjew.cosmodog.actions.ParabolicAction;
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -89,7 +91,6 @@ public class SpaceLiftAction extends PhaseBasedAction {
 
             FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(1000);
             FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(3000);
-
             FixedLengthAsyncAction changingPosition = new FixedLengthAsyncAction(1) {
 
                 @Override
@@ -99,8 +100,13 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     Cam cam = game.getCam();
                     player.switchPlane(MapType.MAIN);
                     player.setDirection(DirectionType.DOWN);
-                    cam.focusOnPiece(game, 0, 0, player);
-
+                    Piece piece = new Piece() {
+                        @Override
+                        public Position getPosition() {
+                            return spaceLiftShaftPosition;
+                        }
+                    };
+                    cam.focusOnPiece(game, 0, 0, piece);
                 }
             };
 

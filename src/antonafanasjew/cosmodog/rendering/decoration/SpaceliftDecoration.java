@@ -38,7 +38,7 @@ public class SpaceliftDecoration {
 
 	private SpaceliftDecoration(boolean upNotDown) {
 		initialTimestamp = System.currentTimeMillis();
-		movementFunction = new LinearMovementFunction(upNotDown ? 999999 : -999999, upNotDown ? 300 : 100);
+		movementFunction = new LinearMovementFunction(upNotDown ? 10 : -10, upNotDown ? 300 : 100);
 		particlePattern = new GridParticlePatternBuilder(96, 54).build(particlePatternSurface);
 		offsetCalculator = new OffsetCalculator();
 		offsetCalculator.setMovementOffsetFunction(movementFunction);

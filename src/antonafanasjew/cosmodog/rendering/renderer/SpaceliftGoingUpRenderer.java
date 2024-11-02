@@ -207,10 +207,13 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
                 Vector particlePatternSurfaceOffsetRelatedToCam = new Vector(centerOffsetX, centerOffsetY);
                 graphics.translate(particlePatternSurfaceOffsetRelatedToCam.getX(), particlePatternSurfaceOffsetRelatedToCam.getY());
                 for (Particle particle : particles) {
-                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor());
+                    float cloudOpacity = 1 - completionRate / 0.6f;
+                    Color cloudFilterColor = new Color(1, 1, 1, cloudOpacity);
+                    cloudImage.draw(particle.getOffset().getX() * cam.getZoomFactor(), particle.getOffset().getY() * cam.getZoomFactor(), cloudImage.getWidth() * cam.getZoomFactor(), cloudImage.getHeight() * cam.getZoomFactor(), cloudFilterColor);
                 }
                 graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
             }
+
             //Fading
             graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
