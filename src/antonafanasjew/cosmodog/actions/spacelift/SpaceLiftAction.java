@@ -90,9 +90,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
         } else {
 
             FixedLengthAsyncAction closingDoor = new FixedLengthAsyncAction(1000);
-            FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(3000);
-            FixedLengthAsyncAction changingPosition = new FixedLengthAsyncAction(1) {
-
+            FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(15000) {
                 @Override
                 public void onEnd() {
                     Player player = ApplicationContextUtils.getPlayer();
@@ -109,16 +107,14 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     cam.focusOnPiece(game, 0, 0, piece);
                 }
             };
-
-            FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(15000);
             FixedLengthAsyncAction landingLift = new ExponentialAction(3000);
+            CamMovementAction focusingOnPlayer = new CamMovementAction(2000, playerPixelPosition, cosmodogGame);
             FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
 
             getPhaseRegistry().registerPhase(closingDoor);
-            getPhaseRegistry().registerPhase(suspenseWaiting);
             getPhaseRegistry().registerPhase(traveling);
-            getPhaseRegistry().registerPhase(changingPosition);
             getPhaseRegistry().registerPhase(landingLift);
+            getPhaseRegistry().registerPhase(focusingOnPlayer);
             getPhaseRegistry().registerPhase(openingDoor);
         }
 

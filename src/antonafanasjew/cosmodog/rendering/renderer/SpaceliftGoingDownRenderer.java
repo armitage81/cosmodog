@@ -111,16 +111,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
 
         if (currentPhaseNumber == 1) {
 
-            Object playedSoundAlready = currentPhase.getProperties().get("playedDecouplingAlready");
-            if (playedSoundAlready == null) {
-                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT_LATCH).play();
-                currentPhase.getProperties().put("playedDecouplingAlready", true);
-            }
-
             spaceDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
-        }
-
-        if (currentPhaseNumber == 2) {
 
             Object playedSoundAlready = currentPhase.getProperties().get("playedLiftInMotionAlready");
             if (playedSoundAlready == null) {
@@ -177,12 +168,12 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
                 graphics.translate(-particlePatternSurfaceOffsetRelatedToCam.getX(), -particlePatternSurfaceOffsetRelatedToCam.getY());
             }
             //Fading
-            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.2f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
+            graphics.setColor(new Color(0, 0, 0, 1 - SpaceLiftFadingFunction.instance(0.05f, 0.1f, 0.1f, 0.1f).apply(completionRate)));
             graphics.fillRect(sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h());
 
         }
 
-        if (currentPhaseNumber == 4) {
+        if (currentPhaseNumber == 2) {
 
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
 
@@ -196,13 +187,17 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
             float visibleCabinHeight = 0;
             float exponentialValue = 5f * (float)currentPhase.getProperty("value");
             int maxCabinOffset = 20 * tileLength;
-            verticalCabinOffset = maxCabinOffset * exponentialValue;
+            verticalCabinOffset = maxCabinOffset - maxCabinOffset * exponentialValue;
             visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
             Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
             float cabinX = initialCabinTileRelatedToCam.getX();
             float cabinY = initialCabinTileRelatedToCam.getY() - verticalCabinOffset;
             Image cabinImage = cabinAnimation.getCurrentFrame().getSubImage(0, 0, cabinAnimation.getWidth(), (int)visibleCabinHeight);
             cabinImage.draw(cabinX, cabinY, cabinImage.getWidth(), visibleCabinHeight);
+        }
+
+        if (currentPhaseNumber == 3) {
+            groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
         }
 
         graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
