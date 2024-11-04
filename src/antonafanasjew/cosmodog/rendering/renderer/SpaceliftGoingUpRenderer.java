@@ -68,6 +68,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         }
 
         AsyncAction currentPhase = action.getPhaseRegistry().currentPhase().get();
+        String phaseName = currentPhase.getProperty("phaseName");
 
         int tileLength = TileUtils.tileLengthSupplier.get();
 
@@ -93,7 +94,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         Image cloudImage = cloudSpriteSheet.getSprite(0, 0);
 
         //Door is closing, partial door, no ray, no cabin
-        if (currentPhaseNumber == 0) {
+        if (phaseName.equals("closingDoor")) {
             float verticalDoorOffset = 0;
             float visibleDoorHeight = tileLength;
             Object playedSoundAlready = currentPhase.getProperties().get("playedClosingSoundAlready");
@@ -112,17 +113,17 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         }
 
         //Suspense waiting, door closed, no ray, no cabin.
-        if (currentPhaseNumber == 1) {
+        if (phaseName.equals("suspenseWaiting")) {
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
         }
 
         //Camera movement, door closed, no ray, no cabin
-        if (currentPhaseNumber == 2) {
+        if (phaseName.equals("focusingOnLift")) {
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
         }
 
         //Ray appears, door closed, ray, no cabin
-        if (currentPhaseNumber == 3) {
+        if (phaseName.equals("preparingLift")) {
 
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
 
@@ -134,7 +135,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         }
 
         //Launching lift, door closed, ray, cabin
-        if (currentPhaseNumber == 4) {
+        if (phaseName.equals("launchingLift")) {
 
             Object playedSoundAlready = currentPhase.getProperties().get("playedLiftInMotionAlready");
             if (playedSoundAlready == null) {
@@ -164,7 +165,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         }
 
         //Traveling in the stratosphere: Background, ray cabin.
-        if (currentPhaseNumber == 6) {
+        if (phaseName.equals("goingUp")) {
             float completionRate = ((FixedLengthAsyncAction) currentPhase).getCompletionRate();
             float skyOpacity = 1 - SpaceLiftSkyTurningBlackFunction.instance(0.4f, 0.3f).apply(completionRate);
             float starOpacity = 1 - skyOpacity;
@@ -222,7 +223,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         }
 
         //Coupling lift
-        if (currentPhaseNumber == 7) {
+        if (phaseName.equals("couplingLift")) {
             Object playedSoundAlready = currentPhase.getProperties().get("playedCouplingAlready");
             if (playedSoundAlready == null) {
                 ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SPACE_LIFT_LATCH).play();
@@ -233,7 +234,7 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
         }
 
         //Opening door
-        if (currentPhaseNumber == 8) {
+        if (phaseName.equals("openingDoor")) {
             float visibleDoorWidth = tileLength;
             Object playedSoundAlready = currentPhase.getProperties().get("playedOpeningSoundAlready");
             if (playedSoundAlready == null) {
