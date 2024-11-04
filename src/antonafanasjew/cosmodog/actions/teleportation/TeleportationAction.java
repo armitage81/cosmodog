@@ -39,9 +39,9 @@ public class TeleportationAction extends PhaseBasedAction {
 	public void onTriggerInternal() {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.beginTeleportation();
-		getPhaseRegistry().registerPhase(new TeleportStartActionPhase(1000, this.getProperty("state")));
-		getPhaseRegistry().registerPhase(new ActualTeleportationActionPhase(1000, teleportConnection, this.getProperty("state")));
-		getPhaseRegistry().registerPhase(new TeleportEndActionPhase(1000, this.getProperty("state")));
+		getPhaseRegistry().registerPhase("preparingTeleportation", new TeleportStartActionPhase(1000, this.getProperty("state")));
+		getPhaseRegistry().registerPhase("teleporting", new ActualTeleportationActionPhase(1000, teleportConnection, this.getProperty("state")));
+		getPhaseRegistry().registerPhase("postprocessingTeleportation", new TeleportEndActionPhase(1000, this.getProperty("state")));
 	}
 
 	@Override

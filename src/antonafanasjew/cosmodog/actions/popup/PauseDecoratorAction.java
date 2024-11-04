@@ -53,9 +53,9 @@ public class PauseDecoratorAction  extends PhaseBasedAction {
 	 */
 	@Override
 	public void onTriggerInternal() {
-		getPhaseRegistry().registerPhase(new WaitAction(durationBefore));
-		getPhaseRegistry().registerPhase(underlyingAsyncAction);
-		getPhaseRegistry().registerPhase(new WaitAction(durationAfter));
+		getPhaseRegistry().registerPhase("waitingBeforeAction", new WaitAction(durationBefore));
+		getPhaseRegistry().registerPhase("underlyingPhase", underlyingAsyncAction);
+		getPhaseRegistry().registerPhase("waitingAfterAction", new WaitAction(durationAfter));
 	}
 
 }

@@ -136,9 +136,9 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 			}
 			
 			AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(phaseResult);
-			getPhaseRegistry().registerPhase(attackActionPhase);
+			getPhaseRegistry().registerPhase("attacking", attackActionPhase);
 			EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy());
-			getPhaseRegistry().registerPhase(enemyDestructionActionPhase);
+			getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
 		}
 	}
 }

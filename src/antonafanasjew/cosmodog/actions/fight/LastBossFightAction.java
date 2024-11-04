@@ -75,7 +75,7 @@ public class LastBossFightAction extends PhaseBasedAction {
 	public void onTriggerInternal() {
 		Player player = ApplicationContextUtils.getPlayer();
 		EnemyDestructionActionPhase enemyDestructionActionPhase = new DefaultEnemyDestructionActionPhase(player, guardian);
-		getPhaseRegistry().registerPhase(enemyDestructionActionPhase);
+		getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
 	}
 
 }

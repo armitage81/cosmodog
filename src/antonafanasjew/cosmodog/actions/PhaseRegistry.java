@@ -14,7 +14,8 @@ public class PhaseRegistry implements Serializable {
 	private boolean triggered = false;
 	private int numberOfPhases;
 
-	public void registerPhase(AsyncAction phase) {
+	public void registerPhase(String phaseName, AsyncAction phase) {
+		phase.getProperties().put("phaseName", phaseName);
 		this.phases.add(phase);
 	}
 

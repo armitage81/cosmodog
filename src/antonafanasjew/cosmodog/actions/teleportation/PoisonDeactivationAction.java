@@ -21,9 +21,9 @@ public class PoisonDeactivationAction extends PhaseBasedAction {
 	
 	@Override
 	public void onTriggerInternal() {
-		getPhaseRegistry().registerPhase(new PoisonDeactivationStartActionPhase(1000, connection));
-		getPhaseRegistry().registerPhase(new ActualPoisonDeactivationActionPhase(1000, connection));
-		getPhaseRegistry().registerPhase(new PoisonDeactivationEndActionPhase(300, connection));
+		getPhaseRegistry().registerPhase("movingCamToTarget", new PoisonDeactivationStartActionPhase(1000, connection));
+		getPhaseRegistry().registerPhase("deactivatingPoison", new ActualPoisonDeactivationActionPhase(1000, connection));
+		getPhaseRegistry().registerPhase("movingCamBackToPlayer", new PoisonDeactivationEndActionPhase(300, connection));
 	}
 	
 }

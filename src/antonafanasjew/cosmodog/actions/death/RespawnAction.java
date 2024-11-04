@@ -59,9 +59,9 @@ public class RespawnAction extends PhaseBasedAction {
 
         FadingAction fadingInAction = new FadingAction(FADING_IN_DURATION, true);
 
-        getPhaseRegistry().registerPhase(fadingOutAction);
-        getPhaseRegistry().registerPhase(respawnAction);
-        getPhaseRegistry().registerPhase(fadingInAction);
+        getPhaseRegistry().registerPhase("fadeOut", fadingOutAction);
+        getPhaseRegistry().registerPhase("respawn", respawnAction);
+        getPhaseRegistry().registerPhase("fadeIn", fadingInAction);
     }
 
 }

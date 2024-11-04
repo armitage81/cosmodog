@@ -77,15 +77,15 @@ public class SpaceLiftAction extends PhaseBasedAction {
                 }
             };
 
-            getPhaseRegistry().registerPhase(closingDoor);
-            getPhaseRegistry().registerPhase(suspenseWaiting);
-            getPhaseRegistry().registerPhase(focusingOnLift);
-            getPhaseRegistry().registerPhase(preparingLift);
-            getPhaseRegistry().registerPhase(launchingLift);
-            getPhaseRegistry().registerPhase(changingPosition);
-            getPhaseRegistry().registerPhase(traveling);
-            getPhaseRegistry().registerPhase(coupling);
-            getPhaseRegistry().registerPhase(openingDoor);
+            getPhaseRegistry().registerPhase("closingDoor", closingDoor);
+            getPhaseRegistry().registerPhase("suspenseWaiting", suspenseWaiting);
+            getPhaseRegistry().registerPhase("focusingOnLift", focusingOnLift);
+            getPhaseRegistry().registerPhase("preparingLift", preparingLift);
+            getPhaseRegistry().registerPhase("launchingLift", launchingLift);
+            getPhaseRegistry().registerPhase("changingPlayerPosition", changingPosition);
+            getPhaseRegistry().registerPhase("goingUp", traveling);
+            getPhaseRegistry().registerPhase("couplingLift", coupling);
+            getPhaseRegistry().registerPhase("openingDoor", openingDoor);
 
         } else {
 
@@ -111,11 +111,11 @@ public class SpaceLiftAction extends PhaseBasedAction {
             CamMovementAction focusingOnPlayer = new CamMovementAction(2000, playerPixelPosition, cosmodogGame);
             FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
 
-            getPhaseRegistry().registerPhase(closingDoor);
-            getPhaseRegistry().registerPhase(traveling);
-            getPhaseRegistry().registerPhase(landingLift);
-            getPhaseRegistry().registerPhase(focusingOnPlayer);
-            getPhaseRegistry().registerPhase(openingDoor);
+            getPhaseRegistry().registerPhase("closingDoor", closingDoor);
+            getPhaseRegistry().registerPhase("goingDown", traveling);
+            getPhaseRegistry().registerPhase("landingLift", landingLift);
+            getPhaseRegistry().registerPhase("focusingOnPlayer", focusingOnPlayer);
+            getPhaseRegistry().registerPhase("openingDoor", openingDoor);
         }
 
     }

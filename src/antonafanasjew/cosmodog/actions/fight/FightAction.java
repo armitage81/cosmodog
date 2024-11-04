@@ -315,12 +315,12 @@ public class FightAction extends PhaseBasedAction {
 
 			//The attack action phase is created based on the fight phase result and registered in the local action phase registry. It can be a player attack or an enemy attack.
 			AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(phaseResult);
-			getPhaseRegistry().registerPhase(attackActionPhase);
+			getPhaseRegistry().registerPhase("attack", attackActionPhase);
 
 			//In case the attack action phase is a player attack and the enemy is destroyed, the enemy destruction action phase is created and registered in the local action phase registry.
 			if (phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
 				EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy());
-				getPhaseRegistry().registerPhase(enemyDestructionActionPhase);
+				getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
 			}
 		}
 	}

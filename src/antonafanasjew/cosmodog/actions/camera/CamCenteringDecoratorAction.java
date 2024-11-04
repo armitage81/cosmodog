@@ -130,9 +130,9 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 
 		Position initialCamPosition = Position.fromCoordinates(initialCamX, initialCamY, camCenteringPosition.getMapType());
 
-		getPhaseRegistry().registerPhase(new CamMovementAction(camMovementDuration, camCenteringPosition, cosmodogGame));
-		getPhaseRegistry().registerPhase(underlyingAsyncAction);
-		getPhaseRegistry().registerPhase(new CamMovementAction(camMovementDuration, initialCamPosition, cosmodogGame));
+		getPhaseRegistry().registerPhase("moveCamToTarget", new CamMovementAction(camMovementDuration, camCenteringPosition, cosmodogGame));
+		getPhaseRegistry().registerPhase("underlying", underlyingAsyncAction);
+		getPhaseRegistry().registerPhase("moveCamBackToPlayer", new CamMovementAction(camMovementDuration, initialCamPosition, cosmodogGame));
 
 	}
 
