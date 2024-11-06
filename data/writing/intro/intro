@@ -6,10 +6,13 @@ The missile hits your space freighter like a giant hammer. The ship shakes. You 
 Idiot! What were you thinking?! The planet is off-limits!
 
 
+You try the controls, to no avail.
+
+
 <font:speech> "Luke, status!" <font:narration>
 
 
-Luke's computer voice is calm as always. <font:speech> "I recommend an immediate evacuation, sir." <font:narration>
+Luke's computer voice is as calm as always. <font:speech> "I recommend an immediate evacuation, sir." <font:narration>
 
 
 <font:speech> "No kidding!" <font:narration>
@@ -29,7 +32,7 @@ Luke reports again, this time from the device on your wrist.
 A needle protrudes from the device and pierces the skin on your backhand.
 
 
-<font:speech> "I'm getting thrilled way too easily," <font:narration> you mutter wryly, while you push yourself toward the heck.
+<font:speech> "I'm getting thrilled way too easily," <font:narration> you mutter wryly, hurrying toward the heck.
 
 
 Passing a monitor, you see the green surface of Phaeton on it. The planet is growing fast. You don't have much time.
@@ -68,16 +71,16 @@ Or is there? An alert message appears on the monitor in front of you.
 <font:speech> "A lock on!" <font:narration> you whisper.
 
 
-The destruction of your ship was not enough for the guardian satellite. It came back to finish the job.
+It seems, the guardian satellite came back to finish the job.
 
 
-You close your eyes and brace for impact...
+You brace for impact...
 
 
 ...but it never comes.
 
 
-You anxiously listen to the silence, wondering what is going on.
+What is going on?
 
 
 <font:speech> "Something is jamming the satellite's target systems, sir." <font:narration>

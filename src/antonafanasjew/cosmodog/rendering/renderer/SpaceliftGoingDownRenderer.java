@@ -63,11 +63,15 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
 
         int currentPhaseNumber = action.getPhaseRegistry().currentPhaseNumber().orElse(-1);
 
+
         if (currentPhaseNumber == -1) {
             return;
         }
 
+
+
         AsyncAction currentPhase = action.getPhaseRegistry().currentPhase().get();
+        String phaseName = currentPhase.getProperty("phaseName");
 
         int tileLength = TileUtils.tileLengthSupplier.get();
 
@@ -93,7 +97,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
         Image cloudImage = cloudSpriteSheet.getSprite(0, 0);
 
         //Door is closing
-        if (currentPhaseNumber == 0) {
+        if (phaseName.equals("closingDoor")) {
             float visibleDoorWidth = tileLength;
             Object playedSoundAlready = currentPhase.getProperties().get("playedClosingSoundAlready");
             if (playedSoundAlready == null) {
@@ -109,7 +113,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
             doorImage.draw(doorX, doorY, visibleDoorWidth, (float)tileLength);
         }
 
-        if (currentPhaseNumber == 1) {
+        if (phaseName.equals("goingDown")) {
 
             spaceDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
 
@@ -173,7 +177,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
 
         }
 
-        if (currentPhaseNumber == 2) {
+        if (phaseName.equals("landingLift")) {
 
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
 
@@ -187,7 +191,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
             float visibleCabinHeight = 0;
             float exponentialValue = 5f * (float)currentPhase.getProperty("value");
             int maxCabinOffset = 20 * tileLength;
-            verticalCabinOffset = maxCabinOffset - maxCabinOffset * exponentialValue;
+            verticalCabinOffset = maxCabinOffset * exponentialValue;
             visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
             Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
             float cabinX = initialCabinTileRelatedToCam.getX();
@@ -196,7 +200,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
             cabinImage.draw(cabinX, cabinY, cabinImage.getWidth(), visibleCabinHeight);
         }
 
-        if (currentPhaseNumber == 3) {
+        if (phaseName.equals("focusingOnPlayer")) {
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
         }
 
