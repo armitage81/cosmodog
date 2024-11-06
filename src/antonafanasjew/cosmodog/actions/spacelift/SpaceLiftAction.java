@@ -47,8 +47,8 @@ public class SpaceLiftAction extends PhaseBasedAction {
 
 
         Position playerPixelPosition = Position.fromCoordinates(
-                playerPosition.getX() * tileLength,
-                playerPosition.getY() * tileLength,
+                playerPosition.getX() * tileLength + tileLength / 2.0f,
+                playerPosition.getY() * tileLength + tileLength / 2.0f,
                 MapType.SPACE);
 
         if (upNotDown) {
@@ -57,7 +57,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
             FixedLengthAsyncAction suspenseWaiting = new FixedLengthAsyncAction(300);
             CamMovementAction focusingOnLift = new CamMovementAction(2000, camCenterPixelPosition, cosmodogGame);
             FixedLengthAsyncAction preparingLift = new FixedLengthAsyncAction(500);
-            ExponentialAction launchingLift = new ExponentialAction(2000);
+            FixedLengthAsyncAction launchingLift = new FixedLengthAsyncAction(2000);
             FixedLengthAsyncAction traveling = new FixedLengthAsyncAction(15000);
             FixedLengthAsyncAction coupling = new FixedLengthAsyncAction(3000);
             FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
@@ -107,7 +107,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     cam.focusOnPiece(game, 0, 0, piece);
                 }
             };
-            FixedLengthAsyncAction landingLift = new ExponentialAction(3000);
+            FixedLengthAsyncAction landingLift = new FixedLengthAsyncAction(3000);
             CamMovementAction focusingOnPlayer = new CamMovementAction(2000, playerPixelPosition, cosmodogGame);
             FixedLengthAsyncAction openingDoor = new FixedLengthAsyncAction(1000);
 

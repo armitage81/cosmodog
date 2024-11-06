@@ -153,9 +153,9 @@ public class SpaceliftGoingUpRenderer extends AbstractRenderer {
 
             float verticalCabinOffset = 0;
             float visibleCabinHeight = 0;
-            float exponentialValue = 5f * (float)currentPhase.getProperty("value");
+            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
             int maxCabinOffset = 20 * tileLength;
-            verticalCabinOffset = maxCabinOffset * exponentialValue;
+            verticalCabinOffset = maxCabinOffset * completionRate;
             visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
             Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
             float cabinX = initialCabinTileRelatedToCam.getX();

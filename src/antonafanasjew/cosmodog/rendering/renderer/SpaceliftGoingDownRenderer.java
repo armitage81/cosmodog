@@ -187,11 +187,13 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
                 rayAnimation.draw(rayX, rayY);
             }
 
+
             float verticalCabinOffset = 0;
             float visibleCabinHeight = 0;
-            float exponentialValue = 5f * (float)currentPhase.getProperty("value");
+            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
             int maxCabinOffset = 20 * tileLength;
-            verticalCabinOffset = maxCabinOffset * exponentialValue;
+            verticalCabinOffset = maxCabinOffset - maxCabinOffset * completionRate;
+            System.out.println(verticalCabinOffset);
             visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
             Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
             float cabinX = initialCabinTileRelatedToCam.getX();
@@ -202,6 +204,25 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
 
         if (phaseName.equals("focusingOnPlayer")) {
             groundDoorAnimation.draw(playerVectorRelatedToCam.getX(), playerVectorRelatedToCam.getY(), tileLength, tileLength);
+        }
+
+
+        if (phaseName.equals("openingDoor")) {
+            float verticalDoorOffset = 0;
+            float visibleDoorHeight = tileLength;
+            Object playedSoundAlready = currentPhase.getProperties().get("playedOpeningSoundAlready");
+            if (playedSoundAlready == null) {
+                ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
+                currentPhase.getProperties().put("playedOpeningSoundAlready", true);
+            }
+            float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
+            verticalDoorOffset = tileLength * completionRate;
+            visibleDoorHeight = tileLength - verticalDoorOffset;
+            float doorX = playerVectorRelatedToCam.getX();
+            float doorY = playerVectorRelatedToCam.getY() + verticalDoorOffset;
+            float doorHeight = visibleDoorHeight;
+            Image doorImage = groundDoorAnimation.getCurrentFrame().getSubImage(0, 0, (int) (float) tileLength, (int)doorHeight);
+            doorImage.draw(doorX, doorY, (float) tileLength, doorHeight);
         }
 
         graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
