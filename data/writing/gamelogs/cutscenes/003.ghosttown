@@ -1,24 +1,27 @@
 Ghost Town
 -------------------------------------------------------
-The town is a ruin. Empty streets. Burning buildings. You have a feeling you just saw something bulky moving behind a heap of rubble. The next second it is gone.
+The town is a ruin. Empty streets. Burning buildings. You have a feeling you just saw something bulky moving behind a heap of rubble.
+The next second it is gone.
 
 
 <font:speech> "What happened here?" <font:narration>
 
 
-Alisa checks her sensors. <font:speech> "I register radioactive pollution in the air. It was a combat zone not that long ago." <font:narration>
+Alisa reports: <font:speech> "A battle took place here not long ago." <font:narration>
 
 
-Another movement. This time you can see it clearly. A humanoid robot. Armed. Just across the street. Then you notice the corpses around it.
+Another movement. This time you can see it clearly. A humanoid robot. Armed. Just across the street.
+Then you notice the corpses around it.
 
 
-You fall to the ground one heart beat before its head turns toward you.
+You fall to the ground one heart beat before the robot's head turns toward you.
 
 
-<font:speech> "Quiet!" <font:narration> you gasp.
+<font:speech> "Quiet!" <font:narration>
 
 
-<font:speech> "I sensored it, too," <font:narration> Alisa whispers. <font:speech> "Those are quarantine enforcement drones. they're programmed to use deadly force." <font:narration>
+<font:speech> "I know," <font:narration> Alisa whispers. <font:speech>
+"Those are quarantine enforcement drones. they're programmed to use deadly force." <font:narration>
 
 
 Your first urge is to turn back and crawl away as far as possible. Then you think of Mary.

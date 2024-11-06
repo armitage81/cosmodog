@@ -3,10 +3,10 @@ Silence
 <font:speech> "Listen!" <font:narration>
 
 
-Alisa's sudden remark startles you. <font:speech> "What do you mean? I do not hear anything." <font:narration>
+You stop abruptly. <font:speech> "What do you mean? I do not hear anything." <font:narration>
 
 
-<font:speech> "That's exactly my point, you genius!" <font:narration>
+<font:speech> "That's exactly my point!" <font:narration>
 
 
 For a second you imagine a pretty young girl rolling her eyes at your stupidity.
@@ -15,19 +15,19 @@ For a second you imagine a pretty young girl rolling her eyes at your stupidity.
 <font:speech> "It's too quiet here," <font:narration> she says. <font:speech> "Where is everyone?" <font:narration>
 
 
-You look at the sharp edges of the canyon around you.
+You shrug.
 
 
-<font:speech> "The planet is off-limits. Perhaps, this place is not even inhabited." <font:narration>
+<font:speech> "After the epidemic broke out, everyone has been evacuated or quarantined." <font:narration>
 
 
 She grunts.
 
 
-<font:speech> "And who's built this road, huh? Can you use your head for a moment?!" <font:narration>
+<font:speech> "And what about birds? I don't hear them singing. Were they also evacuated or quarantined?" <font:narration>
 
 
-<font:speech> "Said a broken robot lady." <font:narration>
+<font:speech> "Could you please shut up, just for a second?" <font:narration>
 
 
 You feel the needle slightly pricking your backhand.
@@ -42,16 +42,14 @@ You feel the needle slightly pricking your backhand.
 If you knew.
 
 
-For a moment, you remember Mary's face - a retarded mask with empty eyes and half-opened mouth, staring mindlessly at a toy dog in front of her... No, not now! You chase away the vision.
+For a moment, you remember Mary's face as you saw it the last time - a retarded mask with empty eyes and half-opened mouth,
+staring mindlessly at a toy dog in front of her... No, not now! You chase away the vision.
 
 
 <font:speech> "Let's follow the road. It must get us somewhere." <font:narration>
 
 
 <font:speech> "No shit, Sherlock," <font:narration> Alisa sighs.
-
-
-Why does your computer assistant sigh? You chuckle grimly. No shit, Sherlock? Really?
 
 
 <font:speech> "The name is Karl." <font:narration>
