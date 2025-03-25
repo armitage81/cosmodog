@@ -38,7 +38,7 @@ public class RadiationRenderer extends AbstractRenderer {
 
 		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 
-		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
+		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
 
@@ -69,7 +69,7 @@ public class RadiationRenderer extends AbstractRenderer {
 
 
 		graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
-		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
+		graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 
 
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
