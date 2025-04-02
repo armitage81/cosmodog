@@ -1,19 +1,19 @@
 Don't rush! The game will stand still unless you execute an action.
 
 
-Sometimes it is better to sit a situation out. Press ENTER to skip a turn without moving.
+Press ENTER to skip a turn without moving. It can be useful when you want to hide or wait for an enemy to come closer.
 
 
 Each enemy type has its own strengths and weaknesses. Study them to improve your chances.
 
 
-Jars with Soul Essence permanently increase your maximum hit points. Get as many as you can find.
+Jars with Soul Essence permanently increase your maximal hit points. Get as many Soul Essences as you can find.
 
 
-Use medkits wisely. There is a limited number of them in the game.
+Medkits fill up your hit points completely. Use them wisely. There is a limited number of medkits in the game.
 
 
-Your progress is retained even if you die.
+Your progress is retained when you die. Killed enemies stay dead. Found tools remain in your inventory.
 
 
 Lack of food or water will deplete your constitution. Keep track of your hunger and thirst.
@@ -22,7 +22,7 @@ Lack of food or water will deplete your constitution. Keep track of your hunger 
 Hunger and thirst will reduce your life points with every turn until only one point remains.
 
 
-Find rations to still hunger. Approach and drink water to avoid dehydration.
+Find rations to still hunger. Approach water to drink.
 
 
 If you are hungry AND thirsty, you will lose TWO hit points with every move.
@@ -34,16 +34,16 @@ You can increase your food and water capacity. Keep your eyes open for bottles a
 Food and water reserves do not deplete if you are inside a vehicle.
 
 
-Cars are armored and protect you from enemy attacks. Their armor can be increased.
+Cars are armored and protect you from enemy attacks. Their armor can be improved by finding armor plates.
 
 
-You can refuel a car with a gas canister.
+You can refuel a car with a gas canister. Walk on foot into a gas station to get one.
 
 
 Fuel depletes slower when you drive on roads.
 
 
-Sometimes stealth is a better option.
+Sometimes stealth is a better option. Hide in high grass, move at night, or stay behind enemy's backs.
 
 
 Stay out of enemy's sight fields.
@@ -56,6 +56,9 @@ The sight field of the most enemies is reduced at night.
 
 
 You can hide in high grass. By doing so, only adjacent enemies will sense you.
+
+
+Hiding in high grass is the best way to confront an artillery unit.
 
 
 Backstabbing an enemy doubles the damage.

@@ -1,24 +1,42 @@
 HINTS: HUNGER AND THIRST
 --------------------------------------------------------------------------
-You need food and water to survive. Your food and water reserves are represented by the green and blue bars on the bottom left of the screen. The green bar shows your food reserve, the blue one represents the water reserve.
+You need food and water to survive.
+Your food and water reserves are represented by the green and blue bars on the bottom left
+of the screen.
+The green bar shows your food reserve, the blue one represents the water reserve.
 
 
-If your food reserve is depleted, you become hungry. Hunger will cost you one hit point for every move you do. Hit points lost due to hunger are represented as the green section of the life bar. You will never die due to hunger as you always retain your last hit point. However, you become very vulnerable to enemies and other threats in such a worst case. When you eat, you get back all the hit points lost due to hunger.
+If your food reserve is depleted, you become hungry.
+Hunger will cost you one hit point every turn.
+Hit points lost due to hunger are represented as the green section of the life bar.
+You will never die due to hunger as you always retain your last hit point.
+However, you become very vulnerable to enemies and other threats in such a worst case.
+When you eat, you get back all the hit points lost due to hunger.
 
 
-Same applies to water. Hit points lost due to thirst are represented as the blue section of the life bar. You get them back when you drink water. The water reserve depletes faster when moving on desert tiles.
+Same applies to water.
+Hit points lost due to thirst are represented as the blue section of the life bar.
+You get them back when you drink water.
+The water reserve depletes faster when moving on desert tiles.
 
 
 If you are hungry AND thirsty, you will lose 2 hit points with every move.
 
 
-Rations are scattered around the game world. You can collect them to refill your food reserve. It is up to you to decide whether you collect a ration to refill somewhat depleted food reserve or save it for later. Keep in mind: There are plenty of rations in Cosmodog, but their number is finite.
+Rations are scattered around the game world.
+You can collect them to refill your food reserve.
+It is up to you to decide whether you collect a ration
+to refill somewhat depleted food reserve or save it for later.
+Keep in mind: There are plenty of rations in Cosmodog, but their number is finite.
 
 
-Approach water (or snow) to still your thirst. Do it whenever you get the chance since water resource is not limited in the game world.
+Approach water (or snow) to still your thirst.
+Do it whenever you get the chance since water resource is not limited in the game world.
 
 
-There are ways to double and triple your food and water reserve capacity. Find them in the game world.
+There are ways to double and triple your food and water reserve capacity.
+Find them in the game world.
 
 
-Food and water reserves are not depleting if you are inside a vehicle. Use this fact to your advantage.
+Vehicles have reserves of food and water. Entering a vehicle will refill your reserves.
+Food and water reserves are not depleting if you are inside a vehicle.

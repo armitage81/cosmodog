@@ -27,7 +27,7 @@ public abstract class DynamicPiece extends Piece {
 	}
 	
 	/**
-	 * This method will be called only when leacing on a dynamic piece, such as a pressure plate or poison pool.
+	 * This method will be called only when leaving on a dynamic piece, such as a pressure plate or poison pool.
 	 */
 	public void interactWhenLeaving() {
 		

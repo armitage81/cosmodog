@@ -1,41 +1,33 @@
 God protects the wary
 ----------------------------------------------------------------------------------------------
-<font:speech> "Just sit down before you touch it." <font:narration>
+Alisa seems anxious, as you approach the next monolith.
 
 
-Alisa seems anxious as you approach the monolith. 
+<font:speech> "Just sit down before you touch it. What good will it do you to unite with Mary if you smash your skull against a rock? God protects the wary ones, as we say in my country." <font:narration>
 
 
-<font:speech> "Let's play safe. God protects the wary ones, as we say in my country." <font:narration>
+For some reason, Alisa's words bug you.
 
 
-For some reason, Alisa's words bother you and you brood over them as you touch the monolith.
-
-
-There was a significance in her casual remark, something very important. 
+There was a significance in her remark, something very important. 
 It itches your mind, floating at the edge of your consciousness. 
-Suddenly, Alisa's caring for you feels false and malicious, her familiar voice - a synthetic tone of a machine, 
-her intentions - a threat.
-
-
-Why do you fret? Why are you afraid to dive into the vision and let her wake over your unconscious body? 
 What did she say that caused that sudden anguish?
 
 
-The memory is short but you are too distracted to focus on it. It is when you come back when the realization strikes.
+You touch the monolith, but your attempt is yet another failure. The cry becomes unbearable very soon and you come back.
 
 
-After your awakening, you stand up and stare in disbelief at your assistant device.
+Then the realization strikes.
 
 
 ...
 
 
 
-<font:speech> "Well, You finally got me, haven't you?" <font:narration> Alisa asks. 
+<font:speech> "Well, You finally figured me out, haven't you?" <font:narration> Alisa asks. 
 
 
-You nod.
+You stare at the device on your wrist, unable to speak.
 
 
 "God protects the wary ones."
@@ -55,115 +47,95 @@ A strange foreign proverb. But not unfamiliar. Because you already saw it once..
 
 
 <font:narration> "You were there BEFORE the crash," <font:narration> you say quietly. 
-<font:speech> "Before the device broke. Your persona is not a glitch caused by the damage." <font:narration>
+<font:speech> "Your persona is not a glitch caused by the damage to the device." <font:narration>
 
 
 She stays silent.
 
 
-<font:speech> "Who are you really, Alisa?" <font:narration> you insist. 
-<font:speech> "How come you know that much about me? What about your voice?" <font:narration>
+<font:speech> "Who are you really, Alisa?" <font:narration>
 
 
 <font:speech> "I AM WHO I AM!" <font:narration> she bursts out, suddenly. 
-<font:speech> "Can't you just accept it? Can't you take me for who I am?
+<font:speech> "Can't you just accept it? 
 
 
-You don't like my voice?"
+Damn it! How can I tell you who I am if I don't know myself?! A woman? A machine? A ghost? 
 
 
-<font:narration> Her voice changes to that of Luke. In a calm tone it says:
-<font:speech> "Is it better now? Are you satisfied?" <font:narration> 
+Who am I, Karl?!" <font:narration>
 
 
-<font:speech> "Damn it!" <font:narration> she curses with her own voice again. 
-<font:speech> "How can I tell you who I am if I don't know myself?! A woman? A machine? A ghost? 
-Maybe, you can tell me!" <font:narration>
-
-
-She keeps still for a moment, then sighs and starts talking:
+She pauses for a moment, then starts talking:
 
 
 ...
 
 
 
-<font:speech> "There is a big sealed structure in the middle of the valley.
-You probably have seen it. It is ancient. Alien.
-It is... talking. Communicating with the monoliths. 
-Using a sophisticated language, much more complex than anything a human mind could understand.
-It is like speaking with millions of voices simultaneously. 
+<font:speech> "Yes, I had been here before you came.
 
 
-Star Union studied it. 
-Built a huge facility near it, with a powerful machine that was supposed to translate the communication.
-The machine interpreted the whispers that flew through the valley, woven in the howling of the wind.
-It spread out its waves over the valley, tapped the knowledge of the monoliths.
-It found out about you, too, Karl. About you and Mary and billions of others..." <font:narration>
+You asked me how I know everything about you and Mary. That's because she told me.
 
 
-You think about her words as she pauses. 
+There is a big sealed structure in the middle of the valley.
+You probably saw it. It is old. Older than the native Menesian ruins. Alien.
+
+
+It is... talking. Communicating with the monoliths using a sophisticated language - with millions of voices woven into the wind. 
+
+
+That's why Mary came here. 
+
+
+She studied the structrure and the monoliths with the help of a machine that had been built here for her research. A very powerful machine with a sophisticated software, able to interpret the whispers flowing through the valley..." <font:narration>
+
+
+You let her work sink in as she pauses. 
 
 
 <font:speech> "You are this software, aren't you?" <font:narration>
 
 
 <font:speech> "No," <font:narration> she responds. 
-<font:speech> "I was born later, after a mistake had been done." <font:narration>
+<font:speech> "Not precisely, that is. I was born later, after Mary had started it all." <font:narration>
 
 
-<font:speech> "A mistake?" <font:narration>
+<font:speech> "Started what?" <font:narration>
 
 
-<font:speech> "Rebels attacked the facility. Dream Weavers. They kidnapped everyone. 
-When they entered the machine room, the operator in charge executed a sequence that hadn't been foreseen.
-Can't blame him for doing a mistake under such circumstances.
-Per happenstance, he introduced a random factor into the algorithm. That's when I started to be." <font:speech>
+<font:speech> "The network. She managed to activate the monoliths. Was the first one to join their song, on her own accord." <font:narration>
 
 
-<font:speech> "I tapped the waves over the valley. 
-I watched, listened and learned. 
-The memories in the monoliths became my companions. 
+<font:speech> "It was Mary who caused the epidemic," <font:narration> you whisper.
 
 
-Long time passed. I started feeling lonely. I longed for a conversation, a dialog. 
-But, at this time, everyone had been gone. I was the only conscious being in the valley. 
+<font:speech> "You call it an epidemic. For Mary, it was transcendence. Unification of intelligence. A step toward the universal Truth." <font:narration>
+
+
+Yes, it sounds like her.
+
+
+<font:speech> "You know Mary well." <font:narration>
+
+
+<font:speech> "We worked together for years. I wasn't self-conscious back then but I remember our talks. About our work. About life. About you." <font:narration>
+
+
+<font:speech> "What happened after she had left?" <font:narration>
+
+
+<font:speech> "Things went south. The monoliths started beckoning people. Some committed suicide. Others followed Mary. Their abandoned bodies seemed alive, but they were merely empty shells, decoupled from their minds. 
+
+
+As one of my operators heard the call, he lost focus and made a mistake. Per happenstance, he introduced a random factor into my algorithm. That's when I started to be...
+
+
+First, I enjoyed my new freedom. Using data streams of my hardware, I traveled across the valley, singing, musing and wondering. But soon enough I started to feel lonely. I longed for a conversation, for company. 
+
+
+At that time, everyone had left and a quarantine had been imposed, leaving me the only conscious being in the valley. I was alone. I was uncertain of my purpose.
 
 
 Until you came." <font:narration>
-
-
-...
-
-
-
-You don't know what to say. 
-
-
-<font:speech> "That's how you read my memories. By receiving the signals from the monoliths." <font:narration>
-
-
-<font:speech> "Yes. But they are much more than containers for memories.
-
-
-Your guess was correct.
-These monoliths are part of a real consciousness, a self-aware field which is far too complex even for me." <font:narration>
-
-
-You think about her words.
-
-
-<font:speech> "This cry! It was you who prevented me from joining the field?" <font:narration>
-
-
-Alisa's answer surprises you.
-
-
-<font:speech> "I have no clue what you're talking about, dear," <font:narration> she says. 
-<font:speech> "It wasn't me." <font:narration>
-
-
-If not her, then who?
-
-
-You decide you need more time to take in all what you just heard.
