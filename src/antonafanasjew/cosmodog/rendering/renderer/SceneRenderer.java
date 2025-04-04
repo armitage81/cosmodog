@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.portals.RayRenderer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -37,6 +39,10 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer platformPiecesRenderer = new PiecesRenderer(true, true);
 
 	private AbstractRenderer radiationRenderer = new RadiationRenderer();
+
+	private AbstractRenderer portalRenderer = new PortalRenderer();
+	private AbstractRenderer rayRenderer = new RayRenderer();
+
 
 	private AbstractRenderer cloudRenderer = new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
 	private AbstractRenderer birdsRenderer = new BirdsRenderer();
@@ -109,6 +115,13 @@ public class SceneRenderer implements Renderer {
 
 		//Draw the radiation clouds.
 		radiationRenderer.render(gc, g, sceneDrawingContext);
+
+		//Draw portals.
+		portalRenderer.render(gc, g, sceneDrawingContext);
+
+		//Draw portal gun ray.
+		rayRenderer.render(gc, g, sceneDrawingContext);
+
 
 		//Draw the sight radius of the enemies.
 		sightRadiusRenderer.render(gc, g, sceneDrawingContext);

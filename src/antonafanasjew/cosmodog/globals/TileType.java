@@ -151,9 +151,9 @@ public enum TileType {
 	Note: There are other ways to block a portal ray: Crates, Reflectors, closed hatches etc.
 	Since they are dynamic pieces, they will not be considered in this layer.
 	 */
-	PORTAL_RAY_EMITTABLE(Layers.LAYER_META_PORTALS, 1),
-	PORTAL_RAY_BLOCKING(Layers.LAYER_META_PORTALS, 1),
-	PORTAL_RAY_ATTACHABLE(Layers.LAYER_META_PORTALS, 1),
+	PORTAL_RAY_EMITTABLE(Layers.LAYER_META_PORTALS, 31),
+	PORTAL_RAY_BLOCKING(Layers.LAYER_META_PORTALS, 28),
+	PORTAL_RAY_ATTACHABLE(Layers.LAYER_META_PORTALS, 30),
 	
 	FIRE_EFFECT(Layers.LAYER_META_EFFECTS, 28),
 	SMOKE_EFFECT(Layers.LAYER_META_EFFECTS, 35),

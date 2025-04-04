@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.LetterPlate;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
@@ -112,6 +113,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	@Override
 	public void beforeWaiting(Actor actor, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
+		player.deactivatePortalRay();
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		addTime();
 		updateWormAlert(player, applicationContext );
@@ -133,7 +135,13 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkDecontamination(applicationContext);
 		checkContamination(applicationContext);
 	}
-	
+
+	@Override
+	public void beforeMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		player.deactivatePortalRay();
+	}
+
 	@Override
 	public void afterMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		checkStarvation(applicationContext);
@@ -145,10 +153,11 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkMine(applicationContext);
 		updateSnowfall();
 		checkContaminationStatus(applicationContext);
+		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 	}
-	
+
 	@Override
 	public void afterWaiting(Actor actor, ApplicationContext applicationContext) {
 		collectCollectibles(applicationContext);
@@ -164,10 +173,17 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
+		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 	}
-	
+
+	@Override
+	public void beforeTeleportation(Actor actor, ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		player.deactivatePortalRay();
+	}
+
 	@Override
 	public void afterTeleportation(Actor actor, ApplicationContext applicationContext) {
 		collectCollectibles(applicationContext);
@@ -175,7 +191,14 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
 		updateSnowfall();
+		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
+	}
+
+	@Override
+	public void beforeRespawn(Actor actor, ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		player.deactivatePortalRay();
 	}
 
 	@Override
@@ -193,9 +216,16 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
 		updateSnowfall();
+		updatePortalRay();
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
+	}
+
+	@Override
+	public void beforeSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
+		Player player = ApplicationContextUtils.getPlayer();
+		player.deactivatePortalRay();
 	}
 
 	@Override
@@ -205,6 +235,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
 		updateSnowfall();
+		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
 	}
 
@@ -691,5 +722,22 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			}
 		}
 
+	}
+
+	private void updatePortalRay() {
+
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
+		TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
+
+		boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
+		boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
+
+		if (emittable && !onEmpField) {
+			player.activatePortalRay();
+		} else {
+			player.deactivatePortalRay();
+		}
 	}
 }

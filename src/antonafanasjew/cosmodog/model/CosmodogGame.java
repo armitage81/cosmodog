@@ -19,7 +19,10 @@ import antonafanasjew.cosmodog.writing.textframe.TextFrame;
 import com.google.common.collect.Maps;
 
 import java.io.Serial;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Model of a game session. This will contain the data about the map, actors and
@@ -216,4 +219,9 @@ public class CosmodogGame extends CosmodogModel {
 	public void createPortal(Portal portal) {
 		portals.offer(portal);
 	}
+
+	public List<Portal> getPortals() {
+		return portals.stream().toList();
+	}
+
 }

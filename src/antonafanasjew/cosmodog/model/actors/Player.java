@@ -2,10 +2,18 @@ package antonafanasjew.cosmodog.model.actors;
 
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
+import antonafanasjew.cosmodog.model.portals.Portal;
+import antonafanasjew.cosmodog.model.portals.Ray;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
+import java.util.Optional;
 
 public class Player extends Actor {
 
@@ -38,6 +46,8 @@ public class Player extends Actor {
 	private boolean poisoned = false;
 	
 	private int turnsPoisoned = 0;
+
+	private Ray portalRay = null;
 	
 	public static Player fromPosition(Position position) {
 		Player player = new Player();
@@ -163,5 +173,19 @@ public class Player extends Actor {
 	@Override
 	public void shiftHorizontal(int positionOffset) {
 		super.shiftHorizontal(positionOffset);
+	}
+
+	public Ray getPortalRay() {
+		return portalRay;
+	}
+
+	public void activatePortalRay() {
+		Ray ray = Ray.create(ApplicationContextUtils.mapOfPlayerLocation(), this);
+		this.portalRay = ray;
+
+	}
+
+	public void deactivatePortalRay() {
+		portalRay = null;
 	}
 }

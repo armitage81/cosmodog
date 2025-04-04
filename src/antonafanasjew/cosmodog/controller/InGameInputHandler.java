@@ -351,22 +351,16 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
 
-			int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
-			TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
-
-			boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
-			boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
-
-			if (emittable && !onEmpField) {
-				Ray ray = Ray.create(map, player);
-				Optional<Position> rayTargetPosition = ray.getTargetPosition();
-				if (rayTargetPosition.isPresent()) {
-					int targetTileId = map.getTileId(rayTargetPosition.get(), Layers.LAYER_META_PORTALS);
-					TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
+			if (player.getPortalRay() != null) {
+				Ray ray = player.getPortalRay();
+				Position rayTargetPosition = ray.getTargetPosition();
+				if (rayTargetPosition != null) {
+					int targetTileId = map.getTileId(rayTargetPosition, Layers.LAYER_META_PORTALS);
+					TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, targetTileId);
 					if (targetTileType.equals(TileType.PORTAL_RAY_ATTACHABLE)) {
 						DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
-						if (!cosmodogGame.portalExists(rayTargetPosition.get(), directionFacingPlayer)) {
-							Portal portal = new Portal(rayTargetPosition.get(), directionFacingPlayer);
+						if (!cosmodogGame.portalExists(rayTargetPosition, directionFacingPlayer)) {
+							Portal portal = new Portal(rayTargetPosition, directionFacingPlayer);
 							cosmodogGame.createPortal(portal);
 						}
 					}
