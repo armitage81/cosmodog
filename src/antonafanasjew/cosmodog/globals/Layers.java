@@ -75,7 +75,8 @@ public class Layers {
 	public static final int LAYER_META_ALT_WATER = LAYER_META_WATERPLACES + 1;
 	public static final int LAYER_META_TERRAINTYPES = LAYER_META_ALT_WATER + 1;
 	public static final int LAYER_META_GROUNDTYPES = LAYER_META_TERRAINTYPES + 1;
-	public static final int LAYER_META_EFFECTS = LAYER_META_GROUNDTYPES + 1;
+	public static final int LAYER_META_PORTALS = LAYER_META_GROUNDTYPES + 1;
+	public static final int LAYER_META_EFFECTS = LAYER_META_PORTALS + 1;
 	public static final int LAYER_META_NPC = LAYER_META_EFFECTS + 1;
 	public static final int LAYER_META_RADIATION = LAYER_META_NPC + 1;
 	public static final int LAYER_META_TEMPERATURE = LAYER_META_RADIATION + 1;

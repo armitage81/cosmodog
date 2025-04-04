@@ -8,7 +8,10 @@ import java.util.Set;
 
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.globals.Layers;
+import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
+import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.model.portals.Ray;
 import antonafanasjew.cosmodog.model.portals.tiles.Hull;
 import org.newdawn.slick.GameContainer;
@@ -348,19 +351,23 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
 
+			int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
+			TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
+
+			boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
 			boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
 
-
-			if (!onEmpField) {
+			if (emittable && !onEmpField) {
 				Ray ray = Ray.create(map, player);
 				Optional<Position> rayTargetPosition = ray.getTargetPosition();
 				if (rayTargetPosition.isPresent()) {
-					Tile tile = map.tileAtPosition(rayTargetPosition.get());
-					if (tile instanceof Hull hull) {
+					int targetTileId = map.getTileId(rayTargetPosition.get(), Layers.LAYER_META_PORTALS);
+					TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
+					if (targetTileType.equals(TileType.PORTAL_RAY_ATTACHABLE)) {
 						DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
-						if (!map.portalExists(rayTargetPosition.get(), directionFacingPlayer)) {
+						if (!cosmodogGame.portalExists(rayTargetPosition.get(), directionFacingPlayer)) {
 							Portal portal = new Portal(rayTargetPosition.get(), directionFacingPlayer);
-							map.createPortal(portal);
+							cosmodogGame.createPortal(portal);
 						}
 					}
 				}

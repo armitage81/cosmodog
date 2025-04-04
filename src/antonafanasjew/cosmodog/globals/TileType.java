@@ -137,8 +137,23 @@ public enum TileType {
 	REV_RIVER_DELTA_E(Layers.LAYER_WATER, 2018),
 	REV_RIVER_BRIDGE_VERT(Layers.LAYER_WATER, 2019),
 	REV_RIVER_BRIDGE_HOR(Layers.LAYER_WATER, 2021),
-	
-	
+
+	/*
+	These tiles are used in a separate layer defining the general functioning
+	of a portal gun. The gun emits a ray that can be used to teleport.
+	This ray can be emitted only in specific areas, defined by the tile type
+	PORTAL_RAY_EMITTABLE. It is ended when it reaches a tile with the type PORTAL_RAY_BLOCKING.
+	When the ray reaches a tile with the type PORTAL_RAY_ATTACHABLE, it can be attached to it,
+	creating a portal.
+	Note: The assumption is that all PORTAL_RAY_EMITTABLE tiles are always completely enwrapped in
+	tiles of the type PORTAL_RAY_BLOCKING and PORTAL_RAY_ATTACHABLE since the ray will go
+	through the whole map otherwise.
+	Note: There are other ways to block a portal ray: Crates, Reflectors, closed hatches etc.
+	Since they are dynamic pieces, they will not be considered in this layer.
+	 */
+	PORTAL_RAY_EMITTABLE(Layers.LAYER_META_PORTALS, 1),
+	PORTAL_RAY_BLOCKING(Layers.LAYER_META_PORTALS, 1),
+	PORTAL_RAY_ATTACHABLE(Layers.LAYER_META_PORTALS, 1),
 	
 	FIRE_EFFECT(Layers.LAYER_META_EFFECTS, 28),
 	SMOKE_EFFECT(Layers.LAYER_META_EFFECTS, 35),

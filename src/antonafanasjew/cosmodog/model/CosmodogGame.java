@@ -3,9 +3,12 @@ package antonafanasjew.cosmodog.model;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.portals.FixedSizeQueue;
+import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.sound.AmbientSoundRegistry;
@@ -56,6 +59,8 @@ public class CosmodogGame extends CosmodogModel {
 	private Player player;
 
 	private final Map<MapType, CosmodogMap> maps = Maps.newHashMap();
+
+	private FixedSizeQueue<Portal> portals = new FixedSizeQueue<Portal>(2);
 
 	private Cam cam;
 
@@ -197,5 +202,18 @@ public class CosmodogGame extends CosmodogModel {
 	
 	public DynamicPiece dynamicPieceAtPosition(Position position) {
 		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
+	}
+
+	public boolean portalExists(Position position, DirectionType directionType) {
+		for (Portal portal : portals) {
+			if (portal.position.equals(position) && portal.directionType == directionType) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void createPortal(Portal portal) {
+		portals.offer(portal);
 	}
 }

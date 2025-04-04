@@ -4,7 +4,9 @@ package antonafanasjew.cosmodog.model.portals;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.topology.Position;
 
-public class Portal {
+import java.io.Serializable;
+
+public class Portal implements Serializable {
 
     public Position position;
     public DirectionType directionType;
