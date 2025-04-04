@@ -3,10 +3,14 @@ package antonafanasjew.cosmodog.controller;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
+import antonafanasjew.cosmodog.model.portals.Ray;
+import antonafanasjew.cosmodog.model.portals.tiles.Hull;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -341,6 +345,28 @@ public class InGameInputHandler extends AbstractInputHandler {
 			}
 			
 		}
+
+		if (input.isKeyPressed(Input.KEY_SPACE)) {
+
+			boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
+
+
+			if (!onEmpField) {
+				Ray ray = Ray.create(map, player);
+				Optional<Position> rayTargetPosition = ray.getTargetPosition();
+				if (rayTargetPosition.isPresent()) {
+					Tile tile = map.tileAtPosition(rayTargetPosition.get());
+					if (tile instanceof Hull hull) {
+						DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
+						if (!map.portalExists(rayTargetPosition.get(), directionFacingPlayer)) {
+							Portal portal = new Portal(rayTargetPosition.get(), directionFacingPlayer);
+							map.createPortal(portal);
+						}
+					}
+				}
+			}
+		}
+
 
 		//TODO: This is a test for plane change. Remove it later.
 		if (input.isKeyPressed(Input.KEY_T)) {

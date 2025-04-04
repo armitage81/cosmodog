@@ -1,9 +1,7 @@
 package antonafanasjew.cosmodog.model;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.domains.MapType;
 import com.google.common.base.Predicate;
@@ -267,6 +265,10 @@ public class CosmodogMap extends CosmodogModel {
 
 	public Multimap<Class<?>, DynamicPiece> getDynamicPieces() {
 		return dynamicPieces;
+	}
+
+	public Optional<DynamicPiece> dynamicPieceAtPosition(Class<? extends DynamicPiece> clazz, Position position) {
+		return dynamicPieces.get(clazz).stream().filter(e -> e.getPosition().equals(position)).findFirst();
 	}
 
 	public List<MoveableGroup> getMoveableGroups() {
