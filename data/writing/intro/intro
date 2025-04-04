@@ -26,10 +26,10 @@ Luke reports again, this time from the device on your wrist.
 
 
 <font:speech> "Copy process finished," <font:narration> he says.
-<font:speech> "Your vital signs are good, except for the high heart rate. Applying medicine..." <font:narration>
+<font:speech> "Your heart rate is very high. Applying medicine..." <font:narration>
 
 
-A needle protrudes from the device and pierces the skin on your backhand.
+A needle protrudes from the device and pierces your backhand.
 
 
 <font:speech> "I'm getting thrilled way too easily," <font:narration> you mutter wryly, hurrying toward the heck.
@@ -42,7 +42,7 @@ Passing a monitor, you see the green surface of Phaeton on it. The planet is gro
 A door slides aside. Behind it is a small cabin with two seats and a console.
 
 
-<font:speech> "Enter the location's coordinates," <font:narration> you command, placing yourself in one of the seats.
+<font:speech> "Enter coordinates of the landing location," <font:narration> you command, placing yourself in one of the seats.
 The door snaps shut.
 
 
@@ -68,10 +68,10 @@ You exhale and try to calm down. There is still a chance.
 Or is there? An alert message appears on the monitor in front of you.
 
 
-<font:speech> "A lock on!" <font:narration> you whisper.
+A lock on!
 
 
-It seems, the guardian satellite came back to finish the job.
+It seems that the guardian satellite came back to finish the job.
 
 
 You brace for impact...
@@ -89,10 +89,10 @@ What is going on?
 Luke's voice is still annoyingly calm and emotionless.
 
 
-Another message appears on the monitor: <font:speech> "You're welcome. Take care. God protects the wary ones."
+You see a message on the monitor: <font:speech> "You're welcome. Take care. God protects the wary ones."
 
 
-<font:narration> You raise your eyebrows. What the hell is this supposed to mean? Never mind, thank you, anyway, whoever you are.
+<font:narration> What the hell is this supposed to mean? But you don't have time to think about it.
 
 
 A sequence of harsh thrusts adjusts the orbit of the pod. The vessel switches to the controlled landing trajectory.

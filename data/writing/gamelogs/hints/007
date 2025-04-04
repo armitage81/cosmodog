@@ -6,10 +6,18 @@ You start the game without any weapons. Your unarmed attack deals only minor dam
 You can find five different weapons in the game world. Experiment with them as they are more or less useful against specific enemy types.
 
 
-Found weapons are displayed on the bottom right corner of the screen. Switch between weapons by pressing TAB or SHIFT+TAB. The currently selected weapon will be marked with a yellow box in the weapon list. You can switch to the unarmed attack by switching through the weapons until none is selected. It can be useful to save ammunition.
+Found weapons are displayed on the bottom right corner of the screen.
+Switch between weapons by pressing TAB or SHIFT+TAB. The currently selected weapon will be marked with a yellow box in the weapon list.
+You can switch to the unarmed attack by switching through the weapons until none is selected. It can be useful to save ammunition.
 
 
-Weapons use up ammunition. Each weapon has a specific amount and type of ammunition. You can find ammunition of each weapon type throughout the game world. When collecting an ammunition item, the weapon ammunition will be filled up completely. It is up to you to decide whether to collect an ammunition type or save it for later. Note: Ammunition is finite. Ammunition items for weapons that you have not found yet, cannot be collected. They will be displayed as transparent until you find the corresponding weapons.
+Weapons use up ammunition. Each weapon has a specific amount and type of ammunition.
+You can find ammunition of each weapon type throughout the game world. When collecting an ammunition item, the weapon ammunition will be filled up completely.
+It is up to you to decide whether to collect an ammunition type or save it for later.
+
+
+Note: Ammunition is finite. Ammunition items for weapons that you have not found yet cannot be collected.
+They will be displayed as transparent outlines until you find the corresponding weapons.
 
 
 There are ways to increase the ammunition capacity for each weapon.

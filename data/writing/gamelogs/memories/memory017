@@ -36,7 +36,7 @@ You will never return.
 
 
 
-<font:speech> "Not too pleasant, huh?" <font:narration> Alisa asks cautiously, noticing your dark mood. 
+<font:speech> "A bad one, huh?" <font:narration> Alisa asks cautiously, noticing your dark mood. 
 You hesitate to answer. 
 
 
@@ -44,28 +44,31 @@ You hesitate to answer.
 <font:speech> "First Mary, then your father." <font:narration> 
 
 
-The interrogation is inappropriate but you do not mind. 
+She reads you like a book but you don't mind. 
 After seven years of silence it feels good to talk to someone who cares.
 
 
+You search for words to describe your feelings.
+
+
 <font:speech> "You know... One day the last star will burn out all its fuel and dim. 
-The Universe will become completely dark.
-You will still be able to fly through it, I guess, but what's the point if there are no stars around?
-No light. No warmth. Nothing to look forward to. No direction and no purpose. No meaning. Only darkness." 
+The Universe will become completely dark. No light. No warmth. Nothing to look forward to. No direction and no purpose. No meaning. Only darkness."
+
+
 <font:narration> You shake your head. 
-<font:speech> "That's what I felt. Darkness. Everything what I believed in vanished,
+
+
+<font:speech> "That's what I felt back then. Darkness. Everything what I'd believed in vanished,
 or turned out to be a mere optical illusion, a distorted reflection of something ugly and shapeless in the dimming light."
 <font:narration> 
 
 
-You halt and wonder at the lack of discomfort in spite of your words. 
-It feels good to have talked about your feelings. 
+You halt and chuckle. <font:speech> "Any smart remarks?" <font:narration>
 
 
-<font:speech> "Any smart remarks?" <font:narration> you say, feigning sarcasm.
+<font:speech> "Yes", <font:narration> Alisa agrees readily.
 
-
-<font:speech> "Yes", <font:narration> Alisa agrees readily. 
+ 
 <font:speech> "What you want to say is that you are searching for this last star that still burns." <font:narration>
 
 
