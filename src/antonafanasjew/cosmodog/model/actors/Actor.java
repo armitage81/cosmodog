@@ -5,8 +5,8 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.listener.life.ComposedLifeListener;
 import antonafanasjew.cosmodog.listener.life.LifeListener;
-import antonafanasjew.cosmodog.listener.movement.ComposedMovementListener;
 import antonafanasjew.cosmodog.listener.movement.MovementListener;
+import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.PositionUtils;
@@ -21,8 +21,7 @@ public abstract class Actor extends Piece {
 
 	private static final long serialVersionUID = 920294272348338561L;
 
-	private List<MovementListener> movementListeners = Lists.newArrayList();
-	private ComposedMovementListener composedMovementListener = new ComposedMovementListener(movementListeners);
+	private PlayerMovementListener movementListener = new PlayerMovementListener();
 	
 	private List<LifeListener> lifeListeners = Lists.newArrayList();
 	protected ComposedLifeListener composedLifeListener = new ComposedLifeListener(lifeListeners);
@@ -37,36 +36,36 @@ public abstract class Actor extends Piece {
 	private int lifeLentForFrost;
 	
 	public void skipTurn() {
-		composedMovementListener.beforeWaiting(this, ApplicationContext.instance());
-		composedMovementListener.afterWaiting(this, ApplicationContext.instance());
+		movementListener.beforeWaiting(this, ApplicationContext.instance());
+		movementListener.afterWaiting(this, ApplicationContext.instance());
 	}
 	
 	public void beginFight() {
-		composedMovementListener.beforeFight(this, ApplicationContext.instance());
+		movementListener.beforeFight(this, ApplicationContext.instance());
 	}
 	
 	public void endFight() {
-		composedMovementListener.afterFight(this, ApplicationContext.instance());
+		movementListener.afterFight(this, ApplicationContext.instance());
 	}
 	
 	public void beginTeleportation() {
-		composedMovementListener.beforeTeleportation(this, ApplicationContext.instance());
+		movementListener.beforeTeleportation(this, ApplicationContext.instance());
 	}
 
 	public void beginRespawn() {
-		composedMovementListener.beforeRespawn(this, ApplicationContext.instance());
+		movementListener.beforeRespawn(this, ApplicationContext.instance());
 	}
 
 	public void endTeleportation() {
-		composedMovementListener.afterTeleportation(this, ApplicationContext.instance());
+		movementListener.afterTeleportation(this, ApplicationContext.instance());
 	}
 
 	public void endRespawn() {
-		composedMovementListener.afterRespawn(this, ApplicationContext.instance());
+		movementListener.afterRespawn(this, ApplicationContext.instance());
 	}
 
 	public void endSwitchingPlane() {
-		composedMovementListener.afterSwitchingPlane(this, ApplicationContext.instance());
+		movementListener.afterSwitchingPlane(this, ApplicationContext.instance());
 	}
 
 	public void switchPlane(MapType mapType) {
@@ -78,37 +77,41 @@ public abstract class Actor extends Piece {
 		Position position1 = this.getPosition();
 		Position position2 = this.getPosition().shifted(positionOffset, 0);
 
-		composedMovementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
-		composedMovementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
+		movementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
 
 		this.setPosition(position2);
 		this.setDirection(positionOffset < 0 ? DirectionType.LEFT : DirectionType.RIGHT);
 
-		composedMovementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
-		composedMovementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
-		composedMovementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
+		movementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
 	}
 
 	public void shiftVertical(int positionOffset) {
 		Position position1 = this.getPosition();
 		Position position2 = this.getPosition().shifted(0, positionOffset);
 
-		composedMovementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
-		composedMovementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
+		movementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
 
 		this.setPosition(position2);
 		this.setDirection(positionOffset < 0 ? DirectionType.UP : DirectionType.DOWN);
 
-		composedMovementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
-		composedMovementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
-		composedMovementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
+		movementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
 	}
 
 
-	public List<MovementListener> getMovementListeners() {
-		return movementListeners;
+	public MovementListener getMovementListener() {
+		return movementListener;
 	}
-	
+
+	public void setMovementListener(PlayerMovementListener movementListener) {
+		this.movementListener = movementListener;
+	}
+
 	public List<LifeListener> getLifeListeners() {
 		return lifeListeners;
 	}
@@ -193,7 +196,6 @@ public abstract class Actor extends Piece {
 	 * Take care: Even if you do not reduce the life points to zero,
 	 * it does not mean that there are life points available for the actor. Some of the points
 	 * could have been 'lent' to some negative effects, like hunger, thirst etc.
-	 * @param life number of points that the life should be reduced by.
 	 */
 	public void decreaseLife(int n) {
 		this.setLife(this.getLife() - n);
@@ -218,7 +220,6 @@ public abstract class Actor extends Piece {
 	 * would kill him. Now, he walks up and collects a goodie that increases the maximal life points by 5 and refills life points.
 	 * As a result, players hp = 15/15. His actual hp are then 12/12 (-3 to both as he did another hungry turn) 
 	 * 
-	 * @param life maximal life points to be set.
 	 */
 	public void setMaxLife(int maxLife) {
 		int previousActualMaxLife = this.getActualMaxLife();
@@ -325,5 +326,5 @@ public abstract class Actor extends Piece {
 	public void setDirection(DirectionType direction) {
 		this.direction = direction;
 	}
-	
+
 }

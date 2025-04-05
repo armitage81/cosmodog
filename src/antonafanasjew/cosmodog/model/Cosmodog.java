@@ -62,7 +62,7 @@ public class Cosmodog extends CosmodogModel {
         this.cosmodogGame = cosmodogGame;
 		//The cache is updated with every player movement. But it has to be updated at the init time as well.
 		Player player = cosmodogGame.getPlayer(); 
-		PlayerMovementCache.getInstance().afterMovement(player, player.getPosition(), player.getPosition(), ApplicationContext.instance());
+		PlayerMovementCache.getInstance().update(player, player.getPosition(), player.getPosition());
     }
     public ScoreList getScoreList() {
         return scoreList;

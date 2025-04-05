@@ -1,9 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.io.Serial;
+import java.util.*;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -31,11 +29,11 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
-import antonafanasjew.cosmodog.model.inventory.FuelTankInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
+import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
+import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
+import antonafanasjew.cosmodog.rules.events.GameEventTeleported;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
@@ -43,13 +41,12 @@ import antonafanasjew.cosmodog.util.*;
 import antonafanasjew.cosmodog.waterplaces.WaterValidator;
 import com.google.common.collect.Lists;
 
-/**
- * Note: this class is not thread-save
- */
-public class PlayerMovementListener extends MovementListenerAdapter {
+public class PlayerMovementListener implements MovementListener {
 
+	@Serial
 	private static final long serialVersionUID = -1789226092040648128L;
 
+	public static final int AUTOSAVE_INTERVAL_IN_TURNS = 20;
 	
 	//This is used to compare players values before and after modification.
 	private int oldWater = -1;
@@ -70,6 +67,9 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		updateWater(position1, position2);
 		updateFood(position1, position2);
 		updateFuel(position1, position2);
+
+
+		GameEventUtils.throwEvent(new GameEventChangedPosition());
 		
 	}
 
@@ -143,6 +143,11 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 	}
 
 	@Override
+	public void onLeavingTile(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
+
+	}
+
+	@Override
 	public void afterMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		checkStarvation(applicationContext);
 		checkDehydration(applicationContext);
@@ -156,6 +161,18 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
+
+		GameEventUtils.throwEvent(new GameEventEndedTurn());
+
+		updateCache(actor, position1, position2);
+
+		if (timeToAutosave()) {
+			autosave();
+		}
+	}
+
+	private void updateCache(Actor actor, Position position1, Position position2) {
+		PlayerMovementCache.getInstance().update(actor, position1, position2);
 	}
 
 	@Override
@@ -176,6 +193,12 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
+
+		updateCache(actor, actor.getPosition(), actor.getPosition());
+
+		if (timeToAutosave()) {
+			autosave();
+		}
 	}
 
 	@Override
@@ -193,6 +216,10 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		updateSnowfall();
 		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
+
+		updateCache(actor, actor.getPosition(), actor.getPosition());
+
+		GameEventUtils.throwEvent(new GameEventTeleported());
 	}
 
 	@Override
@@ -220,6 +247,13 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
+
+		updateCache(actor, actor.getPosition(), actor.getPosition());
+	}
+
+	@Override
+	public void afterFight(Actor actor, ApplicationContext applicationContext) {
+		updateCache(actor, actor.getPosition(), actor.getPosition());
 	}
 
 	@Override
@@ -237,6 +271,8 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 		updateSnowfall();
 		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
+
+		updateCache(actor, actor.getPosition(), actor.getPosition());
 	}
 
 	private void collectCollectibles(ApplicationContext applicationContext) {
@@ -371,7 +407,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 				continue;
 			}
 			
-			boolean mineIsVisible = mineDetector == null ? false : PiecesUtils.distanceBetweenPieces(player, mine) < MineDetectorInventoryItem.DETECTION_DISTANCE;
+			boolean mineIsVisible = mineDetector != null && PiecesUtils.distanceBetweenPieces(player, mine) < MineDetectorInventoryItem.DETECTION_DISTANCE;
 			
 			mine.setState(mineIsVisible ? Mine.STATE_VISIBLE : Mine.STATE_INVISIBLE);
 		}
@@ -433,7 +469,7 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 
 	@Override
 	public void beforeFight(Actor actor, ApplicationContext applicationContext) {
-		super.beforeFight(actor, applicationContext);
+
 	}
 
 	/**
@@ -740,4 +776,17 @@ public class PlayerMovementListener extends MovementListenerAdapter {
 			player.deactivatePortalRay();
 		}
 	}
+
+	private boolean timeToAutosave() {
+		int turn = ApplicationContextUtils.getGameProgress().getTurn();
+		return turn > 0 && turn % AUTOSAVE_INTERVAL_IN_TURNS == 0;
+	}
+
+	private void autosave() {
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");
+	}
+
+
 }

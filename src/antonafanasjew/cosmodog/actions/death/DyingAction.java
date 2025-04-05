@@ -58,7 +58,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 			snowfallChangeAction.resetRate();
 		}
 
-		PlayerMovementCache.getInstance().afterMovement(player, player.getPosition(), player.getPosition(), ApplicationContext.instance());
+		PlayerMovementCache.getInstance().update(player, player.getPosition(), player.getPosition());
 		cam.focusOnPiece(cosmodogGame, 0, 0, player);
 		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
 		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");

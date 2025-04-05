@@ -34,7 +34,6 @@ import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
-import antonafanasjew.cosmodog.listener.movement.AutosaveMovementListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.Collectible;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -80,7 +79,6 @@ import antonafanasjew.cosmodog.rules.PlaySoundRuleAction;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleBook;
-import antonafanasjew.cosmodog.rules.RuleBookMovementListener;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
 import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
@@ -172,13 +170,8 @@ public class InitializationUtils {
 		initializeRuleBook(cosmodogGame);
 		
 		Player player = cosmodogGame.getPlayer();
-		PlayerMovementListener playerMovementListener = new PlayerMovementListener();
-		player.getMovementListeners().clear();
-		player.getMovementListeners().add(playerMovementListener);
-		player.getMovementListeners().add(new RuleBookMovementListener());
-		player.getMovementListeners().add(PlayerMovementCache.getInstance());
-		player.getMovementListeners().add(new AutosaveMovementListener());
-		
+		player.setMovementListener(new PlayerMovementListener());
+
 		PlayerLifeListener playerLifeListener = new PlayerLifeListener();
 		player.getLifeListeners().clear();
 		player.getLifeListeners().add(playerLifeListener);
