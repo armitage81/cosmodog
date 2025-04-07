@@ -34,6 +34,23 @@ public class PortalRenderer extends AbstractRenderer {
         public static PortalRenderer.PortalRendererParam TOP = new PortalRenderer.PortalRendererParam(false);
     }
 
+    private static final float[] PERIOD_OFFSET_PATTERN = new float[] {
+            0, 0.5f, 0, 0.3f, 0.7f, 0.2f, 0.9f,
+    };
+
+    private static final short[] MIN_LENGTH_PATTERN = new short[] {
+            5, 7, 3, 5, 7, 6
+    };
+
+    private static final short[] MAX_LENGTH_PATTERN = new short[] {
+            10, 9, 6, 8, 10, 8
+    };
+
+    private static final int OSCILLATION_PERIOD_LENGTH = 1500;
+
+    private static Color PORTAL_COLOR_1 = new Color(0, 0, 1, 0.4f);
+    private static Color PORTAL_COLOR_2 = new Color(0, 0, 1, 0.35f);
+
     @Override
     public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
@@ -119,44 +136,32 @@ public class PortalRenderer extends AbstractRenderer {
                 DirectionType direction = portal.directionType;
                 boolean bottomNotTop = ((PortalRendererParam)renderingParameter).bottomNotTop;
 
-                float x = 0;
-                float y = 0;
-                float w = 0;
-                float h = 0;
-
-                short[] matrix = new short[]{
-                        (short)0b0000000000000000,
-                        (short)0b0000000000000000,
-                        (short)0b0000000000000000,
-                        (short)0b0000000000000000,
-                        (short)0b0000111111110000,
-                        (short)0b0001000000001000,
-                        (short)0b0011000000001100,
-                        (short)0b0010000000000100,
-                        (short)0b0010000000000100,
-                        (short)0b0010000000000100,
-                        (short)0b0010000000000100,
-                        (short)0b0010000000000100,
-                        (short)0b0010000000000100,
-                        (short)0b0011000000001100,
-                        (short)0b0001000000001000,
-                        (short)0b0000111111110000
-                };
-
-                boolean[] periodOffsetPattern = new boolean[]{
-                        false, true, false, true, true, false, false,
-                };
-
-                short[] lengthPattern = new short[]{
-                        16, 12, 15, 11, 14, 10, 16, 13
-                };
-
                 if (bottomNotTop) {
                     if (direction == DirectionType.DOWN) {
-                        x = offsetX;
-                        y = offsetY;
+
+                        short[] matrix = new short[]{
+                                (short)0b0000000000000000,
+                                (short)0b0000000000000000,
+                                (short)0b0000000000000000,
+                                (short)0b0000000000000000,
+                                (short)0b0000111111110000,
+                                (short)0b0001000000001000,
+                                (short)0b0011000000001100,
+                                (short)0b0010000000000100,
+                                (short)0b0010000000000100,
+                                (short)0b0010000000000100,
+                                (short)0b0010000000000100,
+                                (short)0b0010000000000100,
+                                (short)0b0010000000000100,
+                                (short)0b0011000000001100,
+                                (short)0b0001000000001000,
+                                (short)0b0000111111110000
+                        };
+
+                        float x = offsetX;
+                        float y = offsetY;
+
                         int chunkSize = tileLength / 16;
-                        int periodLength = 1500;
 
                         for (int j = 0; j < 256; j++) {
 
@@ -167,25 +172,92 @@ public class PortalRenderer extends AbstractRenderer {
                             boolean set = ((sh >> col) & 1) == 1;
 
                             if (set) {
-                                int minLength = 8;
+                                int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
 
-                                int maxLength = lengthPattern[j % lengthPattern.length];
+                                int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
 
                                 float length = Oscillations.oscillation(
                                         timestamp,
                                         minLength,
                                         maxLength,
-                                        periodLength,
-                                        periodOffsetPattern[j % periodOffsetPattern.length] ? periodLength / 2 : 0
+                                        OSCILLATION_PERIOD_LENGTH,
+                                        (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
                                 );
 
-                                Color transparentOrange = new Color(0, 0, 1, 0.4f);
-                                Color transparentYellow = new Color(0, 0, 1, 0.35f);
 
-                                graphics.setColor(j % 2 == 0 ? transparentOrange : transparentYellow);
+
+                                graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
 
                                 graphics.fillRect(x + col * chunkSize, y + row * chunkSize, chunkSize, length);
                             }
+                        }
+                    } else if (direction == DirectionType.UP) {
+                        for (int j = 0; j < 16; j++) {
+
+                            int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
+
+                            int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
+
+                            float length = Oscillations.oscillation(
+                                    timestamp,
+                                    minLength,
+                                    maxLength,
+                                    OSCILLATION_PERIOD_LENGTH,
+                                    (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
+                            );
+
+                            float x = offsetX;
+                            float y = offsetY;
+                            int chunkSize = tileLength / 16;
+
+                            short sh = (short)0b0011111111111100;
+                            boolean set = ((sh >> j) & 1) == 1;
+                            if (set) {
+                                graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
+                                graphics.fillRect(x + j * chunkSize, y - length - 8, chunkSize, length);
+                            }
+                        }
+                    } else if (direction == DirectionType.RIGHT) {
+                        for (int j = 4; j < 22; j++) {
+
+                            int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
+
+                            int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
+
+                            float length = Oscillations.oscillation(
+                                    timestamp,
+                                    minLength,
+                                    maxLength,
+                                    OSCILLATION_PERIOD_LENGTH,
+                                    (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
+                            );
+
+                            float x = offsetX;
+                            float y = offsetY;
+                            int chunkSize = tileLength / 16;
+                            graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
+                            graphics.fillRect(x + 16, y - 8 + j * chunkSize, length, chunkSize);
+                        }
+                    } else if (direction == DirectionType.LEFT) {
+                        for (int j = 4; j < 22; j++) {
+
+                            int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
+
+                            int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
+
+                            float length = Oscillations.oscillation(
+                                    timestamp,
+                                    minLength,
+                                    maxLength,
+                                    OSCILLATION_PERIOD_LENGTH,
+                                    (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
+                            );
+
+                            float x = offsetX;
+                            float y = offsetY;
+                            int chunkSize = tileLength / 16;
+                            graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
+                            graphics.fillRect(x - length, y - 8 + j * chunkSize, length, chunkSize);
                         }
                     }
                 }
