@@ -71,7 +71,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
                     Cam cam = game.getCam();
                     player.switchPlane(MapType.SPACE);
-                    player.setDirection(DirectionType.DOWN);
+                    player.turn(DirectionType.DOWN);
                     cam.focusOnPiece(game, 0, 0, player);
 
                 }
@@ -97,7 +97,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
                     Cam cam = game.getCam();
                     player.switchPlane(MapType.MAIN);
-                    player.setDirection(DirectionType.DOWN);
+                    player.turn(DirectionType.DOWN);
                     Piece piece = new Piece() {
                         @Override
                         public Position getPosition() {

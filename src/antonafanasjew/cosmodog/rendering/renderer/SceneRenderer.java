@@ -72,7 +72,10 @@ public class SceneRenderer implements Renderer {
 		
 		//Draw ground dynamic pieces
 		dynamicPiecesRenderer.render(gc, g, DynamicPiecesRendererParam.BOTTOM);
-		
+
+		//Draw bottom portals
+		portalRenderer.render(gc, g, PortalRenderer.PortalRendererParam.BOTTOM);
+
 		//Draw ground effects.
 		effectsRenderer.render(gc, g, EffectsRendererParam.FOR_GROUND_EFFECTS);
 
@@ -99,9 +102,12 @@ public class SceneRenderer implements Renderer {
 		
 		//Draw top dynamic pieces.
 		dynamicPiecesRenderer.render(gc, g, DynamicPiecesRendererParam.TOP);
-		
+
 		//Draw top parts of the map, f.i. roofs, tops of the pillars and trees. They will cover both player and NPC
 		mapRenderer.render(gc, g, topsLayersPredicate);
+
+		//Draw top portals.
+		portalRenderer.render(gc, g, PortalRenderer.PortalRendererParam.TOP);
 
 		//Render space lift animations
 		spaceliftGoingUpRenderer.render(gc, g, sceneDrawingContext);
@@ -115,9 +121,6 @@ public class SceneRenderer implements Renderer {
 
 		//Draw the radiation clouds.
 		radiationRenderer.render(gc, g, sceneDrawingContext);
-
-		//Draw portals.
-		portalRenderer.render(gc, g, sceneDrawingContext);
 
 		//Draw portal gun ray.
 		rayRenderer.render(gc, g, sceneDrawingContext);

@@ -14,6 +14,7 @@ import antonafanasjew.cosmodog.actions.death.WormAttackAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.weather.SnowfallChangeAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -137,9 +138,29 @@ public class PlayerMovementListener implements MovementListener {
 	}
 
 	@Override
-	public void beforeMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
+	public void beforeTurning(DirectionType before, DirectionType after) {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.deactivatePortalRay();
+	}
+
+	@Override
+	public void afterTurning(DirectionType before, DirectionType after) {
+
+	}
+
+	@Override
+	public void beforeBlock(Actor actor, Position position1, Position position2) {
+
+	}
+
+	@Override
+	public void afterBlock(Actor actor, Position position1, Position position2) {
+		updatePortalRay();
+	}
+
+	@Override
+	public void beforeMovement(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
+
 	}
 
 	@Override

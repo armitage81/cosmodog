@@ -158,13 +158,13 @@ public class InGameInputHandler extends AbstractInputHandler {
 			
 			
     		if (inputLeft) {
-    			player.setDirection(DirectionType.LEFT);
+    			player.turn(DirectionType.LEFT);
     		} else if (inputRight) {
-    			player.setDirection(DirectionType.RIGHT);
+    			player.turn(DirectionType.RIGHT);
     		} else if (inputUp) {
-    			player.setDirection(DirectionType.UP);
+    			player.turn(DirectionType.UP);
     		} else if (inputDown) {
-    			player.setDirection(DirectionType.DOWN);
+    			player.turn(DirectionType.DOWN);
     		} 
     		
     		float newX = player.getPosition().getX();
@@ -254,7 +254,6 @@ public class InGameInputHandler extends AbstractInputHandler {
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 					
 				} else {
-					
 					if (collisionStatus.getPassageBlockerDescriptor().getPassageBlockerType() == PassageBlockerType.FUEL_EMPTY) {
 						Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 						if (carmotor.playing()) {
@@ -274,7 +273,8 @@ public class InGameInputHandler extends AbstractInputHandler {
 						
 						@Override
 						public void onTrigger() {
-							
+
+							player.getMovementListener().beforeBlock(player, player.getPosition(), newPosition);
 							
 							DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY, player.getPosition().getMapType()));
 							if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
@@ -286,7 +286,11 @@ public class InGameInputHandler extends AbstractInputHandler {
 							OverheadNotificationAction.registerOverheadNotification(player, text);
 							
 						}
-						
+
+						@Override
+						public void onEnd() {
+							player.getMovementListener().afterBlock(player, player.getPosition(), newPosition);
+						}
 					};
 					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);

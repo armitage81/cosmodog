@@ -3,10 +3,46 @@ package antonafanasjew.cosmodog.listener.movement;
 import java.io.Serializable;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.topology.Position;
 
 public interface MovementListener extends Serializable {
+
+	/**
+	 * Executed before the player update his direction for a movement attempt.
+	 * Note: Normally, this method handles a change of direction, for instance if the player looked south and now
+	 * must walk north, east or west,
+	 * but it is also called if the direction does not change, for instance if the player looked south and now
+	 * must walk south.
+	 *
+	 * To check if there was a real direction change, compare the arguments for before and after.
+	 *
+	 * @param before Direction before the change.
+	 * @param after Direction after the change (could stay the same as before.)
+	 */
+	void beforeTurning(DirectionType before, DirectionType after);
+
+	/**
+	 * Executed after the player sets his direction for a movement attempt.
+	 *
+	 * Note: The same goes as for the 'beforeTurning'. There will not always be a real direction change
+	 * when this method is called.
+	 *
+	 */
+	void afterTurning(DirectionType before, DirectionType after);
+
+	/**
+	 * Executed before a movement fails due to a collision.
+	 * Note: Attacking an enemy is not handled by this case.
+	 */
+	void beforeBlock(Actor actor, Position position1, Position position2);
+
+	/**
+	 * Executed after a movement fails due to a collision.
+	 * Note: Attacking an enemy is not handled by this case.
+	 */
+	void afterBlock(Actor actor, Position position1, Position position2);
 
 	/**
 	 * Currently executed exactly before shifting player's position vertically or horizontally.

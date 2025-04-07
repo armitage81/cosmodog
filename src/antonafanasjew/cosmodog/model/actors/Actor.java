@@ -1,14 +1,9 @@
 package antonafanasjew.cosmodog.model.actors;
 
-import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.listener.life.ComposedLifeListener;
 import antonafanasjew.cosmodog.listener.life.LifeListener;
-import antonafanasjew.cosmodog.listener.movement.MovementListener;
-import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.PositionUtils;
 import com.google.common.collect.Lists;
 
@@ -21,8 +16,6 @@ public abstract class Actor extends Piece {
 
 	private static final long serialVersionUID = 920294272348338561L;
 
-	private PlayerMovementListener movementListener = new PlayerMovementListener();
-	
 	private List<LifeListener> lifeListeners = Lists.newArrayList();
 	protected ComposedLifeListener composedLifeListener = new ComposedLifeListener(lifeListeners);
 
@@ -35,83 +28,6 @@ public abstract class Actor extends Piece {
 	private int lifeLentForHunger;
 	private int lifeLentForFrost;
 	
-	public void skipTurn() {
-		movementListener.beforeWaiting(this, ApplicationContext.instance());
-		movementListener.afterWaiting(this, ApplicationContext.instance());
-	}
-	
-	public void beginFight() {
-		movementListener.beforeFight(this, ApplicationContext.instance());
-	}
-	
-	public void endFight() {
-		movementListener.afterFight(this, ApplicationContext.instance());
-	}
-	
-	public void beginTeleportation() {
-		movementListener.beforeTeleportation(this, ApplicationContext.instance());
-	}
-
-	public void beginRespawn() {
-		movementListener.beforeRespawn(this, ApplicationContext.instance());
-	}
-
-	public void endTeleportation() {
-		movementListener.afterTeleportation(this, ApplicationContext.instance());
-	}
-
-	public void endRespawn() {
-		movementListener.afterRespawn(this, ApplicationContext.instance());
-	}
-
-	public void endSwitchingPlane() {
-		movementListener.afterSwitchingPlane(this, ApplicationContext.instance());
-	}
-
-	public void switchPlane(MapType mapType) {
-		this.getPosition().switchPlane(mapType);
-		endSwitchingPlane();
-	}
-
-	public void shiftHorizontal(int positionOffset) {
-		Position position1 = this.getPosition();
-		Position position2 = this.getPosition().shifted(positionOffset, 0);
-
-		movementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
-		movementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
-
-		this.setPosition(position2);
-		this.setDirection(positionOffset < 0 ? DirectionType.LEFT : DirectionType.RIGHT);
-
-		movementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
-		movementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
-		movementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
-	}
-
-	public void shiftVertical(int positionOffset) {
-		Position position1 = this.getPosition();
-		Position position2 = this.getPosition().shifted(0, positionOffset);
-
-		movementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
-		movementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
-
-		this.setPosition(position2);
-		this.setDirection(positionOffset < 0 ? DirectionType.UP : DirectionType.DOWN);
-
-		movementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
-		movementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
-		movementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
-	}
-
-
-	public MovementListener getMovementListener() {
-		return movementListener;
-	}
-
-	public void setMovementListener(PlayerMovementListener movementListener) {
-		this.movementListener = movementListener;
-	}
-
 	public List<LifeListener> getLifeListeners() {
 		return lifeListeners;
 	}
@@ -317,7 +233,6 @@ public abstract class Actor extends Piece {
 		DirectionType dirType = PositionUtils.targetDirection(this, actor);
 		this.setDirection(dirType);
 	}
-	
 
 	public DirectionType getDirection() {
 		return direction;
