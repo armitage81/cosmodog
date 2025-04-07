@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer.portals;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.geometry.Oscillations;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.model.Cosmodog;
@@ -123,14 +124,69 @@ public class PortalRenderer extends AbstractRenderer {
                 float w = 0;
                 float h = 0;
 
+                short[] matrix = new short[]{
+                        (short)0b0000000000000000,
+                        (short)0b0000000000000000,
+                        (short)0b0000000000000000,
+                        (short)0b0000000000000000,
+                        (short)0b0000111111110000,
+                        (short)0b0001000000001000,
+                        (short)0b0011000000001100,
+                        (short)0b0010000000000100,
+                        (short)0b0010000000000100,
+                        (short)0b0010000000000100,
+                        (short)0b0010000000000100,
+                        (short)0b0010000000000100,
+                        (short)0b0010000000000100,
+                        (short)0b0011000000001100,
+                        (short)0b0001000000001000,
+                        (short)0b0000111111110000
+                };
+
+                boolean[] periodOffsetPattern = new boolean[]{
+                        false, true, false, true, true, false, false,
+                };
+
+                short[] lengthPattern = new short[]{
+                        16, 12, 15, 11, 14, 10, 16, 13
+                };
+
                 if (bottomNotTop) {
                     if (direction == DirectionType.DOWN) {
                         x = offsetX;
                         y = offsetY;
+                        int chunkSize = tileLength / 16;
+                        int periodLength = 1500;
 
+                        for (int j = 0; j < 256; j++) {
 
+                            int row = j / 16;
+                            int col = j % 16;
 
+                            short sh = matrix[row];
+                            boolean set = ((sh >> col) & 1) == 1;
 
+                            if (set) {
+                                int minLength = 8;
+
+                                int maxLength = lengthPattern[j % lengthPattern.length];
+
+                                float length = Oscillations.oscillation(
+                                        timestamp,
+                                        minLength,
+                                        maxLength,
+                                        periodLength,
+                                        periodOffsetPattern[j % periodOffsetPattern.length] ? periodLength / 2 : 0
+                                );
+
+                                Color transparentOrange = new Color(0, 0, 1, 0.4f);
+                                Color transparentYellow = new Color(0, 0, 1, 0.35f);
+
+                                graphics.setColor(j % 2 == 0 ? transparentOrange : transparentYellow);
+
+                                graphics.fillRect(x + col * chunkSize, y + row * chunkSize, chunkSize, length);
+                            }
+                        }
                     }
                 }
 
