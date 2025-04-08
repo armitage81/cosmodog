@@ -48,8 +48,16 @@ public class PortalRenderer extends AbstractRenderer {
 
     private static final int OSCILLATION_PERIOD_LENGTH = 1500;
 
-    private static Color PORTAL_COLOR_1 = new Color(0, 0, 1, 0.4f);
-    private static Color PORTAL_COLOR_2 = new Color(0, 0, 1, 0.35f);
+    private static final Color PORTAL_BASE_COLOR_A = new Color(1, 0.5f, 0, 0.7f);
+    private static final Color PORTAL_BASE_COLOR_B = new Color(1, 0.5f, 0, 0.5f);
+
+    private static final Color PORTAL_ROOF_COLOR_A = new Color(0.7f, 0.3f, 0, 0.7f);
+    private static final Color PORTAL_ROOF_COLOR_B = new Color(0.7f, 0.3f, 0, 0.5f);
+
+    private static final Color PORTAL_CORONA_COLOR_1a = new Color(0, 0, 1, 0.4f);
+    private static final Color PORTAL_CORONA_COLOR_1b = new Color(0, 0, 1, 0.35f);
+
+
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
@@ -121,6 +129,8 @@ public class PortalRenderer extends AbstractRenderer {
 
             if (!(tooFarEast || tooFarWest || tooFarNorth || tooFarSouth)) {
 
+
+
                 float portalTilePositionRelatedToCamX = portalPosition.getX() - camPositionOnMapInTilesX;
                 float portalTilePositionRelatedToCamY = portalPosition.getY() - camPositionOnMapInTilesY;
 
@@ -137,172 +147,36 @@ public class PortalRenderer extends AbstractRenderer {
                 boolean bottomNotTop = ((PortalRendererParam)renderingParameter).bottomNotTop;
 
                 if (bottomNotTop) {
+                    boolean alternateColor = timestamp / 120 % 2 == 1;
+                    Color baseColor = alternateColor ? PORTAL_BASE_COLOR_B : PORTAL_BASE_COLOR_A;
                     if (direction == DirectionType.DOWN) {
-
-                        short[] matrix = new short[]{
-                                (short)0b0000000000000000,
-                                (short)0b0000000000000000,
-                                (short)0b0000000000000000,
-                                (short)0b0000000000000000,
-                                (short)0b0000111111110000,
-                                (short)0b0001000000001000,
-                                (short)0b0011000000001100,
-                                (short)0b0010000000000100,
-                                (short)0b0010000000000100,
-                                (short)0b0010000000000100,
-                                (short)0b0010000000000100,
-                                (short)0b0010000000000100,
-                                (short)0b0010000000000100,
-                                (short)0b0011000000001100,
-                                (short)0b0001000000001000,
-                                (short)0b0000111111110000
-                        };
-
-                        float x = offsetX;
-                        float y = offsetY;
-
-                        int chunkSize = tileLength / 16;
-
-                        for (int j = 0; j < 256; j++) {
-
-                            int row = j / 16;
-                            int col = j % 16;
-
-                            short sh = matrix[row];
-                            boolean set = ((sh >> col) & 1) == 1;
-
-                            if (set) {
-                                int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
-
-                                int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
-
-                                float length = Oscillations.oscillation(
-                                        timestamp,
-                                        minLength,
-                                        maxLength,
-                                        OSCILLATION_PERIOD_LENGTH,
-                                        (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
-                                );
-
-
-
-                                graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
-
-                                graphics.fillRect(x + col * chunkSize, y + row * chunkSize, chunkSize, length);
-                            }
-                        }
+                        graphics.setColor(baseColor);
+                        graphics.fillRect(offsetX, offsetY + 3, tileLength, tileLength - 3);
                     } else if (direction == DirectionType.UP) {
-                        for (int j = 0; j < 16; j++) {
-
-                            int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
-
-                            int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
-
-                            float length = Oscillations.oscillation(
-                                    timestamp,
-                                    minLength,
-                                    maxLength,
-                                    OSCILLATION_PERIOD_LENGTH,
-                                    (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
-                            );
-
-                            float x = offsetX;
-                            float y = offsetY;
-                            int chunkSize = tileLength / 16;
-
-                            short sh = (short)0b0011111111111100;
-                            boolean set = ((sh >> j) & 1) == 1;
-                            if (set) {
-                                graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
-                                graphics.fillRect(x + j * chunkSize, y - length - 8, chunkSize, length);
-                            }
-                        }
-                    } else if (direction == DirectionType.RIGHT) {
-                        for (int j = 4; j < 22; j++) {
-
-                            int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
-
-                            int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
-
-                            float length = Oscillations.oscillation(
-                                    timestamp,
-                                    minLength,
-                                    maxLength,
-                                    OSCILLATION_PERIOD_LENGTH,
-                                    (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
-                            );
-
-                            float x = offsetX;
-                            float y = offsetY;
-                            int chunkSize = tileLength / 16;
-                            graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
-                            graphics.fillRect(x + 16, y - 8 + j * chunkSize, length, chunkSize);
-                        }
                     } else if (direction == DirectionType.LEFT) {
-                        for (int j = 4; j < 22; j++) {
-
-                            int minLength = MIN_LENGTH_PATTERN[j % MIN_LENGTH_PATTERN.length];
-
-                            int maxLength = MAX_LENGTH_PATTERN[j % MAX_LENGTH_PATTERN.length];
-
-                            float length = Oscillations.oscillation(
-                                    timestamp,
-                                    minLength,
-                                    maxLength,
-                                    OSCILLATION_PERIOD_LENGTH,
-                                    (int)(PERIOD_OFFSET_PATTERN[j % PERIOD_OFFSET_PATTERN.length] * OSCILLATION_PERIOD_LENGTH)
-                            );
-
-                            float x = offsetX;
-                            float y = offsetY;
-                            int chunkSize = tileLength / 16;
-                            graphics.setColor(j % 2 == 0 ? PORTAL_COLOR_1 : PORTAL_COLOR_2);
-                            graphics.fillRect(x - length, y - 8 + j * chunkSize, length, chunkSize);
-                        }
+                        graphics.setColor(baseColor);
+                        graphics.fillRect(offsetX, offsetY + 3, 5, tileLength - 3);
+                    } else {
+                        graphics.setColor(baseColor);
+                        graphics.fillRect(offsetX + tileLength - 5, offsetY + 3, 5, tileLength - 3);
+                    }
+                } else {
+                    boolean alternateColor = timestamp / 120 % 2 == 1;
+                    Color roofColor = alternateColor ? PORTAL_ROOF_COLOR_B : PORTAL_ROOF_COLOR_A;
+                    if (direction == DirectionType.DOWN) {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX, offsetY - 2, tileLength, 5);
+                    } else if (direction == DirectionType.UP) {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX, offsetY - 8, tileLength, 5);
+                    } else if (direction == DirectionType.LEFT) {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX, offsetY - 8, 5, 11);
+                    } else {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX + tileLength - 5, offsetY - 8, 5, 11);
                     }
                 }
-
-//                if (bottomNotTop) {
-//                    if (direction == DirectionType.UP) {
-//                        continue;
-//                    } else if (direction == DirectionType.DOWN) {
-//                        x = offsetX;
-//                        y = offsetY;
-//                        w = tileLength;
-//                        h = tileLength;
-//                    } else if (direction == DirectionType.LEFT) {
-//                        x = offsetX;
-//                        y = offsetY;
-//                        w = tileLength / 4.0f;
-//                        h = tileLength;
-//                    } else if (direction == DirectionType.RIGHT) {
-//                        x = offsetX + tileLength / 4.0f * 3.0f;
-//                        y = offsetY;
-//                        w = tileLength / 4.0f;
-//                        h = tileLength;
-//                    }
-//                } else {
-//                    if (direction == DirectionType.UP) {
-//                        x = offsetX;
-//                        y = offsetY - tileLength + tileLength / 2.0f;
-//                        w = tileLength;
-//                        h = tileLength / 2.0f;
-//                    } else if (direction == DirectionType.DOWN) {
-//                        continue;
-//                    } else if (direction == DirectionType.LEFT) {
-//                        x = offsetX;
-//                        y = offsetY + -tileLength + tileLength / 2.0f;
-//                        w = tileLength / 4.0f;
-//                        h = tileLength / 2.0f;
-//                    } else if (direction == DirectionType.RIGHT) {
-//                        x = offsetX + + tileLength / 4.0f * 3.0f;
-//                        y = offsetY - tileLength + tileLength / 2.0f;
-//                        w = tileLength / 4.0f;
-//                        h = tileLength / 2.0f;
-//                    }
-//                }
-//
-//                graphics.fillRect(x, y, w, h);
             }
         }
 
