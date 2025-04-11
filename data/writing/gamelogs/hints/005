@@ -5,7 +5,8 @@ If you feel strong enough, you can fight all the enemies. However, sometimes ste
 
 
 Each enemy has a sight field. This field is represented by blinking squares around the enemy unit.
-The size of the field depends on the enemy type and other factors. An enemy will ignore the player as long as the player is outside of its sight field.
+The size of the field depends on the enemy type and other factors.
+An enemy will ignore the player as long as the player is outside of its sight field.
 When the player steps into the sight field of a hostile unit, the enemy will attempt to approach and attack the player.
 An alerted enemy has a blinking exclamation mark above it.
 
@@ -14,15 +15,19 @@ If an alerted enemy can not reach the player for a number of turns and the playe
 then the enemy will give up the chase and switch to its usual patrol mode.
 
 
-The sight field of all enemies is reduced at night. Some enemies are powered on solar energy and will be deactivated at night.
+The sight field of most enemies is reduced at night.
+Some enemies are powered on solar energy and will be deactivated at night.
 
 
 The player can hide in high grass.
-By doing so, only adjacent enemies can sense the player. This is visualized by a significantly reduced sight field for all enemies while the player is hiding.
-Artillery units have a blind spot around them. Wait for them to come closer while hiding in high grass, then ambush them.
+By doing so, only adjacent enemies can sense the player.
+This is visualized by a significantly reduced sight field for all enemies while the player is hiding.
+Artillery units have a blind spot around them.
+Wait for them to come closer while hiding in high grass, then ambush them.
 
 
-Attacking an enemy from behind doubles the damage. The damage indicator will have an "x2" in it. If the enemy survives the stealth attack, it becomes alerted.
+Attacking an enemy from behind doubles the damage.
+The damage indicator will have an "x2" in it. If the enemy survives the stealth attack, it becomes alerted.
 
 
 Most of the enemies are assigned patrol zones.

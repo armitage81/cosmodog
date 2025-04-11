@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.collision.PassageBlockerType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -22,14 +23,14 @@ public class MoveableTargetCollisionValidatorForNpc extends AbstractCollisionVal
 	}
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.PASSABLE));
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.PASSABLE));
 		if (moveableActionResult != null) {
 			int moveableTargetX = moveableActionResult.getPath().getX(1);
 			int moveableTargetY = moveableActionResult.getPath().getY(1);
-			Position moveableTargetPosition = Position.fromCoordinates(moveableTargetX, moveableTargetY, position.getMapType());
-			if (moveableTargetPosition.equals(position)) {
-				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.BLOCKED_DYNAMIC_PIECE));
+			Position moveableTargetPosition = Position.fromCoordinates(moveableTargetX, moveableTargetY, entrance.getPosition().getMapType());
+			if (moveableTargetPosition.equals(entrance.getPosition())) {
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.BLOCKED_DYNAMIC_PIECE));
 			}
 		}
 		return retVal;

@@ -3,7 +3,8 @@ A page from the technical specification of deployed drones
 AMPV
 
 
-The Advanced Multi-Purpose Vehicle (AMPV) is often referred to as "Tank". It is a heavy armored, all-terrain unit that is usually deployed to guard strategic positions.
+The Advanced Multi-Purpose Vehicle (AMPV) is often referred to as "Tank".
+It is a heavy armored, all-terrain unit that is usually deployed to guard strategic positions.
 This unit's detection radius is limited, but its robustness, speed and offensive strength compensate for it.
 
 
@@ -13,7 +14,7 @@ Weapon type: Double machine gun
 
 Damage: 4
 
-Chaussie type: Tracks (Can cross plain and rough terrain, no water)
+Chassis type: Tracks (Can cross plain and rough terrain. Cannot swim.)
 
 Max Life: 30
 
@@ -23,9 +24,8 @@ Speed factor: 2
 Weaknesses: 
 
 
-The detection radius of the AMPV is limited, especially at night. 
-If a unit detects an intruder, though, there is no outrunning it.
-Weak enemies will be most likely destroyed unless they deploy rocket launchers or other heavy weapons.   
+The detection radius of the AMPV is limited, especially at night.
+AMPV's armor protects it from all but heaviest weapons, such as machine guns and rocket launchers.
 
 
  

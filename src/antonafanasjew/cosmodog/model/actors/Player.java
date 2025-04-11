@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Ray;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -175,6 +176,21 @@ public class Player extends Actor {
 
 	public LogPlayer getLogPlayer() {
 		return logPlayer;
+	}
+
+	public void transport(Entrance targetEntrance) {
+		Position position1 = this.getPosition();
+		Position position2 = targetEntrance.getPosition();
+
+		movementListener.beforeMovement(this, position1, position2, ApplicationContext.instance());
+		movementListener.onLeavingTile(this, position1, position2, ApplicationContext.instance());
+
+		this.setPosition(position2);
+		this.setDirection(targetEntrance.getEntranceDirection());
+
+		movementListener.onEnteringTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.onInteractingWithTile(this, position1, position2, ApplicationContext.instance());
+		movementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
 	}
 
 	public void shiftHorizontal(int positionOffset) {

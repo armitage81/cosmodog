@@ -23,14 +23,15 @@ import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
-		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(position);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
+		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(entrance.getPosition());
 		if (dynamicPiece != null) {
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
@@ -43,50 +44,50 @@ public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValid
 			}	
 			
 			if (dynamicPiece instanceof MoveableDynamicPiece) {
-				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			} else if (dynamicPiece instanceof Terminal) {
-				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			} else if (dynamicPiece instanceof BinaryIndicator) {
-				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			} else if (dynamicPiece instanceof Stone stone) {
                 if (stone.getState() != Stone.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof HardStone hardStone) {
                 if (hardStone.getState() != Stone.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Tree tree) {
                 if (tree.getState() != Tree.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Bamboo bamboo) {
                 if (bamboo.getState() != Bamboo.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof CrumbledWall wall) {
                 if (wall.getState() != CrumbledWall.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Gate gate) {
                 if (!gate.isLowered()) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof SecretDoor door) {
                 if (!door.isOpen()) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Crate crate) {
                 if (crate.getState() != Crate.STATE_DESTROYED) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Door door) {
                 if (door.closed()) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				} 
 			} else if (dynamicPiece instanceof AlienBaseBlockade alienBaseBlockade) {
                 if (alienBaseBlockade.closed()) {
-					retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			}
 		}

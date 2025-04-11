@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.player;
 
 import java.util.Collection;
 
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -138,7 +139,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 	 * 
 	 */
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
 		boolean blocked = false;
 		
@@ -165,7 +166,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 				Collection<BlockInfo> blockInfosForActorsPosition = COLLISIONDATA.get(offsetPosition);
 				
 				if (blockInfosForActorsPosition != null) { //It will be null, if no collisions are defined, so it would be fine to pass.
-					DirectionType movementAttemptDirection = PositionUtils.targetDirection(actor, position);
+					DirectionType movementAttemptDirection = PositionUtils.targetDirection(actor, entrance.getPosition());
 					for (BlockInfo blockInfo : blockInfosForActorsPosition) {
 						if (blockInfo.directionType.equals(movementAttemptDirection)) {
 							
@@ -198,7 +199,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 				}
 			}
 		}
-		return CollisionStatus.instance(actor, map, position, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
+		return CollisionStatus.instance(actor, map, entrance, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
 		
 	}
 

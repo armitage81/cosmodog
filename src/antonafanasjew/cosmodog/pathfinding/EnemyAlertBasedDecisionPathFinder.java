@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
@@ -19,7 +20,7 @@ public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
 
 
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, Entrance playersTargetEntrance) {
 
 		PathFinder relevantPathFinder;
 		Player player = ApplicationContextUtils.getPlayer();
@@ -34,7 +35,7 @@ public class EnemyAlertBasedDecisionPathFinder extends AbstractPathFinder {
 		}
 
 		
-		return relevantPathFinder.calculateMovementResult(actor, costBudget, collisionValidator, playerMovementActionResult);
+		return relevantPathFinder.calculateMovementResult(actor, costBudget, collisionValidator, playersTargetEntrance);
 		
 	}
 

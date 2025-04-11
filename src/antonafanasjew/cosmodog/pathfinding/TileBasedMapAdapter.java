@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.pathfinding;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
@@ -29,7 +31,8 @@ public class TileBasedMapAdapter implements TileBasedMap {
 	@Override
 	public boolean blocked(PathFindingContext cx, int x, int y) {
 		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
-		return !collisionValidator.collisionStatus(cosmodogGame, actor, map, Position.fromCoordinates(x, y, map.getMapType())).isPassable();
+		Entrance entrance = Entrance.instance(Position.fromCoordinates(x, y, map.getMapType()), DirectionType.UP);
+		return !collisionValidator.collisionStatus(cosmodogGame, actor, map, entrance).isPassable();
 	}
 
 	@Override

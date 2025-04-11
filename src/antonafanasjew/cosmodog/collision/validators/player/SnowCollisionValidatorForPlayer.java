@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -20,9 +21,9 @@ import antonafanasjew.cosmodog.topology.Position;
 public class SnowCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
-		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
+		int tileId = map.getTileId(entrance.getPosition(), Layers.LAYER_META_COLLISIONS);
 		Player player = (Player)actor;
 		
 		VehicleInventoryItem vehicleInventoryItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE); 
@@ -36,7 +37,7 @@ public class SnowCollisionValidatorForPlayer extends AbstractCollisionValidator 
 		boolean passable = !snowTile || (hasSki && !hasVehicle);
 		
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED;
-		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, entrance, passable, passageBlocker);
 	}
 
 }

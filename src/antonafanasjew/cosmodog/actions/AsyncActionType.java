@@ -5,6 +5,8 @@ package antonafanasjew.cosmodog.actions;
  */
 public enum AsyncActionType {
 
+	FOCUSING_ON_PLAYER_AFTER_USING_PORTAL(true, false, true),
+
 	SPACE_LIFT(true, false, true),
 
 	SNOWFALL_CHANGE(false, false, false),

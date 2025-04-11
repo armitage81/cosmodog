@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -18,12 +19,12 @@ public class VehicleAsObstacleCollisionValidatorForNpc extends AbstractCollision
 	public static int N = 0;
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		Piece piece = map.pieceAtTile(position);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
+		Piece piece = map.pieceAtTile(entrance.getPosition());
 		boolean vehicleOnTile = piece instanceof Vehicle;
 		boolean resultingPassageFlag = !vehicleOnTile;
 		PassageBlockerType passageBlocker = resultingPassageFlag ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_VEHICLE_COLLECTIBLE;
-		return CollisionStatus.instance(actor, map, position, resultingPassageFlag, passageBlocker);
+		return CollisionStatus.instance(actor, map, entrance, resultingPassageFlag, passageBlocker);
 	}
 
 }

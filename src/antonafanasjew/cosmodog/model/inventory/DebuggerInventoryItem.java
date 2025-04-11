@@ -83,7 +83,13 @@ public class DebuggerInventoryItem extends InventoryItem {
 		positions.add(Position.fromCoordinates(238, 238, MapType.MAIN));
 		positions.add(Position.fromCoordinates(211, 249, MapType.MAIN));
 	}
-	
+
+	public Position firstPosition() {
+		Position pos = positions.getFirst();
+		currentPositionIndex = 1;
+		return pos;
+	}
+
 	public Position nextPosition() {
 		Position pos = positions.get(currentPositionIndex);
 		currentPositionIndex = currentPositionIndex >= positions.size() - 1 ? 0 : currentPositionIndex + 1;

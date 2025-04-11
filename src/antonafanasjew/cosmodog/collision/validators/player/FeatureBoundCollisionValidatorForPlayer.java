@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -29,15 +30,15 @@ public class FeatureBoundCollisionValidatorForPlayer extends AbstractCollisionVa
 	}
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
-		CollisionStatus defaultCollisionStatus = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+		CollisionStatus defaultCollisionStatus = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 		
 		return Features.getInstance().<CollisionStatus>featureBoundFunction(Features.FEATURE_COLLISION, new Callable<CollisionStatus>() {
 
 			@Override
 			public CollisionStatus call() throws Exception {
-				return delegate.collisionStatus(cosmodogGame, actor, map, position);
+				return delegate.collisionStatus(cosmodogGame, actor, map, entrance);
 			}
 			
 		}, defaultCollisionStatus);

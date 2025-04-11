@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
@@ -26,7 +27,7 @@ import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 public class TowardsPlayerPathFinder extends AbstractPathFinder {
 
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, Entrance playersTargetEntrance) {
 		
 		//Preparing static data.
 		ApplicationContext applicationContext = ApplicationContext.instance();
@@ -49,7 +50,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		path.appendStep((int)enemy.getPosition().getX(), (int)enemy.getPosition().getY());
 
 		//Selecting the best match for the target position. It can be null. (See the comment of the method for exact algorithm).
-		Position actorTarget = nextFreePositionNearbyPlayer(actor, player, playerMovementActionResult, collisionValidator);
+		Position actorTarget = nextFreePositionNearbyPlayer(actor, player, playersTargetEntrance, collisionValidator);
 		
 		//If there is a target position, calculate the path (if possible)
 		if (actorTarget != null) {
@@ -81,7 +82,7 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 	 * If the resulting list is empty return null, otherwise return the last element in the list.
 	 * 
 	 */
-	private Position nextFreePositionNearbyPlayer(Actor actor, Player player, MovementActionResult playerMovementActionResult, CollisionValidator collisionValidator) {
+	private Position nextFreePositionNearbyPlayer(Actor actor, Player player, Entrance playersTargetEntrance, CollisionValidator collisionValidator) {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
@@ -91,10 +92,9 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		int y = (int)player.getPosition().getY();
 		
 		//If the player has moved, we take his movement action result as target.
-		if (playerMovementActionResult != null) {
-			Path path = playerMovementActionResult.getPath();
-			x = path.getX(path.getLength() - 1);
-			y = path.getY(path.getLength() - 1);
+		if (!playersTargetEntrance.isWaited()) {
+			x = (int)playersTargetEntrance.getPosition().getX();
+			y = (int)playersTargetEntrance.getPosition().getY();
 		}
 
 		final int finalX = x;
@@ -114,7 +114,8 @@ public class TowardsPlayerPathFinder extends AbstractPathFinder {
 		List<Position> notBlockedPositions = Lists.newArrayList();
 		for (int i = 0; i < xs.length; i++) {
 			//Log.debug("Target candidate: " + xs[i] + "/" + ys[i]);
-			if (collisionValidator.collisionStatus(game, actor, map, Position.fromCoordinates(xs[i], ys[i], player.getPosition().getMapType())).isPassable()) {
+			Entrance entrance = Entrance.instance(Position.fromCoordinates(xs[i], ys[i], player.getPosition().getMapType()), actor.getDirection());
+			if (collisionValidator.collisionStatus(game, actor, map, entrance).isPassable()) {
 				//Log.debug("It is NOT blocked");
 				notBlockedPositions.add(Position.fromCoordinates(xs[i], ys[i], player.getPosition().getMapType()));
 			}

@@ -6,7 +6,9 @@ import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
+import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.FixedSizeQueue;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
@@ -222,6 +224,48 @@ public class CosmodogGame extends CosmodogModel {
 
 	public List<Portal> getPortals() {
 		return portals.stream().toList();
+	}
+
+	/*
+	Calculates the target entrance of the player based on his current position and direction.
+	In the most cases it will be the adjacent position in the direction the player is facing.
+	But in case of portals, it could be the position of the other portal.
+	Since portal can cross different maps, the target entrance can be on a different map.
+	This is the reason why the method is located in the CosmodogGame class and not in the CosmodogMap class.
+	 */
+	public Entrance targetEntrance(Actor actor) {
+
+		Position envisionedPosition;
+		DirectionType directionType = actor.getDirection();
+		DirectionType envisionedPositionEntrance = directionType;
+		boolean usedPortal = false;
+
+		Position protagonistsPosition = Position.fromCoordinates(actor.getPosition().getX(), actor.getPosition().getY(), actor.getPosition().getMapType());
+
+		Position facedAdjacentPosition = DirectionType.facedAdjacentPosition(protagonistsPosition, directionType);
+
+		DirectionType directionFacingProtagonist = DirectionType.reverse(directionType);
+
+		if (portalExists(facedAdjacentPosition, directionFacingProtagonist)) {
+			Optional<Portal> otherPortal = Optional.empty();
+			for (Portal portal : getPortals()) {
+				if (!portal.position.equals(facedAdjacentPosition) || portal.directionType != directionFacingProtagonist) {
+					otherPortal = Optional.of(portal);
+					break;
+				}
+			}
+			if (otherPortal.isPresent()) {
+				envisionedPosition = DirectionType.facedAdjacentPosition(otherPortal.get().position, otherPortal.get().directionType);
+				envisionedPositionEntrance = otherPortal.get().directionType;
+				usedPortal = true;
+			} else {
+				envisionedPosition = facedAdjacentPosition;
+			}
+		} else {
+			envisionedPosition = facedAdjacentPosition;
+		}
+
+		return Entrance.instance(envisionedPosition, envisionedPositionEntrance, usedPortal, false);
 	}
 
 }

@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.player;
 
 import java.util.List;
 
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Lists;
 
@@ -60,7 +61,7 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 	 * on foot. 
 	 */
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
 		Player player = (Player)actor;
 		
@@ -72,31 +73,31 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 		
 		//To check whether the player can move outside the platform, he or the target need to be on the platform.
 		//If we'd check only for target, the player could jump from the border of the platform as the target is not part of it
-		boolean platformAsObstacleCollision = !platformAsVehicleCollision && (CosmodogMapUtils.isTileOnPlatform(position) || CosmodogMapUtils.isTileOnPlatform(actor.getPosition()));
+		boolean platformAsObstacleCollision = !platformAsVehicleCollision && (CosmodogMapUtils.isTileOnPlatform(entrance.getPosition()) || CosmodogMapUtils.isTileOnPlatform(actor.getPosition()));
 		boolean vehicleCollision = vehicleInventoryItem != null && !vehicleInventoryItem.isExiting(); 
 
 		//Check fuel collision
-		CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+		CollisionStatus fuelCollisionStatus = fuelCollisionValidator.collisionStatus(cosmodogGame, actor, map, entrance);
 		if (!fuelCollisionStatus.isPassable()) {
 			return fuelCollisionStatus;
 		}
 		
 		//Check vehicle collision.
-		CollisionStatus otherVehicleCollisionStatus = otherVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+		CollisionStatus otherVehicleCollisionStatus = otherVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, entrance);
 		if (!otherVehicleCollisionStatus.isPassable()) {
 			return otherVehicleCollisionStatus;
 		}
 		
 		//Check exiting platform collision. It is always PASSABLE
 		if (exitingPlatformCollision) {
-			return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+			return CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 		}
 			
 		//All cases when player or the target tile is on platform (and not driving)
 		if (platformAsObstacleCollision) {
 			
 			//Only check platform obstacles
-			CollisionStatus platformCollisionStatus = platformAsObstacleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+			CollisionStatus platformCollisionStatus = platformAsObstacleCollisionValidator.collisionStatus(cosmodogGame, actor, map, entrance);
 			
 			//If platform blocks passage return IMPASSABLE
 			if (!platformCollisionStatus.isPassable()) {
@@ -104,20 +105,20 @@ public class GeneralCollisionValidatorForPlayer extends AbstractCollisionValidat
 			}
 			
 			//If no platform obstacles and target tile on platform, there is no need to check for the terrain type collisions, so return PASSABLE
-			if (CosmodogMapUtils.isTileOnPlatform(position)) {
+			if (CosmodogMapUtils.isTileOnPlatform(entrance.getPosition())) {
 				return platformCollisionStatus;
 			}
 		} 
 		
 		if (vehicleCollision) {
-			return vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+			return vehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, entrance);
 		} 
 		
 		if (platformAsVehicleCollision) {
-			return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+			return platformAsVehicleCollisionValidator.collisionStatus(cosmodogGame, actor, map, entrance);
 		} 
 		
-		return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, position);
+		return defaultCollisionValidator.collisionStatus(cosmodogGame, actor, map, entrance);
 	}
 
 

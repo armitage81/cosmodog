@@ -5,7 +5,7 @@ Turret
 
 Turrets are stationary units used for protection of strategic points. 
 They are most useful in narrow aisles, mountain passes or tree copses.
-A turret is almost invincible for most weapons short of a rocket launcher.
+A turret's armor is almost impervious for most weapons short of a rocket launcher.
 It can take a great deal of damage before being destroyed and its own fire power is unmatched. 
 
 
@@ -15,7 +15,7 @@ Weapon type: Turret
 
 Damage: 7
 
-Chaussie type: Stationary
+Chassis type: Stationary
 
 Max Life: 50
 
@@ -25,8 +25,11 @@ Speed factor: 0
 Weaknesses: 
 
 
-There is no way to destroy a turret without being damaged but rocket launchers can be used to take a turret down with one shot.
-The biggest weakness of the unit is its stationary nature. An intruder can ignore the turret and just pass by, suffering some damage but still reaching the point of their interest.
+There is no way to destroy a turret without being damaged but rocket launchers
+can be used to take a turret down with one shot.
+The biggest weakness of the unit is its stationary nature.
+An intruder can ignore the turret and just pass by,
+suffering some damage but still reaching the point of their interest.
 
 
  

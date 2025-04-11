@@ -16,11 +16,11 @@ When you eat, you get back all the hit points lost due to hunger.
 
 Same applies to water.
 Hit points lost due to thirst are represented as the blue section of the life bar.
-You get them back when you drink water.
+You get them back when you drink.
 The water reserve depletes faster when moving on desert tiles.
 
 
-If you are hungry AND thirsty, you will lose 2 hit points with every move.
+If you are hungry AND thirsty, you will lose two hit points with every move.
 
 
 Rations are scattered around the game world.
@@ -39,4 +39,4 @@ Find them in the game world.
 
 
 Vehicles have reserves of food and water. Entering a vehicle will refill your reserves.
-Food and water reserves are not depleting if you are inside a vehicle.
+Food and water reserves are not depleting while you are inside a vehicle.

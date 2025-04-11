@@ -6,14 +6,15 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.movement.BlockingAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
+import antonafanasjew.cosmodog.model.actors.*;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.model.portals.Ray;
-import antonafanasjew.cosmodog.model.portals.tiles.Hull;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -49,10 +50,6 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
-import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.actors.Platform;
-import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
@@ -139,8 +136,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 			AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, true);
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 		}
-		
-		
+
 		//Handle movement
 		if (inputMovement) {
 
@@ -155,8 +151,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					platformItem.setExiting(true);
 				}
 			}
-			
-			
+
     		if (inputLeft) {
     			player.turn(DirectionType.LEFT);
     		} else if (inputRight) {
@@ -166,20 +161,9 @@ public class InGameInputHandler extends AbstractInputHandler {
     		} else if (inputDown) {
     			player.turn(DirectionType.DOWN);
     		} 
-    		
-    		float newX = player.getPosition().getX();
-    		float newY = player.getPosition().getY();
-    		
-    		if (player.getDirection() == DirectionType.LEFT) {
-    			newX = player.getPosition().getX() - 1;
-    		} else if (player.getDirection() == DirectionType.RIGHT) {
-    			newX = player.getPosition().getX() + 1;
-    		} else if (player.getDirection() == DirectionType.UP) {
-    			newY = player.getPosition().getY() - 1;
-    		} else if (player.getDirection() == DirectionType.DOWN) {
-    			newY = player.getPosition().getY() + 1;
-    		}
-			Position newPosition = Position.fromCoordinates(newX, newY, player.getPosition().getMapType());
+
+			Entrance targetEntrance = cosmodogGame.targetEntrance(player);
+
     		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.
     		Set<Enemy> enemies = map.getEnemies();
     		Enemy meleeTargetEnemy = null;
@@ -187,11 +171,11 @@ public class InGameInputHandler extends AbstractInputHandler {
     		for (Enemy enemy : enemies) {
     			
     			if (platformItem != null && !platformItem.isExiting()) {
-    				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), newPosition)) {
+    				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), targetEntrance.getPosition())) {
     					platformTargetEnemies.add(enemy);
         			}
     			} else {
-	    			if (enemy.getPosition().equals(newPosition)) {
+	    			if (enemy.getPosition().equals(targetEntrance.getPosition())) {
 	    				meleeTargetEnemy = enemy;
 	    			}
     			}
@@ -217,7 +201,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
     		
-	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, newPosition);
+	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, targetEntrance);
 	    		
 				if (collisionStatus.isPassable()) {
 					
@@ -262,39 +246,12 @@ public class InGameInputHandler extends AbstractInputHandler {
 							motordies.play();
 						}
 					}
-					
-					final float finalNewX = newX;
-					final float finalNewY = newY;
 
-					AsyncAction blockingAction = new FixedLengthAsyncAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION) {
-	
-						@Serial
-						private static final long serialVersionUID = 1663061093630885138L;
-						
-						@Override
-						public void onTrigger() {
+					BlockingAction blockingAction = new BlockingAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION, player, cosmodogGame, targetEntrance, collisionStatus);
+					MovementAttemptAction movementAttemptAction = new MovementAttemptAction(250, targetEntrance.getPosition());
 
-							player.getMovementListener().beforeBlock(player, player.getPosition(), newPosition);
-							
-							DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinates(finalNewX, finalNewY, player.getPosition().getMapType()));
-							if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
-								applicationContext.getSoundResources().get(SoundResources.SOUND_NOWAY).play();
-							}
-							
-							String text = collisionStatus.getPassageBlockerDescriptor().asText();
-							
-							OverheadNotificationAction.registerOverheadNotification(player, text);
-							
-						}
-
-						@Override
-						public void onEnd() {
-							player.getMovementListener().afterBlock(player, player.getPosition(), newPosition);
-						}
-					};
-					
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
-					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, new MovementAttemptAction(250, Position.fromCoordinatesOnPlayerLocationMap(newX, newY)));
+					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, movementAttemptAction);
 					
 				}
     		}
@@ -372,7 +329,6 @@ public class InGameInputHandler extends AbstractInputHandler {
 			}
 		}
 
-
 		//TODO: This is a test for plane change. Remove it later.
 		if (input.isKeyPressed(Input.KEY_T)) {
 			MapType currentMapType = player.getPosition().getMapType();
@@ -385,9 +341,14 @@ public class InGameInputHandler extends AbstractInputHandler {
 		DebuggerInventoryItem debugger = (DebuggerInventoryItem)player.getInventory().get(InventoryItemType.DEBUGGER);
 		
 		if (debugger != null) {
-			
+
 			if (input.isKeyPressed(Input.KEY_1)) {
-				Position position = debugger.nextPosition();
+				Position position;
+				if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
+					position = debugger.firstPosition();
+				} else {
+					position = debugger.nextPosition();
+				}
 				player.setPosition(position);
 				player.shiftHorizontal(0); //Just to trigger the listeners.
 				cam.focusOnPiece(cosmodogGame,0, 0, player);

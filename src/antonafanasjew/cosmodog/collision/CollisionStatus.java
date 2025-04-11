@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.collision;
 
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
-import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 
 /**
  * Describes the collision status for a tile based on the actor and the map (passable/not passable)
@@ -15,7 +15,7 @@ public class CollisionStatus {
 	
 	private Actor actor;
 	private CosmodogMap map;
-	private Position position;
+	private Entrance entrance;
 	private boolean passable;
 	private PassageBlockerDescriptor passageBlockerDescriptor = PassageBlockerDescriptor.fromPassageBlockerType(PassageBlockerType.PASSABLE);
 	
@@ -28,16 +28,16 @@ public class CollisionStatus {
 	 * 
 	 * @param actor Actor for whom the collision status has been calculated.
 	 * @param map Tiled map.
-	 * @param position tile position of actors location.
+	 * @param entrance tile position of actors location and the direction from which it was entered.
 	 * @param passable true if the tile is passable, false otherwise.
 	 * @param passageBlockerDescriptor Reason for non passable tile.
 	 * @return A new Collision status object filled with the given parameters.
 	 */
-	public static CollisionStatus instance(Actor actor, CosmodogMap map, Position position, boolean passable, PassageBlockerDescriptor passageBlockerDescriptor) {
+	public static CollisionStatus instance(Actor actor, CosmodogMap map, Entrance entrance, boolean passable, PassageBlockerDescriptor passageBlockerDescriptor) {
 		CollisionStatus collisionStatus = new CollisionStatus();
 		collisionStatus.actor = actor;
 		collisionStatus.map = map;
-		collisionStatus.position = position;
+		collisionStatus.entrance = entrance;
 		collisionStatus.passable = passable;
 		collisionStatus.passageBlockerDescriptor = passageBlockerDescriptor;
 		return collisionStatus;
@@ -47,12 +47,12 @@ public class CollisionStatus {
 	 * This method is for the backwards compatibility of the existing code that used the passage blocker type instead of the passage blocker descriptor.
 	 * Most of the callers do not need to be changed as this method will convert the passage blocker type into the passage blocker descriptor.
 	 */
-	public static CollisionStatus instance(Actor actor, CosmodogMap map, Position position, boolean passable, PassageBlockerType passageBlockerType) {
-		return instance(actor, map, position, passable, PassageBlockerDescriptor.fromPassageBlockerType(passageBlockerType));
+	public static CollisionStatus instance(Actor actor, CosmodogMap map, Entrance entrance, boolean passable, PassageBlockerType passageBlockerType) {
+		return instance(actor, map, entrance, passable, PassageBlockerDescriptor.fromPassageBlockerType(passageBlockerType));
 	}
 	
-	public static CollisionStatus instance(Actor actor, CosmodogMap map, Position position, boolean passable, PassageBlockerType passageBlockerType, Object paramValue) {
-		return instance(actor, map, position, passable, PassageBlockerDescriptor.fromPassageBlockerTypeAndParameter(passageBlockerType, paramValue));
+	public static CollisionStatus instance(Actor actor, CosmodogMap map, Entrance entrance, boolean passable, PassageBlockerType passageBlockerType, Object paramValue) {
+		return instance(actor, map, entrance, passable, PassageBlockerDescriptor.fromPassageBlockerTypeAndParameter(passageBlockerType, paramValue));
 	}
 	
 	/**
@@ -72,11 +72,11 @@ public class CollisionStatus {
 	}
 
 	/**
-	 * Returns the position of the tile (int tiles, not in pixels).
+	 * Returns the entrance, that is the position and the direction from which it was entered.
 	 * @return x coordinate of the tiles location.
 	 */
-	public Position getTilePosition() {
-		return position;
+	public Entrance getEntrance() {
+		return entrance;
 	}
 
 	/**

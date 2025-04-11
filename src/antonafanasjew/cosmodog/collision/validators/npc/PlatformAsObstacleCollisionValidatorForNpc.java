@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
@@ -19,7 +20,7 @@ public class PlatformAsObstacleCollisionValidatorForNpc extends AbstractCollisio
 
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
 		boolean blocked = false;
 		
@@ -28,10 +29,10 @@ public class PlatformAsObstacleCollisionValidatorForNpc extends AbstractCollisio
 		if (platform != null) { //It is null, if collected, that is if the player is sitting inside of it. 
 		
 			if (PiecesUtils.distanceBetweenPieces(actor, platform) <= 10) {
-				blocked = CosmodogMapUtils.isTileOnPlatform(position);
+				blocked = CosmodogMapUtils.isTileOnPlatform(entrance.getPosition());
 			}
 		}
-		return CollisionStatus.instance(actor, map, position, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
+		return CollisionStatus.instance(actor, map, entrance, !blocked, PassageBlockerDescriptor.fromPassageBlockerType(blocked ? PassageBlockerType.BLOCKED : PassageBlockerType.PASSABLE));
 		
 	}
 

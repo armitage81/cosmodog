@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import antonafanasjew.cosmodog.globals.Constants;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -23,7 +24,7 @@ import com.google.common.collect.Lists;
 public class RandomPathFinder extends AbstractPathFinder {
 
 	@Override
-	protected MovementActionResult calculateMovementResultInternal(Actor enemy, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
+	protected MovementActionResult calculateMovementResultInternal(Actor enemy, int costBudget, CollisionValidator collisionValidator, Entrance playersTargetEntrance) {
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
@@ -56,8 +57,10 @@ public class RandomPathFinder extends AbstractPathFinder {
 				int index = (firstIndex + i) % 4;
 				float xAtIndex = xSteps[index];
 				float yAtIndex = ySteps[index];
-				
-				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, Position.fromCoordinates(xAtIndex, yAtIndex, map.getMapType()));
+
+				Position position = Position.fromCoordinates(xAtIndex, yAtIndex, map.getMapType());
+				Entrance entrance = Entrance.instance(position, enemy.getDirection());
+				CollisionStatus collisionStatus = collisionValidator.collisionStatus(game, enemy, map, entrance);
 				
 				if (collisionStatus.isPassable()) {
 					x = (int)xAtIndex;

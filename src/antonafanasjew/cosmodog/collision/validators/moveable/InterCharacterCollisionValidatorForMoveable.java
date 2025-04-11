@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.moveable;
 
 import java.util.Set;
 
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Sets;
 
@@ -21,7 +22,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 public class InterCharacterCollisionValidatorForMoveable extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		Set<Enemy> enemies = cosmodogMap.getEnemiesInRange();
 		
@@ -33,11 +34,11 @@ public class InterCharacterCollisionValidatorForMoveable extends AbstractCollisi
 			
 			Position blockedPos = oneActor.getPosition();
 
-			if (blockedPos.equals(position)) {
-				return CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
+			if (blockedPos.equals(entrance.getPosition())) {
+				return CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
 			}
 		}
-		return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+		return CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 	}
 
 }

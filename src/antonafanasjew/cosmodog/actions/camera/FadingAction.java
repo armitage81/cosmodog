@@ -4,6 +4,10 @@ import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class FadingAction extends FixedLengthAsyncAction {
 
     private final boolean fadingInNotFadingOut;
@@ -31,4 +35,5 @@ public class FadingAction extends FixedLengthAsyncAction {
         this.getProperties().put("value", (float)value);
 
     }
+
 }

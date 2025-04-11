@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.collision.PassageBlockerType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -26,17 +27,17 @@ public class OneBlocksAllCollisionValidator implements CollisionValidator {
 	}
 	
 	@Override
-	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 
 
         for (CollisionValidator underlying : underlyings) {
-            CollisionStatus underlyingCollisionStatus = underlying.collisionStatus(cosmodogGame, actor, map, position);
+            CollisionStatus underlyingCollisionStatus = underlying.collisionStatus(cosmodogGame, actor, map, entrance);
             if (!underlyingCollisionStatus.isPassable()) {
                 return underlyingCollisionStatus;
             }
         }
 			
-		return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+		return CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 	}
 
 }

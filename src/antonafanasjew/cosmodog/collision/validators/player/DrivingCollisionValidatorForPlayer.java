@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -16,8 +17,8 @@ import antonafanasjew.cosmodog.topology.Position;
 public class DrivingCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
+		int tileId = map.getTileId(entrance.getPosition(), Layers.LAYER_META_COLLISIONS);
 		boolean collisionTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION);
 		boolean collisionVehicleTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_VEHICLE);
 		boolean waterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
@@ -26,7 +27,7 @@ public class DrivingCollisionValidatorForPlayer extends AbstractCollisionValidat
 		boolean passable = !collisionTile && !collisionVehicleTile && !waterTile && !snowTile;
 		
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_ON_WHEELS;
-		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, entrance, passable, passageBlocker);
 		
 	}
 

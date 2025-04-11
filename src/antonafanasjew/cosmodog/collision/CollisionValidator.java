@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.collision;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -22,9 +23,9 @@ public interface CollisionValidator {
 	 * @param cosmodogGame The cosmodog game object
 	 * @param actor The actor object. (f.i. the player figure)
 	 * @param cosmodogMap The tiled map object to retrieve the tile informations.
-	 * @param position The position of the tile (in tiles, not in pixels)
+	 * @param entrance The position of the tile (in tiles, not in pixels) and also the direction from which the tile should be entered.
 	 * @return The collision status object. It contains all information about the tiles as well as the passable/not passable property.
 	 */
-	CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap cosmodogMap, Position position);
+	CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap cosmodogMap, Entrance entrance);
 	
 }

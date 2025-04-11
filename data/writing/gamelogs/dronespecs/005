@@ -4,17 +4,18 @@ Artillery
 
 
 The artillery unit is the most dangerous drone in our arsenal. 
-Other than any other unit, the artillery can fire over a far distance, hitting the intruders without exposing itself to their counterattacks.
+Other than any other unit, the artillery can fire over a far distance,
+hitting the intruders without exposing itself to their counterattacks.
 The utilization of this weapon should be considered wisely, as it can be inaccurate in choosing the targets.
 
 
 Armor type: Medium
 
-Weapon type: Rockets
+Weapon type: Grenades
 
 Damage: 4
 
-Chaussie type: Wheels (Cannot cross rough terrain)
+Chassis type: Wheels (Cannot cross rough terrain. Cannot swim.)
 
 Max Life: 25
 
@@ -24,10 +25,9 @@ Speed factor: 1
 Weaknesses: 
 
 
-Artilleries are moving on wheels and hence cannot drive over grass, sand or snow.
+Artillery units are moving on wheels and hence cannot drive over grass, sand or snow.
 
-A well armored intruder could storm toward the unit, ignoring the damage taken by its rockets. 
-As soon as they reach the unit, it can be destroyed relatively easily.
+Artillery units cannot attack adjacent targets. This blind spot allows enemies ambushes.
 
 
 

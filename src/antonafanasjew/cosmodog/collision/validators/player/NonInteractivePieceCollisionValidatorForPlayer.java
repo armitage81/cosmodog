@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -22,12 +23,12 @@ import antonafanasjew.cosmodog.topology.Position;
 public class NonInteractivePieceCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		Piece piece = map.pieceAtTile(position);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
+		Piece piece = map.pieceAtTile(entrance.getPosition());
 		boolean passable = piece == null || piece.interactive(piece, ApplicationContext.instance(), cosmodogGame, (Player)actor);
 
 		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_BY_INACTIVE_PIECE;
-		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, entrance, passable, passageBlocker);
 	}
 
 }

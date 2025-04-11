@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.pathfinding;
 import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 
 /**
  * Abstract implementation of a path finder to hold common logic.
@@ -10,10 +11,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public abstract class AbstractPathFinder implements PathFinder {
 
 	@Override
-	public MovementActionResult calculateMovementResult(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult) {
-		return calculateMovementResultInternal(actor, costBudget, collisionValidator, playerMovementActionResult);
+	public MovementActionResult calculateMovementResult(Actor actor, int costBudget, CollisionValidator collisionValidator, Entrance playersTargetEntrance) {
+		return calculateMovementResultInternal(actor, costBudget, collisionValidator, playersTargetEntrance);
 	}	
 
-	protected abstract MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, MovementActionResult playerMovementActionResult);
+	protected abstract MovementActionResult calculateMovementResultInternal(Actor actor, int costBudget, CollisionValidator collisionValidator, Entrance playersTargetEntrance);
 
 }

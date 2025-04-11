@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -16,11 +17,11 @@ import antonafanasjew.cosmodog.topology.Position;
 public class SailingCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
-		int tileId = map.getTileId(position, Layers.LAYER_META_COLLISIONS);
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
+		int tileId = map.getTileId(entrance.getPosition(), Layers.LAYER_META_COLLISIONS);
         boolean passable = TileType.COLLISION_WATER.getTileId() == tileId;
 		PassageBlockerType passageBlocker = PassageBlockerType.PASSABLE;
-		return CollisionStatus.instance(actor, map, position, passable, passageBlocker);
+		return CollisionStatus.instance(actor, map, entrance, passable, passageBlocker);
 	}
 
 }

@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.collision;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -15,18 +16,18 @@ public abstract class AbstractCollisionValidator implements CollisionValidator {
 	 * Returns 'no passage' for tiles beyond map borders and delegates the concrete validation to sub classes.
 	 */
 	@Override
-	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus collisionStatus(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
-		CollisionStatus notPassable = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED);
+		CollisionStatus notPassable = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED);
 		
-		if (!position.inMapBounds(cosmodogGame.mapOfPlayerLocation())) {
+		if (!entrance.getPosition().inMapBounds(cosmodogGame.mapOfPlayerLocation())) {
 			return notPassable;
 		}
 		
-		return calculateStatusWithinMap(cosmodogGame, actor, map, position);
+		return calculateStatusWithinMap(cosmodogGame, actor, map, entrance);
 		
 	}
 
-	public abstract CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position);
+	public abstract CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance);
 
 }

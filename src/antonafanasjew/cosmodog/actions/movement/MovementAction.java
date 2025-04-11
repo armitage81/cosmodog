@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -53,7 +56,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	@Serial
 	private static final long serialVersionUID = -693412142092974821L;
 
-	private MovementActionResult playerMovementActionResult = null;
+	private Entrance targetEntrance;
 
 	private MovementActionResult moveableMovementActionResult = null;
 
@@ -107,15 +110,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	private void initMovementActionResults() {
 		//Preparing static data.
-		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
+		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap cosmodogMap = game.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		Position playerPosition = player.getPosition();
 		
-		//Calculating the target position.
-		Position targetPosition = skipTurn ? playerPosition : PositionUtils.neighbourPositionInFacingDirection(player);
-		
-		//Calculating the future result of the player movement.
-		this.playerMovementActionResult = MovementActionResult.instance(playerPosition, targetPosition);
+		//Calculating the target entrance.
+		targetEntrance = skipTurn ?
+				Entrance.instance(playerPosition, player.getDirection(), false, true)
+				:
+				game.targetEntrance(player);
 		
 		//There could be a moveable block in player's path. In this case, it also would be moved (collision has been checked already.)
 		//Take care: Player's movement has to be calculated before this.
@@ -151,14 +155,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = ApplicationContextUtils.getPlayer();
 		
-		//We check if the position to which the player moves contains a moveable.
-		Path path = playerMovementActionResult.getPath();
-		Step lastStep = path.getStep(path.getLength() - 1);
-		int moveablePosX = lastStep.getX();
-		int moveablePosY = lastStep.getY();
-		
+
 		//If a moveable is there, we calculate its target position (always away from the player as he pushes it)
-		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(Position.fromCoordinatesOnPlayerLocationMap(moveablePosX, moveablePosY));
+		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(targetEntrance.getPosition());
 		if (dynamicPiece instanceof MoveableDynamicPiece) {
 			int newMoveablePosX = (int)dynamicPiece.getPosition().getX();
 			int newMoveablePosY = (int)dynamicPiece.getPosition().getY();
@@ -177,7 +176,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			}
 			
 			retVal = MovementActionResult.instance(
-					Position.fromCoordinatesOnPlayerLocationMap(moveablePosX, moveablePosY),
+					targetEntrance.getPosition(),
 					Position.fromCoordinatesOnPlayerLocationMap(newMoveablePosX, newMoveablePosY));
 		}
 		return retVal;
@@ -191,11 +190,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 		PathFinder pathFinder = cosmodog.getPathFinder();
 		
 		//Preparing enemy collision validator
-		CollisionValidator collisionValidator = GeneralCollisionValidatorForNpc.instance(playerMovementActionResult, moveableMovementActionResult, enemyMovementActionResults);
+		CollisionValidator collisionValidator = GeneralCollisionValidatorForNpc.instance(targetEntrance, moveableMovementActionResult, enemyMovementActionResults);
 		
 		//Using the pathfinder to calculate the movement result based on the time budget generated from user movement and enemy's time overhead from the previous turns.
 		int costBudget = Constants.MINUTES_PER_TURN * enemy.getSpeedFactor();
-		return pathFinder.calculateMovementResult(enemy, costBudget, collisionValidator, playerMovementActionResult);
+		return pathFinder.calculateMovementResult(enemy, costBudget, collisionValidator, targetEntrance);
 
 	}
 
@@ -212,12 +211,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 			if (!skipTurn) {
 				applicationContext.getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
 			}
-			
-			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
-			int resultX = playerMovementActionResult.getPath().getX(1);
-			int resultY = playerMovementActionResult.getPath().getY(1);
 
-			Position resultPosition = Position.fromCoordinatesOnPlayerLocationMap(resultX, resultY);
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 
 			Set<Enemy> destroyedEnemies = Sets.newHashSet();
 			
@@ -230,13 +225,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 				Position enemyPosition = Position.fromCoordinatesOnPlayerLocationMap(enemyX, enemyY);
 
-				if (CosmodogMapUtils.isTileOnPlatform(enemyPosition, resultPosition)) {
+				if (CosmodogMapUtils.isTileOnPlatform(enemyPosition, targetEntrance.getPosition())) {
 					destroyedEnemies.add(enemy);
 				}
 			}
 			
 			for (Enemy enemy : map.getEnemies()) {
-				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), resultPosition)) {
+				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), targetEntrance.getPosition())) {
 					destroyedEnemies.add(enemy);
 				}
 			}
@@ -245,10 +240,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			
 		} else {
 			if (!skipTurn) {
-				int resultX = playerMovementActionResult.getPath().getX(1);
-				int resultY = playerMovementActionResult.getPath().getY(1);
-				Position position = Position.fromCoordinatesOnPlayerLocationMap(resultX, resultY);
-				String footStepsSoundType = FootstepUtils.footStepsSoundType(position);
+				String footStepsSoundType = FootstepUtils.footStepsSoundType(targetEntrance.getPosition());
 				applicationContext.getSoundResources().get(footStepsSoundType).play();
 			}
 		}
@@ -266,10 +258,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	private void onUpdateForPlayer(int timePassed) {
 		
-		if (skipTurn) {
+		if (targetEntrance.isWaited()) {
 			return;
 		}
-		
+
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		
@@ -280,43 +272,46 @@ public class MovementAction extends FixedLengthAsyncAction {
 		float movementOffsetX = 0;
 		float movementOffsetY = 0;
 		
-		Player player = cosmodogGame.getPlayer();
-		
+
 		//Take care: This works only because the tiles are square.
 		float ratio = (float)timePassed / getDuration();
 		ratio = Math.min(ratio, 1.0f);
 		float offset = tileLength * ratio;
 		boolean verticalNotHorizontal = true;
 		boolean positiveNotNegative = true;
-		
-		if (player.getDirection() == DirectionType.DOWN) {
-			movementOffsetY += offset;
-		} else if (player.getDirection() == DirectionType.UP) {
-			movementOffsetY -= offset;
-			positiveNotNegative = false;
-		} else if (player.getDirection() == DirectionType.LEFT) {
-			movementOffsetX -= offset;
-			verticalNotHorizontal = false;
-			positiveNotNegative = false;
-		} else if (player.getDirection() == DirectionType.RIGHT) {
-			movementOffsetX += offset;
-			verticalNotHorizontal = false;
-		}
 
-		int targetPosX = playerMovementActionResult.getPath().getStep(1).getX();
-		int targetPosY = playerMovementActionResult.getPath().getStep(1).getY();
-		Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetPosX, targetPosY);
 
-		CrossTileMotion crossTileMotion = CrossTileMotion.fromActor(player, targetPosition);
-		if (verticalNotHorizontal) {
-			crossTileMotion.setCrossTileOffsetY(positiveNotNegative ? ratio : -ratio);
+		if (targetEntrance.isUsedPortal()) {
+
 		} else {
-			crossTileMotion.setCrossTileOffsetX(positiveNotNegative ? ratio : -ratio);
+			Player player = ApplicationContextUtils.getPlayer();
+			if (player.getDirection() == DirectionType.DOWN) {
+				movementOffsetY += offset;
+			} else if (player.getDirection() == DirectionType.UP) {
+				movementOffsetY -= offset;
+				positiveNotNegative = false;
+			} else if (player.getDirection() == DirectionType.LEFT) {
+				movementOffsetX -= offset;
+				verticalNotHorizontal = false;
+				positiveNotNegative = false;
+			} else if (player.getDirection() == DirectionType.RIGHT) {
+				movementOffsetX += offset;
+				verticalNotHorizontal = false;
+			}
+			Position targetPosition = targetEntrance.getPosition();
+
+
+			CrossTileMotion crossTileMotion = CrossTileMotion.fromActor(player, targetPosition);
+			if (verticalNotHorizontal) {
+				crossTileMotion.setCrossTileOffsetY(positiveNotNegative ? ratio : -ratio);
+			} else {
+				crossTileMotion.setCrossTileOffsetX(positiveNotNegative ? ratio : -ratio);
+			}
+
+			actorMotions.put(player, crossTileMotion);
+
+			cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
 		}
-		
-		actorMotions.put(player, crossTileMotion);
-		
-		cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
 	}
 
 	private void onUpdateForMoveable(int timePassed) {
@@ -443,49 +438,69 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		actorMotions.remove(player);
 
-		if (skipTurn) {
+		if (targetEntrance.isWaited()) {
 			player.skipTurn();
 			return;
 		}
 		
 		boolean playerInPlatform = player.getInventory().hasPlatform();
-		
-		if (playerInPlatform) {
-			
-			Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
-			
-			for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().values()) {
-				if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
-					
-					//As we move the piece on the platform, we need to update it in the mapValues cache
-					Position position = piece.getPosition();
-					oldPositionsForPiecesOnPlatform.put(position, piece);
-					
-					if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
-						piece.getPosition().shift(0, player.getDirection() == DirectionType.UP ? -1 : 1);
-					} else {
-						piece.getPosition().shift(player.getDirection() == DirectionType.LEFT ? -1 : 1, 0);
+
+		if (targetEntrance.isUsedPortal()) {
+
+			player.transport(targetEntrance);
+
+
+			int tileLength = TileUtils.tileLengthSupplier.get();
+
+			Position playerPixelPosition = Position.fromCoordinates(
+					player.getPosition().getX() * tileLength + tileLength / 2.0f,
+					player.getPosition().getY() * tileLength + tileLength / 2.0f,
+					player.getPosition().getMapType());
+
+			CamMovementAction camMovementAction = new CamMovementAction(1000, playerPixelPosition, cosmodogGame);
+			ActionRegistry ar = cosmodogGame.getActionRegistry();
+			ar.registerAction(AsyncActionType.FOCUSING_ON_PLAYER_AFTER_USING_PORTAL, camMovementAction);
+
+		} else {
+
+			if (playerInPlatform) {
+
+				Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
+
+				for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().values()) {
+					if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
+
+						//As we move the piece on the platform, we need to update it in the mapValues cache
+						Position position = piece.getPosition();
+						oldPositionsForPiecesOnPlatform.put(position, piece);
+
+						if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
+							piece.getPosition().shift(0, player.getDirection() == DirectionType.UP ? -1 : 1);
+						} else {
+							piece.getPosition().shift(player.getDirection() == DirectionType.LEFT ? -1 : 1, 0);
+						}
 					}
 				}
+
+				//When we modify positions of pieces on platform, we need to modify the mapPieces cache as well.
+				for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
+					cosmodogGame.mapOfPlayerLocation().getMapPieces().remove(oldPosition);
+				}
+
+				for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
+					Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
+					Position newPosition = piece.getPosition();
+					cosmodogGame.mapOfPlayerLocation().getMapPieces().put(newPosition, piece);
+				}
 			}
-			
-			//When we modify positions of pieces on platform, we need to modify the mapPieces cache as well.
-			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
-				cosmodogGame.mapOfPlayerLocation().getMapPieces().remove(oldPosition);
-			}
-			
-			for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
-				Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
-				Position newPosition = piece.getPosition();
-				cosmodogGame.mapOfPlayerLocation().getMapPieces().put(newPosition, piece);
+
+			if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
+				player.shiftVertical(player.getDirection() == DirectionType.UP ? -1 : 1);
+			} else {
+				player.shiftHorizontal(player.getDirection() == DirectionType.LEFT ? -1 : 1);
 			}
 		}
-		
-		if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
-			player.shiftVertical(player.getDirection() == DirectionType.UP ? -1 : 1);
-		} else {
-			player.shiftHorizontal(player.getDirection() == DirectionType.LEFT ? -1 : 1);
-		}
+
 	}
 
 	private void onEndForMoveable() {
@@ -576,15 +591,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 	}
 
 	private void onEndForDynamicPieces() {
-		int startX = playerMovementActionResult.getPath().getX(0);
-		int startY = playerMovementActionResult.getPath().getY(0);
-		int targetX = playerMovementActionResult.getPath().getX(1);
-		int targetY = playerMovementActionResult.getPath().getY(1);
 
-		Position startPosition = Position.fromCoordinatesOnPlayerLocationMap(startX, startY);
-		Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetX, targetY);
+		Player player = ApplicationContextUtils.getPlayer();
+
+		Position startPosition = player.getPosition();
+		Position targetPosition = targetEntrance.getPosition();
 		
-		boolean noMovement = startX == targetX && startY == targetY;
+		boolean noMovement = targetEntrance.isWaited();
 
 		if (noMovement) {
 			return;

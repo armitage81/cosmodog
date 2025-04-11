@@ -3,6 +3,8 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.List;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -104,7 +106,8 @@ public class EffectsRenderer extends AbstractRenderer {
     				}
     				if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ENERGYWALL)) {
     					//Only render, if the energy wall is not passable.
-    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), map, piece.getPosition());
+						Entrance entrance = Entrance.instance(piece.getPosition(), DirectionType.UP);
+    					CollisionStatus energyWallCollisionStatus = energyWallCollisionValidator.collisionStatus(cosmodogGame, ApplicationContextUtils.getPlayer(), map, entrance);
     					
     					if (!energyWallCollisionStatus.isPassable()) {
     						audibleEnergyWall = true;

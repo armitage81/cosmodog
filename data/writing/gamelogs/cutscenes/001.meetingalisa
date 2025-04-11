@@ -41,15 +41,18 @@ Who is supposed to be of assistance here? Thanks for nothing, lady!
 <font:speech> "Report your status," <font:narration> you command.
 
 
-The assistant responds in a sarcastic tone: <font:speech>
+The assistant responds smugly: <font:speech>
 "Glad to meet you, too, dear. Well, name's Alisa. Hmm, the status... I feel like a frog in a mixer, that's the status.
-But don't you dare to reset the device! What about you? How are you doing?" <font:narration>
+But don't you dare to reset the device!
+
+
+What about you? How are you doing?" <font:narration>
 
 
 You shake your head.
 
 
-<font:speech> "I don't have time for smalltalk, 'Alice'!" <font:narration>
+<font:speech> "I'm not interested in a smalltalk, 'Alice'!" <font:narration>
 
 
 <font:speech> "It's Alisa!" <font:narration> she says.

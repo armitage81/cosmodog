@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.collision.validators.npc;
 import java.util.Map;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
@@ -42,50 +43,52 @@ import com.google.common.collect.Sets;
  */
 public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionValidator {
 
-	private MovementActionResult playerMovementActionResult;
+	private Entrance playersTargetEntrance;
 	private Map<Enemy, MovementActionResult> enemyMovementActionResults;
 	
 	/**
 	 * Initialized with movement results of all actors.
-	 * @param playerMovementActionResult Player movement result.
 	 * @param enemyMovementActionResults Enemies movement results.
 	 */
-	public InterCharacterCollisionValidatorForNpc(MovementActionResult playerMovementActionResult, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
-		this.playerMovementActionResult = playerMovementActionResult;
+	public InterCharacterCollisionValidatorForNpc(Entrance playersTargetEntrance, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
+		this.playersTargetEntrance = playersTargetEntrance;
 		this.enemyMovementActionResults = enemyMovementActionResults;
 	}
 	
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		Player player = cosmodogGame.getPlayer();
 		Set<Enemy> enemies = cosmodogMap.getEnemiesInRange();
 		
-		Set<Actor> allActors = Sets.newHashSet();
-		allActors.add(player);
-		allActors.addAll(enemies);
-		allActors.remove(actor); //Don't check for the actor himself
-		
-		for (Actor oneActor : allActors) {
-			
-			MovementActionResult oneActorsMovementActionResult = (oneActor instanceof Player) ? playerMovementActionResult : enemyMovementActionResults.get(oneActor);
+		for (Enemy enemy : enemies) {
+
+			if (enemy == actor) {
+				continue;
+			}
+
+			MovementActionResult oneActorsMovementActionResult = enemyMovementActionResults.get(enemy);
 			
 			Position blockedPos;
 
 			if (oneActorsMovementActionResult == null) { //Actor is not moving, so his position tile is blocked.
-				blockedPos = oneActor.getPosition();
+				blockedPos = enemy.getPosition();
 			} else { //Actor is moving, so his target tile is blocked.
 				Path oneActorsPath = oneActorsMovementActionResult.getPath();
 				Step oneActorsLastStep = oneActorsPath.getStep(oneActorsPath.getLength() - 1);
 				blockedPos = Position.fromCoordinates(oneActorsLastStep.getX(), oneActorsLastStep.getY(), map.getMapType());
 			}
-			
-			
-			if (blockedPos.equals(position)) {
-				return CollisionStatus.instance(actor, map, position, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
+
+			if (blockedPos.equals(entrance.getPosition())) {
+				return CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
 			}
 		}
-		return CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+
+		if (playersTargetEntrance.getPosition().equals(entrance.getPosition())) {
+			return CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_AS_TARGET_BY_OTHER_MOVING_CHARACTER);
+		}
+
+		return CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 	}
 
 }

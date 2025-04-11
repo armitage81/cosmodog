@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.Mappings;
 
@@ -18,20 +19,20 @@ import antonafanasjew.cosmodog.util.Mappings;
 public class EnergyWallCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
-	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Position position) {
+	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		
-		CollisionStatus retVal = CollisionStatus.instance(actor, map, position, true, PassageBlockerType.PASSABLE);
+		CollisionStatus retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 		
-		int roadObjectsTileId = map.getTileId(position, Layers.LAYER_ROADS_OBJECTS_MANUAL);
+		int roadObjectsTileId = map.getTileId(entrance.getPosition(), Layers.LAYER_ROADS_OBJECTS_MANUAL);
 		
 		if (TileType.ENERGY_WALL_GENERATOR.getTileId() == roadObjectsTileId) {
 		
-			int energyWallTileId = map.getTileId(position, Layers.LAYER_META_EFFECTS);
+			int energyWallTileId = map.getTileId(entrance.getPosition(), Layers.LAYER_META_EFFECTS);
 			
 			int collectedInfobits = ((Player)actor).getGameProgress().getInfobits();
 			int requiredInfobits = Mappings.ENERGY_WALL_TILE_TYPE_2_INFOBIT_COSTS.get(TileType.getByLayerAndTileId(Layers.LAYER_META_EFFECTS, energyWallTileId));
 			if (collectedInfobits < requiredInfobits) {
-				retVal = CollisionStatus.instance(actor, map, position, false, PassageBlockerType.ENERGY_WALL_COSTS, String.valueOf(requiredInfobits));
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.ENERGY_WALL_COSTS, String.valueOf(requiredInfobits));
 			}
 			
 		}
