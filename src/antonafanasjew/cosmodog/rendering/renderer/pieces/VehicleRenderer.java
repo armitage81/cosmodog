@@ -20,7 +20,6 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 import com.google.common.collect.Maps;
 
@@ -48,7 +47,7 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 			playerMotion = movementAction.getActorMotions().get(player);
 		}
 
-		Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
+		Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 		
 		MovementAttemptAction movementAttemptAction = (MovementAttemptAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT_ATTEMPT);
 

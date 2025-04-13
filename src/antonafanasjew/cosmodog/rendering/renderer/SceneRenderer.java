@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.RayRenderer;
 import org.newdawn.slick.GameContainer;

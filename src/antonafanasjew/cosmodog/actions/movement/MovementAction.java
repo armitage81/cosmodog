@@ -280,38 +280,39 @@ public class MovementAction extends FixedLengthAsyncAction {
 		boolean verticalNotHorizontal = true;
 		boolean positiveNotNegative = true;
 
+		Player player = ApplicationContextUtils.getPlayer();
+		if (player.getDirection() == DirectionType.DOWN) {
+			movementOffsetY += offset;
+		} else if (player.getDirection() == DirectionType.UP) {
+			movementOffsetY -= offset;
+			positiveNotNegative = false;
+		} else if (player.getDirection() == DirectionType.LEFT) {
+			movementOffsetX -= offset;
+			verticalNotHorizontal = false;
+			positiveNotNegative = false;
+		} else if (player.getDirection() == DirectionType.RIGHT) {
+			movementOffsetX += offset;
+			verticalNotHorizontal = false;
+		}
+		Position targetPosition = targetEntrance.getPosition();
+
+		CrossTileMotion crossTileMotion;
 
 		if (targetEntrance.isUsedPortal()) {
-
+			crossTileMotion = CrossTileMotion.fromActor(player, targetPosition, true);
 		} else {
-			Player player = ApplicationContextUtils.getPlayer();
-			if (player.getDirection() == DirectionType.DOWN) {
-				movementOffsetY += offset;
-			} else if (player.getDirection() == DirectionType.UP) {
-				movementOffsetY -= offset;
-				positiveNotNegative = false;
-			} else if (player.getDirection() == DirectionType.LEFT) {
-				movementOffsetX -= offset;
-				verticalNotHorizontal = false;
-				positiveNotNegative = false;
-			} else if (player.getDirection() == DirectionType.RIGHT) {
-				movementOffsetX += offset;
-				verticalNotHorizontal = false;
-			}
-			Position targetPosition = targetEntrance.getPosition();
-
-
-			CrossTileMotion crossTileMotion = CrossTileMotion.fromActor(player, targetPosition);
-			if (verticalNotHorizontal) {
-				crossTileMotion.setCrossTileOffsetY(positiveNotNegative ? ratio : -ratio);
-			} else {
-				crossTileMotion.setCrossTileOffsetX(positiveNotNegative ? ratio : -ratio);
-			}
-
-			actorMotions.put(player, crossTileMotion);
-
-			cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
+			crossTileMotion = CrossTileMotion.fromActor(player, targetPosition);
 		}
+
+		if (verticalNotHorizontal) {
+			crossTileMotion.setCrossTileOffsetY(positiveNotNegative ? ratio : -ratio);
+		} else {
+			crossTileMotion.setCrossTileOffsetX(positiveNotNegative ? ratio : -ratio);
+		}
+
+		actorMotions.put(player, crossTileMotion);
+
+		cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
 	}
 
 	private void onUpdateForMoveable(int timePassed) {

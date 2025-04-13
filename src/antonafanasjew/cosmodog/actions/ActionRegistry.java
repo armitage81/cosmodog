@@ -3,8 +3,13 @@ package antonafanasjew.cosmodog.actions;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.environmentaldamage.MineExplosionAction;
+import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
+import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
+import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -138,6 +143,57 @@ public class ActionRegistry implements Serializable {
 		}
 		
 		return retVal;
+	}
+
+	public Optional<AbstractFightActionPhase> currentFightPhase() {
+
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+
+		PhaseBasedAction fightAction = (PhaseBasedAction)getRegisteredAction(AsyncActionType.FIGHT);
+
+		if (fightAction == null) {
+			fightAction = (PhaseBasedAction)getRegisteredAction(AsyncActionType.FIGHT_FROM_PLATFORM);
+		}
+
+		if (fightAction != null) {
+			PhaseRegistry fightActionPhaseRegistry = fightAction.getPhaseRegistry();
+			Optional<AsyncAction> fightPhase = fightActionPhaseRegistry.currentPhase();
+			return fightPhase.map(asyncAction -> (AbstractFightActionPhase) asyncAction);
+		} else {
+			return Optional.empty();
+		}
+
+	}
+
+	public Optional<MineExplosionAction> currentMineExplosionAction() {
+		Object action = getRegisteredAction(AsyncActionType.MINE_EXPLOSION);
+		MineExplosionAction mineExplosionAction = null;
+
+		//Could also be a crumbling wall when using dynamite. That, we ignore.
+		if (action instanceof MineExplosionAction) {
+			mineExplosionAction = (MineExplosionAction)action;
+		}
+		return Optional.ofNullable(mineExplosionAction);
+	}
+
+	public <T extends AsyncAction> Optional<T> currentActionOfGivenType(AsyncActionType type, Class<T> clazz) {
+		AsyncAction action = getRegisteredAction(type);
+
+		if (action == null) {
+			return Optional.empty();
+		}
+
+		if (clazz.isAssignableFrom(action.getClass())) {
+			return Optional.of((T)action);
+		}
+
+		throw new RuntimeException("Action of type " + action.getClass().getName() + " is not of the expected type " + clazz.getName() + ".");
+
+	}
+
+	public <T> Optional<T> attributeForCurrentActionOfGivenType(AsyncActionType type, String attributeName) {
+		Optional<? extends AsyncAction> optTeleportationAction = currentActionOfGivenType(type, AsyncAction.class);
+		return optTeleportationAction.flatMap(o -> Optional.ofNullable(o.getProperty(attributeName)));
 	}
 
 }

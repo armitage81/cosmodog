@@ -22,7 +22,8 @@ import antonafanasjew.cosmodog.topology.Rectangle;
  * (The scene is the complete map. It can be bigger or smaller depending on zoom factor.
  * The camera is the part of the map that is visible on the screen).
  * <p>
- * Take note: The camera is equivalent to the screen size (or its part in case the map view is not drawn on the whole screen).
+ * Take note: The camera is equivalent to the screen size
+ * (or its part in case the map view is not drawn on the whole screen).
  */
 public class Cam implements Serializable {
 

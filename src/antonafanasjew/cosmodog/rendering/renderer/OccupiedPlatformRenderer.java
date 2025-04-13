@@ -26,7 +26,6 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 
 import com.google.common.collect.Maps;
@@ -70,7 +69,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 				playerMotion = movementAction.getActorMotions().get(player);
 			}
 
-			Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
+			Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 			
 			MovementAttemptAction movementAttemptAction = (MovementAttemptAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT_ATTEMPT);
 			

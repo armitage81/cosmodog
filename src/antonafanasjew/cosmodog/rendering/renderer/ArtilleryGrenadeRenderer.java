@@ -20,7 +20,6 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 
 public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
@@ -52,7 +51,7 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 				continue;
 			}
 
-			Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
+			Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 
 			boolean enemyIsFighting = optFightPhase.isPresent() && optFightPhase.get().getProperties().get("enemy").equals(enemy);
 			boolean enemyIsShooting = enemyIsFighting && (optFightPhase.get() instanceof ArtilleryAttackActionPhase);

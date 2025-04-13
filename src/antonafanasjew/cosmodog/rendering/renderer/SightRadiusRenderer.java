@@ -5,7 +5,6 @@ import java.util.Set;
 
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
-import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
@@ -83,7 +82,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 			}
 
 
-			Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
+			Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 
 
 			if (optFightPhase.isPresent()) {

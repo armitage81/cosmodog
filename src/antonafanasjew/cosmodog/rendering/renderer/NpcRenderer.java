@@ -8,7 +8,6 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
-import antonafanasjew.cosmodog.actions.fight.FightActionUtils;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
@@ -67,7 +66,7 @@ public class NpcRenderer extends AbstractRenderer {
 
 		Set<Enemy> enemies = map.visibleEnemies(tilePosition, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2);
 
-		Optional<AbstractFightActionPhase> optFightPhase = FightActionUtils.currentFightPhase();
+		Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 
 		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
 
