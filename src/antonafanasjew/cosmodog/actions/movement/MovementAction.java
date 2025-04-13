@@ -312,7 +312,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		actorMotions.put(player, crossTileMotion);
 
-		cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
+		if (!targetEntrance.isUsedPortal()) {
+			cam.focusOnPiece(cosmodogGame, movementOffsetX, movementOffsetY, player);
+		}
 	}
 
 	private void onUpdateForMoveable(int timePassed) {
@@ -458,7 +460,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 					player.getPosition().getY() * tileLength + tileLength / 2.0f,
 					player.getPosition().getMapType());
 
-			CamMovementAction camMovementAction = new CamMovementAction(1000, playerPixelPosition, cosmodogGame);
+			CamMovementAction camMovementAction = new CamMovementAction(250, playerPixelPosition, cosmodogGame);
 			ActionRegistry ar = cosmodogGame.getActionRegistry();
 			ar.registerAction(AsyncActionType.FOCUSING_ON_PLAYER_AFTER_USING_PORTAL, camMovementAction);
 

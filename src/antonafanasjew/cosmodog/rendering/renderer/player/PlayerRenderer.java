@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer.player;
 import antonafanasjew.cosmodog.actions.fight.*;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
+import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
@@ -33,6 +34,8 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 
+import java.awt.*;
+import java.util.List;
 import java.util.Optional;
 
 public class PlayerRenderer extends AbstractRenderer {
@@ -44,7 +47,6 @@ public class PlayerRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 
@@ -80,195 +82,72 @@ public class PlayerRenderer extends AbstractRenderer {
 				)
 		;
 
-		CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
-
-		Optional<MovementAttemptAction> optMovementAttemptAction = cosmodogGame
-				.getActionRegistry()
-				.currentActionOfGivenType(
-						AsyncActionType.MOVEMENT_ATTEMPT,
-						MovementAttemptAction.class
-				)
-		;
-
-		Optional<TeleportationAction.TeleportationState> optTeleportationState = cosmodogGame
-				.getActionRegistry()
-				.attributeForCurrentActionOfGivenType(
-						AsyncActionType.TELEPORTATION,
-						"state"
-				)
-		;
-
-		boolean playerIsBeingTeleportedAndInvisible = optTeleportationState.isPresent() && optTeleportationState.get().beingTeleported && !optTeleportationState.get().characterVisible;
-		boolean playerIsInVehicle = player.getInventory().hasVehicle();
-		boolean playerIsInPlatform = player.getInventory().hasPlatform();
-		boolean playerIsOnBoat = hasBoat(player) && isWaterTile(map, player, playerMotion);
-		
-		boolean playerIsOnPlatform = PlayerMovementCache.getInstance().isPlayerOnPlatform();
-		
-		boolean playerIsInHighGrass = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_PLANTS, map, player, playerMotion);
-		boolean playerIsInSnow = RenderingUtils.isActorOnGroundTypeTile(TileType.GROUND_TYPE_SNOW, map, player, playerMotion);
-		boolean playerHasSki = player.getInventory().get(InventoryItemType.SKI) != null;
-		boolean playerIsOnSki = playerIsInSnow && playerHasSki && !playerIsOnPlatform && !playerIsInPlatform;
-		boolean playerIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, player, playerMotion);
-		boolean playerIsMoving = playerMotion != null;
-		boolean playerIsUsingPortal = playerMotion != null && playerMotion.isContainsTeleportation();
-
-		Optional<MineExplosionAction> optMineExplosionAction = cosmodogGame.getActionRegistry().currentMineExplosionAction();
-		Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
-		Object radiationDamageAction = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.RADIATION_DAMAGE);
-		Object shockDamageAction = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SHOCK_DAMAGE);
-
-		boolean playerIsFighting = optFightPhase.isPresent() && optFightPhase.get() instanceof PlayerAttackActionPhase;
-		boolean playerIsAttemptingBlockedPassage = optMovementAttemptAction.isPresent();
-		boolean playerIsTakingDamage = false;
-		
-		if (shockDamageAction != null) {
-			playerIsTakingDamage = true;
-		} if (radiationDamageAction != null) {
-			playerIsTakingDamage = true;
-		} else if (optMineExplosionAction.isPresent()) {
-			playerIsTakingDamage = true;
-		} else if (optFightPhase.isPresent()) {
-			if (optFightPhase.get() instanceof EnemyAttackActionPhase) {
-				if (optFightPhase.get() instanceof ArtilleryAttackActionPhase) {
-					playerIsTakingDamage = ((ArtilleryAttackActionPhase)optFightPhase.get()).playerTakingDamage();
-				} else {
-					playerIsTakingDamage = true;
-				}
-			}
-		}
 
 		boolean playerIsHoldingUpItem = cosmodogGame.getCurrentlyFoundTool() != null;
-		
-		ActorAppearanceType playerAppearanceType;
-		
-		if (playerIsBeingTeleportedAndInvisible) {
-			playerAppearanceType = ActorAppearanceType.ISTELEPORTING;
-		} else if (playerIsOnBoat) {
-			playerAppearanceType = ActorAppearanceType.ONBOAT;
-		} else if (playerIsInPlatform) {
-			playerAppearanceType = ActorAppearanceType.INPLATFORM;
-		} else if (playerIsInVehicle) {
-			playerAppearanceType = ActorAppearanceType.INVEHICLE;
-		} else if (playerIsOnPlatform) {
-			playerAppearanceType = ActorAppearanceType.DEFAULT;
-		} else if (playerIsInHighGrass) {
-			playerAppearanceType = ActorAppearanceType.INHIGHGRASS;
-		} else if (playerIsOnSki) {
-			playerAppearanceType = ActorAppearanceType.ONSKI;
-		} else if (playerIsInSoftGroundType) {
-			playerAppearanceType = ActorAppearanceType.NOFEET;
-		} else {
-			playerAppearanceType = ActorAppearanceType.DEFAULT;
-		}
-		
-		PlayerActionType playerActionType;
-		
-		if (playerIsMoving) {
-			playerActionType = PlayerActionType.ANIMATE;
-		} else if (playerIsTakingDamage) {
-			playerActionType = PlayerActionType.TAKINGDAMAGE;
-		} else if (playerIsHoldingUpItem) {
-			playerActionType = PlayerActionType.HOLDING_UP_ITEM;
-		} else {
-			playerActionType = PlayerActionType.INANIMATE;
-		}
-		
-		String animationKey;
-		
 
-		animationKey = Mappings.playerAnimationId(playerAppearanceType, playerActionType, player.getDirection());
-		
-		Animation playerAnimation = applicationContext.getAnimations().get(animationKey);
-		Animation playerWeaponAnimation = null;
-		
-		Arsenal arsenal = player.getArsenal();
-		WeaponType weaponType = arsenal.getSelectedWeaponType();
-		
-		if (weaponType != WeaponType.FISTS) {
-			String animationPrefix = Mappings.WEAPON_TYPE_2_PLAYER_WEAPON_ANIMATION_PREFIX.get(weaponType);
-			String weaponAnimationId = animationKey.replace("player", "player" + animationPrefix);
-			weaponAnimationId = weaponAnimationId.replace("OnSki", "Default");
-			playerWeaponAnimation = applicationContext.getAnimations().get(weaponAnimationId);
-		}
-		
-		float pieceOffsetX = 0;
-		float pieceOffsetY = 0;
-		
 
+		ActorAppearanceType playerAppearanceType = PlayerRendererUtils.appearanceType();
+		PlayerActionType playerActionType = PlayerRendererUtils.actionType();
+		Animation playerAnimation = PlayerRendererUtils.playerAnimation(playerAppearanceType, playerActionType, player.getDirection());
+		Animation playerWeaponAnimation = PlayerRendererUtils.weaponAnimation(playerAppearanceType, playerActionType, player.getDirection());
 		
-		if (playerIsMoving) {
-			pieceOffsetX = tileLength * playerMotion.getCrossTileOffsetX();
-			pieceOffsetY = tileLength * playerMotion.getCrossTileOffsetY();
-		}
-		
-		if (playerIsFighting) {
-								
-			float completion = optFightPhase.get().getCompletionRate();
-
-			float fightOffset = 0.0f;
-				
-			if (completion > 0.5f) {
-				completion = 1.0f - completion;
-			}
-			
-			fightOffset = (tileLength * cam.getZoomFactor()) / 10.0f * completion;
-			
-			if (player.getDirection() == DirectionType.DOWN) {
-				pieceOffsetY = fightOffset;
-			}
-			
-			if (player.getDirection() == DirectionType.UP) {
-				pieceOffsetY = -fightOffset;
-			}
-			
-			if (player.getDirection() == DirectionType.RIGHT) {
-				pieceOffsetX = fightOffset;
-			}
-			
-			if (player.getDirection() == DirectionType.LEFT) {
-				pieceOffsetX = -fightOffset;
-			}
-				
-		}
-		
-		if (playerIsAttemptingBlockedPassage) {
-			
-			float completion = optMovementAttemptAction.get().getCompletionRate();
-
-			float movementAttemptOffset = 0.0f;
-			
-				
-			if (completion > 0.5f) {
-				completion = 1.0f - completion;
-			}
-				
-			movementAttemptOffset = (tileLength * cam.getZoomFactor()) / 16.0f * completion;
-				
-			
-			if (player.getDirection() == DirectionType.DOWN) {
-				pieceOffsetY = movementAttemptOffset;
-			}
-			
-			if (player.getDirection() == DirectionType.UP) {
-				pieceOffsetY = -movementAttemptOffset;
-			}
-			
-			if (player.getDirection() == DirectionType.RIGHT) {
-				pieceOffsetX = movementAttemptOffset;
-			}
-			
-			if (player.getDirection() == DirectionType.LEFT) {
-				pieceOffsetX = -movementAttemptOffset;
-			}
-		}
+		Vector offsetFromTile = PlayerRendererUtils.offsetFromTile();
 		
 		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		playerAnimation.draw(playerCoordinatesRelatedToCam.getX() + pieceOffsetX, playerCoordinatesRelatedToCam.getY() + pieceOffsetY);
+		Optional<Portal> optExitPortal = PlayerRendererUtils.exitPortal();
+		if (optExitPortal.isPresent()) {
+
+
+
+			Vector exitCoordinatesRelatedToCam = Cam
+					.positionVectorRelatedToCamTilePosition(
+							DirectionType.facedAdjacentPosition(optExitPortal.get().position, optExitPortal.get().directionType),
+							camTilePosition
+					)
+			;
+
+			CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
+			int index = (int)Math.abs((playerMotion.getCrossTileOffsetX() + playerMotion.getCrossTileOffsetY()) * playerAnimation.getFrameCount());
+
+			float verticalOffsetForEntering = 0;
+
+			Animation enteringPortalAnimation;
+			if (playerMotion.getCrossTileOffsetX() > 0) {
+				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalRight");
+			} else if (playerMotion.getCrossTileOffsetX() < 0) {
+				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalLeft");
+			} else if (playerMotion.getCrossTileOffsetY() > 0) {
+				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalDown");
+			} else {
+				verticalOffsetForEntering = -Math.abs((playerMotion.getCrossTileOffsetY()) * tileLength);
+				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalUp");
+			}
+			enteringPortalAnimation.getImage(index).draw(playerCoordinatesRelatedToCam.getX(), playerCoordinatesRelatedToCam.getY() + verticalOffsetForEntering);
+
+			float verticalOffsetForExiting = 0;
+
+			Animation exitingPortalAnimation;
+			if (optExitPortal.get().directionType == DirectionType.RIGHT) {
+				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalRight");
+			} else if (optExitPortal.get().directionType == DirectionType.LEFT) {
+				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalLeft");
+			} else if (optExitPortal.get().directionType == DirectionType.DOWN) {
+				float ratio = Math.abs(playerMotion.getCrossTileOffsetX()) + Math.abs(playerMotion.getCrossTileOffsetY());
+				verticalOffsetForExiting = ratio * tileLength - tileLength;
+				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalDown");
+			} else {
+				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalUp");
+			}
+			exitingPortalAnimation.getImage(index).draw(exitCoordinatesRelatedToCam.getX(), exitCoordinatesRelatedToCam.getY() + verticalOffsetForExiting);
+
+		} else {
+			playerAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
+		}
+
 		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw(playerCoordinatesRelatedToCam.getX() + pieceOffsetX, playerCoordinatesRelatedToCam.getY() + pieceOffsetY);
+			playerWeaponAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
 		}
 		
 		if (playerIsHoldingUpItem) {
@@ -277,7 +156,7 @@ public class PlayerRenderer extends AbstractRenderer {
 				String animationId = Mappings.collectibleToolToAnimationId(tool);
 				Animation foundToolAnimation = ApplicationContext.instance().getAnimations().get(animationId);
 				if (foundToolAnimation != null) {
-					foundToolAnimation.draw(playerCoordinatesRelatedToCam.getX() + pieceOffsetX, playerCoordinatesRelatedToCam.getY() - tileLength + pieceOffsetY);
+					foundToolAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() - tileLength + offsetFromTile.getY());
 				}
 			}
 		}
@@ -289,48 +168,4 @@ public class PlayerRenderer extends AbstractRenderer {
 		
 	}
 
-	private boolean hasBoat(Player player) {
-		InventoryItem boat= player.getInventory().get(InventoryItemType.BOAT);
-		return boat != null;
-	}
-	
-	private boolean isWaterTile(CosmodogMap map, Player player, CrossTileMotion playerMotion) {
-		//int tileId = map.getTileId(tileX, tileY, Layers.LAYER_META_COLLISIONS);
-		//return tileId == Tiles.WATER_TILE_ID;
-		
-		boolean retVal = false;
-		
-		if (playerMotion == null) {
-			int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_COLLISIONS);
-			retVal = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_WATER);
-		} else {
-			int startTileId = map.getTileId(playerMotion.getlastMidwayPosition(), Layers.LAYER_META_COLLISIONS);
-			int targetTileId = map.getTileId(playerMotion.getTargetPosition(), Layers.LAYER_META_COLLISIONS);
-			
-			boolean startTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, startTileId).equals(TileType.COLLISION_WATER);
-			boolean targetTileIdIsWaterTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, targetTileId).equals(TileType.COLLISION_WATER);
-			
-			if (startTileIdIsWaterTile && targetTileIdIsWaterTile) {
-				retVal = true;
-			} else if (!startTileIdIsWaterTile && !targetTileIdIsWaterTile) {
-				retVal = false;
-			} else if (startTileIdIsWaterTile) {
-				float transitionalOffset = playerMotion.getCrossTileOffsetX() + playerMotion.getCrossTileOffsetY();
-				retVal = transitionalOffset > -0.25 && transitionalOffset < 0.25;
-			} else {
-				float transitionalOffset = playerMotion.getCrossTileOffsetX() + playerMotion.getCrossTileOffsetY();
-				retVal = transitionalOffset > 0.5 || transitionalOffset < -0.5;
-			}
-		}
-		
-		return retVal;
-		
-	}
-	
-
-
-	
-	
-	
-	
 }

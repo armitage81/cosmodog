@@ -1357,6 +1357,14 @@ playerRpgNoFeetHitDown;data/player_weapon_rpg.png;16;16;[3/1/25,4/1/25,5/1/25];t
 playerRpgNoFeetHitLeft;data/player_weapon_rpg.png;16;16;[3/2/25,4/2/25,5/2/25];true;true
 playerRpgNoFeetHitUp;data/player_weapon_rpg.png;16;16;[3/3/25,4/3/25,5/3/25];true;true
 
+playerEnteringPortalRight;data/player.png;16;16;[0/39/10,1/39/10,2/39/10,3/39/10,4/39/10,5/39/10,6/39/10];false;false
+playerExitingPortalRight;data/player.png;16;16;[0/40/10,1/40/10,2/40/10,3/40/10,4/40/10,5/40/10,6/40/10];false;false
+playerEnteringPortalDown;data/player.png;16;16;[0/41/10,1/41/10,2/41/10,3/41/10,4/41/10,5/41/10,6/41/10];false;false
+playerExitingPortalDown;data/player.png;16;16;[0/42/10,1/42/10,2/42/10,3/42/10,4/42/10,5/42/10,6/42/10];false;false
+playerEnteringPortalLeft;data/player.png;16;16;[0/43/10,1/43/10,2/43/10,3/43/10,4/43/10,5/43/10,6/43/10];false;false
+playerExitingPortalLeft;data/player.png;16;16;[0/44/10,1/44/10,2/44/10,3/44/10,4/44/10,5/44/10,6/44/10];false;false
+playerEnteringPortalUp;data/player.png;16;16;[0/45/10,1/45/10,2/45/10,3/45/10,4/45/10,5/45/10,6/45/10];false;false
+playerExitingPortalUp;data/player.png;16;16;[0/46/10,1/46/10,2/46/10,3/46/10,4/46/10,5/46/10,6/46/10];false;false
 
 wormAttackSnowSpark;data/worm.png;48;16;[0/3/200,0/4/200,0/5/200];true;true
 wormAttack;data/worm.png;48;48;[1/0/10000];true;true
