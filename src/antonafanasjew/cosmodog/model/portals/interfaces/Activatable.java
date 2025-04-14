@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.portals.interfaces;
 
+import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 
 public interface Activatable {
@@ -10,7 +11,7 @@ public interface Activatable {
 
         boolean isActive();
 
-        boolean canActivate(CosmodogMap map);
+        boolean canActivate(CosmodogGame game);
 
-        boolean canDeactivate(CosmodogMap map);
+        boolean canDeactivate(CosmodogGame game);
 }

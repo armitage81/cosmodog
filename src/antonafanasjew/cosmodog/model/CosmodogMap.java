@@ -4,6 +4,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
+import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
+import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
+import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -270,6 +274,76 @@ public class CosmodogMap extends CosmodogModel {
 	public Optional<DynamicPiece> dynamicPieceAtPosition(Class<? extends DynamicPiece> clazz, Position position) {
 		return dynamicPieces.get(clazz).stream().filter(e -> e.getPosition().equals(position)).findFirst();
 	}
+
+	public Optional<SwitchableHolder> switchableHolderAtPosition(Position position) {
+
+		for (Class<?> c : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> l = dynamicPieces.get(c);
+			for (DynamicPiece dp : l) {
+				if (dp instanceof SwitchableHolder) {
+					if (dp.getPosition().equals(position)) {
+						return Optional.of((SwitchableHolder) dp);
+					}
+				}
+			}
+		}
+
+		return Optional.empty();
+	}
+
+	public Optional<Switchable> switchableAtPosition(Position position) {
+
+		for (Class<?> c : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> l = dynamicPieces.get(c);
+			for (DynamicPiece dp : l) {
+				if (dp instanceof Switchable) {
+					if (dp.getPosition().equals(position)) {
+						return Optional.of((Switchable) dp);
+					}
+				}
+			}
+		}
+
+		return Optional.empty();
+	}
+
+
+
+	public Optional<ActivatableHolder> activatableHolderAtPosition(Position position) {
+
+		for (Class<?> c : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> l = dynamicPieces.get(c);
+			for (DynamicPiece dp : l) {
+				if (dp instanceof ActivatableHolder) {
+					if (dp.getPosition().equals(position)) {
+						return Optional.of((ActivatableHolder) dp);
+					}
+				}
+			}
+		}
+
+		return Optional.empty();
+	}
+
+	public Optional<Activatable> activatableAtPosition(Position position) {
+
+		for (Class<?> c : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> l = dynamicPieces.get(c);
+			for (DynamicPiece dp : l) {
+				if (dp instanceof Activatable) {
+					if (dp.getPosition().equals(position)) {
+						return Optional.of((Activatable) dp);
+					}
+				}
+			}
+		}
+
+		return Optional.empty();
+	}
+
+
+
+
 
 	public List<MoveableGroup> getMoveableGroups() {
 		return moveableGroups;

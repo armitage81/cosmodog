@@ -1,13 +1,18 @@
 package antonafanasjew.cosmodog.util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Switch;
+import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
+import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
+import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
+import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
+import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -34,13 +39,6 @@ import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
-import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.Effect;
-import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
-import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.builder.EnemyFactory;
@@ -206,6 +204,7 @@ public class InitializationUtils {
 			initializeTiledMapObjects(customTiledMap, map);
 			initializeEnemies(customTiledMap, map);
 			initializeDynamicTiles(customTiledMap, map);
+			initializeSwitchableAndActivatableConnectors(map);
 			//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
 			initializeMoveableGroups(customTiledMap, map);
 			//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
@@ -384,6 +383,21 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
+                if (tileId == TileType.DYNAMIC_PIECE_BOLLARD_RISEN.getTileId()) {
+                    Bollard bollard = Bollard.create(position, false);
+                    map.getDynamicPieces().put(Bollard.class, bollard);
+                }
+
+                if (tileId == TileType.DYNAMIC_PIECE_BOLLARD_SUNK.getTileId()) {
+                    Bollard bollard = Bollard.create(position, true);
+                    map.getDynamicPieces().put(Bollard.class, bollard);
+                }
+
+                if (tileId == TileType.DYNAMIC_PIECE_SWITCH.getTileId()) {
+                    Switch aSwitch = Switch.createInstance(position);
+                    map.getDynamicPieces().put(Switch.class, aSwitch);
+                }
+
 				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_BLOCK.getTileId()) {
 					Block block = Block.create(position);
 					block.setStil(Block.STIL_BLOCK);
@@ -556,6 +570,41 @@ public class InitializationUtils {
 					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
 				}
 				
+			}
+		}
+	}
+
+	private static void initializeSwitchableAndActivatableConnectors(CosmodogMap map) {
+		CustomTiledMap tiledMap = map.getCustomTiledMap();
+		TiledObjectGroup connectorsGroup = map.getCustomTiledMap().getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_SWITCHABLES_AND_ACTIVATABLES);
+
+		if (connectorsGroup == null) {
+			return;
+		}
+
+		List<TiledLineObject> connectors = connectorsGroup.getObjects().values().stream().map(e -> (TiledLineObject)e).toList();
+
+		int tileLength = TileUtils.tileLengthSupplier.get();
+
+		for (TiledLineObject connector : connectors) {
+			TiledLineObject.Point start = connector.getPoints().get(0);
+			TiledLineObject.Point end = connector.getPoints().get(1);
+			Position startPosition = Position.fromCoordinates((float)((int)start.x / tileLength), (float)((int)start.y / tileLength), map.getMapType());
+			Position endPosition = Position.fromCoordinates((float)((int)end.x / tileLength), (float)((int)end.y / tileLength), map.getMapType());
+			Optional<SwitchableHolder> optSwitchableHolder = map.switchableHolderAtPosition(startPosition);
+			if (optSwitchableHolder.isPresent()) {
+				Optional<Switchable> optSwitchable = map.switchableAtPosition(endPosition);
+				if (optSwitchable.isPresent()) {
+					optSwitchableHolder.get().addSwitchable(optSwitchable.get());
+				}
+			} else {
+				Optional<ActivatableHolder> optActivatableHolder = map.activatableHolderAtPosition(startPosition);
+				if (optActivatableHolder.isPresent()) {
+					Optional<Activatable> optActivatable = map.activatableAtPosition(endPosition);
+					if (optActivatable.isPresent()) {
+						optActivatableHolder.get().addActivatable(optActivatable.get());
+					}
+				}
 			}
 		}
 	}

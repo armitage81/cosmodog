@@ -4,7 +4,7 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
- * Represents a dynamic tile that is apressure button.
+ * Represents a dynamic tile that is a pressure button.
  */
 public class PressureButton extends DynamicPiece {
 
