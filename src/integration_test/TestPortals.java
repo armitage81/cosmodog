@@ -18,7 +18,7 @@ public class TestPortals {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(180, 60, MapType.SPACE));
+				player.setPosition(Position.fromCoordinates(206, 60, MapType.SPACE));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
