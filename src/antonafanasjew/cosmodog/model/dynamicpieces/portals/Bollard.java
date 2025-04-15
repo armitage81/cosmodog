@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces.portals;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -15,11 +17,21 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
     public boolean open;
     public boolean initialOpen;
 
+    public static final short VISUAL_STATE_CLOSED = 0;
+    public static final short VISUAL_STATE_OPENING_PHASE1 = 1;
+    public static final short VISUAL_STATE_OPENING_PHASE2 = 2;
+    public static final short VISUAL_STATE_OPENING_PHASE3 = 3;
+    public static final short VISUAL_STATE_OPEN = 4;
+
+
+    private short visualState;
+
     public static Bollard create(Position position, boolean open) {
         Bollard bollard = new Bollard();
         bollard.setPosition(position);
         bollard.open = open;
         bollard.initialOpen = open;
+        bollard.visualState = open ? VISUAL_STATE_OPEN : VISUAL_STATE_CLOSED;
         return bollard;
     }
 
@@ -30,7 +42,21 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
 
     @Override
     public String animationId(boolean bottomNotTop) {
-        return "";
+        String animationIdPrefix = "dynamicPieceBollard";
+        String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
+        String animationSuffix = String.valueOf(visualState);
+        return animationIdPrefix + animationIdInfix + animationSuffix;
+    }
+
+    @Override
+    public void interact() {
+        if (!open) {
+            ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
+        }
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 
     @Override

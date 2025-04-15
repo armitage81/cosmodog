@@ -23,6 +23,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -75,6 +76,10 @@ public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValid
 				}
 			} else if (dynamicPiece instanceof SecretDoor door) {
                 if (!door.isOpen()) {
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				}
+			} else if (dynamicPiece instanceof Bollard bollard) {
+				if (!bollard.isOpen()) {
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
 			} else if (dynamicPiece instanceof Crate crate) {

@@ -28,6 +28,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -153,7 +154,13 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					String blockReasonParam = "Door is closed";
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
-			} else if (dynamicPiece instanceof Crate) {
+			} else if (dynamicPiece instanceof Bollard) {
+				Bollard bollard = (Bollard)dynamicPiece;
+				if (!bollard.isOpen()) {
+					String blockReasonParam = "Door is closed";
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				}
+			}else if (dynamicPiece instanceof Crate) {
 				Crate crate = (Crate)dynamicPiece;
 				if (crate.getState() != Crate.STATE_DESTROYED) {
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");

@@ -5,6 +5,7 @@ import java.util.List;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.model.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -39,6 +40,7 @@ import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
 	public static List<Class<? extends DynamicPiece>> PIECES_FOR_DEFAULT_RENDERING = List.of(
+			Bollard.class,
 			SecretDoor.class,
 			Stone.class,
 			HardStone.class,
@@ -69,13 +71,12 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
 
-		DynamicPiecesRendererParam dynamicPiecerenderingParam = (DynamicPiecesRendererParam) renderingParameter;
+		DynamicPiecesRendererParam dynamicPieceRenderingParam = (DynamicPiecesRendererParam) renderingParameter;
 
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
-
 		Cam cam = cosmodogGame.getCam();
 
 		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
@@ -102,9 +103,9 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			float pieceX = pieceVectorRelatedToCam.getX();
 			float pieceY = pieceVectorRelatedToCam.getY();
 			float pieceNorthY = adjacentNorthPieceVectorRelatedToCam.getY();
-			float topBottomDependentY = dynamicPiecerenderingParam.bottomNotTop() ? pieceY : pieceNorthY;
+			float topBottomDependentY = dynamicPieceRenderingParam.bottomNotTop() ? pieceY : pieceNorthY;
 
-			String animationId = dynamicPiece.animationId(dynamicPiecerenderingParam.bottomNotTop());
+			String animationId = dynamicPiece.animationId(dynamicPieceRenderingParam.bottomNotTop());
 
 			if (dynamicPiece instanceof Block block) {
 
@@ -132,7 +133,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			if (dynamicPiece instanceof LetterPlate letterPlate) {
 
-				if (dynamicPiecerenderingParam.bottomNotTop()) {
+				if (dynamicPieceRenderingParam.bottomNotTop()) {
 
 					applicationContext.getAnimations().get(animationId).draw(pieceX, pieceY);
 
@@ -152,7 +153,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			}
 
 			if (dynamicPiece instanceof Terminal terminal) {
-				if (dynamicPiecerenderingParam.bottomNotTop()) {
+				if (dynamicPieceRenderingParam.bottomNotTop()) {
 					applicationContext.getAnimations().get(animationId).draw(pieceX, pieceY);
 				}
 			}
