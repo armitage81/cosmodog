@@ -1,5 +1,10 @@
 package antonafanasjew.cosmodog.model.dynamicpieces.portals;
 
+import antonafanasjew.cosmodog.actions.ActionRegistry;
+import antonafanasjew.cosmodog.actions.AsyncAction;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
+import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.portals.interfaces.Pressable;
@@ -28,7 +33,7 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
 
     @Override
     public String animationId(boolean bottomNotTop) {
-        return "";
+        return bottomNotTop ? "dynamicPieceSwitchBottom" : "dynamicPieceSwitchTop";
     }
 
     @Override
@@ -47,7 +52,20 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
 
     @Override
     public void press(CosmodogGame game) {
-        switchables.forEach(Switchable::switchToNextState);
+        for (Switchable switchable : switchables) {
+            if (switchable instanceof  Bollard bollard) {
+                boolean open = bollard.isOpen();
+                AsyncAction action;
+                if (open) {
+                    action = new RaisingBollardAction(1000, bollard);
+                } else {
+                    action = new SinkingBollardAction(1000, bollard);
+                }
+                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+            }
+        }
+
     }
 
 }

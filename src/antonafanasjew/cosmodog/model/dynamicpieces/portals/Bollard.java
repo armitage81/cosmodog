@@ -59,6 +59,10 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
         return open;
     }
 
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
     @Override
     public int numberOfStates() {
         return 2;
@@ -105,5 +109,9 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
 
 
         return !moveableOnPosition && !playerOnPosition;
+    }
+
+    public void setVisualState(short visualState) {
+        this.visualState = visualState;
     }
 }
