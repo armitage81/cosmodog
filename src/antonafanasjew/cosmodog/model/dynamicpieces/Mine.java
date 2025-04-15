@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -63,6 +64,11 @@ public class Mine extends DynamicPiece {
 	@Override
 	public boolean wrapsCollectible() {
 		return false;
+	}
+
+	@Override
+	public boolean permeableForPortalRay(DirectionType incomingDirection) {
+		return true;
 	}
 
 	@Override

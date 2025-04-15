@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.dynamicpieces;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -44,7 +45,12 @@ public class Block extends MoveableDynamicPiece {
 	public void interact() {
 		
 	}
-	
+
+	@Override
+	public boolean permeableForPortalRay(DirectionType incomingDirection) {
+		return false;
+	}
+
 	public String getStil() {
 		return stil;
 	}

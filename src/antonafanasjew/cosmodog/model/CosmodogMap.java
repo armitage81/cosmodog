@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -25,6 +26,7 @@ import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import org.newdawn.slick.AppletGameContainer;
 
 /**
  * Represents the game map as model. Does not contains information about the
@@ -174,7 +176,18 @@ public class CosmodogMap extends CosmodogModel {
 		}
 		return retVal;
 	}
-	
+
+	public Set<DynamicPiece> dynamicPiecesAtPosition(Position position) {
+		Set<DynamicPiece> retVal = new HashSet<>();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapType());
+		Set<Class<?>> dynamicPieceTypes = map.getDynamicPieces().keySet();
+		for (Class<?> clazz : dynamicPieceTypes) {
+			Collection<DynamicPiece> l = map.getDynamicPieces().get(clazz);
+			l.stream().filter(e -> e.getPosition().equals(position)).forEach(retVal::add);
+		}
+		return retVal;
+	}
+
 	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(Position position, int width, int height, int grace) {
 		return PlayerMovementCache.getInstance().getVisibleDynamicPieces();
 	}

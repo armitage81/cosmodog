@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.portals.interfaces.Pressable;
@@ -28,6 +29,11 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
 
     @Override
     public boolean wrapsCollectible() {
+        return false;
+    }
+
+    @Override
+    public boolean permeableForPortalRay(DirectionType incomingDirection) {
         return false;
     }
 

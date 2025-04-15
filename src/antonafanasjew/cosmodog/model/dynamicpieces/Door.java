@@ -91,8 +91,12 @@ public class Door extends DynamicPiece {
 		return false;
 	}
 
-	
-	
+	@Override
+	public boolean permeableForPortalRay(DirectionType incomingDirection) {
+		return false;
+	}
+
+
 	public DoorType getDoorType() {
 		return doorType;
 	}

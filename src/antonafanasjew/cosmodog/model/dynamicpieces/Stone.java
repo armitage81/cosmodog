@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -68,6 +69,11 @@ public class Stone extends DynamicPiece {
 	@Override
 	public boolean wrapsCollectible() {
 		return state != STATE_DESTROYED;
+	}
+
+	@Override
+	public boolean permeableForPortalRay(DirectionType incomingDirection) {
+		return false;
 	}
 
 	@Override

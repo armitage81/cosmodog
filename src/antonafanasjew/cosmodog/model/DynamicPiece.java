@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.model;
 
 
+import antonafanasjew.cosmodog.domains.DirectionType;
+
 /**
  * Describes dynamic pieces, that is tiles that can change their properties.
  * F.i. an destroyable stone.
@@ -48,6 +50,8 @@ public abstract class DynamicPiece extends Piece {
 	 * Example: A crate is hiding the collectible as long as it is not in the state 'destroyed'.
 	 */
 	public abstract boolean wrapsCollectible();
+
+	public abstract boolean permeableForPortalRay(DirectionType incomingDirection);
 
 	public abstract String animationId(boolean bottomNotTop);
 	

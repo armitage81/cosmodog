@@ -69,6 +69,11 @@ public class Terminal extends DynamicPiece {
 		return false;
 	}
 
+	@Override
+	public boolean permeableForPortalRay(DirectionType incomingDirection) {
+		return false;
+	}
+
 	public static Terminal create(Position position) {
 		Terminal terminal = new Terminal();
 		terminal.setPosition(position);

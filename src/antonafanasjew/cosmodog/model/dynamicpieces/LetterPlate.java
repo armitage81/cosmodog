@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.death.RespawnAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -126,6 +127,11 @@ public class LetterPlate extends DynamicPiece {
 	@Override
 	public boolean wrapsCollectible() {
 		return false;
+	}
+
+	@Override
+	public boolean permeableForPortalRay(DirectionType incomingDirection) {
+		return true;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces.portals;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -38,6 +39,11 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
     @Override
     public boolean wrapsCollectible() {
         return false;
+    }
+
+    @Override
+    public boolean permeableForPortalRay(DirectionType incomingDirection) {
+        return this.isOpen();
     }
 
     @Override

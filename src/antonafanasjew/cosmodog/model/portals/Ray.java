@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
 import antonafanasjew.cosmodog.topology.Position;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class Ray implements Serializable {
 
@@ -61,7 +63,15 @@ public class Ray implements Serializable {
         TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
         boolean blocking = tileType.equals(TileType.PORTAL_RAY_BLOCKING);
         boolean attachable = tileType.equals(TileType.PORTAL_RAY_ATTACHABLE);
-        return !blocking && !attachable;
+        Set<DynamicPiece> dynamicPieces = map.dynamicPiecesAtPosition(position);
+        boolean dynamicPiecePermeable = true;
+        for (DynamicPiece dynamicPiece : dynamicPieces) {
+            if (!dynamicPiece.permeableForPortalRay(null)) {
+                dynamicPiecePermeable = false;
+                break;
+            }
+        }
+        return !blocking && !attachable && dynamicPiecePermeable;
     }
 
     private static Optional<DirectionType> reflectionDirection(Position reflectorPosition, DirectionType directionType) {
