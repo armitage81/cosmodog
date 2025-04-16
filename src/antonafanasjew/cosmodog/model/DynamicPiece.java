@@ -19,7 +19,32 @@ public abstract class DynamicPiece extends Piece {
 	public void interact() {
 		
 	};
-	
+
+	/**
+	 * This method will be called before the movement. When the player wants to move to a tile with this dynamic piece,
+	 * he will first interact with the dynamic piece, then attempting to move to the tile.
+	 * Example: Doors that are opened automatically when the player enters the tile. They need to be open before the player moves to the tile.
+	 * It could be that some logic would decide whether the door should open or not. This logic could be placed here.
+	 * What is the difference to the interact method? The difference is that this method here is called before collision validation.
+	 * That means that the player will execute a movement attempt after the interaction.
+	 *
+	 * Consider two examples:
+	 *
+	 * 1. "Crumbled wall" piece: If the player has dynamite, he will destroy the wall in the "interact" method, but he will not move into the tile in the same turn.
+	 * 2. "Bollard with movement detector": If the player wants to move to the tile, the bollard will be sunk in the interactBeforeEnteringAttempt and the player will enter the tile afterwards.
+	 *
+	 */
+	public void interactBeforeEnteringAttempt() {
+
+	}
+
+	/**
+	 * Analog to interactBeforeEnteringAttempt, this method is used to execute an action after the player has left the tile and finished his movement.
+	 */
+	public void interactAfterExiting() {
+
+	}
+
 	/**
 	 * This method will be called only when stepping on a dynamic piece, such as a pressure plate or poison pool.
 	 * If the dynamic piece is blocking, then the interact() method is called instead.

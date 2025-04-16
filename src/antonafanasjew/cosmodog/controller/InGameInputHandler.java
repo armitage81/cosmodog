@@ -162,7 +162,14 @@ public class InGameInputHandler extends AbstractInputHandler {
     			player.turn(DirectionType.DOWN);
     		} 
 
+			Position startPosition = player.getPosition();
 			Entrance targetEntrance = cosmodogGame.targetEntrance(player);
+
+			Set<DynamicPiece> dynamicPieces = map.dynamicPiecesAtPosition(targetEntrance.getPosition());
+
+			for (DynamicPiece dynamicPiece : dynamicPieces) {
+				dynamicPiece.interactBeforeEnteringAttempt();
+			}
 
     		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.
     		Set<Enemy> enemies = map.getEnemies();
@@ -200,7 +207,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     			
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
-    		
+
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, targetEntrance);
 	    		
 				if (collisionStatus.isPassable()) {

@@ -41,7 +41,7 @@ public class VehicleRenderer extends AbstractPieceRenderer {
 		Player player = ApplicationContextUtils.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 
-		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 		CrossTileMotion playerMotion = null;
 		if (movementAction != null) {
 			playerMotion = movementAction.getActorMotions().get(player);

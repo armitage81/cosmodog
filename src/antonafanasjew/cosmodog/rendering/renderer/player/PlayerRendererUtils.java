@@ -94,7 +94,7 @@ public class PlayerRendererUtils {
 
         MovementAction movementAction = (MovementAction)game
                 .getActionRegistry()
-                .getRegisteredAction(AsyncActionType.MOVEMENT)
+                .getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class)
         ;
 
         CrossTileMotion playerMotion = null;

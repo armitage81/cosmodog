@@ -71,7 +71,7 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 			float movementOffsetY = 0;
 
 			//The information about the actor's movement is taken from its registered transition, if any.
-			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 			CrossTileMotion actorMotion = null;
 			if (movementAction != null) {
 				actorMotion = movementAction.getActorMotions().get(actor);

@@ -56,6 +56,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	@Serial
 	private static final long serialVersionUID = -693412142092974821L;
 
+    private Position startPosition;
 	private Entrance targetEntrance;
 
 	private MovementActionResult moveableMovementActionResult = null;
@@ -114,7 +115,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 		CosmodogMap cosmodogMap = game.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 		Position playerPosition = player.getPosition();
-		
+
+        //Position before movement
+        startPosition = player.getPosition();
+
 		//Calculating the target entrance.
 		targetEntrance = skipTurn ?
 				Entrance.instance(playerPosition, player.getDirection(), false, true)
@@ -597,7 +601,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		Player player = ApplicationContextUtils.getPlayer();
 
-		Position startPosition = player.getPosition();
 		Position targetPosition = targetEntrance.getPosition();
 		
 		boolean noMovement = targetEntrance.isWaited();
@@ -620,6 +623,14 @@ public class MovementAction extends FixedLengthAsyncAction {
 				}
 			}
 		}
+
+        if (!player.getPosition().equals(startPosition)) {
+            Set<DynamicPiece> dynamicPiecesAtStartPosition = map.dynamicPiecesAtPosition(startPosition);
+
+            for (DynamicPiece dynamicPiece : dynamicPiecesAtStartPosition) {
+                dynamicPiece.interactAfterExiting();
+            }
+        }
 	}
 
 	public Map<Actor, CrossTileMotion> getActorMotions() {

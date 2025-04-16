@@ -61,7 +61,7 @@ public class OccupiedPlatformRenderer extends AbstractRenderer {
 
 			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
-			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 
 			CrossTileMotion playerMotion = null;
 

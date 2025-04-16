@@ -5,6 +5,7 @@ import java.util.*;
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.AutoBollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Switch;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
@@ -392,6 +393,11 @@ public class InitializationUtils {
                     Bollard bollard = Bollard.create(position, true);
                     map.getDynamicPieces().put(Bollard.class, bollard);
                 }
+
+				if (tileId == TileType.DYNAMIC_PIECE_AUTOBOLLARD.getTileId()) {
+					AutoBollard autoBollard = AutoBollard.create(position);
+					map.getDynamicPieces().put(AutoBollard.class, autoBollard);
+				}
 
                 if (tileId == TileType.DYNAMIC_PIECE_SWITCH.getTileId()) {
                     Switch aSwitch = Switch.createInstance(position);

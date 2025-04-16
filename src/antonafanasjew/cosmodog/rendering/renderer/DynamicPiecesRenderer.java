@@ -5,6 +5,7 @@ import java.util.List;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.model.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.AutoBollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Switch;
 import antonafanasjew.cosmodog.topology.Position;
@@ -41,6 +42,7 @@ import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
 	public static List<Class<? extends DynamicPiece>> PIECES_FOR_DEFAULT_RENDERING = List.of(
+			AutoBollard.class,
 			Bollard.class,
 			Switch.class,
 			SecretDoor.class,
@@ -114,7 +116,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 				float pieceOffsetX = 0.0f;
 				float pieceOffsetY = 0.0f;
 
-				MovementAction movementAction = (MovementAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+				MovementAction movementAction = (MovementAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 
 				if (movementAction != null) {
 

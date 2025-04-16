@@ -2,9 +2,13 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
+import antonafanasjew.cosmodog.actions.popup.WaitAction;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 /**
  * Represents a dynamic tile that is a stone that can be destroyed by the player.

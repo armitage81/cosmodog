@@ -68,7 +68,7 @@ public class NpcRenderer extends AbstractRenderer {
 
 		Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 
-		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT);
+		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 
 		for (Enemy enemy : enemies) {
 

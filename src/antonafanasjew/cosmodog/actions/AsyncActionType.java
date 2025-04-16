@@ -40,7 +40,7 @@ public enum AsyncActionType {
 	/**
 	 * Action type: Movement of the player character and the NPC's
 	 */
-	MOVEMENT(true, false, true),
+	MOVEMENT(true, true, true),
 	
 	/**
 	 * Action type: Wait. Is used to make intervals between movements of the player.
