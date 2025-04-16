@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.AutoBollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Jammer;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Switch;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
@@ -383,6 +384,11 @@ public class InitializationUtils {
 				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
+
+				if (tileId == TileType.DYNAMIC_PIECE_JAMMER.getTileId()) {
+					Jammer jammer = Jammer.create(position);
+					map.getDynamicPieces().put(Jammer.class, jammer);
+				}
 
                 if (tileId == TileType.DYNAMIC_PIECE_BOLLARD_RISEN.getTileId()) {
                     Bollard bollard = Bollard.create(position, false);

@@ -1648,6 +1648,9 @@ dynamicPieceAutoBollardTop4;data/portals_animations.png;16;16;[4/4/10000];true;t
 dynamicPieceSwitchBottom;data/portals_animations.png;16;16;[0/3/10000];true;true
 dynamicPieceSwitchTop;data/portals_animations.png;16;16;[0/2/10000];true;true
 
+dynamicPieceJammerTop;data/portals_animations.png;16;16;[0/6/100,1/6/100,2/6/100,];true;true
+dynamicPieceJammerBottom;data/portals_animations.png;16;16;[0/7/100,1/7/100,2/7/100,];true;true
+
 dynamicPieceAlienSwitchBottom0;data/stones.png;32;16;[0/49/10000];true;true
 dynamicPieceAlienSwitchBottom1;data/stones.png;32;16;[0/51/10000];true;true
 dynamicPieceAlienSwitchTop0;data/stones.png;32;16;[0/48/10000];true;true

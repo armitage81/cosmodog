@@ -226,6 +226,10 @@ public class CosmodogGame extends CosmodogModel {
 		return portals.stream().toList();
 	}
 
+	public void clearPortals() {
+		portals.clear();
+	}
+
 	/*
 	Calculates the target entrance of the player based on his current position and direction.
 	In the most cases it will be the adjacent position in the direction the player is facing.

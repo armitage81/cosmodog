@@ -84,6 +84,7 @@ public class Layers {
 	public static final int LAYER_META_DYNAMIC_PIECES = LAYER_META_PLATFORM_COLLISION + 1;
 
 
+
 	/**
 	 * This layers are counting as "covering", that is, their tiles may act as
 	 * 'roofs' and be removed if the player goes under them. This list is not
