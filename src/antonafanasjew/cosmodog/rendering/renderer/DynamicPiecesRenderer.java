@@ -5,13 +5,11 @@ import java.util.List;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.model.*;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.AutoBollard;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Jammer;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Switch;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.TileUtils;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -39,6 +37,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
+import org.newdawn.slick.Image;
 
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
@@ -135,6 +134,14 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 						pieceX + pieceOffsetX,
 						topBottomDependentY + pieceOffsetY
 				);
+			}
+
+			if (dynamicPiece instanceof Reflector reflector) {
+				if (dynamicPieceRenderingParam.bottomNotTop()) {
+					Animation animation = applicationContext.getAnimations().get(animationId);
+					Image image = animation.getImage(reflector.getVisualState());
+					image.draw(pieceX, pieceY);
+				}
 			}
 
 			if (dynamicPiece instanceof LetterPlate letterPlate) {

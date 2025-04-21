@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
+import antonafanasjew.cosmodog.actions.mechanism.TurningReflectorClockwiseAction;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -16,6 +17,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 public class Switch extends DynamicPiece implements Pressable, SwitchableHolder {
 
@@ -67,6 +69,10 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
                 } else {
                     action = new SinkingBollardAction(1000, bollard);
                 }
+                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+            } else if (switchable instanceof Reflector reflector) {
+                AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
                 actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
             }

@@ -5,10 +5,8 @@ import java.util.*;
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.AutoBollard;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Jammer;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Switch;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
+import antonafanasjew.cosmodog.model.portals.ReflectionType;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
@@ -384,6 +382,26 @@ public class InitializationUtils {
 				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
+
+				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_NE.getTileId()) {
+					Reflector reflector = Reflector.create(position, ReflectionType.NORTH_EAST);
+					map.getDynamicPieces().put(Reflector.class, reflector);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_NW.getTileId()) {
+					Reflector reflector = Reflector.create(position, ReflectionType.NORTH_WEST);
+					map.getDynamicPieces().put(Reflector.class, reflector);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_SE.getTileId()) {
+					Reflector reflector = Reflector.create(position, ReflectionType.SOUTH_EAST);
+					map.getDynamicPieces().put(Reflector.class, reflector);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_SW.getTileId()) {
+					Reflector reflector = Reflector.create(position, ReflectionType.SOUTH_WEST);
+					map.getDynamicPieces().put(Reflector.class, reflector);
+				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_JAMMER.getTileId()) {
 					Jammer jammer = Jammer.create(position);

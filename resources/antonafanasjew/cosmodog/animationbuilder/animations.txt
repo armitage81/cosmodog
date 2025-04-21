@@ -1648,8 +1648,14 @@ dynamicPieceAutoBollardTop4;data/portals_animations.png;16;16;[4/4/10000];true;t
 dynamicPieceSwitchBottom;data/portals_animations.png;16;16;[0/3/10000];true;true
 dynamicPieceSwitchTop;data/portals_animations.png;16;16;[0/2/10000];true;true
 
-dynamicPieceJammerTop;data/portals_animations.png;16;16;[0/6/100,1/6/100,2/6/100,];true;true
-dynamicPieceJammerBottom;data/portals_animations.png;16;16;[0/7/100,1/7/100,2/7/100,];true;true
+dynamicPieceJammerTop;data/portals_animations.png;16;16;[0/6/100,1/6/100,2/6/100];true;true
+dynamicPieceJammerBottom;data/portals_animations.png;16;16;[0/7/100,1/7/100,2/7/100];true;true
+
+dynamicPieceReflectorClockwiseSw;data/portals_animations.png;16;16;[0/9/100,1/9/100,2/9/100,3/9/100,4/9/100,5/9/100];true;true
+dynamicPieceReflectorClockwiseNw;data/portals_animations.png;16;16;[0/10/100,1/10/100,2/10/100,3/10/100,4/10/100,5/10/100];true;true
+dynamicPieceReflectorClockwiseNe;data/portals_animations.png;16;16;[0/11/100,1/11/100,2/11/100,3/11/100,4/11/100,5/11/100];true;true
+dynamicPieceReflectorClockwiseSe;data/portals_animations.png;16;16;[0/12/100,1/12/100,2/12/100,3/12/100,4/12/100,5/12/100];true;true
+
 
 dynamicPieceAlienSwitchBottom0;data/stones.png;32;16;[0/49/10000];true;true
 dynamicPieceAlienSwitchBottom1;data/stones.png;32;16;[0/51/10000];true;true
