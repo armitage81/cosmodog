@@ -383,6 +383,26 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
+				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_WEST.getTileId()) {
+					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.LEFT);
+					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_NORTH.getTileId()) {
+					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.UP);
+					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_EAST.getTileId()) {
+					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.RIGHT);
+					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_SOUTH.getTileId()) {
+					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.DOWN);
+					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+				}
+
 				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_NE.getTileId()) {
 					Reflector reflector = Reflector.create(position, ReflectionType.NORTH_EAST);
 					map.getDynamicPieces().put(Reflector.class, reflector);

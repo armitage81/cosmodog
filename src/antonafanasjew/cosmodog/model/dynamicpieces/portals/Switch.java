@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
+import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.TurningReflectorClockwiseAction;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -73,6 +74,10 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
                 actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
             } else if (switchable instanceof Reflector reflector) {
                 AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
+                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+            } else if (switchable instanceof OneWayBollard oneWayBollard) {
+                AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
                 actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
             }

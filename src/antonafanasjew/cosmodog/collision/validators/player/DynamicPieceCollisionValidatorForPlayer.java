@@ -29,6 +29,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.OneWayBollard;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -154,10 +155,15 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					String blockReasonParam = "Door is closed";
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
-			} else if (dynamicPiece instanceof Bollard) {
-				Bollard bollard = (Bollard)dynamicPiece;
+			} else if (dynamicPiece instanceof Bollard bollard) {
 				if (!bollard.isOpen()) {
 					String blockReasonParam = "Door is closed";
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				}
+			} else if (dynamicPiece instanceof OneWayBollard oneWayBollard) {
+				Player player = ApplicationContextUtils.getPlayer();
+				if (player.getDirection() != oneWayBollard.getDirection()) {
+					String blockReasonParam = "Wrong side";
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
 			}else if (dynamicPiece instanceof Crate) {

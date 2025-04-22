@@ -42,6 +42,7 @@ import org.newdawn.slick.Image;
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
 	public static List<Class<? extends DynamicPiece>> PIECES_FOR_DEFAULT_RENDERING = List.of(
+			OneWayBollard.class,
 			Jammer.class,
 			AutoBollard.class,
 			Bollard.class,
