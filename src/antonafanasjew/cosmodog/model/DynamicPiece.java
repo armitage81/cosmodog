@@ -10,7 +10,14 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 public abstract class DynamicPiece extends Piece {
 
 	private static final long serialVersionUID = -4951335050582899992L;
-	
+
+	//There can be multiple dynamic pieces on one position, for instance, a cube on a sensor.
+	// In this case random rendering order is not enough since the sensor could be rendered above the cube.
+	//Instead, the renderer should render dynamic pieces in order of their priority (first 1, then 2 and last 10.)
+	public int renderingPriority() {
+		return 10;
+	}
+
 	/**
 	 * Executed when the player tries to enter the tile with this piece.
 	 * This method will only be called if the dynamic piece is blocking, f.i. when the player hits on the hard stone.

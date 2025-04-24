@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer.dynamicpieces;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,7 +110,9 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 				2
 		);
 
-		for (DynamicPiece dynamicPiece : dynamicPieces.values()) {
+		List<DynamicPiece> sortedDynamicPieces = dynamicPieces.values().stream().sorted(Comparator.comparingInt(DynamicPiece::renderingPriority)).toList();
+
+		for (DynamicPiece dynamicPiece : sortedDynamicPieces) {
 
 			Vector pieceVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(dynamicPiece.getPosition(), camTilePosition);
 			Vector adjacentNorthPieceVectorRelatedToCam = new Vector(pieceVectorRelatedToCam.getX(), pieceVectorRelatedToCam.getY() - tileLength);
@@ -120,6 +123,19 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			float topBottomDependentY = dynamicPieceRenderingParam.bottomNotTop() ? pieceY : pieceNorthY;
 
 			String animationId = dynamicPiece.animationId(dynamicPieceRenderingParam.bottomNotTop());
+
+			if (dynamicPiece instanceof Sensor sensor) {
+
+				if (((DynamicPiecesRendererParam) renderingParameter).bottomNotTop) {
+
+					animationId = sensor.isPresencePresent() ? "dynamicPieceActiveSensor" : "dynamicPieceInactiveSensor";
+
+					applicationContext.getAnimations().get(animationId).draw(
+							pieceX,
+							pieceY
+					);
+				}
+			}
 
 			if (dynamicPiece instanceof Cube cube) {
 

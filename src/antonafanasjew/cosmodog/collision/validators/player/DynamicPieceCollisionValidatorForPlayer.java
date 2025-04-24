@@ -31,6 +31,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.OneWayBollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Sensor;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -41,13 +42,25 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
+import java.util.Optional;
+import java.util.Set;
+
 public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
-		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(entrance.getPosition());
+
+		//In case there are multiple dynamic pieces at one position, we assume that a moveable is on a non-blocking dynamic piece, such as a sensor.
+		//In this case we assume that we should move the moveable and ignore the other dynamic pieces. (If a moveable is on it, player will also be able to enter anyway.)
+		Set<DynamicPiece> dynamicPieces = map.dynamicPiecesAtPosition(entrance.getPosition());
+		Optional<MoveableDynamicPiece> optMoveable = dynamicPieces.stream().filter(e -> e instanceof MoveableDynamicPiece).map(e -> (MoveableDynamicPiece)e).findFirst();
+		DynamicPiece dynamicPiece = optMoveable.isPresent() ? optMoveable.get() : dynamicPieces.stream().findFirst().orElse(null);
+
 		if (dynamicPiece != null) {
+			if (dynamicPiece instanceof Sensor) {
+				//Do nothing. Just a place holder to not forget this part in case something changes.
+			}
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
 			}

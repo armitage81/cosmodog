@@ -383,6 +383,11 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
+				if (tileId == TileType.DYNAMIC_PIECE_SENSOR.getTileId()) {
+					Sensor sensor = Sensor.create(position);
+					map.getDynamicPieces().put(Sensor.class, sensor);
+				}
+
 				if (tileId == TileType.DYNAMIC_PIECE_CUBE.getTileId()) {
 					Cube cube = Cube.create(position, false);
 					map.getDynamicPieces().put(Cube.class, cube);

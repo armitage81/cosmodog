@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.io.Serial;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -32,6 +33,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
+import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventTeleported;
@@ -180,6 +182,7 @@ public class PlayerMovementListener implements MovementListener {
 		updateSnowfall();
 		checkContaminationStatus(applicationContext);
 		updatePortalRay();
+		updatePresenseDetectors();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 
@@ -795,6 +798,33 @@ public class PlayerMovementListener implements MovementListener {
 			player.activatePortalRay();
 		} else {
 			player.deactivatePortalRay();
+		}
+	}
+
+	private void updatePresenseDetectors() {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
+		Set<DynamicPiece> presenceDetectorDynamicPieces = map
+				.getDynamicPieces()
+				.values()
+				.stream()
+				.filter(e -> e instanceof PresenceDetector)
+				.collect(Collectors.toSet());
+
+		for (DynamicPiece presenceDetectorDynamicPiece : presenceDetectorDynamicPieces) {
+			Position position = presenceDetectorDynamicPiece.getPosition();
+			if (player.getPosition().equals(position)) {
+				((PresenceDetector)presenceDetectorDynamicPiece).presenceDetected(game, player);
+			} else {
+				Optional<DynamicPiece> optMoveableDynamicPiece = map.dynamicPiecesAtPosition(position).stream().filter(e -> e instanceof  MoveableDynamicPiece).findFirst();
+
+				if (optMoveableDynamicPiece.isPresent()) {
+					((PresenceDetector)presenceDetectorDynamicPiece).presenceDetected(game, ((MoveableDynamicPiece)optMoveableDynamicPiece.get()).asActor());
+				} else {
+					((PresenceDetector)presenceDetectorDynamicPiece).presenceLost(game);
+				}
+			}
 		}
 	}
 

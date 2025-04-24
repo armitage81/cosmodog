@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.movement;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
@@ -129,9 +130,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 		//There could be a moveable block in player's path. In this case, it also would be moved (collision has been checked already.)
 		//Take care: Player's movement has to be calculated before this.
 
-		DynamicPiece dynamicPiece = game.dynamicPieceAtPosition(targetEntrance.getPosition());
-		if (dynamicPiece instanceof MoveableDynamicPiece mdp) {
-			this.moveableDynamicPiece = mdp;
+		Optional<DynamicPiece> optMoveable = cosmodogMap.dynamicPiecesAtPosition(targetEntrance.getPosition()).stream().filter(e -> e instanceof  MoveableDynamicPiece).findFirst();
+		if (optMoveable.isPresent()) {
+			this.moveableDynamicPiece = (MoveableDynamicPiece) optMoveable.get();
 			moveableTargetEntrance = game.targetEntrance(moveableDynamicPiece.asActor(), targetEntrance.getEntranceDirection());
 		}
 
