@@ -24,8 +24,8 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
 import antonafanasjew.cosmodog.model.portals.Entrance;
-import antonafanasjew.cosmodog.topology.Position;
 
 public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValidator {
 
@@ -94,6 +94,8 @@ public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValid
                 if (alienBaseBlockade.closed()) {
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 				}
+			} else if (dynamicPiece instanceof Reflector reflector) {
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			}
 		}
 		return retVal;

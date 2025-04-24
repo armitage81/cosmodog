@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.OneWayBollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -151,7 +152,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					String blockReasonParam = "Wrong side";
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
-			}else if (dynamicPiece instanceof Crate) {
+			} else if (dynamicPiece instanceof Crate) {
 				Crate crate = (Crate)dynamicPiece;
 				if (crate.getState() != Crate.STATE_DESTROYED) {
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
@@ -190,6 +191,8 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					}
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
+			} else if (dynamicPiece instanceof Reflector) {
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			}
 		}
 		return retVal;
