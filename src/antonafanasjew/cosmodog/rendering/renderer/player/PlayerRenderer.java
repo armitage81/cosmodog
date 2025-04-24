@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.renderingutils.ActorRendererUtils;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
@@ -88,64 +89,64 @@ public class PlayerRenderer extends AbstractRenderer {
 
 		ActorAppearanceType playerAppearanceType = PlayerRendererUtils.appearanceType();
 		PlayerActionType playerActionType = PlayerRendererUtils.actionType();
-		Animation playerAnimation = PlayerRendererUtils.playerAnimation(playerAppearanceType, playerActionType, player.getDirection());
-		Animation playerWeaponAnimation = PlayerRendererUtils.weaponAnimation(playerAppearanceType, playerActionType, player.getDirection());
-		
+
 		Vector offsetFromTile = PlayerRendererUtils.offsetFromTile();
 		
 		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Optional<Portal> optExitPortal = PlayerRendererUtils.exitPortal();
-		if (optExitPortal.isPresent()) {
+		CrossTileMotion motion = ActorRendererUtils.actorMotion(player);
+		boolean usingPortal = motion != null && motion.isContainsTeleportation();
 
-
+		if (usingPortal) {
 
 			Vector exitCoordinatesRelatedToCam = Cam
 					.positionVectorRelatedToCamTilePosition(
-							DirectionType.facedAdjacentPosition(optExitPortal.get().position, optExitPortal.get().directionType),
+							DirectionType.facedAdjacentPosition(motion.getExitPortal().position, motion.getExitPortal().directionType),
 							camTilePosition
 					)
 			;
 
-			CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
-			int index = (int)Math.abs((playerMotion.getCrossTileOffsetX() + playerMotion.getCrossTileOffsetY()) * playerAnimation.getFrameCount());
-
 			float verticalOffsetForEntering = 0;
 
 			Animation enteringPortalAnimation;
-			if (playerMotion.getCrossTileOffsetX() > 0) {
+			if (motion.getEntrancePortal().directionType == DirectionType.LEFT) {
 				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalRight");
-			} else if (playerMotion.getCrossTileOffsetX() < 0) {
+			} else if (motion.getEntrancePortal().directionType == DirectionType.RIGHT) {
 				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalLeft");
-			} else if (playerMotion.getCrossTileOffsetY() > 0) {
+			} else if (motion.getEntrancePortal().directionType == DirectionType.UP) {
 				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalDown");
 			} else {
-				verticalOffsetForEntering = -Math.abs((playerMotion.getCrossTileOffsetY()) * tileLength);
+				float ratio = Math.abs(motion.getCrossTileOffsetX()) + Math.abs(motion.getCrossTileOffsetY());
+				verticalOffsetForEntering = -(ratio * tileLength);
 				enteringPortalAnimation = ApplicationContext.instance().getAnimations().get("playerEnteringPortalUp");
 			}
-			enteringPortalAnimation.getImage(index).draw(playerCoordinatesRelatedToCam.getX(), playerCoordinatesRelatedToCam.getY() + verticalOffsetForEntering);
+			int indexEnteringAnimation = (int)Math.abs((motion.getCrossTileOffsetX() + motion.getCrossTileOffsetY()) * enteringPortalAnimation.getFrameCount());
+			enteringPortalAnimation.getImage(indexEnteringAnimation).draw(playerCoordinatesRelatedToCam.getX(), playerCoordinatesRelatedToCam.getY() + verticalOffsetForEntering);
 
 			float verticalOffsetForExiting = 0;
 
 			Animation exitingPortalAnimation;
-			if (optExitPortal.get().directionType == DirectionType.RIGHT) {
+			if (motion.getExitPortal().directionType == DirectionType.RIGHT) {
 				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalRight");
-			} else if (optExitPortal.get().directionType == DirectionType.LEFT) {
+			} else if (motion.getExitPortal().directionType == DirectionType.LEFT) {
 				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalLeft");
-			} else if (optExitPortal.get().directionType == DirectionType.DOWN) {
-				float ratio = Math.abs(playerMotion.getCrossTileOffsetX()) + Math.abs(playerMotion.getCrossTileOffsetY());
+			} else if (motion.getExitPortal().directionType == DirectionType.DOWN) {
+				float ratio = Math.abs(motion.getCrossTileOffsetX()) + Math.abs(motion.getCrossTileOffsetY());
 				verticalOffsetForExiting = ratio * tileLength - tileLength;
 				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalDown");
 			} else {
 				exitingPortalAnimation = ApplicationContext.instance().getAnimations().get("playerExitingPortalUp");
 			}
-			exitingPortalAnimation.getImage(index).draw(exitCoordinatesRelatedToCam.getX(), exitCoordinatesRelatedToCam.getY() + verticalOffsetForExiting);
+			int indexExitingAnimation = (int)Math.abs((motion.getCrossTileOffsetX() + motion.getCrossTileOffsetY()) * exitingPortalAnimation.getFrameCount());
+			exitingPortalAnimation.getImage(indexExitingAnimation).draw(exitCoordinatesRelatedToCam.getX(), exitCoordinatesRelatedToCam.getY() + verticalOffsetForExiting);
 
 		} else {
+			Animation playerAnimation = PlayerRendererUtils.playerAnimation(playerAppearanceType, playerActionType, player.getDirection());
 			playerAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
 		}
 
+		Animation playerWeaponAnimation = PlayerRendererUtils.weaponAnimation(playerAppearanceType, playerActionType, player.getDirection());
 		if (playerWeaponAnimation != null) {
 			playerWeaponAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
 		}

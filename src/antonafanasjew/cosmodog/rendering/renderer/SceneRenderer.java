@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.RayRenderer;
@@ -10,7 +11,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicPiecesRendererParam;
+import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer.DynamicPiecesRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
 import antonafanasjew.cosmodog.rendering.maprendererpredicates.BottomLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.maprendererpredicates.MapLayerRendererPredicate;

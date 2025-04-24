@@ -163,7 +163,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     		} 
 
 			Position startPosition = player.getPosition();
-			Entrance targetEntrance = cosmodogGame.targetEntrance(player);
+			Entrance targetEntrance = cosmodogGame.targetEntrance(player, player.getDirection());
 
 			Set<DynamicPiece> dynamicPieces = map.dynamicPiecesAtPosition(targetEntrance.getPosition());
 
@@ -237,7 +237,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 						}
 					}
 					
-					
+
+
+
 					int timePassed = Constants.MINUTES_PER_TURN;
 					int movementDurationFactor = Features.getInstance().featureBoundFunction(Features.FEATURE_FASTRUNNING, () -> Constants.VISIBLE_MOVEMENT_DURATION_FACTOR_WHEN_FASTRUNNING, Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
 					AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, false);
@@ -327,7 +329,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, targetTileId);
 					if (targetTileType.equals(TileType.PORTAL_RAY_ATTACHABLE)) {
 						DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
-						if (!cosmodogGame.portalExists(rayTargetPosition, directionFacingPlayer)) {
+						if (cosmodogGame.portal(rayTargetPosition, directionFacingPlayer).isEmpty()) {
 							Portal portal = new Portal(rayTargetPosition, directionFacingPlayer);
 							cosmodogGame.createPortal(portal);
 						}

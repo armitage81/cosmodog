@@ -27,10 +27,12 @@ import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.portals.Portal;
+import antonafanasjew.cosmodog.rendering.renderer.renderingutils.ActorRendererUtils;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
@@ -86,23 +88,6 @@ public class PlayerRendererUtils {
         }
 
         return false;
-    }
-
-    public static CrossTileMotion playerMotion() {
-        CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-        Player player = game.getPlayer();
-
-        MovementAction movementAction = (MovementAction)game
-                .getActionRegistry()
-                .getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class)
-        ;
-
-        CrossTileMotion playerMotion = null;
-        if (movementAction != null) {
-            playerMotion = movementAction.getActorMotions().get(player);
-        }
-
-        return playerMotion;
     }
 
     public static boolean beingInvisibleWhileTeleporting() {
@@ -179,7 +164,7 @@ public class PlayerRendererUtils {
 
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
-        CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
+        CrossTileMotion playerMotion = ActorRendererUtils.actorMotion(player);
 
         boolean playerIsBeingTeleportedAndInvisible = PlayerRendererUtils.beingInvisibleWhileTeleporting();
         boolean playerIsInVehicle = player.getInventory().hasVehicle();
@@ -251,8 +236,8 @@ public class PlayerRendererUtils {
 
     public static PlayerActionType actionType() {
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-
-        CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
+        Player player = ApplicationContextUtils.getPlayer();
+        CrossTileMotion playerMotion = ActorRendererUtils.actorMotion(player);
         boolean playerIsMoving = playerMotion != null;
         boolean playerIsTakingDamage = PlayerRendererUtils.takingDamage();
         boolean playerIsHoldingUpItem = game.getCurrentlyFoundTool() != null;
@@ -275,11 +260,9 @@ public class PlayerRendererUtils {
     public static Vector offsetFromTile() {
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
         Cam cam = game.getCam();
-        Player player = ApplicationContextUtils.getPlayer();
-
-
         int tileLength = TileUtils.tileLengthSupplier.get();
-        CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
+        Player player = ApplicationContextUtils.getPlayer();
+        CrossTileMotion playerMotion = ActorRendererUtils.actorMotion(player);
         boolean playerIsMoving = playerMotion != null;
         boolean playerIsFighting = PlayerRendererUtils.fighting();
 
@@ -365,29 +348,4 @@ public class PlayerRendererUtils {
         return Vector.empty().add(pieceOffsetX, pieceOffsetY);
     }
 
-    public static Optional<Portal> exitPortal() {
-
-        Player player = ApplicationContextUtils.getPlayer();
-        Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
-        Cam.CamTilePosition camTilePosition = cam.camTilePosition();
-
-        CrossTileMotion playerMotion = PlayerRendererUtils.playerMotion();
-
-        boolean playerIsUsingPortal = playerMotion != null && playerMotion.isContainsTeleportation();
-
-        Portal exitPortal = null;
-        if (playerIsUsingPortal) {
-            CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-            List<Portal> portals = game.getPortals();
-            Portal firstPortal = portals.getFirst();
-            boolean playerFacesFirstPortal = firstPortal.position.equals(DirectionType.facedAdjacentPosition(player.getPosition(), player.getDirection()));
-            playerFacesFirstPortal &= DirectionType.reverse(player.getDirection()) == firstPortal.directionType;
-            if (playerFacesFirstPortal) {
-                exitPortal = portals.getLast();
-            } else {
-                exitPortal = portals.getFirst();
-            }
-        }
-        return Optional.ofNullable(exitPortal);
-    }
 }

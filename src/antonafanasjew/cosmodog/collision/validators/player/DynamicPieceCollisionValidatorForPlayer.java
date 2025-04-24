@@ -63,25 +63,10 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 				MoveableDynamicPiece moveable = (MoveableDynamicPiece)dynamicPiece;
 				Actor moveableActor = moveable.asActor();
 				CollisionValidator collisionValidatorForMoveable = ApplicationContextUtils.getCosmodog().getCollisionValidatorForMoveable();
-				DirectionType directionType = PositionUtils.targetDirection(actor, moveableActor);
-				int newMoveablePosX = (int)moveableActor.getPosition().getX();
-				int newMoveablePosY = (int)moveableActor.getPosition().getY();
-				if (directionType == DirectionType.UP) {
-					newMoveablePosY--;
-				}
-				if (directionType == DirectionType.DOWN) {
-					newMoveablePosY++;
-				}
-				if (directionType == DirectionType.LEFT) {
-					newMoveablePosX--;
-				}
-				if (directionType == DirectionType.RIGHT) {
-					newMoveablePosX++;
-				}
 
-				Position moveablePosition = Position.fromCoordinates(newMoveablePosX, newMoveablePosY, moveableActor.getPosition().getMapType());
-				Entrance moveableEntrance = Entrance.instance(moveablePosition, directionType);
-				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, moveableEntrance);
+				Entrance moveableTargetEntrance = cosmodogGame.targetEntrance(moveableActor, entrance.getEntranceDirection());
+
+				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, moveableTargetEntrance);
 				if (collisionStatusForMoveable.isPassable()) {
 					retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 				} else {

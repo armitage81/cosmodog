@@ -1697,6 +1697,27 @@ dynamicPieceReflectorClockwiseNw;data/portals_animations.png;16;16;[0/10/100,1/1
 dynamicPieceReflectorClockwiseNe;data/portals_animations.png;16;16;[0/11/100,1/11/100,2/11/100,3/11/100,4/11/100,5/11/100];true;true
 dynamicPieceReflectorClockwiseSe;data/portals_animations.png;16;16;[0/12/100,1/12/100,2/12/100,3/12/100,4/12/100,5/12/100];true;true
 
+dynamicPieceCubeTop;data/portals_animations.png;16;16;[0/21/10000];true;true
+dynamicPieceCubeBottom;data/portals_animations.png;16;16;[0/22/10000];true;true
+dynamicPieceCubeWestFromPortalTop;data/portals_animations.png;16;16;[1/21/10000,2/21/10000,3/21/10000,4/21/10000,5/21/10000,6/21/10000];true;true
+dynamicPieceCubeWestFromPortalBottom;data/portals_animations.png;16;16;[1/22/10000,2/22/10000,3/22/10000,4/22/10000,5/22/10000,6/22/10000];true;true
+dynamicPieceCubeEastFromPortalTop;data/portals_animations.png;16;16;[1/23/10000,2/23/10000,3/23/10000,4/23/10000,5/23/10000,6/23/10000];true;true
+dynamicPieceCubeEastFromPortalBottom;data/portals_animations.png;16;16;[1/24/10000,2/24/10000,3/24/10000,4/24/10000,5/24/10000,6/24/10000];true;true
+dynamicPieceCubeNorthFromPortalTop;data/portals_animations.png;16;16;[1/25/10000,2/25/10000,3/25/10000,4/25/10000,5/25/10000,6/25/10000];true;true
+dynamicPieceCubeNorthFromPortalBottom;data/portals_animations.png;16;16;[1/26/10000,2/26/10000,3/26/10000,4/26/10000,5/26/10000,6/26/10000];true;true
+dynamicPieceCubeSouthFromPortalTop;data/portals_animations.png;16;16;[1/27/10000,2/27/10000,3/27/10000,4/27/10000,5/27/10000,6/27/10000];true;true
+dynamicPieceCubeSouthFromPortalBottom;data/portals_animations.png;16;16;[1/28/10000,2/28/10000,3/28/10000,4/28/10000,5/28/10000,6/28/10000];true;true
+dynamicPieceTransparentCubeTop;data/portals_animations.png;16;16;[0/30/10000];true;true
+dynamicPieceTransparentCubeBottom;data/portals_animations.png;16;16;[0/31/10000];true;true
+dynamicPieceTransparentCubeWestFromPortalTop;data/portals_animations.png;16;16;[1/30/10000,2/30/10000,3/30/10000,4/30/10000,5/30/10000,6/30/10000];true;true
+dynamicPieceTransparentCubeWestFromPortalBottom;data/portals_animations.png;16;16;[1/31/10000,2/31/10000,3/31/10000,4/31/10000,5/31/10000,6/31/10000];true;true
+dynamicPieceTransparentCubeEastFromPortalTop;data/portals_animations.png;16;16;[1/32/10000,2/32/10000,3/32/10000,4/32/10000,5/32/10000,6/32/10000];true;true
+dynamicPieceTransparentCubeEastFromPortalBottom;data/portals_animations.png;16;16;[1/33/10000,2/33/10000,3/33/10000,4/33/10000,5/33/10000,6/33/10000];true;true
+dynamicPieceTransparentCubeNorthFromPortalTop;data/portals_animations.png;16;16;[1/34/10000,2/34/10000,3/34/10000,4/34/10000,5/34/10000,6/34/10000];true;true
+dynamicPieceTransparentCubeNorthFromPortalBottom;data/portals_animations.png;16;16;[1/35/10000,2/35/10000,3/35/10000,4/35/10000,5/35/10000,6/35/10000];true;true
+dynamicPieceTransparentCubeSouthFromPortalTop;data/portals_animations.png;16;16;[1/36/10000,2/36/10000,3/36/10000,4/36/10000,5/36/10000,6/36/10000];true;true
+dynamicPieceTransparentCubeSouthFromPortalBottom;data/portals_animations.png;16;16;[1/37/10000,2/37/10000,3/37/10000,4/37/10000,5/37/10000,6/37/10000];true;true
+
 
 dynamicPieceAlienSwitchBottom0;data/stones.png;32;16;[0/49/10000];true;true
 dynamicPieceAlienSwitchBottom1;data/stones.png;32;16;[0/51/10000];true;true

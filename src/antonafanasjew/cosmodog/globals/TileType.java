@@ -420,6 +420,9 @@ public enum TileType {
 	DYNAMIC_PIECE_ONE_WAY_BOLLARD_EAST(Layers.LAYER_META_DYNAMIC_PIECES, 5822),
 	DYNAMIC_PIECE_ONE_WAY_BOLLARD_SOUTH(Layers.LAYER_META_DYNAMIC_PIECES, 5823),
 
+	DYNAMIC_PIECE_CUBE(Layers.LAYER_META_DYNAMIC_PIECES, 5824),
+	DYNAMIC_PIECE_TRANSPARENT_CUBE(Layers.LAYER_META_DYNAMIC_PIECES, 5825),
+
 	//Doors have different variants, so they are not stored here.
 	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.

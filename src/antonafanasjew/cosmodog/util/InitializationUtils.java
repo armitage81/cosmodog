@@ -383,6 +383,16 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
+				if (tileId == TileType.DYNAMIC_PIECE_CUBE.getTileId()) {
+					Cube cube = Cube.create(position, false);
+					map.getDynamicPieces().put(Cube.class, cube);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TRANSPARENT_CUBE.getTileId()) {
+					Cube cube = Cube.create(position, true);
+					map.getDynamicPieces().put(Cube.class, cube);
+				}
+
 				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_WEST.getTileId()) {
 					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.LEFT);
 					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);

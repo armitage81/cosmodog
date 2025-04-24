@@ -59,7 +59,8 @@ public class MovementAction extends FixedLengthAsyncAction {
     private Position startPosition;
 	private Entrance targetEntrance;
 
-	private MovementActionResult moveableMovementActionResult = null;
+	private MoveableDynamicPiece moveableDynamicPiece;
+	private Entrance moveableTargetEntrance;
 
 	private final Map<Enemy, MovementActionResult> enemyMovementActionResults = Maps.newHashMap();
 
@@ -121,14 +122,19 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		//Calculating the target entrance.
 		targetEntrance = skipTurn ?
-				Entrance.instance(playerPosition, player.getDirection(), false, true)
+				Entrance.instanceForWaiting(playerPosition, player.getDirection())
 				:
-				game.targetEntrance(player);
+				game.targetEntrance(player, player.getDirection());
 		
 		//There could be a moveable block in player's path. In this case, it also would be moved (collision has been checked already.)
 		//Take care: Player's movement has to be calculated before this.
-		this.moveableMovementActionResult = calculateMoveableMovementActionResult();
-		
+
+		DynamicPiece dynamicPiece = game.dynamicPieceAtPosition(targetEntrance.getPosition());
+		if (dynamicPiece instanceof MoveableDynamicPiece mdp) {
+			this.moveableDynamicPiece = mdp;
+			moveableTargetEntrance = game.targetEntrance(moveableDynamicPiece.asActor(), targetEntrance.getEntranceDirection());
+		}
+
 		//Preparing the future results of the enemy movements.
 		Set<Enemy> movingEnemies = Sets.newHashSet();
 		
@@ -148,45 +154,6 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 	}
 
-	private MovementActionResult calculateMoveableMovementActionResult() {
-		
-		MovementActionResult retVal = null;
-		
-		if (skipTurn) {
-			return retVal;
-		}
-
-		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		Player player = ApplicationContextUtils.getPlayer();
-		
-
-		//If a moveable is there, we calculate its target position (always away from the player as he pushes it)
-		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(targetEntrance.getPosition());
-		if (dynamicPiece instanceof MoveableDynamicPiece) {
-			int newMoveablePosX = (int)dynamicPiece.getPosition().getX();
-			int newMoveablePosY = (int)dynamicPiece.getPosition().getY();
-			DirectionType directionType = player.getDirection();
-			if (directionType == DirectionType.UP) {
-				newMoveablePosY--;
-			}
-			if (directionType == DirectionType.DOWN) {
-				newMoveablePosY++;
-			}
-			if (directionType == DirectionType.LEFT) {
-				newMoveablePosX--;
-			}
-			if (directionType == DirectionType.RIGHT) {
-				newMoveablePosX++;
-			}
-			
-			retVal = MovementActionResult.instance(
-					targetEntrance.getPosition(),
-					Position.fromCoordinatesOnPlayerLocationMap(newMoveablePosX, newMoveablePosY));
-		}
-		return retVal;
-		
-	}
-
 	private MovementActionResult calculateEnemyMovementResult(Enemy enemy) {
 		
 		//Preparing static data.
@@ -194,7 +161,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		PathFinder pathFinder = cosmodog.getPathFinder();
 		
 		//Preparing enemy collision validator
-		CollisionValidator collisionValidator = GeneralCollisionValidatorForNpc.instance(targetEntrance, moveableMovementActionResult, enemyMovementActionResults);
+		CollisionValidator collisionValidator = GeneralCollisionValidatorForNpc.instance(targetEntrance, moveableTargetEntrance, enemyMovementActionResults);
 		
 		//Using the pathfinder to calculate the movement result based on the time budget generated from user movement and enemy's time overhead from the previous turns.
 		int costBudget = Constants.MINUTES_PER_TURN * enemy.getSpeedFactor();
@@ -251,7 +218,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	}
 
 	private void onTriggerForMoveable() {
-		if (moveableMovementActionResult != null) {
+		if (moveableTargetEntrance != null) {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
 		}
 	}
@@ -303,7 +270,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		CrossTileMotion crossTileMotion;
 
 		if (targetEntrance.isUsedPortal()) {
-			crossTileMotion = CrossTileMotion.fromActor(player, targetPosition, true);
+			crossTileMotion = CrossTileMotion.fromActorWhenUsingPortal(player, targetPosition, targetEntrance.getEntrancePortal(), targetEntrance.getExitPortal());
 		} else {
 			crossTileMotion = CrossTileMotion.fromActor(player, targetPosition);
 		}
@@ -327,26 +294,12 @@ public class MovementAction extends FixedLengthAsyncAction {
 			return;
 		}
 
-		if (moveableMovementActionResult == null) {
+		if (moveableTargetEntrance == null) {
 			return;
 		}
 
-		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-
-		Path path = moveableMovementActionResult.getPath();
-
-		int posX = path.getX(0);
-		int posY = path.getY(0);
-		int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
-		int targetPosY = path.getY(1);
-
-		Position position = Position.fromCoordinatesOnPlayerLocationMap(posX, posY);
-		Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetPosX, targetPosY);
-
-		MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils
-				.getCosmodogGame()
-				.dynamicPieceAtPosition(position);
+		Position position = moveableDynamicPiece.getPosition();
+		Position targetPosition = moveableTargetEntrance.getPosition();
 
 		float ratio = (float)timePassed / getDuration();
 		ratio = Math.min(ratio, 1.0f);
@@ -354,13 +307,13 @@ public class MovementAction extends FixedLengthAsyncAction {
 		boolean verticalNotHorizontal;
 		boolean positiveNotNegative;
 
-		if (targetPosY > posY) {
+		if (targetPosition.getY() > position.getY()) {
 			verticalNotHorizontal = true;
 			positiveNotNegative = true;
-		} else if (targetPosY < posY) {
+		} else if (targetPosition.getY() < position.getY()) {
 			verticalNotHorizontal = true;
 			positiveNotNegative = false;
-		} else if (targetPosX < posX) {
+		} else if (targetPosition.getX() < position.getX()) {
 			verticalNotHorizontal = false;
 			positiveNotNegative = false;
 		} else {
@@ -368,13 +321,20 @@ public class MovementAction extends FixedLengthAsyncAction {
 			positiveNotNegative = true;
 		}
 
-		CrossTileMotion moveableCrossTileMotion = CrossTileMotion.fromActor(moveable.asActor(), targetPosition);
+		boolean usingPortal = moveableTargetEntrance.isUsedPortal();
+		CrossTileMotion moveableCrossTileMotion;
+		if (usingPortal) {
+			moveableCrossTileMotion = CrossTileMotion.fromActorWhenUsingPortal(moveableDynamicPiece.asActor(), targetPosition, moveableTargetEntrance.getEntrancePortal(), moveableTargetEntrance.getExitPortal());
+		} else {
+			moveableCrossTileMotion = CrossTileMotion.fromActor(moveableDynamicPiece.asActor(), targetPosition);
+		}
+
 		if (verticalNotHorizontal) {
 			moveableCrossTileMotion.setCrossTileOffsetY(positiveNotNegative ? ratio : -ratio);
 		} else {
 			moveableCrossTileMotion.setCrossTileOffsetX(positiveNotNegative ? ratio : -ratio);
 		}
-		actorMotions.put(moveable.asActor(), moveableCrossTileMotion);
+		actorMotions.put(moveableDynamicPiece.asActor(), moveableCrossTileMotion);
 	}
 
 	private void onUpdateForEnemies(int timePassed) {
@@ -512,28 +472,15 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	private void onEndForMoveable() {
 		
-		MovementActionResult moveableMovementActionResult = this.moveableMovementActionResult;
-		if (moveableMovementActionResult != null) {
-			Path path = moveableMovementActionResult.getPath();
-			
-			if (path.getLength() > 1) { //The path can contain only the start point in case the moveable does not move.
+		if (moveableTargetEntrance != null) {
+
+			if (!moveableTargetEntrance.getPosition().equals(moveableDynamicPiece.getPosition())) { //The start and the target positions can be equal in case the moveable does not move.
 				
 				CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 				
-				int posX = path.getX(0);
-				int posY = path.getY(0);
-
-				Position position = Position.fromCoordinatesOnPlayerLocationMap(posX, posY);
-
-				int targetPosX = path.getX(1); //We need to add 1 as the path contains the initial position at index 0
-				int targetPosY = path.getY(1);
-				Position targetPosition = Position.fromCoordinatesOnPlayerLocationMap(targetPosX, targetPosY);
+				actorMotions.remove(moveableDynamicPiece.asActor());
 				
-				MoveableDynamicPiece moveable = (MoveableDynamicPiece)ApplicationContextUtils.getCosmodogGame().dynamicPieceAtPosition(position);
-
-				actorMotions.remove(moveable.asActor());
-				
-				moveable.setPosition(targetPosition);
+				moveableDynamicPiece.setPosition(moveableTargetEntrance.getPosition());
 
 			}
 		}
