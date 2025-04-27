@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.*;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Portal;
@@ -46,10 +47,6 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
-import antonafanasjew.cosmodog.model.Cosmodog;
-import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
@@ -164,11 +161,18 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 			Position startPosition = player.getPosition();
 			Entrance targetEntrance = cosmodogGame.targetEntrance(player, player.getDirection());
-
+			Optional<DynamicPiece> optMoveable = cosmodogGame.mapOfPlayerLocation().dynamicPiecesAtPosition(targetEntrance.getPosition()).stream().filter(e -> e instanceof  MoveableDynamicPiece).findFirst();
 			Set<DynamicPiece> dynamicPieces = map.dynamicPiecesAtPosition(targetEntrance.getPosition());
-
 			for (DynamicPiece dynamicPiece : dynamicPieces) {
 				dynamicPiece.interactBeforeEnteringAttempt();
+			}
+			if (optMoveable.isPresent()) {
+				MoveableDynamicPiece moveableDynamicPiece = (MoveableDynamicPiece) optMoveable.get();
+				Entrance moveableTargetEntrance = cosmodogGame.targetEntrance(moveableDynamicPiece.asActor(), targetEntrance.getEntranceDirection());
+				dynamicPieces = map.dynamicPiecesAtPosition(moveableTargetEntrance.getPosition());
+				for (DynamicPiece dynamicPiece : dynamicPieces) {
+					dynamicPiece.interactBeforeEnteringAttempt();
+				}
 			}
 
     		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.

@@ -792,7 +792,7 @@ public class PlayerMovementListener implements MovementListener {
 		//These changes happen as asynchronous actions. If we would update the ray directly, it would not pick up those changes.
 		//That is why we pack it into a short action of type MODAL_WINDOW. This way, the update will be queued up after all
 		//those changes.
-		AsyncAction portalRayUpdateAction = new FixedLengthAsyncAction(1) {
+		AsyncAction portalRayUpdateAction = new FixedLengthAsyncAction(0) {
 			@Override
 			public void onEnd() {
 				Player player = ApplicationContextUtils.getPlayer();
@@ -811,7 +811,7 @@ public class PlayerMovementListener implements MovementListener {
 			}
 		};
 		ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-		actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, portalRayUpdateAction);
+		actionRegistry.registerAction(AsyncActionType.MOVEMENT, portalRayUpdateAction);
 
 	}
 

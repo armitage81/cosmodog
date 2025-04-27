@@ -71,15 +71,15 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
                     action = new SinkingBollardAction(1000, bollard);
                 }
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
             } else if (switchable instanceof Reflector reflector) {
                 AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
             } else if (switchable instanceof OneWayBollard oneWayBollard) {
                 AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
             }
         }
 

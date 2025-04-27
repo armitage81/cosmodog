@@ -71,13 +71,13 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
                             action = new SinkingBollardAction(1000, bollard);
                         }
                         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                        actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 } else if (activatable instanceof OneWayBollard oneWayBollard) {
                     if (!oneWayBollard.isActive()) {
                         AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
                         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                        actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 }
             }
@@ -98,13 +98,13 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
                             action = new SinkingBollardAction(1000, bollard);
                         }
                         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                        actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 } else if (activatable instanceof OneWayBollard oneWayBollard) {
                     if (oneWayBollard.isActive()) {
                         AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
                         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                        actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 }
             }

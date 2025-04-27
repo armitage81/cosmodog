@@ -67,7 +67,7 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
     @Override
     public void interactBeforeEnteringAttempt() {
         Player player = ApplicationContextUtils.getPlayer();
-        if (player.getDirection() == direction) {
+        if (!open && player.getDirection() == direction) {
             ApplicationContextUtils
                     .getCosmodogGame()
                     .getActionRegistry()
@@ -79,12 +79,14 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
 
     @Override
     public void interactAfterExiting() {
-        ApplicationContextUtils
-                .getCosmodogGame()
-                .getActionRegistry()
-                .registerAction(AsyncActionType.MOVEMENT,
-                        new RaisingOneWayBollardAction(1000, this)
-                );
+        if (open) {
+            ApplicationContextUtils
+                    .getCosmodogGame()
+                    .getActionRegistry()
+                    .registerAction(AsyncActionType.MOVEMENT,
+                            new RaisingOneWayBollardAction(1000, this)
+                    );
+        }
     }
 
     @Override
@@ -159,5 +161,10 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
     @Override
     public void switchToNextState() {
         this.direction = DirectionType.reverse(this.direction);
+    }
+
+    @Override
+    public int renderingPriority() {
+        return open ? 1 : 10;
     }
 }

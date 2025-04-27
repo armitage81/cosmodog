@@ -96,7 +96,7 @@ public class PlayerRendererUtils {
         Optional<TeleportationAction.TeleportationState> optTeleportationState = game
                 .getActionRegistry()
                 .attributeForCurrentActionOfGivenType(
-                        AsyncActionType.TELEPORTATION,
+                        AsyncActionType.MOVEMENT,
                         "state"
                 );
 
