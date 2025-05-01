@@ -66,9 +66,9 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
                 boolean open = bollard.isOpen();
                 AsyncAction action;
                 if (open) {
-                    action = new RaisingBollardAction(1000, bollard);
+                    action = new RaisingBollardAction(RaisingBollardAction.DURATION, bollard);
                 } else {
-                    action = new SinkingBollardAction(1000, bollard);
+                    action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
                 }
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
                 actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);

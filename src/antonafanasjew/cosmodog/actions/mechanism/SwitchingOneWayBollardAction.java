@@ -10,6 +10,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class SwitchingOneWayBollardAction extends FixedLengthAsyncAction {
 
+    public static final int DURATION = 100;
+
     private final OneWayBollard oneWayBollard;
 
     public SwitchingOneWayBollardAction(int duration, OneWayBollard oneWayBollard) {

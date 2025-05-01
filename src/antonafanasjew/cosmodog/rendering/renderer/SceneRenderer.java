@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRen
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.RayRenderer;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -46,8 +47,8 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer rayRenderer = new RayRenderer();
 
 
-	private AbstractRenderer cloudRenderer = new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
-	private AbstractRenderer birdsRenderer = new BirdsRenderer();
+	private AbstractRenderer cloudRenderer = ConditionalRenderer.instanceWithSkyDecorationsActiveCondition(new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS)));
+	private AbstractRenderer birdsRenderer = ConditionalRenderer.instanceWithSkyDecorationsActiveCondition(new BirdsRenderer());
 	private AbstractRenderer snowflakesRenderer = new SnowflakesRenderer();
 	private AbstractRenderer wormAttackRenderer = new WormAttackRenderer();
 	private AbstractRenderer artilleryGrenadeRenderer = new ArtilleryGrenadeRenderer();

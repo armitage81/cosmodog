@@ -9,6 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class SinkingBollardAction extends FixedLengthAsyncAction {
 
+    public static final int DURATION = 100;
+
     private final Bollard bollard;
 
     public SinkingBollardAction(int duration, Bollard bollard) {

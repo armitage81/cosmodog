@@ -63,7 +63,7 @@ public class AutoBollard extends DynamicPiece {
                     .getCosmodogGame()
                     .getActionRegistry()
                     .registerAction(AsyncActionType.MOVEMENT,
-                            new SinkingAutoBollardAction(1000, this)
+                            new SinkingAutoBollardAction(SinkingAutoBollardAction.DURATION, this)
                     );
         }
     }
@@ -75,7 +75,7 @@ public class AutoBollard extends DynamicPiece {
                     .getCosmodogGame()
                     .getActionRegistry()
                     .registerAction(AsyncActionType.MOVEMENT,
-                            new RaisingAutoBollardAction(1000, this)
+                            new RaisingAutoBollardAction(RaisingAutoBollardAction.DURATION, this)
                     );
         }
     }

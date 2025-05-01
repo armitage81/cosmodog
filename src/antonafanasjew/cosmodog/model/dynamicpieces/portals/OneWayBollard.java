@@ -72,7 +72,7 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
                     .getCosmodogGame()
                     .getActionRegistry()
                     .registerAction(AsyncActionType.MOVEMENT,
-                            new SinkingOneWayBollardAction(1000, this)
+                            new SinkingOneWayBollardAction(SinkingOneWayBollardAction.DURATION, this)
                     );
         }
     }
@@ -84,7 +84,7 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
                     .getCosmodogGame()
                     .getActionRegistry()
                     .registerAction(AsyncActionType.MOVEMENT,
-                            new RaisingOneWayBollardAction(1000, this)
+                            new RaisingOneWayBollardAction(RaisingOneWayBollardAction.DURATION, this)
                     );
         }
     }
