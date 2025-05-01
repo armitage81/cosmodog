@@ -261,7 +261,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 					}
 
 					BlockingAction blockingAction = new BlockingAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION, player, cosmodogGame, targetEntrance, collisionStatus);
-					MovementAttemptAction movementAttemptAction = new MovementAttemptAction(150, targetEntrance.getPosition());
+					MovementAttemptAction movementAttemptAction = new MovementAttemptAction(250, targetEntrance.getPosition());
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, movementAttemptAction);
 

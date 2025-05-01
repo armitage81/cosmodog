@@ -27,7 +27,6 @@ public class TestAll {
 				player.setPosition(Position.fromCoordinates(5, 3, MapType.MAIN));
 				List<String> debuggerPositions = new ArrayList<>();
 
-				/*
 				for (int i = 0; i < 20; i++) {
 					for (int j = 0; j < 20; j++) {
 						int x = j * 20 + 18;
@@ -35,9 +34,8 @@ public class TestAll {
 						debuggerPositions.add(String.format("%s/%s/%s", x, y, MapType.ALTERNATIVE));
 					}
 				}
-				*/
 
-				debuggerPositions.add(String.format("%s/%s/%s", 329, 11, MapType.ALTERNATIVE));
+				//debuggerPositions.add(String.format("%s/%s/%s", 329, 11, MapType.ALTERNATIVE));
 
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 			}
