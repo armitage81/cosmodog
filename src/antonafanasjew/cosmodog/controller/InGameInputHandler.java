@@ -139,7 +139,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 			VehicleInventoryItem vehicleItem = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			PlatformInventoryItem platformItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
-			
+
 			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
 				if (vehicleItem != null) {
 					vehicleItem.setExiting(true);
@@ -157,7 +157,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     			player.turn(DirectionType.UP);
     		} else if (inputDown) {
     			player.turn(DirectionType.DOWN);
-    		} 
+    		}
 
 			Position startPosition = player.getPosition();
 			Entrance targetEntrance = cosmodogGame.targetEntrance(player, player.getDirection());
@@ -180,7 +180,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     		Enemy meleeTargetEnemy = null;
     		Set<Enemy> platformTargetEnemies = new HashSet<>();
     		for (Enemy enemy : enemies) {
-    			
+
     			if (platformItem != null && !platformItem.isExiting()) {
     				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), targetEntrance.getPosition())) {
     					platformTargetEnemies.add(enemy);
@@ -191,7 +191,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 	    			}
     			}
     		}
-    		
+
     		if (!platformTargetEnemies.isEmpty()) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
@@ -199,23 +199,23 @@ public class InGameInputHandler extends AbstractInputHandler {
     		} else if (meleeTargetEnemy != null) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
-    			
+
     			boolean damageFeatureOn = Features.getInstance().featureOn(Features.FEATURE_DAMAGE);
     			AbstractEnemyAttackDamageCalculator enemyDamageCalculator = damageFeatureOn ? new SimpleEnemyAttackDamageCalculator() : new AbstractEnemyAttackDamageCalculator() {
-    				
+
     				@Override
     				protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
     					return 0;
     				}
     			};
-    			
+
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
 
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, targetEntrance);
-	    		
+
 				if (collisionStatus.isPassable()) {
-					
+
 					if (vehicleItem != null) {
 						if (vehicleItem.isExiting()) {
 							Vehicle vehicle = vehicleItem.getVehicle();
@@ -230,9 +230,9 @@ public class InGameInputHandler extends AbstractInputHandler {
 							}
 						}
 					}
-					
+
 					if (platformItem != null) {
-						
+
 						if (platformItem.isExiting()) {
 							Platform platform = platformItem.getPlatform();
 							platform.setPosition(player.getPosition());
@@ -240,16 +240,16 @@ public class InGameInputHandler extends AbstractInputHandler {
 							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
-					
+
 
 
 
 					int timePassed = Constants.MINUTES_PER_TURN;
 					int movementDurationFactor = Features.getInstance().featureBoundFunction(Features.FEATURE_FASTRUNNING, () -> Constants.VISIBLE_MOVEMENT_DURATION_FACTOR_WHEN_FASTRUNNING, Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
 					AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, false);
-					
+
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
-					
+
 				} else {
 					if (collisionStatus.getPassageBlockerDescriptor().getPassageBlockerType() == PassageBlockerType.FUEL_EMPTY) {
 						Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
@@ -261,24 +261,23 @@ public class InGameInputHandler extends AbstractInputHandler {
 					}
 
 					BlockingAction blockingAction = new BlockingAction(Constants.INTERVAL_BETWEEN_COLLISION_NOTIFICATION, player, cosmodogGame, targetEntrance, collisionStatus);
-					MovementAttemptAction movementAttemptAction = new MovementAttemptAction(250, targetEntrance.getPosition());
-
+					MovementAttemptAction movementAttemptAction = new MovementAttemptAction(150, targetEntrance.getPosition());
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.COLLISION_INDICATOR, blockingAction);
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT_ATTEMPT, movementAttemptAction);
-					
+
 				}
     		}
-    		
+
 			if (vehicleItem != null) {
 				vehicleItem.setExiting(false);
 			}
-			
+
 			if (platformItem != null) {
 				platformItem.setExiting(false);
 			}
 
 		}
-		
+
 		//Handle weapon scrolling
 		if (input.isKeyPressed(Input.KEY_TAB)) {
 			Arsenal arsenal = player.getArsenal();

@@ -57,7 +57,7 @@ public class Constants {
 	/**
 	 * Milliseconds between another collision notification.
 	 */
-	public static final int INTERVAL_BETWEEN_COLLISION_NOTIFICATION = 500;
+	public static final int INTERVAL_BETWEEN_COLLISION_NOTIFICATION = 150;
 	
 	/**
 	 * The factor by which the length of the movement action will be defined.
