@@ -30,7 +30,10 @@ public class InterfaceOnSceneRenderer implements Renderer {
 	private final Renderer vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
 	private final Renderer geigerCounterViewRenderer = new GeigerCounterViewRenderer();
 	private final Renderer supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
-	private final Renderer timeRenderer = new TimeRenderer();
+	private final Renderer timeRenderer = ConditionalRenderer.instanceWithDayNightActiveConditionAndAlternative(
+			new TimeRenderer(),
+			new TimeInSpaceRenderer());
+
 	private final Renderer infobitsRenderer = new InfobitsRenderer();
 	private final Renderer textFrameRenderer = new TextFrameRenderer();
 	private final Renderer onScreenNotificationRenderer = new OnScreenNotificationRenderer();

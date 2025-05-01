@@ -59,7 +59,7 @@ public class SceneRenderer implements Renderer {
 
 
 	private AbstractRenderer overheadNotificationRenderer = new OverheadNotificationRenderer();
-	private Renderer daytimeColorFilterRenderer = new DayTimeFilterRenderer();
+	private Renderer daytimeColorFilterRenderer = ConditionalRenderer.instanceWithDayNightActiveCondition(new DayTimeFilterRenderer());
 	private AbstractRenderer sightRadiusRenderer = new SightRadiusRenderer();
 	
 	@Override
