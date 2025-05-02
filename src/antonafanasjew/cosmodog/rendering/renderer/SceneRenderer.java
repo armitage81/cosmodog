@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRen
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.RayRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.BackgroundRenderer;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -25,6 +26,8 @@ import antonafanasjew.cosmodog.rendering.piecerendererpredicates.OnPlatformPiece
  * Renders the scene, that is the game map and everything on it.
  */
 public class SceneRenderer implements Renderer {
+
+	private AbstractRenderer backgroundRenderer = new BackgroundRenderer();
 
 	private MapLayerRenderer mapRenderer = new MapLayerRenderer();
 	
@@ -66,7 +69,10 @@ public class SceneRenderer implements Renderer {
 	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
 		
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
-		
+
+		//Skybox renderer. (Everything what is beneath the map, for instance stars beneath the space lab)
+		backgroundRenderer.render(gc, g, null);
+
 		//Draw "ground" part of the map
 		mapRenderer.render(gc, g, bottomLayersPredicate);
 		

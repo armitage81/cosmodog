@@ -27,7 +27,9 @@ public class InterfaceOnSceneRenderer implements Renderer {
 	private final Renderer sceneRenderer = new SceneRenderer();
 	private final Renderer lifeInterfaceRenderer = new LifeInterfaceRenderer();
 	private final Renderer arsenalInterfaceRenderer = new ArsenalInterfaceRenderer();
-	private final Renderer vitalDataInterfaceRenderer = new VitalDataInterfaceRenderer();
+	private final Renderer vitalDataInterfaceRenderer = ConditionalRenderer.instanceWithResourceConsumptionActiveConditionAndAlternative(
+			new VitalDataInterfaceRenderer(),
+			new VitalDataInterfaceInSpaceRenderer()) ;
 	private final Renderer geigerCounterViewRenderer = new GeigerCounterViewRenderer();
 	private final Renderer supplyTrackerViewRenderer = new SupplyTrackerViewRenderer();
 	private final Renderer timeRenderer = ConditionalRenderer.instanceWithDayNightActiveConditionAndAlternative(

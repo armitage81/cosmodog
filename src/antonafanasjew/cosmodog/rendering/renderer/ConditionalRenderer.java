@@ -57,4 +57,12 @@ public class ConditionalRenderer extends AbstractRenderer {
         );
     }
 
+    public static ConditionalRenderer instanceWithResourceConsumptionActiveConditionAndAlternative(Renderer delegate, Renderer alternativeDelegate) {
+        return instance(
+                delegate,
+                alternativeDelegate,
+                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType().isResourceConsumptionActive()
+        );
+    }
+
 }

@@ -12,16 +12,16 @@ public enum MapType {
 
     private final boolean dayNightActive;
     private final boolean skyDecorationsActive;
-    private final boolean resourceDepletionActive;
+    private final boolean resourceConsumptionActive;
     private final boolean weaponsActive;
 
-    private MapType(String mapPath, int mapWidth, int mapHeight, boolean dayNightActive, boolean skyDecorationsActive, boolean resourceDepletionActive, boolean weaponsActive) {
+    private MapType(String mapPath, int mapWidth, int mapHeight, boolean dayNightActive, boolean skyDecorationsActive, boolean resourceConsumptionActive, boolean weaponsActive) {
         this.mapPath = mapPath;
         this.width = mapWidth;
         this.height = mapHeight;
         this.dayNightActive = dayNightActive;
         this.skyDecorationsActive = skyDecorationsActive;
-        this.resourceDepletionActive = resourceDepletionActive;
+        this.resourceConsumptionActive = resourceConsumptionActive;
         this.weaponsActive = weaponsActive;
     }
 
@@ -41,8 +41,8 @@ public enum MapType {
         return dayNightActive;
     }
 
-    public boolean isResourceDepletionActive() {
-        return resourceDepletionActive;
+    public boolean isResourceConsumptionActive() {
+        return resourceConsumptionActive;
     }
 
     public boolean isSkyDecorationsActive() {
