@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
@@ -27,7 +28,17 @@ import antonafanasjew.cosmodog.rendering.piecerendererpredicates.OnPlatformPiece
  */
 public class SceneRenderer implements Renderer {
 
-	private AbstractRenderer backgroundRenderer = new BackgroundRenderer();
+	private AbstractRenderer backgroundRenderer = ConditionalRenderer.instance(
+			new BackgroundRenderer(),
+			null,
+			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType() == MapType.SPACE
+	);
+
+	private AbstractRenderer backgroundCloudRenderer = ConditionalRenderer.instance(
+			new BackgroundCloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS)),
+			null,
+			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType() == MapType.SPACE
+	);
 
 	private MapLayerRenderer mapRenderer = new MapLayerRenderer();
 	
@@ -72,6 +83,9 @@ public class SceneRenderer implements Renderer {
 
 		//Skybox renderer. (Everything what is beneath the map, for instance stars beneath the space lab)
 		backgroundRenderer.render(gc, g, null);
+
+		//Clouds in the background when in the space station.
+		backgroundCloudRenderer.render(gc, g, null);
 
 		//Draw "ground" part of the map
 		mapRenderer.render(gc, g, bottomLayersPredicate);
