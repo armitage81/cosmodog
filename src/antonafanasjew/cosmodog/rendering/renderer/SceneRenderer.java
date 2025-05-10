@@ -1,8 +1,12 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.RayRenderer;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.BackgroundRenderer;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -10,7 +14,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer.DynamicPiecesRendererParam;
+import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer.DynamicPiecesRendererParam;
 import antonafanasjew.cosmodog.rendering.renderer.EffectsRenderer.EffectsRendererParam;
 import antonafanasjew.cosmodog.rendering.maprendererpredicates.BottomLayersRenderingPredicate;
 import antonafanasjew.cosmodog.rendering.maprendererpredicates.MapLayerRendererPredicate;
@@ -23,6 +27,18 @@ import antonafanasjew.cosmodog.rendering.piecerendererpredicates.OnPlatformPiece
  * Renders the scene, that is the game map and everything on it.
  */
 public class SceneRenderer implements Renderer {
+
+	private AbstractRenderer backgroundRenderer = ConditionalRenderer.instance(
+			new BackgroundRenderer(),
+			null,
+			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType() == MapType.SPACE
+	);
+
+	private AbstractRenderer backgroundCloudRenderer = ConditionalRenderer.instance(
+			new BackgroundCloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS)),
+			null,
+			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType() == MapType.SPACE
+	);
 
 	private MapLayerRenderer mapRenderer = new MapLayerRenderer();
 	
@@ -45,8 +61,8 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer rayRenderer = new RayRenderer();
 
 
-	private AbstractRenderer cloudRenderer = new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS));
-	private AbstractRenderer birdsRenderer = new BirdsRenderer();
+	private AbstractRenderer cloudRenderer = ConditionalRenderer.instanceWithSkyDecorationsActiveCondition(new CloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS)));
+	private AbstractRenderer birdsRenderer = ConditionalRenderer.instanceWithSkyDecorationsActiveCondition(new BirdsRenderer());
 	private AbstractRenderer snowflakesRenderer = new SnowflakesRenderer();
 	private AbstractRenderer wormAttackRenderer = new WormAttackRenderer();
 	private AbstractRenderer artilleryGrenadeRenderer = new ArtilleryGrenadeRenderer();
@@ -57,14 +73,20 @@ public class SceneRenderer implements Renderer {
 
 
 	private AbstractRenderer overheadNotificationRenderer = new OverheadNotificationRenderer();
-	private Renderer daytimeColorFilterRenderer = new DayTimeFilterRenderer();
+	private Renderer daytimeColorFilterRenderer = ConditionalRenderer.instanceWithDayNightActiveCondition(new DayTimeFilterRenderer());
 	private AbstractRenderer sightRadiusRenderer = new SightRadiusRenderer();
 	
 	@Override
 	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
 		
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
-		
+
+		//Skybox renderer. (Everything what is beneath the map, for instance stars beneath the space lab)
+		backgroundRenderer.render(gc, g, null);
+
+		//Clouds in the background when in the space station.
+		backgroundCloudRenderer.render(gc, g, null);
+
 		//Draw "ground" part of the map
 		mapRenderer.render(gc, g, bottomLayersPredicate);
 		

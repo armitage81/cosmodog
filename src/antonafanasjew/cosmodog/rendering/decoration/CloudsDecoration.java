@@ -19,17 +19,17 @@ public class CloudsDecoration {
 	private Rectangle particlePatternSurface = Rectangle.fromSize(1920, 1080);
 	private OffsetCalculator offsetCalculator;
 	
-	public static CloudsDecoration instance() {
+	public static CloudsDecoration instance(int gridWidth, int gridHeight) {
 		if (instance == null) {
-			instance = new CloudsDecoration();
+			instance = new CloudsDecoration(gridWidth, gridHeight);
 		}
 		return instance;
 	}
 	
-	private CloudsDecoration() {
+	private CloudsDecoration(int gridWidth, int gridHeight) {
 		initialTimestamp = System.currentTimeMillis();
 		movementFunction = new LinearMovementFunction(1, 50);
-		particlePattern = new GridParticlePatternBuilder(1920, 1080).build(particlePatternSurface);
+		particlePattern = new GridParticlePatternBuilder(gridWidth, gridHeight).build(particlePatternSurface);
 		offsetCalculator = new OffsetCalculator();
 		offsetCalculator.setMovementOffsetFunction(movementFunction);
 		offsetCalculator.setParticlePattern(particlePattern);

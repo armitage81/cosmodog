@@ -3,17 +3,13 @@ package antonafanasjew.cosmodog.rendering.renderer.portals;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.geometry.Oscillations;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.maprendererpredicates.MapLayerRendererPredicate;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
-import antonafanasjew.cosmodog.rendering.renderer.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -22,10 +18,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
-import static com.badlogic.gdx.Gdx.graphics;
 
 public class PortalRenderer extends AbstractRenderer {
 

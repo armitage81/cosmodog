@@ -45,7 +45,7 @@ public class CloudRenderer extends AbstractRenderer {
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		Cam cam = cosmodogGame.getCam();
 		
-		CloudsDecoration cloudsDecoration = CloudsDecoration.instance();
+		CloudsDecoration cloudsDecoration = CloudsDecoration.instance(1920, 1080);
 		
 		/*
 		 * 	This is complicated, so read carefully.

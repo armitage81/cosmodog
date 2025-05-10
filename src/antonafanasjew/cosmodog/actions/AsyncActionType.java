@@ -33,11 +33,6 @@ public enum AsyncActionType {
 	ONSCREEN_NOTIFICATION(false, true, false),
 	
 	/**
-	 * Action type: Teleportation.
-	 */
-	TELEPORTATION(true, true, true),
-	
-	/**
 	 * Action type: Movement of the player character and the NPC's
 	 */
 	MOVEMENT(true, true, true),

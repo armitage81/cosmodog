@@ -14,7 +14,7 @@ Weapon type: Light gun
 
 Damage: 1
 
-Locomotion: Legs (Can cross plain and rough terrain. Cannot swim.)
+Chassis type: Legs (Can cross plain and rough terrain. Cannot swim.)
 
 Max Life: 15
 
@@ -24,4 +24,4 @@ Speed factor: 1
 Weaknesses: 
 
 
-Its light armor makes the bots vulnerable against handguns. A shot from behind can completely destroy the unit.
+Its light armor makes the bot vulnerable against handguns. A hit from behind can completely destroy the unit.

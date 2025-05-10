@@ -3,9 +3,9 @@ A page from the technical specification of deployed drones
 Copter
 
 
-Copters are our most flexible units. They are fast and can fly over water.
+Copters are the Fleet's most flexible units. They are fast and can fly over water.
 That makes them a perfect choice for guarding naval areas. 
-A copter's detection radius is extremely high and its height allows a big 'sight' angle. 
+A copter's detection radius is extremely high and its height allows big 'sight' angle.
 
 
 Armor type: Light
@@ -24,7 +24,7 @@ Speed factor: 3
 Weaknesses: 
 
 
-Copters don't have good armor and can be easily shot down with rapid-fire weapons, such as assault rifles.
+Copters have light armor and can be easily shot down with rapid-fire weapons, such as assault rifles.
 
 
  

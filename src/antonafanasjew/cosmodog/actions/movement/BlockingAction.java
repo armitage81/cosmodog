@@ -40,7 +40,7 @@ public class BlockingAction extends FixedLengthAsyncAction {
 
         DynamicPiece dynamicPiece = game.dynamicPieceAtPosition(targetEntrance.getPosition());
         if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
-            ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
+            //ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
         }
 
         String text = collisionStatus.getPassageBlockerDescriptor().asText();

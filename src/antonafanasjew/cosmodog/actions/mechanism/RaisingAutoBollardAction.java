@@ -10,6 +10,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class RaisingAutoBollardAction extends FixedLengthAsyncAction {
 
+    public static final int DURATION = 100;
+
     private final AutoBollard bollard;
 
     public RaisingAutoBollardAction(int duration, AutoBollard bollard) {

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
+import antonafanasjew.cosmodog.listener.movement.consumer.*;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
@@ -40,10 +41,6 @@ import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.listener.movement.consumer.FoodConsumer;
-import antonafanasjew.cosmodog.listener.movement.consumer.FuelConsumer;
-import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
-import antonafanasjew.cosmodog.listener.movement.consumer.WaterConsumer;
 import antonafanasjew.cosmodog.model.CollectibleComposed;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
@@ -301,7 +298,9 @@ public class ApplicationContext {
 				return 0;
 			}
 		};
-		
+
+		waterConsumer = ConditionalResourceConsumer.instanceWithResourceConsumptionActiveCondition(waterConsumer);
+
 		cosmodog.setWaterConsumer(waterConsumer);
 		
 		ResourceConsumer foodConsumer = Features.getInstance().featureOn(Features.FEATURE_HUNGER) ? new FoodConsumer() : new ResourceConsumer() {
@@ -310,6 +309,8 @@ public class ApplicationContext {
 				return 0;
 			}
 		};
+
+		foodConsumer = ConditionalResourceConsumer.instanceWithResourceConsumptionActiveCondition(foodConsumer);
 		
 		cosmodog.setFoodConsumer(foodConsumer);
 		
@@ -621,6 +622,8 @@ public class ApplicationContext {
 		for (String key : animationResourceWrappers.keySet()) {
 			this.getAnimations().put(key, animationResourceWrappers.get(key).getEntity());
 		}
+
+		images.put("space.background", new Image("data/space_background.png", false, Image.FILTER_NEAREST));
 
 		images.put("ui.ingame.background", new Image("data/ui/background.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.lifeframe", new Image("data/ui/lifeframe2.png", false, Image.FILTER_NEAREST));

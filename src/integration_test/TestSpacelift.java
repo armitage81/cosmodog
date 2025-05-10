@@ -23,6 +23,8 @@ public class TestSpacelift {
 				player.setPosition(Position.fromCoordinates(126, 47, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
+				player.setFood(1);
+				player.setWater(1);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 			}
 		};

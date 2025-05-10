@@ -58,22 +58,26 @@ public class AutoBollard extends DynamicPiece {
 
     @Override
     public void interactBeforeEnteringAttempt() {
-        ApplicationContextUtils
-                .getCosmodogGame()
-                .getActionRegistry()
-                .registerAction(AsyncActionType.MOVEMENT,
-                        new SinkingAutoBollardAction(1000, this)
-                );
+        if (!open) {
+            ApplicationContextUtils
+                    .getCosmodogGame()
+                    .getActionRegistry()
+                    .registerAction(AsyncActionType.MOVEMENT,
+                            new SinkingAutoBollardAction(SinkingAutoBollardAction.DURATION, this)
+                    );
+        }
     }
 
     @Override
     public void interactAfterExiting() {
-        ApplicationContextUtils
-                .getCosmodogGame()
-                .getActionRegistry()
-                .registerAction(AsyncActionType.MOVEMENT,
-                        new RaisingAutoBollardAction(1000, this)
-                );
+        if (open) {
+            ApplicationContextUtils
+                    .getCosmodogGame()
+                    .getActionRegistry()
+                    .registerAction(AsyncActionType.MOVEMENT,
+                            new RaisingAutoBollardAction(RaisingAutoBollardAction.DURATION, this)
+                    );
+        }
     }
 
     @Override
@@ -105,5 +109,10 @@ public class AutoBollard extends DynamicPiece {
 
     public void setVisualState(short visualState) {
         this.visualState = visualState;
+    }
+
+    @Override
+    public int renderingPriority() {
+        return open ? 1 : 10;
     }
 }

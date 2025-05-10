@@ -5,6 +5,8 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
+import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
+import antonafanasjew.cosmodog.actions.mechanism.TurningReflectorClockwiseAction;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -16,6 +18,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 public class Switch extends DynamicPiece implements Pressable, SwitchableHolder {
 
@@ -63,12 +66,20 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
                 boolean open = bollard.isOpen();
                 AsyncAction action;
                 if (open) {
-                    action = new RaisingBollardAction(1000, bollard);
+                    action = new RaisingBollardAction(RaisingBollardAction.DURATION, bollard);
                 } else {
-                    action = new SinkingBollardAction(1000, bollard);
+                    action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
                 }
                 ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, action);
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+            } else if (switchable instanceof Reflector reflector) {
+                AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
+                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+            } else if (switchable instanceof OneWayBollard oneWayBollard) {
+                AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
+                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
             }
         }
 

@@ -178,14 +178,8 @@ public class CosmodogMap extends CosmodogModel {
 	}
 
 	public Set<DynamicPiece> dynamicPiecesAtPosition(Position position) {
-		Set<DynamicPiece> retVal = new HashSet<>();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapType());
-		Set<Class<?>> dynamicPieceTypes = map.getDynamicPieces().keySet();
-		for (Class<?> clazz : dynamicPieceTypes) {
-			Collection<DynamicPiece> l = map.getDynamicPieces().get(clazz);
-			l.stream().filter(e -> e.getPosition().equals(position)).forEach(retVal::add);
-		}
-		return retVal;
+		return map.getDynamicPieces().values().stream().filter(e -> e.getPosition().equals(position)).collect(Collectors.toSet());
 	}
 
 	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(Position position, int width, int height, int grace) {
@@ -287,6 +281,7 @@ public class CosmodogMap extends CosmodogModel {
 	public Optional<DynamicPiece> dynamicPieceAtPosition(Class<? extends DynamicPiece> clazz, Position position) {
 		return dynamicPieces.get(clazz).stream().filter(e -> e.getPosition().equals(position)).findFirst();
 	}
+
 
 	public Optional<SwitchableHolder> switchableHolderAtPosition(Position position) {
 

@@ -14,7 +14,7 @@ public enum PassageBlockerType {
 	/**
 	 * The tile is not passable because it is blocked by obstacles.
 	 */
-	BLOCKED("Blocked"),
+	BLOCKED(""),
 	
 	BLOCKED_ON_WHEELS("Blocked. [SHIFT] + [Arrow Key] to exit"),
 	

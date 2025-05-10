@@ -17,6 +17,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import java.io.Serializable;
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,9 +53,9 @@ public class Ray implements Serializable {
         return targetPosition;
     }
 
-    private static boolean reflectorPresent(Position position) {
+    private static Optional<Reflector> reflector(Position position) {
         CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapType());
-        return map.dynamicPieceAtPosition(Reflector.class, position).isPresent();
+        return map.dynamicPieceAtPosition(Reflector.class, position).map(dynamicPiece -> (Reflector) dynamicPiece);
     }
 
     private static boolean positionPenetrable(Position position) {
@@ -74,8 +75,49 @@ public class Ray implements Serializable {
         return !blocking && !attachable && dynamicPiecePermeable;
     }
 
-    private static Optional<DirectionType> reflectionDirection(Position reflectorPosition, DirectionType directionType) {
-        throw new RuntimeException("Not yet implemented.");
+    private static Optional<DirectionType> reflectionDirection(Reflector reflector, DirectionType directionType) {
+
+        Optional<DirectionType> retVal = Optional.empty();
+        ReflectionType reflectionType = reflector.getReflectionType();
+
+        if (directionType == DirectionType.RIGHT) {
+            if (reflectionType == ReflectionType.NORTH_WEST) {
+                retVal = Optional.of(DirectionType.UP);
+            }
+            if (reflectionType == ReflectionType.SOUTH_WEST) {
+                retVal = Optional.of(DirectionType.DOWN);
+            }
+        }
+
+        if (directionType == DirectionType.LEFT) {
+            if (reflectionType == ReflectionType.NORTH_EAST) {
+                retVal = Optional.of(DirectionType.UP);
+            }
+            if (reflectionType == ReflectionType.SOUTH_EAST) {
+                retVal = Optional.of(DirectionType.DOWN);
+            }
+        }
+
+        if (directionType == DirectionType.UP) {
+            if (reflectionType == ReflectionType.SOUTH_EAST) {
+                retVal = Optional.of(DirectionType.RIGHT);
+            }
+            if (reflectionType == ReflectionType.SOUTH_WEST) {
+                retVal = Optional.of(DirectionType.LEFT);
+            }
+        }
+
+        if (directionType == DirectionType.DOWN) {
+            if (reflectionType == ReflectionType.NORTH_EAST) {
+                retVal = Optional.of(DirectionType.RIGHT);
+            }
+            if (reflectionType == ReflectionType.NORTH_WEST) {
+                retVal = Optional.of(DirectionType.LEFT);
+            }
+        }
+
+        return retVal;
+
     }
 
     private boolean empAtPlayersPosition() {
@@ -102,8 +144,9 @@ public class Ray implements Serializable {
                     ray.addPosition(lookAheadPosition);
                     lookAheadPosition = DirectionType.facedAdjacentPosition(lookAheadPosition, directionType);
                 } else {
-                    if (reflectorPresent(lookAheadPosition)) {
-                        Optional<DirectionType> reflectionDirection = reflectionDirection(lookAheadPosition, directionType);
+                    Optional<Reflector> optReflector = reflector(lookAheadPosition);
+                    if (optReflector.isPresent()) {
+                        Optional<DirectionType> reflectionDirection = reflectionDirection(optReflector.get(), directionType);
                         if (reflectionDirection.isPresent()) {
                             ray.addPosition(lookAheadPosition);
                             directionType = reflectionDirection.get();

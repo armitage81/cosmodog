@@ -1,7 +1,9 @@
 package antonafanasjew.cosmodog.actions.movement;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
+import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.topology.Position;
 
 /**
@@ -11,12 +13,18 @@ import antonafanasjew.cosmodog.topology.Position;
 public class CrossTileMotion {
 
 	public static CrossTileMotion fromActor(Actor actor, Position targetPosition) {
-		return fromActor(actor, targetPosition, false);
+		return fromActor(actor, targetPosition, false, null, null);
 	}
 
-	public static CrossTileMotion fromActor(Actor actor, Position targetPosition, boolean containsTeleportation) {
+	public static CrossTileMotion fromActorWhenUsingPortal(Actor actor, Position targetPosition, Portal entrancePortal, Portal exitPortal) {
+		return fromActor(actor, targetPosition, true, entrancePortal, exitPortal);
+	}
+
+	private static CrossTileMotion fromActor(Actor actor, Position targetPosition, boolean containsTeleportation, Portal entrancePortal, Portal exitPortal) {
 		CrossTileMotion crossTileMotion = new CrossTileMotion();
 		crossTileMotion.containsTeleportation = containsTeleportation;
+		crossTileMotion.entrancePortal = entrancePortal;
+		crossTileMotion.exitPortal = exitPortal;
 		crossTileMotion.setActor(actor);
 		crossTileMotion.setLastMidwayPosition(actor.getPosition());
 		crossTileMotion.targetPosition = targetPosition;
@@ -24,6 +32,9 @@ public class CrossTileMotion {
 	}
 
 	private boolean containsTeleportation;
+
+	private Portal entrancePortal;
+	private Portal exitPortal;
 
 	private Actor actor;
 	
@@ -89,5 +100,13 @@ public class CrossTileMotion {
 
 	public boolean isContainsTeleportation() {
 		return containsTeleportation;
+	}
+
+	public Portal getEntrancePortal() {
+		return entrancePortal;
+	}
+
+	public Portal getExitPortal() {
+		return exitPortal;
 	}
 }

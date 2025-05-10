@@ -29,6 +29,9 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.OneWayBollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Sensor;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -39,13 +42,25 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
+import java.util.Optional;
+import java.util.Set;
+
 public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionValidator {
 
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
-		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(entrance.getPosition());
+
+		//In case there are multiple dynamic pieces at one position, we assume that a moveable is on a non-blocking dynamic piece, such as a sensor.
+		//In this case we assume that we should move the moveable and ignore the other dynamic pieces. (If a moveable is on it, player will also be able to enter anyway.)
+		Set<DynamicPiece> dynamicPieces = map.dynamicPiecesAtPosition(entrance.getPosition());
+		Optional<MoveableDynamicPiece> optMoveable = dynamicPieces.stream().filter(e -> e instanceof MoveableDynamicPiece).map(e -> (MoveableDynamicPiece)e).findFirst();
+		DynamicPiece dynamicPiece = optMoveable.isPresent() ? optMoveable.get() : dynamicPieces.stream().findFirst().orElse(null);
+
 		if (dynamicPiece != null) {
+			if (dynamicPiece instanceof Sensor) {
+				//Do nothing. Just a place holder to not forget this part in case something changes.
+			}
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
 			}
@@ -62,25 +77,10 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 				MoveableDynamicPiece moveable = (MoveableDynamicPiece)dynamicPiece;
 				Actor moveableActor = moveable.asActor();
 				CollisionValidator collisionValidatorForMoveable = ApplicationContextUtils.getCosmodog().getCollisionValidatorForMoveable();
-				DirectionType directionType = PositionUtils.targetDirection(actor, moveableActor);
-				int newMoveablePosX = (int)moveableActor.getPosition().getX();
-				int newMoveablePosY = (int)moveableActor.getPosition().getY();
-				if (directionType == DirectionType.UP) {
-					newMoveablePosY--;
-				}
-				if (directionType == DirectionType.DOWN) {
-					newMoveablePosY++;
-				}
-				if (directionType == DirectionType.LEFT) {
-					newMoveablePosX--;
-				}
-				if (directionType == DirectionType.RIGHT) {
-					newMoveablePosX++;
-				}
 
-				Position moveablePosition = Position.fromCoordinates(newMoveablePosX, newMoveablePosY, moveableActor.getPosition().getMapType());
-				Entrance moveableEntrance = Entrance.instance(moveablePosition, directionType);
-				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, moveableEntrance);
+				Entrance moveableTargetEntrance = cosmodogGame.targetEntrance(moveableActor, entrance.getEntranceDirection());
+
+				CollisionStatus collisionStatusForMoveable = collisionValidatorForMoveable.collisionStatus(cosmodogGame, moveableActor, map, moveableTargetEntrance);
 				if (collisionStatusForMoveable.isPassable()) {
 					retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
 				} else {
@@ -154,13 +154,18 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					String blockReasonParam = "Door is closed";
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
-			} else if (dynamicPiece instanceof Bollard) {
-				Bollard bollard = (Bollard)dynamicPiece;
+			} else if (dynamicPiece instanceof Bollard bollard) {
 				if (!bollard.isOpen()) {
 					String blockReasonParam = "Door is closed";
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
-			}else if (dynamicPiece instanceof Crate) {
+			} else if (dynamicPiece instanceof OneWayBollard oneWayBollard) {
+				Player player = ApplicationContextUtils.getPlayer();
+				if (player.getDirection() != oneWayBollard.getDirection()) {
+					String blockReasonParam = "Wrong side";
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
+				}
+			} else if (dynamicPiece instanceof Crate) {
 				Crate crate = (Crate)dynamicPiece;
 				if (crate.getState() != Crate.STATE_DESTROYED) {
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
@@ -199,6 +204,8 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 					}
 					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, blockReasonParam);
 				}
+			} else if (dynamicPiece instanceof Reflector) {
+				retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
 			}
 		}
 		return retVal;

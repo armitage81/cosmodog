@@ -2,15 +2,19 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.io.Serial;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
+import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.RadiationDamageAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.death.WormAttackAction;
+import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.weather.SnowfallChangeAction;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
@@ -32,6 +36,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
+import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventTeleported;
@@ -179,6 +184,7 @@ public class PlayerMovementListener implements MovementListener {
 		checkMine(applicationContext);
 		updateSnowfall();
 		checkContaminationStatus(applicationContext);
+		updatePresenseDetectors();
 		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
@@ -782,19 +788,57 @@ public class PlayerMovementListener implements MovementListener {
 	}
 
 	private void updatePortalRay() {
+		//Some things on the map change after the player moves. For instance, presence detectors can close doors.
+		//These changes happen as asynchronous actions. If we would update the ray directly, it would not pick up those changes.
+		//That is why we pack it into a short action of type MODAL_WINDOW. This way, the update will be queued up after all
+		//those changes.
+		AsyncAction portalRayUpdateAction = new FixedLengthAsyncAction(0) {
+			@Override
+			public void onEnd() {
+				Player player = ApplicationContextUtils.getPlayer();
+				CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+				int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
+				TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
 
+				boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
+				boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
+
+				if (emittable && !onEmpField) {
+					player.activatePortalRay();
+				} else {
+					player.deactivatePortalRay();
+				}
+			}
+		};
+		ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+		actionRegistry.registerAction(AsyncActionType.MOVEMENT, portalRayUpdateAction);
+
+	}
+
+	private void updatePresenseDetectors() {
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
-		TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
+		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
+		Set<DynamicPiece> presenceDetectorDynamicPieces = map
+				.getDynamicPieces()
+				.values()
+				.stream()
+				.filter(e -> e instanceof PresenceDetector)
+				.collect(Collectors.toSet());
 
-		boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
-		boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
+		for (DynamicPiece presenceDetectorDynamicPiece : presenceDetectorDynamicPieces) {
+			Position position = presenceDetectorDynamicPiece.getPosition();
+			if (player.getPosition().equals(position)) {
+				((PresenceDetector)presenceDetectorDynamicPiece).presenceDetected(game, player);
+			} else {
+				Optional<DynamicPiece> optMoveableDynamicPiece = map.dynamicPiecesAtPosition(position).stream().filter(e -> e instanceof  MoveableDynamicPiece).findFirst();
 
-		if (emittable && !onEmpField) {
-			player.activatePortalRay();
-		} else {
-			player.deactivatePortalRay();
+				if (optMoveableDynamicPiece.isPresent()) {
+					((PresenceDetector)presenceDetectorDynamicPiece).presenceDetected(game, ((MoveableDynamicPiece)optMoveableDynamicPiece.get()).asActor());
+				} else {
+					((PresenceDetector)presenceDetectorDynamicPiece).presenceLost(game);
+				}
+			}
 		}
 	}
 

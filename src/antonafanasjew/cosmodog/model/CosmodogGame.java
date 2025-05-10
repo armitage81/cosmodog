@@ -209,13 +209,13 @@ public class CosmodogGame extends CosmodogModel {
 		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
 	}
 
-	public boolean portalExists(Position position, DirectionType directionType) {
+	public Optional<Portal> portal(Position position, DirectionType directionType) {
 		for (Portal portal : portals) {
 			if (portal.position.equals(position) && portal.directionType == directionType) {
-				return true;
+				return Optional.of(portal);
 			}
 		}
-		return false;
+		return Optional.empty();
 	}
 
 	public void createPortal(Portal portal) {
@@ -237,23 +237,25 @@ public class CosmodogGame extends CosmodogModel {
 	Since portal can cross different maps, the target entrance can be on a different map.
 	This is the reason why the method is located in the CosmodogGame class and not in the CosmodogMap class.
 	 */
-	public Entrance targetEntrance(Actor actor) {
+	public Entrance targetEntrance(Actor actor, DirectionType directionType) {
 
 		Position envisionedPosition;
-		DirectionType directionType = actor.getDirection();
 		DirectionType envisionedPositionEntrance = directionType;
 		boolean usedPortal = false;
+		Portal entrancePortal = null;
+		Portal exitPortal = null;
 
-		Position protagonistsPosition = Position.fromCoordinates(actor.getPosition().getX(), actor.getPosition().getY(), actor.getPosition().getMapType());
+		Position actorsPosition = Position.fromCoordinates(actor.getPosition().getX(), actor.getPosition().getY(), actor.getPosition().getMapType());
 
-		Position facedAdjacentPosition = DirectionType.facedAdjacentPosition(protagonistsPosition, directionType);
+		Position facedAdjacentPosition = DirectionType.facedAdjacentPosition(actorsPosition, directionType);
 
-		DirectionType directionFacingProtagonist = DirectionType.reverse(directionType);
+		DirectionType directionFacingActor = DirectionType.reverse(directionType);
 
-		if (portalExists(facedAdjacentPosition, directionFacingProtagonist)) {
+		Optional<Portal> optPortal = portal(facedAdjacentPosition, directionFacingActor);
+		if (optPortal.isPresent()) {
 			Optional<Portal> otherPortal = Optional.empty();
 			for (Portal portal : getPortals()) {
-				if (!portal.position.equals(facedAdjacentPosition) || portal.directionType != directionFacingProtagonist) {
+				if (!portal.position.equals(facedAdjacentPosition) || portal.directionType != directionFacingActor) {
 					otherPortal = Optional.of(portal);
 					break;
 				}
@@ -262,6 +264,8 @@ public class CosmodogGame extends CosmodogModel {
 				envisionedPosition = DirectionType.facedAdjacentPosition(otherPortal.get().position, otherPortal.get().directionType);
 				envisionedPositionEntrance = otherPortal.get().directionType;
 				usedPortal = true;
+				entrancePortal = optPortal.get();
+				exitPortal = otherPortal.get();
 			} else {
 				envisionedPosition = facedAdjacentPosition;
 			}
@@ -269,7 +273,13 @@ public class CosmodogGame extends CosmodogModel {
 			envisionedPosition = facedAdjacentPosition;
 		}
 
-		return Entrance.instance(envisionedPosition, envisionedPositionEntrance, usedPortal, false);
+		Entrance entrance;
+		if (usedPortal) {
+			entrance = Entrance.instanceForPortals(envisionedPosition, envisionedPositionEntrance, entrancePortal, exitPortal);
+		} else {
+			entrance = Entrance.instance(envisionedPosition, envisionedPositionEntrance);
+		}
+		return entrance;
 	}
 
 }

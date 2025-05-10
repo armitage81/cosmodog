@@ -70,6 +70,10 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     Player player = ApplicationContextUtils.getPlayer();
                     CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
                     Cam cam = game.getCam();
+                    player.setFood(player.getCurrentMaxFood());
+                    player.setLifeLentForHunger(0);
+                    player.setWater(player.getCurrentMaxWater());
+                    player.setLifeLentForThirst(0);
                     player.switchPlane(MapType.SPACE);
                     player.turn(DirectionType.DOWN);
                     cam.focusOnPiece(game, 0, 0, player);
