@@ -20,12 +20,21 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import javax.sound.sampled.Port;
 import java.util.List;
 import java.util.Optional;
 
 public class RayRenderer extends AbstractRenderer {
+
+    public record RayRendererParam(boolean bottomNotTop) {
+        public static RayRenderer.RayRendererParam BOTTOM = new RayRenderer.RayRendererParam(true);
+        public static RayRenderer.RayRendererParam TOP = new RayRenderer.RayRendererParam(false);
+    }
+
     @Override
     public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+
+        boolean bottomNotTop = ((RayRenderer.RayRendererParam)renderingParameter).bottomNotTop;
 
         CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
         Player player = ApplicationContextUtils.getPlayer();
@@ -103,84 +112,86 @@ public class RayRenderer extends AbstractRenderer {
 
             Player protagonist = game.getPlayer();
 
-            List<Position> positions = ray.getRayPositions();
-            for (int i = 0; i < positions.size(); i++) {
+            if (!bottomNotTop) {
+                List<Position> positions = ray.getRayPositions();
+                for (int i = 0; i < positions.size(); i++) {
 
-                Position lookBehindPosition;
-                if (i == 0) {
-                    lookBehindPosition = Position.fromCoordinatesOnPlayerLocationMap((int)protagonist.getPosition().getX(), (int)protagonist.getPosition().getY());
-                } else {
-                    lookBehindPosition = positions.get(i - 1);
-                }
-
-                Position position = positions.get(i);
-                DirectionType startDirection = DirectionType.direction(lookBehindPosition, position);
-
-                Position lookAheadPosition = null;
-
-                if (i < positions.size() - 1) {
-                    lookAheadPosition = positions.get(i + 1);
-                } else {
-                    if (ray.getTargetPosition() != null) {
-                        lookAheadPosition = ray.getTargetPosition();
+                    Position lookBehindPosition;
+                    if (i == 0) {
+                        lookBehindPosition = Position.fromCoordinatesOnPlayerLocationMap((int) protagonist.getPosition().getX(), (int) protagonist.getPosition().getY());
                     } else {
-                        lookAheadPosition = DirectionType.facedAdjacentPosition(position, startDirection);
-                    }
-                }
-
-                DirectionType endDirection = lookAheadPosition != null ? DirectionType.direction(position, lookAheadPosition) : startDirection;
-
-                if (!position.inMapBounds(map)) {
-                    continue;
-                }
-
-                boolean tooFarWest = position.getX() < camPositionOnMapInTilesX;
-                boolean tooFarEast = position.getX() >= camPositionOnMapInTilesX + camViewWidthInTiles;
-                boolean tooFarNorth = position.getY() < camPositionOnMapInTilesY;
-                boolean tooFarSouth = position.getY() >= camPositionOnMapInTilesY + camViewHeightInTiles;
-
-                if (!(tooFarEast || tooFarWest || tooFarNorth || tooFarSouth)) {
-
-                    g.setLineWidth(3);
-
-                    float x1;
-                    float y1;
-                    float x2;
-                    float y2;
-
-                    if (startDirection == DirectionType.UP || endDirection == DirectionType.DOWN) {
-                        x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                        x2 = x1;
-                        y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength;
-                        y2 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                        g.drawLine(x1, y1, x2, y2);
+                        lookBehindPosition = positions.get(i - 1);
                     }
 
-                    if (startDirection == DirectionType.DOWN || endDirection == DirectionType.UP) {
-                        x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                        x2 = x1;
-                        y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength;
-                        y2 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                        g.drawLine(x1, y1, x2, y2);
+                    Position position = positions.get(i);
+                    DirectionType startDirection = DirectionType.direction(lookBehindPosition, position);
+
+                    Position lookAheadPosition = null;
+
+                    if (i < positions.size() - 1) {
+                        lookAheadPosition = positions.get(i + 1);
+                    } else {
+                        if (ray.getTargetPosition() != null) {
+                            lookAheadPosition = ray.getTargetPosition();
+                        } else {
+                            lookAheadPosition = DirectionType.facedAdjacentPosition(position, startDirection);
+                        }
                     }
 
-                    if (startDirection == DirectionType.RIGHT || endDirection == DirectionType.LEFT) {
-                        x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength;
-                        x2 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                        y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                        y2 = y1;
-                        g.drawLine(x1, y1, x2, y2);
+                    DirectionType endDirection = lookAheadPosition != null ? DirectionType.direction(position, lookAheadPosition) : startDirection;
+
+                    if (!position.inMapBounds(map)) {
+                        continue;
                     }
 
-                    if (startDirection == DirectionType.LEFT || endDirection == DirectionType.RIGHT) {
-                        x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                        x2 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength;
-                        y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                        y2 = y1;
-                        g.drawLine(x1, y1, x2, y2);
-                    }
+                    boolean tooFarWest = position.getX() < camPositionOnMapInTilesX;
+                    boolean tooFarEast = position.getX() >= camPositionOnMapInTilesX + camViewWidthInTiles;
+                    boolean tooFarNorth = position.getY() < camPositionOnMapInTilesY;
+                    boolean tooFarSouth = position.getY() >= camPositionOnMapInTilesY + camViewHeightInTiles;
 
-                    g.setLineWidth(1);
+                    if (!(tooFarEast || tooFarWest || tooFarNorth || tooFarSouth)) {
+
+                        g.setLineWidth(3);
+
+                        float x1;
+                        float y1;
+                        float x2;
+                        float y2;
+
+                        if (startDirection == DirectionType.UP || endDirection == DirectionType.DOWN) {
+                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
+                            x2 = x1;
+                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength;
+                            y2 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
+                            g.drawLine(x1, y1, x2, y2);
+                        }
+
+                        if (startDirection == DirectionType.DOWN || endDirection == DirectionType.UP) {
+                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
+                            x2 = x1;
+                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength;
+                            y2 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
+                            g.drawLine(x1, y1, x2, y2);
+                        }
+
+                        if (startDirection == DirectionType.RIGHT || endDirection == DirectionType.LEFT) {
+                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength;
+                            x2 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
+                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
+                            y2 = y1;
+                            g.drawLine(x1, y1, x2, y2);
+                        }
+
+                        if (startDirection == DirectionType.LEFT || endDirection == DirectionType.RIGHT) {
+                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
+                            x2 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength;
+                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
+                            y2 = y1;
+                            g.drawLine(x1, y1, x2, y2);
+                        }
+
+                        g.setLineWidth(1);
+                    }
                 }
 
             }
@@ -196,8 +207,46 @@ public class RayRenderer extends AbstractRenderer {
 
                 if (!(tooFarEast || tooFarWest || tooFarNorth || tooFarSouth)) {
 
-                    g.setColor(new Color(1, 0, 0, 0.33f));
-                    g.fillRect((targetPosition.getX() - camPositionOnMapInTilesX) * tileLength, (targetPosition.getY() - camPositionOnMapInTilesY) * tileLength, tileLength, tileLength);
+                    float portalTilePositionRelatedToCamX = ray.getTargetPosition().getX() - camPositionOnMapInTilesX;
+                    float portalTilePositionRelatedToCamY = ray.getTargetPosition().getY() - camPositionOnMapInTilesY;
+
+                    float offsetX = (portalTilePositionRelatedToCamX) * tileLength;
+                    float offsetY = (portalTilePositionRelatedToCamY) * tileLength;
+
+                    DirectionType direction = DirectionType.reverse(ray.getLastDirection());
+
+                    Color colorPortalRoof = new Color(0.7f, 0.3f, 0.5f, 0.7f);
+                    Color colorPortalWall = new Color(1, 0.5f, 0.5f, 0.7f);
+
+                    if (bottomNotTop) {
+                        if (direction == DirectionType.DOWN) {
+                            g.setColor(colorPortalWall);
+                            g.fillRect(offsetX, offsetY + PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET, tileLength, tileLength - PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET);
+                        } else if (direction == DirectionType.UP) {
+                        } else if (direction == DirectionType.LEFT) {
+                            g.setColor(colorPortalWall);
+                            g.fillRect(offsetX, offsetY + PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET, PortalRenderer.PORTAL_THICKNESS, tileLength - PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET);
+                        } else {
+                            g.setColor(colorPortalWall);
+                            g.fillRect(offsetX + tileLength - PortalRenderer.PORTAL_THICKNESS, offsetY + PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET, PortalRenderer.PORTAL_THICKNESS, tileLength - PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET);
+                        }
+                    } else {
+                        boolean alternateColor = timestamp / 120 % 2 == 1;
+                        if (direction == DirectionType.DOWN) {
+                            g.setColor(colorPortalRoof);
+                            g.fillRect(offsetX, offsetY + PortalRenderer.PORTAL_SOUTH_WALL_EDGE_OFFSET - PortalRenderer.PORTAL_THICKNESS, tileLength, PortalRenderer.PORTAL_THICKNESS);
+                        } else if (direction == DirectionType.UP) {
+                            g.setColor(colorPortalRoof);
+                            g.fillRect(offsetX, offsetY - PortalRenderer.PORTAL_NORTH_WALL_EDGE_OFFSET, tileLength, PortalRenderer.PORTAL_THICKNESS);
+                        } else if (direction == DirectionType.LEFT) {
+                            g.setColor(colorPortalRoof);
+                            g.fillRect(offsetX, offsetY - PortalRenderer.PORTAL_NORTH_WALL_EDGE_OFFSET, PortalRenderer.PORTAL_THICKNESS, tileLength);
+                        } else {
+                            g.setColor(colorPortalRoof);
+                            g.fillRect(offsetX + tileLength - PortalRenderer.PORTAL_THICKNESS, offsetY - PortalRenderer.PORTAL_NORTH_WALL_EDGE_OFFSET, PortalRenderer.PORTAL_THICKNESS, tileLength);
+                        }
+                    }
+
                 }
             }
 

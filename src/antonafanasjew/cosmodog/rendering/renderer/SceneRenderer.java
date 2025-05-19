@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.portals.Ray;
 import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.portals.PortalRenderer;
@@ -99,6 +100,9 @@ public class SceneRenderer implements Renderer {
 		//Draw bottom portals
 		portalRenderer.render(gc, g, PortalRenderer.PortalRendererParam.BOTTOM);
 
+		//Bottom of the ray, which is the base portal outline
+		rayRenderer.render(gc, g, RayRenderer.RayRendererParam.BOTTOM);
+
 		//Draw ground effects.
 		effectsRenderer.render(gc, g, EffectsRendererParam.FOR_GROUND_EFFECTS);
 
@@ -146,7 +150,7 @@ public class SceneRenderer implements Renderer {
 		radiationRenderer.render(gc, g, sceneDrawingContext);
 
 		//Draw portal gun ray.
-		rayRenderer.render(gc, g, sceneDrawingContext);
+		rayRenderer.render(gc, g, RayRenderer.RayRendererParam.TOP);
 
 
 		//Draw the sight radius of the enemies.

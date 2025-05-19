@@ -32,9 +32,9 @@ public class PortalRenderer extends AbstractRenderer {
     private static final Color PORTAL_ROOF_COLOR_A = new Color(0.7f, 0.3f, 0, 0.7f);
     private static final Color PORTAL_ROOF_COLOR_B = new Color(0.7f, 0.3f, 0, 0.5f);
 
-    private static final int PORTAL_THICKNESS = 4;
-    private static final int PORTAL_SOUTH_WALL_EDGE_OFFSET = 9;
-    private static final int PORTAL_NORTH_WALL_EDGE_OFFSET = 7;
+    public static final int PORTAL_THICKNESS = 4;
+    public static final int PORTAL_SOUTH_WALL_EDGE_OFFSET = 9;
+    public static final int PORTAL_NORTH_WALL_EDGE_OFFSET = 7;
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
