@@ -26,18 +26,15 @@ public class PortalRenderer extends AbstractRenderer {
         public static PortalRenderer.PortalRendererParam TOP = new PortalRenderer.PortalRendererParam(false);
     }
 
-    private static final int OSCILLATION_PERIOD_LENGTH = 1500;
+    private static final Color PORTAL_BASE_COLOR_A = new Color(1, 0.5f, 0, 0.7f);
+    private static final Color PORTAL_BASE_COLOR_B = new Color(1, 0.5f, 0, 0.5f);
 
-    private static final Color PORTAL_BASE_COLOR_A = new Color(1, 0.5f, 0);
-    private static final Color PORTAL_BASE_COLOR_B = new Color(1, 0.7f, 0);
+    private static final Color PORTAL_ROOF_COLOR_A = new Color(0.7f, 0.3f, 0, 0.7f);
+    private static final Color PORTAL_ROOF_COLOR_B = new Color(0.7f, 0.3f, 0, 0.5f);
 
-    private static final Color PORTAL_ROOF_COLOR_A = new Color(0.7f, 0.3f, 0);
-    private static final Color PORTAL_ROOF_COLOR_B = new Color(0.7f, 0.5f, 0);
-
-    private static final int PORTAL_THICKNESS = 4;
-    private static final int SOUTH_WALL_EDGE_OFFSET = 9;
-    private static final int NORTH_WALL_EDGE_OFFSET = 7;
-
+    public static final int PORTAL_THICKNESS = 4;
+    public static final int PORTAL_SOUTH_WALL_EDGE_OFFSET = 9;
+    public static final int PORTAL_NORTH_WALL_EDGE_OFFSET = 7;
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
@@ -126,32 +123,35 @@ public class PortalRenderer extends AbstractRenderer {
                 DirectionType direction = portal.directionType;
                 boolean bottomNotTop = ((PortalRendererParam)renderingParameter).bottomNotTop;
 
-                boolean alternateColor = timestamp / 120 % 2 == 1;
-                Color baseColor = alternateColor ? PORTAL_BASE_COLOR_B : PORTAL_BASE_COLOR_A;
-                Color roofColor = alternateColor ? PORTAL_ROOF_COLOR_B : PORTAL_ROOF_COLOR_A;
-
                 if (bottomNotTop) {
+                    boolean alternateColor = timestamp / 120 % 2 == 1;
+                    Color baseColor = alternateColor ? PORTAL_BASE_COLOR_B : PORTAL_BASE_COLOR_A;
                     if (direction == DirectionType.DOWN) {
                         graphics.setColor(baseColor);
-                        graphics.fillRect(offsetX, offsetY + SOUTH_WALL_EDGE_OFFSET + PORTAL_THICKNESS, tileLength, tileLength - SOUTH_WALL_EDGE_OFFSET);
-                    }
-                } else {
-                    if (direction == DirectionType.DOWN) {
-                        graphics.setColor(roofColor);
-                        graphics.fillRect(offsetX, offsetY + SOUTH_WALL_EDGE_OFFSET, tileLength, PORTAL_THICKNESS);
+                        graphics.fillRect(offsetX, offsetY + PORTAL_SOUTH_WALL_EDGE_OFFSET, tileLength, tileLength - PORTAL_SOUTH_WALL_EDGE_OFFSET);
                     } else if (direction == DirectionType.UP) {
-                        graphics.setColor(roofColor);
-                        graphics.fillRect(offsetX, offsetY - NORTH_WALL_EDGE_OFFSET - PORTAL_THICKNESS, tileLength, PORTAL_THICKNESS);
                     } else if (direction == DirectionType.LEFT) {
                         graphics.setColor(baseColor);
-                        graphics.fillRect(offsetX - PORTAL_THICKNESS, offsetY + SOUTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, tileLength - SOUTH_WALL_EDGE_OFFSET);
-                        graphics.setColor(roofColor);
-                        graphics.fillRect(offsetX - PORTAL_THICKNESS, offsetY - NORTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, NORTH_WALL_EDGE_OFFSET + SOUTH_WALL_EDGE_OFFSET);
+                        graphics.fillRect(offsetX, offsetY + PORTAL_SOUTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, tileLength - PORTAL_SOUTH_WALL_EDGE_OFFSET);
                     } else {
                         graphics.setColor(baseColor);
-                        graphics.fillRect(offsetX + tileLength, offsetY + SOUTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, tileLength - SOUTH_WALL_EDGE_OFFSET);
+                        graphics.fillRect(offsetX + tileLength - PORTAL_THICKNESS, offsetY + PORTAL_SOUTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, tileLength - PORTAL_SOUTH_WALL_EDGE_OFFSET);
+                    }
+                } else {
+                    boolean alternateColor = timestamp / 120 % 2 == 1;
+                    Color roofColor = alternateColor ? PORTAL_ROOF_COLOR_B : PORTAL_ROOF_COLOR_A;
+                    if (direction == DirectionType.DOWN) {
                         graphics.setColor(roofColor);
-                        graphics.fillRect(offsetX + tileLength, offsetY - NORTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, NORTH_WALL_EDGE_OFFSET + SOUTH_WALL_EDGE_OFFSET);
+                        graphics.fillRect(offsetX, offsetY + PORTAL_SOUTH_WALL_EDGE_OFFSET - PORTAL_THICKNESS, tileLength, PORTAL_THICKNESS);
+                    } else if (direction == DirectionType.UP) {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX, offsetY - PORTAL_NORTH_WALL_EDGE_OFFSET, tileLength, PORTAL_THICKNESS);
+                    } else if (direction == DirectionType.LEFT) {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX, offsetY - PORTAL_NORTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, tileLength);
+                    } else {
+                        graphics.setColor(roofColor);
+                        graphics.fillRect(offsetX + tileLength - PORTAL_THICKNESS, offsetY - PORTAL_NORTH_WALL_EDGE_OFFSET, PORTAL_THICKNESS, tileLength);
                     }
                 }
             }
