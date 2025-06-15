@@ -1722,6 +1722,20 @@ dynamicPieceInactiveSensor;data/portals_animations.png;16;16;[0/40/500,1/40/500]
 dynamicPieceActiveSensor;data/portals_animations.png;16;16;[0/41/10000];true;true
 
 
+portalRayVerticalA;data/animations/portals/portalray_animations.png;16;16;[0/1/125,0/4/125];true;true
+portalRayVerticalB;data/animations/portals/portalray_animations.png;16;16;[2/1/125,2/4/125];true;true
+portalRayHorizontalA;data/animations/portals/portalray_animations.png;16;16;[1/0/125,1/3/125];true;true
+portalRayHorizontalB;data/animations/portals/portalray_animations.png;16;16;[1/2/125,1/5/125];true;true
+portalRayBentSW;data/animations/portals/portalray_animations.png;16;16;[2/0/125,2/3/125];true;true
+portalRayBentNW;data/animations/portals/portalray_animations.png;16;16;[2/2/125,2/5/125];true;true
+portalRayBentNE;data/animations/portals/portalray_animations.png;16;16;[0/2/125,0/5/125];true;true
+portalRayBentSE;data/animations/portals/portalray_animations.png;16;16;[0/0/125,0/3/125];true;true
+portalRayEndNorth;data/animations/portals/portalray_animations.png;16;16;[5/0/125,5/3/125];true;true
+portalRayEndSouth;data/animations/portals/portalray_animations.png;16;16;[5/2/125,5/5/125];true;true
+portalRayEndWest;data/animations/portals/portalray_animations.png;16;16;[6/1/125,6/4/125];true;true
+portalRayEndEast;data/animations/portals/portalray_animations.png;16;16;[8/1/125,8/4/125];true;true
+
+
 dynamicPieceAlienSwitchBottom0;data/stones.png;32;16;[0/49/10000];true;true
 dynamicPieceAlienSwitchBottom1;data/stones.png;32;16;[0/51/10000];true;true
 dynamicPieceAlienSwitchTop0;data/stones.png;32;16;[0/48/10000];true;true

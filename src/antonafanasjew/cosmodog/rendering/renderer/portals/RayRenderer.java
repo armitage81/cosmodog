@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer.portals;
 
+import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
@@ -16,13 +17,16 @@ import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import javax.sound.sampled.Port;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class RayRenderer extends AbstractRenderer {
 
@@ -151,46 +155,72 @@ public class RayRenderer extends AbstractRenderer {
 
                     if (!(tooFarEast || tooFarWest || tooFarNorth || tooFarSouth)) {
 
-                        g.setLineWidth(3);
+                        float x = (position.getX() - camPositionOnMapInTilesX) * tileLength;
+                        float y = (position.getY() - camPositionOnMapInTilesY) * tileLength;
 
-                        float x1;
-                        float y1;
-                        float x2;
-                        float y2;
+                        Set<DirectionType> rayDirections = new HashSet<>();
+                        rayDirections.add(startDirection);
+                        rayDirections.add(endDirection);
 
-                        if (startDirection == DirectionType.UP || endDirection == DirectionType.DOWN) {
-                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                            x2 = x1;
-                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength;
-                            y2 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                            g.drawLine(x1, y1, x2, y2);
+                        String animationId = null;
+
+                        if (i < positions.size() - 1) {
+
+                            if (!rayDirections.contains(DirectionType.LEFT) && !rayDirections.contains(DirectionType.RIGHT)) {
+                                animationId = "portalRayVerticalA";
+                            }
+
+                            if (!rayDirections.contains(DirectionType.UP) && !rayDirections.contains(DirectionType.DOWN)) {
+                                animationId = "portalRayHorizontalA";
+                            }
+
+                            if (startDirection == DirectionType.RIGHT && endDirection == DirectionType.UP) {
+                                animationId = "portalRayBentNW";
+                            }
+
+                            if (startDirection == DirectionType.DOWN && endDirection == DirectionType.LEFT) {
+                                animationId = "portalRayBentNW";
+                            }
+
+                            if (startDirection == DirectionType.RIGHT && endDirection == DirectionType.DOWN) {
+                                animationId = "portalRayBentSW";
+                            }
+
+                            if (startDirection == DirectionType.UP && endDirection == DirectionType.LEFT) {
+                                animationId = "portalRayBentSW";
+                            }
+
+                            if (startDirection == DirectionType.LEFT && endDirection == DirectionType.UP) {
+                                animationId = "portalRayBentNE";
+                            }
+
+                            if (startDirection == DirectionType.DOWN && endDirection == DirectionType.RIGHT) {
+                                animationId = "portalRayBentNE";
+                            }
+
+                            if (startDirection == DirectionType.UP && endDirection == DirectionType.RIGHT) {
+                                animationId = "portalRayBentSE";
+                            }
+
+                            if (startDirection == DirectionType.LEFT && endDirection == DirectionType.DOWN) {
+                                animationId = "portalRayBentSE";
+                            }
+                        } else {
+                            DirectionType lastRayDirection = ray.getLastDirection();
+                            if (lastRayDirection == DirectionType.LEFT) {
+                                animationId = "portalRayEndWest";
+                            } else if (lastRayDirection == DirectionType.RIGHT) {
+                                animationId = "portalRayEndEast";
+                            } else if (lastRayDirection == DirectionType.UP) {
+                                animationId = "portalRayEndNorth";
+                            } else {
+                                animationId = "portalRayEndSouth";
+                            }
                         }
 
-                        if (startDirection == DirectionType.DOWN || endDirection == DirectionType.UP) {
-                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                            x2 = x1;
-                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength;
-                            y2 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                            g.drawLine(x1, y1, x2, y2);
-                        }
+                        Animation animation = ApplicationContext.instance().getAnimations().get(animationId);
+                        animation.draw(x, y, tileLength, tileLength);
 
-                        if (startDirection == DirectionType.RIGHT || endDirection == DirectionType.LEFT) {
-                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength;
-                            x2 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                            y2 = y1;
-                            g.drawLine(x1, y1, x2, y2);
-                        }
-
-                        if (startDirection == DirectionType.LEFT || endDirection == DirectionType.RIGHT) {
-                            x1 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength / 2f;
-                            x2 = (position.getX() - camPositionOnMapInTilesX) * tileLength + tileLength;
-                            y1 = (position.getY() - camPositionOnMapInTilesY) * tileLength + tileLength / 2f;
-                            y2 = y1;
-                            g.drawLine(x1, y1, x2, y2);
-                        }
-
-                        g.setLineWidth(1);
                     }
                 }
 
