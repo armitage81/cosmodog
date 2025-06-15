@@ -8,6 +8,7 @@ import java.util.Set;
 
 import antonafanasjew.cosmodog.actions.movement.BlockingAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
+import antonafanasjew.cosmodog.actions.portals.PortalShotAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -325,19 +326,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
 
 			if (player.getPortalRay() != null) {
-				Ray ray = player.getPortalRay();
-				Position rayTargetPosition = ray.getTargetPosition();
-				if (rayTargetPosition != null) {
-					int targetTileId = map.getTileId(rayTargetPosition, Layers.LAYER_META_PORTALS);
-					TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, targetTileId);
-					if (targetTileType.equals(TileType.PORTAL_RAY_ATTACHABLE)) {
-						DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
-						if (cosmodogGame.portal(rayTargetPosition, directionFacingPlayer).isEmpty()) {
-							Portal portal = new Portal(rayTargetPosition, directionFacingPlayer);
-							cosmodogGame.createPortal(portal);
-						}
-					}
-				}
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.CUTSCENE, new PortalShotAction());
 			}
 		}
 

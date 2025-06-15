@@ -101,6 +101,10 @@ public class PositionUtils {
 		
 		return retVal;
 	}
-	
+
+	public static Position toPixelPosition(Position tilePosition) {
+		int tileLength = TileUtils.tileLengthSupplier.get();
+        return Position.fromCoordinates(tilePosition.getX() * tileLength + tileLength / 2.0f, tilePosition.getY() * tileLength + tileLength / 2.0f, tilePosition.getMapType());
+	}
 	
 }
