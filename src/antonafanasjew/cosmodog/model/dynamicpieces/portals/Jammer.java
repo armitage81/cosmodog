@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.model.dynamicpieces.portals;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -32,6 +34,8 @@ public class Jammer extends DynamicPiece {
     @Override
     public void interactWhenSteppingOn() {
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CANCELED).play();
         game.clearPortals();
+
     }
 }

@@ -1,8 +1,10 @@
 package antonafanasjew.cosmodog.actions.portals;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.VariableLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
+import antonafanasjew.cosmodog.actions.camera.CamMovementActionWithConstantSpeed;
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.actions.popup.WaitAction;
 import antonafanasjew.cosmodog.domains.DirectionType;
@@ -27,6 +29,8 @@ public class PortalShotAction extends PhaseBasedAction {
     @Override
     protected void onTriggerInternal() {
 
+        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_GUNSHOT).play();
+
         boolean portalShouldBeCreated = false;
 
         Player player = ApplicationContextUtils.getPlayer();
@@ -50,11 +54,11 @@ public class PortalShotAction extends PhaseBasedAction {
             getPhaseRegistry().registerPhase(position.toString(), new CamMovementAction(125, PositionUtils.toPixelPosition(position), game));
         }
         if (portalShouldBeCreated) {
-            getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(1000));
+            getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(500));
         } else {
-            getPhaseRegistry().registerPhase("NotCreatingPortal", new WaitAction(1));
+            getPhaseRegistry().registerPhase("NotCreatingPortal", new FailPortalAction(1));
         }
-        getPhaseRegistry().registerPhase("BackToPlayer", new CamMovementAction(500, PositionUtils.toPixelPosition(player.getPosition()), game));
+        getPhaseRegistry().registerPhase("BackToPlayer", new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
 }

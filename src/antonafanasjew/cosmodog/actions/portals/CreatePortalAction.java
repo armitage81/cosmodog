@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.actions.portals;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -19,6 +21,7 @@ public class CreatePortalAction extends FixedLengthAsyncAction {
 
     @Override
     public void onTrigger() {
+        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CREATED).play();
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
         Ray ray = player.getPortalRay();

@@ -19,7 +19,8 @@ public class CollectibleTool extends Collectible {
 		machete(5000),
 		archeologistsJournal(5000),
 		weaponFirmwareUpgrade(5000),
-		nutrients(5000);
+		nutrients(5000),
+		portalgun(5000);
 		
 		private int scorePoints;
 

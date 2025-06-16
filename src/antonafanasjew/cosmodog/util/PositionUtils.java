@@ -106,5 +106,11 @@ public class PositionUtils {
 		int tileLength = TileUtils.tileLengthSupplier.get();
         return Position.fromCoordinates(tilePosition.getX() * tileLength + tileLength / 2.0f, tilePosition.getY() * tileLength + tileLength / 2.0f, tilePosition.getMapType());
 	}
+
+	public static float distance(Position p1, Position p2) {
+		float dx = p1.getX() - p2.getX();
+		float dy = p1.getY() - p2.getY();
+		return (float)Math.sqrt(dx * dx + dy * dy);
+	}
 	
 }

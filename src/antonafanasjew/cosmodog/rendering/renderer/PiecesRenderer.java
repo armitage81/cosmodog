@@ -75,6 +75,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleTool.ToolType.pick.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.ski.name(), new ToolRenderer());
 		pieceRendererMap.put(CollectibleTool.ToolType.supplytracker.name(), new ToolRenderer());
+		pieceRendererMap.put(CollectibleTool.ToolType.portalgun.name(), new ToolRenderer());
 		
 		pieceRendererMap.put("pistol", new WeaponRenderer());
 		pieceRendererMap.put("shotgun", new WeaponRenderer());

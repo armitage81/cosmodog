@@ -147,6 +147,7 @@ public class Mappings {
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.ARCHEOLOGISTS_JOURNAL, ToolType.archeologistsJournal);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.WEAPON_FIRMWARE_UPGRADE, ToolType.weaponFirmwareUpgrade);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.NUTRIENTS, ToolType.nutrients);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.PORTALGUN, ToolType.portalgun);
 	}
 	
 	public static Map<TileType, GoodieType> MAP_TILE_TO_GOODIE_TYPE = Maps.newHashMap();
@@ -362,6 +363,8 @@ public class Mappings {
 			return "inventoryItemWeaponFirmwareUpgrade";
 		} else if (tool.getToolType() == ToolType.nutrients) {
 			return "inventoryItemNutrients";
+		} else if (tool.getToolType() == ToolType.portalgun) {
+			return "inventoryItemPortalGun";
 		}
 		
 		return "infobit";
@@ -397,6 +400,7 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.ARCHEOLOGISTS_JOURNAL, "inventoryItemArcheologistsJournal");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.WEAPON_FIRMWARE_UPGRADE, "inventoryItemWeaponFirmwareUpgrade");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.NUTRIENTS, "inventoryItemNutrients");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.PORTAL_GUN, "inventoryItemPortalGun");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DEBUGGER, "inventoryItemCosmodog");
 	}
 	

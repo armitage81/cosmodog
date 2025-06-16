@@ -212,15 +212,23 @@ public class MovementAction extends FixedLengthAsyncAction {
 			
 		} else {
 			if (!skipTurn) {
-				String footStepsSoundType = FootstepUtils.footStepsSoundType(targetEntrance.getPosition());
-				applicationContext.getSoundResources().get(footStepsSoundType).play();
+				if (targetEntrance.isUsedPortal()) {
+					applicationContext.getSoundResources().get(SoundResources.SOUND_PORTALS_TELEPORTED).play();
+				} else {
+					String footStepsSoundType = FootstepUtils.footStepsSoundType(targetEntrance.getPosition());
+					applicationContext.getSoundResources().get(footStepsSoundType).play();
+				}
 			}
 		}
 	}
 
 	private void onTriggerForMoveable() {
 		if (moveableTargetEntrance != null) {
-			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
+			if (moveableTargetEntrance.isUsedPortal()) {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_TELEPORTED).play();
+			} else {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
+			}
 		}
 	}
 

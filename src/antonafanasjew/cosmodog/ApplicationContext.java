@@ -386,6 +386,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.weaponFirmwareUpgrade.name(), new WeaponFirmwareUpgradeInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.nutrients.name(), new NutrientsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.axe.name(), new AxeInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.portalgun.name(), new PortalGunInteraction());
 		
 		this.setCosmodog(cosmodog);
 		
@@ -502,6 +503,12 @@ public class ApplicationContext {
 		Sound secretDoorEnergy = new Sound("data/sound/secretdoor_energy.wav");
 		Sound secretDoorWall = new Sound("data/sound/secretdoor_wall.wav");
 
+		Sound portalsGunshot = new Sound("data/sound/portals_gunshot.wav");
+		Sound portalsCreated = new Sound("data/sound/portals_created.wav");
+		Sound portalsFailed = new Sound("data/sound/portals_failed.wav");
+		Sound portalsCanceled = new Sound("data/sound/portals_canceled.wav");
+		Sound portalsTeleported = new Sound("data/sound/portals_teleported.wav");
+
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT, spacelift);
@@ -586,6 +593,12 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS, secretDoorHydraulics);
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_ENERGY, secretDoorEnergy);
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_WALL, secretDoorWall);
+
+		this.getSoundResources().put(SoundResources.SOUND_PORTALS_GUNSHOT, portalsGunshot);
+		this.getSoundResources().put(SoundResources.SOUND_PORTALS_CREATED, portalsCreated);
+		this.getSoundResources().put(SoundResources.SOUND_PORTALS_FAILED, portalsFailed);
+		this.getSoundResources().put(SoundResources.SOUND_PORTALS_CANCELED, portalsCanceled);
+		this.getSoundResources().put(SoundResources.SOUND_PORTALS_TELEPORTED, portalsTeleported);
 		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

@@ -6,23 +6,7 @@ import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
-import antonafanasjew.cosmodog.model.inventory.AmmoInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.AntidoteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.ArcheologistsJournalInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.AxeInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.BoatInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.DynamiteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.GeigerZaehlerInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
-import antonafanasjew.cosmodog.model.inventory.JacketInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.KeyRingInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.MacheteInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.MineDetectorInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.PickInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.SkiInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.SupplyTrackerInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.model.upgrades.Key;
 
 public class InventoryItemFactory {
@@ -74,6 +58,8 @@ public class InventoryItemFactory {
 			return new SupplyTrackerInventoryItem();
 		} else if (toolType == ToolType.archeologistsJournal) {
 			return new ArcheologistsJournalInventoryItem();
+		} else if (toolType == ToolType.portalgun) {
+			return new PortalGunInventoryItem();
 		} else {
 			return null;
 		}
