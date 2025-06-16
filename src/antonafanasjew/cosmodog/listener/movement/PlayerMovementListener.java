@@ -800,10 +800,11 @@ public class PlayerMovementListener implements MovementListener {
 				int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
 				TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
 
+				boolean hasPortalGun = player.getInventory().hasItem(InventoryItemType.PORTAL_GUN);
 				boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
 				boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
 
-				if (emittable && !onEmpField) {
+				if (hasPortalGun && emittable && !onEmpField) {
 					player.activatePortalRay();
 				} else {
 					player.deactivatePortalRay();

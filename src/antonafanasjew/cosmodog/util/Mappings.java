@@ -51,6 +51,7 @@ public class Mappings {
 		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.archeologistsJournal, InventoryItemType.ARCHEOLOGISTS_JOURNAL);
 		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.weaponFirmwareUpgrade, InventoryItemType.WEAPON_FIRMWARE_UPGRADE);
 		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.nutrients, InventoryItemType.NUTRIENTS);
+		COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.put(ToolType.portalgun, InventoryItemType.PORTAL_GUN);
 
 	}
 

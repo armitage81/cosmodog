@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.PortalGunInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
@@ -33,9 +34,10 @@ public class TestPortals {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(127, 45, MapType.SPACE));
+				player.setPosition(Position.fromCoordinates(161, 122, MapType.SPACE));
 				player.setMaxLife(100);
 				player.setLife(100);
+				player.getInventory().put(InventoryItemType.PORTAL_GUN, new PortalGunInventoryItem());
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 
 				CustomTiledMap map = ApplicationContextUtils.getCustomTiledMaps().get(MapType.SPACE);
