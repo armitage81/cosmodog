@@ -1,6 +1,10 @@
 package antonafanasjew.cosmodog.rendering.renderer.portals;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.actions.AbstractAsyncAction;
+import antonafanasjew.cosmodog.actions.AsyncAction;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.portals.PortalShotAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
@@ -44,6 +48,25 @@ public class RayRenderer extends AbstractRenderer {
         Player player = ApplicationContextUtils.getPlayer();
         Cam cam = ApplicationContextUtils.getCosmodogGame().getCam();
 
+        PortalShotAction action = ApplicationContextUtils.getCosmodogGame().getActionRegistry().getRegisteredAction(AsyncActionType.CUTSCENE, PortalShotAction.class);
+
+        if (action != null) {
+            Optional<AsyncAction> optPhase = action.getPhaseRegistry().currentPhase();
+            int numberOfPhases = action.getPhaseRegistry().numberOfPhases();
+            int currentPhaseNumber = action.getPhaseRegistry().currentPhaseNumber().orElse(numberOfPhases);
+
+            //Second last phase is the creation of the portal.
+            //Last phase is the camera returning to player.
+            if (currentPhaseNumber < numberOfPhases - 2) {
+                Animation animation = ApplicationContext.instance().getAnimations().get("portalPlasmaBall");
+                Cam.CamTilePosition camTilePosition = cam.camTilePosition();
+                float w = animation.getWidth() * cam.getZoomFactor();
+                float h = animation.getHeight() * cam.getZoomFactor();
+                float x = (gameContainer.getWidth() - w) / 2.0f;
+                float y = (gameContainer.getHeight() - h) / 2.0f;
+                animation.draw(x, y, w, h);
+            }
+        }
 
     }
 

@@ -21,19 +21,10 @@ public class CreatePortalAction extends FixedLengthAsyncAction {
     public void onTrigger() {
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-        CosmodogMap map = game.mapOfPlayerLocation();
         Ray ray = player.getPortalRay();
         Position rayTargetPosition = ray.getTargetPosition();
-        if (rayTargetPosition != null) {
-            int targetTileId = map.getTileId(rayTargetPosition, Layers.LAYER_META_PORTALS);
-            TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, targetTileId);
-            if (targetTileType.equals(TileType.PORTAL_RAY_ATTACHABLE)) {
-                DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
-                if (game.portal(rayTargetPosition, directionFacingPlayer).isEmpty()) {
-                    Portal portal = new Portal(rayTargetPosition, directionFacingPlayer);
-                    game.createPortal(portal);
-                }
-            }
-        }
+        DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
+        Portal portal = new Portal(rayTargetPosition, directionFacingPlayer);
+        game.createPortal(portal);
     }
 }

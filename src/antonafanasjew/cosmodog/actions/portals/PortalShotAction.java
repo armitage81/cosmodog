@@ -27,14 +27,33 @@ public class PortalShotAction extends PhaseBasedAction {
     @Override
     protected void onTriggerInternal() {
 
+        boolean portalShouldBeCreated = false;
+
         Player player = ApplicationContextUtils.getPlayer();
-        Ray ray = player.getPortalRay();
-        List<Position> positions = ray.getRayPositions();
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+        CosmodogMap map = game.mapOfPlayerLocation();
+        Ray ray = player.getPortalRay();
+        Position rayTargetPosition = ray.getTargetPosition();
+        if (rayTargetPosition != null) {
+            int targetTileId = map.getTileId(rayTargetPosition, Layers.LAYER_META_PORTALS);
+            TileType targetTileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, targetTileId);
+            if (targetTileType.equals(TileType.PORTAL_RAY_ATTACHABLE)) {
+                DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
+                if (game.portal(rayTargetPosition, directionFacingPlayer).isEmpty()) {
+                    portalShouldBeCreated = true;
+                }
+            }
+        }
+
+        List<Position> positions = ray.getRayPositions();
         for (Position position : positions) {
             getPhaseRegistry().registerPhase(position.toString(), new CamMovementAction(125, PositionUtils.toPixelPosition(position), game));
         }
-        getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(1000));
+        if (portalShouldBeCreated) {
+            getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(1000));
+        } else {
+            getPhaseRegistry().registerPhase("NotCreatingPortal", new WaitAction(1));
+        }
         getPhaseRegistry().registerPhase("BackToPlayer", new CamMovementAction(500, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
