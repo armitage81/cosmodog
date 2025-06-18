@@ -401,11 +401,13 @@ public class ApplicationContext {
 					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.ogg");
 					Music foundTool = new Music("data/music/EG_Positive_Stinger_02.ogg");
 					Music musicSoundtrack = new Music("data/music/Soundtrack.ogg");
+					Music musicSoundtrackSpace = new Music("data/music/Soundtrack_space.ogg");
 					
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK, musicSoundtrack);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_SPACE, musicSoundtrackSpace);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);

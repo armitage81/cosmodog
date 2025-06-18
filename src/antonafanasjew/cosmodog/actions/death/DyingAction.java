@@ -15,6 +15,7 @@ import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.PathUtils;
+import org.newdawn.slick.Music;
 
 import java.io.Serial;
 
@@ -60,7 +61,8 @@ public class DyingAction extends FixedLengthAsyncAction {
 
 		PlayerMovementCache.getInstance().update(player, player.getPosition(), player.getPosition());
 		cam.focusOnPiece(cosmodogGame, 0, 0, player);
-		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");
 	}
 

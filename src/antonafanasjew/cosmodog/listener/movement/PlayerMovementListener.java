@@ -298,7 +298,8 @@ public class PlayerMovementListener implements MovementListener {
 		updateSnowfall();
 		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
-
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 		updateCache(actor, actor.getPosition(), actor.getPosition());
 	}
 

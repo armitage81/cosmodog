@@ -59,7 +59,8 @@ public class PlayJingleAction extends FixedLengthAsyncAction {
 	@Override
 	public void onTrigger() {
 		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, () -> {
-			Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
+			String currentMapMusicId = MusicUtils.currentMapMusicId();
+			Music music = ApplicationContext.instance().getMusicResources().get(currentMapMusicId);
 			originalMusicPosition = music.getPosition();
 			MusicUtils.playMusic(musicResourceId);
 		});
@@ -76,9 +77,10 @@ public class PlayJingleAction extends FixedLengthAsyncAction {
 	@Override
 	public void onEnd() {
 		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, () -> {
-			Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_SOUNDTRACK);
+			String currentMapMusicId = MusicUtils.currentMapMusicId();
+			Music music = ApplicationContext.instance().getMusicResources().get(currentMapMusicId);
 			music.setPosition(originalMusicPosition);
-			MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
+			MusicUtils.loopMusic(currentMapMusicId);
 		});
 	}
 }

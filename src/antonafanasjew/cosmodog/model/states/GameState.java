@@ -111,7 +111,8 @@ public class GameState extends CosmodogAbstractState {
 			GameEventUtils.throwEvent(new GameEventNewGame());
 
 		}
-		MusicUtils.loopMusic(MusicResources.MUSIC_SOUNDTRACK);
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 
 		firstUpdate = true;
 	}
