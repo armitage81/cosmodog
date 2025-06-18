@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="93" nextobjectid="919">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="93" nextobjectid="919">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="6183" columns="9">
   <image source="tiles.png" width="144" height="11000"/>
  </tileset>
@@ -548,33 +548,63 @@
    <polyline points="0,0 -64.375,3"/>
   </object>
   <object id="903" name="reflectors_1" x="4296" y="263.333">
+   <properties>
+    <property name="priority" value="1"/>
+   </properties>
    <polyline points="0,0 -44,-47.3333"/>
   </object>
   <object id="904" name="reflectors_2" x="4299.33" y="265">
+   <properties>
+    <property name="priority" value="2"/>
+   </properties>
    <polyline points="0,0 -17.6667,-48.3333"/>
   </object>
   <object id="905" name="reflectors_3" x="4291.67" y="263.333">
+   <properties>
+    <property name="priority" value="3"/>
+   </properties>
    <polyline points="0,0 19.3333,-48"/>
   </object>
   <object id="906" name="reflectors_4" x="4301" y="259.667">
+   <properties>
+    <property name="priority" value="4"/>
+   </properties>
    <polyline points="0,0 44,-43.3333"/>
   </object>
   <object id="910" name="sensors_6" x="5271.5" y="168.5">
+   <properties>
+    <property name="priority" value="1"/>
+   </properties>
    <polyline points="0,0 -80,-48"/>
   </object>
   <object id="911" name="sensors_5" x="5273.5" y="168.125">
+   <properties>
+    <property name="priority" value="2"/>
+   </properties>
    <polyline points="0,0 -49.25,-50.875"/>
   </object>
   <object id="912" name="sensors_4" x="5271.5" y="172">
+   <properties>
+    <property name="priority" value="3"/>
+   </properties>
    <polyline points="0,0 -15.5,-50.5"/>
   </object>
   <object id="913" name="sensors_3" x="5275.25" y="170.25">
+   <properties>
+    <property name="priority" value="4"/>
+   </properties>
    <polyline points="0,0 13.25,-50.25"/>
   </object>
   <object id="914" name="sensors_2" x="5268.5" y="171.25">
+   <properties>
+    <property name="priority" value="5"/>
+   </properties>
    <polyline points="0,0 53,-52"/>
   </object>
   <object id="915" name="sensors_1" x="5276.25" y="173.5">
+   <properties>
+    <property name="priority" value="6"/>
+   </properties>
    <polyline points="0,0 77.5,-52.75"/>
   </object>
   <object id="917" name="bollards_3" x="3607" y="105.75">

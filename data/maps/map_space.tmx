@@ -751,21 +751,39 @@
    <polyline points="0,0 176.545,13.8182"/>
   </object>
   <object id="992" name="chamber21_6" x="3927.22" y="1576.53">
+   <properties>
+    <property name="priority" value="1"/>
+   </properties>
    <polyline points="0,0 -32,-16"/>
   </object>
   <object id="993" name="chamber21_5" x="3930.22" y="1577.48">
+   <properties>
+    <property name="priority" value="2"/>
+   </properties>
    <polyline points="0,0 -19.8182,-20.5455"/>
   </object>
   <object id="994" name="chamber21_4" x="3932.22" y="1575.39">
+   <properties>
+    <property name="priority" value="3"/>
+   </properties>
    <polyline points="0,0 -0.818182,-16.6364"/>
   </object>
   <object id="995" name="chamber21_3" x="3932.31" y="1578.12">
+   <properties>
+    <property name="priority4" value=""/>
+   </properties>
    <polyline points="0,0 10.4545,-19.0909"/>
   </object>
   <object id="996" name="chamber21_2" x="3931.95" y="1580.03">
+   <properties>
+    <property name="priority" value="5"/>
+   </properties>
    <polyline points="0,0 27.6364,-20.9091"/>
   </object>
   <object id="997" name="chamber21_1" x="3926.04" y="1579.85">
+   <properties>
+    <property name="priority" value="6"/>
+   </properties>
    <polyline points="0,0 96.7273,-21.0909"/>
   </object>
   <object id="1007" name="chamber22_8" x="4041.72" y="1802.03">
@@ -802,24 +820,45 @@
    <polyline points="0,0 187.333,-160.667"/>
   </object>
   <object id="1019" name="chamber23_7" x="3660.55" y="2155.7">
+   <properties>
+    <property name="priority" value="2"/>
+   </properties>
    <polyline points="0,0 -36.6667,-102.333"/>
   </object>
   <object id="1020" name="chamber23_6" x="3651.89" y="2152.7">
+   <properties>
+    <property name="priority" value="1"/>
+   </properties>
    <polyline points="0,0 -29.6667,-114.667"/>
   </object>
   <object id="1021" name="chamber23_5" x="3661.22" y="2148.7">
+   <properties>
+    <property name="priority" value="5"/>
+   </properties>
    <polyline points="0,0 9,-125"/>
   </object>
   <object id="1022" name="chamber23_4" x="3656.55" y="2155.03">
+   <properties>
+    <property name="priority" value="6"/>
+   </properties>
    <polyline points="0,0 33.3333,-131.667"/>
   </object>
   <object id="1023" name="chamber23_3" x="3652.55" y="2157.03">
+   <properties>
+    <property name="priority" value="7"/>
+   </properties>
    <polyline points="0,0 51.6667,-134.667"/>
   </object>
   <object id="1024" name="chamber23_2" x="3654.22" y="2147.78">
+   <properties>
+    <property name="priority" value="3"/>
+   </properties>
    <polyline points="0,0 -31.25,-75.5"/>
   </object>
   <object id="1025" name="chamber23_1" x="3657.72" y="2157.53">
+   <properties>
+    <property name="priority" value="4"/>
+   </properties>
    <polyline points="0,0 -33.25,-67.75"/>
   </object>
   <object id="1056" name="chamber8_2" x="3784.3" y="1175.86">
