@@ -15,15 +15,20 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
+import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceDetector {
 
-    private final List<Activatable> activatables = new ArrayList<>();
+    private final Multimap<Integer, Activatable> activatables = ArrayListMultimap.create();
+
     private boolean presencePresent;
 
     public static Sensor create(Position position) {
@@ -48,19 +53,23 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
     }
 
     @Override
-    public void addActivatable(Activatable activatable) {
-        this.activatables.add(activatable);
+    public void addActivatable(int priority, Activatable activatable) {
+        this.activatables.put(priority, activatable);
     }
 
-    @Override
     public List<Activatable> getActivatables() {
-        return activatables;
+        Set<Integer> priorities = activatables.keySet();
+        List<Activatable> retVal = new ArrayList<>();
+        for (Integer priority : priorities) {
+            retVal.addAll(activatables.get(priority));
+        }
+        return retVal;
     }
 
     @Override
     public void presenceDetected(CosmodogGame game, Actor presence) {
         this.presencePresent = true;
-        for (Activatable activatable : activatables) {
+        for (Activatable activatable : getActivatables()) {
             if (activatable.canActivate(game)) {
                 if (activatable instanceof Bollard bollard) {
                     if (!bollard.isActive()) {
@@ -87,7 +96,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
     @Override
     public void presenceLost(CosmodogGame game) {
         this.presencePresent = false;
-        for (Activatable activatable : activatables) {
+        for (Activatable activatable : getActivatables()) {
             if (activatable.canDeactivate(game)) {
                 if (activatable instanceof Bollard bollard) {
                     if (bollard.isActive()) {

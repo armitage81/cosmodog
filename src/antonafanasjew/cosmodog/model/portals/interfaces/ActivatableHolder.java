@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ActivatableHolder {
 
-    void addActivatable(Activatable activatable);
+    void addActivatable(int priority, Activatable activatable);
 
     List<Activatable> getActivatables();
 

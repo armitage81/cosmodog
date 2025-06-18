@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SwitchableHolder {
 
-    public void addSwitchable(Switchable switchable);
+    public void addSwitchable(int priority, Switchable switchable);
 
     public List<Switchable> getSwitchables();
 

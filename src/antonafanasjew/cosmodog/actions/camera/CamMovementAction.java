@@ -23,6 +23,8 @@ import java.io.Serial;
  * <p>
  * This action is a fixed length action. It will take a fixed amount of time to finish regardless of the distance
  * between the start and target points. The camera will move faster the further the points are apart.
+ *
+ * If you want constant speed independing of the distance between the points, use {@link CamMovementActionWithConstantSpeed} instead.
  */
 public class CamMovementAction extends FixedLengthAsyncAction {
 

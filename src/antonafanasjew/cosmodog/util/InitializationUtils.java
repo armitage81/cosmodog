@@ -652,6 +652,8 @@ public class InitializationUtils {
 		int tileLength = TileUtils.tileLengthSupplier.get();
 
 		for (TiledLineObject connector : connectors) {
+			String priorityPropertyValue = connector.getProperties().get("priority");
+			int priority = (priorityPropertyValue == null) ? 0 : Integer.parseInt(priorityPropertyValue);
 			TiledLineObject.Point start = connector.getPoints().get(0);
 			TiledLineObject.Point end = connector.getPoints().get(1);
 			Position startPosition = Position.fromCoordinates((float)((int)start.x / tileLength), (float)((int)start.y / tileLength), map.getMapType());
@@ -660,14 +662,14 @@ public class InitializationUtils {
 			if (optSwitchableHolder.isPresent()) {
 				Optional<Switchable> optSwitchable = map.switchableAtPosition(endPosition);
 				if (optSwitchable.isPresent()) {
-					optSwitchableHolder.get().addSwitchable(optSwitchable.get());
+					optSwitchableHolder.get().addSwitchable(priority, optSwitchable.get());
 				}
 			} else {
 				Optional<ActivatableHolder> optActivatableHolder = map.activatableHolderAtPosition(startPosition);
 				if (optActivatableHolder.isPresent()) {
 					Optional<Activatable> optActivatable = map.activatableAtPosition(endPosition);
 					if (optActivatable.isPresent()) {
-						optActivatableHolder.get().addActivatable(optActivatable.get());
+						optActivatableHolder.get().addActivatable(priority, optActivatable.get());
 					}
 				}
 			}

@@ -15,14 +15,19 @@ import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 public class Switch extends DynamicPiece implements Pressable, SwitchableHolder {
 
-    private final List<Switchable> switchables = new ArrayList<>();
+    private final Multimap<Integer, Switchable> switchables = ArrayListMultimap.create();
 
     public static Switch createInstance(Position position) {
         Switch aSwitch = new Switch();
@@ -51,17 +56,22 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
         press(game);
     }
 
-    public void addSwitchable(Switchable switchable) {
-        this.switchables.add(switchable);
+    public void addSwitchable(int priority, Switchable switchable) {
+        this.switchables.put(priority, switchable);
     }
 
     public List<Switchable> getSwitchables() {
-        return switchables;
+        Set<Integer> priorities = switchables.keySet();
+        List<Switchable> retVal = new ArrayList<>();
+        for (Integer priority : priorities) {
+            retVal.addAll(switchables.get(priority));
+        }
+        return retVal;
     }
 
     @Override
     public void press(CosmodogGame game) {
-        for (Switchable switchable : switchables) {
+        for (Switchable switchable : getSwitchables()) {
             if (switchable instanceof  Bollard bollard) {
                 boolean open = bollard.isOpen();
                 AsyncAction action;
