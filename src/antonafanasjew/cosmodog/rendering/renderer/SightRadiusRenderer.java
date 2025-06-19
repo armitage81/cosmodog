@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.Optional;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.topology.Vector;
@@ -42,7 +43,13 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		if (!Features.getInstance().featureOn(Features.FEATURE_SIGHTRADIUS)) {
 			return;
 		}
-		
+
+		boolean spaceLiftActionBeingExecuted = ApplicationContextUtils.getCosmodogGame().getActionRegistry().getRegisteredAction(AsyncActionType.SPACE_LIFT) != null;
+
+		if (spaceLiftActionBeingExecuted) {
+			return;
+		}
+
 		Player player = ApplicationContextUtils.getPlayer();
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
