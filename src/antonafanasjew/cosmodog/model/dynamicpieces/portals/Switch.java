@@ -10,11 +10,13 @@ import antonafanasjew.cosmodog.actions.mechanism.TurningReflectorClockwiseAction
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.portals.interfaces.Pressable;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.PositionUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -53,7 +55,11 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
     @Override
     public void interact() {
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-        press(game);
+        Player player = ApplicationContextUtils.getPlayer();
+        DirectionType directionType = PositionUtils.targetDirection(player, this);
+        if (directionType == DirectionType.UP) {
+            press(game);
+        }
     }
 
     public void addSwitchable(int priority, Switchable switchable) {
