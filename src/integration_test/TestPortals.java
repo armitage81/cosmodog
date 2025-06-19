@@ -34,7 +34,7 @@ public class TestPortals {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(221, 131, MapType.SPACE));
+				player.setPosition(Position.fromCoordinates(174, 167, MapType.SPACE));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.PORTAL_GUN, new PortalGunInventoryItem());
