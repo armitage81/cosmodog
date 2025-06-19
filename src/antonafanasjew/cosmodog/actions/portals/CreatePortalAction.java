@@ -15,8 +15,12 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class CreatePortalAction extends FixedLengthAsyncAction {
-    public CreatePortalAction(int duration) {
+
+    Ray ray;
+
+    public CreatePortalAction(int duration, Ray ray) {
         super(duration);
+        this.ray = ray;
     }
 
     @Override
@@ -24,7 +28,6 @@ public class CreatePortalAction extends FixedLengthAsyncAction {
         ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CREATED).play();
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-        Ray ray = player.getPortalRay();
         Position rayTargetPosition = ray.getTargetPosition();
         DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());
         Portal portal = new Portal(rayTargetPosition, directionFacingPlayer);

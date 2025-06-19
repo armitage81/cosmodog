@@ -26,6 +26,8 @@ import java.util.List;
 
 public class PortalShotAction extends PhaseBasedAction {
 
+    private Ray ray;
+
     @Override
     protected void onTriggerInternal() {
 
@@ -36,7 +38,7 @@ public class PortalShotAction extends PhaseBasedAction {
         Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
         CosmodogMap map = game.mapOfPlayerLocation();
-        Ray ray = player.getPortalRay();
+        ray = Ray.create(map, player);
         Position rayTargetPosition = ray.getTargetPosition();
         if (rayTargetPosition != null) {
             int targetTileId = map.getTileId(rayTargetPosition, Layers.LAYER_META_PORTALS);
@@ -54,11 +56,15 @@ public class PortalShotAction extends PhaseBasedAction {
             getPhaseRegistry().registerPhase(position.toString(), new CamMovementAction(125, PositionUtils.toPixelPosition(position), game));
         }
         if (portalShouldBeCreated) {
-            getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(500));
+            getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(500, ray));
         } else {
             getPhaseRegistry().registerPhase("NotCreatingPortal", new FailPortalAction(1));
         }
         getPhaseRegistry().registerPhase("BackToPlayer", new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
+    @Override
+    public void onEnd() {
+        ray = null;
+    }
 }

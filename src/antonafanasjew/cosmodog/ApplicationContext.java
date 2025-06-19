@@ -506,6 +506,7 @@ public class ApplicationContext {
 		Sound secretDoorWall = new Sound("data/sound/secretdoor_wall.wav");
 
 		Sound portalsGunshot = new Sound("data/sound/portals_gunshot.wav");
+		Sound portalsJammed = new Sound("data/sound/portals_jammed.wav");
 		Sound portalsCreated = new Sound("data/sound/portals_created.wav");
 		Sound portalsFailed = new Sound("data/sound/portals_failed.wav");
 		Sound portalsCanceled = new Sound("data/sound/portals_canceled.wav");
@@ -597,6 +598,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_WALL, secretDoorWall);
 
 		this.getSoundResources().put(SoundResources.SOUND_PORTALS_GUNSHOT, portalsGunshot);
+		this.getSoundResources().put(SoundResources.SOUND_PORTALS_JAMMED, portalsJammed);
 		this.getSoundResources().put(SoundResources.SOUND_PORTALS_CREATED, portalsCreated);
 		this.getSoundResources().put(SoundResources.SOUND_PORTALS_FAILED, portalsFailed);
 		this.getSoundResources().put(SoundResources.SOUND_PORTALS_CANCELED, portalsCanceled);

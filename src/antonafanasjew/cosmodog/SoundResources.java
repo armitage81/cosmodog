@@ -220,6 +220,7 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_SECRET_DOOR_WALL = "sound.secretdoor.wall";
 
 	public static final String SOUND_PORTALS_GUNSHOT = "sound.portals.gunshot";
+	public static final String SOUND_PORTALS_JAMMED = "sound.portals.jammed";
 	public static final String SOUND_PORTALS_CREATED = "sound.portals.created";
 	public static final String SOUND_PORTALS_FAILED = "sound.portals.failed";
 	public static final String SOUND_PORTALS_CANCELED = "sound.portals.canceled";

@@ -45,8 +45,6 @@ public class Player extends Actor {
 	
 	private int turnsPoisoned = 0;
 
-	private Ray portalRay = null;
-
 	private PlayerMovementListener movementListener = new PlayerMovementListener();
 
 	public static Player fromPosition(Position position) {
@@ -221,16 +219,6 @@ public class Player extends Actor {
 		movementListener.afterMovement(this, position1, position2, ApplicationContext.instance());
 	}
 
-	public Ray getPortalRay() {
-		return portalRay;
-	}
-
-	public void activatePortalRay() {
-		Ray ray = Ray.create(ApplicationContextUtils.mapOfPlayerLocation(), this);
-		this.portalRay = ray;
-
-	}
-
 	public void skipTurn() {
 		movementListener.beforeWaiting(this, ApplicationContext.instance());
 		movementListener.afterWaiting(this, ApplicationContext.instance());
@@ -283,7 +271,4 @@ public class Player extends Actor {
 		movementListener.afterTurning(before, after);
 	}
 
-	public void deactivatePortalRay() {
-		portalRay = null;
-	}
 }

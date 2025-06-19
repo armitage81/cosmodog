@@ -14,6 +14,7 @@ import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.model.portals.Ray;
@@ -325,8 +326,17 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
 
-			if (player.getPortalRay() != null) {
+			int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
+			TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
+
+			boolean hasPortalGun = player.getInventory().hasItem(InventoryItemType.PORTAL_GUN);
+			boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
+			boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
+
+			if (hasPortalGun && emittable && !onEmpField) {
 				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.CUTSCENE, new PortalShotAction());
+			} else {
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_JAMMED).play();
 			}
 		}
 

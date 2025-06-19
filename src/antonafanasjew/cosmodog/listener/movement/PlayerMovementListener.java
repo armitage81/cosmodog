@@ -119,7 +119,6 @@ public class PlayerMovementListener implements MovementListener {
 	@Override
 	public void beforeWaiting(Actor actor, ApplicationContext applicationContext) {
 		Player player = (Player)actor;
-		player.deactivatePortalRay();
 		oldTurnsWormAlerted = player.getTurnsWormAlerted();
 		addTime();
 		updateWormAlert(player, applicationContext );
@@ -145,7 +144,6 @@ public class PlayerMovementListener implements MovementListener {
 	@Override
 	public void beforeTurning(DirectionType before, DirectionType after) {
 		Player player = ApplicationContextUtils.getPlayer();
-		player.deactivatePortalRay();
 	}
 
 	@Override
@@ -160,7 +158,6 @@ public class PlayerMovementListener implements MovementListener {
 
 	@Override
 	public void afterBlock(Actor actor, Position position1, Position position2) {
-		updatePortalRay();
 	}
 
 	@Override
@@ -185,7 +182,6 @@ public class PlayerMovementListener implements MovementListener {
 		updateSnowfall();
 		checkContaminationStatus(applicationContext);
 		updatePresenseDetectors();
-		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 
@@ -217,7 +213,6 @@ public class PlayerMovementListener implements MovementListener {
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
-		updatePortalRay();
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 
@@ -230,8 +225,6 @@ public class PlayerMovementListener implements MovementListener {
 
 	@Override
 	public void beforeTeleportation(Actor actor, ApplicationContext applicationContext) {
-		Player player = ApplicationContextUtils.getPlayer();
-		player.deactivatePortalRay();
 	}
 
 	@Override
@@ -241,7 +234,6 @@ public class PlayerMovementListener implements MovementListener {
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
 		updateSnowfall();
-		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
 
 		updateCache(actor, actor.getPosition(), actor.getPosition());
@@ -251,8 +243,6 @@ public class PlayerMovementListener implements MovementListener {
 
 	@Override
 	public void beforeRespawn(Actor actor, ApplicationContext applicationContext) {
-		Player player = ApplicationContextUtils.getPlayer();
-		player.deactivatePortalRay();
 	}
 
 	@Override
@@ -270,7 +260,6 @@ public class PlayerMovementListener implements MovementListener {
 		checkWorm(applicationContext);
 		checkMine(applicationContext);
 		updateSnowfall();
-		updatePortalRay();
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
@@ -285,8 +274,6 @@ public class PlayerMovementListener implements MovementListener {
 
 	@Override
 	public void beforeSwitchingPlane(Actor actor, ApplicationContext applicationContext) {
-		Player player = ApplicationContextUtils.getPlayer();
-		player.deactivatePortalRay();
 	}
 
 	@Override
@@ -296,7 +283,6 @@ public class PlayerMovementListener implements MovementListener {
 		refillFuel(applicationContext);
 		detectMines(applicationContext);
 		updateSnowfall();
-		updatePortalRay();
 		changeLettersOnLetterPlates(applicationContext);
 		String currentMapMusicId = MusicUtils.currentMapMusicId();
 		MusicUtils.loopMusic(currentMapMusicId);
@@ -785,35 +771,6 @@ public class PlayerMovementListener implements MovementListener {
 				snowfallChangeAction.setFadesInNotOut(true);
 			}
 		}
-
-	}
-
-	private void updatePortalRay() {
-		//Some things on the map change after the player moves. For instance, presence detectors can close doors.
-		//These changes happen as asynchronous actions. If we would update the ray directly, it would not pick up those changes.
-		//That is why we pack it into a short action of type MODAL_WINDOW. This way, the update will be queued up after all
-		//those changes.
-		AsyncAction portalRayUpdateAction = new FixedLengthAsyncAction(0) {
-			@Override
-			public void onEnd() {
-				Player player = ApplicationContextUtils.getPlayer();
-				CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-				int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_PORTALS);
-				TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
-
-				boolean hasPortalGun = player.getInventory().hasItem(InventoryItemType.PORTAL_GUN);
-				boolean emittable = tileType.equals(TileType.PORTAL_RAY_EMITTABLE);
-				boolean onEmpField = map.dynamicPieceAtPosition(Emp.class, player.getPosition()).isPresent();
-
-				if (hasPortalGun && emittable && !onEmpField) {
-					player.activatePortalRay();
-				} else {
-					player.deactivatePortalRay();
-				}
-			}
-		};
-		ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-		actionRegistry.registerAction(AsyncActionType.MOVEMENT, portalRayUpdateAction);
 
 	}
 
