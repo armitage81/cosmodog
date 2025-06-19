@@ -135,9 +135,7 @@ public class Ray implements Serializable {
         boolean finished = false;
         Position lookAheadPosition = DirectionType.facedAdjacentPosition(protagonistsPosition, directionType);
         do {
-            if (ray.containsPosition(lookAheadPosition)) {
-                finished = true;
-            } else if (lookAheadPosition.equals(protagonistsPosition)) {
+            if (lookAheadPosition.equals(protagonistsPosition)) {
                 finished = true;
             } else {
                 if (positionPenetrable(lookAheadPosition)) {
