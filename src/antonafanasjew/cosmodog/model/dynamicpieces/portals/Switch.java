@@ -1,8 +1,12 @@
 package antonafanasjew.cosmodog.model.dynamicpieces.portals;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
+import antonafanasjew.cosmodog.actions.camera.CamMovementActionWithConstantSpeed;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
@@ -77,27 +81,38 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
 
     @Override
     public void press(CosmodogGame game) {
+        Player player = ApplicationContextUtils.getPlayer();
+        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BUTTON_PUSHED).play();
+        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
         for (Switchable switchable : getSwitchables()) {
-            if (switchable instanceof  Bollard bollard) {
-                boolean open = bollard.isOpen();
-                AsyncAction action;
-                if (open) {
-                    action = new RaisingBollardAction(RaisingBollardAction.DURATION, bollard);
-                } else {
-                    action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
+
+            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*5, PositionUtils.toPixelPosition(switchable.getPosition()), game));
+
+            switch (switchable) {
+                case Bollard bollard -> {
+                    boolean open = bollard.isOpen();
+                    AsyncAction action;
+                    if (open) {
+                        action = new RaisingBollardAction(RaisingBollardAction.DURATION, bollard);
+                    } else {
+                        action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
+                    }
+                    actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                 }
-                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
-            } else if (switchable instanceof Reflector reflector) {
-                AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
-                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
-            } else if (switchable instanceof OneWayBollard oneWayBollard) {
-                AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
-                ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+                case Reflector reflector -> {
+                    AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
+                    actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+                }
+                case OneWayBollard oneWayBollard -> {
+                    AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
+                    actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+                }
+                default -> {
+                }
             }
         }
+
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
 
     }
 

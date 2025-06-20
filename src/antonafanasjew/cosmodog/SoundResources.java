@@ -225,4 +225,6 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_PORTALS_FAILED = "sound.portals.failed";
 	public static final String SOUND_PORTALS_CANCELED = "sound.portals.canceled";
 	public static final String SOUND_PORTALS_TELEPORTED = "sound.portals.teleported";
+
+	public static final String SOUND_BUTTON_PUSHED = "sound.buttonpushed";
 }
