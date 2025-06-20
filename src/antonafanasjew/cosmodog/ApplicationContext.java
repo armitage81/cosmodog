@@ -513,6 +513,10 @@ public class ApplicationContext {
 		Sound portalsTeleported = new Sound("data/sound/portals_teleported.wav");
 		Sound buttonPushed = new Sound("data/sound/button_pushed.wav");
 
+		Sound sensorPresenceDetected = new Sound("data/sound/sensor_presence_detected.wav");
+		Sound sensorPresenceLost = new
+				Sound("data/sound/sensor_presence_lost.wav");
+
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT, spacelift);
@@ -605,6 +609,8 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_PORTALS_CANCELED, portalsCanceled);
 		this.getSoundResources().put(SoundResources.SOUND_PORTALS_TELEPORTED, portalsTeleported);
 		this.getSoundResources().put(SoundResources.SOUND_BUTTON_PUSHED, buttonPushed);
+		this.getSoundResources().put(SoundResources.SOUND_SENSOR_PRESENCE_DETECTED, sensorPresenceDetected);
+		this.getSoundResources().put(SoundResources.SOUND_SENSOR_PRESENCE_LOST, sensorPresenceLost);
 		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);

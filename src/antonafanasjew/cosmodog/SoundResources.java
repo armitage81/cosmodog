@@ -227,4 +227,6 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_PORTALS_TELEPORTED = "sound.portals.teleported";
 
 	public static final String SOUND_BUTTON_PUSHED = "sound.buttonpushed";
+	public static final String SOUND_SENSOR_PRESENCE_DETECTED = "sound.sensorpresencedetected";
+	public static final String SOUND_SENSOR_PRESENCE_LOST = "sound.sensorpresencelost";
 }

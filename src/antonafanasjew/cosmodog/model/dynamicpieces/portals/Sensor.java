@@ -1,8 +1,11 @@
 package antonafanasjew.cosmodog.model.dynamicpieces.portals;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.camera.CamMovementActionWithConstantSpeed;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
@@ -12,12 +15,14 @@ import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.PositionUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -68,9 +73,22 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
 
     @Override
     public void presenceDetected(CosmodogGame game, Actor presence) {
+
+        if (this.presencePresent) {
+            return;
+        }
+
+        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SENSOR_PRESENCE_DETECTED).play();
+        Player player = ApplicationContextUtils.getPlayer();
         this.presencePresent = true;
+
+        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
         for (Activatable activatable : getActivatables()) {
+
             if (activatable.canActivate(game)) {
+
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*5, PositionUtils.toPixelPosition(activatable.getPosition()), game));
+
                 if (activatable instanceof Bollard bollard) {
                     if (!bollard.isActive()) {
                         AsyncAction action;
@@ -79,25 +97,38 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
                         } else {
                             action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
                         }
-                        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
                         actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 } else if (activatable instanceof OneWayBollard oneWayBollard) {
                     if (!oneWayBollard.isActive()) {
                         AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
-                        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
                         actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 }
             }
         }
+
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
     @Override
     public void presenceLost(CosmodogGame game) {
+
+        if (!this.presencePresent) {
+            return;
+        }
+
+        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SENSOR_PRESENCE_LOST).play();
+        Player player = ApplicationContextUtils.getPlayer();
         this.presencePresent = false;
+
+        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
         for (Activatable activatable : getActivatables()) {
+
             if (activatable.canDeactivate(game)) {
+
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*5, PositionUtils.toPixelPosition(activatable.getPosition()), game));
+
                 if (activatable instanceof Bollard bollard) {
                     if (bollard.isActive()) {
                         AsyncAction action;
@@ -106,18 +137,18 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
                         } else {
                             action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
                         }
-                        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
+
                         actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 } else if (activatable instanceof OneWayBollard oneWayBollard) {
                     if (oneWayBollard.isActive()) {
                         AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
-                        ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
                         actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
                 }
             }
         }
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
     public boolean isPresencePresent() {
