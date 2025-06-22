@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -67,6 +68,12 @@ public class GameHintRenderer extends AbstractRenderer {
 		//When in a Sokoban puzzle
 		MoveableGroup moveableGroup = playerMovementCache.getActiveMoveableGroup();
 		if (moveableGroup != null && moveableGroup.isResetable() && !moveableGroup.solved()) {
+			hints.add("Press R to reset.");
+		}
+
+		//When in a portal puzzle
+		PortalPuzzle portalPuzzle = playerMovementCache.getActivePortalPuzzle();
+		if (portalPuzzle != null) {
 			hints.add("Press R to reset.");
 		}
 

@@ -7,11 +7,9 @@ import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
 import antonafanasjew.cosmodog.model.portals.ReflectionType;
-import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
-import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
-import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
-import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
+import antonafanasjew.cosmodog.model.portals.interfaces.*;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
+import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -207,6 +205,8 @@ public class InitializationUtils {
 			initializeSwitchableAndActivatableConnectors(map);
 			//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
 			initializeMoveableGroups(customTiledMap, map);
+			//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
+			initializePortalPuzzles(customTiledMap, map);
 			//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
 			initializeCollectibles(customTiledMap, map);
 
@@ -219,7 +219,7 @@ public class InitializationUtils {
 
 	private static void initializeMoveableGroups(CustomTiledMap customTiledMap, CosmodogMap map) {
 
-		TiledObjectGroup moveableGroupObjectGroup = customTiledMap.getObjectGroups().get("MoveableGroups");
+		TiledObjectGroup moveableGroupObjectGroup = customTiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_MOVEABLE_GROUPS);
 		Map<String, TiledObject> moveableGroupRegions = moveableGroupObjectGroup.getObjects();
 		Set<String> moveableGroupRegionNames = moveableGroupRegions.keySet();
 		for (String moveableGroupRegionName : moveableGroupRegionNames) {
@@ -284,6 +284,93 @@ public class InitializationUtils {
 			moveableGroup.setResetable(resetable);
 			map.getMoveableGroups().add(moveableGroup);
 			
+		}
+	}
+
+	private static void initializePortalPuzzles(CustomTiledMap customTiledMap, CosmodogMap map) {
+
+		TiledObjectGroup portalPuzzleObjectGroup = customTiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_PORTAL_PUZZLES);
+		Map<String, TiledObject> portalPuzzleRegions = portalPuzzleObjectGroup.getObjects();
+		Set<String> portalPuzzleRegionNames = portalPuzzleRegions.keySet();
+		for (String portalPuzzleRegionName : portalPuzzleRegionNames) {
+
+			TiledObject portalPuzzleRegion = portalPuzzleRegions.get(portalPuzzleRegionName);
+
+			List<MoveableDynamicPiece> moveablesInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof MoveableDynamicPiece))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.map(e -> (MoveableDynamicPiece)e)
+					.toList();
+
+			List<Position> originalPositions = moveablesInRegion
+					.stream()
+					.map(Piece::getPosition)
+					.toList();
+
+			List<Switchable> switchablesInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof Switchable))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.map(e -> (Switchable)e)
+					.toList();
+
+			List<Activatable> activatablesInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof Activatable))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.map(e -> (Activatable)e)
+					.toList();
+
+			List<PresenceDetector> presenceDetectorsInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof PresenceDetector))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.map(e -> (PresenceDetector)e)
+					.toList();
+
+			List<AutoBollard> autoBollardsInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof AutoBollard))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.map(e -> (AutoBollard)e)
+					.toList();
+
+			List<OneWayBollard> oneWayBollardsInRegion = map
+					.getDynamicPieces()
+					.values()
+					.stream()
+					.filter(e -> (e instanceof OneWayBollard))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.map(e -> (OneWayBollard)e)
+					.toList();
+
+			int x = Integer.parseInt(portalPuzzleRegion.getProperties().get("playerStartPosX"));
+			int y = Integer.parseInt(portalPuzzleRegion.getProperties().get("playerStartPosY"));
+			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapType());
+
+			PortalPuzzle portalPuzzle = new PortalPuzzle();
+			portalPuzzle.setRegion(portalPuzzleRegion);
+			portalPuzzle.getMoveables().addAll(moveablesInRegion);
+			portalPuzzle.getOriginalPositions().addAll(originalPositions);
+			portalPuzzle.getSwitchables().addAll(switchablesInRegion);
+			portalPuzzle.getActivatables().addAll(activatablesInRegion);
+			portalPuzzle.getPresenceDetectors().addAll(presenceDetectorsInRegion);
+			portalPuzzle.getAutoBollards().addAll(autoBollardsInRegion);
+			portalPuzzle.getOneWayBollards().addAll(oneWayBollardsInRegion);
+			portalPuzzle.setPlayerStartPosition(playerStartPosition);
+			map.getPortalPuzzles().add(portalPuzzle);
+
 		}
 	}
 

@@ -15,6 +15,7 @@ public class Reflector extends DynamicPiece implements Switchable {
     public static short VISUAL_STATE_PHASE4 = 4;
     public static short VISUAL_STATE_PHASE5 = 5;
 
+    private ReflectionType initialReflectionType;
     private ReflectionType reflectionType;
     private short visualState = VISUAL_STATE_IDLE;
 
@@ -22,6 +23,7 @@ public class Reflector extends DynamicPiece implements Switchable {
         Reflector reflector = new Reflector();
         reflector.setPosition(position);
         reflector.setReflectionType(reflectionType);
+        reflector.initialReflectionType = reflectionType;
         return reflector;
     }
 
@@ -46,6 +48,11 @@ public class Reflector extends DynamicPiece implements Switchable {
     @Override
     public void switchToNextState() {
         reflectionType = ReflectionType.next(reflectionType);
+    }
+
+    @Override
+    public void switchToInitialState() {
+        this.reflectionType = initialReflectionType;
     }
 
     @Override

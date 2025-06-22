@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
+import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -53,6 +54,7 @@ public class CosmodogMap extends CosmodogModel {
 	private Multimap<Class<?>, DynamicPiece> dynamicPieces = ArrayListMultimap.create();
 	
 	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
+	private List<PortalPuzzle> portalPuzzles = Lists.newArrayList();
 	
 	private MapModification mapModification = new MapModificationImpl();
 	
@@ -355,5 +357,9 @@ public class CosmodogMap extends CosmodogModel {
 
 	public List<MoveableGroup> getMoveableGroups() {
 		return moveableGroups;
+	}
+
+	public List<PortalPuzzle> getPortalPuzzles() {
+		return portalPuzzles;
 	}
 }

@@ -8,5 +8,6 @@ public interface Switchable {
     int currentState();
     void switchToNextState();
     Position getPosition();
+    void switchToInitialState();
 
 }

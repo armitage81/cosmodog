@@ -33,7 +33,7 @@ public class AutoBollard extends DynamicPiece {
     public static AutoBollard create(Position position) {
         AutoBollard bollard = new AutoBollard();
         bollard.setPosition(position);
-        bollard.open = false;
+        bollard.setOpen(false);
         bollard.visualState = VISUAL_STATE_CLOSED;
         return bollard;
     }
@@ -93,6 +93,7 @@ public class AutoBollard extends DynamicPiece {
 
     public void setOpen(boolean open) {
         this.open = open;
+        this.visualState = open ? VISUAL_STATE_OPEN : VISUAL_STATE_CLOSED;
     }
 
     public boolean canDeactivate(CosmodogGame game) {

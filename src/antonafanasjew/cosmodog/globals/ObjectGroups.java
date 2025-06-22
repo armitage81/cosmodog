@@ -24,6 +24,7 @@ public class ObjectGroups {
 	public static final String OBJECT_GROUP_ID_POISON_SWITCH_CONNECTORS = "PoisonSwitchConnectors";
 	
 	public static final String OBJECT_GROUP_ID_MOVEABLE_GROUPS = "MoveableGroups";
+	public static final String OBJECT_GROUP_ID_PORTAL_PUZZLES = "PortalPuzzles";
 	public static final String OBJECT_GROUP_ID_WEATHER = "Weather";
 	
 	

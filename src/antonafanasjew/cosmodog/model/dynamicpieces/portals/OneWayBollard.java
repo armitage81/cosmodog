@@ -38,7 +38,7 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
     public static OneWayBollard create(Position position, DirectionType direction) {
         OneWayBollard bollard = new OneWayBollard();
         bollard.setPosition(position);
-        bollard.open = false;
+        bollard.setOpen(false);
         bollard.initialDirectionType = direction;
         bollard.direction = direction;
         bollard.visualState = VISUAL_STATE_CLOSED;
@@ -102,6 +102,7 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
 
     public void setOpen(boolean open) {
         this.open = open;
+        this.visualState = open ? VISUAL_STATE_OPEN : VISUAL_STATE_CLOSED;
     }
 
     @Override
@@ -161,6 +162,11 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
     @Override
     public void switchToNextState() {
         this.direction = DirectionType.reverse(this.direction);
+    }
+
+    @Override
+    public void switchToInitialState() {
+        this.direction = initialDirectionType;
     }
 
     @Override

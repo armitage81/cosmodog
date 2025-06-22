@@ -151,6 +151,11 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
         actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
+    @Override
+    public void reset() {
+        presencePresent = false;
+    }
+
     public boolean isPresencePresent() {
         return presencePresent;
     }

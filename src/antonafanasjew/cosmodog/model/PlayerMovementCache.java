@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.util.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -81,6 +82,8 @@ public class PlayerMovementCache implements Serializable {
 	 * which will be updated once per turn.
 	 */
 	private MoveableGroup activeMoveableGroup;
+
+	private PortalPuzzle activePortalPuzzle;
 	
 	public Piece getClosestSupply() {
 		return closestSupply;
@@ -138,6 +141,14 @@ public class PlayerMovementCache implements Serializable {
 		this.activeMoveableGroup = activeMoveableGroup;
 	}
 
+	public PortalPuzzle getActivePortalPuzzle() {
+		return activePortalPuzzle;
+	}
+
+	public void setActivePortalPuzzle(PortalPuzzle activePortalPuzzle) {
+		this.activePortalPuzzle = activePortalPuzzle;
+	}
+
 	public void update(Actor actor, Position position1, Position position2) {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		recalculateClosestSupplyAndMedkitPosition(actor, position1, position2, applicationContext);
@@ -151,6 +162,7 @@ public class PlayerMovementCache implements Serializable {
 		recalculateEnemiesInRange();
 		recalculateRoofsOverEnemiesInRange();
 		recalculateActiveMoveableGroup();
+		recalculateActivePortalPuzzle();
 	}
 
 
@@ -426,6 +438,20 @@ public class PlayerMovementCache implements Serializable {
 			}
 		}
 		setActiveMoveableGroup(moveableGroupAroundPlayer);
+	}
+
+	private void recalculateActivePortalPuzzle() {
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		Player player = ApplicationContextUtils.getPlayer();
+		PortalPuzzle portalPuzzleAroundPlayer = null;
+		List<PortalPuzzle> portalPuzzles = map.getPortalPuzzles();
+		for (PortalPuzzle portalPuzzle : portalPuzzles) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), portalPuzzle.getRegion())) {
+				portalPuzzleAroundPlayer = portalPuzzle;
+				break;
+			}
+		}
+		setActivePortalPuzzle(portalPuzzleAroundPlayer);
 	}
 	
 }

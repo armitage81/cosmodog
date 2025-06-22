@@ -9,5 +9,7 @@ public interface PresenceDetector {
 
     void presenceDetected(CosmodogGame game, Actor presence);
     void presenceLost(CosmodogGame game);
+    //Resets the detector by setting the presence to false.
+    void reset();
 
 }

@@ -37,7 +37,7 @@ public class TestAll {
 				}
 				 */
 
-				debuggerPositions.add(String.format("%s/%s/%s", 329, 11, MapType.ALTERNATIVE));
+				debuggerPositions.add(String.format("%s/%s/%s", 369, 13, MapType.ALTERNATIVE));
 
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 			}

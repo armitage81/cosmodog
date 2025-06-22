@@ -30,7 +30,7 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
     public static Bollard create(Position position, boolean open) {
         Bollard bollard = new Bollard();
         bollard.setPosition(position);
-        bollard.open = open;
+        bollard.setOpen(open);
         bollard.initialOpen = open;
         bollard.visualState = open ? VISUAL_STATE_OPEN : VISUAL_STATE_CLOSED;
         return bollard;
@@ -67,6 +67,7 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
 
     public void setOpen(boolean open) {
         this.open = open;
+        this.visualState = open ? VISUAL_STATE_OPEN : VISUAL_STATE_CLOSED;
     }
 
     @Override
@@ -81,17 +82,22 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
 
     @Override
     public void switchToNextState() {
-        open = !open;
+        setOpen(!open);;
+    }
+
+    @Override
+    public void switchToInitialState() {
+        setOpen(initialOpen);
     }
 
     @Override
     public void activate() {
-        this.open = !initialOpen;
+        setOpen(!initialOpen);
     }
 
     @Override
     public void deactivate() {
-        this.open = initialOpen;
+        setOpen(initialOpen);
     }
 
     @Override

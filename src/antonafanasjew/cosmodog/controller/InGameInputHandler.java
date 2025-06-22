@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.model.portals.Ray;
+import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -431,6 +432,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		if (input.isKeyPressed(Input.KEY_R)) {
 			MoveableGroup.resetMoveableGroup(cosmodogGame);
+			PortalPuzzle.resetPortalPuzzle(cosmodogGame);
 
 		}
 

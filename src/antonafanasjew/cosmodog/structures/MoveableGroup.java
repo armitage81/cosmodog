@@ -24,7 +24,7 @@ import antonafanasjew.cosmodog.util.RegionUtils;
  * Moveable objects on the map, such as boxes, can be pushed by the player, but not pulled.
  * 
  * By pushing objects, the player can enter a deadlock state when it is not possible to move a moveable object.
- * This can happen when a boxed is pushed in a corner.
+ * This can happen when a box is pushed into a corner.
  * 
  * We don't want such deadlocks to be permanent, so in each puzzle with moveables, there will be a button which resets
  * the moveable objects to their original places.
