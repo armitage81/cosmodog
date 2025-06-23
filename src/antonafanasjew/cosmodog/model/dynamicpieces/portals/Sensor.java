@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.camera.CamMovementActionWithConstantSpeed;
+import antonafanasjew.cosmodog.actions.camera.CamMovementUtils;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
@@ -87,7 +88,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
 
             if (activatable.canActivate(game)) {
 
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(activatable.getPosition()), game));
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(activatable.getPosition()), game));
 
                 if (activatable instanceof Bollard bollard) {
                     if (!bollard.isActive()) {
@@ -108,7 +109,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
             }
         }
 
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
     @Override
@@ -127,7 +128,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
 
             if (activatable.canDeactivate(game)) {
 
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(activatable.getPosition()), game));
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(activatable.getPosition()), game));
 
                 if (activatable instanceof Bollard bollard) {
                     if (bollard.isActive()) {
@@ -148,7 +149,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
                 }
             }
         }
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
     @Override

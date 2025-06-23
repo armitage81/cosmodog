@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
 import antonafanasjew.cosmodog.actions.camera.CamMovementActionWithConstantSpeed;
+import antonafanasjew.cosmodog.actions.camera.CamMovementUtils;
 import antonafanasjew.cosmodog.actions.mechanism.RaisingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SinkingBollardAction;
 import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
@@ -86,7 +87,7 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
         for (Switchable switchable : getSwitchables()) {
 
-            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(switchable.getPosition()), game));
+            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(switchable.getPosition()), game));
 
             switch (switchable) {
                 case Bollard bollard -> {
@@ -112,7 +113,7 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
             }
         }
 
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
 
     }
 

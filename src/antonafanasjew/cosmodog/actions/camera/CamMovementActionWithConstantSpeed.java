@@ -19,8 +19,6 @@ import antonafanasjew.cosmodog.util.PositionUtils;
  */
 public class CamMovementActionWithConstantSpeed extends PhaseBasedAction {
 
-    public static final int SPEED_FAST = 160;
-
     private final int pixelPerSecond;
     private final Position targetCamPosition;
     private final CosmodogGame cosmodogGame;
@@ -45,8 +43,7 @@ public class CamMovementActionWithConstantSpeed extends PhaseBasedAction {
 
         float distance = PositionUtils.distance(startPixelPosition, targetPixelPosition);
 
-        float pixelPerMillisecond = pixelPerSecond / 1000.0f;
-        int durationInMilliseconds = (int)(distance / pixelPerMillisecond);
+        int durationInMilliseconds = CamMovementUtils.movementDuration(pixelPerSecond, startPixelPosition, targetPixelPosition);
 
         CamMovementAction delegate = new CamMovementAction(durationInMilliseconds, targetCamPosition, cosmodogGame);
         getPhaseRegistry().registerPhase("delegate", delegate);
