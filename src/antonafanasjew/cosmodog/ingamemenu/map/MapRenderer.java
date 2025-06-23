@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -46,10 +47,20 @@ public class MapRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
-		//Render the frame
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
+
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		if (map.getMapType() != MapType.MAIN) {
+			FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
+			Book textBook;
+			textBook = TextPageConstraints.fromDc(inGameMenuContentDrawingContext).textToBook("Map not available.", fontType);
+			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook);
+			return;
+		}
+
+		//Render the frame
 		ImageUtils.renderImage(gameContainer, graphics, "ui.ingame.ingamemap", inGameMenuContentDrawingContext);
-		
+
 		int actualMapPieceColumns = ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_X;
 		int actualMapPieceRows = ChartInventoryItem.ACTUAL_CHART_PIECE_NUMBER_Y;
 		int mapPieceColumns = ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
@@ -67,8 +78,6 @@ public class MapRenderer implements Renderer {
 		DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
 		miniMapRenderer.render(gameContainer, graphics, mapInputState);
 		
-		//Render players position in the selected chart piece.
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		int mapWidth = map.getMapType().getWidth();
 		int mapHeight = map.getMapType().getHeight();
 		int posX = (int)player.getPosition().getX();

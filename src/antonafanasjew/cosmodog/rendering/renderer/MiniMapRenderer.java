@@ -155,6 +155,7 @@ public class MiniMapRenderer implements Renderer {
 		//Positions of the undiscovered monoliths (or rather the insights closed to them)
 		//are rendered as blinking green or red tiles on the map.
 		//This should be moved to the MapRenderer class since the display of player's position is already there.
+
 		Map<Position, Piece> insights = map.getInsights();
 		for (Position insightPosition : insights.keySet()) {
 			int x = (int)insightPosition.getX();
