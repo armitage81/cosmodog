@@ -56,6 +56,11 @@ public class Reflector extends DynamicPiece implements Switchable {
     }
 
     @Override
+    public boolean canSwitch() {
+        return true;
+    }
+
+    @Override
     public boolean wrapsCollectible() {
         return false;
     }

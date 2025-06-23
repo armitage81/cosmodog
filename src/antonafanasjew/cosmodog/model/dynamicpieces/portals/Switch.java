@@ -86,35 +86,35 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
         ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_BUTTON_PUSHED).play();
         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
         for (Switchable switchable : getSwitchables()) {
+            if (switchable.canSwitch()) {
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(switchable.getPosition()), game));
 
-            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(switchable.getPosition()), game));
-
-            switch (switchable) {
-                case Bollard bollard -> {
-                    boolean open = bollard.isOpen();
-                    AsyncAction action;
-                    if (open) {
-                        action = new RaisingBollardAction(RaisingBollardAction.DURATION, bollard);
-                    } else {
-                        action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
+                switch (switchable) {
+                    case Bollard bollard -> {
+                        boolean open = bollard.isOpen();
+                        AsyncAction action;
+                        if (open) {
+                            action = new RaisingBollardAction(RaisingBollardAction.DURATION, bollard);
+                        } else {
+                            action = new SinkingBollardAction(SinkingBollardAction.DURATION, bollard);
+                        }
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
                     }
-                    actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
-                }
-                case Reflector reflector -> {
-                    AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
-                    actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
-                }
-                case OneWayBollard oneWayBollard -> {
-                    AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
-                    actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
-                }
-                default -> {
+                    case Reflector reflector -> {
+                        AsyncAction action = new TurningReflectorClockwiseAction(500, reflector);
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+                    }
+                    case OneWayBollard oneWayBollard -> {
+                        AsyncAction action = new SwitchingOneWayBollardAction(500, oneWayBollard);
+                        actionRegistry.registerAction(AsyncActionType.MOVEMENT, action);
+                    }
+                    default -> {
+                    }
                 }
             }
+
+            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
         }
-
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
-
     }
 
 }

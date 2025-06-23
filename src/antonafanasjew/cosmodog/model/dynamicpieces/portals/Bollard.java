@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 
 public class Bollard extends DynamicPiece  implements Switchable, Activatable {
@@ -91,6 +92,24 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
     }
 
     @Override
+    public boolean canSwitch() {
+
+        if (!isOpen()) {
+            return true;
+        }
+
+        CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
+        Player player = game.getPlayer();
+        CosmodogMap map = game.getMaps().get(getPosition().getMapType());
+
+        boolean moveableOnPosition = map.moveableAtPosition(getPosition()).isPresent();
+        boolean playerOnPosition = player.getPosition().equals(getPosition());
+
+
+        return !moveableOnPosition && !playerOnPosition;
+    }
+
+    @Override
     public void activate() {
         setOpen(!initialOpen);
     }
@@ -115,9 +134,8 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
         Player player = game.getPlayer();
         CosmodogMap map = game.getMaps().get(getPosition().getMapType());
 
-        boolean moveableOnPosition = map.dynamicPieceAtPosition(MoveableDynamicPiece.class, getPosition()).isPresent();
+        boolean moveableOnPosition = map.moveableAtPosition(getPosition()).isPresent();
         boolean playerOnPosition = player.getPosition().equals(getPosition());
-        boolean plasmaOnPosition = false; //TODO: Implement it once plasma is in place.
 
 
         return !moveableOnPosition && !playerOnPosition;
@@ -125,5 +143,14 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
 
     public void setVisualState(short visualState) {
         this.visualState = visualState;
+    }
+
+    @Override
+    public int renderingPriority() {
+        if (isOpen()) {
+            return 1;
+        } else {
+            return 10;
+        }
     }
 }

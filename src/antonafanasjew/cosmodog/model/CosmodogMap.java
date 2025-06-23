@@ -317,7 +317,19 @@ public class CosmodogMap extends CosmodogModel {
 		return Optional.empty();
 	}
 
-
+	public Optional<MoveableDynamicPiece> moveableAtPosition(Position position) {
+		for (Class<?> c : dynamicPieces.keySet()) {
+			Collection<DynamicPiece> l = dynamicPieces.get(c);
+			for (DynamicPiece dp : l) {
+				if (dp instanceof MoveableDynamicPiece) {
+					if (dp.getPosition().equals(position)) {
+						return Optional.of((MoveableDynamicPiece) dp);
+					}
+				}
+			}
+		}
+		return Optional.empty();
+	}
 
 	public Optional<ActivatableHolder> activatableHolderAtPosition(Position position) {
 

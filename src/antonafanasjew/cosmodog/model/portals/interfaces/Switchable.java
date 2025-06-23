@@ -9,5 +9,6 @@ public interface Switchable {
     void switchToNextState();
     Position getPosition();
     void switchToInitialState();
+    boolean canSwitch();
 
 }

@@ -170,6 +170,11 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
     }
 
     @Override
+    public boolean canSwitch() {
+        return true;
+    }
+
+    @Override
     public int renderingPriority() {
         return open ? 1 : 10;
     }
