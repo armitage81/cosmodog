@@ -29,9 +29,10 @@ public class BackgroundCloudRenderer extends AbstractRenderer {
 	private final List<BackgroundCloudsDecoration> cloudsDecorations = new ArrayList<>();
 
 	public BackgroundCloudRenderer(SpriteSheet cloudSpriteSheet) {
-		s = cloudSpriteSheet.getSprite(0, 0).getScaledCopy(50, 50);
-		cloudsDecorations.add(new BackgroundCloudsDecoration(60, 60, 2000));
-		cloudsDecorations.add(new BackgroundCloudsDecoration(40, 40, 600));
+		s = cloudSpriteSheet.getSprite(0, 0).getScaledCopy(960, 540);
+		s.setImageColor(1, 1, 1, 0.75f);
+		cloudsDecorations.add(new BackgroundCloudsDecoration(960, 540, 3000));
+		cloudsDecorations.add(new BackgroundCloudsDecoration(960, 540, 900));
 	}
 	
 	

@@ -23,7 +23,7 @@ public class BackgroundCloudsDecoration {
 		initialTimestamp = System.currentTimeMillis();
 		movementFunction = new LinearMovementFunction(1, millisecondsInUnit);
 		ParticlePatternBuilder builder = new GridParticlePatternBuilder(gridWidth, gridHeight);
-		builder = JitteringParticlePatternBuilder.instance(builder, 20, 20);
+		builder = JitteringParticlePatternBuilder.instance(builder, 200, 400);
 		particlePattern = builder.build(particlePatternSurface);
 		offsetCalculator = new OffsetCalculator();
 		offsetCalculator.setMovementOffsetFunction(movementFunction);
