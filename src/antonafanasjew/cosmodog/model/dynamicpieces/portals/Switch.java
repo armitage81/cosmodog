@@ -112,9 +112,8 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
                     }
                 }
             }
-
-            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
         }
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementUtils.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
 }
