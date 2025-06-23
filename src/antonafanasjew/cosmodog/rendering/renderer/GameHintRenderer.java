@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.FontProvider;
@@ -14,6 +15,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -25,6 +27,12 @@ public class GameHintRenderer extends AbstractRenderer {
 
 	@Override
 	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+
+		boolean modalWindow = ApplicationContext.instance().getCosmodog().getCosmodogGame().getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) != null;
+
+		if (modalWindow) {
+			return;
+		}
 
 		Player player = ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer();
 		PlayerMovementCache playerMovementCache = PlayerMovementCache.getInstance();
