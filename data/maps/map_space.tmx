@@ -958,7 +958,7 @@
   </object>
   <object id="995" name="chamber21_3" x="3932.31" y="1578.12">
    <properties>
-    <property name="priority4" value=""/>
+    <property name="priority" value="4"/>
    </properties>
    <polyline points="0,0 10.4545,-19.0909"/>
   </object>
