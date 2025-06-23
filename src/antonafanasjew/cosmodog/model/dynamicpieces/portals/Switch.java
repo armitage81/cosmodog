@@ -86,7 +86,7 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
         ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
         for (Switchable switchable : getSwitchables()) {
 
-            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*5, PositionUtils.toPixelPosition(switchable.getPosition()), game));
+            actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(switchable.getPosition()), game));
 
             switch (switchable) {
                 case Bollard bollard -> {
@@ -112,7 +112,7 @@ public class Switch extends DynamicPiece implements Pressable, SwitchableHolder 
             }
         }
 
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
 
     }
 

@@ -87,7 +87,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
 
             if (activatable.canActivate(game)) {
 
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*5, PositionUtils.toPixelPosition(activatable.getPosition()), game));
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(activatable.getPosition()), game));
 
                 if (activatable instanceof Bollard bollard) {
                     if (!bollard.isActive()) {
@@ -108,7 +108,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
             }
         }
 
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
     @Override
@@ -127,7 +127,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
 
             if (activatable.canDeactivate(game)) {
 
-                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*5, PositionUtils.toPixelPosition(activatable.getPosition()), game));
+                actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(activatable.getPosition()), game));
 
                 if (activatable instanceof Bollard bollard) {
                     if (bollard.isActive()) {
@@ -148,7 +148,7 @@ public class Sensor extends DynamicPiece implements ActivatableHolder, PresenceD
                 }
             }
         }
-        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(16*10, PositionUtils.toPixelPosition(player.getPosition()), game));
+        actionRegistry.registerAction(AsyncActionType.MOVEMENT, new CamMovementActionWithConstantSpeed(CamMovementActionWithConstantSpeed.SPEED_FAST, PositionUtils.toPixelPosition(player.getPosition()), game));
     }
 
     @Override

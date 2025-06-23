@@ -19,6 +19,8 @@ import antonafanasjew.cosmodog.util.PositionUtils;
  */
 public class CamMovementActionWithConstantSpeed extends PhaseBasedAction {
 
+    public static final int SPEED_FAST = 160;
+
     private final int pixelPerSecond;
     private final Position targetCamPosition;
     private final CosmodogGame cosmodogGame;
