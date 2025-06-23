@@ -20,11 +20,9 @@ public class TestSpacelift {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(126, 47, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(128, 50, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
-				player.setFood(1);
-				player.setWater(1);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 			}
 		};

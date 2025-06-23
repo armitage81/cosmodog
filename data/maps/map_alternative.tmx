@@ -526,7 +526,7 @@
   </object>
   <object id="938" name="CubesAndOpenDoors" x="6368" y="288" width="16" height="16">
    <properties>
-    <property name="text" value="Cubes must be rendered above open doors"/>
+    <property name="text" value="Open doors must consider cubes when being closed or rendered"/>
    </properties>
   </object>
  </objectgroup>
