@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -54,10 +56,14 @@ public class ArsenalInterfaceRenderer implements Renderer {
 	@Override
 	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
+		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;
 		}
-		
+
+		if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() == MapType.SPACE) {
+			return;
+		}
+
 		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 		
 		DrawingContext[] dcs = new DrawingContext[6];
@@ -141,9 +147,7 @@ public class ArsenalInterfaceRenderer implements Renderer {
 						g.drawRect(oneAmmoDc.x(), oneAmmoDc.y(), oneAmmoDc.w(), 10);
 					}
 				}
-				
-				
-			
+
 			}
 			
 		}

@@ -283,29 +283,33 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 		//Handle weapon scrolling
 		if (input.isKeyPressed(Input.KEY_TAB)) {
-			Arsenal arsenal = player.getArsenal();
 
-			WeaponType previouslySelectedWeaponType = arsenal.getSelectedWeaponType();
-			
-			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
-				arsenal.selectPreviousWeaponType();
-			} else {
-				arsenal.selectNextWeaponType();
-			}
-			
-			WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
-			
-			if (selectedWeaponType != null && !selectedWeaponType.equals(previouslySelectedWeaponType)) {
-				Weapon weapon = arsenal.getWeaponsCopy().get(selectedWeaponType);
-				ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
-				AsyncAction previousTooltipAction = actionRegistry.getRegisteredAction(AsyncActionType.WEAPON_TOOLTIP);
-				if (previousTooltipAction != null) {
-					previousTooltipAction.cancel();
+			if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() != MapType.SPACE) {
+
+				Arsenal arsenal = player.getArsenal();
+
+				WeaponType previouslySelectedWeaponType = arsenal.getSelectedWeaponType();
+
+				if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
+					arsenal.selectPreviousWeaponType();
+				} else {
+					arsenal.selectNextWeaponType();
 				}
-				actionRegistry.registerAction(AsyncActionType.WEAPON_TOOLTIP, WeaponTooltipAction.create(10000, weapon));
+
+				WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
+
+				if (selectedWeaponType != null && !selectedWeaponType.equals(previouslySelectedWeaponType)) {
+					Weapon weapon = arsenal.getWeaponsCopy().get(selectedWeaponType);
+					ActionRegistry actionRegistry = cosmodogGame.getActionRegistry();
+					AsyncAction previousTooltipAction = actionRegistry.getRegisteredAction(AsyncActionType.WEAPON_TOOLTIP);
+					if (previousTooltipAction != null) {
+						previousTooltipAction.cancel();
+					}
+					actionRegistry.registerAction(AsyncActionType.WEAPON_TOOLTIP, WeaponTooltipAction.create(10000, weapon));
+				}
+
+				applicationContext.getSoundResources().get(SoundResources.SOUND_RELOAD).play();
 			}
-			
-			applicationContext.getSoundResources().get(SoundResources.SOUND_RELOAD).play();
 		}
 
 		//Handle zooming
