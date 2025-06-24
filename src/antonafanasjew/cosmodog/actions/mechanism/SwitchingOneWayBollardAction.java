@@ -22,6 +22,7 @@ public class SwitchingOneWayBollardAction extends FixedLengthAsyncAction {
     @Override
     public void onTrigger() {
         ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
+        oneWayBollard.switchToNextState();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class SwitchingOneWayBollardAction extends FixedLengthAsyncAction {
 
     @Override
     public void onEnd() {
-        oneWayBollard.switchToNextState();
+
     }
 
 }

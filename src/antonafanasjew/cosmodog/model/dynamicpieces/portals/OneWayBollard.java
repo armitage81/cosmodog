@@ -131,7 +131,6 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
 
         boolean moveableOnPosition = map.dynamicPieceAtPosition(MoveableDynamicPiece.class, getPosition()).isPresent();
         boolean playerOnPosition = player.getPosition().equals(getPosition());
-        boolean plasmaOnPosition = false; //TODO: Implement it once plasma is in place.
 
 
         return !moveableOnPosition && !playerOnPosition;
