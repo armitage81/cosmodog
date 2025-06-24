@@ -1,12 +1,15 @@
 package integration_test;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.RadioactiveSuitInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
@@ -25,6 +28,15 @@ public class TestAll {
 			@Override
 			protected void updatePlayer(Player player) {
 				player.setPosition(Position.fromCoordinates(5, 3, MapType.MAIN));
+				player.setLife(100);
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+				player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
+				for (int i = 0; i < 100; i++) {
+					player.getGameProgress().addInfobank();
+				}
 				List<String> debuggerPositions = new ArrayList<>();
 
 				/*
@@ -37,7 +49,7 @@ public class TestAll {
 				}
 				 */
 
-				debuggerPositions.add(String.format("%s/%s/%s", 387, 17, MapType.ALTERNATIVE));
+				debuggerPositions.add(String.format("%s/%s/%s", 129, 143, MapType.MAIN));
 
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 			}
