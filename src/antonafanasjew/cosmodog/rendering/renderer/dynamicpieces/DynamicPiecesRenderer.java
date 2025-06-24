@@ -51,7 +51,6 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 	public static List<Class<? extends DynamicPiece>> PIECES_FOR_DEFAULT_RENDERING = List.of(
 			OneWayBollard.class,
-			Jammer.class,
 			AutoBollard.class,
 			Bollard.class,
 			Switch.class,
@@ -123,6 +122,12 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			float topBottomDependentY = dynamicPieceRenderingParam.bottomNotTop() ? pieceY : pieceNorthY;
 
 			String animationId = dynamicPiece.animationId(dynamicPieceRenderingParam.bottomNotTop());
+
+			if (dynamicPiece instanceof Jammer jammer) {
+				if (!jammer.isHidden()) {
+					applicationContext.getAnimations().get(animationId).draw(pieceX, topBottomDependentY);
+				}
+			}
 
 			if (dynamicPiece instanceof Sensor sensor) {
 

@@ -526,7 +526,12 @@ public class InitializationUtils {
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_JAMMER.getTileId()) {
-					Jammer jammer = Jammer.create(position);
+					Jammer jammer = Jammer.create(position, false);
+					map.getDynamicPieces().put(Jammer.class, jammer);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_JAMMER_INVISIBLE.getTileId()) {
+					Jammer jammer = Jammer.create(position, true);
 					map.getDynamicPieces().put(Jammer.class, jammer);
 				}
 

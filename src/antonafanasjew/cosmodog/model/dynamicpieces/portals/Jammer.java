@@ -10,14 +10,20 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.apple.eawt.Application;
 
 public class Jammer extends DynamicPiece {
+
+    private boolean hidden;
+
     @Override
     public boolean wrapsCollectible() {
         return false;
     }
 
-    public static Jammer create(Position position) {
+    //Hidden jammers are not visible nor audible to the player.
+    //They are used to silently disable all portals after leaving a puzzle chamber.
+    public static Jammer create(Position position, boolean hidden) {
         Jammer jammer = new Jammer();
         jammer.setPosition(position);
+        jammer.setHidden(hidden);
         return jammer;
     }
 
@@ -28,14 +34,27 @@ public class Jammer extends DynamicPiece {
 
     @Override
     public String animationId(boolean bottomNotTop) {
+        if (hidden) {
+            return null;
+        }
         return bottomNotTop ? "dynamicPieceJammerBottom" : "dynamicPieceJammerTop";
     }
 
     @Override
     public void interactWhenSteppingOn() {
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-        ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CANCELED).play();
+        if (!hidden) {
+            ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CANCELED).play();
+        }
         game.clearPortals();
 
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }
