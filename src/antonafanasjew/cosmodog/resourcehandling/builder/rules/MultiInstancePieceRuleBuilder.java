@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
@@ -29,14 +30,15 @@ public class MultiInstancePieceRuleBuilder extends AbstractCsvBasedResourceWrapp
 		
 		String ruleName = values[0];
 		String pieceName = values[1];
-		String gameLogsSeriesNameAndId = values[2];
-		String gameProgressProperty = values[3];
-		String gameProgressPropertyValue = values[4];
+		MapType mapType = MapType.valueOf(values[2]);
+		String gameLogsSeriesNameAndId = values[3];
+		String gameProgressProperty = values[4];
+		String gameProgressPropertyValue = values[5];
 		int gameProgressPropertyCount = Integer.valueOf(gameProgressPropertyValue);
-		short priority = Short.valueOf(values[5]);
+		short priority = Short.valueOf(values[6]);
 		
 		
-		RuleTrigger pieceInteractionTrigger = new InteractingWithPieceTrigger(pieceName);
+		RuleTrigger pieceInteractionTrigger = new InteractingWithPieceTrigger(pieceName, mapType);
 		RuleTrigger gameProgressPropertyValueTrigger = new GameProgressPropertyTrigger(gameProgressProperty, gameProgressPropertyValue, "0");
 		
 		RuleTrigger trigger = AndTrigger.and(pieceInteractionTrigger, gameProgressPropertyValueTrigger);

@@ -27,7 +27,7 @@ public class ItemNotificationRuleBuilder extends AbstractCsvBasedResourceWrapper
 		String description = values[4];
 		short priority = Short.valueOf(values[5]);
 			
-		RuleTrigger trigger = new InteractingWithPieceTrigger(pieceName);
+		RuleTrigger trigger = new InteractingWithPieceTrigger(pieceName, null);
 		
 		boolean valueIsAny = ifGameProgressPropertyValueIs.equalsIgnoreCase("ANY");
 		
