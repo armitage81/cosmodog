@@ -72,8 +72,6 @@ public class NpcRenderer extends AbstractRenderer {
 
 		for (Enemy enemy : enemies) {
 
-			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemy.getPosition(), camTilePosition);
-			
 			Position enemyPosition = enemy.getPosition();
 
 			float pieceOffsetX = 0.0f;
@@ -191,7 +189,7 @@ public class NpcRenderer extends AbstractRenderer {
 				animationSizeCorrectionOffsetY = ENEMY_TYPE_2_Y_OFFSET.get(enemy.getUnitType()) * tileLength;
 			}
 
-			
+			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemyPosition, camTilePosition);
 			enemyAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY);
 			
 			if (enemyDamaged && enemyRobotic) {
@@ -217,8 +215,6 @@ public class NpcRenderer extends AbstractRenderer {
 
 		//This is another rendering loop to render the overhead markers over the enemies.
 		for (Enemy enemy : enemies) {
-
-			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemy.getPosition(), camTilePosition);
 
 			Position enemyPosition = enemy.getPosition();
 
@@ -303,7 +299,9 @@ public class NpcRenderer extends AbstractRenderer {
 			if (ENEMY_TYPE_2_Y_OFFSET.get(enemy.getUnitType()) != null) {
 				animationSizeCorrectionOffsetY = ENEMY_TYPE_2_Y_OFFSET.get(enemy.getUnitType()) * tileLength;
 			}
-		
+
+			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemyPosition, camTilePosition);
+
 			//Render enemy overhead markers
 			if (!enemyIsExploding) {
 				if (!EnemiesUtils.enemyActive(enemy)) {
