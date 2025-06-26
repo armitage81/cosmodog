@@ -31,4 +31,4 @@ INSIGHT29_MAIN;insight;MAIN;maryharper/011;foundinsightnumber;28;12
 INSIGHT30_MAIN;insight;MAIN;memories/memory019;foundinsightnumber;29;11
 INSIGHT31_MAIN;insight;MAIN;maryharper/012;foundinsightnumber;30;10
 INSIGHT32_MAIN;insight;MAIN;memories/memory020;foundinsightnumber;31;9
-INSIGHT01_SPACE;insight;SPACE;memories/memory_space;foundinsightnumber_space;1;1
+INSIGHT01_SPACE;insight;SPACE;memories/memory_space;foundinsightnumber_space;0;1

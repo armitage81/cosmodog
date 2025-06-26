@@ -46,6 +46,7 @@ public class DebuggerInventoryItem extends InventoryItem {
 		super(InventoryItemType.DEBUGGER);
 		positions.add(Position.fromCoordinates(53, 29, MapType.MAIN));
 		positions.add(Position.fromCoordinates(140, 14, MapType.MAIN));
+		positions.add(Position.fromCoordinates(191, 171, MapType.SPACE));
 		positions.add(Position.fromCoordinates(129, 34, MapType.MAIN));
 		positions.add(Position.fromCoordinates(299, 22, MapType.MAIN));
 		positions.add(Position.fromCoordinates(362, 46, MapType.MAIN));
