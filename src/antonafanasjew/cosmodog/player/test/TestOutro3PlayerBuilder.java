@@ -16,7 +16,7 @@ public class TestOutro3PlayerBuilder extends AbstractPlayerBuilder {
 		
 		InsightInventoryItem insight = (InsightInventoryItem)player.getInventory().get(InventoryItemType.INSIGHT);
 		
-		for (int i = 0; i < 32; i++) {
+		for (int i = 0; i < 33; i++) {
 			
 			if (insight == null) {
 				insight = new InsightInventoryItem();

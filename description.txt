@@ -20,7 +20,7 @@ What Cosmodog offers:
     A sci-fi open world with enemies, collectibles, secrets, giant worms, labyrinths, teleports and vehicles. No procedural generation, no random bioms - each corner of this game is crafted by hand.
     A new approach to survival mechanics. Apart from hunger and thirst, you'll need to master cold, radiation, poisonous traps, deadly land mines, intricate puzzles and giant snow worms.
     Many gadgets, upgrades and weapons increase your stats and unlock new areas of the game world. Use vehicles, boats, ski equipment and many more hidden gadgets to access uncharted places.
-    Rewarding collectibles: 5 weapons, 10 enemy types, 32 alien monoliths, 6000 infobits, 64 map pieces, 120 secret areas and many story logs.
+    Rewarding collectibles: 5 weapons, 10 enemy types, 33 alien monoliths, 6000 infobits, 64 map pieces, 120 secret areas and many story logs.
     A sci-fi narration with a broken AI as one of the protagonists and the story that deals with identity, intelligence, love and self-identification.
 
 Please send your feedback to feedback@cosmodog.eu or post comments here

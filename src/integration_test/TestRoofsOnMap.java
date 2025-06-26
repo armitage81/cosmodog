@@ -40,7 +40,7 @@ public class TestRoofsOnMap {
 				}
 
 				InsightInventoryItem insight = new InsightInventoryItem();
-				insight.setNumber(32);
+				insight.setNumber(33);
 
 				player.getInventory().put(InventoryItemType.INSIGHT, insight);
 

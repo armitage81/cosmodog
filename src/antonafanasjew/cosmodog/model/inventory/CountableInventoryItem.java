@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.model.inventory;
 
 /**
- * Describes multi-instance items, like insights (there are 32 of them to collect)
+ * Describes multi-instance items, like insights (there are 33 of them to collect)
  */
 public abstract class CountableInventoryItem extends InventoryItem {
 
