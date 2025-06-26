@@ -86,8 +86,6 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		
 		if (item != null && ((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
 			AsyncAction asyncAction2 = new PopUpNotificationAction("You can enter the alien base now.");
-			asyncAction2 = new PauseDecoratorAction(3000, 0, asyncAction2);
-			asyncAction2 = new CamCenteringDecoratorAction(3000, Position.fromCoordinates(238, 238, MapType.MAIN), asyncAction2, ApplicationContextUtils.getCosmodogGame());
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction2);
 		}

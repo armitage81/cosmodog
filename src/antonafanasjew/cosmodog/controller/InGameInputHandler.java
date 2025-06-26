@@ -353,6 +353,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 			player.endSwitchingPlane();
 		}
 
+
 		//Handle debugging
 		DebuggerInventoryItem debugger = (DebuggerInventoryItem)player.getInventory().get(InventoryItemType.DEBUGGER);
 		

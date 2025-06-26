@@ -2,6 +2,9 @@ package antonafanasjew.cosmodog.model.inventory;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
@@ -44,9 +47,9 @@ public class DebuggerInventoryItem extends InventoryItem {
 
 	public DebuggerInventoryItem() {
 		super(InventoryItemType.DEBUGGER);
+
 		positions.add(Position.fromCoordinates(53, 29, MapType.MAIN));
 		positions.add(Position.fromCoordinates(140, 14, MapType.MAIN));
-		positions.add(Position.fromCoordinates(191, 171, MapType.SPACE));
 		positions.add(Position.fromCoordinates(129, 34, MapType.MAIN));
 		positions.add(Position.fromCoordinates(299, 22, MapType.MAIN));
 		positions.add(Position.fromCoordinates(362, 46, MapType.MAIN));
@@ -54,10 +57,10 @@ public class DebuggerInventoryItem extends InventoryItem {
 		positions.add(Position.fromCoordinates(395, 69, MapType.MAIN));
 		positions.add(Position.fromCoordinates(331, 124, MapType.MAIN));
 		positions.add(Position.fromCoordinates(242, 100, MapType.MAIN));
-		positions.add(Position.fromCoordinates(95, 144, MapType.MAIN));
+		positions.add(Position.fromCoordinates(96, 145, MapType.MAIN));
 		positions.add(Position.fromCoordinates(232, 132, MapType.MAIN));
 		positions.add(Position.fromCoordinates(379, 155, MapType.MAIN));
-		positions.add(Position.fromCoordinates(239, 159, MapType.MAIN));
+		positions.add(Position.fromCoordinates(391, 92 , MapType.MAIN));
 		positions.add(Position.fromCoordinates(42, 173, MapType.MAIN));
 		positions.add(Position.fromCoordinates(124, 219, MapType.MAIN));
 		positions.add(Position.fromCoordinates(188, 195, MapType.MAIN));
@@ -77,6 +80,7 @@ public class DebuggerInventoryItem extends InventoryItem {
 		positions.add(Position.fromCoordinates(6, 370, MapType.MAIN));
 		positions.add(Position.fromCoordinates(276, 395, MapType.MAIN));
 		positions.add(Position.fromCoordinates(364, 389, MapType.MAIN));
+		positions.add(Position.fromCoordinates(191, 171, MapType.SPACE));
 
 		positions.add(Position.fromCoordinates(7, 9, MapType.MAIN));
 		positions.add(Position.fromCoordinates(7, 21, MapType.MAIN));
