@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.collision.validators.player;
 
 import java.util.Collection;
 
+import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -51,84 +52,84 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 	private static Multimap<Position, BlockInfo> COLLISIONDATA = HashMultimap.create();
 	
 	static {
-		COLLISIONDATA.put(Position.fromCoordinates(-1, -4, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 3, -4, null), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates(-1, -4, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 3, -4, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
 		                                                 
-		COLLISIONDATA.put(Position.fromCoordinates(-2, -3, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates(-2, -3, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 0, -3, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 0, -3, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 1, -3, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 2, -3, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 2, -3, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 4, -3, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 4, -3, null), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-2, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates(-2, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 0, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 0, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 1, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 2, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 2, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 4, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 4, -3, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
 		                                                 
-		COLLISIONDATA.put(Position.fromCoordinates(-3, -2, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates(-3, -2, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates(-1, -2, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates(-1, -2, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 0, -2, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 1, -2, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 2, -2, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 3, -2, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 3, -2, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 5, -2, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 5, -2, null), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-3, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates(-3, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates(-1, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-1, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 0, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 1, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 2, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 3, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 3, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 5, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 5, -2, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
 		                                                 
-		COLLISIONDATA.put(Position.fromCoordinates(-4, -1, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates(-2, -1, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates(-2, -1, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates(-2, -1, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 0, -1, null), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 4, -1, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 4, -1, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 4, -1, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 6, -1, null), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-4, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates(-2, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates(-2, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates(-2, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 0, -1, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 4, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 4, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 4, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 6, -1, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
 		                                                 
-		COLLISIONDATA.put(Position.fromCoordinates(-3,  0, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates(-3,  0, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates(-1,  0, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates(-1,  0, null), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates(1,  0, null), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 3,  0, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 5,  0, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 5,  0, null), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-3,  0, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates(-3,  0, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates(-1,  0, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-1,  0, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates(1,  0, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 3,  0, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 5,  0, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 5,  0, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
 		                                                 
-		COLLISIONDATA.put(Position.fromCoordinates(-3,  1, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates(-1,  1, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates(-1,  1, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 0,  1, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 0,  1, null), BlockInfo.fromDirCarOnly(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 1,  1, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 1,  1, null), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 2,  1, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 2,  1, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 3,  1, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 3,  1, null), BlockInfo.fromDir(DirectionType.DOWN));
-		COLLISIONDATA.put(Position.fromCoordinates( 3,  1, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 5,  1, null), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-3,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates(-1,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates(-1,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 0,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 0,  1, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 1,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 1,  1, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 2,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 2,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 3,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 3,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.DOWN));
+		COLLISIONDATA.put(Position.fromCoordinates( 3,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 5,  1, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
 		                                                 
-		COLLISIONDATA.put(Position.fromCoordinates(-3,  2, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 1,  2, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 1,  2, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 2,  2, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 2,  2, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 5,  2, null), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates(-3,  2, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 1,  2, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 1,  2, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 2,  2, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 2,  2, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 5,  2, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+
+		COLLISIONDATA.put(Position.fromCoordinates(-2,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates(-2,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 0,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 0,  3, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 0,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 2,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.RIGHT));
+		COLLISIONDATA.put(Position.fromCoordinates( 2,  3, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
+		COLLISIONDATA.put(Position.fromCoordinates( 4,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 4,  3, MapType.MAIN), BlockInfo.fromDir(DirectionType.LEFT));
 		
-		COLLISIONDATA.put(Position.fromCoordinates(-2,  3, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates(-2,  3, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 0,  3, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 0,  3, null), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 0,  3, null), BlockInfo.fromDir(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 2,  3, null), BlockInfo.fromDir(DirectionType.RIGHT));
-		COLLISIONDATA.put(Position.fromCoordinates( 2,  3, null), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
-		COLLISIONDATA.put(Position.fromCoordinates( 4,  3, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 4,  3, null), BlockInfo.fromDir(DirectionType.LEFT));
-		
-		COLLISIONDATA.put(Position.fromCoordinates(-1,  4, null), BlockInfo.fromDir(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 1,  4, null), BlockInfo.fromDirCarOnly(DirectionType.UP));
-		COLLISIONDATA.put(Position.fromCoordinates( 3,  4, null), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates(-1,  4, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 1,  4, MapType.MAIN), BlockInfo.fromDirCarOnly(DirectionType.UP));
+		COLLISIONDATA.put(Position.fromCoordinates( 3,  4, MapType.MAIN), BlockInfo.fromDir(DirectionType.UP));
 
 	}
 	

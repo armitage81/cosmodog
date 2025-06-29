@@ -176,7 +176,7 @@ public class CosmodogMapUtils {
 	
 	public static boolean isTileOnPlatform(Position tilePosition, Position platformPosition) {
 		boolean retVal = false;
-		if (tilePosition.getMapType() != platformPosition.getMapType()) {
+		if (tilePosition.getMapType() == platformPosition.getMapType()) {
 			int actorOffsetX = (int) (tilePosition.getX() - platformPosition.getX());
 			int actorOffsetY = (int) (tilePosition.getY() - platformPosition.getY());
 			Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, MapType.MAIN);
