@@ -33,9 +33,11 @@ public class HelpRenderer implements Renderer {
 	
 			"Exit a vehicle",
 	
-			"Zoom in",
+			"Zoom in/Zoom out",
 			
-			"Zoom out",
+			"Shoot portal",
+
+			"Reset puzzle",
 	
 			"Menu",
 	
@@ -65,9 +67,11 @@ public class HelpRenderer implements Renderer {
 				"[SHIFT] + [UP] or [DOWN] or [LEFT] or [RIGHT]",
 		
 				"Z (if owning binoculars)",
+
+				"[SPACE] (if portal gun active)",
+
+				"R (if within a puzzle area)",
 				
-				"Y (if owning binoculars)",
-		
 				"[ESC]",
 		
 				"[TAB]",
@@ -88,13 +92,13 @@ public class HelpRenderer implements Renderer {
 		FontRefToFontTypeMap fontTypeSubheaders = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
 		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
 		
-		for (int i = 0; i < 14; i++) {
+		for (int i = 0; i < 15; i++) {
 			if (i < actions.length) {
 				
 				Book textBook;
 				
-				TileDrawingContext tdcAction = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 14, 0, i, 3, 1);
-				TileDrawingContext tdcKey = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 14, 3, i, 7, 1);
+				TileDrawingContext tdcAction = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 15, 0, i, 3, 1);
+				TileDrawingContext tdcKey = new TileDrawingContext(inGameMenuContentDrawingContext, 10, 15, 3, i, 7, 1);
 				
 				textBook = TextPageConstraints.fromDc(tdcAction).textToBook(actions[i], fontTypeSubheaders);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
