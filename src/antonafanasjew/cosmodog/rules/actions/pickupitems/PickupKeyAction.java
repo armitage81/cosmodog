@@ -43,6 +43,7 @@ public class PickupKeyAction extends AbstractRuleAction {
 		keyring.addKey(key);
 		
 		CollectibleKey collectibleKey = new CollectibleKey(key);
+		collectibleKey.setPosition(player.getPosition());
 		
 		PieceInteraction keyInteraction = new KeyInteraction();
 		keyInteraction.beforeInteraction(collectibleKey, ApplicationContext.instance(), cosmodogGame, player);
