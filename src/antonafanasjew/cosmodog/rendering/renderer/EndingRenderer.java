@@ -18,7 +18,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class EndingRenderer implements Renderer {
+public class EndingRenderer extends AbstractRenderer {
 
 	public static boolean firstLoop = true;
 	
@@ -27,7 +27,7 @@ public class EndingRenderer implements Renderer {
 	}
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		long referenceTime = System.currentTimeMillis();
 		

@@ -28,15 +28,6 @@ public class TestAll {
 			@Override
 			protected void updatePlayer(Player player) {
 				player.setPosition(Position.fromCoordinates(5, 3, MapType.MAIN));
-				player.setLife(100);
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-				player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
-				for (int i = 0; i < 100; i++) {
-					player.getGameProgress().addInfobank();
-				}
 				List<String> debuggerPositions = new ArrayList<>();
 
 				for (int i = 0; i < 20; i++) {

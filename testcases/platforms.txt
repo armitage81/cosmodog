@@ -1,0 +1,30 @@
+Assertions:
+------------------------------------------------------
+1. Player is on the platform
+
+- Collision works for player
+- Player can exit and enter platform via the ladder and the ramp
+- Player can exit and enter platform via the ramp while in vehicle
+- Player cannot exit and enter platform via the ladded while in vehicle
+- Player can exit vehicle while it is on the platform
+- Player can directly jump from a vehicle adjacent to the platform driver seat to this driver seat
+- Collision works while player is in a vehicle
+- Collision with another vehicle works while moving a vehicle on the platform
+- Enemies cannot reach player
+
+2. Player is in the platform
+
+- Platform can move
+- Rails collision works for platform
+- A vehicle in the way blocks the platform
+- An infobit in the way blocks the platform
+- Another platform blocks the platform
+- Enemies cannot reach player
+- Enemies are destroyed upon approaching
+- Vehicles on the platform are moved together with the platform
+
+3. Player is outside a platform
+- Collision with every platform works for player even if there are multiple platforms
+- Collision with platforms works for player while in a vehicle
+- Collision with platforms works for enemies
+

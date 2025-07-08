@@ -26,7 +26,7 @@ import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 public class OverheadNotificationRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 

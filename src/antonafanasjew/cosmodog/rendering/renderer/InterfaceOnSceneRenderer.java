@@ -22,7 +22,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 
-public class InterfaceOnSceneRenderer implements Renderer {
+public class InterfaceOnSceneRenderer extends AbstractRenderer {
 
 	private final Renderer sceneRenderer = new SceneRenderer();
 	private final Renderer lifeInterfaceRenderer = new LifeInterfaceRenderer();
@@ -47,7 +47,7 @@ public class InterfaceOnSceneRenderer implements Renderer {
 	private final Renderer positionDebugInfoRenderer = new PositionDebugInfoRenderer();
 		
 	@Override
-	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gc, Graphics g, Object renderingParameter) {
 
 		DrawingContext gameContainerDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
 		DrawingContext leftColumnDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().leftColumnDrawingContext();

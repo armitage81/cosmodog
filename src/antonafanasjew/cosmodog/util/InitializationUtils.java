@@ -227,10 +227,9 @@ public class InitializationUtils {
 			TiledObject moveableGroupRegion = moveableGroupRegions.get(moveableGroupRegionName);
 			
 			List<MoveableDynamicPiece> moveablesInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof MoveableDynamicPiece))
 					.stream()
-					.filter(e -> (e instanceof MoveableDynamicPiece))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
 					.map(e -> (MoveableDynamicPiece)e)
 					.toList();
@@ -256,12 +255,11 @@ public class InitializationUtils {
 				}
 
 			}
-			
+
 			List<SecretDoor> secretDoorsInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof SecretDoor))
 					.stream()
-					.filter(e -> (e instanceof SecretDoor))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
 					.map(e -> (SecretDoor)e)
 					.toList();
@@ -297,10 +295,9 @@ public class InitializationUtils {
 			TiledObject portalPuzzleRegion = portalPuzzleRegions.get(portalPuzzleRegionName);
 
 			List<MoveableDynamicPiece> moveablesInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof MoveableDynamicPiece))
 					.stream()
-					.filter(e -> (e instanceof MoveableDynamicPiece))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (MoveableDynamicPiece)e)
 					.toList();
@@ -311,46 +308,41 @@ public class InitializationUtils {
 					.toList();
 
 			List<Switchable> switchablesInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof Switchable))
 					.stream()
-					.filter(e -> (e instanceof Switchable))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (Switchable)e)
 					.toList();
 
 			List<Activatable> activatablesInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof Activatable))
 					.stream()
-					.filter(e -> (e instanceof Activatable))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (Activatable)e)
 					.toList();
 
 			List<PresenceDetector> presenceDetectorsInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof PresenceDetector))
 					.stream()
-					.filter(e -> (e instanceof PresenceDetector))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (PresenceDetector)e)
 					.toList();
 
 			List<AutoBollard> autoBollardsInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof AutoBollard))
 					.stream()
-					.filter(e -> (e instanceof AutoBollard))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (AutoBollard)e)
 					.toList();
 
 			List<OneWayBollard> oneWayBollardsInRegion = map
-					.getDynamicPieces()
-					.values()
+					.getMapPieces()
+					.piecesOverall(e -> (e instanceof OneWayBollard))
 					.stream()
-					.filter(e -> (e instanceof OneWayBollard))
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (OneWayBollard)e)
 					.toList();
@@ -401,10 +393,10 @@ public class InitializationUtils {
 							InventoryItem inventoryItem = InventoryItemFactory.createInventoryItem((Collectible)piece);
 							enemy.setInventoryItem(inventoryItem);
 						} else {
-							map.getMapPieces().put(piece.getPosition(), piece);
+							map.getMapPieces().addPiece(piece);
 						}
 					} else {
-						map.getMapPieces().put(piece.getPosition(), piece);
+						map.getMapPieces().addPiece(piece);
 					}
 				}
 			}
@@ -426,31 +418,31 @@ public class InitializationUtils {
 				if (TileType.TELEPORT_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_TELEPORT);
 					effect.setPosition(position);
-					map.getEffectPieces().add(effect);
+					map.getMapPieces().addPiece(effect);
 				}
 
 				if (TileType.FIRE_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_FIRE);
 					effect.setPosition(position);
-					map.getEffectPieces().add(effect);
+					map.getMapPieces().addPiece(effect);
 				}
 
 				if (TileType.SMOKE_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_SMOKE);
 					effect.setPosition(position);
-					map.getEffectPieces().add(effect);
+					map.getMapPieces().addPiece(effect);
 				}
 
 				if (TileType.ELECTRICITY_EFFECT.getTileId() == tileId) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_ELECTRICITY);
 					effect.setPosition(position);
-					map.getEffectPieces().add(effect);
+					map.getMapPieces().addPiece(effect);
 				}
 
 				if (TileType.ENERGY_WALL_TILES.contains(TileType.getByLayerAndTileId(Layers.LAYER_META_EFFECTS, tileId))) {
 					Effect effect = new Effect(Effect.EFFECT_TYPE_ENERGYWALL);
 					effect.setPosition(position);
-					map.getEffectPieces().add(effect);
+					map.getMapPieces().addPiece(effect);
 				}
 
 			}
@@ -472,205 +464,205 @@ public class InitializationUtils {
 
 				if (tileId == TileType.DYNAMIC_PIECE_SENSOR.getTileId()) {
 					Sensor sensor = Sensor.create(position);
-					map.getDynamicPieces().put(Sensor.class, sensor);
+					map.getMapPieces().addPiece(sensor);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_CUBE.getTileId()) {
 					Cube cube = Cube.create(position, false);
-					map.getDynamicPieces().put(Cube.class, cube);
+					map.getMapPieces().addPiece(cube);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_TRANSPARENT_CUBE.getTileId()) {
 					Cube cube = Cube.create(position, true);
-					map.getDynamicPieces().put(Cube.class, cube);
+					map.getMapPieces().addPiece(cube);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_WEST.getTileId()) {
 					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.LEFT);
-					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+					map.getMapPieces().addPiece(oneWayBollard);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_NORTH.getTileId()) {
 					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.UP);
-					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+					map.getMapPieces().addPiece(oneWayBollard);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_EAST.getTileId()) {
 					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.RIGHT);
-					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+					map.getMapPieces().addPiece(oneWayBollard);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_ONE_WAY_BOLLARD_SOUTH.getTileId()) {
 					OneWayBollard oneWayBollard = OneWayBollard.create(position, DirectionType.DOWN);
-					map.getDynamicPieces().put(OneWayBollard.class, oneWayBollard);
+					map.getMapPieces().addPiece(oneWayBollard);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_NE.getTileId()) {
 					Reflector reflector = Reflector.create(position, ReflectionType.NORTH_EAST);
-					map.getDynamicPieces().put(Reflector.class, reflector);
+					map.getMapPieces().addPiece(reflector);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_NW.getTileId()) {
 					Reflector reflector = Reflector.create(position, ReflectionType.NORTH_WEST);
-					map.getDynamicPieces().put(Reflector.class, reflector);
+					map.getMapPieces().addPiece(reflector);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_SE.getTileId()) {
 					Reflector reflector = Reflector.create(position, ReflectionType.SOUTH_EAST);
-					map.getDynamicPieces().put(Reflector.class, reflector);
+					map.getMapPieces().addPiece(reflector);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_REFLECTOR_SW.getTileId()) {
 					Reflector reflector = Reflector.create(position, ReflectionType.SOUTH_WEST);
-					map.getDynamicPieces().put(Reflector.class, reflector);
+					map.getMapPieces().addPiece(reflector);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_JAMMER.getTileId()) {
 					Jammer jammer = Jammer.create(position, false);
-					map.getDynamicPieces().put(Jammer.class, jammer);
+					map.getMapPieces().addPiece(jammer);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_JAMMER_INVISIBLE.getTileId()) {
 					Jammer jammer = Jammer.create(position, true);
-					map.getDynamicPieces().put(Jammer.class, jammer);
+					map.getMapPieces().addPiece(jammer);
 				}
 
                 if (tileId == TileType.DYNAMIC_PIECE_BOLLARD_RISEN.getTileId()) {
                     Bollard bollard = Bollard.create(position, false);
-                    map.getDynamicPieces().put(Bollard.class, bollard);
+					map.getMapPieces().addPiece(bollard);
                 }
 
                 if (tileId == TileType.DYNAMIC_PIECE_BOLLARD_SUNK.getTileId()) {
                     Bollard bollard = Bollard.create(position, true);
-                    map.getDynamicPieces().put(Bollard.class, bollard);
+					map.getMapPieces().addPiece(bollard);
                 }
 
 				if (tileId == TileType.DYNAMIC_PIECE_AUTOBOLLARD.getTileId()) {
 					AutoBollard autoBollard = AutoBollard.create(position);
-					map.getDynamicPieces().put(AutoBollard.class, autoBollard);
+					map.getMapPieces().addPiece(autoBollard);
 				}
 
                 if (tileId == TileType.DYNAMIC_PIECE_SWITCH.getTileId()) {
                     Switch aSwitch = Switch.createInstance(position);
-                    map.getDynamicPieces().put(Switch.class, aSwitch);
+					map.getMapPieces().addPiece(aSwitch);
                 }
 
 				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_BLOCK.getTileId()) {
 					Block block = Block.create(position);
 					block.setStil(Block.STIL_BLOCK);
-					map.getDynamicPieces().put(Block.class, block);
+					map.getMapPieces().addPiece(block);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_CONTAINER.getTileId()) {
 					Block block = Block.create(position);
 					block.setStil(Block.STIL_CONTAINER);
-					map.getDynamicPieces().put(Block.class, block);
+					map.getMapPieces().addPiece(block);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_ICE.getTileId()) {
 					Block block = Block.create(position);
 					block.setStil(Block.STIL_ICE);
-					map.getDynamicPieces().put(Block.class, block);
+					map.getMapPieces().addPiece(block);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_MOVEABLE_PLANT.getTileId()) {
 					Block block = Block.create(position);
 					block.setStil(Block.STIL_PLANT);
-					map.getDynamicPieces().put(Block.class, block);
+					map.getMapPieces().addPiece(block);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_GUIDETERMINAL.getTileId()) {
 					Terminal terminal = Terminal.create(position);
-					map.getDynamicPieces().put(Terminal.class, terminal);
+					map.getMapPieces().addPiece(terminal);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_STONE.getTileId()) {
 					Stone stone = Stone.create(position);
-					map.getDynamicPieces().put(Stone.class, stone);
+					map.getMapPieces().addPiece(stone);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_HARDSTONE.getTileId()) {
 					HardStone hardStone = HardStone.create(position);
-					map.getDynamicPieces().put(HardStone.class, hardStone);
+					map.getMapPieces().addPiece(hardStone);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_TREE.getTileId()) {
 					Tree tree = Tree.create(position);
-					map.getDynamicPieces().put(Tree.class, tree);
+					map.getMapPieces().addPiece(tree);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_BAMBOO.getTileId()) {
 					Bamboo bamboo = Bamboo.create(position);
-					map.getDynamicPieces().put(Bamboo.class, bamboo);
+					map.getMapPieces().addPiece(bamboo);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL_MONTAIN.getTileId()) {
 					CrumbledWall wall = CrumbledWall.create(position, CrumbledWall.SHAPE_MONTAIN);
-					map.getDynamicPieces().put(CrumbledWall.class, wall);
+					map.getMapPieces().addPiece(wall);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_BINARY_INDICATOR_ALIEN_BASE.getTileId()) {
 					BinaryIndicator binaryIndicator = BinaryIndicator.create(position);
-					map.getDynamicPieces().put(BinaryIndicator.class, binaryIndicator);
+					map.getMapPieces().addPiece(binaryIndicator);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_CRUMBLED_WALL_ALIEN_BASE.getTileId()) {
 					CrumbledWall wall = CrumbledWall.create(position, CrumbledWall.SHAPE_ALIEN_BASE);
-					map.getDynamicPieces().put(CrumbledWall.class, wall);
+					map.getMapPieces().addPiece(wall);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_GATE.getTileId()) {
 					Gate gate = Gate.create(position);
-					map.getDynamicPieces().put(Gate.class, gate);
+					map.getMapPieces().addPiece(gate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_SPIKES.getTileId()) {
 					SecretDoor secretDoor = SecretDoor.create(position);
 					secretDoor.setStil(SecretDoor.STIL_SPIKES);
-					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+					map.getMapPieces().addPiece(secretDoor);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_HYDRAULICS.getTileId()) {
 					SecretDoor secretDoor = SecretDoor.create(position);
 					secretDoor.setStil(SecretDoor.STIL_HYDRAULICS);
-					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+					map.getMapPieces().addPiece(secretDoor);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_ENERGY.getTileId()) {
 					SecretDoor secretDoor = SecretDoor.create(position);
 					secretDoor.setStil(SecretDoor.STIL_ENERGY);
-					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+					map.getMapPieces().addPiece(secretDoor);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_SECRET_DOOR_WALL.getTileId()) {
 					SecretDoor secretDoor = SecretDoor.create(position);
 					secretDoor.setStil(SecretDoor.STIL_WALL);
-					map.getDynamicPieces().put(SecretDoor.class, secretDoor);
+					map.getMapPieces().addPiece(secretDoor);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {
 					Crate crate = Crate.create(position);
-					map.getDynamicPieces().put(Crate.class, crate);
+					map.getMapPieces().addPiece(crate);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_MINE.getTileId()) {
 					Mine mine = Mine.create(position);
-					map.getDynamicPieces().put(Mine.class, mine);
+					map.getMapPieces().addPiece(mine);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_POISON.getTileId()) {
 					Poison poison = Poison.create(position);
-					map.getDynamicPieces().put(Poison.class, poison);
+					map.getMapPieces().addPiece(poison);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_PRESSUREBUTTON.getTileId()) {
 					PressureButton pressureButton = PressureButton.create(position);
-					map.getDynamicPieces().put(PressureButton.class, pressureButton);
+					map.getMapPieces().addPiece(pressureButton);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_ALIEN_BASE_BLOCKADE.getTileId()) {
 					AlienBaseBlockade alienBaseBlockade = AlienBaseBlockade.create(Position.fromCoordinates(k, l, map.getMapType()));
-					map.getDynamicPieces().put(AlienBaseBlockade.class, alienBaseBlockade);
+					map.getMapPieces().addPiece(alienBaseBlockade);
 				}
 
 				if (TileType.MIN_ALIEN_DOOR.getTileId() <= tileId && tileId <= TileType.MAX_ALIEN_DOOR.getTileId()) {
@@ -679,52 +671,52 @@ public class InitializationUtils {
 					DirectionType directionType = Mappings.TILE_ID_TO_DOOR_DIRECTION_TYPE.get(tileId);
 					Door door = new Door(directionType, doorType, doorAppearanceType);
 					door.setPosition(position);
-					map.getDynamicPieces().put(Door.class, door);
+					map.getMapPieces().addPiece(door);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_1.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[0]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_2.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[1]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_3.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[2]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_4.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[3]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_5.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[4]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_6.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[5]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_7.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[6]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_8.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[7]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_LETTERPLATE_9.getTileId()) {
 					LetterPlate letterPlate = LetterPlate.create(position, LetterPlate.ALPHABETHS[8]);
-					map.getDynamicPieces().put(LetterPlate.class, letterPlate);
+					map.getMapPieces().addPiece(letterPlate);
 				}
 				
 			}
@@ -1064,7 +1056,7 @@ public class InitializationUtils {
 
 					enemy.setDirection(DirectionType.random());
 
-					map.getEnemies().add(enemy);
+					map.getMapPieces().addPiece(enemy);
 				}
 
 			}

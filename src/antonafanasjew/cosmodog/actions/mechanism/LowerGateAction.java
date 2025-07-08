@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -77,10 +78,9 @@ public class LowerGateAction extends FixedLengthAsyncAction {
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		TiledObjectGroup regions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		TiledObject region = regions.getObjects().get(regionName);
-		Collection<DynamicPiece> gates = map.getDynamicPieces().get(Gate.class);
+		Collection<DynamicPiece> gates = map.getMapPieces().piecesOverall(e -> e instanceof Gate).stream().map(e -> (DynamicPiece)e).toList();
         for (DynamicPiece dynamicPiece : gates) {
             Gate gate = (Gate) dynamicPiece;
-			int tileLength = TileUtils.tileLengthSupplier.get();
             if (RegionUtils.pieceInRegion(gate, map.getMapType(), region)) {
                 gatesInRegion.add(gate);
             }

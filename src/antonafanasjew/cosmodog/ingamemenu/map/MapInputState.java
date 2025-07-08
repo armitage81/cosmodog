@@ -116,7 +116,7 @@ public class MapInputState implements InGameMenuInputState {
 		offsetY = 0;
 		
 		infobitNumbersByChartPiece.clear();
-		infobitNumbersByChartPiece.putAll(CosmodogMapStatisticsProvider.getInstance().infobitValuePerChartPiece(map.getMapPieces(), map.getEnemies(), chartPieceWidthInTiles, chartPieceHeightInTiles));
+		infobitNumbersByChartPiece.putAll(CosmodogMapStatisticsProvider.getInstance().infobitValuePerChartPiece(map.getMapPieces(), map.allEnemies(), chartPieceWidthInTiles, chartPieceHeightInTiles));
 		//System.out.println(infobitNumbersByChartPiece.entrySet().stream().mapToInt(e -> e.getValue()).sum());
 	}
 	

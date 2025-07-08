@@ -17,10 +17,10 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class TimeRenderer implements Renderer {
+public class TimeRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
 			return;

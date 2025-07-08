@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.ingamemenu.options;
 
 
 
+import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -14,12 +15,12 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class OptionsRenderer implements Renderer {
+public class OptionsRenderer extends AbstractRenderer {
 
 	private static final String TEXT = "Press [RETURN] to save and quit";
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 		FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
 		

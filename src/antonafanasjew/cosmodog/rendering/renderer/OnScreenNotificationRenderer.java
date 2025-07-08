@@ -14,7 +14,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 public class OnScreenNotificationRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		DrawingContext secretFoundMessageDc = DrawingContextProviderHolder.get().getDrawingContextProvider().secretFoundMessageDrawingContext();
 		

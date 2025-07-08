@@ -22,12 +22,12 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class LifeInterfaceRenderer implements Renderer {
+public class LifeInterfaceRenderer extends AbstractRenderer {
 
 	private static final float LABEL_WIDTH = 70;
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
 		@SuppressWarnings("unused")
 		DrawingContext lifeDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().lifeDrawingContext();

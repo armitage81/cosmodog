@@ -108,7 +108,7 @@ public class DebugState extends CosmodogAbstractState {
 		
 		trHeader.render(gc, g, "Debug console");
 		
-		tfr.render(gc, g);
+		tfr.renderInternally(gc, g, null);
 		
 		trControls.render(gc, g, "Press Enter to execute debug command. Press Esc to return to the game.");
 		

@@ -9,7 +9,7 @@ import org.newdawn.slick.Image;
 
 public class BackgroundRenderer extends AbstractRenderer {
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+    public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
         Image image = ApplicationContext.instance().getImages().get("space.background");
         image.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
     }

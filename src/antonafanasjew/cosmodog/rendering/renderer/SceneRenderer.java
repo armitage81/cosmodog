@@ -27,7 +27,7 @@ import antonafanasjew.cosmodog.rendering.piecerendererpredicates.OnPlatformPiece
 /**
  * Renders the scene, that is the game map and everything on it.
  */
-public class SceneRenderer implements Renderer {
+public class SceneRenderer extends AbstractRenderer {
 
 	private AbstractRenderer backgroundRenderer = ConditionalRenderer.instance(
 			new BackgroundRenderer(),
@@ -78,7 +78,7 @@ public class SceneRenderer implements Renderer {
 	private AbstractRenderer sightRadiusRenderer = new SightRadiusRenderer();
 	
 	@Override
-	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gc, Graphics g, Object renderingParameter) {
 		
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 

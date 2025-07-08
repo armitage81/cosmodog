@@ -68,7 +68,7 @@ public class StatisticsState extends CosmodogAbstractState {
 				.getMaps()
 				.values()
 				.stream()
-				.mapToInt(cosmodogMap -> cosmodogMap.getEnemies()
+				.mapToInt(cosmodogMap -> cosmodogMap.allEnemies()
 						.size())
 				.sum();
 

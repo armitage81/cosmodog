@@ -19,7 +19,7 @@ public class FuelTankInteraction extends AbstractPieceInteraction {
 
 		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 
-		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().values();
+		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().piecesOverall(e -> true);
 
 		for (Piece piece2 : mapPieces) {
 			if (piece2 instanceof Vehicle vehicle) {

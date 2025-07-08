@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.dynamicpieces;
 
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
@@ -88,10 +89,17 @@ public class LetterPlate extends DynamicPiece {
 		if (sequence.sequenceComplete()) {
 			OverheadNotificationAction.registerOverheadNotification(player, "\"The opposite of nervousness...\"");
 			OverheadNotificationAction.registerOverheadNotification(player, LetterPlateSequence.FULL_SEQUENCE.toUpperCase() + "!!!");
-			Collection<DynamicPiece> letterPlates = map.getDynamicPieces().get(LetterPlate.class);
-			for (DynamicPiece piece : letterPlates) {
-				((LetterPlate)piece).setActive(false);
-				((LetterPlate)piece).setPressed(false);
+
+			Collection<LetterPlate> letterPlates = map
+					.getMapPieces()
+					.piecesOverall(e -> e instanceof LetterPlate)
+					.stream()
+					.map(e -> (LetterPlate)e)
+					.collect(Collectors.toSet());
+
+			for (LetterPlate letterPlate : letterPlates) {
+				letterPlate.setActive(false);
+				letterPlate.setPressed(false);
 			}
 		} else {
 			//We print the currently entered sequence over the player's head. It is not complete. It could be a valid sub sequence, or a wrong one.

@@ -16,10 +16,10 @@ import org.newdawn.slick.Graphics;
 
 import java.util.Locale;
 
-public class TimeInSpaceRenderer implements Renderer {
+public class TimeInSpaceRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
 			return;

@@ -8,12 +8,15 @@ import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.io.Serial;
+import java.util.Optional;
 
 public class BlockingAction extends FixedLengthAsyncAction {
 
@@ -38,8 +41,15 @@ public class BlockingAction extends FixedLengthAsyncAction {
 
         player.getMovementListener().beforeBlock(player, player.getPosition(), targetEntrance.getPosition());
 
-        DynamicPiece dynamicPiece = game.dynamicPieceAtPosition(targetEntrance.getPosition());
-        if (dynamicPiece == null) { //Otherwise, the dynamic piece interact method should handle the sound.
+        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(targetEntrance.getPosition().getMapType());
+        Optional<DynamicPiece> optDynamicPiece = map
+                .getMapPieces()
+                .piecesAtPosition(e -> e instanceof DynamicPiece, targetEntrance.getPosition().getX(), targetEntrance.getPosition().getY())
+                .stream()
+                .map(e -> (DynamicPiece)e)
+                .findFirst();
+
+        if (optDynamicPiece.isEmpty()) { //Otherwise, the dynamic piece interact method should handle the sound.
             //ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_NOWAY).play();
         }
 

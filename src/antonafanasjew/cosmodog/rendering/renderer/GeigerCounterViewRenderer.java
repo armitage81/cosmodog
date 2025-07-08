@@ -17,10 +17,10 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
-public class GeigerCounterViewRenderer implements Renderer {
+public class GeigerCounterViewRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
 		//This is the small square at the top right of the interface
 		DrawingContext geigerCounterDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().geigerCounterDrawingContext();

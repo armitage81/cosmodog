@@ -62,6 +62,7 @@ import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
+import profiling.ProfilingData;
 
 /**
  * Standard game controls for usual actions, like movement, zooming, weapon scrolling.
@@ -179,7 +180,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 			}
 
     		//First handle cases when an enemy is standing on the target tile and when the platform would hit enemies. In this case initialize a fight instead of a movement.
-    		Set<Enemy> enemies = map.getEnemies();
+    		Set<Enemy> enemies = map.allEnemies();
     		Enemy meleeTargetEnemy = null;
     		Set<Enemy> platformTargetEnemies = new HashSet<>();
     		for (Enemy enemy : enemies) {
@@ -223,7 +224,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 						if (vehicleItem.isExiting()) {
 							Vehicle vehicle = vehicleItem.getVehicle();
 							vehicle.setPosition(player.getPosition());
-							map.getMapPieces().put(vehicle.getPosition(), vehicle);
+							map.getMapPieces().addPiece(vehicle);
 							player.getInventory().remove(InventoryItemType.VEHICLE);
 							Sound carmotor = applicationContext.getSoundResources().get(SoundResources.SOUND_CARMOTOR);
 							if (carmotor.playing()) {
@@ -239,7 +240,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 						if (platformItem.isExiting()) {
 							Platform platform = platformItem.getPlatform();
 							platform.setPosition(player.getPosition());
-							map.getMapPieces().put(platform.getPosition(), platform);
+							map.getMapPieces().addPiece(platform);
 							player.getInventory().remove(InventoryItemType.PLATFORM);
 						}
 					}
@@ -385,6 +386,10 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 			if (input.isKeyPressed(Input.KEY_5)) {
 				cosmodogGame.getPlanetaryCalendar().addMinutes(60);
+			}
+
+			if (input.isKeyPressed(Input.KEY_8)) {
+				ProfilingData.instance().print();
 			}
 
 			if (input.isKeyPressed(Input.KEY_9)) {

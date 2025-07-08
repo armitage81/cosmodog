@@ -37,7 +37,7 @@ public class PortalRenderer extends AbstractRenderer {
     public static final int PORTAL_NORTH_WALL_EDGE_OFFSET = 7;
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+    public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
         long timestamp = System.currentTimeMillis();
 

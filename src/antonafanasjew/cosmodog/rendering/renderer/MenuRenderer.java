@@ -29,7 +29,7 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
  * calculated by loading the game save header. It would be too costly to do it every time, hence the cache.
  * The cache has to be reset every time a game state changes. It is enough to reset the cache every time the menu game state is entered.
  */
-public class MenuRenderer implements Renderer {
+public class MenuRenderer extends AbstractRenderer {
 
 	public static final int MAX_MENU_ENTRIES_RENDERED = 5;
 	
@@ -44,7 +44,7 @@ public class MenuRenderer implements Renderer {
 	}
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
 		
 		DrawingContext startScreenMenuDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().startScreenMenuDrawingContext();

@@ -43,7 +43,7 @@ public class EffectsRenderer extends AbstractRenderer {
 	private final EnergyWallCollisionValidatorForPlayer energyWallCollisionValidator = new EnergyWallCollisionValidatorForPlayer();
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 

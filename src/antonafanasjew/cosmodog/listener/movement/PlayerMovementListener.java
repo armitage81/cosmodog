@@ -296,12 +296,10 @@ public class PlayerMovementListener implements MovementListener {
 		Player player = cosmodog.getCosmodogGame().getPlayer();
 		CosmodogMap cosmodogMap = cosmodog.getCosmodogGame().mapOfPlayerLocation();
 		
-		Collection<Piece> pieces = cosmodogMap.getMapPieces().values();
-		Iterator<Piece> it = pieces.iterator();
+		Collection<Piece> pieces = cosmodogMap.getMapPieces().piecesOverall(e -> true);
 
-		while (it.hasNext()) {
-			Piece piece = it.next();
-			
+		for (Piece piece : pieces) {
+
 			if (piece.getPosition().equals(player.getPosition())) {
 				
 				String pieceType = PiecesUtils.pieceType(piece);
@@ -314,7 +312,7 @@ public class PlayerMovementListener implements MovementListener {
 						pieceInteraction.beforeInteraction(piece, applicationContext, cosmodogGame, player);
 						pieceInteraction.interactWithPiece(piece, applicationContext, cosmodogGame, player);
 						pieceInteraction.afterInteraction(piece, applicationContext, cosmodogGame, player);
-						it.remove();
+						cosmodogMap.getMapPieces().removePiece(piece);
 					}
 					
 				}
@@ -387,7 +385,7 @@ public class PlayerMovementListener implements MovementListener {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		
-		Collection<DynamicPiece> letterPlates = map.getDynamicPieces().get(LetterPlate.class);
+		Collection<DynamicPiece> letterPlates = map.getMapPieces().piecesOverall(e -> e instanceof LetterPlate).stream().map(e -> (DynamicPiece)e).toList();
 		
 		for (DynamicPiece piece : letterPlates) {
 			LetterPlate letterPlate = (LetterPlate)piece;
@@ -408,8 +406,8 @@ public class PlayerMovementListener implements MovementListener {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		MineDetectorInventoryItem mineDetector = (MineDetectorInventoryItem)player.getInventory().get(InventoryItemType.MINEDETECTOR);
-		
-		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+
+		Collection<DynamicPiece> mines = map.getMapPieces().piecesOverall(e -> e instanceof Mine).stream().map(e -> (DynamicPiece)e).toList();
 		
 		for (DynamicPiece piece : mines) {
 			Mine mine =(Mine)piece;
@@ -432,7 +430,7 @@ public class PlayerMovementListener implements MovementListener {
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		Collection<DynamicPiece> buttons = map.getDynamicPieces().get(PressureButton.class);
+		Collection<DynamicPiece> buttons = map.getMapPieces().piecesOverall(e -> e instanceof PressureButton).stream().map(e -> (DynamicPiece)e).toList();
 		
 		for (DynamicPiece piece : buttons) {
 			PressureButton button = (PressureButton)piece;
@@ -452,12 +450,19 @@ public class PlayerMovementListener implements MovementListener {
 	 */
 	private void checkContamination(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
-		DynamicPiece piece = ApplicationContextUtils.getCosmodogGame().dynamicPieceAtPosition(player.getPosition());
-		if (!(piece instanceof Poison poison)) {
+		Optional<Poison> poison = ApplicationContextUtils
+				.getCosmodogGame()
+				.mapOfPlayerLocation()
+				.getMapPieces()
+				.piecesAtPosition(e -> e instanceof Poison, player.getPosition().getX(), player.getPosition().getY())
+				.stream()
+				.map(e -> (Poison)e)
+				.findFirst();
+		if (poison.isEmpty()) {
 			return;
 		}
 
-        if (poison.isDeactivated()) {
+        if (poison.get().isDeactivated()) {
 			return;
 		}
 		
@@ -714,7 +719,7 @@ public class PlayerMovementListener implements MovementListener {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+		Collection<DynamicPiece> mines = map.getMapPieces().piecesOverall(e -> e instanceof Mine).stream().map(e -> (DynamicPiece)e).toList();
 		
 		Mine mineUnderPlayer = null;
 		
@@ -778,12 +783,7 @@ public class PlayerMovementListener implements MovementListener {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
-		Set<DynamicPiece> presenceDetectorDynamicPieces = map
-				.getDynamicPieces()
-				.values()
-				.stream()
-				.filter(e -> e instanceof PresenceDetector)
-				.collect(Collectors.toSet());
+		Collection<DynamicPiece> presenceDetectorDynamicPieces = map.getMapPieces().piecesOverall(e -> e instanceof PresenceDetector).stream().map(e -> (DynamicPiece)e).toList();
 
 		for (DynamicPiece presenceDetectorDynamicPiece : presenceDetectorDynamicPieces) {
 			Position position = presenceDetectorDynamicPiece.getPosition();

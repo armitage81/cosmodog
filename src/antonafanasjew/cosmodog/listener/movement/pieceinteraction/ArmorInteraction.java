@@ -19,12 +19,11 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 		
 		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		
-		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().values();
+		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().piecesOverall(e -> e instanceof Vehicle);
 		
 		for (Piece piece2 : mapPieces) {
-			if (piece2 instanceof Vehicle) {
-				Vehicle vehicle = ((Vehicle)piece2);
-				vehicle.increaseMaxLife(Player.ROBUSTNESS_UNITS_IN_ARMORPACK, true);
+			if (piece2 instanceof Vehicle vehicle) {
+                vehicle.increaseMaxLife(Player.ROBUSTNESS_UNITS_IN_ARMORPACK, true);
 			}
 		}
 		

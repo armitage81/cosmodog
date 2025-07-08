@@ -1,10 +1,7 @@
 package antonafanasjew.cosmodog.actions.movement;
 
 import java.io.Serial;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
 import antonafanasjew.cosmodog.domains.MapType;
@@ -202,14 +199,16 @@ public class MovementAction extends FixedLengthAsyncAction {
 				}
 			}
 			
-			for (Enemy enemy : map.getEnemies()) {
+			for (Enemy enemy : map.allEnemies()) {
 				if (CosmodogMapUtils.isTileOnPlatform(enemy.getPosition(), targetEntrance.getPosition())) {
 					destroyedEnemies.add(enemy);
 				}
 			}
-			
-			map.getEnemies().removeAll(destroyedEnemies);
-			
+
+			for (Enemy enemy : destroyedEnemies) {
+				map.getMapPieces().removePiece(enemy);
+			}
+
 		} else {
 			if (!skipTurn) {
 				if (targetEntrance.isUsedPortal()) {
@@ -443,7 +442,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 				Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
 
-				for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().values()) {
+				for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().piecesOverall(e -> true)) {
 					if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
 
 						//As we move the piece on the platform, we need to update it in the mapValues cache
@@ -451,23 +450,17 @@ public class MovementAction extends FixedLengthAsyncAction {
 						oldPositionsForPiecesOnPlatform.put(position, piece);
 
 						if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
+							cosmodogGame.mapOfPlayerLocation().getMapPieces().removePiece(piece);
 							piece.getPosition().shift(0, player.getDirection() == DirectionType.UP ? -1 : 1);
+							cosmodogGame.mapOfPlayerLocation().getMapPieces().addPiece(piece);
 						} else {
+							cosmodogGame.mapOfPlayerLocation().getMapPieces().removePiece(piece);
 							piece.getPosition().shift(player.getDirection() == DirectionType.LEFT ? -1 : 1, 0);
+							cosmodogGame.mapOfPlayerLocation().getMapPieces().addPiece(piece);
 						}
 					}
 				}
 
-				//When we modify positions of pieces on platform, we need to modify the mapPieces cache as well.
-				for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
-					cosmodogGame.mapOfPlayerLocation().getMapPieces().remove(oldPosition);
-				}
-
-				for (Position oldPosition : oldPositionsForPiecesOnPlatform.keySet()) {
-					Piece piece = oldPositionsForPiecesOnPlatform.get(oldPosition);
-					Position newPosition = piece.getPosition();
-					cosmodogGame.mapOfPlayerLocation().getMapPieces().put(newPosition, piece);
-				}
 			}
 
 			if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
@@ -500,7 +493,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
-		Set<Enemy> enemies = map.getEnemies();
+		Set<Enemy> enemies = map.allEnemies();
 		for (Enemy enemy : enemies) {
 						
 			CrossTileMotion enemyCrossTileMotion = actorMotions.remove(enemy);
@@ -566,27 +559,25 @@ public class MovementAction extends FixedLengthAsyncAction {
 		}
 
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		Multimap<Class<?>, DynamicPiece> pieces = map.getDynamicPieces();
-		for (Class<?> pieceType : pieces.keySet()) {
-			Collection<DynamicPiece> piecesOfOneType = pieces.get(pieceType);
-			for (DynamicPiece piece : piecesOfOneType) {
-				if (piece.getPosition().equals(targetPosition)) {
-					piece.interactWhenSteppingOn();
-				}
-				
-				if (piece.getPosition().equals(startPosition)) {
-					piece.interactWhenLeaving();
-				}
-			}
-		}
 
-        if (!player.getPosition().equals(startPosition)) {
-            Set<DynamicPiece> dynamicPiecesAtStartPosition = map.dynamicPiecesAtPosition(startPosition);
+		List<DynamicPiece> dynamicPiecesAtStartPosition = map
+				.getMapPieces()
+				.piecesAtPosition(e -> e instanceof DynamicPiece, startPosition.getX(), startPosition.getY())
+				.stream()
+				.map(e -> (DynamicPiece)e)
+				.toList();
 
-            for (DynamicPiece dynamicPiece : dynamicPiecesAtStartPosition) {
-                dynamicPiece.interactAfterExiting();
-            }
-        }
+		List<DynamicPiece> dynamicPiecesAtTargetPosition = map
+				.getMapPieces()
+				.piecesAtPosition(e -> e instanceof DynamicPiece, targetPosition.getX(), targetPosition.getY())
+				.stream()
+				.map(e -> (DynamicPiece)e)
+				.toList();
+
+		dynamicPiecesAtStartPosition.forEach(DynamicPiece::interactWhenLeaving);
+		dynamicPiecesAtTargetPosition.forEach(DynamicPiece::interactWhenSteppingOn);
+		dynamicPiecesAtStartPosition.forEach(DynamicPiece::interactAfterExiting);
+
 	}
 
 	public Map<Actor, CrossTileMotion> getActorMotions() {

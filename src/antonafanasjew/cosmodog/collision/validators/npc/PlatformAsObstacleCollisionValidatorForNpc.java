@@ -13,6 +13,8 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import antonafanasjew.cosmodog.util.PiecesUtils;
 
+import java.util.Set;
+
 /**
  * This validator is checking only the not-occupied platform as obstacle for enemies (They cannot enter it at all) 
  */
@@ -24,9 +26,9 @@ public class PlatformAsObstacleCollisionValidatorForNpc extends AbstractCollisio
 		
 		boolean blocked = false;
 		
-		Platform platform = cosmodogGame.mapOfPlayerLocation().getCachedPlatform(cosmodogGame);
+		Set<Platform> platforms = cosmodogGame.mapOfPlayerLocation().getPlatforms();
 		
-		if (platform != null) { //It is null, if collected, that is if the player is sitting inside of it. 
+		for (Platform platform : platforms) {
 		
 			if (PiecesUtils.distanceBetweenPieces(actor, platform) <= 10) {
 				blocked = CosmodogMapUtils.isTileOnPlatform(entrance.getPosition());

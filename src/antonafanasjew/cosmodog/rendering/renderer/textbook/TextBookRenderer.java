@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer.textbook;
 import java.util.ArrayList;
 import java.util.List;
 
+import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -22,7 +23,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Line;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Page;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Word;
 
-public class TextBookRenderer implements Renderer {
+public class TextBookRenderer extends AbstractRenderer {
 	
 	private DrawingContext drawingContext;
 	
@@ -67,7 +68,7 @@ public class TextBookRenderer implements Renderer {
 	}
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		long referenceTime = System.currentTimeMillis();
 		

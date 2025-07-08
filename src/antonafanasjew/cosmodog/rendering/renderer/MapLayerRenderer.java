@@ -24,7 +24,7 @@ import antonafanasjew.cosmodog.util.TilesetUtils;
 public class MapLayerRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		//Start drawing at the beginning of the scene. Usually, it is the top left corner of the screen.
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();

@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.Mappings;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -31,13 +32,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class ProgressRenderer implements Renderer {
+public class ProgressRenderer extends AbstractRenderer {
 
 	private static final int ROWS = 7;
 	private static final int ROW_PADDING = 10;
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 		

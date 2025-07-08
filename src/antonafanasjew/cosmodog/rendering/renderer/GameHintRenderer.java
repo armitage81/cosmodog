@@ -26,7 +26,7 @@ import java.util.*;
 public class GameHintRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		boolean modalWindow = ApplicationContext.instance().getCosmodog().getCosmodogGame().getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) != null;
 

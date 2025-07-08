@@ -22,10 +22,10 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-public class VitalDataInterfaceInSpaceRenderer implements Renderer {
+public class VitalDataInterfaceInSpaceRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 
 	}
 

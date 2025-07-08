@@ -15,10 +15,10 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
-public class SupplyTrackerViewRenderer implements Renderer {
+public class SupplyTrackerViewRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
 		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
 			return;

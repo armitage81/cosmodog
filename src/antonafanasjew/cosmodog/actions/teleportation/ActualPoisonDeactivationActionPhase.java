@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.teleportation;
 import java.util.Collection;
 import java.util.Map;
 
+import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -76,7 +77,7 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 			if (relevantPoisonRegion != null) {
 
 				int tileLength = TileUtils.tileLengthSupplier.get();
-				Collection<DynamicPiece> poisons = map.getDynamicPieces().get(Poison.class);
+				Collection<DynamicPiece> poisons = map.getMapPieces().piecesOverall(e -> e instanceof Poison).stream().map(e -> (DynamicPiece)e).toList();
 				
 				for (DynamicPiece piece : poisons) {
 					Poison poison = (Poison)piece;

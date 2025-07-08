@@ -26,14 +26,25 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
 import antonafanasjew.cosmodog.model.portals.Entrance;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
+import java.util.Optional;
 
 public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	@Override
 	public CollisionStatus calculateStatusWithinMap(CosmodogGame cosmodogGame, Actor actor, CosmodogMap map, Entrance entrance) {
 		CollisionStatus retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE);
-		DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(entrance.getPosition());
-		if (dynamicPiece != null) {
+
+		Optional<DynamicPiece> optDynamicPiece = map
+				.getMapPieces()
+				.piecesAtPosition(e -> e instanceof DynamicPiece, entrance.getPosition().getX(), entrance.getPosition().getY())
+				.stream()
+				.map(e -> (DynamicPiece)e)
+				.findFirst();
+
+		if (optDynamicPiece.isPresent()) {
+			DynamicPiece dynamicPiece = optDynamicPiece.get();
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
 			}

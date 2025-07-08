@@ -205,10 +205,6 @@ public class CosmodogGame extends CosmodogModel {
 		this.ambientSoundRegistry = ambientSoundRegistry;
 	}
 	
-	public DynamicPiece dynamicPieceAtPosition(Position position) {
-		return PlayerMovementCache.getInstance().getDynamicPieces().get(position);
-	}
-
 	public Optional<Portal> portal(Position position, DirectionType directionType) {
 		for (Portal portal : portals) {
 			if (portal.position.equals(position) && portal.directionType == directionType) {

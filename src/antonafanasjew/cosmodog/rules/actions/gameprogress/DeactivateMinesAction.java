@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
@@ -47,7 +48,12 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 
 
 			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
-			Collection<DynamicPiece> mines = map.getDynamicPieces().get(Mine.class);
+			Collection<DynamicPiece> mines = map
+					.getMapPieces()
+					.piecesOverall(e -> e instanceof Mine)
+					.stream()
+					.map(e -> (DynamicPiece)e)
+					.collect(Collectors.toSet());
 
 			for (DynamicPiece piece : mines) {
 				Mine mine = (Mine) piece;

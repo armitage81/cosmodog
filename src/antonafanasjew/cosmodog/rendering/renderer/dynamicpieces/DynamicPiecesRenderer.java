@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer.dynamicpieces;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
@@ -10,7 +10,6 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
-import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.renderingutils.ActorRendererUtils;
 import antonafanasjew.cosmodog.topology.Position;
@@ -46,6 +45,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 import org.newdawn.slick.Image;
+import profiling.ProfilerUtils;
 
 public class DynamicPiecesRenderer extends AbstractRenderer {
 
@@ -76,7 +76,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 	}
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 
@@ -90,7 +90,6 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
-		Player player = ApplicationContextUtils.getPlayer();
 		Cam cam = cosmodogGame.getCam();
 
 		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
@@ -98,20 +97,28 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Multimap<Class<?>, DynamicPiece> dynamicPieces = map.visibleDynamicPieces(
-				Position.fromCoordinates(
-						camTilePosition.tileX(),
-						camTilePosition.tileY(),
-						map.getMapType()
-				),
-				camTilePosition.widthInTiles(),
-				camTilePosition.heightInTiles(),
-				2
-		);
+		AtomicReference<List<DynamicPiece>> dynamicPieces = new AtomicReference<>();
 
-		List<DynamicPiece> sortedDynamicPieces = dynamicPieces.values().stream().sorted(Comparator.comparingInt(DynamicPiece::renderingPriority)).toList();
+		ProfilerUtils.runWithProfiling("calculateVisibleDynamicPieces", () -> {
 
-		for (DynamicPiece dynamicPiece : sortedDynamicPieces) {
+			List<DynamicPiece> visiblePieces = map
+					.getMapPieces()
+					.piecesInArea(e -> e instanceof DynamicPiece, camTilePosition.tileX(), camTilePosition.tileY(), camTilePosition.widthInTiles(), camTilePosition.heightInTiles())
+					.stream()
+					.map(e -> (DynamicPiece)e)
+					.toList();
+
+			dynamicPieces.set(visiblePieces);
+		});
+
+
+		AtomicReference<List<DynamicPiece>> sortedDynamicPieces = new AtomicReference<>();
+
+		ProfilerUtils.runWithProfiling("sortVisibleDynamicPieces", () -> {
+			sortedDynamicPieces.set(dynamicPieces.get().stream().sorted(Comparator.comparingInt(DynamicPiece::renderingPriority)).toList());
+		});
+
+		for (DynamicPiece dynamicPiece : sortedDynamicPieces.get()) {
 
 			Vector pieceVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(dynamicPiece.getPosition(), camTilePosition);
 			Vector adjacentNorthPieceVectorRelatedToCam = new Vector(pieceVectorRelatedToCam.getX(), pieceVectorRelatedToCam.getY() - tileLength);
@@ -291,7 +298,10 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			}
 
 			if (PIECES_FOR_DEFAULT_RENDERING.contains(dynamicPiece.getClass())) {
-				applicationContext.getAnimations().get(animationId).draw(pieceX, topBottomDependentY);
+				final String finalAnimationId = animationId;
+				ProfilerUtils.runWithProfiling("drawDefaultDynamicPiece", () -> {
+					applicationContext.getAnimations().get(finalAnimationId).draw(pieceX, topBottomDependentY);
+				});
 			}
 
 		}

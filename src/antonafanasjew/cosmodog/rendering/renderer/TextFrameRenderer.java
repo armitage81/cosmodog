@@ -15,13 +15,13 @@ import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import antonafanasjew.cosmodog.writing.textframe.TextFrame;
 
-public class TextFrameRenderer implements Renderer {
+public class TextFrameRenderer extends AbstractRenderer {
 
 	public static boolean firstLoop = true;
 	
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		long referenceTime = System.currentTimeMillis();
 		

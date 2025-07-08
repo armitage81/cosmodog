@@ -45,7 +45,7 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+    public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
         ActionRegistry actionRegistry = ApplicationContextUtils
                 .getCosmodogGame()

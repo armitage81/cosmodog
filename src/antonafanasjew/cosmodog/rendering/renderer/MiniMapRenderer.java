@@ -28,7 +28,7 @@ import java.util.Set;
  * Take note: Rendering the map happens in a similar way as rendering the actual game. There is no map image.
  * Instead, the map excerpt is rendered tile by tile.
  */
-public class MiniMapRenderer implements Renderer {
+public class MiniMapRenderer extends AbstractRenderer {
 
 	/**
 	 * The drawing context in which the minimap is rendered.
@@ -52,7 +52,7 @@ public class MiniMapRenderer implements Renderer {
 	 * @param renderingParameter - Contains the input state to know which part of the map to render depending on scrolling position.
 	 */
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		//Contains the input state to know which part of the map to render depending on scrolling position.
 		MapInputState mapInputState = (MapInputState) renderingParameter;

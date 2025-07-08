@@ -7,6 +7,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.caching.PieceCache;
+import antonafanasjew.cosmodog.model.actors.NpcActor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -81,18 +83,11 @@ public class CosmodogMapStatisticsProvider {
 	 * pieces to count. Positions are representing chart pieces in the map (not
 	 * tiles!).
 	 */
-	public Map<Position, Integer> infobitValuePerChartPiece(Map<Position, Piece> collectibles, Set<Enemy> enemies, int chartPieceWidthInTiles, int chartPieceHeightInTiles) {
-
-		Map<Position, Piece> mapPieces = Maps.newHashMap();
-		mapPieces.putAll(collectibles);
-
-		for (Enemy enemy : enemies) {
-			mapPieces.put(enemy.getPosition(), enemy);
-		}
+	public Map<Position, Integer> infobitValuePerChartPiece(PieceCache mapPieces, Set<Enemy> enemies, int chartPieceWidthInTiles, int chartPieceHeightInTiles) {
 
 		Function<Piece, Integer> valueFunction = pieceValueInInfobitsFunction();
 
-		Map<Position, Integer> pieceValues = mapPieces.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> valueFunction.apply(e.getValue())));
+		Map<Position, Integer> pieceValues = mapPieces.piecesOverall(e -> true).stream().filter(e -> e instanceof Collectible || e instanceof NpcActor).collect(Collectors.toMap(Piece::getPosition, valueFunction));
 
 		Map<Position, Integer> mapPieceValuePerChartPiece = Maps.newHashMap();
 		for (Position position : pieceValues.keySet()) {

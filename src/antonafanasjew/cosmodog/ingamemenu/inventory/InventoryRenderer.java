@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.ingamemenu.inventory;
 
 import java.util.Iterator;
 
+import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -31,7 +32,7 @@ import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class InventoryRenderer implements Renderer {
+public class InventoryRenderer extends AbstractRenderer {
 
 	public static final int NUMBER_OF_VISIBLE_MESSAGES = NotificationQueue.MAX_MESSAGES_BEFORE_REMOVAL;
 	public static final int INVENTORY_COLUMNS = 6;
@@ -39,7 +40,7 @@ public class InventoryRenderer implements Renderer {
 
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 		

@@ -1,7 +1,9 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
@@ -47,21 +49,15 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		Position insightPosition = piece.getPosition();
 		Position effectPosition = Position.fromCoordinates(insightPosition.getX(), insightPosition.getY() - 1, insightPosition.getMapType());
 
-		Set<Piece> effectPieces = cosmodogMap.getEffectPieces();
-		Iterator<Piece> effectPiecesIt = effectPieces.iterator();
-		while (effectPiecesIt.hasNext()) {
-			Piece effectPiece = effectPiecesIt.next();
-			if (effectPiece.getPosition().equals(effectPosition)) {
-				if (effectPiece instanceof Effect effect) {
-                    if (effect.getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY)) {
-						effectPiecesIt.remove();
-						break;
-					}
-				}
+		Predicate<Piece> beingElectricityEffect = e -> {
+			return e instanceof Effect && ((Effect)e).getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY);
+		};
 
-			}
+		List<Piece> electricityEffectPieces = cosmodogMap.getMapPieces().piecesAtPosition(beingElectricityEffect, effectPosition.getX(), effectPosition.getY());
+		for (Piece electricityEffectPiece : electricityEffectPieces ) {
+			cosmodogMap.getMapPieces().removePiece(electricityEffectPiece);
 		}
-		
+
 		Position playerPosition = player.getPosition();
 		int l = Layers.LAYER_META_RADIATION;
 		

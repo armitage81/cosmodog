@@ -17,12 +17,12 @@ import com.google.common.collect.Multimap;
  * Organizing renderers in layers lets the programmer add
  * additional rendering objects in any order while keeping the rendering order
  */
-public class LayeredRenderer implements Renderer {
+public class LayeredRenderer extends AbstractRenderer {
 
 	private final Multimap<Integer, Renderer> underlyingRenderers = ArrayListMultimap.create();
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		Set<Integer> keys = underlyingRenderers.keySet();
 		List<Integer> sortedKeys = Lists.newArrayList(keys);
 		Collections.sort(sortedKeys);

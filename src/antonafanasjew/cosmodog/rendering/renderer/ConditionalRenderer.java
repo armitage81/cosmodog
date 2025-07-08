@@ -14,7 +14,7 @@ public class ConditionalRenderer extends AbstractRenderer {
     private Renderer alternativeDelegate;
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+    public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
         if (condition.get()) {
             delegate.render(gameContainer, graphics, renderingParameter);

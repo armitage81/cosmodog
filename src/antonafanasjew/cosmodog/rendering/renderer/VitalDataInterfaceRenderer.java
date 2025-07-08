@@ -28,12 +28,12 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 /**
  * Renders bars for water and food.
  */
-public class VitalDataInterfaceRenderer implements Renderer {
+public class VitalDataInterfaceRenderer extends AbstractRenderer {
 
 	private static final float LABEL_WIDTH = 70;
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 
 		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;

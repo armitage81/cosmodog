@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.ingamemenu.logplayer;
 import java.util.List;
 import java.util.function.Function;
 
+import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -35,7 +36,7 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
  * Also, if a new series is added, check that the indexes of labels and other series are updated.
  * If a new category of series is added, then check that it is added everywhere like other categories are.
  */
-public class LogPlayerRenderer implements Renderer {
+public class LogPlayerRenderer extends AbstractRenderer {
 
 	/**
 	 * The maximum number of logs that can be displayed in one row.
@@ -58,7 +59,7 @@ public class LogPlayerRenderer implements Renderer {
 	};
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		//Drawing context for the whole game menu frame.
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();

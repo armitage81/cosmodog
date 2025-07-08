@@ -6,7 +6,7 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 
-public class FeatureBoundRenderer implements Renderer {
+public class FeatureBoundRenderer extends AbstractRenderer {
 
 	private final Renderer delegate;
 	private final String feature;
@@ -18,7 +18,7 @@ public class FeatureBoundRenderer implements Renderer {
 	}
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		Features.getInstance().featureBoundProcedure(feature, new Runnable() {
 			@Override
 			public void run() {

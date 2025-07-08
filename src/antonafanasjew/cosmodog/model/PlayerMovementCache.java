@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
@@ -68,11 +69,7 @@ public class PlayerMovementCache implements Serializable {
 	private Set<TiledObject> roofRemovalBlockerRegionsOverPlayer = Sets.newHashSet();
 	
 	private int numberInfobitsInGame;
-	
 
-	private Map<Position, DynamicPiece> dynamicPieces = Maps.newHashMap();
-	private Multimap<Class<?>, DynamicPiece> visibleDynamicPieces = ArrayListMultimap.create();
-	
 	private Set<Enemy> enemiesInRange = Sets.newHashSet();
 	private Map<Enemy, Set<TiledObject>> enemiesInRangeWithRoofsOverThem = Maps.newHashMap();
 	
@@ -117,14 +114,6 @@ public class PlayerMovementCache implements Serializable {
 		return roofRemovalBlockerRegionsOverPlayer;
 	}
 
-	public Map<Position, DynamicPiece> getDynamicPieces() {
-		return dynamicPieces;
-	}
-	
-	public Multimap<Class<?>, DynamicPiece> getVisibleDynamicPieces() {
-		return visibleDynamicPieces;
-	}
-	
 	public int getNumberInfobitsInGame() {
 		return numberInfobitsInGame;
 	}
@@ -156,8 +145,6 @@ public class PlayerMovementCache implements Serializable {
 		recalculateWhetherPlayerIsOnPlatform(actor);
 		recalculateRoofsOverPlayer();
 		recalculateRoofRemovalBlockerRegions(actor);
-		recalculateDynamicPieces();
-		recalculateVisibleDynamicPieces();
 		recalculateInfobitsInGame();
 		recalculateEnemiesInRange();
 		recalculateRoofsOverEnemiesInRange();
@@ -172,7 +159,7 @@ public class PlayerMovementCache implements Serializable {
 
 		enemiesInRange.clear();
 
-		Set<Enemy> enemies = map.getEnemies();
+		Set<Enemy> enemies = map.allEnemies();
 		for (Enemy enemy : enemies) {
 			float distance = PiecesUtils.distanceBetweenPieces(player, enemy);
 			if (distance < CACHE_RANGE) {
@@ -207,69 +194,6 @@ public class PlayerMovementCache implements Serializable {
 				}
 			}
 		}
-	}
-
-	private void recalculateDynamicPieces() {
-
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-
-		dynamicPieces.clear();
-		for (Class<?> key : map.getDynamicPieces().keySet()) {
-			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
-			if (piecesForKey != null) {
-				for (DynamicPiece piece : piecesForKey) {
-					Position position = piece.getPosition();
-					dynamicPieces.put(position, piece);
-				}
-			}
-		}
-	}
-
-	private void recalculateVisibleDynamicPieces() {
-
-		//Unfortunately, this cache does not make sense, as it focuses at the pieces next to the player,
-		//but in case of a camera flight over the field, every piece should be visible.
-		//Commented the logic and showing all pieces instead to avoid the problem.
-		//This has a bad impact on performance and should be tackled.
-
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-
-		visibleDynamicPieces = map.getDynamicPieces();
-
-//		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
-//		Cam cam = game.getCam();
-//		int tileWidth = map.getTileWidth();
-//		int tileHeight = map.getTileHeight();
-//
-//		int scaledTileWidth = (int) (tileWidth * cam.getZoomFactor());
-//		int scaledTileHeight = (int) (tileHeight * cam.getZoomFactor());
-//
-//		int camX = (int) cam.viewCopy().x();
-//		int camY = (int) cam.viewCopy().y();
-//
-//
-//		int tileNoX = camX / scaledTileWidth;
-//		int tileNoY = camY / scaledTileHeight;
-//
-//		int tilesW = (int) (cam.viewCopy().width()) / scaledTileWidth + 2;
-//		int tilesH = (int) (cam.viewCopy().height()) / scaledTileHeight + 2;
-//
-//
-//		visibleDynamicPieces.clear();
-//		for (Class<?> key : map.getDynamicPieces().keySet()) {
-//			Collection<DynamicPiece> piecesForKey = map.getDynamicPieces().get(key);
-//			if (piecesForKey != null) {
-//				Iterator<DynamicPiece> it = piecesForKey.iterator();
-//				while (it.hasNext()) {
-//					DynamicPiece piece = it.next();
-//					if (piece.getPositionX() >= (tileNoX - 2) && piece.getPositionX() < (tileNoX + tilesW + 2)) {
-//						if (piece.getPositionY() >= (tileNoY - 2) && piece.getPositionY() < (tileNoY + tilesH + 2)) {
-//							visibleDynamicPieces.put(key, piece);
-//						}
-//					}
-//				}
-//			}
-//		}
 	}
 
 	private void recalculateRoofRemovalBlockerRegions(Actor actor) {
@@ -315,69 +239,35 @@ public class PlayerMovementCache implements Serializable {
 
 	private void recalculateclosestPieceInterestingForDebugging(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
-		Collection<Piece> pieces = map.getMapPieces().values();
-
-		pieces = Lists.newArrayList(Iterables.filter(pieces, new Predicate<Piece>() {
-
-			@Override
-			public boolean apply(Piece piece) {
-
-				if (!(piece instanceof Collectible)) {
+		Collection<Piece> pieces = map.getMapPieces().piecesOverall(piece -> {
+			if (!(piece instanceof Collectible)) {
+				return false;
+			}
+			Collectible coll = (Collectible)piece;
+			if (coll.getCollectibleType() == Collectible.CollectibleType.GOODIE) {
+				CollectibleGoodie goodie = (CollectibleGoodie)coll;
+				if (goodie.getGoodieType() == CollectibleGoodie.GoodieType.cognition) {
 					return false;
 				}
-
-
-				Collectible coll = (Collectible)piece;
-				if (coll.getCollectibleType() == Collectible.CollectibleType.GOODIE) {
-					CollectibleGoodie goodie = (CollectibleGoodie)coll;
-					if (goodie.getGoodieType() == CollectibleGoodie.GoodieType.cognition) {
-						return false;
-					}
-				}
-
-				return true;
-
 			}
 
+			return true;
+		});
 
-		}));
-
-		Collection<Enemy> enemies = map.getEnemies();
-
-		enemies = Lists.newArrayList(Iterables.filter(enemies, new Predicate<Enemy>() {
-
-			@Override
-			public boolean apply(Enemy enemy) {
-
-				if (enemy.getUnitType() == UnitType.ARTILLERY) {
-					return false;
-				}
-
-				return true;
-
-			}
-
-
-		}));
-
+		Collection<Enemy> enemies = map.allEnemies().stream().filter(enemy -> enemy.getUnitType() != UnitType.ARTILLERY).collect(Collectors.toSet());
 
 		List<Piece> piecesSortedByProximity = Lists.newArrayList(pieces);
 		piecesSortedByProximity.addAll(enemies);
-		Collections.sort(piecesSortedByProximity, new Comparator<Piece>() {
+		piecesSortedByProximity.sort((o1, o2) -> {
+            Position o1Pos = o1.getPosition();
+            Position o2Pos = o2.getPosition();
+            Position playerPos = actor.getPosition();
 
-			@Override
-			public int compare(Piece o1, Piece o2) {
-				Position o1Pos = o1.getPosition();
-				Position o2Pos = o2.getPosition();
-				Position playerPos = actor.getPosition();
+            float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
+            float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
 
-				float distance1 = CosmodogMapUtils.distanceBetweenPositions(o1Pos, playerPos);
-				float distance2 = CosmodogMapUtils.distanceBetweenPositions(o2Pos, playerPos);
-
-				return Float.compare(distance1, distance2);
-			}
-
-		});
+            return Float.compare(distance1, distance2);
+        });
 
 		closestPieceInterestingForDebugging = piecesSortedByProximity.isEmpty() ? null : piecesSortedByProximity.get(0);
 
@@ -403,7 +293,7 @@ public class PlayerMovementCache implements Serializable {
 
 			int inInventories = 0;
 
-			Set<Enemy> enemies = map.getEnemies();
+			Set<Enemy> enemies = map.allEnemies();
 			for (Enemy enemy : enemies) {
 				InventoryItem item = enemy.getInventoryItem();
 				if (item instanceof GoodieInventoryItem) {

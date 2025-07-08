@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -32,7 +33,7 @@ import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class MapRenderer implements Renderer {
+public class MapRenderer extends AbstractRenderer {
 
 	private final DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 	private final DrawingContext mapAreaDrawingContext = mapAreaDrawingContext(inGameMenuContentDrawingContext);
@@ -45,7 +46,7 @@ public class MapRenderer implements Renderer {
 	
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 

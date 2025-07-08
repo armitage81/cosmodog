@@ -32,7 +32,7 @@ import antonafanasjew.cosmodog.topology.Position;
 public class SightRadiusRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 

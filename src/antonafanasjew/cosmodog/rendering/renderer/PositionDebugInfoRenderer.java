@@ -29,30 +29,28 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 public class PositionDebugInfoRenderer extends AbstractRenderer {
 
 	@Override
-	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gc, Graphics g, Object renderingParameter) {
 
 		Player player = ApplicationContext.instance().getCosmodog().getCosmodogGame().getPlayer();
 		
 		DebuggerInventoryItem debugger = (DebuggerInventoryItem)player.getInventory().get(InventoryItemType.DEBUGGER);
 
-		List<Position> enemiesHoldingItems = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getEnemies().stream().filter(e -> {
+		List<Position> enemiesHoldingItems = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().allEnemies().stream().filter(e -> {
 			return e.getInventoryItem() != null;
 		}).map(Piece::getPosition).toList();
 		
-		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getMapPieces().entrySet().stream().filter(e -> {
-			Piece piece = e.getValue();
-			
+		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getMapPieces().piecesOverall(e -> true).stream().filter(piece -> {
+
 			boolean tool =  piece instanceof CollectibleTool;
 			boolean goodie = piece instanceof CollectibleGoodie;
 			boolean supplies = goodie && ((CollectibleGoodie)piece).getGoodieType().equals(GoodieType.supplies);
 			boolean cognition = goodie && ((CollectibleGoodie)piece).getGoodieType().equals(GoodieType.cognition);
 			boolean weapon = piece instanceof CollectibleWeapon;
 			boolean log = piece instanceof CollectibleLog;
-			boolean relevantCollectible = tool || (goodie && !supplies && !cognition) || weapon || log;
 
-			return relevantCollectible;
+            return tool || (goodie && !supplies && !cognition) || weapon || log;
 			
-		}).map(Map.Entry::getKey).toList();
+		}).map(Piece::getPosition).toList();
 		
 		List<Position> relevantPositions = new ArrayList<>();
 		relevantPositions.addAll(collectiblePositions);

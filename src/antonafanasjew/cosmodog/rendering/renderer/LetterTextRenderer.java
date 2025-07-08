@@ -11,7 +11,7 @@ import antonafanasjew.cosmodog.text.Letter;
 import antonafanasjew.cosmodog.text.LetterUtils;
 import antonafanasjew.cosmodog.topology.Rectangle;
 
-public class LetterTextRenderer implements Renderer {
+public class LetterTextRenderer extends AbstractRenderer {
 
 	private static final LetterTextRenderer instance = new LetterTextRenderer();
 	
@@ -60,7 +60,7 @@ public class LetterTextRenderer implements Renderer {
 	
 
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		LetterTextRenderingParameter param = (LetterTextRenderingParameter)renderingParameter;
 		
 		String text = param.text;

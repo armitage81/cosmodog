@@ -32,7 +32,7 @@ import com.google.common.collect.Maps;
  * Renders the arsenal interface that shows the weapons and their ammunition.
  * Appears on the bottom of the screen. The selected weapon is highlighted.
  */
-public class ArsenalInterfaceRenderer implements Renderer {
+public class ArsenalInterfaceRenderer extends AbstractRenderer {
 
 	/*
 	 * Weapons animations have different widths, f.i. rifle is twice as wide as pistol.
@@ -54,7 +54,7 @@ public class ArsenalInterfaceRenderer implements Renderer {
 	
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
 		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
 			return;

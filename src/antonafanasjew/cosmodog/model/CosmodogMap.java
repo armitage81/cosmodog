@@ -1,20 +1,17 @@
 package antonafanasjew.cosmodog.model;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.caching.PieceCache;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
@@ -27,7 +24,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledMapLayer;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
-import org.newdawn.slick.AppletGameContainer;
 
 /**
  * Represents the game map as model. Does not contains information about the
@@ -47,145 +43,93 @@ public class CosmodogMap extends CosmodogModel {
 	private transient CustomTiledMap customTiledMap;
 
 	private MapType mapType;
-	private Set<Enemy> enemies = Sets.newHashSet();
-	private Map<Position, Piece> mapPieces = Maps.newHashMap();
-	private Set<Piece> effectPieces = Sets.newHashSet();
-	private Set<Piece> markedTilePieces = Sets.newHashSet();
-	private Multimap<Class<?>, DynamicPiece> dynamicPieces = ArrayListMultimap.create();
-	
+	private PieceCache mapPieces = new PieceCache(20, 20);
+
 	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
 	private List<PortalPuzzle> portalPuzzles = Lists.newArrayList();
 	
 	private MapModification mapModification = new MapModificationImpl();
 	
-	private Platform cachedPlatform = null;
-	private boolean platformCacheInitialized = false;
-
 	public CosmodogMap(CustomTiledMap customTiledMap) {
 		this.setCustomTiledMap(customTiledMap);
 	}
 	
-	public Map<Position, Piece> getMapPieces() {
+	public PieceCache getMapPieces() {
 		return mapPieces;
 	}
 	
-	public Set<Piece> getEffectPieces() {
-		return effectPieces;
+	private Map<Position, Piece> getSpecificPieces(Predicate<Piece> predicate) {
+		return getMapPieces().piecesInArea(
+				predicate,
+				0,
+				0,
+				400,
+				400
+		).stream().collect(Collectors.toMap(Piece::getPosition, e -> e));
 	}
-	
-	public Set<Piece> getMarkedTilePieces() {
-		return markedTilePieces;
-	}
-	
+
 	public Map<Position, Piece> getInfobits() {
-		Map<Position, Piece> infobits = Maps.filterValues(mapPieces, new Predicate<Piece>() {
-			@Override
-			public boolean apply(Piece piece) {
-				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobit);
-			}
-		});
-		return infobits;
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobit);
+		return getSpecificPieces(predicate);
 	}
 	
 	public Map<Position, Piece> getInfobytes() {
-		Map<Position, Piece> infobytes = Maps.filterValues(mapPieces, new Predicate<Piece>() {
-			@Override
-			public boolean apply(Piece piece) {
-				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobyte);
-			}
-		});
-		return infobytes;
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobyte);
+		return getSpecificPieces(predicate);
 	}
 	
 	public Map<Position, Piece> getInfobanks() {
-		Map<Position, Piece> infobanks = Maps.filterValues(mapPieces, new Predicate<Piece>() {
-			@Override
-			public boolean apply(Piece piece) {
-				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobank);
-			}
-		});
-		return infobanks;
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobank);
+		return getSpecificPieces(predicate);
 	}
 	
 	public Map<Position, Piece> getSupplies() {
-		Map<Position, Piece> supplies = Maps.filterValues(mapPieces, new Predicate<Piece>() {
-			@Override
-			public boolean apply(Piece piece) {
-				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
-			}
-		});
-		return supplies;
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
+		return getSpecificPieces(predicate);
 	}
 	
 	public Map<Position, Piece> getMedkits() {
-		Map<Position, Piece> supplies = Maps.filterValues(mapPieces, new Predicate<Piece>() {
-			@Override
-			public boolean apply(Piece piece) {
-				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.medipack);
-			}
-		});
-		return supplies;
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.medipack);
+		return getSpecificPieces(predicate);
 	}
 	
 	public Map<Position, Piece> getInsights() {
-		Map<Position, Piece> supplies = Maps.filterValues(mapPieces, new Predicate<Piece>() {
-			@Override
-			public boolean apply(Piece piece) {
-				return piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.insight);
-			}
-		});
-		return supplies;
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.insight);
+		return getSpecificPieces(predicate);
 	}
 	
 	public Map<Position, Piece> visibleMapPieces(Position ref, int width, int height, int grace) {
-		
-		Map<Position, Piece> retVal = Maps.newHashMap();
-		
-		for (Position position : mapPieces.keySet()) {
-			if (position.getX() >= ref.getX() - grace && position.getX() < ref.getX() + width + grace) {
-				if (position.getY() >= ref.getY() - grace && position.getY() < ref.getY() + height + grace) {
-					retVal.put(position, mapPieces.get(position));
-				}
-			}
+
+		List<Piece> pieces = getMapPieces()
+				.piecesInArea(piece -> true, ref.getX() - grace, ref.getY() - grace, width + 2 * grace, height + 2 * grace)
+				.stream()
+				.toList();
+
+		Map<Position, Piece> retVal = new HashMap<>();
+		for (Piece piece : pieces) {
+			retVal.put(piece.getPosition(), piece);
 		}
-		
 		return retVal;
+
 	}
 	
 	public Piece pieceAtTile(Position position) {
-		return mapPieces.get(position);
+		List<Piece> pieces = mapPieces.piecesInArea(e -> true, position.getX(), position.getY(), 1, 1);
+		return pieces.isEmpty() ? null : pieces.getFirst();
 	}
 	
-	public Enemy enemyAtTile(Position ref) {
-		Enemy retVal = null;
-		for (Enemy enemy : enemies) {
-			if (enemy.getPosition().equals(ref)) {
-				retVal = enemy;
-			}
-		}
-		return retVal;
+	public Enemy enemyAtTile(Position position) {
+		List<Piece> pieces = mapPieces.piecesInArea(e -> e instanceof Enemy, position.getX(), position.getY(), 1, 1);
+		return pieces.isEmpty() ? null : (Enemy)pieces.getFirst();
 	}
 
 	
-	public Set<Piece> visibleEffectPieces(Position ref, int width, int height, int grace) {
-		Set<Piece> retVal = Sets.newHashSet();
-		for (Piece piece : effectPieces) {
-			if (piece.getPosition().getX() >= ref.getX() - grace && piece.getPosition().getX() < ref.getX() + width + grace) {
-				if (piece.getPosition().getY() >= ref.getY() - grace && piece.getPosition().getY() < ref.getY() + height + grace) {
-					retVal.add(piece);
-				}
-			}
-		}
-		return retVal;
+	public Set<Piece> visibleEffectPieces(Position position, int width, int height, int grace) {
+		return new HashSet<>(getMapPieces().piecesInArea(piece -> piece instanceof Effect, position.getX(), position.getY(), width + grace, height + grace));
 	}
 
 	public Set<DynamicPiece> dynamicPiecesAtPosition(Position position) {
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapType());
-		return map.getDynamicPieces().values().stream().filter(e -> e.getPosition().equals(position)).collect(Collectors.toSet());
-	}
-
-	public Multimap<Class<?>, DynamicPiece> visibleDynamicPieces(Position position, int width, int height, int grace) {
-		return PlayerMovementCache.getInstance().getVisibleDynamicPieces();
+		return getMapPieces().piecesInArea(piece -> piece instanceof DynamicPiece, position.getX(), position.getY(), 1, 1).stream().map(e -> (DynamicPiece)e).collect(Collectors.toSet());
 	}
 
 	public MapType getMapType() {
@@ -196,62 +140,47 @@ public class CosmodogMap extends CosmodogModel {
 		this.mapType = mapType;
 	}
 
-	public Set<Enemy> getEnemies() {
-		return enemies;
-	}
-
 	public Set<Enemy> getEnemiesInRange() {
 		return PlayerMovementCache.getInstance().getEnemiesInRange();
 	}
-	
+
+	public Set<Enemy> allEnemies() {
+		return mapPieces
+				.piecesOverall(piece -> piece instanceof Enemy)
+				.stream()
+				.map(e -> (Enemy)e)
+				.collect(Collectors.toSet());
+	}
+
 	public Set<Enemy> nearbyEnemies(Position ref, int maxDistance) {
-		Set<Enemy> retVal = Sets.newHashSet();
-		for (Enemy enemy : enemies) {
-			float enemyDistance = CosmodogMapUtils.distanceBetweenPositions(ref, enemy.getPosition());
-			if (enemyDistance <= maxDistance) {
-				retVal.add(enemy);
-			}
-		}
-		return retVal;		
+
+		return mapPieces
+				.piecesInArea(piece -> piece instanceof Enemy, ref.getX() - maxDistance, ref.getY() - maxDistance, maxDistance * 2, maxDistance * 2)
+				.stream()
+				.map(e -> (Enemy)e)
+				.collect(Collectors.toSet());
+
 	}
 	
 	public Set<Enemy> visibleEnemies(Position ref, int width, int height, int grace) {
-		Set<Enemy> retVal = Sets.newHashSet();
-		for (Enemy enemy : enemies) {
-			if (enemy.getPosition().getX() >= ref.getX() - grace && enemy.getPosition().getX() < ref.getX() + width + grace) {
-				if (enemy.getPosition().getY() >= ref.getY() - grace && enemy.getPosition().getY() < ref.getY() + height + grace) {
-					retVal.add(enemy);
-				}
-			}
-		}
-		return retVal;
+
+		return mapPieces
+				.piecesInArea(piece -> piece instanceof Enemy, ref.getX() - grace, ref.getY() - grace, width + 2 * grace, height + 2 * grace)
+				.stream()
+				.map(e -> (Enemy)e)
+				.collect(Collectors.toSet());
+
 	}
 
-	public Platform getCachedPlatform(CosmodogGame cosmodogGame) {
-		
-		if (!platformCacheInitialized) {
-			Collection<Piece> pieces = getMapPieces().values();
-			
-			for (Piece piece : pieces) {
-				if (piece instanceof Platform) {
-					cachedPlatform = (Platform)piece;
-					break;
-				}
-			}
-			
-			platformCacheInitialized = true;
-			
-		}
-
-		return cachedPlatform;
-		
+	public Set<Platform> getPlatforms() {
+		//Platform is null when player is sitting in it, because then it counts as an inventory item, not a piece.
+		return getMapPieces()
+				.piecesOverall(e -> e instanceof  Platform)
+				.stream()
+				.map(e -> (Platform)e)
+				.collect(Collectors.toSet());
 	}
 	
-	public void clearPlatformCache() {
-		this.platformCacheInitialized = false;
-		this.cachedPlatform = null;
-	}
-
 	public int getTileId(Position position, int layerIndex) {
 		return this.mapModification.getTileId(this.getCustomTiledMap(), position, layerIndex);
 	}
@@ -276,91 +205,57 @@ public class CosmodogMap extends CosmodogModel {
 		this.customTiledMap = customTiledMap;
 	}
 
-	public Multimap<Class<?>, DynamicPiece> getDynamicPieces() {
-		return dynamicPieces;
-	}
-
 	public Optional<DynamicPiece> dynamicPieceAtPosition(Class<? extends DynamicPiece> clazz, Position position) {
-		return dynamicPieces.get(clazz).stream().filter(e -> e.getPosition().equals(position)).findFirst();
+		return mapPieces.piecesAtPosition(e -> clazz
+				.isAssignableFrom(e.getClass()), position.getX(), position.getY())
+				.stream()
+				.map(e -> (DynamicPiece)e)
+				.findFirst();
 	}
 
 
 	public Optional<SwitchableHolder> switchableHolderAtPosition(Position position) {
 
-		for (Class<?> c : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> l = dynamicPieces.get(c);
-			for (DynamicPiece dp : l) {
-				if (dp instanceof SwitchableHolder) {
-					if (dp.getPosition().equals(position)) {
-						return Optional.of((SwitchableHolder) dp);
-					}
-				}
-			}
-		}
-
-		return Optional.empty();
+		return mapPieces
+				.piecesAtPosition(e -> SwitchableHolder.class.isAssignableFrom(e.getClass()), position.getX(), position.getY())
+				.stream()
+				.map(e -> (SwitchableHolder)e)
+				.findFirst();
 	}
 
 	public Optional<Switchable> switchableAtPosition(Position position) {
 
-		for (Class<?> c : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> l = dynamicPieces.get(c);
-			for (DynamicPiece dp : l) {
-				if (dp instanceof Switchable) {
-					if (dp.getPosition().equals(position)) {
-						return Optional.of((Switchable) dp);
-					}
-				}
-			}
-		}
-
-		return Optional.empty();
+		return mapPieces
+				.piecesAtPosition(e -> Switchable.class.isAssignableFrom(e.getClass()), position.getX(), position.getY())
+				.stream()
+				.map(e -> (Switchable)e)
+				.findFirst();
 	}
 
 	public Optional<MoveableDynamicPiece> moveableAtPosition(Position position) {
-		for (Class<?> c : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> l = dynamicPieces.get(c);
-			for (DynamicPiece dp : l) {
-				if (dp instanceof MoveableDynamicPiece) {
-					if (dp.getPosition().equals(position)) {
-						return Optional.of((MoveableDynamicPiece) dp);
-					}
-				}
-			}
-		}
-		return Optional.empty();
+		return mapPieces
+				.piecesAtPosition(e -> MoveableDynamicPiece.class.isAssignableFrom(e.getClass()), position.getX(), position.getY())
+				.stream()
+				.map(e -> (MoveableDynamicPiece)e)
+				.findFirst();
 	}
 
 	public Optional<ActivatableHolder> activatableHolderAtPosition(Position position) {
 
-		for (Class<?> c : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> l = dynamicPieces.get(c);
-			for (DynamicPiece dp : l) {
-				if (dp instanceof ActivatableHolder) {
-					if (dp.getPosition().equals(position)) {
-						return Optional.of((ActivatableHolder) dp);
-					}
-				}
-			}
-		}
-
-		return Optional.empty();
+		return mapPieces
+				.piecesAtPosition(e -> ActivatableHolder.class.isAssignableFrom(e.getClass()), position.getX(), position.getY())
+				.stream()
+				.map(e -> (ActivatableHolder)e)
+				.findFirst();
 	}
 
 	public Optional<Activatable> activatableAtPosition(Position position) {
 
-		for (Class<?> c : dynamicPieces.keySet()) {
-			Collection<DynamicPiece> l = dynamicPieces.get(c);
-			for (DynamicPiece dp : l) {
-				if (dp instanceof Activatable) {
-					if (dp.getPosition().equals(position)) {
-						return Optional.of((Activatable) dp);
-					}
-				}
-			}
-		}
-
-		return Optional.empty();
+		return mapPieces
+				.piecesAtPosition(e -> Activatable.class.isAssignableFrom(e.getClass()), position.getX(), position.getY())
+				.stream()
+				.map(e -> (Activatable)e)
+				.findFirst();
 	}
 
 

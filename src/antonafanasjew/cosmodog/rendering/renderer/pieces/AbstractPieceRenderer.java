@@ -10,15 +10,18 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
+import java.util.Optional;
+
 public abstract class AbstractPieceRenderer implements PieceRenderer {
 
 	@Override
 	public void renderPiece(ApplicationContext applicationContext, int tileWidth, int tileHeight, int tileNoX, int tileNoY, Piece piece) {
 		
 		// Don't render the collectible if it is wrapped by a dynamic piece, such as a crate.
-		DynamicPiece dynamicPiece = ApplicationContextUtils.getCosmodogGame().dynamicPieceAtPosition(piece.getPosition());
-		
-		if (dynamicPiece == null || !dynamicPiece.wrapsCollectible()) {
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(piece.getPosition().getMapType());
+		Optional<DynamicPiece> optDynamicPiece = map.getMapPieces().piecesAtPosition(e -> e instanceof DynamicPiece, piece.getPosition().getX(), piece.getPosition().getY()).stream().map(e -> (DynamicPiece)e).findFirst();
+
+		if (optDynamicPiece.isEmpty() || !optDynamicPiece.get().wrapsCollectible()) {
 			render(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
 		}
 	}

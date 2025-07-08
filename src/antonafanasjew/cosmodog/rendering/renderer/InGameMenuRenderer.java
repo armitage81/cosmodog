@@ -15,12 +15,12 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
-public class InGameMenuRenderer implements Renderer {
+public class InGameMenuRenderer extends AbstractRenderer {
 
 	public static boolean firstLoop = true;
 	
 	@Override
-	public void render(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
+	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		InGameMenu inGameMenu = ApplicationContextUtils.getCosmodogGame().getInGameMenu();
 		

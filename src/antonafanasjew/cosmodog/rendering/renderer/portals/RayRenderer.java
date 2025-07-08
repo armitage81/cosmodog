@@ -40,7 +40,7 @@ public class RayRenderer extends AbstractRenderer {
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics g, Object renderingParameter) {
+    public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 
         boolean bottomNotTop = ((RayRenderer.RayRendererParam)renderingParameter).bottomNotTop;
 

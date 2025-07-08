@@ -25,7 +25,7 @@ public class TextFieldRenderer extends AbstractRenderer {
 	
 	
 	@Override
-	public void render(GameContainer gc, Graphics g, Object renderingParameter) {
+	public void renderInternally(GameContainer gc, Graphics g, Object renderingParameter) {
 		
 		g.translate(drawingContext.x(), drawingContext.y());
 		

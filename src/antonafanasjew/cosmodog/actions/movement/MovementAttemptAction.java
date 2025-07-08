@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.movement;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
@@ -11,6 +12,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.io.Serial;
+import java.util.Optional;
 
 public class MovementAttemptAction extends FixedLengthAsyncAction {
 
@@ -35,10 +37,16 @@ public class MovementAttemptAction extends FixedLengthAsyncAction {
             //BTW, this part is not entirely correct, as interaction with dynamic pieces will happen only in
             //case if they are blocking passage (e.g. not destroyed stones)
             //But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
-            DynamicPiece dynamicPiece = cosmodogGame.dynamicPieceAtPosition(targetPosition);
-            if (dynamicPiece != null) {
-                dynamicPiece.interact();
-            }
+
+            CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(targetPosition.getMapType());
+            Optional<DynamicPiece> optDynamicPiece = map
+                    .getMapPieces()
+                    .piecesAtPosition(e -> e instanceof DynamicPiece, targetPosition.getX(), targetPosition.getY())
+                    .stream()
+                    .map(e -> (DynamicPiece)e)
+                    .findFirst();
+
+            optDynamicPiece.ifPresent(DynamicPiece::interact);
             interactedWithDynamicPieceAlready = true;
         }
     }

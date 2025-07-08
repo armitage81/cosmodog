@@ -31,7 +31,7 @@ public class CosmodogMapUtils {
 				player.getPosition().shifted(1, 0)
 		};
 
-		Set<Enemy> enemies = map.getEnemies();
+		Set<Enemy> enemies = map.allEnemies();
 		for (Enemy enemy : enemies) {
             for (Position adjacentPosition : adjacentPositions) {
 
@@ -61,7 +61,7 @@ public class CosmodogMapUtils {
 		
 		PlanetaryCalendar planetaryCalendar = ApplicationContextUtils.getCosmodogGame().getPlanetaryCalendar();
 		
-		Set<Enemy> enemies = map.getEnemies();
+		Set<Enemy> enemies = map.allEnemies();
 		for (Enemy enemy : enemies) {
 		
 			if (!enemy.getUnitType().isRangedUnit()) {
@@ -167,9 +167,12 @@ public class CosmodogMapUtils {
 	public static boolean isTileOnPlatform(Position tilePosition) {
 		boolean retVal = false;
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		Platform platform = cosmodogGame.getMaps().get(tilePosition.getMapType()).getCachedPlatform(cosmodogGame);
-		if (platform != null) {
-			return isTileOnPlatform(tilePosition, platform.getPosition());
+		Set<Platform> platforms = cosmodogGame.getMaps().get(tilePosition.getMapType()).getPlatforms();
+		for (Platform platform : platforms) {
+			if (isTileOnPlatform(tilePosition, platform.getPosition())) {
+				retVal = true;
+				break;
+			}
 		}
 		return retVal;
 	}
