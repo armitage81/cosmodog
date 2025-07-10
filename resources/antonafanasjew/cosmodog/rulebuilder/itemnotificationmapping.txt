@@ -35,7 +35,7 @@ FUEL_TANK_DESCRIPTION;fueltank;ANY;fuelTankDescription;You found a fuel tank upg
 RED_KEYCARD_DESCRIPTION;CollectibleKey_redKeycardDoor;0;CollectibleKey_redKeycardDoor;You found the key card for the sleeping quarters (red).;40
 LILA_KEYCARD_DESCRIPTION;CollectibleKey_lilaKeycardDoor;0;CollectibleKey_lilaKeycardDoor;You found the key card for the supplies storage (purple).;40
 CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKeycardDoor;You found the key card for the quarantaine room (cyan).;40
-GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermasters keycard (green).;40
+GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermaster's keycard (green).;40
 YELLOW_KEYCARD_DESCRIPTION;CollectibleKey_yellowKeycardDoor;0;CollectibleKey_yellowKeycardDoor;You found the key card to the expedition wing (yellow).;40
 BROWN_KEYCARD_DESCRIPTION;CollectibleKey_brownKeycardDoor;0;CollectibleKey_brownKeycardDoor;You found the key card to the hangar (brown).;40
 PURPLE_KEYCARD_DESCRIPTION;CollectibleKey_purpleKeycardDoor;0;CollectibleKey_purpleKeycardDoor;You found captains key card (crimson).;40
