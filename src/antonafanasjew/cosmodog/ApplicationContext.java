@@ -446,6 +446,7 @@ public class ApplicationContext {
 		Sound carDoor = new Sound("data/sound/cardoor.wav");
 		Sound console = new Sound("data/sound/console.wav");
 		Sound wormGrowl = new Sound("data/sound/wormgrowl.wav");
+		Sound shortWormGrowl = new Sound("data/sound/shortwormgrowl.wav");
 		Sound earthquake = new Sound("data/sound/earthquake.wav");
 		Sound breakcrate1 = new Sound("data/sound/breakcrate1.wav");
 		Sound breakcrate2 = new Sound("data/sound/breakcrate2.wav");
@@ -545,6 +546,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_CAR_DOOR, carDoor);
 		this.getSoundResources().put(SoundResources.SOUND_CONSOLE, console);
 		this.getSoundResources().put(SoundResources.SOUND_WORM_GROWL, wormGrowl);
+		this.getSoundResources().put(SoundResources.SOUND_SHORT_WORM_GROWL, shortWormGrowl);
 		this.getSoundResources().put(SoundResources.SOUND_EARTHQUAKE, earthquake);
 		this.getSoundResources().put(SoundResources.SOUND_BREAK_CRATE1, breakcrate1);
 		this.getSoundResources().put(SoundResources.SOUND_BREAK_CRATE2, breakcrate2);

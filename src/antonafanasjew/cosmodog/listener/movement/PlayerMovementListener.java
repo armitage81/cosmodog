@@ -652,6 +652,7 @@ public class PlayerMovementListener implements MovementListener {
 		boolean wormActive = player.getGameProgress().isWormActive();
 		boolean wormAlerted = wormActive && inWormRegion && inSnow && !onPlatform && !inPlatform;
 		if (wormAlerted) {
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHORT_WORM_GROWL).play();
 			player.increaseTurnsWormAlerted();
 		} else {
 			player.resetTurnsWormAlerted();

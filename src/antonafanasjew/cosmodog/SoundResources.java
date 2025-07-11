@@ -160,6 +160,11 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_WORM_GROWL = "sound.wormgrowl";
 
 	/**
+	 * Growl of the worm that is following the player character.
+	 */
+	public static final String SOUND_SHORT_WORM_GROWL = "sound.shortwormgrowl";
+
+	/**
 	 * Earthquake before the worm appears.
 	 */
 	public static final String SOUND_EARTHQUAKE = "sound.earthquake";
