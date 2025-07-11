@@ -9,6 +9,18 @@ import org.newdawn.slick.SlickException;
 
 public class TestQuestionMarksOnMap {
 
+	/**
+	 * - Test that question marks appear on the charted map for the following items:
+	 * 	- Insights,
+	 * 	- Tools,
+	 * 	- Weapons,
+	 * 	- Food compartments and water bottles.
+	 * - Test that the question marks do not cross the borders of the map.
+	 * - Test that uncharted map pieces do not contain question marks.
+	 * - Test that a collected item makes the question mark disappear.
+	 *
+	 */
+
 	public static void main(String[] args) throws SlickException {
 		
 		PlayerBuilder playerBuilder = new AbstractPlayerBuilder() {
@@ -24,8 +36,8 @@ public class TestQuestionMarksOnMap {
 
 				ChartInventoryItem chart = new ChartInventoryItem();
 
-				for (int i = 0; i < 4; i++) {
-					for (int j = 0; j < 4; j++) {
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
 						chart.discoverPiece(i,j);
 					}
 				}
