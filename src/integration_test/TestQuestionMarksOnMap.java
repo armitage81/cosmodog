@@ -7,7 +7,7 @@ import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import org.newdawn.slick.SlickException;
 
-public class TestMonolithsOnMap {
+public class TestQuestionMarksOnMap {
 
 	public static void main(String[] args) throws SlickException {
 		
@@ -24,6 +24,11 @@ public class TestMonolithsOnMap {
 
 				ChartInventoryItem chart = new ChartInventoryItem();
 
+				for (int i = 0; i < 4; i++) {
+					for (int j = 0; j < 4; j++) {
+						chart.discoverPiece(i,j);
+					}
+				}
 
 
 				player.getInventory().put(InventoryItemType.CHART, chart);

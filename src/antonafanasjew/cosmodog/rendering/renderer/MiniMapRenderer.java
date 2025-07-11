@@ -1,7 +1,14 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.SpriteSheets;
+import antonafanasjew.cosmodog.geometry.Oscillations;
+import antonafanasjew.cosmodog.globals.FontProvider;
+import antonafanasjew.cosmodog.globals.FontType;
+import antonafanasjew.cosmodog.model.*;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
+import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.RegionUtils;
@@ -10,7 +17,6 @@ import org.newdawn.slick.*;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.ingamemenu.map.MapInputState;
-import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.ChartInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -19,8 +25,11 @@ import antonafanasjew.cosmodog.rendering.context.TileDrawingContext;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TilesetUtils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Renders the minimap in the map screen.
@@ -150,34 +159,62 @@ public class MiniMapRenderer extends AbstractRenderer {
 			}
 		}
 
-		boolean evenPhaseOfBlinking = (System.currentTimeMillis() / 200) % 2 == 0;
-
 		//Positions of the undiscovered monoliths (or rather the insights closed to them)
 		//are rendered as blinking green or red tiles on the map.
 		//This should be moved to the MapRenderer class since the display of player's position is already there.
 
-		Map<Position, Piece> insights = map.getInsights();
-		for (Position insightPosition : insights.keySet()) {
-			int x = (int)insightPosition.getX();
-			int y = (int)insightPosition.getY();
+		Predicate<Piece> beingPieceIndicatedOnMap = piece -> {
+			boolean interestingGoodie = piece instanceof CollectibleGoodie && (
+					((CollectibleGoodie)piece).getGoodieType() == CollectibleGoodie.GoodieType.insight
+							||
+					((CollectibleGoodie)piece).getGoodieType() == CollectibleGoodie.GoodieType.bottle
+							||
+					((CollectibleGoodie)piece).getGoodieType() == CollectibleGoodie.GoodieType.foodcompartment
+			);
 
-			//Ignore monoliths that are outside the visible excerpt.
-			if (x < firstTileToRenderX) {
-				continue;
-			}
-			if (x >= firstTileToRenderX + minimapPieceWidthInTiles) {
-				continue;
-			}
-			if (y < firstTileToRenderY) {
-				continue;
-			}
-			if (y >= firstTileToRenderY + minimapPieceHeightInTiles) {
-				continue;
+			boolean interestingTool = piece instanceof CollectibleTool;
+
+			boolean interestingWeapons = piece instanceof CollectibleWeapon;
+
+			return interestingGoodie || interestingTool || interestingWeapons;
+
+		};
+
+		List<Position> piecesIndicatedOnMap = map.getMapPieces().piecesOverall(beingPieceIndicatedOnMap).stream().map(Piece::getPosition).toList();
+
+
+		for (Position position : piecesIndicatedOnMap) {
+			int x = (int)position.getX();
+			int y = (int)position.getY();
+
+			int chartPiecePositionX = x / minimapPieceWidthInTiles;
+			int chartPiecePositionY = y / minimapPieceHeightInTiles;
+
+			if (chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(chartPiecePositionX, chartPiecePositionY)) {
+
+				//Ignore monoliths that are outside the visible excerpt.
+				if (x < firstTileToRenderX) {
+					continue;
+				}
+				if (x >= firstTileToRenderX + minimapPieceWidthInTiles) {
+					continue;
+				}
+				if (y < firstTileToRenderY) {
+					continue;
+				}
+				if (y >= firstTileToRenderY + minimapPieceHeightInTiles) {
+					continue;
+				}
+
+				long timestamp = System.currentTimeMillis();
+				float opacity = Oscillations.oscillation(timestamp, 0.2f, 1f, 1000, 0);
+
+				DrawingContext tileDc = new TileDrawingContext(drawingContext, minimapPieceWidthInTiles, minimapPieceHeightInTiles, x - firstTileToRenderX, y - firstTileToRenderY);
+				SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
+				Image questionMark = symbolsSpriteSheet.getSprite(1, 0);
+				questionMark.draw(tileDc.x() - tileDc.w(), tileDc.y() - tileDc.h(), tileDc.w() * 3, tileDc.h() * 3, new Color(1, 1, 1, opacity));
 			}
 
-			DrawingContext tileDc = new TileDrawingContext(drawingContext, minimapPieceWidthInTiles, minimapPieceHeightInTiles, x - firstTileToRenderX, y - firstTileToRenderY);
-			graphics.setColor(evenPhaseOfBlinking ? Color.green: Color.red);
-			graphics.fillRect(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h());
 		}
 
 	}

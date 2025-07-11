@@ -672,9 +672,7 @@ public class ApplicationContext {
 		
 		images.put("ui.ingame.ingameinventoryitembox", new Image("data/ui/ingameinventoryitembox.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.ingameinventoryitemboxselected", new Image("data/ui/ingameinventoryitemboxselected.png", false, Image.FILTER_NEAREST));
-		
-		
-		
+
 		//This big image is not loaded eagerly when initializing animations in the application context.
 		//That causes a delay when opening map for the first time. Initializing the map image explicitly to
 		//avoid this.
