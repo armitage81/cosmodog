@@ -3,6 +3,9 @@ package antonafanasjew.cosmodog.sound;
 import java.util.HashMap;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.Sound;
 
 public class AmbientSoundRegistry extends HashMap<String, Sound> {
@@ -35,5 +38,5 @@ public class AmbientSoundRegistry extends HashMap<String, Sound> {
 			keys = this.keySet();
 		}
 	}
-	
+
 }

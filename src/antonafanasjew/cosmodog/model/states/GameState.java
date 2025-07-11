@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.rendering.renderer.*;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.GameContainer;
@@ -162,9 +163,15 @@ public class GameState extends CosmodogAbstractState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		interfaceOnSceneRenderer.render(gc, g, null);
-		dyingPlayerRenderer.render(gc, g, null);
-		wrongSequenceRenderer.render(gc, g, null);
+
+		InGameMenu inGameMenu = ApplicationContextUtils.getCosmodogGame().getInGameMenu();
+
+		//No need to render the game world if a menu is open.
+		if (inGameMenu == null) {
+			interfaceOnSceneRenderer.render(gc, g, null);
+			dyingPlayerRenderer.render(gc, g, null);
+			wrongSequenceRenderer.render(gc, g, null);
+		}
 		inGameMenuRenderer.render(gc, g, null);
 
 	}

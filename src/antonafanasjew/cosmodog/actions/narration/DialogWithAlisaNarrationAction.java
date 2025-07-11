@@ -44,7 +44,7 @@ public class DialogWithAlisaNarrationAction extends AbstractNarrationAction {
 	}
 
 	@Override
-	public void onTrigger() {
+	public void onTriggerInternally() {
 		
 		long referenceTime = System.currentTimeMillis();
 		

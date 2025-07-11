@@ -24,7 +24,7 @@ public class GameLogNarrationAction extends AbstractNarrationAction {
 	}
 
 	@Override
-	public void onTrigger() {
+	public void onTriggerInternally() {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		DrawingContext textDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameLogContentDrawingContext();
