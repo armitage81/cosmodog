@@ -489,7 +489,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 	}
 
 	private void onEndForEnemies() {
-		
+		boolean alertSoundPlayed = false;
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
@@ -510,7 +510,12 @@ public class MovementAction extends FixedLengthAsyncAction {
 			}
 			
 			if (playerInVisibilityRange(enemy, player)) {
+				int oldAlertLevel = enemy.getAlertLevel();
 				enemy.increaseAlertLevelToMax();
+				if (oldAlertLevel == 0 && !alertSoundPlayed) {
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_ALERT).play();
+					alertSoundPlayed = true;
+				}
 			} else {
 				enemy.reduceAlertLevel();
 			}

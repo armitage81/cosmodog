@@ -514,8 +514,8 @@ public class ApplicationContext {
 		Sound buttonPushed = new Sound("data/sound/button_pushed.wav");
 
 		Sound sensorPresenceDetected = new Sound("data/sound/sensor_presence_detected.wav");
-		Sound sensorPresenceLost = new
-				Sound("data/sound/sensor_presence_lost.wav");
+		Sound sensorPresenceLost = new Sound("data/sound/sensor_presence_lost.wav");
+		Sound alert = new Sound("data/sound/alert.wav");
 
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
@@ -611,6 +611,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_BUTTON_PUSHED, buttonPushed);
 		this.getSoundResources().put(SoundResources.SOUND_SENSOR_PRESENCE_DETECTED, sensorPresenceDetected);
 		this.getSoundResources().put(SoundResources.SOUND_SENSOR_PRESENCE_LOST, sensorPresenceLost);
+		this.getSoundResources().put(SoundResources.SOUND_ALERT, alert);
 		
 		
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
