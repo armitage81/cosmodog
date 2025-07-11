@@ -2,6 +2,7 @@ package integration_test;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -11,6 +12,7 @@ import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PortalGunInventoryItem;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
@@ -39,6 +41,12 @@ public class TestPortals {
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.PORTAL_GUN, new PortalGunInventoryItem());
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().selectNextWeaponType();
 
 				CustomTiledMap map = ApplicationContextUtils.getCustomTiledMaps().get(MapType.SPACE);
 				TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);

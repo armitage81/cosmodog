@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer.player;
 import antonafanasjew.cosmodog.actions.fight.*;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
+import antonafanasjew.cosmodog.domains.*;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.renderingutils.ActorRendererUtils;
@@ -16,10 +17,6 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.environmentaldamage.MineExplosionAction;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.domains.ActorAppearanceType;
-import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.PlayerActionType;
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -146,9 +143,12 @@ public class PlayerRenderer extends AbstractRenderer {
 			playerAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
 		}
 
-		Animation playerWeaponAnimation = PlayerRendererUtils.weaponAnimation(playerAppearanceType, playerActionType, player.getDirection());
-		if (playerWeaponAnimation != null) {
-			playerWeaponAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
+		//Weapons are deactivated in space. Also, their rendering glitches when combined with portals.
+		if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() != MapType.SPACE) {
+			Animation playerWeaponAnimation = PlayerRendererUtils.weaponAnimation(playerAppearanceType, playerActionType, player.getDirection());
+			if (playerWeaponAnimation != null) {
+				playerWeaponAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
+			}
 		}
 		
 		if (playerIsHoldingUpItem) {
