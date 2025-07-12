@@ -22,7 +22,7 @@ public class ArcheologistsJournalInteraction extends ToolInteraction {
 
 	@Override
 	protected String text() {
-		return "You found the archeologist's journal. It shows amounts of infobits on your map.";
+		return "You found the archaeologist's journal. It shows amounts of infobits on your map.";
 	}
 	
 }
