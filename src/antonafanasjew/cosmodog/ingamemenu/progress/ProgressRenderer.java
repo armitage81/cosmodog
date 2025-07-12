@@ -280,33 +280,31 @@ public class ProgressRenderer extends AbstractRenderer {
 				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Tools", fontTypeSubheader);
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
-				Iterator<CollectibleTool.ToolType> toolTypeIterator = Arrays.stream(CollectibleTool.ToolType.values()).iterator();
+				List<InventoryItemType> inventoryItemTypes = Arrays.stream(InventoryItemType.values()).filter(InventoryItemType::isRepresentsTool).toList();
 				for (int j = 0; j < 20; j++) {
+					if (j >= inventoryItemTypes.size()) {
+						break;
+					}
 					DrawingContext toolDc = new TileDrawingContext(contentDc, 20, 1, j, 0);
 					toolDc = new CenteredDrawingContext(toolDc, 5);
-					if (toolTypeIterator.hasNext()) {
-						CollectibleTool.ToolType toolType = toolTypeIterator.next();
-						InventoryItemType inventoryItemType = Mappings.COLLECTIBLE_TOOL_TYPE_TO_INVENTORY_ITEM_TYPE.get(toolType);
-						InventoryItem inventoryItem = player.getInventory().get(inventoryItemType);
-						String animationId = Mappings.INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.get(inventoryItemType);
-						Animation inventoryItemAnimation = ApplicationContext.instance().getAnimations().get(animationId);
-						if (inventoryItem != null) {
-							graphics.setColor(Color.green);
-							graphics.fillRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
-							graphics.setColor(Color.orange);
-							graphics.setLineWidth(3);
-							graphics.drawRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
-							inventoryItemAnimation.draw(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
-						} else {
-							graphics.setColor(Color.lightGray);
-							graphics.fillRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
-							graphics.setColor(Color.orange);
-							graphics.setLineWidth(3);
-							graphics.drawRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
-							inventoryItemAnimation.draw(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h(), new Color(0,0,0));
-						}
+					InventoryItemType inventoryItemType = inventoryItemTypes.get(j);
+					InventoryItem inventoryItem = player.getInventory().get(inventoryItemType);
+					String animationId = Mappings.INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.get(inventoryItemType);
+					Animation inventoryItemAnimation = ApplicationContext.instance().getAnimations().get(animationId);
+					if (inventoryItem != null) {
+						graphics.setColor(Color.green);
+						graphics.fillRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+						graphics.setColor(Color.orange);
+						graphics.setLineWidth(3);
+						graphics.drawRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+						inventoryItemAnimation.draw(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
 					} else {
-						break;
+						graphics.setColor(Color.lightGray);
+						graphics.fillRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+						graphics.setColor(Color.orange);
+						graphics.setLineWidth(3);
+						graphics.drawRect(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h());
+						inventoryItemAnimation.draw(toolDc.x(), toolDc.y(), toolDc.w(), toolDc.h(), new Color(0,0,0));
 					}
 				}
 			}
