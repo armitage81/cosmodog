@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.caching;
 
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.topology.Position;
+import profiling.ProfilerUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -19,6 +20,8 @@ public class PieceCache implements Serializable {
     }
 
     private final Map<Position, List<Piece>> pieces = new HashMap<>();
+
+    private final Map<Integer, List<Piece>> piecesByPredicates = new HashMap<>();
 
     public int getSectorWidth() {
         return sectorWidth;
@@ -48,12 +51,35 @@ public class PieceCache implements Serializable {
         return relatedSectorPositions;
     }
 
-    public List<Piece> piecesOverall(Predicate<Piece> predicate) {
-        Set<Position> sectorPositions = pieces.keySet();
+    public List<Piece> allPieces() {
         List<Piece> retVal = new ArrayList<>();
+        Set<Position> sectorPositions = pieces.keySet();
         for (Position sectorPosition : sectorPositions) {
-            retVal.addAll(pieces.get(sectorPosition).stream().filter(predicate).toList());
+            retVal.addAll(pieces.get(sectorPosition).stream().toList());
         }
+        return retVal;
+    }
+
+    public List<Piece> piecesOverall(Predicate<Piece> predicate) {
+        List<Piece> retVal = new ArrayList<>();
+
+        ProfilerUtils.runWithProfiling("piecesOverall", () -> {
+
+            List<Piece> piecesForPredicate = piecesByPredicates.get(predicate.hashCode());
+
+            if (piecesForPredicate == null) {
+                piecesForPredicate = new ArrayList<>();
+                Set<Position> sectorPositions = pieces.keySet();
+                for (Position sectorPosition : sectorPositions) {
+                    piecesForPredicate.addAll(pieces.get(sectorPosition).stream().filter(predicate).toList());
+                }
+                piecesByPredicates.put(predicate.hashCode(), piecesForPredicate);
+            }
+
+            retVal.addAll(piecesForPredicate);
+
+        });
+
         return retVal;
     }
 
@@ -94,11 +120,16 @@ public class PieceCache implements Serializable {
             if (piecesAtPosition != null) {
                 piecesAtPosition.remove(piece);
             }
+        }
 
+        for (Integer predicateHashcode : piecesByPredicates.keySet()) {
+            List<Piece> piecesForPredicate = piecesByPredicates.get(predicateHashcode);
+            piecesForPredicate.remove(piece);
         }
     }
 
     public void clear() {
         this.pieces.clear();
+        this.piecesByPredicates.clear();
     }
 }

@@ -5,12 +5,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -47,6 +49,7 @@ public class CosmodogMap extends CosmodogModel {
 
 	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
 	private List<PortalPuzzle> portalPuzzles = Lists.newArrayList();
+	private List<SafeSpace> safeSpaces = Lists.newArrayList();
 	
 	private MapModification mapModification = new MapModificationImpl();
 	
@@ -146,7 +149,7 @@ public class CosmodogMap extends CosmodogModel {
 
 	public Set<Enemy> allEnemies() {
 		return mapPieces
-				.piecesOverall(piece -> piece instanceof Enemy)
+				.piecesOverall(PiecePredicates.ENEMY)
 				.stream()
 				.map(e -> (Enemy)e)
 				.collect(Collectors.toSet());
@@ -175,7 +178,7 @@ public class CosmodogMap extends CosmodogModel {
 	public Set<Platform> getPlatforms() {
 		//Platform is null when player is sitting in it, because then it counts as an inventory item, not a piece.
 		return getMapPieces()
-				.piecesOverall(e -> e instanceof  Platform)
+				.piecesOverall(PiecePredicates.PLATFORM)
 				.stream()
 				.map(e -> (Platform)e)
 				.collect(Collectors.toSet());
@@ -268,5 +271,9 @@ public class CosmodogMap extends CosmodogModel {
 
 	public List<PortalPuzzle> getPortalPuzzles() {
 		return portalPuzzles;
+	}
+
+	public List<SafeSpace> getSafeSpaces() {
+		return safeSpaces;
 	}
 }

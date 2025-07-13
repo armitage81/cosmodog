@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.collision.validators.player;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.PassageBlockerType;
@@ -45,7 +46,7 @@ public class PlatformAsVehicleCollisionValidatorForPlayer extends AbstractCollis
 			}
 		}
 		//Check blocking vehicles and collectibles. The platform is blocked only if the piece is not on the platform, but would be after platform movement.
-		for (Piece piece : cosmodogMap.getMapPieces().piecesOverall(e -> true)) {
+		for (Piece piece : cosmodogMap.getMapPieces().piecesOverall(PiecePredicates.ALWAYS_TRUE)) {
 			if (piece instanceof Vehicle || piece instanceof Collectible) {
 				if (PiecesUtils.distanceBetweenPieces(piece, actor) <= 10) {
 					if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), entrance.getPosition())) {

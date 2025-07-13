@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.util;
 import java.util.*;
 
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
@@ -10,6 +11,7 @@ import antonafanasjew.cosmodog.model.portals.ReflectionType;
 import antonafanasjew.cosmodog.model.portals.interfaces.*;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -207,6 +209,7 @@ public class InitializationUtils {
 			initializeMoveableGroups(customTiledMap, map);
 			//This method call relies on the dynamic piece initialization, so don't shift it before the dynamic piece initialization method.
 			initializePortalPuzzles(customTiledMap, map);
+			initializeSafeSpaces(customTiledMap, map);
 			//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
 			initializeCollectibles(customTiledMap, map);
 
@@ -228,7 +231,7 @@ public class InitializationUtils {
 			
 			List<MoveableDynamicPiece> moveablesInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof MoveableDynamicPiece))
+					.piecesOverall(PiecePredicates.MOVEABLE_DYNAMIC_PIECE)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
 					.map(e -> (MoveableDynamicPiece)e)
@@ -258,7 +261,7 @@ public class InitializationUtils {
 
 			List<SecretDoor> secretDoorsInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof SecretDoor))
+					.piecesOverall(PiecePredicates.SECRET_DOOR)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
 					.map(e -> (SecretDoor)e)
@@ -296,7 +299,7 @@ public class InitializationUtils {
 
 			List<MoveableDynamicPiece> moveablesInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof MoveableDynamicPiece))
+					.piecesOverall(PiecePredicates.MOVEABLE_DYNAMIC_PIECE)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (MoveableDynamicPiece)e)
@@ -309,7 +312,7 @@ public class InitializationUtils {
 
 			List<Switchable> switchablesInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof Switchable))
+					.piecesOverall(PiecePredicates.SWITCHABLE)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (Switchable)e)
@@ -317,7 +320,7 @@ public class InitializationUtils {
 
 			List<Activatable> activatablesInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof Activatable))
+					.piecesOverall(PiecePredicates.ACTIVATABLE)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (Activatable)e)
@@ -325,7 +328,7 @@ public class InitializationUtils {
 
 			List<PresenceDetector> presenceDetectorsInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof PresenceDetector))
+					.piecesOverall(PiecePredicates.PRESENCE_DETECTOR)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (PresenceDetector)e)
@@ -333,7 +336,7 @@ public class InitializationUtils {
 
 			List<AutoBollard> autoBollardsInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof AutoBollard))
+					.piecesOverall(PiecePredicates.AUTOBOLLARD)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (AutoBollard)e)
@@ -341,7 +344,7 @@ public class InitializationUtils {
 
 			List<OneWayBollard> oneWayBollardsInRegion = map
 					.getMapPieces()
-					.piecesOverall(e -> (e instanceof OneWayBollard))
+					.piecesOverall(PiecePredicates.ONE_WAY_BOLLARD)
 					.stream()
 					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
 					.map(e -> (OneWayBollard)e)
@@ -363,6 +366,20 @@ public class InitializationUtils {
 			portalPuzzle.setPlayerStartPosition(playerStartPosition);
 			map.getPortalPuzzles().add(portalPuzzle);
 
+		}
+
+	}
+
+	private static void initializeSafeSpaces(CustomTiledMap customTiledMap, CosmodogMap map) {
+		TiledObjectGroup safeSpaceObjectGroup = customTiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_SAFE_SPACES);
+		Map<String, TiledObject> safeSpaceRegions = safeSpaceObjectGroup.getObjects();
+		Set<String> safeSpaceRegionNames = safeSpaceRegions.keySet();
+		for (String safeSpaceRegionName : safeSpaceRegionNames) {
+
+			TiledObject portalPuzzleRegion = safeSpaceRegions.get(safeSpaceRegionName);
+			SafeSpace safeSpace = new SafeSpace();
+			safeSpace.setRegion(portalPuzzleRegion);
+			map.getSafeSpaces().add(safeSpace);
 		}
 	}
 

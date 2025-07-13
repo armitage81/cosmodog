@@ -20,7 +20,7 @@ public class TestPerformanceProfiling {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(87, 281, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(218, 191, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.ANTIDOTE, new AntidoteInventoryItem());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="94" nextobjectid="944">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="95" nextobjectid="944">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="6183" columns="9">
   <image source="tiles.png" width="144" height="11000"/>
  </tileset>
@@ -549,6 +549,7 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="94" name="SafeSpaces"/>
  <objectgroup id="89" name="Weather"/>
  <objectgroup id="92" name="SwitchablesAndActivatables">
   <object id="892" name="Bollard4" x="3637.5" y="278.75">

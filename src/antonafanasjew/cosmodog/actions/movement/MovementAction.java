@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.*;
 
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.portals.Entrance;
@@ -442,7 +443,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 				Map<Position, Piece> oldPositionsForPiecesOnPlatform = Maps.newHashMap();
 
-				for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().piecesOverall(e -> true)) {
+				for (Piece piece : cosmodogGame.mapOfPlayerLocation().getMapPieces().piecesOverall(PiecePredicates.ALWAYS_TRUE)) {
 					if (CosmodogMapUtils.isTileOnPlatform(piece.getPosition(), player.getPosition())) {
 
 						//As we move the piece on the platform, we need to update it in the mapValues cache

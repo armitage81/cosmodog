@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -160,7 +161,7 @@ public class CosmodogMapUtils {
 		PLATFORMDATA.add(Position.fromCoordinates( 2, 3, MapType.MAIN));
 		PLATFORMDATA.add(Position.fromCoordinates( 3, 3, MapType.MAIN));
 	}
-	
+
 	/**
 	 * Use this to define whether the target tile is part of the platform or not. 
 	 */
@@ -184,6 +185,22 @@ public class CosmodogMapUtils {
 			int actorOffsetY = (int) (tilePosition.getY() - platformPosition.getY());
 			Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, MapType.MAIN);
 			retVal = PLATFORMDATA.contains(offsetPosition);
+		}
+		return retVal;
+	}
+
+	public static Set<Position> positionsCoveredByPlatforms() {
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		CosmodogMap map = cosmodogGame.getMaps().get(cosmodogGame.mapOfPlayerLocation().getMapType());
+		Set<Position> retVal = new HashSet<>();
+		Set<Platform> platforms = map.getPlatforms();
+		for (Platform platform : platforms) {
+			for (Position offsetPosition : PLATFORMDATA) {
+				float x = platform.getPosition().getX() + offsetPosition.getX();
+				float y = platform.getPosition().getY() + offsetPosition.getY();
+				Position position = Position.fromCoordinatesOnPlayerLocationMap(x, y);
+				retVal.add(position);
+			}
 		}
 		return retVal;
 	}

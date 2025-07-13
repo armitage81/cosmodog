@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -26,9 +27,11 @@ public class WaterConsumer implements ResourceConsumer {
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		MoveableGroup moveableGroupAroundPlayer = PlayerMovementCache.getInstance().getActiveMoveableGroup();
-		boolean inRiddleArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
-		
-		if (hasVehicle || hasPlatform || inRiddleArea) {
+		boolean inSocobanArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
+		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
+		boolean inSafeSpace = safeSpaceAroundPlayer != null;
+
+		if (hasVehicle || hasPlatform || inSocobanArea || inSafeSpace) {
 			return 0;
 		}
 		

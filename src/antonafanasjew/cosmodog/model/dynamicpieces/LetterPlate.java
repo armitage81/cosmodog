@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.death.RespawnAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -92,7 +93,7 @@ public class LetterPlate extends DynamicPiece {
 
 			Collection<LetterPlate> letterPlates = map
 					.getMapPieces()
-					.piecesOverall(e -> e instanceof LetterPlate)
+					.piecesOverall(PiecePredicates.LETTER_PLATE)
 					.stream()
 					.map(e -> (LetterPlate)e)
 					.collect(Collectors.toSet());

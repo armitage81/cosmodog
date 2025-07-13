@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.topology.Position;
 
 public class FoodConsumer implements ResourceConsumer {
@@ -19,9 +20,12 @@ public class FoodConsumer implements ResourceConsumer {
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		MoveableGroup moveableGroupAroundPlayer = PlayerMovementCache.getInstance().getActiveMoveableGroup();
-		boolean inRiddleArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
+		boolean inSocobanArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
 
-		if (hasVehicle || hasPlatform || inRiddleArea) {
+		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
+		boolean inSafeSpace = safeSpaceAroundPlayer != null;
+
+		if (hasVehicle || hasPlatform || inSocobanArea || inSafeSpace) {
 			return 0;
 		}
 

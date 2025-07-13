@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -19,7 +20,7 @@ public class ArmorInteraction extends AbstractPieceInteraction {
 		
 		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 		
-		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().piecesOverall(e -> e instanceof Vehicle);
+		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().piecesOverall(PiecePredicates.VEHICLE);
 		
 		for (Piece piece2 : mapPieces) {
 			if (piece2 instanceof Vehicle vehicle) {

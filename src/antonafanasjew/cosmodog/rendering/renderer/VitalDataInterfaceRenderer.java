@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -45,8 +46,12 @@ public class VitalDataInterfaceRenderer extends AbstractRenderer {
 		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
 		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		MoveableGroup moveableGroupAroundPlayer = PlayerMovementCache.getInstance().getActiveMoveableGroup();
-		boolean inRiddleArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
-		boolean resourceConsumptionHalted = hasVehicle || hasPlatform || inRiddleArea;
+		boolean inSocobanArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
+
+		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
+		boolean inSafeSpace = safeSpaceAroundPlayer != null;
+
+		boolean resourceConsumptionHalted = hasVehicle || hasPlatform || inSocobanArea || inSafeSpace;
 
 		DrawingContext vitalDataDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().vitalDataDrawingContext();
 

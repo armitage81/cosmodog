@@ -2,16 +2,14 @@ package antonafanasjew.cosmodog.model;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.util.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -81,7 +79,11 @@ public class PlayerMovementCache implements Serializable {
 	private MoveableGroup activeMoveableGroup;
 
 	private PortalPuzzle activePortalPuzzle;
-	
+
+	private SafeSpace activeSafeSpace;
+
+	private Set<Position> positionsCoveredByPlatforms;
+
 	public Piece getClosestSupply() {
 		return closestSupply;
 	}
@@ -134,8 +136,20 @@ public class PlayerMovementCache implements Serializable {
 		return activePortalPuzzle;
 	}
 
+	public SafeSpace getActiveSafeSpace() {
+		return activeSafeSpace;
+	}
+
 	public void setActivePortalPuzzle(PortalPuzzle activePortalPuzzle) {
 		this.activePortalPuzzle = activePortalPuzzle;
+	}
+
+	public void setActiveSafeSpace(SafeSpace activeSafeSpace) {
+		this.activeSafeSpace = activeSafeSpace;
+	}
+
+	public Set<Position> getPositionsCoveredByPlatforms() {
+		return positionsCoveredByPlatforms;
 	}
 
 	public void update(Actor actor, Position position1, Position position2) {
@@ -150,6 +164,8 @@ public class PlayerMovementCache implements Serializable {
 		recalculateRoofsOverEnemiesInRange();
 		recalculateActiveMoveableGroup();
 		recalculateActivePortalPuzzle();
+		recalculateActiveSafeSpace();
+		recalculatePositionsCoveredByPlatforms();
 	}
 
 
@@ -239,20 +255,7 @@ public class PlayerMovementCache implements Serializable {
 
 	private void recalculateclosestPieceInterestingForDebugging(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
-		Collection<Piece> pieces = map.getMapPieces().piecesOverall(piece -> {
-			if (!(piece instanceof Collectible)) {
-				return false;
-			}
-			Collectible coll = (Collectible)piece;
-			if (coll.getCollectibleType() == Collectible.CollectibleType.GOODIE) {
-				CollectibleGoodie goodie = (CollectibleGoodie)coll;
-				if (goodie.getGoodieType() == CollectibleGoodie.GoodieType.cognition) {
-					return false;
-				}
-			}
-
-			return true;
-		});
+		Collection<Piece> pieces = map.getMapPieces().piecesOverall(PiecePredicates.GOODIE);
 
 		Collection<Enemy> enemies = map.allEnemies().stream().filter(enemy -> enemy.getUnitType() != UnitType.ARTILLERY).collect(Collectors.toSet());
 
@@ -343,6 +346,26 @@ public class PlayerMovementCache implements Serializable {
 		}
 		setActivePortalPuzzle(portalPuzzleAroundPlayer);
 	}
-	
+
+	private void recalculateActiveSafeSpace() {
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		Player player = ApplicationContextUtils.getPlayer();
+		SafeSpace safeSpaceAroundPlayer = null;
+		List<SafeSpace> safeSpaces = map.getSafeSpaces();
+		for (SafeSpace safeSpace : safeSpaces) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), safeSpace.getRegion())) {
+				safeSpaceAroundPlayer = safeSpace;
+				break;
+			}
+		}
+		setActiveSafeSpace(safeSpaceAroundPlayer);
+	}
+
+	private void recalculatePositionsCoveredByPlatforms() {
+		positionsCoveredByPlatforms = CosmodogMapUtils.positionsCoveredByPlatforms();
+	}
+
+
+
 }
 

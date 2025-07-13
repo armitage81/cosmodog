@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -19,7 +20,7 @@ public class FuelTankInteraction extends AbstractPieceInteraction {
 
 		CosmodogMap cosmodogMap = cosmodogGame.mapOfPlayerLocation();
 
-		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().piecesOverall(e -> true);
+		Collection<Piece> mapPieces = cosmodogMap.getMapPieces().piecesOverall(PiecePredicates.ALWAYS_TRUE);
 
 		for (Piece piece2 : mapPieces) {
 			if (piece2 instanceof Vehicle vehicle) {

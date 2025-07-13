@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -98,7 +99,7 @@ public class SwitchingIndicatorAction extends FixedLengthAsyncAction {
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		TiledObjectGroup regions = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		TiledObject region = regions.getObjects().get(regionName);
-		Collection<DynamicPiece> binaryIndicators = map.getMapPieces().piecesOverall(e -> e instanceof BinaryIndicator).stream().map(e -> (DynamicPiece)e).toList();
+		Collection<DynamicPiece> binaryIndicators = map.getMapPieces().piecesOverall(PiecePredicates.BINARY_INDICATOR).stream().map(e -> (DynamicPiece)e).toList();
         for (DynamicPiece indicator : binaryIndicators) {
             BinaryIndicator binaryIndicator = (BinaryIndicator) indicator;
             if (RegionUtils.pieceInRegion(binaryIndicator, map.getMapType(), region)) {

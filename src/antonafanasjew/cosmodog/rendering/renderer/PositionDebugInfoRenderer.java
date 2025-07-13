@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -39,7 +40,7 @@ public class PositionDebugInfoRenderer extends AbstractRenderer {
 			return e.getInventoryItem() != null;
 		}).map(Piece::getPosition).toList();
 		
-		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getMapPieces().piecesOverall(e -> true).stream().filter(piece -> {
+		List<Position> collectiblePositions = ApplicationContext.instance().getCosmodog().getCosmodogGame().mapOfPlayerLocation().getMapPieces().piecesOverall(PiecePredicates.ALWAYS_TRUE).stream().filter(piece -> {
 
 			boolean tool =  piece instanceof CollectibleTool;
 			boolean goodie = piece instanceof CollectibleGoodie;

@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -87,7 +88,7 @@ public class CosmodogMapStatisticsProvider {
 
 		Function<Piece, Integer> valueFunction = pieceValueInInfobitsFunction();
 
-		Map<Position, Integer> pieceValues = mapPieces.piecesOverall(e -> true).stream().filter(e -> e instanceof Collectible || e instanceof NpcActor).collect(Collectors.toMap(Piece::getPosition, valueFunction));
+		Map<Position, Integer> pieceValues = mapPieces.piecesOverall(PiecePredicates.NPC_ACTOR).stream().collect(Collectors.toMap(Piece::getPosition, valueFunction));
 
 		Map<Position, Integer> mapPieceValuePerChartPiece = Maps.newHashMap();
 		for (Position position : pieceValues.keySet()) {

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.SpriteSheets;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.geometry.Oscillations;
 import antonafanasjew.cosmodog.globals.FontProvider;
 import antonafanasjew.cosmodog.globals.FontType;
@@ -159,28 +160,7 @@ public class MiniMapRenderer extends AbstractRenderer {
 			}
 		}
 
-		//Positions of the undiscovered monoliths (or rather the insights closed to them)
-		//are rendered as blinking green or red tiles on the map.
-		//This should be moved to the MapRenderer class since the display of player's position is already there.
-
-		Predicate<Piece> beingPieceIndicatedOnMap = piece -> {
-			boolean interestingGoodie = piece instanceof CollectibleGoodie && (
-					((CollectibleGoodie)piece).getGoodieType() == CollectibleGoodie.GoodieType.insight
-							||
-					((CollectibleGoodie)piece).getGoodieType() == CollectibleGoodie.GoodieType.bottle
-							||
-					((CollectibleGoodie)piece).getGoodieType() == CollectibleGoodie.GoodieType.foodcompartment
-			);
-
-			boolean interestingTool = piece instanceof CollectibleTool;
-
-			boolean interestingWeapons = piece instanceof CollectibleWeapon;
-
-			return interestingGoodie || interestingTool || interestingWeapons;
-
-		};
-
-		List<Position> piecesIndicatedOnMap = map.getMapPieces().piecesOverall(beingPieceIndicatedOnMap).stream().map(Piece::getPosition).toList();
+		List<Position> piecesIndicatedOnMap = map.getMapPieces().piecesOverall(PiecePredicates.PIECE_INDICATED_ON_MAP).stream().map(Piece::getPosition).toList();
 
 
 		for (Position position : piecesIndicatedOnMap) {
