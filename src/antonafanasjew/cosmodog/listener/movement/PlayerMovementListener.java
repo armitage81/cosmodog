@@ -196,6 +196,15 @@ public class PlayerMovementListener implements MovementListener {
 
 	private void updateCache(Actor actor, Position position1, Position position2) {
 		PlayerMovementCache.getInstance().update(actor, position1, position2);
+
+		//The pieces are cached in segments so now we have to recalculate all of them to be placed in
+		//the right segment after potential movement.
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		List<Piece> allPieces = map.getMapPieces().piecesOverall(e -> true);
+		map.getMapPieces().clear();
+		for (Piece piece : allPieces) {
+			map.getMapPieces().addPiece(piece);
+		}
 	}
 
 	@Override

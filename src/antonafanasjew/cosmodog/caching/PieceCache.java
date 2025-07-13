@@ -88,12 +88,14 @@ public class PieceCache implements Serializable {
     }
 
     public void removePiece(Piece piece) {
-        Position piecePosition = piece.getPosition();
-        int sectorColumn = (int)piecePosition.getX() / sectorWidth;
-        int sectorRow = (int)piecePosition.getY() / sectorHeight;
-        Position sectorPosition = Position.fromCoordinates(sectorColumn, sectorRow, null);
-        List<Piece> piecesInSector = pieces.computeIfAbsent(sectorPosition, k -> new ArrayList<>());
-        piecesInSector.remove(piece);
+        //Positions are segment positions here.
+        for (Position position : pieces.keySet()) {
+            List<Piece> piecesAtPosition = pieces.get(position);
+            if (piecesAtPosition != null) {
+                piecesAtPosition.remove(piece);
+            }
+
+        }
     }
 
     public void clear() {

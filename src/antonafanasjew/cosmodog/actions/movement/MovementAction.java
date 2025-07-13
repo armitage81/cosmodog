@@ -450,13 +450,9 @@ public class MovementAction extends FixedLengthAsyncAction {
 						oldPositionsForPiecesOnPlatform.put(position, piece);
 
 						if (player.getDirection() == DirectionType.UP || player.getDirection() == DirectionType.DOWN) {
-							cosmodogGame.mapOfPlayerLocation().getMapPieces().removePiece(piece);
 							piece.getPosition().shift(0, player.getDirection() == DirectionType.UP ? -1 : 1);
-							cosmodogGame.mapOfPlayerLocation().getMapPieces().addPiece(piece);
 						} else {
-							cosmodogGame.mapOfPlayerLocation().getMapPieces().removePiece(piece);
 							piece.getPosition().shift(player.getDirection() == DirectionType.LEFT ? -1 : 1, 0);
-							cosmodogGame.mapOfPlayerLocation().getMapPieces().addPiece(piece);
 						}
 					}
 				}
