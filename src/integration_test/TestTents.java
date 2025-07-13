@@ -18,6 +18,8 @@ public class TestTents {
 
 	/**
 	 * - The items in tents must be desaturated to not be confused with interactive elements of the game.
+	 * - The tents should look good when outside
+	 * - The tents should look good when inside
 	 */
 
 	public static void main(String[] args) throws SlickException {
