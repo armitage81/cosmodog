@@ -35,7 +35,7 @@ public class LetterPlate extends DynamicPiece {
 		"bdhlkmq",
 		"nprtsu",
 		"aevwxz",
-		"cfgijkmqsuvwxz",
+		"cfgijkmqsuvxz",
 		"" + CONTROL_LETTER_RESET
 	};
 	
