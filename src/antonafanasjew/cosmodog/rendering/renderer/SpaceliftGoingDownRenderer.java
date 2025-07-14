@@ -193,7 +193,6 @@ public class SpaceliftGoingDownRenderer extends AbstractRenderer {
             float completionRate = ((FixedLengthAsyncAction)currentPhase).getCompletionRate();
             int maxCabinOffset = 20 * tileLength;
             verticalCabinOffset = maxCabinOffset - maxCabinOffset * completionRate;
-            System.out.println(verticalCabinOffset);
             visibleCabinHeight = Math.min(4 * tileLength, verticalCabinOffset);
             Vector initialCabinTileRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(player.getPosition().shifted(-1, -3), camTilePosition);
             float cabinX = initialCabinTileRelatedToCam.getX();
