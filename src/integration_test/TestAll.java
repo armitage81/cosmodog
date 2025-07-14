@@ -27,7 +27,7 @@ public class TestAll {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(165, 78, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(326, 118, MapType.MAIN));
 				List<String> debuggerPositions = new ArrayList<>();
 
 				for (int i = 0; i < 20; i++) {
