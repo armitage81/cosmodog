@@ -5,6 +5,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.DynamicPiece;
+import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.apple.eawt.Application;
@@ -45,8 +46,11 @@ public class Jammer extends DynamicPiece {
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
         if (!hidden) {
             ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CANCELED).play();
+            game.clearPortals();
+        } else {
+            PortalPuzzle.resetPortalPuzzle(game, false);
         }
-        game.clearPortals();
+
 
     }
 

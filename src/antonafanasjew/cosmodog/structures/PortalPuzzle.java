@@ -106,7 +106,7 @@ public class PortalPuzzle implements Serializable {
         this.oneWayBollards = oneWayBollards;
     }
 
-    public static void resetPortalPuzzle(CosmodogGame game) {
+    public static void resetPortalPuzzle(CosmodogGame game, boolean resetPlayer) {
         int tileLength = TileUtils.tileLengthSupplier.get();
 
         Player player = game.getPlayer();
@@ -152,11 +152,16 @@ public class PortalPuzzle implements Serializable {
             }
 
             game.clearPortals();
-            player.beginTeleportation();
-            Position playerStartingPosition = portalPuzzleAroundPlayer.getPlayerStartPosition();
-            player.setPosition(playerStartingPosition);
-            player.endTeleportation();
-            cam.focusOnPiece(game, 0, 0, player);
+
+            //When the puzzle is finished and the player leaves, we reset the puzzle.
+            //In this case, the player does not need to be teleported to the start of the puzzle.
+            if (resetPlayer) {
+                player.beginTeleportation();
+                Position playerStartingPosition = portalPuzzleAroundPlayer.getPlayerStartPosition();
+                player.setPosition(playerStartingPosition);
+                player.endTeleportation();
+                cam.focusOnPiece(game, 0, 0, player);
+            }
         }
     }
 }

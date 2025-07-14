@@ -442,7 +442,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		
 		if (input.isKeyPressed(Input.KEY_R)) {
 			MoveableGroup.resetMoveableGroup(cosmodogGame);
-			PortalPuzzle.resetPortalPuzzle(cosmodogGame);
+			PortalPuzzle.resetPortalPuzzle(cosmodogGame, true);
 
 		}
 
