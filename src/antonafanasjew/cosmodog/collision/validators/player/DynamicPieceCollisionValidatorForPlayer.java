@@ -101,7 +101,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 			} else if (dynamicPiece instanceof HardStone) {
 				HardStone hardStone = (HardStone)dynamicPiece;
 				if (hardStone.getState() != Stone.STATE_DESTROYED) {
-					String blockReasonParam = "<knock>";
+					String blockReasonParam = "";
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.PICK) == null) {
@@ -112,7 +112,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 			} else if (dynamicPiece instanceof Tree) {
 				Tree tree = (Tree)dynamicPiece;
 				if (tree.getState() != Tree.STATE_DESTROYED) {
-					String blockReasonParam = "<knock>";
+					String blockReasonParam = "";
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.AXE) == null) {
@@ -123,7 +123,7 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 			} else if (dynamicPiece instanceof Bamboo) {
 				Bamboo bamboo = (Bamboo)dynamicPiece;
 				if (bamboo.getState() != Bamboo.STATE_DESTROYED) {
-					String blockReasonParam = "<knock>";
+					String blockReasonParam = "";
 					Player player = (Player)actor;
 					Inventory inventory = player.getInventory();
 					if (inventory.get(InventoryItemType.MACHETE) == null) {
