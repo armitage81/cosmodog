@@ -87,6 +87,10 @@ public class PieceCache implements Serializable {
         return piecesInArea(predicate, x, y, 1, 1);
     }
 
+    public List<Piece> piecesInArea(Predicate<Piece> predicate, float x, float y, float width, float height, float grace) {
+        return piecesInArea(predicate, x - grace, y - grace, width + 2 * grace, height + 2 * grace);
+    }
+
     public List<Piece> piecesInArea(Predicate<Piece> predicate, float x, float y, float width, float height) {
 
         Predicate<Piece> withinBoundsPredicate = new Predicate<Piece>() {

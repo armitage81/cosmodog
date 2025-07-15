@@ -103,7 +103,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			List<DynamicPiece> visiblePieces = map
 					.getMapPieces()
-					.piecesInArea(e -> e instanceof DynamicPiece, camTilePosition.tileX(), camTilePosition.tileY(), camTilePosition.widthInTiles(), camTilePosition.heightInTiles())
+					.piecesInArea(e -> e instanceof DynamicPiece, camTilePosition.tileX(), camTilePosition.tileY(), camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2)
 					.stream()
 					.map(e -> (DynamicPiece)e)
 					.toList();
