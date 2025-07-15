@@ -5,7 +5,8 @@ import antonafanasjew.cosmodog.util.PositionUtils;
 
 public class CamMovementUtils {
 
-    public static final int SPEED_FAST = 640;
+    public static final int SPEED_FAST = 480;
+    public static final int SPEED_MEDIUM = 240;
 
     public static int movementDuration(int pixelPerSecond, Position startPixelPosition, Position targetPixelPosition) {
         float distance = PositionUtils.distance(startPixelPosition, targetPixelPosition);
