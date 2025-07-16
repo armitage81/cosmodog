@@ -4,22 +4,17 @@ import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.RadioactiveSuitInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestAll {
+public class TestMonolythBehindPortal {
 
 	public static void main(String[] args) throws SlickException {
 		
@@ -27,20 +22,24 @@ public class TestAll {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(223, 274, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(118, 2, MapType.MAIN));
+				player.setMaxLife(100);
+				player.setLife(100);
+
+				player.getInventory().put(InventoryItemType.INSIGHT, new InsightInventoryItem());
+				player.getInventory().put(InventoryItemType.PORTAL_GUN, new PortalGunInventoryItem());
+				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
 				List<String> debuggerPositions = new ArrayList<>();
 
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 20; j++) {
-						int x = j * 20 + 18;
-						int y = i * 20 + 18;
-						debuggerPositions.add(String.format("%s/%s/%s", x, y, MapType.ALTERNATIVE));
-					}
-				}
-
-				//debuggerPositions.add(String.format("%s/%s/%s", 129, 143, MapType.MAIN));
+				debuggerPositions.add("153/13");
+				debuggerPositions.add("140/16");
+				debuggerPositions.add("118/2");
 
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
+
 			}
 		};
 
@@ -48,6 +47,5 @@ public class TestAll {
 
 		TestStarter.main(args);
 	}
-
 	
 }

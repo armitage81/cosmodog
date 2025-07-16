@@ -144,7 +144,7 @@ public class PlayerRenderer extends AbstractRenderer {
 		}
 
 		//Weapons are deactivated in space. Also, their rendering glitches when combined with portals.
-		if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() != MapType.SPACE) {
+		if (!usingPortal) {
 			Animation playerWeaponAnimation = PlayerRendererUtils.weaponAnimation(playerAppearanceType, playerActionType, player.getDirection());
 			if (playerWeaponAnimation != null) {
 				playerWeaponAnimation.draw(playerCoordinatesRelatedToCam.getX() + offsetFromTile.getX(), playerCoordinatesRelatedToCam.getY() + offsetFromTile.getY());
