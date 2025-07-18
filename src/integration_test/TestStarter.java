@@ -28,7 +28,6 @@ import antonafanasjew.cosmodog.model.states.GameState;
 import antonafanasjew.cosmodog.model.states.IntroState;
 import antonafanasjew.cosmodog.model.states.MainMenuState;
 import antonafanasjew.cosmodog.model.states.Outro2State;
-import antonafanasjew.cosmodog.model.states.OutroState;
 import antonafanasjew.cosmodog.model.states.ScoreState;
 import antonafanasjew.cosmodog.model.states.SplashState;
 import antonafanasjew.cosmodog.model.states.StatisticsState;
@@ -220,7 +219,6 @@ public class TestStarter extends StateBasedGame {
 		this.addState(new GameMenuState());
 		this.addState(new CutsceneState());
 		this.addState(new CreditsState());
-		this.addState(new OutroState());
 		this.addState(new Outro2State());
 		this.addState(new DebugState());
 		this.addState(new GameIntroState());

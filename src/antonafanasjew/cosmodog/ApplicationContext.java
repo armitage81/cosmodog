@@ -727,8 +727,7 @@ public class ApplicationContext {
 		try {
 			this.gameLogs = gameLogBuilder.buildGameLogs("data/writing/gamelogs");
 			this.gameTexts.put("intro", gameLogBuilder.buildGameLog("data/writing/intro/intro"));
-			this.gameTexts.put("outro_a", gameLogBuilder.buildGameLog("data/writing/outro/outro_a"));
-			this.gameTexts.put("outro_b", gameLogBuilder.buildGameLog("data/writing/outro/outro_b"));
+			this.gameTexts.put("outro", gameLogBuilder.buildGameLog("data/writing/outro/outro"));
 			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("data/writing/credits/credits"));
 			this.gameTexts.put("references", gameLogBuilder.buildGameLog("data/writing/references/references"));
 		} catch (IOException e) {

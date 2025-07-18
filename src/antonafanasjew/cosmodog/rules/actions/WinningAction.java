@@ -14,7 +14,7 @@ public class WinningAction extends AbstractRuleAction {
 	@Override
 	public void execute(GameEvent event) {
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		StateBasedGameHolder.stateBasedGame.enterState(CosmodogStarter.OUTRO_STATE_ID);
+		StateBasedGameHolder.stateBasedGame.enterState(CosmodogStarter.OUTRO2_STATE_ID);
 		cosmodog.getGameLifeCycle().setStartNewGame(true);
 		
 	}

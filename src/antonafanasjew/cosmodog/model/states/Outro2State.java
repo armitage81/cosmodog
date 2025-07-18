@@ -38,7 +38,7 @@ public class Outro2State extends CosmodogAbstractState {
 
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 		
-		String text = ApplicationContext.instance().getGameTexts().get("outro_b").getLogText();
+		String text = ApplicationContext.instance().getGameTexts().get("outro").getLogText();
 		DrawingContext textDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameOutroTextDrawingContext();
 		TextPageConstraints tpc = TextPageConstraints.fromDc(textDc);
 		book = tpc.textToBook(text, FontRefToFontTypeMap.forEmphasizedNarration(), 100);

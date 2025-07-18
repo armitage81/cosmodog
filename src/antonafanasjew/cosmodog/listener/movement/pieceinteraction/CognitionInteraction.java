@@ -41,7 +41,7 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 				
 				int lengthOfFadeOutTransition = Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) ? 5000 : 0;
 				
-				CosmodogStarter.instance.enterState(CosmodogStarter.OUTRO_STATE_ID, new FadeOutTransition(Color.white, lengthOfFadeOutTransition), new FadeInTransition());
+				CosmodogStarter.instance.enterState(CosmodogStarter.OUTRO2_STATE_ID, new FadeOutTransition(Color.white, lengthOfFadeOutTransition), new FadeInTransition());
 			}
 		});
 		
