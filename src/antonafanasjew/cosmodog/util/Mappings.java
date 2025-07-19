@@ -111,7 +111,7 @@ public class Mappings {
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_17, "flowersandmines");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_18, "riddletemples");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_19, "containers");
-		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_20, "tobedefined021");
+		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_20, "holeinalienbase");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_21, "tobedefined022");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_22, "tobedefined023");
 		MAP_TILE_TO_UNSORTED_LOG_ID.put(TileType.LOG_CARD_23, "tobedefined024");
