@@ -92,7 +92,20 @@ public class CosmodogMap extends CosmodogModel {
 	}
 	
 	public Map<Position, Piece> getMedkits() {
-		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.medipack);
+		Predicate<Piece> predicate = piece -> {
+
+			boolean retVal = false;
+
+			if (piece instanceof CollectibleGoodie goodie) {
+                boolean goodieIsFirstAidKit = goodie.getGoodieType() == CollectibleGoodie.GoodieType.firstaidkit;
+				boolean goodieIsMedipack = goodie.getGoodieType() == CollectibleGoodie.GoodieType.medipack;
+				if (goodieIsFirstAidKit || goodieIsMedipack) {
+					retVal = true;
+				}
+			}
+			return retVal;
+		};
+
 		return getSpecificPieces(predicate);
 	}
 	

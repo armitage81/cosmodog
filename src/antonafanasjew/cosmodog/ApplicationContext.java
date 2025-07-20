@@ -327,6 +327,7 @@ public class ApplicationContext {
 		Map<String, PieceInteraction> pieceInteractionMap = cosmodog.getPieceInteractionMap();
 		
 		pieceInteractionMap.put(CollectibleComposed.class.getSimpleName(), new ComposedInteraction());
+		pieceInteractionMap.put(CollectibleGoodie.GoodieType.firstaidkit.name(), new FirstAidKitInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceInteraction());

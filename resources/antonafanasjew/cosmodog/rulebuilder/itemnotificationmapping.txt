@@ -5,7 +5,8 @@ INFOBANK_DESCRIPTION;infobank;0;infobankDescription;You found an infobank. It's 
 SUPPLIES_DESCRIPTION;supplies;0;suppliesDescription;You found a supply ration and ate it. Your hunger is stilled. ;40
 VEHICLE_DESCRIPTION;vehicle;0;vehicleDescription; You found a vehicle. Use it to travel faster. Keep an eye on the fuel. Exit the vehicle by pressing [SHIFT] + [arrow key].;40
 SOULESSENCE_DESCRIPTION;soulessence;ANY;soulessenceDescription;You found the jar of Soul Essence. Your maximal life has increased.;40
-MEDIPACK_DESCRIPTION;medipack;0;medipackDescription;You found a medipack and used it. Your health has been restored.;40
+FIRSTAIDKIT_DESCRIPTION;firstaidkit;0;firstaidkitDescription;You found a First Aid kit and used it. Your health has been restored up to 5 points.;40
+MEDIPACK_DESCRIPTION;medipack;0;medipackDescription;You found a medipack and used it. Your health has been restored completely.;40
 ARMOR_DESCRIPTION;armor;ANY;armorDescription;You found an armor plate. Vehicles will be more durable.;40
 SOFTWARE_DESCRIPTION;software;ANY;softwareDesciption;You found a software chip from the data center.;40
 CHART_DESCRIPTION;chart;ANY;chartDesciption;You found a map of this area. It can be viewed in the menu on the map screen.;40

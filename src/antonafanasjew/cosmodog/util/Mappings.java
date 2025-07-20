@@ -162,6 +162,7 @@ public class Mappings {
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SOFTWARE, GoodieType.software);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.CHART, GoodieType.chart);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SUPPLIES, GoodieType.supplies);
+		MAP_TILE_TO_GOODIE_TYPE.put(TileType.FIRSTAIDKIT, GoodieType.firstaidkit);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.MEDIPACK, GoodieType.medipack);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.SOULESSENCE, GoodieType.soulessence);
 		MAP_TILE_TO_GOODIE_TYPE.put(TileType.ARMOR, GoodieType.armor);

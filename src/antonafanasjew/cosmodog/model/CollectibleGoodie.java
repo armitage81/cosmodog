@@ -13,6 +13,7 @@ public class CollectibleGoodie extends Collectible {
 		software(3000),
 		chart(500),
 		supplies(200),
+		firstaidkit(200),
 		medipack(200),
 		soulessence(500),
 		armor(500),

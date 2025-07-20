@@ -111,6 +111,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(Platform.class.getSimpleName(), new PlatformRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.armor.name(), new ArmorRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.soulessence.name(), new SoulEssenceRenderer());
+		pieceRendererMap.put(CollectibleGoodie.GoodieType.firstaidkit.name(), new FirstAidKitRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.medipack.name(), new MedipackRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.supplies.name(), new SuppliesRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.insight.name(), new InsightRenderer());
