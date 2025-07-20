@@ -1,9 +1,11 @@
 package antonafanasjew.cosmodog.sight;
 
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
+import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -29,6 +31,15 @@ public class VisibilityCalculator {
 	}
 
 	public boolean visible(Actor observer, PlanetaryCalendar cal, CosmodogMap map, Player player, Piece piece) {
+
+		//Hercules units are deactivated at night and do not see anything.
+		if (observer instanceof Enemy enemy) {
+			if (enemy.getUnitType() == UnitType.SOLARTANK) {
+				if (cal.isNight()) {
+					return false;
+				}
+			}
+		}
 
 		Vision vision = getVision(cal, map, player);
 
