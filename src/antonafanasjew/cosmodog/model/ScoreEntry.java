@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Represents an entry in the score list. 
@@ -12,16 +13,25 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
     
     private Date date;
 	private long score;
+	private int starScore;
     
-    public ScoreEntry(Date date, long score) {
+    public ScoreEntry(Date date, long score, int starScore) {
     	this.date = date;
     	this.score = score;
+		this.starScore = starScore;
     }
     
     public long getScore() {
 		return score;
 	}
 
+	public int getStarScore() {
+		return starScore;
+	}
+
+	public void setStarScore(int starScore) {
+		this.starScore = starScore;
+	}
 
 	@Override
 	public int hashCode() {
@@ -33,22 +43,11 @@ public class ScoreEntry extends CosmodogModel implements Comparable<ScoreEntry> 
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ScoreEntry other = (ScoreEntry) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
-		if (score != other.score)
-			return false;
-		return true;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ScoreEntry that = (ScoreEntry) o;
+		return score == that.score && starScore == that.starScore && Objects.equals(date, that.date);
 	}
 
 	@Override

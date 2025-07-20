@@ -3,9 +3,11 @@ package antonafanasjew.cosmodog;
 import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.QuadrandType;
+import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogModel;
 import antonafanasjew.cosmodog.model.LetterPlateSequence;
 
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.google.common.collect.Maps;
 
 /**
@@ -30,6 +32,7 @@ public class GameProgress extends CosmodogModel {
 
 	
 	private boolean won = false;
+	private int numberOfDeaths = 0;
 	private int infobits = 0;
 	private int armors = 0;
 	private int fuelTanks = 0;
@@ -234,5 +237,41 @@ public class GameProgress extends CosmodogModel {
 		this.turn = this.turn + 1;
 		return this.turn;
 	}
-	
+
+	public int getNumberOfDeaths() {
+		return numberOfDeaths;
+	}
+
+	public void incNumberOfDeaths() {
+		numberOfDeaths++;
+	}
+
+	public int starScore() {
+		int starScore = 0;
+		if(isWon()) {
+			starScore++;
+		}
+		if (getInfobits() == Constants.NUMBER_OF_INFOBITS_IN_GAME) {
+			starScore++;
+		}
+		if (getNumberOfFoundSecrets() == Constants.NUMBER_OF_SECRETS_IN_GAME) {
+			starScore++;
+		}
+
+		int enemiesLeft = ApplicationContextUtils.getCosmodogGame()
+				.getMaps()
+				.values()
+				.stream()
+				.mapToInt(cosmodogMap -> cosmodogMap.allEnemies()
+						.size())
+				.sum();
+
+		if (enemiesLeft == 0) {
+			starScore++;
+		}
+		if (isWon() && getNumberOfDeaths() == 0) {
+			starScore++;
+		}
+		return starScore;
+	}
 }

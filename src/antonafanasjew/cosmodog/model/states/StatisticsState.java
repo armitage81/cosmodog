@@ -1,9 +1,8 @@
 package antonafanasjew.cosmodog.model.states;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import antonafanasjew.cosmodog.SpriteSheets;
+import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -63,7 +62,7 @@ public class StatisticsState extends CosmodogAbstractState {
 		int maxInsights = Constants.NUMBER_OF_INSIGHTS_IN_GAME;
 		int noSecrets = player.getGameProgress().getNumberOfFoundSecrets();
 		int maxSecrets = Constants.NUMBER_OF_SECRETS_IN_GAME;
-		
+
 		int enemiesLeft = cosmodogGame
 				.getMaps()
 				.values()
@@ -88,28 +87,49 @@ public class StatisticsState extends CosmodogAbstractState {
 		
 		Book statistics = TextPageConstraints.fromDc(topContainerDrawingContext).textToBook("Statistics", fontTypeMainHeader);
 		TextBookRendererUtils.renderCenteredLabel(gc, g, statistics);
-		
-		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 0);
+
+		int numberOfRows = 8;
+		int currentRow = 0;
+
+		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, scoreDc, "Score", String.valueOf(score));
 		
-		DrawingContext infobitsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 1);
+		DrawingContext infobitsDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, infobitsDc, "Found infobits", String.valueOf(noInfobits) + "/" + String.valueOf(maxInfobits));
 		
-		DrawingContext softwareDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 2);
+		DrawingContext softwareDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, softwareDc, "Found software pieces", String.valueOf(noSoftware) + "/" + String.valueOf(maxSoftware));
 		
-		DrawingContext chartsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 3);
+		DrawingContext chartsDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, chartsDc, "Found map pieces", String.valueOf(noCharts) + "/" + String.valueOf(maxMaps));
 		
-		DrawingContext secretsDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 4);
+		DrawingContext secretsDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, secretsDc, "Found secrets", String.valueOf(noSecrets) + "/" + String.valueOf(maxSecrets));
 		
-		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 5);
+		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, enemiesDc, "Enemies left", String.valueOf(enemiesLeft));
 		
-		DrawingContext playTimeDc = new TileDrawingContext(centerContainerDrawingContext, 1, 7, 0, 6);
+		DrawingContext playTimeDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, playTimeDc, "Play time", playTimeRepresentation);
-		
+
+		DrawingContext starScoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
+		starScoreDc = new CenteredDrawingContext(starScoreDc, 350, 70);
+		for (int i = 0; i < 5; i++) {
+			DrawingContext starDc = new TileDrawingContext(starScoreDc, 5, 1, i, 0);
+			starDc = new CenteredDrawingContext(starDc, 3);
+			SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
+			Image starImage;
+			if (i < player.getGameProgress().starScore()) {
+				starImage = symbolsSpriteSheet.getSprite(4, 0); //Rewarded star
+			} else {
+				starImage = symbolsSpriteSheet.getSprite(3, 0); //empty star socket
+			}
+
+			starImage.draw(starDc.x(), starDc.y(), starDc.w(), starDc.h());
+
+
+		}
+
 		DrawingContext bottomContainerDrawingContext = new TileDrawingContext(dc, 1, 10, 0, 9, 1, 1);
 		
 		boolean renderBlinkingHint = (System.currentTimeMillis() / 250 % 2) == 1;

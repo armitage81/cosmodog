@@ -27,7 +27,8 @@ public class GameFlowUtils {
 		Player player = cosmodogGame.getPlayer();
 		GameProgress gameProgress = player.getGameProgress();
 		long lastGameScore = gameProgress.getGameScore();
-		ScoreEntry scoreEntry = new ScoreEntry(new Date(), lastGameScore);
+		int starScore = gameProgress.starScore();
+		ScoreEntry scoreEntry = new ScoreEntry(new Date(), lastGameScore, starScore);
 		ScoreList scoreList = cosmodog.getScoreList();
 		scoreList.addNewScoreEntry(scoreEntry);
 		try {

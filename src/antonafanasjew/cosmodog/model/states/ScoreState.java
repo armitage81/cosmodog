@@ -2,10 +2,8 @@ package antonafanasjew.cosmodog.model.states;
 
 import java.text.SimpleDateFormat;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import antonafanasjew.cosmodog.SpriteSheets;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -79,11 +77,27 @@ public class ScoreState extends CosmodogAbstractState {
 				if (i < scoreList.size()) {
 					ScoreEntry scoreEntry = scoreList.get(i);
 					text = SDF.format(scoreEntry.getDate())  + Strings.padStart("" + scoreEntry.getScore(), 15, '.') + " points.";
+					DrawingContext scoreEntryDc = new TileDrawingContext(recordsDc, 1, ScoreList.MAX_ELEMENTS, 0, i);
+					scoreEntryDc = new CenteredDrawingContext(scoreEntryDc, 3);
+					textBook = TextPageConstraints.fromDc(scoreEntryDc).textToBook(text, fontTypeInformational);
+					TextBookRendererUtils.renderCenteredLabel(gc, g, textBook);
+
+					DrawingContext starScoreEntryDc = new SimpleDrawingContext(null, scoreEntryDc.x() + scoreEntryDc.w() + 10, scoreEntryDc.y(), 100, 20);
+					for (int j = 0; j < 5; j++) {
+						DrawingContext starDc = new TileDrawingContext(starScoreEntryDc, 5, 1, j, 0);
+						starDc = new CenteredDrawingContext(starDc, 2);
+						SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
+						Image starImage;
+						if (j < scoreEntry.getStarScore()) {
+							starImage = symbolsSpriteSheet.getSprite(4, 0); //Rewarded star
+						} else {
+							starImage = symbolsSpriteSheet.getSprite(3, 0); //empty star socket
+						}
+						starImage.draw(starDc.x(), starDc.y(), starDc.w(), starDc.h());
+					}
 				}
-				DrawingContext scoreEntryDc = new TileDrawingContext(recordsDc, 1, ScoreList.MAX_ELEMENTS, 0, i);
-				scoreEntryDc = new CenteredDrawingContext(scoreEntryDc, 3);
-				textBook = TextPageConstraints.fromDc(scoreEntryDc).textToBook(text, fontTypeInformational);
-				TextBookRendererUtils.renderCenteredLabel(gc, g, textBook);
+
+
 			}
 		}
 		

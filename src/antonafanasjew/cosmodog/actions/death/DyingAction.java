@@ -42,7 +42,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 		Player player = cosmodogGame.getPlayer();
 		Cam cam = cosmodogGame.getCam();
-
+		player.getGameProgress().incNumberOfDeaths();
 		player.setFood(player.getCurrentMaxFood());
 		player.setWater(player.getCurrentMaxWater());
 		player.resetLife();
