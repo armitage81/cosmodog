@@ -78,14 +78,6 @@ public class InsightInteraction extends AbstractPieceInteraction {
 		cosmodogMap.getMapModification().modifyTile(playerPosition.shifted(1, -2), l, TileType.NO_RADIATION_MARKUP);
 		cosmodogMap.getMapModification().modifyTile(playerPosition.shifted(2, -2), l, TileType.NO_RADIATION_MARKUP);
 		
-		//Now check if the alien base door can be opened and notify the player.
-		
-		if (item != null && ((InsightInventoryItem)item).getNumber() == Constants.MIN_INSIGHTS_TO_OPEN_ALIEN_BASE) {
-			AsyncAction asyncAction2 = new PopUpNotificationAction("You can enter the alien base now.");
-			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
-			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction2);
-		}
-		
 	}
 
 }

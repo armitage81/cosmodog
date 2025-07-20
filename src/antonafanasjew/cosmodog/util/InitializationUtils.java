@@ -984,7 +984,18 @@ public class InitializationUtils {
 		rule = new Rule(Rule.RULE_ACTIVATE_TELEPORT, Lists.newArrayList(GameEventChangedPosition.class), activateTeleportTrigger, updateTeleportSequenceAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 		
-		
+
+		//Collected 33 insights rule
+		RuleTrigger collected32InsightsOnMainMapTrigger = new GameProgressPropertyTrigger("foundinsightnumber", "32", "0");
+		RuleTrigger collected1InsightOnSpaceMapTrigger = new GameProgressPropertyTrigger("foundinsightnumber_space", "1", "0");
+		RuleTrigger collectedAllInsightsTrigger = AndTrigger.and(collected32InsightsOnMainMapTrigger, collected1InsightOnSpaceMapTrigger);
+		AsyncAction popupTextAboutAlienBaseEntryAsyncAction = new PopUpNotificationAction("You can enter the alien base now.");
+		RuleAction popupTextAboutAlienBaseEntryRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, popupTextAboutAlienBaseEntryAsyncAction, true);
+		rule = new Rule(Rule.RULE_COLLECTED_ALL_INSIGHTS, Lists.newArrayList(GameEventPieceInteraction.class), collectedAllInsightsTrigger, popupTextAboutAlienBaseEntryRuleAction, Rule.RULE_PRIORITY_LATEST);
+		ruleBook.put(rule.getId(), rule);
+
+
+
 		// Last boss damage.
 		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
 		RuleAction damageLastBossAction = new DamageLastBossAction();

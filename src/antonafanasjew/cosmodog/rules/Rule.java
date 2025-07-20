@@ -44,6 +44,7 @@ public class Rule implements Serializable {
 	public static final String RULE_ACTIVATE_TELEPORT = "ActivateTeleport";
 	public static final String RULE_DAMAGE_LAST_BOSS = "DamageLastBoss";
 	public static final String RULE_FOUND_SECRET = "FoundSecret";
+	public static final String RULE_COLLECTED_ALL_INSIGHTS = "CollectedAllInsights";
 
 	public static final String RULE_OPERATE_SECRET_DOORS_IN_SOKOBAN = "OperateSecretDoorsInSokoban";
 	

@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.actions.narration;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -64,7 +65,7 @@ public class MonolithNarrationAction extends AbstractNarrationAction {
 
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
-		
+
 		long referenceTime = System.currentTimeMillis();
 		
 		ActionPhase prevActionPhase = phase;
