@@ -9,6 +9,8 @@ import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.sight.VisibilityCalculatorForPlayer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
@@ -70,9 +72,15 @@ public class NpcRenderer extends AbstractRenderer {
 
 		MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 
+		Player player = ApplicationContextUtils.getPlayer();
+
 		for (Enemy enemy : enemies) {
 
 			Position enemyPosition = enemy.getPosition();
+
+			if (!VisibilityCalculatorForPlayer.instance().visible(player, map, cosmodogGame.getPlanetaryCalendar(), enemy.getPosition())) {
+				continue;
+			};
 
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
@@ -217,6 +225,10 @@ public class NpcRenderer extends AbstractRenderer {
 		for (Enemy enemy : enemies) {
 
 			Position enemyPosition = enemy.getPosition();
+
+			if (!VisibilityCalculatorForPlayer.instance().visible(player, map, cosmodogGame.getPlanetaryCalendar(), enemy.getPosition())) {
+				continue;
+			};
 
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;

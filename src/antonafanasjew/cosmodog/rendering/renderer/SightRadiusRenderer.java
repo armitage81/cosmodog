@@ -6,6 +6,7 @@ import java.util.Set;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
+import antonafanasjew.cosmodog.sight.VisibilityCalculatorForPlayer;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.Animation;
@@ -76,6 +77,10 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		}
 
 		for (Enemy enemy : enemies) {
+
+			if (!VisibilityCalculatorForPlayer.instance().visible(player, map, cosmodogGame.getPlanetaryCalendar(), enemy.getPosition())) {
+				continue;
+			};
 
 			Set<TiledObject> roofsOverEnemy = PlayerMovementCache.getInstance().getEnemiesInRangeWithRoofsOverThem().get(enemy);
 

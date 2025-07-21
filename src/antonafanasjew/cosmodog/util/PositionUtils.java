@@ -112,5 +112,11 @@ public class PositionUtils {
 		float dy = p1.getY() - p2.getY();
 		return (float)Math.sqrt(dx * dx + dy * dy);
 	}
+
+	public static int distanceInTiles(Position p1, Position p2) {
+		float dx = p1.getX() - p2.getX();
+		float dy = p1.getY() - p2.getY();
+		return (int)Math.abs(dx) + (int)Math.abs(dy);
+	}
 	
 }

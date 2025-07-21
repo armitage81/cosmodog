@@ -26,6 +26,10 @@ public class Vision implements Serializable {
     }
 
     public Set<Position> visiblePositions(Actor observer, int mapWidth, int mapHeight) {
+        return visiblePositions(observer, mapWidth, mapHeight, false);
+    }
+
+    public Set<Position> visiblePositions(Actor observer, int mapWidth, int mapHeight, boolean includeNegative) {
         DirectionType directionType = observer.getDirection();
 
         Set<Position> retVal = new HashSet<Position>();
@@ -48,12 +52,14 @@ public class Vision implements Serializable {
             visionElementX = observer.getPosition().getX() + visionElementX;
             visionElementY = observer.getPosition().getY() + visionElementY;
 
-            if (visionElementX < 0 || visionElementX >= mapWidth) {
-                continue;
-            }
+            if (!includeNegative) {
+                if (visionElementX < 0 || visionElementX >= mapWidth) {
+                    continue;
+                }
 
-            if (visionElementY < 0 || visionElementY >= mapHeight) {
-                continue;
+                if (visionElementY < 0 || visionElementY >= mapHeight) {
+                    continue;
+                }
             }
 
             retVal.add(Position.fromCoordinates(
@@ -83,5 +89,51 @@ public class Vision implements Serializable {
 
     public static boolean playerNotHiddenAndItIsDay(PlanetaryCalendar planetaryCalendar, CosmodogMap map, Player player) {
         return !playerHidden(map, player) && !planetaryCalendar.isNight();
+    }
+
+    public static Vision NIGHT_VISION_FOR_PLAYER_DEFAULT;
+
+    static {
+        NIGHT_VISION_FOR_PLAYER_DEFAULT = new Vision();
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -1, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -2, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -2, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, -2, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -3, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -3, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, -3, null));
+
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -4, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -4, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, -4, null));
+    }
+
+    public static Vision NIGHT_VISION_FOR_PLAYER_IN_VEHICLE;
+
+    static {
+        NIGHT_VISION_FOR_PLAYER_IN_VEHICLE = new Vision();
+        NIGHT_VISION_FOR_PLAYER_IN_VEHICLE.getElements().add(Position.fromCoordinates(0, -1, null));
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -2; j >= -20; j--) {
+                NIGHT_VISION_FOR_PLAYER_IN_VEHICLE.getElements().add(Position.fromCoordinates(i, j, null));
+            }
+        }
+    }
+
+    public static Vision NIGHT_VISION_FOR_PLAYER_IN_PLATFORM;
+
+    static {
+        NIGHT_VISION_FOR_PLAYER_IN_PLATFORM = new Vision();
+        int radius = 9;
+        for (int i = -radius; i <= radius; i++) {
+            for (int j = -radius; j <= radius; j++) {
+                int distanceX = Math.abs(i);
+                int distanceY = Math.abs(j);
+                int distance = distanceX + distanceY;
+                if (distance > 0 && distance <= radius) {
+                    NIGHT_VISION_FOR_PLAYER_IN_PLATFORM.getElements().add(Position.fromCoordinates(i, j, null));
+                }
+            }
+        }
     }
 }

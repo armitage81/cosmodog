@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Ray;
+import antonafanasjew.cosmodog.sight.Vision;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
