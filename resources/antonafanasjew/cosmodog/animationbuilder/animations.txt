@@ -247,6 +247,9 @@ inventoryItemMineDetector;data/MineDetector.png;16;16;[0/0/10000];true;true
 inventoryItemMineDeactivationCodes;data/MineDetector.png;16;16;[1/0/10000];true;true
 inventoryItemAntidote;data/antidote.png;16;16;[0/0/10000];true;true
 inventoryItemPortalGun;data/inventory_items.png;16;16;[4/1/10000];true;true
+inventoryItemFlashlight;data/inventory_items.png;16;16;[5/1/10000];true;true
+inventoryItemNightVisionGoggles;data/inventory_items.png;16;16;[6/1/10000];true;true
+inventoryItemMotionTracker;data/inventory_items.png;16;16;[7/1/10000];true;true
 
 inventoryItemBackground;data/inventory_items.png;16;16;[1/9/75,2/9/75,3/9/75,4/9/75,5/9/75,6/9/75,7/9/75,8/9/75,0/9/3000];true;true
 

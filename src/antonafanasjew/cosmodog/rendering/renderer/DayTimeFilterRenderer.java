@@ -96,8 +96,8 @@ public class DayTimeFilterRenderer extends AbstractRenderer {
 			filterColor = new Color(1f,0f, 0f, 0.2f);
 			filterColorNearby = filterColor;
 		} else if (calendar.isNight()) {
-			filterColor = new Color(0f,0f, 1f, 0.4f);
-			filterColorNearby = new Color(0f,0f, 0f, 0f);
+			filterColor = new Color(0f,0f, 1f, 0.5f);
+			filterColorNearby = new Color(0f,0f, 0f, 0.3f);
 		} else if (calendar.isMorning()) {
 			filterColor = new Color(1f,0f,0f,0.4f);
 			filterColorNearby = filterColor;

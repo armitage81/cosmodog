@@ -388,6 +388,8 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleTool.ToolType.nutrients.name(), new NutrientsInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.axe.name(), new AxeInteraction());
 		pieceInteractionMap.put(CollectibleTool.ToolType.portalgun.name(), new PortalGunInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.nightvision.name(), new NightVisionInteraction());
+		pieceInteractionMap.put(CollectibleTool.ToolType.motiontracker.name(), new MotionTrackerInteraction());
 		
 		this.setCosmodog(cosmodog);
 		

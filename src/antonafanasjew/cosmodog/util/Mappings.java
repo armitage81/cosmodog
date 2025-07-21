@@ -149,6 +149,8 @@ public class Mappings {
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.WEAPON_FIRMWARE_UPGRADE, ToolType.weaponFirmwareUpgrade);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.NUTRIENTS, ToolType.nutrients);
 		MAP_TILE_TO_TOOL_TYPE.put(TileType.PORTALGUN, ToolType.portalgun);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.NIGHTVISION, ToolType.nightvision);
+		MAP_TILE_TO_TOOL_TYPE.put(TileType.MOTIONTRACKER, ToolType.motiontracker);
 	}
 	
 	public static Map<TileType, GoodieType> MAP_TILE_TO_GOODIE_TYPE = Maps.newHashMap();
@@ -367,6 +369,15 @@ public class Mappings {
 			return "inventoryItemNutrients";
 		} else if (tool.getToolType() == ToolType.portalgun) {
 			return "inventoryItemPortalGun";
+		} else if (tool.getToolType() == ToolType.nightvision) {
+			Player player = ApplicationContextUtils.getPlayer();
+			if (player.getInventory().get(InventoryItemType.NIGHT_VISION_GOGGLES) != null) {
+				return "inventoryItemNightVisionGoggles";
+			} else {
+				return "inventoryItemFlashlight";
+			}
+		} else if (tool.getToolType() == ToolType.motiontracker) {
+			return "inventoryItemMotionTracker";
 		}
 		
 		return "infobit";
@@ -403,6 +414,9 @@ public class Mappings {
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.WEAPON_FIRMWARE_UPGRADE, "inventoryItemWeaponFirmwareUpgrade");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.NUTRIENTS, "inventoryItemNutrients");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.PORTAL_GUN, "inventoryItemPortalGun");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.FLASHLIGHT, "inventoryItemFlashlight");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.NIGHT_VISION_GOGGLES, "inventoryItemNightVisionGoggles");
+		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.MOTION_TRACKER, "inventoryItemMotionTracker");
 		INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.put(InventoryItemType.DEBUGGER, "inventoryItemCosmodog");
 	}
 	

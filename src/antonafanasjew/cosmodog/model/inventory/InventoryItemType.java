@@ -29,6 +29,9 @@ public enum InventoryItemType {
 	WEAPON_FIRMWARE_UPGRADE(true),
 	NUTRIENTS(true),
 	PORTAL_GUN(true),
+	FLASHLIGHT(true),
+	NIGHT_VISION_GOGGLES(true),
+	MOTION_TRACKER(true),
 	DEBUGGER(false);
 
 	private boolean representsTool;

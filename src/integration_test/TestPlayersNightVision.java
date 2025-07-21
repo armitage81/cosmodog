@@ -20,7 +20,7 @@ public class TestPlayersNightVision {
 
             @Override
             protected void updatePlayer(Player player) {
-                player.setPosition(Position.fromCoordinates(18, 36, MapType.ALTERNATIVE));
+                player.setPosition(Position.fromCoordinates(38, 38, MapType.ALTERNATIVE));
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
