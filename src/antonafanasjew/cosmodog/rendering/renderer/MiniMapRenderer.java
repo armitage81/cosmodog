@@ -160,9 +160,43 @@ public class MiniMapRenderer extends AbstractRenderer {
 			}
 		}
 
+		if (player.getInventory().hasItem(InventoryItemType.MOTION_TRACKER)) {
+			List<Position> enemies = map.getMapPieces().piecesOverall(PiecePredicates.ENEMY).stream().map(Piece::getPosition).toList();
+			for (Position position : enemies) {
+				int x = (int) position.getX();
+				int y = (int) position.getY();
+
+				int chartPiecePositionX = x / minimapPieceWidthInTiles;
+				int chartPiecePositionY = y / minimapPieceHeightInTiles;
+
+				if (chartInventoryItem != null && chartInventoryItem.pieceIsDiscovered(chartPiecePositionX, chartPiecePositionY)) {
+
+					//Ignore monoliths that are outside the visible excerpt.
+					if (x < firstTileToRenderX) {
+						continue;
+					}
+					if (x >= firstTileToRenderX + minimapPieceWidthInTiles) {
+						continue;
+					}
+					if (y < firstTileToRenderY) {
+						continue;
+					}
+					if (y >= firstTileToRenderY + minimapPieceHeightInTiles) {
+						continue;
+					}
+
+					long timestamp = System.currentTimeMillis();
+					float opacity = Oscillations.oscillation(timestamp, 0.5f, 1f, 500, 0);
+
+					DrawingContext tileDc = new TileDrawingContext(drawingContext, minimapPieceWidthInTiles, minimapPieceHeightInTiles, x - firstTileToRenderX, y - firstTileToRenderY);
+					SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
+					Image enemy = symbolsSpriteSheet.getSprite(5, 0);
+					enemy.draw(tileDc.x(), tileDc.y(), tileDc.w(), tileDc.h(), new Color(1, 1, 1, opacity));
+				}
+			}
+		}
+
 		List<Position> piecesIndicatedOnMap = map.getMapPieces().piecesOverall(PiecePredicates.PIECE_INDICATED_ON_MAP).stream().map(Piece::getPosition).toList();
-
-
 		for (Position position : piecesIndicatedOnMap) {
 			int x = (int)position.getX();
 			int y = (int)position.getY();
@@ -196,6 +230,7 @@ public class MiniMapRenderer extends AbstractRenderer {
 			}
 
 		}
+
 
 	}
 

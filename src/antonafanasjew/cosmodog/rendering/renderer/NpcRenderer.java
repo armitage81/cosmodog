@@ -4,19 +4,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyAttackActionPhase;
 import antonafanasjew.cosmodog.actions.fight.EnemyDestructionActionPhase;
 import antonafanasjew.cosmodog.actions.movement.MovementAction;
+import antonafanasjew.cosmodog.geometry.Oscillations;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.sight.VisibilityCalculatorForPlayer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.*;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.*;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
@@ -78,9 +79,7 @@ public class NpcRenderer extends AbstractRenderer {
 
 			Position enemyPosition = enemy.getPosition();
 
-			if (!VisibilityCalculatorForPlayer.instance().visible(player, map, cosmodogGame.getPlanetaryCalendar(), enemy.getPosition())) {
-				continue;
-			};
+			boolean visible = VisibilityCalculatorForPlayer.instance().visible(player, map, cosmodogGame.getPlanetaryCalendar(), enemyPosition);
 
 			float pieceOffsetX = 0.0f;
 			float pieceOffsetY = 0.0f;
@@ -198,23 +197,34 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 
 			Vector npcPositionVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(enemyPosition, camTilePosition);
-			enemyAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY);
-			
-			if (enemyDamaged && enemyRobotic) {
-				int smokeOffsetX = 8;
-				int smokeOffsetY = -8;
-				Animation smokeAnimation = ApplicationContext.instance().getAnimations().get("smoke");
-				smokeAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX  + animationSizeCorrectionOffsetX + smokeOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY + smokeOffsetY);
+
+			if (visible) {
+				enemyAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY);
+
+				if (enemyDamaged && enemyRobotic) {
+					int smokeOffsetX = 8;
+					int smokeOffsetY = -8;
+					Animation smokeAnimation = ApplicationContext.instance().getAnimations().get("smoke");
+					smokeAnimation.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + animationSizeCorrectionOffsetX + smokeOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY + smokeOffsetY);
+				}
+
+				if (enemyIsExploding && enemyRobotic) {
+					Animation explosionAnimation = ApplicationContext.instance().getAnimations().get("explosion");
+					float completion = optFightPhase.get().getCompletionRate();
+					int animationFrame = (int) (explosionAnimation.getFrameCount() * completion);
+					explosionAnimation.setCurrentFrame(animationFrame);
+					explosionAnimation.draw(npcPositionVectorRelatedToCam.getX() - tileLength, npcPositionVectorRelatedToCam.getY() - tileLength);
+				}
 			}
-			
-			if (enemyIsExploding && enemyRobotic) {
-				Animation explosionAnimation = ApplicationContext.instance().getAnimations().get("explosion");
-				float completion = optFightPhase.get().getCompletionRate();
-				int animationFrame = (int)(explosionAnimation.getFrameCount() * completion);
-				explosionAnimation.setCurrentFrame(animationFrame);
-				explosionAnimation.draw(npcPositionVectorRelatedToCam.getX() - tileLength, npcPositionVectorRelatedToCam.getY() - tileLength);
+			else if (player.getInventory().hasItem(InventoryItemType.MOTION_TRACKER)) {
+
+				long timestamp = System.currentTimeMillis();
+				float opacity = Oscillations.oscillation(timestamp, 0.5f, 1f, 500, 0);
+
+				Image image = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS).getSprite(5, 0);
+				image.draw(npcPositionVectorRelatedToCam.getX() + pieceOffsetX + animationSizeCorrectionOffsetX, npcPositionVectorRelatedToCam.getY() + pieceOffsetY + animationSizeCorrectionOffsetY, new Color(1, 1, 1, opacity));
 			}
-						
+
 			graphics.scale(1 / cam.getZoomFactor(), 1 / cam.getZoomFactor());
 			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 

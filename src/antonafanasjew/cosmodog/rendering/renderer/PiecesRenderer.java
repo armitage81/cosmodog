@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.model.actors.*;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.*;
+import antonafanasjew.cosmodog.sight.VisibilityCalculatorForPlayer;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.GameContainer;
@@ -24,10 +26,6 @@ import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.actors.Platform;
-import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.piecerendererpredicates.PieceRendererPredicate;
@@ -183,7 +181,14 @@ public class PiecesRenderer extends AbstractRenderer {
 		filteredMapPieces = filteredMapPieces.stream().sorted((p1, p2) -> (int)(p1.getPosition().getY() - p2.getPosition().getY())).collect(Collectors.toList());
 		
 		for (Piece piece : filteredMapPieces) {
-			
+
+			//Don't render collectibles if they are out of the player's sight at night.
+			if (piece instanceof Collectible || piece instanceof Vehicle) {
+				if (!VisibilityCalculatorForPlayer.instance().visible(player, map, cosmodogGame.getPlanetaryCalendar(), piece.getPosition())) {
+					continue;
+				}
+			}
+
 			Piece element = null;
 			String elementType = null;
 			

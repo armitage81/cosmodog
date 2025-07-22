@@ -12,6 +12,9 @@ import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestPlayersNightVision {
 
     public static void main(String[] args) throws SlickException {
@@ -24,7 +27,25 @@ public class TestPlayersNightVision {
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-                player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem());
+
+
+                List<Position> positions = new ArrayList<>();
+                positions.add(Position.fromCoordinates(7,3, MapType.MAIN));
+                positions.add(Position.fromCoordinates(38, 38, MapType.ALTERNATIVE));
+
+                player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(positions));
+
+                ChartInventoryItem chart = new ChartInventoryItem();
+
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        chart.discoverPiece(i,j);
+                    }
+                }
+
+
+                player.getInventory().put(InventoryItemType.CHART, chart);
+
 
             }
         };
