@@ -71,6 +71,7 @@ public class TestPortals {
 					int targetPosY = (int)endPoint.y / tileLength;
 					debuggerPositions.add(String.format("%s/%s/%s", targetPosX, targetPosY, MapType.SPACE));
 				}
+				debuggerPositions.add(String.format("%s/%s/%s", 127, 46, MapType.MAIN));
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 
 			}
