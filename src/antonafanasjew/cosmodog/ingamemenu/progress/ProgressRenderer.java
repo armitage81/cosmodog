@@ -281,12 +281,14 @@ public class ProgressRenderer extends AbstractRenderer {
 				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
 
 				List<InventoryItemType> inventoryItemTypes = Arrays.stream(InventoryItemType.values()).filter(InventoryItemType::isRepresentsTool).toList();
-				for (int j = 0; j < 20; j++) {
+				int slotsForTools = 30;
+				for (int j = 0; j < slotsForTools; j++) {
 					if (j >= inventoryItemTypes.size()) {
 						break;
 					}
-					DrawingContext toolDc = new TileDrawingContext(contentDc, 20, 1, j, 0);
-					toolDc = new CenteredDrawingContext(toolDc, 5);
+					DrawingContext toolDc = new TileDrawingContext(contentDc, slotsForTools, 1, j, 0);
+					float minSide = Math.min(toolDc.w(), toolDc.h()) - 5; //To make tool icons quadratic and add border.
+					toolDc = new CenteredDrawingContext(toolDc, minSide, minSide);
 					InventoryItemType inventoryItemType = inventoryItemTypes.get(j);
 					InventoryItem inventoryItem = player.getInventory().get(inventoryItemType);
 					String animationId = Mappings.INVENTORY_ITEM_TYPE_TO_ANIMATION_ID.get(inventoryItemType);
