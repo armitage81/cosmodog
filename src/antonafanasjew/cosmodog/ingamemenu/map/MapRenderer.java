@@ -98,14 +98,12 @@ public class MapRenderer extends AbstractRenderer {
 			int posInChartPieceY = posY - visibleYFrom;
 			TileDrawingContext playerPositionDrawingContext = new TileDrawingContext(mapAreaQuadraticDrawingContext, chartPieceWidth, chartPieceHeight, posInChartPieceX, posInChartPieceY);
 			long timestamp = System.currentTimeMillis();
-			if ((timestamp / 200) % 2 == 0) {
 
-				float opacity = Oscillations.oscillation(timestamp, 0.2f, 1f, 1000, 0);
+			float opacity = Oscillations.oscillation(timestamp, 0.3f, 1f, 750, 0);
 
-				SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
-				Image playerMarker = symbolsSpriteSheet.getSprite(2, 0);
-				playerMarker.draw(playerPositionDrawingContext.x() - playerPositionDrawingContext.w(), playerPositionDrawingContext.y() - playerPositionDrawingContext.h(), playerPositionDrawingContext.w() * 3, playerPositionDrawingContext.h() * 3, new Color(1, 1, 1, opacity));
-			}
+			SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);
+			Image playerMarker = symbolsSpriteSheet.getSprite(2, 0);
+			playerMarker.draw(playerPositionDrawingContext.x() - playerPositionDrawingContext.w(), playerPositionDrawingContext.y() - playerPositionDrawingContext.h(), playerPositionDrawingContext.w() * 3, playerPositionDrawingContext.h() * 3, new Color(1, 1, 1, opacity));
 
 		}
 		
