@@ -88,7 +88,17 @@ public class CosmodogMapStatisticsProvider {
 
 		Function<Piece, Integer> valueFunction = pieceValueInInfobitsFunction();
 
-		Map<Position, Integer> pieceValues = mapPieces.piecesOverall(PiecePredicates.NPC_ACTOR).stream().collect(Collectors.toMap(Piece::getPosition, valueFunction));
+
+		List<Piece> npcActors = mapPieces.piecesOverall(PiecePredicates.NPC_ACTOR);
+
+		for (Piece piece : npcActors) {
+			if (piece.getPosition().getX() == 67.0f && piece.getPosition().getY() == 67.0f) {
+				System.out.println(piece.getPosition());
+				System.out.println(piece.getClass());
+			}
+		}
+
+		Map<Position, Integer> pieceValues = npcActors.stream().collect(Collectors.toMap(Piece::getPosition, valueFunction));
 
 		Map<Position, Integer> mapPieceValuePerChartPiece = Maps.newHashMap();
 		for (Position position : pieceValues.keySet()) {
