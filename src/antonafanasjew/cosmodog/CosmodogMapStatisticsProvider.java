@@ -88,29 +88,16 @@ public class CosmodogMapStatisticsProvider {
 
 		Function<Piece, Integer> valueFunction = pieceValueInInfobitsFunction();
 
-
-		List<Piece> npcActors = mapPieces.piecesOverall(PiecePredicates.NPC_ACTOR);
-
-		for (Piece piece : npcActors) {
-			if (piece.getPosition().getX() == 67.0f && piece.getPosition().getY() == 67.0f) {
-				System.out.println(piece.getPosition());
-				System.out.println(piece.getClass());
-			}
-		}
-
-		Map<Position, Integer> pieceValues = npcActors.stream().collect(Collectors.toMap(Piece::getPosition, valueFunction));
+		Map<Piece, Integer> pieceValues = mapPieces.piecesOverall(PiecePredicates.NPC_ACTOR).stream().collect(Collectors.toMap(e -> e, valueFunction));
 
 		Map<Position, Integer> mapPieceValuePerChartPiece = Maps.newHashMap();
-		for (Position position : pieceValues.keySet()) {
-			Integer pieceValue = pieceValues.get(position);
-			int chartPiecePositionX = (int) position.getX() / chartPieceWidthInTiles;
-			int chartPiecePositionY = (int) position.getY() / chartPieceHeightInTiles;
-			Position chartPiecePosition = Position.fromCoordinates(chartPiecePositionX, chartPiecePositionY, position.getMapType());
-			if (mapPieceValuePerChartPiece.get(chartPiecePosition) == null) {
-				mapPieceValuePerChartPiece.put(chartPiecePosition, 0);
-			}
-			int currentCount = mapPieceValuePerChartPiece.get(chartPiecePosition);
-			mapPieceValuePerChartPiece.put(chartPiecePosition, currentCount + pieceValue);
+		for (Piece piece : pieceValues.keySet()) {
+			Integer pieceValue = pieceValues.get(piece);
+			int chartPiecePositionX = (int) piece.getPosition().getX() / chartPieceWidthInTiles;
+			int chartPiecePositionY = (int) piece.getPosition().getY() / chartPieceHeightInTiles;
+			Position chartPiecePosition = Position.fromCoordinates(chartPiecePositionX, chartPiecePositionY, piece.getPosition().getMapType());
+            mapPieceValuePerChartPiece.putIfAbsent(chartPiecePosition, 0);
+            mapPieceValuePerChartPiece.compute(chartPiecePosition, (k, currentCount) -> currentCount + pieceValue);
 		}
 
 		return mapPieceValuePerChartPiece;
