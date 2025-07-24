@@ -221,8 +221,8 @@ public class PlayerMovementCache implements Serializable {
 
 	private void recalculateClosestSupplyAndMedkitPosition(Actor actor, Position position1, Position position2, ApplicationContext applicationContext) {
 		CosmodogMap map = applicationContext.getCosmodog().getCosmodogGame().mapOfPlayerLocation();
-		Collection<Piece> supplies = map.getSupplies().values();
-		Collection<Piece> medkits = map.getMedkits().values();
+		Collection<Piece> supplies = map.getSupplies();
+		Collection<Piece> medkits = map.getMedkits();
 
 
 		Comparator<Piece> proximityComparator = new Comparator<Piece>() {

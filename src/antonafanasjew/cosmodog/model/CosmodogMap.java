@@ -60,38 +60,98 @@ public class CosmodogMap extends CosmodogModel {
 	public PieceCache getMapPieces() {
 		return mapPieces;
 	}
-	
-	private Map<Position, Piece> getSpecificPieces(Predicate<Piece> predicate) {
-		return getMapPieces().piecesInArea(
+
+	private List<Piece> getSpecificPieces(Predicate<Piece> predicate) {
+
+        return getMapPieces().piecesInArea(
+                predicate,
+                0,
+                0,
+                400,
+                400
+        );
+
+	}
+
+	private Map<Position, List<Piece>> getSpecificPiecesByPosition(Predicate<Piece> predicate) {
+		List<Piece> pieces = getMapPieces().piecesInArea(
 				predicate,
 				0,
 				0,
 				400,
 				400
-		).stream().collect(Collectors.toMap(Piece::getPosition, e -> e));
+		);
+
+		Map<Position, List<Piece>> retVal = new HashMap<>();
+
+		for (Piece piece : pieces) {
+			retVal.computeIfAbsent(piece.getPosition(), (position) -> new ArrayList<>());
+			retVal.get(piece.getPosition()).add(piece);
+		}
+
+		return retVal;
+
 	}
 
-	public Map<Position, Piece> getInfobits() {
+	public List<Piece> getInfobits() {
 		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobit);
 		return getSpecificPieces(predicate);
 	}
-	
-	public Map<Position, Piece> getInfobytes() {
+
+	public Map<Position, List<Piece>> getInfobitsByPosition() {
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobit);
+		return getSpecificPiecesByPosition(predicate);
+	}
+
+	public List<Piece> getInfobytes() {
 		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobyte);
 		return getSpecificPieces(predicate);
 	}
-	
-	public Map<Position, Piece> getInfobanks() {
+
+	public Map<Position, List<Piece>> getInfobytesByPosition() {
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobyte);
+		return getSpecificPiecesByPosition(predicate);
+	}
+
+	public List<Piece> getInfobanks() {
 		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobank);
 		return getSpecificPieces(predicate);
 	}
-	
-	public Map<Position, Piece> getSupplies() {
+
+	public Map<Position, List<Piece>> getInfobanksByPosition() {
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.infobank);
+		return getSpecificPiecesByPosition(predicate);
+	}
+
+	public List<Piece> getSupplies() {
 		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
 		return getSpecificPieces(predicate);
 	}
-	
-	public Map<Position, Piece> getMedkits() {
+
+	public Map<Position, List<Piece>> getSuppliesByPosition() {
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.supplies);
+		return getSpecificPiecesByPosition(predicate);
+	}
+
+	public List<Piece> getMedkits() {
+		Predicate<Piece> predicate = piece -> {
+
+			boolean retVal = false;
+
+			if (piece instanceof CollectibleGoodie goodie) {
+				boolean goodieIsFirstAidKit = goodie.getGoodieType() == CollectibleGoodie.GoodieType.firstaidkit;
+				boolean goodieIsMedipack = goodie.getGoodieType() == CollectibleGoodie.GoodieType.medipack;
+				if (goodieIsFirstAidKit || goodieIsMedipack) {
+					retVal = true;
+				}
+			}
+			return retVal;
+		};
+
+		return getSpecificPieces(predicate);
+	}
+
+	public Map<Position, List<Piece>> getMedkitsByPosition() {
 		Predicate<Piece> predicate = piece -> {
 
 			boolean retVal = false;
@@ -106,25 +166,38 @@ public class CosmodogMap extends CosmodogModel {
 			return retVal;
 		};
 
-		return getSpecificPieces(predicate);
+		return getSpecificPiecesByPosition(predicate);
 	}
-	
-	public Map<Position, Piece> getInsights() {
+
+	public List<Piece> getInsights() {
 		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.insight);
 		return getSpecificPieces(predicate);
 	}
-	
-	public Map<Position, Piece> visibleMapPieces(Position ref, int width, int height, int grace) {
+
+	public Map<Position, List<Piece>> getInsightsByPosition() {
+		Predicate<Piece> predicate = piece -> piece instanceof CollectibleGoodie && ((CollectibleGoodie)piece).getGoodieType().equals(CollectibleGoodie.GoodieType.insight);
+		return getSpecificPiecesByPosition(predicate);
+	}
+
+	public List<Piece> visibleMapPieces(Position ref, int width, int height, int grace) {
+		Map<Position, List<Piece>> map = visibleMapPiecesByPosition(ref, width, height, grace);
+		return map.values().stream().flatMap(Collection::stream).toList();
+	}
+
+	public Map<Position, List<Piece>> visibleMapPiecesByPosition(Position ref, int width, int height, int grace) {
 
 		List<Piece> pieces = getMapPieces()
 				.piecesInArea(piece -> true, ref.getX() - grace, ref.getY() - grace, width + 2 * grace, height + 2 * grace)
 				.stream()
 				.toList();
 
-		Map<Position, Piece> retVal = new HashMap<>();
+		Map<Position, List<Piece>> retVal = new HashMap<>();
+
 		for (Piece piece : pieces) {
-			retVal.put(piece.getPosition(), piece);
+			retVal.computeIfAbsent(piece.getPosition(), (position) -> new ArrayList<>());
+			retVal.get(piece.getPosition()).add(piece);
 		}
+
 		return retVal;
 
 	}
