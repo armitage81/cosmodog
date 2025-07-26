@@ -993,7 +993,10 @@ public class InitializationUtils {
 
 		AsyncAction popupTextAboutAlienBaseEntryAsyncAction = new PopUpNotificationAction("You can enter the alien base now.");
 		RuleAction popupTextAboutAlienBaseEntryRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, popupTextAboutAlienBaseEntryAsyncAction, true);
-		rule = new Rule(Rule.RULE_COLLECTED_ALL_INSIGHTS, Lists.newArrayList(GameEventPieceInteraction.class), collectedAllInsightsOnlyOnceTrigger, popupTextAboutAlienBaseEntryRuleAction, Rule.RULE_PRIORITY_LATEST);
+		RuleAction setFlag = new SetGameProgressPropertyAction("MentionedThatAlienBaseCanBeEntered", "true");
+		BlockAction popupAndFlag = BlockAction.block(popupTextAboutAlienBaseEntryRuleAction, setFlag);
+
+		rule = new Rule(Rule.RULE_COLLECTED_ALL_INSIGHTS, Lists.newArrayList(GameEventPieceInteraction.class), collectedAllInsightsOnlyOnceTrigger, popupAndFlag, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 
 
