@@ -988,10 +988,12 @@ public class InitializationUtils {
 		//Collected 33 insights rule
 		RuleTrigger collected32InsightsOnMainMapTrigger = new GameProgressPropertyTrigger("foundinsightnumber", "32", "0");
 		RuleTrigger collected1InsightOnSpaceMapTrigger = new GameProgressPropertyTrigger("foundinsightnumber_space", "1", "0");
-		RuleTrigger collectedAllInsightsTrigger = AndTrigger.and(collected32InsightsOnMainMapTrigger, collected1InsightOnSpaceMapTrigger);
+		RuleTrigger onlyOnceTrigger = new GameProgressPropertyTrigger("MentionedThatAlienBaseCanBeEntered", "false");
+		RuleTrigger collectedAllInsightsOnlyOnceTrigger = AndTrigger.and(collected32InsightsOnMainMapTrigger, collected1InsightOnSpaceMapTrigger, onlyOnceTrigger);
+
 		AsyncAction popupTextAboutAlienBaseEntryAsyncAction = new PopUpNotificationAction("You can enter the alien base now.");
 		RuleAction popupTextAboutAlienBaseEntryRuleAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, popupTextAboutAlienBaseEntryAsyncAction, true);
-		rule = new Rule(Rule.RULE_COLLECTED_ALL_INSIGHTS, Lists.newArrayList(GameEventPieceInteraction.class), collectedAllInsightsTrigger, popupTextAboutAlienBaseEntryRuleAction, Rule.RULE_PRIORITY_LATEST);
+		rule = new Rule(Rule.RULE_COLLECTED_ALL_INSIGHTS, Lists.newArrayList(GameEventPieceInteraction.class), collectedAllInsightsOnlyOnceTrigger, popupTextAboutAlienBaseEntryRuleAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 
 
