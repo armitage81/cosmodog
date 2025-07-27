@@ -19,6 +19,11 @@ The sight field of most enemies is reduced at night.
 Some enemies are powered on solar energy and will be deactivated at night.
 
 
+Your sight is also reduced at night. Outside of your vision field, you will be able to see only the terrain, but not the enemies nor collectibles.
+There are tools in the game world that can improve your night vision.
+Alternatively, you can wait till dawn when the night surprises you in a dangerous area. (Press [ENTER] to skip time.)
+
+
 The player can hide in high grass.
 By doing so, only adjacent enemies can sense the player.
 This is visualized by a significantly reduced sight field for all enemies while the player is hiding.
