@@ -1964,9 +1964,9 @@ artilleryGrenadeUp;data/artillery_grenade.png;16;16;[0/0/10000];false;false
 artilleryGrenadeDown;data/artillery_grenade.png;16;16;[1/0/10000];false;false
 
 
-introShipCalmFlight;data/intro/shipFrameCalmFlight.png;640;300;[0/0/10000];false;false
-introShipDamaged;data/intro/shipFrameDamaged.png;640;300;[0/0/10000];false;false
-phaetonBackground;data/intro/phaetonBackground.png;1280;1280;[0/0/10000];false;false
+introShipCalmFlight;data/intro/spaceShipInteriour.png;1024;1024;[0/0/10000];false;false
+introShipDamaged;data/intro/spaceShipInteriour.png;1024;1024;[0/0/10000];false;false
+phaetonBackground;data/intro/phaetonBackground.png;1024;1024;[0/0/10000];false;false
 endingBackground;data/endingBackground.png;640;300;[0/0/10000];false;false
 
 

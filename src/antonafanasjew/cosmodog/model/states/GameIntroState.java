@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.model.states;
 
+import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -151,26 +152,31 @@ public class GameIntroState  extends CosmodogAbstractState {
 		
 	}
 	
-	private void renderPhase(GameContainer gc, StateBasedGame sbg, Graphics g) {
+	private void renderPhase(GameContainer gc2, StateBasedGame sbg, Graphics g) {
 		
-		DrawingContext dc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+		DrawingContext dc2 = DrawingContextProviderHolder.get().getDrawingContextProvider().gameContainerDrawingContext();
+
+		DrawingContext imageDc = new CenteredDrawingContext(dc2, 1024, 1024);
+
 		DrawingContext controlsDc = DrawingContextProviderHolder.get().getDrawingContextProvider().gameIntroControlsDrawingContext();
 		
 		long referenceTime = System.currentTimeMillis();
 		long phaseDuration = referenceTime - phaseStart;
-		
+
 		if (phase == IntroPhase.CALM_FLIGHT) {
 			
 			Animation shipFrameCalmFlight = ApplicationContext.instance().getAnimations().get("introShipCalmFlight");
 			Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 			
-			float backgroundLength = gc.getWidth() * 1.3f;
+			float backgroundLength = imageDc.w() * 1.3f;
 
 			Image backgroundImage = phaetonBackground.getCurrentFrame();
-			
+
+			g.setClip((int)imageDc.x(), (int)imageDc.y(), (int)imageDc.w(), (int)imageDc.h());
+
 			backgroundImage.draw(
-					-(backgroundLength - gc.getWidth()) / 2, 
-					-(backgroundLength - gc.getHeight()) / 2,
+					imageDc.x() - (backgroundLength - imageDc.w()) / 2,
+					imageDc.y() - (backgroundLength - imageDc.h()) / 2,
 					backgroundLength, 
 					backgroundLength
 			);
@@ -178,9 +184,10 @@ public class GameIntroState  extends CosmodogAbstractState {
 			Vector flyingVector = flying.apply(phaseDuration);
 			float shipOffsetX = flyingVector.getX();
 			float shipOffsetY = flyingVector.getY();
-			
-			shipFrameCalmFlight.draw(dc.x() - 20 + shipOffsetX, dc.y() - 20 + shipOffsetY, dc.w() + 40, dc.h() + 40);
-			
+
+			shipFrameCalmFlight.draw(imageDc.x() - 20 + shipOffsetX, imageDc.y() - 20 + shipOffsetY, imageDc.w() + 40, imageDc.h() + 40);
+
+			g.setClip(0, 0, gc2.getWidth(), gc2.getHeight());
 		}
 		
 		if (phase == IntroPhase.EXPLOSION) {
@@ -188,13 +195,15 @@ public class GameIntroState  extends CosmodogAbstractState {
 			Animation shipFrame = ApplicationContext.instance().getAnimations().get("introShipDamaged");
 			Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 			
-			float backgroundLength = gc.getWidth() * 1.3f;
+			float backgroundLength = imageDc.w() * 1.3f;
 
 			Image backgroundImage = phaetonBackground.getCurrentFrame();
-			
+
+			g.setClip((int)imageDc.x(), (int)imageDc.y(), (int)imageDc.w(), (int)imageDc.h());
+
 			backgroundImage.draw(
-					-(backgroundLength - gc.getWidth()) / 2, 
-					-(backgroundLength - gc.getHeight()) / 2,
+					imageDc.x() - (backgroundLength - imageDc.w()) / 2,
+					imageDc.y() - (backgroundLength - imageDc.h()) / 2,
 					backgroundLength, 
 					backgroundLength
 			);
@@ -202,8 +211,10 @@ public class GameIntroState  extends CosmodogAbstractState {
 			Vector explodingVector = exploding.apply(phaseDuration);
 			float shipOffsetX = explodingVector.getX();
 			float shipOffsetY = explodingVector.getY();
-			
-			shipFrame.draw(dc.x() - 20 + shipOffsetX, dc.y() - 20 + shipOffsetY, dc.w() + 40, dc.h() + 40);			
+
+			shipFrame.draw(imageDc.x() - 20 + shipOffsetX, imageDc.y() - 20 + shipOffsetY, imageDc.w() + 40, imageDc.h() + 40);
+
+			g.setClip(0, 0, gc2.getWidth(), gc2.getHeight());
 		}
 		
 		if (phase == IntroPhase.FALLING) {
@@ -211,16 +222,17 @@ public class GameIntroState  extends CosmodogAbstractState {
 			Animation shipFrame = ApplicationContext.instance().getAnimations().get("introShipDamaged");
 			Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 			
-			float backgroundLength = gc.getWidth() * 1.3f;
+			float backgroundLength = imageDc.w() * 1.3f;
 
 			Image backgroundImage = phaetonBackground.getCurrentFrame();
 			backgroundImage.setCenterOfRotation(backgroundLength / 2, backgroundLength / 2);
 			backgroundImage.setRotation(backgroundImage.getRotation() + 1);
-			
+
+			g.setClip((int)imageDc.x(), (int)imageDc.y(), (int)imageDc.w(), (int)imageDc.h());
 			
 			backgroundImage.draw(
-					-(backgroundLength - gc.getWidth()) / 2, 
-					-(backgroundLength - gc.getHeight()) / 2,
+					imageDc.x() - (backgroundLength - imageDc.w()) / 2,
+					imageDc.y() - (backgroundLength - imageDc.h()) / 2,
 					backgroundLength, 
 					backgroundLength
 			);
@@ -230,31 +242,33 @@ public class GameIntroState  extends CosmodogAbstractState {
 			float shipOffsetX = shakingVector.getX();
 			float shipOffsetY = shakingVector.getY();
 			
-			shipFrame.draw(dc.x() - 20 + shipOffsetX, dc.y() - 20 + shipOffsetY, dc.w() + 40, dc.h() + 40);
+			shipFrame.draw(imageDc.x() - 20 + shipOffsetX, imageDc.y() - 20 + shipOffsetY, imageDc.w() + 40, imageDc.h() + 40);
 			
 			int warnLampRest = (int)((referenceTime / 200) % 2);
 			
 			if (warnLampRest == 0) {
 				g.setColor(new Color(1f, 0f, 0f, 0.2f));
-				g.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
+				g.fillRect(imageDc.x(), imageDc.y(), imageDc.w(), imageDc.h());
 			}
-			
+
+			g.setClip(0, 0, gc2.getWidth(), gc2.getHeight());
 		}
 		
 		if (phase == IntroPhase.TEXT) {
 			Animation shipFrame = ApplicationContext.instance().getAnimations().get("introShipDamaged");
 			Animation phaetonBackground = ApplicationContext.instance().getAnimations().get("phaetonBackground");
 			
-			float backgroundLength = gc.getWidth() * 1.3f;
+			float backgroundLength = imageDc.w() * 1.3f;
 
 			Image backgroundImage = phaetonBackground.getCurrentFrame();
 			backgroundImage.setCenterOfRotation(backgroundLength / 2, backgroundLength / 2);
 			backgroundImage.setRotation(backgroundImage.getRotation() + 1);
-			
-			
+
+			g.setClip((int)imageDc.x(), (int)imageDc.y(), (int)imageDc.w(), (int)imageDc.h());
+
 			backgroundImage.draw(
-					-(backgroundLength - gc.getWidth()) / 2, 
-					-(backgroundLength - gc.getHeight()) / 2,
+					imageDc.x() - (backgroundLength - imageDc.w()) / 2,
+					imageDc.y() - (backgroundLength - imageDc.h()) / 2,
 					backgroundLength, 
 					backgroundLength
 			);
@@ -264,19 +278,21 @@ public class GameIntroState  extends CosmodogAbstractState {
 			float shipOffsetX = shakingVector.getX();
 			float shipOffsetY = shakingVector.getY();
 			
-			shipFrame.draw(dc.x() - 20 + shipOffsetX, dc.y() - 20 + shipOffsetY, dc.w() + 40, dc.h() + 40);
-			
+			shipFrame.draw(imageDc.x() - 20 + shipOffsetX, imageDc.y() - 20 + shipOffsetY, imageDc.w() + 40, imageDc.h() + 40);
+
+			g.setClip(0, 0, gc2.getWidth(), gc2.getHeight());
+
 			g.setColor(new Color(0f, 0f, 0f, 0.9f));
-			g.fillRect(dc.x(), dc.y(), dc.w(), dc.h());
+			g.fillRect(dc2.x(), dc2.y(), dc2.w(), dc2.h());
 			
-			TextBookRendererUtils.renderDynamicTextPage(gc, g, book);
+			TextBookRendererUtils.renderDynamicTextPage(gc2, g, book);
 			
 			boolean renderHint = book.dynamicPageComplete(referenceTime);
 			boolean renderBlinkingHint = (referenceTime / 250 % 2) == 1;
 			if (renderHint && renderBlinkingHint) {
 				FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.ControlsHint);
 				Book controlHint = TextPageConstraints.fromDc(controlsDc).textToBook("Press [ENTER]", fontRefToFontTypeMap);
-				TextBookRendererUtils.renderCenteredLabel(gc, g, controlHint);
+				TextBookRendererUtils.renderCenteredLabel(gc2, g, controlHint);
 			}
 			
 		}
