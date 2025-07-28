@@ -11,7 +11,7 @@ import antonafanasjew.cosmodog.controller.InputHandler;
 
 public class MapInputHandler implements InputHandler {
 
-	private static final int DELAY_LIMIT = 20;
+	private static final int DELAY_LIMIT = 3;
 	
 	private MapInputState mapInputState;
 	private int delay = 0;
