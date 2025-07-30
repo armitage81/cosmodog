@@ -31,9 +31,9 @@ public class NightVisionInteraction extends ToolInteraction {
 
 		FlashlightInventoryItem flashlight = (FlashlightInventoryItem) player.getInventory().get(InventoryItemType.FLASHLIGHT);
 		if (flashlight == null) {
-			return "You found a flashlight. It will increase your visibility at night.";
+			return "You found a flashlight. It will increase your sight at night.";
 		} else {
-			return "You found the night vision goggles. They will remove all visibility restrictions at night.";
+			return "You found the night vision goggles. They will remove all sight restrictions at night.";
 		}
 	}
 	
