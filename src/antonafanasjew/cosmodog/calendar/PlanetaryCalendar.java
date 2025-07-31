@@ -216,7 +216,7 @@ public class PlanetaryCalendar implements Serializable {
 	 * @return true if it is day time, false otherwise.
 	 */
 	public boolean isDay() {
-		return this.hour >= 8 && this.hour < 18;
+		return this.hour >= 7 && this.hour < 19;
 	}
 	
 	/**
@@ -224,7 +224,7 @@ public class PlanetaryCalendar implements Serializable {
 	 * @return true if it is evening time, false otherwise.
 	 */
 	public boolean isEvening() {
-		return this.hour >= 18 && this.hour < 20;
+		return this.hour == 19;
 	}
 	
 	/**
@@ -240,6 +240,6 @@ public class PlanetaryCalendar implements Serializable {
 	 * @return true if it is morning time, false otherwise.
 	 */
 	public boolean isMorning() {
-		return this.hour >= 6 && this.hour < 8;
+		return this.hour == 6;
 	}
 }
