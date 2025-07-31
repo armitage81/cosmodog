@@ -62,6 +62,7 @@ public class StatisticsState extends CosmodogAbstractState {
 		int maxInsights = Constants.NUMBER_OF_INSIGHTS_IN_GAME;
 		int noSecrets = player.getGameProgress().getNumberOfFoundSecrets();
 		int maxSecrets = Constants.NUMBER_OF_SECRETS_IN_GAME;
+		int deaths = player.getGameProgress().getNumberOfDeaths();
 
 		int enemiesLeft = cosmodogGame
 				.getMaps()
@@ -88,7 +89,7 @@ public class StatisticsState extends CosmodogAbstractState {
 		Book statistics = TextPageConstraints.fromDc(topContainerDrawingContext).textToBook("Statistics", fontTypeMainHeader);
 		TextBookRendererUtils.renderCenteredLabel(gc, g, statistics);
 
-		int numberOfRows = 8;
+		int numberOfRows = 9;
 		int currentRow = 0;
 
 		DrawingContext scoreDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
@@ -108,7 +109,10 @@ public class StatisticsState extends CosmodogAbstractState {
 		
 		DrawingContext enemiesDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, enemiesDc, "Enemies left", String.valueOf(enemiesLeft));
-		
+
+		DrawingContext deathsDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
+		renderLabelAndValue(gc, g, deathsDc, "Deaths", String.valueOf(deaths));
+
 		DrawingContext playTimeDc = new TileDrawingContext(centerContainerDrawingContext, 1, numberOfRows, 0, currentRow++);
 		renderLabelAndValue(gc, g, playTimeDc, "Play time", playTimeRepresentation);
 
