@@ -28,7 +28,7 @@ public class KeyRingInventoryItem extends InventoryItem {
 			DoorType.greenKeycardDoor,
 			DoorType.yellowKeycardDoor,
 			DoorType.brownKeycardDoor,
-			DoorType.purpleKeycardDoor,
+			DoorType.blackKeycardDoor,
 			DoorType.darkblueKeycardDoor,
 			DoorType.whiteKeycardDoor,
 			DoorType.yellowKeyDoor,

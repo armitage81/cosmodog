@@ -364,7 +364,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.greenKeycardDoor, new KeyInteraction());
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.greenKeyDoor, new KeyInteraction());
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.lilaKeycardDoor, new KeyInteraction());
-		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.purpleKeycardDoor, new KeyInteraction());
+		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.blackKeycardDoor, new KeyInteraction());
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.redKeycardDoor, new KeyInteraction());
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.redKeyDoor, new KeyInteraction());
 		pieceInteractionMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.whiteKeycardDoor, new KeyInteraction());

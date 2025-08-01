@@ -39,7 +39,7 @@ CYAN_KEYCARD_DESCRIPTION;CollectibleKey_cyanKeycardDoor;0;CollectibleKey_cyanKey
 GREEN_KEYCARD_DESCRIPTION;CollectibleKey_greenKeycardDoor;0;CollectibleKey_greenKeycardDoor;You found quartermaster's keycard (green).;40
 YELLOW_KEYCARD_DESCRIPTION;CollectibleKey_yellowKeycardDoor;0;CollectibleKey_yellowKeycardDoor;You found the key card to the expedition wing (yellow).;40
 BROWN_KEYCARD_DESCRIPTION;CollectibleKey_brownKeycardDoor;0;CollectibleKey_brownKeycardDoor;You found the key card to the hangar (brown).;40
-PURPLE_KEYCARD_DESCRIPTION;CollectibleKey_purpleKeycardDoor;0;CollectibleKey_purpleKeycardDoor;You found captains key card (crimson).;40
+BLACK_KEYCARD_DESCRIPTION;CollectibleKey_blackKeycardDoor;0;CollectibleKey_blackKeycardDoor;You found captains key card (black).;40
 DARKBLUE_KEYCARD_DESCRIPTION;CollectibleKey_darkblueKeycardDoor;0;CollectibleKey_darkblueKeycardDoor;You found the key card of the keeper of traditions (dark blue).;40
 WHITE_KEYCARD_DESCRIPTION;CollectibleKey_whiteKeycardDoor;0;CollectibleKey_whiteKeycardDoor;You found the expedition chiefs keycard (white).;40
 YELLOW_KEY_DESCRIPTION;CollectibleKey_yellowKeyDoor;0;CollectibleKey_yellowKeyDoor;You found the yellow key. It will open some doors.;40

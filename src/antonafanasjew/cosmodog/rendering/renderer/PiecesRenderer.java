@@ -97,7 +97,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.greenKeycardDoor, new KeyRenderer());
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.greenKeyDoor, new KeyRenderer());
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.lilaKeycardDoor, new KeyRenderer());
-		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.purpleKeycardDoor, new KeyRenderer());
+		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.blackKeycardDoor, new KeyRenderer());
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.redKeycardDoor, new KeyRenderer());
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.redKeyDoor, new KeyRenderer());
 		pieceRendererMap.put(CollectibleKey.class.getSimpleName() + "_" + DoorType.whiteKeycardDoor, new KeyRenderer());

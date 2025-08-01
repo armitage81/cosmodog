@@ -32,7 +32,7 @@ public class Door extends DynamicPiece {
 		greenKeycardDoor("green keycard"),
 		yellowKeycardDoor("yellow keycard"),
 		brownKeycardDoor("brown keycard"),
-		purpleKeycardDoor("crimson keycard"),
+		blackKeycardDoor("black keycard"),
 		darkblueKeycardDoor("dark blue keycard"),
 		whiteKeycardDoor("white keycard"),
 		yellowKeyDoor("yellow key"),

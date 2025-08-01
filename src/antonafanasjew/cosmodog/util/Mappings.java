@@ -183,7 +183,7 @@ public class Mappings {
 		TILE_ID_TO_KEY_TYPE.put(4514, DoorType.greenKeycardDoor);
 		TILE_ID_TO_KEY_TYPE.put(4515, DoorType.yellowKeycardDoor);
 		TILE_ID_TO_KEY_TYPE.put(4516, DoorType.brownKeycardDoor);
-		TILE_ID_TO_KEY_TYPE.put(4517, DoorType.purpleKeycardDoor);
+		TILE_ID_TO_KEY_TYPE.put(4517, DoorType.blackKeycardDoor);
 		TILE_ID_TO_KEY_TYPE.put(4518, DoorType.darkblueKeycardDoor);
 		TILE_ID_TO_KEY_TYPE.put(4519, DoorType.whiteKeycardDoor);
 		TILE_ID_TO_KEY_TYPE.put(4520, DoorType.yellowKeyDoor);
@@ -206,7 +206,7 @@ public class Mappings {
 		TILE_ID_TO_DOOR_TYPE.put(4478, DoorType.greenKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4479, DoorType.yellowKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4480, DoorType.brownKeycardDoor);
-		TILE_ID_TO_DOOR_TYPE.put(4481, DoorType.purpleKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4481, DoorType.blackKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4482, DoorType.darkblueKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4483, DoorType.whiteKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4484, DoorType.yellowKeyDoor);
@@ -225,7 +225,7 @@ public class Mappings {
 		TILE_ID_TO_DOOR_TYPE.put(4496, DoorType.greenKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4497, DoorType.yellowKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4498, DoorType.brownKeycardDoor);
-		TILE_ID_TO_DOOR_TYPE.put(4499, DoorType.purpleKeycardDoor);
+		TILE_ID_TO_DOOR_TYPE.put(4499, DoorType.blackKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4500, DoorType.darkblueKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4501, DoorType.whiteKeycardDoor);
 		TILE_ID_TO_DOOR_TYPE.put(4502, DoorType.yellowKeyDoor);
@@ -708,7 +708,7 @@ public class Mappings {
 		KEY_TYPE_2_ANIMATION_ID.put(DoorType.greenKeycardDoor, "dynamicPieceAlienKey4");
 		KEY_TYPE_2_ANIMATION_ID.put(DoorType.yellowKeycardDoor, "dynamicPieceAlienKey5");
 		KEY_TYPE_2_ANIMATION_ID.put(DoorType.brownKeycardDoor, "dynamicPieceAlienKey6");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.purpleKeycardDoor, "dynamicPieceAlienKey7");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.blackKeycardDoor, "dynamicPieceAlienKey7");
 		KEY_TYPE_2_ANIMATION_ID.put(DoorType.darkblueKeycardDoor, "dynamicPieceAlienKey8");
 		KEY_TYPE_2_ANIMATION_ID.put(DoorType.whiteKeycardDoor, "dynamicPieceAlienKey9");
 	}
