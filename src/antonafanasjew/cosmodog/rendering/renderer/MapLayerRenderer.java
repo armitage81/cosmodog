@@ -20,6 +20,7 @@ import antonafanasjew.cosmodog.rendering.maprendererpredicates.MapLayerRendererP
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.Mappings;
 import antonafanasjew.cosmodog.util.TilesetUtils;
+import profiling.ProfilerUtils;
 
 public class MapLayerRenderer extends AbstractRenderer {
 
@@ -112,7 +113,9 @@ public class MapLayerRenderer extends AbstractRenderer {
 		}
 		
 		if (animation != null) {
-			animation.draw(offsetX, offsetY, animation.getWidth(), animation.getHeight());
+			final Animation finalAnimation = animation;
+			ProfilerUtils.runWithProfiling("MapLayerRenderer.drawingASingleTileAnimation", () -> {
+				finalAnimation.draw(offsetX, offsetY, finalAnimation.getWidth(), finalAnimation.getHeight());});
 		} else {
 			int imageIndex = tileId - 1;
 			
@@ -122,8 +125,9 @@ public class MapLayerRenderer extends AbstractRenderer {
 				int imagePosY = imageIndex / 9;
 				
 				Image tileImage = TilesetUtils.tileByIndex(imagePosX, imagePosY);
-				
-				tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
+				ProfilerUtils.runWithProfiling("MapLayerRenderer.drawingASingleTileImage", () -> {
+					tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
+				});
 			}	
 		}
 		

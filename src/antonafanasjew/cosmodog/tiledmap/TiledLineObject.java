@@ -13,14 +13,22 @@ public abstract class TiledLineObject extends TiledObject {
 		
 		private static final long serialVersionUID = 9014114862165386002L;
 
+		//We have this values only to keep the information from the map
+		//in case we want to write it back to file and compare the maps for equality.
+		//I did not want to change the float type to double and refactor the whole application, so these variables come on top.
+		public double xx;
+		public double yy;
+
 		public float x;
 		public float y;
 		
 		
 		
-		public Point(float x, float y) {
-			this.x = x;
-			this.y = y;
+		public Point(double x, double y) {
+			this.xx = x;
+			this.yy = y;
+			this.x = (float)x;
+			this.y = (float)y;
 		}
 
 		public Point() {

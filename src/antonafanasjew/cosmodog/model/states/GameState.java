@@ -30,6 +30,7 @@ import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rules.events.GameEventNewGame;
 import antonafanasjew.cosmodog.tiledmap.io.TiledMapIoException;
 import antonafanasjew.cosmodog.topology.Rectangle;
+import profiling.ProfilerUtils;
 
 import java.util.Map;
 
@@ -119,44 +120,46 @@ public class GameState extends CosmodogAbstractState {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int n) throws SlickException {
+	public void update(GameContainer gc, StateBasedGame sbg, final int delta) throws SlickException {
 
-		if (firstUpdate) {
-			n = 0; // We ignore the first update as it can be big because of the initialization.
-			gc.getInput().clearKeyPressedRecord();
-			firstUpdate = false;
-		}
+		ProfilerUtils.runWithProfiling("GameState.update", () -> {
+			int n = delta;
+			if (firstUpdate) {
+				n = 0; // We ignore the first update as it can be big because of the initialization.
+				gc.getInput().clearKeyPressedRecord();
+				firstUpdate = false;
+			}
 
-		final int nn = n;
-		ApplicationContext.instance().getAnimations().values().forEach(e -> e.update(nn));
+			final int nn = n;
+			ApplicationContext.instance().getAnimations().values().forEach(e -> e.update(nn));
 
-		Cosmodog cosmodog = applicationContext.getCosmodog();
-		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+			Cosmodog cosmodog = applicationContext.getCosmodog();
+			CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
 
-		Input input = gc.getInput();
+			Input input = gc.getInput();
 
-		// Modal window actions, like text frames or dialog boxes, have their own
-		// modal input handling, so handle the input only in case they are not registered.
-		// Also the asyncronous actions from the action registry should be updated only
-		// if no modal window action is registered.
-		if (cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) == null) {
-			if (Features.getInstance().featureOn(Features.FEATURE_DEBUGGER)) {
+			// Modal window actions, like text frames or dialog boxes, have their own
+			// modal input handling, so handle the input only in case they are not registered.
+			// Also the asyncronous actions from the action registry should be updated only
+			// if no modal window action is registered.
+			if (cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) == null) {
+				if (Features.getInstance().featureOn(Features.FEATURE_DEBUGGER)) {
 
-				if (input.isKeyPressed(Input.KEY_0)) {
-					sbg.enterState(CosmodogStarter.DEBUG_STATE_ID);
+					if (input.isKeyPressed(Input.KEY_0)) {
+						sbg.enterState(CosmodogStarter.DEBUG_STATE_ID);
+					}
+
 				}
+				cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME).handleInput(gc, sbg, n, applicationContext);
 
 			}
-			cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME).handleInput(gc, sbg, n, applicationContext);
 
-		}
+			cosmodogGame.getActionRegistry().update(n, gc, sbg);
+			cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
 
-		cosmodogGame.getActionRegistry().update(n, gc, sbg);
-		cosmodogGame.getInterfaceActionRegistry().update(n, gc, sbg);
-
-		// After processing a loop, clear the record of pressed buttons.
-		input.clearKeyPressedRecord();
-
+			// After processing a loop, clear the record of pressed buttons.
+			input.clearKeyPressedRecord();
+		});
 	}
 
 	public static int maxTime = 0;
@@ -164,16 +167,18 @@ public class GameState extends CosmodogAbstractState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 
-		InGameMenu inGameMenu = ApplicationContextUtils.getCosmodogGame().getInGameMenu();
+		ProfilerUtils.runWithProfiling("SceneRenderer.render", () -> {
 
-		//No need to render the game world if a menu is open.
-		if (inGameMenu == null) {
-			interfaceOnSceneRenderer.render(gc, g, null);
-			dyingPlayerRenderer.render(gc, g, null);
-			wrongSequenceRenderer.render(gc, g, null);
-		}
-		inGameMenuRenderer.render(gc, g, null);
+			InGameMenu inGameMenu = ApplicationContextUtils.getCosmodogGame().getInGameMenu();
 
+			//No need to render the game world if a menu is open.
+			if (inGameMenu == null) {
+				interfaceOnSceneRenderer.render(gc, g, null);
+				dyingPlayerRenderer.render(gc, g, null);
+				wrongSequenceRenderer.render(gc, g, null);
+			}
+			inGameMenuRenderer.render(gc, g, null);
+		});
 	}
 
 	@Override
