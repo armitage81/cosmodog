@@ -112,7 +112,7 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 	 */
 	private void updateFightActionResultForOneEnemy(Player player, Enemy enemy) {
 		int playerAttackDamage = 1000;
-		FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
+		FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true, false);
 		fightActionResult.add(playerPhaseResult);
 	}
 

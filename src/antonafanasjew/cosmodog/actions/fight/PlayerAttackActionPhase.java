@@ -31,7 +31,13 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
 
-		String text = String.valueOf(getFightPhaseResult().getDamage());
+		int damage = getFightPhaseResult().getDamage();
+		boolean criticalHit = getFightPhaseResult().isCriticalHit();
+		if (criticalHit) {
+			damage *= 3;
+		}
+
+		String text = String.valueOf(damage);
 
 		DirectionType playerDirection = getFightPhaseResult().getPlayer().getDirection();
 		DirectionType enemyDirection = getFightPhaseResult().getEnemy().getDirection();
@@ -40,14 +46,17 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
 		boolean enemyLooksAway = enemyDirection.equals(playerDirection);
 		Enemy enemy = getFightPhaseResult().getEnemy();
-		boolean criticalHitsAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
-		
-		if (playerLooksAtEnemy && enemyLooksAway && criticalHitsAllowed) {
-			text = text + " (x2)";
-		}
-		
+		boolean backstabbingAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
+
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), text);
-		
+		if (playerLooksAtEnemy && enemyLooksAway && backstabbingAllowed) {
+			OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(BACKSTABBED)");
+		}
+
+		if (criticalHit) {
+			OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(CRITICAL HIT)");
+		}
+
 		getFightPhaseResult().getPlayer().lookAtActor(getFightPhaseResult().getEnemy());
 		getFightPhaseResult().getEnemy().lookAtActor(getFightPhaseResult().getPlayer());
 		
@@ -61,7 +70,13 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		Enemy enemy = getFightPhaseResult().getEnemy();
 		
 		int damage = getFightPhaseResult().getDamage();
-		
+
+		boolean critical = getFightPhaseResult().isCriticalHit();
+
+		if (critical) {
+			damage = damage * 3;
+		}
+
 		enemy.setLife(enemy.getLife() - damage);
 		Arsenal arsenal = player.getArsenal();
 		WeaponType weaponType = arsenal.getSelectedWeaponType();

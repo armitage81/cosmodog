@@ -542,6 +542,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 			protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
 				return 0;
 			}
+
+			@Override
+			public boolean criticalHit(Actor attacker, Actor defender) {
+				return false;
+			}
 		};
 		
 		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(game.getPlanetaryCalendar()), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));

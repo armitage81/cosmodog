@@ -270,10 +270,13 @@ public class FightAction extends PhaseBasedAction {
 
 			DamageCalculator playerDamageCalculator = unarmedAttack ? playerAttackDamageCalculatorIfNoAmmo : playerAttackDamageCalculator;
 			int playerAttackDamage = playerDamageCalculator.damage(player, enemy);
-			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
+			boolean playerCriticalHit = playerDamageCalculator.criticalHit(player, enemy);
+
+			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true, playerCriticalHit);
 
 			int enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
-			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
+			boolean enemyCriticalHit = enemyAttackDamageCalculator.criticalHit(enemy, player);
+			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false, enemyCriticalHit);
 
 			if (playerIsAttacker) {
 				fightActionResult.add(playerPhaseResult);
