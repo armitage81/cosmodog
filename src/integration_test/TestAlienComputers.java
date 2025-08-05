@@ -1,9 +1,11 @@
 package integration_test;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.*;
+import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
@@ -26,6 +28,12 @@ public class TestAlienComputers {
 
 
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+				player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 
 				for (int i = 0; i < 6000; i++) {
 					player.getGameProgress().addInfobit();
