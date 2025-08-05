@@ -14,5 +14,7 @@ public interface DamageCalculator {
 	 * @return Amount of damage points dealt by the attacker.
 	 */
 	int damage(Actor attacker, Actor defender);
+
+	boolean criticalHit(Actor attacker, Actor defender);
 	
 }

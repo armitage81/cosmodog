@@ -9,16 +9,24 @@ import antonafanasjew.cosmodog.model.actors.Player;
  */
 public abstract class AbstractPlayerAttackDamageCalculator extends AbstractDamageCalculator {
 
+	public static final int CRITICAL_HIT_CHANCE_IN_PERCENT = 5;
+
 	@Override
 	protected int damageInternal(Actor attacker, Actor defender) {
 
 		Player player = (Player) attacker;
 		Enemy enemy = (Enemy) defender;
 		
-		return playerAttackDamageInternal(player, enemy);
+		int damage = playerAttackDamageInternal(player, enemy);
+
+		return damage;
+
 	}
 
 	protected abstract int playerAttackDamageInternal(Player player, Enemy enemy);
 
-	
+	@Override
+	public boolean criticalHit(Actor attacker, Actor defender) {
+		return System.currentTimeMillis() % 100 < CRITICAL_HIT_CHANCE_IN_PERCENT;
+	}
 }

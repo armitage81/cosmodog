@@ -88,7 +88,10 @@ public class GameIntroState  extends CosmodogAbstractState {
 		long referenceTime = System.currentTimeMillis();
 
 		Input input = gc.getInput();
-		
+
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			cutsceneSkipped = true;
+		}
 		
 		IntroPhase phaseBeforeSwitch = phase;
 		

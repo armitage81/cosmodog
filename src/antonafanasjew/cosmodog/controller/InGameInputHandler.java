@@ -211,7 +211,12 @@ public class InGameInputHandler extends AbstractInputHandler {
     				protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
     					return 0;
     				}
-    			};
+
+					@Override
+					public boolean criticalHit(Actor attacker, Actor defender) {
+						return false;
+					}
+				};
 
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {

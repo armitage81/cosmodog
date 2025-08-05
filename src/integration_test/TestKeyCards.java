@@ -14,7 +14,7 @@ import org.newdawn.slick.SlickException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestAlienComputers {
+public class TestKeyCards {
 
 	public static void main(String[] args) throws SlickException {
 		
@@ -26,14 +26,11 @@ public class TestAlienComputers {
 				player.setMaxLife(100);
 				player.setLife(100);
 
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
 
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-				player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 
 				for (int i = 0; i < 6000; i++) {
 					player.getGameProgress().addInfobit();
@@ -44,7 +41,12 @@ public class TestAlienComputers {
 				player.getInventory().put(InventoryItemType.INSIGHT, insight);
 
 				List<String> debuggerPositions = new ArrayList<>();
-				debuggerPositions.add("270/294");
+				debuggerPositions.add("206/269");
+				debuggerPositions.add("217/269");
+				debuggerPositions.add("230/269");
+				debuggerPositions.add("242/254");
+				debuggerPositions.add("261/245");
+				debuggerPositions.add("224/281");
 				DebuggerInventoryItem debugger = new DebuggerInventoryItem(String.join(";", debuggerPositions));
 				player.getInventory().put(InventoryItemType.DEBUGGER, debugger);
 				player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());

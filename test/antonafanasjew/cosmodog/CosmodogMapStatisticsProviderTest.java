@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog;
 import java.util.Map;
 import java.util.function.Function;
 
+import antonafanasjew.cosmodog.caching.PieceCache;
 import antonafanasjew.cosmodog.domains.MapType;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -76,17 +77,30 @@ public class CosmodogMapStatisticsProviderTest {
 	public void testInfobitValuePerChartPiece() {
 		int chartPieceWidthInTiles = 2;
 		int chartPieceHeightInTiles = 2;
-		CollectibleGoodie g = new CollectibleGoodie(GoodieType.infobit);
 		Position p1 = Position.fromCoordinates(0, 0, MapType.MAIN);
 		Position p2 = Position.fromCoordinates(1, 1, MapType.MAIN);
 		Position p3 = Position.fromCoordinates(2, 0, MapType.MAIN);
 		Position p4 = Position.fromCoordinates(0, 2, MapType.MAIN);
-		Map<Position, Piece> map = Maps.newHashMap();
-		map.put(p1,  g);
-		map.put(p2,  g);
-		map.put(p3,  g);
-		map.put(p4,  g);
-		Map<Position, Integer> result = CosmodogMapStatisticsProvider.getInstance().infobitValuePerChartPiece(map, Sets.newHashSet(), chartPieceWidthInTiles, chartPieceHeightInTiles);
+
+		CollectibleGoodie g1 = new CollectibleGoodie(GoodieType.infobit);
+		g1.setPosition(p1);
+
+		CollectibleGoodie g2 = new CollectibleGoodie(GoodieType.infobit);
+		g2.setPosition(p2);
+
+		CollectibleGoodie g3 = new CollectibleGoodie(GoodieType.infobit);
+		g3.setPosition(p3);
+
+		CollectibleGoodie g4 = new CollectibleGoodie(GoodieType.infobit);
+		g4.setPosition(p4);
+
+		PieceCache pieceCache = new PieceCache(400, 400);
+
+		pieceCache.addPiece(g1);
+		pieceCache.addPiece(g2);
+		pieceCache.addPiece(g3);
+		pieceCache.addPiece(g4);
+		Map<Position, Integer> result = CosmodogMapStatisticsProvider.getInstance().infobitValuePerChartPiece(pieceCache, Sets.newHashSet(), chartPieceWidthInTiles, chartPieceHeightInTiles);
 		
 		Position m1 = Position.fromCoordinates(0f, 0f, MapType.MAIN);
 		Position m2 = Position.fromCoordinates(0f, 1f, MapType.MAIN);

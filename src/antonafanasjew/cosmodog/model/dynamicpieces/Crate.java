@@ -24,8 +24,19 @@ public class Crate extends DynamicPiece {
 	private static final short NUMBER_OF_SHAPES = 5;
 	private static short shapeLoopCounter = 0;
 
+	private boolean alienCrate;
+
+	public boolean isAlienCrate() {
+		return alienCrate;
+	}
+
+	public void setAlienCrate(boolean alienCrate) {
+		this.alienCrate = alienCrate;
+	}
+
 	private short state = STATE_WHOLE;
 	private final short shapeNumber = (short) ((shapeLoopCounter++) % NUMBER_OF_SHAPES);
+
 
 	public short getState() {
 		return state;
@@ -35,10 +46,11 @@ public class Crate extends DynamicPiece {
 		return state == STATE_DESTROYED;
 	}
 
-	public static Crate create(Position position) {
-		Crate stone = new Crate();
-		stone.setPosition(position);
-		return stone;
+	public static Crate create(Position position, boolean alienCrate) {
+		Crate crate = new Crate();
+		crate.setPosition(position);
+		crate.setAlienCrate(alienCrate);
+		return crate;
 	}
 
 	public String animationSuffixFromState() {
@@ -79,7 +91,7 @@ public class Crate extends DynamicPiece {
 
 	@Override
 	public String animationId(boolean bottomNotTop) {
-		String animationIdPrefix = "dynamicPieceCrate";
+		String animationIdPrefix = alienCrate ? "dynamicPieceAlienCrate" : "dynamicPieceCrate";
 		String animationIdPrefixIndex = String.valueOf(getShapeNumber());
 		String animationIdInfix = bottomNotTop ? "Bottom" : "Top";
 		String animationSuffix = animationSuffixFromState();

@@ -3,13 +3,16 @@ package integration_test;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.*;
+import antonafanasjew.cosmodog.model.actors.Vehicle;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.model.inventory.RadioactiveSuitInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.SlickException;
 
-public class TestSnowfall {
+public class TestCraterSprite {
 
 	public static void main(String[] args) throws SlickException {
 		
@@ -17,15 +20,11 @@ public class TestSnowfall {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(111, 349, MapType.MAIN));
-				player.setLife(1);
-				for (int i = 0; i < 64; i++) {
-					player.getGameProgress().addInfobank();
-				}
-				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
-				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
-				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("111/355;111/357;111/349"));
+				player.setPosition(Position.fromCoordinates(115, 156, MapType.MAIN));
+				player.setMaxLife(100);
+				player.setLife(100);
+				player.getInventory().put(InventoryItemType.RADIOACTIVESUIT, new RadioactiveSuitInventoryItem());
+				
 			}
 		};
 

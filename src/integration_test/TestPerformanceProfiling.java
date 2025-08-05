@@ -17,11 +17,13 @@ public class TestPerformanceProfiling {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(218, 191, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(69, 352, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.ANTIDOTE, new AntidoteInventoryItem());
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
+				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem());
 
 				ChartInventoryItem chart = new ChartInventoryItem();

@@ -19,4 +19,8 @@ public abstract class AbstractEnemyAttackDamageCalculator extends AbstractDamage
 
 	protected abstract int enemyAttackDamageInternal(Enemy enemy, Player player);
 
+	public boolean criticalHit(Actor attacker, Actor defender) {
+		return false;
+	}
+
 }

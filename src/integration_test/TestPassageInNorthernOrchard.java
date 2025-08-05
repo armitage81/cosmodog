@@ -1,11 +1,9 @@
 package integration_test;
 
 import antonafanasjew.cosmodog.domains.MapType;
-import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.*;
-import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
@@ -14,7 +12,7 @@ import org.newdawn.slick.SlickException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestAlienComputers {
+public class TestPassageInNorthernOrchard {
 
 	public static void main(String[] args) throws SlickException {
 		
@@ -22,18 +20,12 @@ public class TestAlienComputers {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(238, 237, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(108, 44, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 
 
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
-				player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 
 				for (int i = 0; i < 6000; i++) {
 					player.getGameProgress().addInfobit();
@@ -47,8 +39,7 @@ public class TestAlienComputers {
 				debuggerPositions.add("270/294");
 				DebuggerInventoryItem debugger = new DebuggerInventoryItem(String.join(";", debuggerPositions));
 				player.getInventory().put(InventoryItemType.DEBUGGER, debugger);
-				player.getInventory().put(InventoryItemType.BOAT, new BoatInventoryItem());
-				player.getInventory().put(InventoryItemType.PICK, new PickInventoryItem());
+				player.getInventory().put(InventoryItemType.AXE, new AxeInventoryItem());
 			}
 		};
 

@@ -658,7 +658,12 @@ public class InitializationUtils {
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_CRATE.getTileId()) {
-					Crate crate = Crate.create(position);
+					Crate crate = Crate.create(position, false);
+					map.getMapPieces().addPiece(crate);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_ALIENCRATE.getTileId()) {
+					Crate crate = Crate.create(position, true);
 					map.getMapPieces().addPiece(crate);
 				}
 

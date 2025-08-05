@@ -90,8 +90,7 @@ public class LogPlayerInputState implements InGameMenuInputState {
 
 	@Override
 	public void initializeState() {
-		seriesNumber = 0;
-		logNumber = 0;
+		//We intentionally do not initialize the cursor position in the log player to keep it memorized from the previous time.
 		recalculatePages();
 	}
 	

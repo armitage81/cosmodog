@@ -58,7 +58,7 @@ public class TiledMapLayer {
 		return visible;
 	}
 	
-	public void setVisible(boolean visible) {
+	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
 	
@@ -66,7 +66,7 @@ public class TiledMapLayer {
 		return opacity;
 	}
 
-	public void setOpacity(float opacity) {
+	public void setOpacity(Float opacity) {
 		this.opacity = opacity;
 	}
 	

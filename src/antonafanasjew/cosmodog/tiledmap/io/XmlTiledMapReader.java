@@ -109,11 +109,16 @@ public class XmlTiledMapReader implements TiledMapReader {
 		String width = element.getAttribute("width").getValue();
 		String height = element.getAttribute("height").getValue();
 		Attribute visibleAttribute = element.getAttribute("visible");
-		//Per default this attribute is skipped, defaulting to visible=true
-		boolean visible = visibleAttribute == null || !visibleAttribute.getValue().equals("0");
+		boolean visible = true;
+		if (visibleAttribute != null) {
+			visible = !visibleAttribute.getValue().equals("0");
+		}
 		Attribute opacityAttribute = element.getAttribute("opacity");
-		float opacity = opacityAttribute == null ? 1.0f : Float.parseFloat(opacityAttribute.getValue());
-		
+		float opacity = 1.0f;
+		if (opacityAttribute != null) {
+			opacity = Float.parseFloat(opacityAttribute.getValue());
+		}
+
 		layer.setId(id);
 		layer.setName(name);
 		int mapWidth = Integer.parseInt(width);
@@ -272,11 +277,13 @@ public class XmlTiledMapReader implements TiledMapReader {
 				String[] coordinates = point.split(",");
 				//Take care. This coordinates are all relating to the x/y starting point of the polygon which is considered as 0/0
 				//When creating the polygon object, the actual x/y position should be added to each point.
-				float cx = Float.parseFloat(coordinates[0]);
-				float cy = Float.parseFloat(coordinates[1]);
+				double cx = Double.parseDouble(coordinates[0]);
+				double cy = Double.parseDouble(coordinates[1]);
 				Point p = new Point();
-				p.x = cx + o.getX();
-				p.y = cy + o.getY();
+				p.xx = cx + o.getX();
+				p.yy = cy + o.getY();
+				p.x = (float)p.xx;
+				p.y = (float)p.yy;
 				o.getPoints().add(p);
 			}
 		}
