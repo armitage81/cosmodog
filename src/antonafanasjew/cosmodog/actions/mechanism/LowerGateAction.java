@@ -4,6 +4,8 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.util.TileUtils;
@@ -86,6 +88,7 @@ public class LowerGateAction extends FixedLengthAsyncAction {
                 gatesInRegion.add(gate);
             }
         }
+		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS).play();
 	}
 
 	/**
