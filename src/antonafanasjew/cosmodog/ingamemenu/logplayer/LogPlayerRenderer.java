@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.ingamemenu.logplayer;
 import java.util.List;
 import java.util.function.Function;
 
+import antonafanasjew.cosmodog.SpriteSheets;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -41,7 +42,7 @@ public class LogPlayerRenderer extends AbstractRenderer {
 	/**
 	 * The maximum number of logs that can be displayed in one row.
 	 */
-	private static final int MAX_NUMBER_OF_LOGS_IN_SERIES = 20;
+	private static final int MAX_NUMBER_OF_LOGS_IN_SERIES = 30;
 
 	/**
 	 * There can be maximally that many log series.
@@ -197,13 +198,20 @@ public class LogPlayerRenderer extends AbstractRenderer {
 
 				//If the log is not selected it is just drawn green or gray depending on whether it has been found or not.
 				oneLogDc = new CenteredDrawingContext(oneLogDc, 5);
-				graphics.setColor(found ? Color.green : Color.gray);
-				graphics.fillRect(oneLogDc.x(), oneLogDc.y(), oneLogDc.w(), oneLogDc.h());
-				
+
+				if (found) {
+					ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS).getSprite(6, 0).draw(oneLogDc.x(), oneLogDc.y(), oneLogDc.w(), oneLogDc.h());
+				} else {
+					graphics.setColor(Color.gray);
+					graphics.fillRect(oneLogDc.x(), oneLogDc.y(), oneLogDc.w(), oneLogDc.h());
+				}
+
+
+
 			}
 		}
-		
-		
+
+
 	}
 
 }
