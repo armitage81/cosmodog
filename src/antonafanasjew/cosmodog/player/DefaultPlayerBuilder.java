@@ -18,6 +18,7 @@ public class DefaultPlayerBuilder extends AbstractPlayerBuilder {
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
 		player.getLogPlayer().addLogToSeries("hints");
+		player.getLogPlayer().addLogToSeries("hints");
 		player.setLife(1);
 
 	}
