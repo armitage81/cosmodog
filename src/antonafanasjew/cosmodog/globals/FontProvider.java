@@ -12,6 +12,7 @@ public class FontProvider {
 		MainMenu(FontType.StartMenu, FontType.StartMenu_LowRes),
 		
 		Narration(FontType.Narration, FontType.Narration_LowRes),
+		NarrationMemory(FontType.NarrationMemory, FontType.NarrationMemory_LowRes),
 		NarrationImportant(FontType.NarrationImportant, FontType.NarrationImportant_LowRes),
 		NarrationSpeech(FontType.NarrationSpeech, FontType.NarrationSpeech_LowRes),
 		NarrationSpeechImportant(FontType.NarrationSpeechImportant, FontType.NarrationSpeechImportant_LowRes),

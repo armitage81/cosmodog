@@ -3,7 +3,8 @@ Memory of father's heroism
 Another memory closes in upon you...
 
 
-Today, you feel like the coolest boy at school.
+
+<font:memory> Today, you feel like the coolest boy at school.
 The feeling is unfamiliar, but you could get used to it.
 You came late to class but the teacher Stevenson, nicknamed 'The Inquisitor,' uncharacteristically kept his remarks to himself.
 Maybe, he'd read the last issue of 'The Traveller' already.
@@ -43,29 +44,26 @@ You never were the best student in class. It is not your first less-than-average
 Today, you feel ashamed.
 
 
-...
-
-
 
 After the class, your friend Mick approaches you and hits you with his backpack.
 
 
-<font:speech> "I got 36 out of 100. You?" <font:narration>
+<font:speech> "I got 36 out of 100. You?" <font:memory>
 
 
-<font:speech> "53" <font:narration>
+<font:speech> "53" <font:memory>
 
 
-<font:speech> "Well, that means supporting course for us both, huh?" <font:narration>
+<font:speech> "Well, that means supporting course for us both, huh?" <font:memory>
 
 
 He notices the newspaper page in your hand. 
 
 
-<font:speech> "What do you have there?" <font:narration>
+<font:speech> "What do you have there?" <font:memory>
 
 
-<font:speech> "Nothing." <font:narration>
+<font:speech> "Nothing." <font:memory>
 
 
 You crumple the page into a tight ball and toss it into the trash bin.

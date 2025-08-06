@@ -4,11 +4,8 @@ As the memory takes form in your mind, everything clicks into place.
 You know it now! Alisa's voice! You remember why it feels so familiar.
 
 
-...
 
-
-
-It's time to celebrate.
+<font:memory> It's time to celebrate.
 You graduated from the Academy as one of the best.
 It was not easy but you gave yourself a push. You had someone to look up to, after all.
 
@@ -34,7 +31,7 @@ She seems to be in trouble.
 One of the men pushes the woman against the wall and grabs her arm.
 
 
-<font:speech> "Leave me alone, you moron!" <font:narration> she shouts. 
+<font:speech> "Leave me alone, you moron!" <font:memory> she shouts.
 
 
 The drunkard does not let go. He swings his arm...
@@ -50,51 +47,51 @@ You are not the best fighter in the world, but both your opponents are drunk and
 The fight ends quickly, and they retreat, hurling curses at you and the woman.
 
 
-<font:speech> "Are you alright?" <font:narration> you ask her. 
+<font:speech> "Are you alright?" <font:memory> you ask her.
 
 
 The woman looks you up and down, then smiles. Her stressful expression dissipates in an instant. 
 
 
-<font:speech> "Thanks, dear! You are a lifesaver! Those two were a real pain." <font:narration>
+<font:speech> "Thanks, dear! You are a lifesaver! Those two were a real pain." <font:memory>
 
 
 Suddenly she leans toward you and lays her hand on your shoulder.
 
 
-<font:speech> "You deserve a reward, handsome." <font:narration>
+<font:speech> "You deserve a reward, handsome." <font:memory>
 
 
 You flinch with sudden embarrassment. The woman laughs and reaches for your hand.
 
 
-<font:speech> "Come on, darling. Relax. Let's have some fun!" <font:narration>
+<font:speech> "Come on, darling. Relax. Let's have some fun!" <font:memory>
 
 
 Her breath smells of alcohol. As you withdraw, she frowns.
 
 
-<font:speech> "What's wrong with you?! Oh, you're one of..." <font:narration>
+<font:speech> "What's wrong with you?! Oh, you're one of..." <font:memory>
 
 
-<font:speech> "No," <font:narration> you protest. 
-<font:speech> "No, I'm not! It's just... I don't even know you." <font:narration> 
+<font:speech> "No," <font:memory> you protest.
+<font:speech> "No, I'm not! It's just... I don't even know you." <font:memory>
 
 
-<font:speech> "Don't worry, I work here," <font:narration> the woman responds, her expression less friendly. 
+<font:speech> "Don't worry, I work here," <font:memory> the woman responds, her expression less friendly.
 Given your reluctance, she grins maliciously.
 
 
 <font:speech> "Oh, I know your kind! A knight in the shining armor.
 Thinking you’re better than everyone else.
-Waiting for a true love, aren't you?" <font:narration>
+Waiting for a true love, aren't you?" <font:memory>
 
 
 She lights a cigarette.
 
 
 <font:speech> "How old are you, boy? Eighteen? Nineteen? Still a virgin, I bet! 
-Dreaming of Her, the perfect woman, right?" <font:narration> 
+Dreaming of Her, the perfect woman, right?" <font:memory>
 
 
 You realize she is drunk. Her eyes are dull and unfocused, her accent sharp.
@@ -103,10 +100,7 @@ You realize she is drunk. Her eyes are dull and unfocused, her accent sharp.
 <font:speech> "Ha! Keep waiting, boy! But you know what? The world doesn't give a damn about you!
 It is a crappy place! Cold and merciless!
 Nothing's gonna just drop into your lap, dear! You gotta go out and grab it!
-That's life, boy! Stop dreaming! Wake up!" <font:narration>
-
-
-...
+That's life, boy! Stop dreaming! Wake up!" <font:memory>
 
 
 

@@ -11,6 +11,7 @@ public class FontRefToFontTypeMap extends HashMap<String, FontTypeName> {
 	public static final String FONT_REF_DEFAULT = "default";
 	
 	public static final String FONT_REF_NARRATION = "narration";
+	public static final String FONT_REF_NARRATION_MEMORY = "memory";
 	public static final String FONT_REF_NARRATION_IMPORTANT = "important";
 	public static final String FONT_REF_NARRATION_SPEECH = "speech";
 	public static final String FONT_REF_NARRATION_SPEECH_IMPORTANT = "shout";
@@ -22,6 +23,7 @@ public class FontRefToFontTypeMap extends HashMap<String, FontTypeName> {
 		
 		map.put(FONT_REF_DEFAULT, FontTypeName.Narration);
 		map.put(FONT_REF_NARRATION, FontTypeName.Narration);
+		map.put(FONT_REF_NARRATION_MEMORY, FontTypeName.NarrationMemory);
 		map.put(FONT_REF_NARRATION_IMPORTANT, FontTypeName.NarrationImportant);
 		map.put(FONT_REF_NARRATION_SPEECH, FontTypeName.NarrationSpeech);
 		map.put(FONT_REF_NARRATION_SPEECH_IMPORTANT, FontTypeName.NarrationSpeechImportant);
