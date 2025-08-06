@@ -9,7 +9,11 @@ The only remark she makes before you touch the cold stone is "Good Luck!"
 It is as if she knew what was coming.
 
 
-A painful memory. The day of Mary's departure.
+A painful memory.
+
+
+
+<font:memory> It is the day of Mary's departure.
 
 
 You always knew your time together wouldn't last forever. You insist on escorting her to the orbital port.
@@ -37,13 +41,13 @@ It would be unfair. She deserves much better.
 Mary hugs you, avoiding your gaze.
 
 
-<font:speech> "I'll write," <font:narration> she says.
+<font:speech> "I'll write," <font:memory> she says.
 
 
 You nod. As she walks toward the shuttle, the urge to stop her becomes unbearable.
 
 
-<font:speech> "Mary!" <font:narration> 
+<font:speech> "Mary!" <font:memory>
 
 
 She turns around, quickly as if she'd waited for your call.
@@ -55,7 +59,7 @@ Stay, you think. I cannot live without you.
 But you manage to pull yourself together.
 
 
-<font:speech> "My new ship. I named it Cosmodog," <font:narration> is all you say, a stupid fake smile on your face.
+<font:speech> "My new ship. I named it Cosmodog," <font:memory> is all you say, a stupid fake smile on your face.
 
 
 Mary returns the smile. Her eyes glisten.
@@ -63,11 +67,8 @@ She takes a breath as if to speak, pauses briefly,
 then turns and strides through the terminal door.
 
 
-...
 
-
-
-The voices withdraw and become silent hisses. 
+<font:narration> The voices withdraw and become silent hisses.
 The currents of darkness dissipate, and you blink away the remnants of the vision.
 Alisa does not hesitate to comment on your behaviour.
 

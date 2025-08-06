@@ -25,8 +25,8 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 	private static final long serialVersionUID = 2907704591362301531L;
 
 	public static final int DURATION_DARKNESS = 3000;
-	public static final int DURATION_PICTURE_FADES_IN = 15000;
-	public static final int DURATION_PICTURE = 5000;
+	public static final int DURATION_PICTURE_FADES_IN = 7000;
+	public static final int DURATION_PICTURE = 3000;
 	public static final int DURATION_PICTURE_FADES_OUT = 500;
 	public static final float INITIAL_PICTURE_OPACITY = 1f;
 	public static final float TEXT_PICTURE_OPACITY = 0.7f;

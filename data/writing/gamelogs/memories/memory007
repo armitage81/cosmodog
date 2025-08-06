@@ -25,12 +25,8 @@ Among them: Mary.
 <font:speech> "Just take care, okay?" <font:narration>
 
 
-...
 
-
-
-The memory is a roller coaster of emotions.
-You are in the hotel room on Athena, waiting for the conference to finish.
+<font:memory> You are in the hotel room on Athena, waiting for the conference to finish.
 You feel broken and empty.
 
 
@@ -46,10 +42,6 @@ As she took leave, Mary gave you a hug and wished you good night.
 
 
 You did not hear of her since.
-
-
-...
-
 
 
 For the tenth time you grab the communicator and immediately put it back again. 
@@ -69,21 +61,21 @@ A cheerful courier stands there.
 
 
 <font:speech> "I've got a package for your kid," 
-<font:narration> she says and passes you a toy dog 
+<font:memory> she says and passes you a toy dog
 wearing a red space suit and a transparent bubble helmet with a small note attached to it. 
 
 
 The courier laughs.
 <font:speech> "I know this one. It's the dog from this old cartoon. 
 I loved it as a child. How was it called again?"
-<font:narration>
+<font:memory>
 
 
 You scan the note, and a wave of happiness washes over you.
 
 
-Mary hasn’t forgotten you, after all.
+Mary has not forgotten you, after all.
 
 
-<font:speech> "Cosmodog," <font:narration> you say, pointing at the note, wide smile on your face.
-<font:speech> "It was called Cosmodog. I love it, too!" <font:narration>
+<font:speech> "Cosmodog," <font:memory> you say, pointing at the note, wide smile on your face.
+<font:speech> "It was called Cosmodog. I love it, too!" <font:memory>
