@@ -186,7 +186,7 @@ public class MiniMapRenderer extends AbstractRenderer {
 					}
 
 					long timestamp = System.currentTimeMillis();
-					float opacity = Oscillations.oscillation(timestamp, 0.5f, 1f, 500, 0);
+					float opacity = Oscillations.oscillation(timestamp, 0.2f, 1f, 250, 0);
 
 					DrawingContext tileDc = new TileDrawingContext(drawingContext, minimapPieceWidthInTiles, minimapPieceHeightInTiles, x - firstTileToRenderX, y - firstTileToRenderY);
 					SpriteSheet symbolsSpriteSheet = ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_SYMBOLS);

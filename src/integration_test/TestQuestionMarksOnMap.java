@@ -33,6 +33,7 @@ public class TestQuestionMarksOnMap {
 				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem());
 				player.getInventory().put(InventoryItemType.ARCHEOLOGISTS_JOURNAL, new ArcheologistsJournalInventoryItem());
+				player.getInventory().put(InventoryItemType.MOTION_TRACKER, new MotionTrackerInventoryItem());
 
 				ChartInventoryItem chart = new ChartInventoryItem();
 
