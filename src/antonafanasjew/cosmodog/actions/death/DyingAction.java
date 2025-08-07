@@ -45,6 +45,7 @@ public class DyingAction extends FixedLengthAsyncAction {
 		player.getGameProgress().incNumberOfDeaths();
 		player.setFood(player.getCurrentMaxFood());
 		player.setWater(player.getCurrentMaxWater());
+		cosmodogGame.clearPortals();
 		player.resetLife();
 		player.setPosition(respawnPosition);
 		player.decontaminate();
