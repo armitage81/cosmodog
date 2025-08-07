@@ -28,6 +28,11 @@ public class TestGameHints {
 				player.setWater(10);
 				player.setFood(5);
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
+				player.getLogPlayer().addLogToSeries("hints");
+				player.getLogPlayer().addLogToSeries("hints");
+				player.getLogPlayer().addLogToSeries("hints");
+				player.getLogPlayer().addLogToSeries("hints");
+				player.getLogPlayer().addLogToSeries("hints");
 
 				List<String> debuggerPositions = new ArrayList<>();
 				debuggerPositions.add("367/323");
