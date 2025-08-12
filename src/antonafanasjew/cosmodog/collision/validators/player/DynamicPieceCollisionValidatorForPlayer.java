@@ -32,6 +32,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.OneWayBollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Sensor;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.TrafficBarrier;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -58,6 +59,17 @@ public class DynamicPieceCollisionValidatorForPlayer extends AbstractCollisionVa
 		DynamicPiece dynamicPiece = optMoveable.isPresent() ? optMoveable.get() : dynamicPieces.stream().findFirst().orElse(null);
 
 		if (dynamicPiece != null) {
+
+			if (dynamicPiece instanceof TrafficBarrier trafficBarrier) {
+				Player player = ApplicationContextUtils.getPlayer();
+				boolean open = trafficBarrier.openAsPerReality(player.getGameProgress().getTurn());
+				if (open) {
+					retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE, "");
+				} else {
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				}
+			}
+
 			if (dynamicPiece instanceof Sensor) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
 			}

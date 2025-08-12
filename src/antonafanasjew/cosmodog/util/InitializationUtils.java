@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.TrafficBarrier;
 import antonafanasjew.cosmodog.model.portals.ReflectionType;
 import antonafanasjew.cosmodog.model.portals.interfaces.*;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
@@ -478,6 +479,20 @@ public class InitializationUtils {
 				Position position = Position.fromCoordinates(k, l, map.getMapType());
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
+
+				if (tileId >= TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_FIRST.getTileId() && tileId <= TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_LAST.getTileId()) {
+					int offset = tileId - TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_FIRST.getTileId();
+					int[] opennessRhythm = TileType.TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.get(offset);
+					TrafficBarrier trafficBarrier = TrafficBarrier.create(position, false, opennessRhythm);
+					map.getMapPieces().addPiece(trafficBarrier);
+				}
+
+				if (tileId >= TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_HORIZONTAL_FIRST.getTileId() && tileId <= TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_HORIZONTAL_LAST.getTileId()) {
+					int offset = tileId - TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_HORIZONTAL_FIRST.getTileId();
+					int[] opennessRhythm = TileType.TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.get(offset);
+					TrafficBarrier trafficBarrier = TrafficBarrier.create(position, true, opennessRhythm);
+					map.getMapPieces().addPiece(trafficBarrier);
+				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_SENSOR.getTileId()) {
 					Sensor sensor = Sensor.create(position);

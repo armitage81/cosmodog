@@ -1,6 +1,8 @@
 package antonafanasjew.cosmodog.globals;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
@@ -430,6 +432,14 @@ public enum TileType {
 	DYNAMIC_PIECE_CUBE(Layers.LAYER_META_DYNAMIC_PIECES, 5824),
 	DYNAMIC_PIECE_TRANSPARENT_CUBE(Layers.LAYER_META_DYNAMIC_PIECES, 5825),
 
+
+	DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_FIRST(Layers.LAYER_META_DYNAMIC_PIECES, 2629),
+	DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_LAST(Layers.LAYER_META_DYNAMIC_PIECES, 2645),
+
+	DYNAMIC_PIECE_TRAFFIC_BARRIER_HORIZONTAL_FIRST(Layers.LAYER_META_DYNAMIC_PIECES, 2647),
+	DYNAMIC_PIECE_TRAFFIC_BARRIER_HORIZONTAL_LAST(Layers.LAYER_META_DYNAMIC_PIECES, 2663),
+
+
 	//Doors have different variants, so they are not stored here.
 	
 	//This is a dummy tile type to represent a tile that is not in the tile type enum.
@@ -522,6 +532,31 @@ public enum TileType {
 		ENERGY_WALL_TILES.add(ENERGYWALL_EFFECT_18);
 	}
 
+	//Here, the key is the offset from the first traffic barrier tile and the value is the rhythm
+	//in which the barrier opens and closes.
+	public static final Map<Integer, int[]> TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS = new HashMap<>();
+	static {
+
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(0, new int[]{1, 1});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(1, new int[]{2, 2});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(2, new int[]{3, 3});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(3, new int[]{4, 4});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(4, new int[]{5, 5});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(5, new int[]{6, 6});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(6, new int[]{7, 7});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(7, new int[]{8, 8});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(8, new int[]{16, 16});
+
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(9, new int[]{1, 2});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(10, new int[]{1, 3});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(11, new int[]{1, 4});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(12, new int[]{1, 5});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(13, new int[]{2, 4});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(14, new int[]{3, 6});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(15, new int[]{4, 8});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(16, new int[]{5, 10});
+		TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.put(17, new int[]{8, 24});
+	}
 	
 	
 	private int layerId;

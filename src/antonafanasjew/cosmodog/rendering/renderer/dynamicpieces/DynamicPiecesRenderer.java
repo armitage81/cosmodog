@@ -10,11 +10,13 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.TrafficBarrier;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.renderingutils.ActorRendererUtils;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.util.ArithmeticUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -89,6 +91,7 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
+		Player player = cosmodogGame.getPlayer();
 		CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
 		Cam cam = cosmodogGame.getCam();
 
@@ -129,6 +132,59 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 			float topBottomDependentY = dynamicPieceRenderingParam.bottomNotTop() ? pieceY : pieceNorthY;
 
 			String animationId = dynamicPiece.animationId(dynamicPieceRenderingParam.bottomNotTop());
+
+			if (dynamicPiece instanceof TrafficBarrier trafficBarrier) {
+
+				float x = pieceX;
+				float y = pieceY;
+
+				float counterX = pieceX;
+				float counterY = pieceY;
+
+				float signalX = pieceX;
+				float signalY = pieceY;
+
+				if (trafficBarrier.isHorizontalNotVertical()) {
+					x -= tileLength;
+					y -= (2 * tileLength);
+
+					counterX = counterX - tileLength - 2;
+					counterY = counterY - tileLength - 1;
+
+					signalX = signalX - tileLength + 1;
+					signalY = signalY - 2 * tileLength + 7;
+
+				} else {
+					x -= tileLength;
+					y -= tileLength;
+
+					counterX = counterX - tileLength + 3;
+					counterY = counterY - tileLength - 3;
+
+					signalX = signalX - tileLength + 6;
+					signalY = signalY - 2 * tileLength + 5;
+
+				}
+
+				int turn = player.getGameProgress().getTurn();
+
+				String verticalOrHorizontal = trafficBarrier.isHorizontalNotVertical() ? "Horizontal" : "Vertical";
+				String openOrClosed = trafficBarrier.openAsPerReality(turn) ? "Open" : "Closed";
+				String bottomOrTop = ((DynamicPiecesRendererParam) renderingParameter).bottomNotTop ? "Bottom" : "Top";
+				animationId = "trafficBarrier" + verticalOrHorizontal + openOrClosed + bottomOrTop;
+
+				applicationContext.getAnimations().get(animationId).draw(x, y);
+
+				boolean openAsPerSchedule = trafficBarrier.openAsPerSchedule(turn);
+				String signalAnimationId = openAsPerSchedule ? "trafficBarrierSignalGreen" : "trafficBarrierSignalRed";
+				applicationContext.getAnimations().get(signalAnimationId).draw(signalX, signalY);
+
+				int[] remainingPhaseDuration = ArithmeticUtils.remainingPhaseDuration(trafficBarrier.getOpennessRhythm(), turn);
+				int remainingDuration = remainingPhaseDuration[1];
+				String remainingDurationAnimationId = "trafficBarrierSignalCounter" + remainingDuration;
+				applicationContext.getAnimations().get(remainingDurationAnimationId).draw(counterX, counterY);
+
+			}
 
 			if (dynamicPiece instanceof Jammer jammer) {
 				if (!jammer.isHidden()) {

@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArithmeticUtils {
@@ -22,6 +23,15 @@ public class ArithmeticUtils {
             timeInPeriod -= phaseDuration;
         }
         return retVal;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> phaseDurations = new ArrayList<>();
+        phaseDurations.add(Integer.parseInt(args[0]));
+        phaseDurations.add(Integer.parseInt(args[1]));
+        int[] remainingPhaseDuration = remainingPhaseDuration(phaseDurations, Integer.parseInt(args[2]));
+        System.out.printf("Phase     : %s\n", remainingPhaseDuration[0] % 2 == 0 ? "OPEN" : "CLOSE");
+        System.out.printf("Remaining : %s\n", remainingPhaseDuration[1]);
     }
 
 }

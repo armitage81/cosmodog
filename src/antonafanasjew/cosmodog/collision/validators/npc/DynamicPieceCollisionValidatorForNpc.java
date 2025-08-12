@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.actors.Actor;
+import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.AlienBaseBlockade;
 import antonafanasjew.cosmodog.model.dynamicpieces.Bamboo;
 import antonafanasjew.cosmodog.model.dynamicpieces.BinaryIndicator;
@@ -25,6 +26,7 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.Reflector;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.TrafficBarrier;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
@@ -45,6 +47,17 @@ public class DynamicPieceCollisionValidatorForNpc extends AbstractCollisionValid
 
 		if (optDynamicPiece.isPresent()) {
 			DynamicPiece dynamicPiece = optDynamicPiece.get();
+
+			if (dynamicPiece instanceof TrafficBarrier trafficBarrier) {
+				Player player = ApplicationContextUtils.getPlayer();
+				boolean open = trafficBarrier.openAsPerReality(player.getGameProgress().getTurn());
+				if (open) {
+					retVal = CollisionStatus.instance(actor, map, entrance, true, PassageBlockerType.PASSABLE, "");
+				} else {
+					retVal = CollisionStatus.instance(actor, map, entrance, false, PassageBlockerType.BLOCKED_DYNAMIC_PIECE, "");
+				}
+			}
+
 			if (dynamicPiece instanceof Mine) {
 				//Do nothing. Just a place holder to not forget this part in case something changes.
 			}
