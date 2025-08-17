@@ -16,6 +16,9 @@ import antonafanasjew.cosmodog.actions.environmentaldamage.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.death.WormAttackAction;
 import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.actions.race.CancelRaceAction;
+import antonafanasjew.cosmodog.actions.race.InitiateRaceAction;
+import antonafanasjew.cosmodog.actions.race.LoseRaceAction;
 import antonafanasjew.cosmodog.actions.weather.SnowfallChangeAction;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
@@ -41,6 +44,7 @@ import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.rules.events.GameEventChangedPosition;
 import antonafanasjew.cosmodog.rules.events.GameEventEndedTurn;
 import antonafanasjew.cosmodog.rules.events.GameEventTeleported;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.topology.Position;
@@ -179,6 +183,7 @@ public class PlayerMovementListener implements MovementListener {
 		checkRadiation(applicationContext);
 		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
+		checkRace(applicationContext);
 		checkMine(applicationContext);
 		updateSnowfall();
 		checkContaminationStatus(applicationContext);
@@ -187,7 +192,8 @@ public class PlayerMovementListener implements MovementListener {
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
 
 		GameEventUtils.throwEvent(new GameEventEndedTurn());
-
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 		updateCache(actor, position1, position2);
 
 		if (timeToAutosave()) {
@@ -224,11 +230,13 @@ public class PlayerMovementListener implements MovementListener {
 		checkRadiation(applicationContext);
 		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
+		checkRace(applicationContext);
 		checkMine(applicationContext);
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
-
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 		updateCache(actor, actor.getPosition(), actor.getPosition());
 
 		if (timeToAutosave()) {
@@ -248,7 +256,8 @@ public class PlayerMovementListener implements MovementListener {
 		detectMines(applicationContext);
 		updateSnowfall();
 		changeLettersOnLetterPlates(applicationContext);
-
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 		updateCache(actor, actor.getPosition(), actor.getPosition());
 
 		GameEventUtils.throwEvent(new GameEventTeleported());
@@ -271,12 +280,14 @@ public class PlayerMovementListener implements MovementListener {
 		checkRadiation(applicationContext);
 		checkElectricity(applicationContext);
 		checkWorm(applicationContext);
+		checkRace(applicationContext);
 		checkMine(applicationContext);
 		updateSnowfall();
 		checkContaminationStatus(applicationContext);
 		ApplicationContextUtils.getGameProgress().incTurn();
 		ApplicationContextUtils.getCosmodogGame().getTimer().updatePlayTime();
-
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		MusicUtils.loopMusic(currentMapMusicId);
 		updateCache(actor, actor.getPosition(), actor.getPosition());
 	}
 
@@ -713,6 +724,19 @@ public class PlayerMovementListener implements MovementListener {
 		}
 	}
 
+	private void checkRace(ApplicationContext applicationContext) {
+
+		Race activeRace = PlayerMovementCache.getInstance().getActiveRace();
+		if (activeRace != null && activeRace.isStarted() && !activeRace.isSolved()) {
+			activeRace.endTurn();
+			int remainingTimeToSolve = activeRace.getRemainingTimeToSolve();
+			if (remainingTimeToSolve <= 0) {
+				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.CUTSCENE, new LoseRaceAction(activeRace));
+			}
+		}
+
+	}
+
 	private void checkContaminationStatus(ApplicationContext applicationContext) {
 		Player player = ApplicationContextUtils.getPlayer();
 		int turnsPoisoned = player.getTurnsPoisoned();
@@ -754,7 +778,7 @@ public class PlayerMovementListener implements MovementListener {
 		}
 		
 	}
-	
+
 	private boolean isPlayerOnGroundTypeTile(TileType tileType, CosmodogMap map, Player player) {
 		boolean retVal = false;
 		int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_GROUNDTYPES);

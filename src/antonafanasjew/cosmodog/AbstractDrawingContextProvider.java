@@ -19,8 +19,7 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext humanLifeDrawingContext;
 	protected DrawingContext robustnessDrawingContext;
 	protected DrawingContext fuelDrawingContext;
-	
-	
+
 	protected DrawingContext vitalDataDrawingContext;
 	
 	protected DrawingContext leftColumnDrawingContext;
@@ -77,8 +76,7 @@ public abstract class AbstractDrawingContextProvider {
 	protected DrawingContext logPlayerControlsHintDrawingContext;
 	protected DrawingContext logPlayerTextDrawingContext;
 	protected DrawingContext gameHintDrawingContext;
-	
-	
+
 	public DrawingContext gameContainerDrawingContext() {
 		return this.gameContainerDrawingContext;
 	}

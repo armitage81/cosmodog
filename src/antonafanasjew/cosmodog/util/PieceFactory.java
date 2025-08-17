@@ -3,15 +3,9 @@ package antonafanasjew.cosmodog.util;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
-import antonafanasjew.cosmodog.model.CollectibleAmmo;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
-import antonafanasjew.cosmodog.model.CollectibleKey;
-import antonafanasjew.cosmodog.model.CollectibleLog;
-import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
-import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
@@ -29,7 +23,7 @@ public class PieceFactory {
 			CollectibleGoodie goodie = new CollectibleGoodie(goodieTypeRepresentedByTile);
 			piece = goodie;
 		}
-						
+
 		ToolType toolTypeRepresentedByTile = Mappings.MAP_TILE_TO_TOOL_TYPE.get(tileType);
 		if (toolTypeRepresentedByTile != null) {
 			CollectibleTool tool = new CollectibleTool(toolTypeRepresentedByTile);

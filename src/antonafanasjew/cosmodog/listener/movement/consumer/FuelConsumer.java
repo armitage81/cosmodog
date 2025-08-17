@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -17,6 +18,10 @@ public class FuelConsumer implements ResourceConsumer {
 		
 		//No fuel costs if no movement.
 		if (position1.equals(position2)) {
+			return 0;
+		}
+
+		if (PlayerMovementCache.getInstance().getActiveRace() != null) {
 			return 0;
 		}
 		

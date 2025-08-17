@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.*;
 import antonafanasjew.cosmodog.rendering.renderer.pieces.*;
 import antonafanasjew.cosmodog.sight.VisibilityCalculatorForPlayer;
@@ -16,16 +17,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleComposed;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
-import antonafanasjew.cosmodog.model.CollectibleKey;
-import antonafanasjew.cosmodog.model.CollectibleLog;
-import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.Cosmodog;
-import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.dynamicpieces.Door.DoorType;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.piecerendererpredicates.PieceRendererPredicate;
@@ -124,6 +115,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentRenderer());
 		pieceRendererMap.put(CollectibleGoodie.GoodieType.fueltank.name(), new FuelTankRenderer());
+
 	}
 	
 	@Override

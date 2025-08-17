@@ -50,7 +50,7 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 				RESOLUTION_WIDTH, 
 				RESOLUTION_HEIGHT
 		);
-		
+
 		dialogBoxDrawingContext = new TileDrawingContext(sceneDrawingContext, 1, 5, 0, 4);
 		
 		leftColumnDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 0, 0, mapOffsetX, gameContainerDrawingContext.h());
@@ -72,10 +72,10 @@ public class DrawingContextProvider1920x1080 extends AbstractDrawingContextProvi
 		
 		supplyTrackerDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 1196, 28, 56, 52);
 		supplyTrackerDrawingContext = DrawingContextUtils.difResFromRef(supplyTrackerDrawingContext, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
-		
+
 		lifeDrawingContext = new SimpleDrawingContext(gameContainerDrawingContext, 28, 28, 524, 52);
 		lifeDrawingContext = DrawingContextUtils.difResFromRef(lifeDrawingContext, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
-		
+
 		humanLifeDrawingContext = new TileDrawingContext(lifeDrawingContext, 1, 3, 0, 0);
 		humanLifeDrawingContext = new CenteredDrawingContext(humanLifeDrawingContext, 2);
 		

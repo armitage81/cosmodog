@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.util;
 
+import java.sql.Time;
 import java.util.*;
 
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
@@ -7,11 +8,12 @@ import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
-import antonafanasjew.cosmodog.model.dynamicpieces.races.TrafficBarrier;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.*;
 import antonafanasjew.cosmodog.model.portals.ReflectionType;
 import antonafanasjew.cosmodog.model.portals.interfaces.*;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
 import org.newdawn.slick.SlickException;
@@ -212,8 +214,9 @@ public class InitializationUtils {
 			initializePortalPuzzles(customTiledMap, map);
 			initializeSafeSpaces(customTiledMap, map);
 			//This method call relies on the enemy initialization, so don't shift it before the enemy initialization method.
+			//On the other hand, races rely on collectible initialization, so this method must be called before races are initialized.
 			initializeCollectibles(customTiledMap, map);
-
+			initializeRaces(customTiledMap, map);
 			retVal.put(mapType, map);
 		}
 
@@ -384,6 +387,100 @@ public class InitializationUtils {
 		}
 	}
 
+	private static void initializeRaces(CustomTiledMap customTiledMap, CosmodogMap map) {
+		TiledObjectGroup raceObjectGroup = customTiledMap.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_RACES);
+		if (raceObjectGroup == null) {
+			return;
+		}
+		Map<String, TiledObject> raceRegions = raceObjectGroup.getObjects();
+		Set<String> raceRegionNames = raceRegions.keySet();
+		for (String raceRegionName : raceRegionNames) {
+			TiledObject raceRegion = raceRegions.get(raceRegionName);
+			Race race = new Race();
+			race.setRegion(raceRegion);
+
+			List<TimeBonus> bonusesInRegion = map
+					.getMapPieces()
+					.piecesOverall(PiecePredicates.TIME_BONUS)
+					.stream()
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.map(e -> (TimeBonus)e)
+					.toList();
+
+			List<Resetter> resettersInRegion = map
+					.getMapPieces()
+					.piecesOverall(PiecePredicates.RESETTER)
+					.stream()
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.map(e -> (Resetter)e)
+					.toList();
+
+			List<TrafficBarrier> trafficBarriersInRegion = map
+					.getMapPieces()
+					.piecesOverall(PiecePredicates.TRAFFIC_BARRIER)
+					.stream()
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.map(e -> (TrafficBarrier)e)
+					.toList();
+
+			List<RaceExit> raceExitsInRegion = map
+					.getMapPieces()
+					.piecesOverall(PiecePredicates.RACE_EXIT)
+					.stream()
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.map(e -> (RaceExit)e)
+					.toList();
+
+			PolePosition polePositionInRegion = map
+					.getMapPieces()
+					.piecesOverall(PiecePredicates.POLE_POSITION)
+					.stream()
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.map(e -> (PolePosition)e)
+					.findFirst().orElseThrow(() -> new RuntimeException("No pole position defined for the race " + raceRegion.getName()));
+
+			FinishLine finishLineInRegion = map
+					.getMapPieces()
+					.piecesOverall(PiecePredicates.FINISH_LINE)
+					.stream()
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.map(e -> (FinishLine)e)
+					.findFirst().orElseThrow(RuntimeException::new);
+
+			int timeToSolve = Integer.parseInt(raceRegion.getProperties().get("timeToSolve"));
+
+			String rewardPropertyName = raceRegion.getProperties().get("rewardPropertyName");
+
+			float respawnPositionX = Float.parseFloat(raceRegion.getProperties().get("respawnPosX"));
+			float respawnPositionY = Float.parseFloat(raceRegion.getProperties().get("respawnPosY"));
+
+			race.getTimeBonuses().addAll(bonusesInRegion);
+			bonusesInRegion.forEach(e -> e.setRace(race));
+
+			race.getResetters().addAll(resettersInRegion);
+			resettersInRegion.forEach(e -> e.setRace(race));
+
+			race.getTrafficBarriers().addAll(trafficBarriersInRegion);
+			trafficBarriersInRegion.forEach(e -> e.setRace(race));
+
+			race.getRaceExits().addAll(raceExitsInRegion);
+			raceExitsInRegion.forEach(e -> e.setRace(race));
+
+			race.setPolePosition(polePositionInRegion);
+			polePositionInRegion.setRace(race);
+
+			race.setFinishLine(finishLineInRegion);
+			finishLineInRegion.setRace(race);
+
+			race.setTimeToSolve(timeToSolve);
+			race.setRewardPropertyName(rewardPropertyName);
+
+			race.setRespawnPosition(Position.fromCoordinates(respawnPositionX, respawnPositionY, map.getMapType()));
+
+			map.getRaces().add(race);
+		}
+	}
+
 	private static void initializeCollectibles(CustomTiledMap customTiledMap, CosmodogMap map) {
 
 		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
@@ -480,6 +577,66 @@ public class InitializationUtils {
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_1.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 1));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_2.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 2));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_3.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 3));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_4.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 4));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_5.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 5));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_6.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 6));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_7.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 7));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_8.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 8));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_9.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 9));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_10.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 10));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_20.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 20));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_30.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 30));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_40.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 40));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_TIME_BONUS_50.getTileId()) {
+					map.getMapPieces().addPiece(TimeBonus.create(position, 50));
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_RESETTER.getTileId()) {
+					map.getMapPieces().addPiece(Resetter.create(position));
+				}
+
 				if (tileId >= TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_FIRST.getTileId() && tileId <= TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_LAST.getTileId()) {
 					int offset = tileId - TileType.DYNAMIC_PIECE_TRAFFIC_BARRIER_VERTICAL_FIRST.getTileId();
 					int[] opennessRhythm = TileType.TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.get(offset);
@@ -492,6 +649,31 @@ public class InitializationUtils {
 					int[] opennessRhythm = TileType.TRAFFIC_BARRIER_TILE_OFFSETS_TO_OPENNESS_RHYTHMS.get(offset);
 					TrafficBarrier trafficBarrier = TrafficBarrier.create(position, true, opennessRhythm);
 					map.getMapPieces().addPiece(trafficBarrier);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_RACE_POLE_POSITION_HORIZONTAL.getTileId()) {
+					PolePosition polePosition = PolePosition.create(position, true);
+					map.getMapPieces().addPiece(polePosition);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_RACE_POLE_POSITION_VERTICAL.getTileId()) {
+					PolePosition polePosition = PolePosition.create(position, false);
+					map.getMapPieces().addPiece(polePosition);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_RACE_FINISH_LINE_HORIZONTAL.getTileId()) {
+					FinishLine finishLine = FinishLine.create(position, true);
+					map.getMapPieces().addPiece(finishLine);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_RACE_FINISH_LINE_VERTICAL.getTileId()) {
+					FinishLine finishLine = FinishLine.create(position, false);
+					map.getMapPieces().addPiece(finishLine);
+				}
+
+				if (tileId == TileType.DYNAMIC_PIECE_RACE_EXIT.getTileId()) {
+					RaceExit raceExit = RaceExit.create(position);
+					map.getMapPieces().addPiece(raceExit);
 				}
 
 				if (tileId == TileType.DYNAMIC_PIECE_SENSOR.getTileId()) {

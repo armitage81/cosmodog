@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.listener.movement.consumer.*;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
@@ -41,14 +42,6 @@ import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Features;
-import antonafanasjew.cosmodog.model.CollectibleComposed;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
-import antonafanasjew.cosmodog.model.CollectibleKey;
-import antonafanasjew.cosmodog.model.CollectibleLog;
-import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.Cosmodog;
-import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.User;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -342,6 +335,7 @@ public class ApplicationContext {
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.bottle.name(), new BottleInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.foodcompartment.name(), new FoodCompartmentInteraction());
 		pieceInteractionMap.put(CollectibleGoodie.GoodieType.fueltank.name(), new FuelTankInteraction());
+
 		pieceInteractionMap.put(Vehicle.class.getSimpleName(), new VehicleInteraction());
 		pieceInteractionMap.put(Platform.class.getSimpleName(), new PlatformInteraction());
 		pieceInteractionMap.put("pistol", new WeaponInteraction());
@@ -399,22 +393,28 @@ public class ApplicationContext {
 			public void run() {
 				try {
 					Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.ogg");
-					Music musicGameOver = new Music("data/music/EG_Negative_Stinger.ogg");
+					Music musicLost = new Music("data/music/EG_Negative_Stinger.ogg");
 					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.ogg");
 					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.ogg");
-					Music foundTool = new Music("data/music/EG_Positive_Stinger_02.ogg");
+					Music musicWon = new Music("data/music/EG_Positive_Stinger_02.ogg");
 					Music musicSoundtrack = new Music("data/music/Soundtrack.ogg");
 					Music musicSoundtrackSpace = new Music("data/music/Soundtrack_space.ogg");
+					Music musicSoundtrackRacing = new Music("data/music/Soundtrack_racing.ogg");
+					Music musicSoundtrackTension = new Music("data/music/Soundtrack_tension.ogg");
 					
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
 					
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK, musicSoundtrack);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_SPACE, musicSoundtrackSpace);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_GAME_OVER, musicGameOver);
+
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_RACING, musicSoundtrackRacing);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_TENSION, musicSoundtrackTension);
+
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOST, musicLost);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
 					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_FOUND_TOOL, foundTool);
+					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_WON, musicWon);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -521,6 +521,9 @@ public class ApplicationContext {
 		Sound sensorPresenceLost = new Sound("data/sound/sensor_presence_lost.wav");
 		Sound alert = new Sound("data/sound/alert.wav");
 
+		Sound timeBonus = new Sound("data/sound/timebonus.wav");
+		Sound trafficbarrierreset = new Sound("data/sound/trafficbarrierreset.wav");
+
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT, spacelift);
@@ -617,8 +620,10 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_SENSOR_PRESENCE_DETECTED, sensorPresenceDetected);
 		this.getSoundResources().put(SoundResources.SOUND_SENSOR_PRESENCE_LOST, sensorPresenceLost);
 		this.getSoundResources().put(SoundResources.SOUND_ALERT, alert);
-		
-		
+
+		this.getSoundResources().put(SoundResources.SOUND_TIMEBONUS, timeBonus);
+		this.getSoundResources().put(SoundResources.SOUND_TRAFFICBARRIERRESET, trafficbarrierreset);
+
 		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
 		SpriteSheet collectibleItemToolSheet = new SpriteSheet("data/collectible_tool.png", 16, 16);
 		SpriteSheet infobitsSheet = new SpriteSheet("data/infobits.png", 16, 16);

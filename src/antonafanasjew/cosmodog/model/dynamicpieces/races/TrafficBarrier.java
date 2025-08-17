@@ -1,26 +1,24 @@
 package antonafanasjew.cosmodog.model.dynamicpieces.races;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Bollard;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ArithmeticUtils;
-import com.google.common.collect.Lists;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class TrafficBarrier extends DynamicPiece {
 
-    boolean horizontalNotVertical;
-    List<Integer> opennessRhythm;
-    long referenceTurn = 0;
-
+    private boolean horizontalNotVertical;
+    private List<Integer> opennessRhythm;
+    private long referenceTurn = 0;
+    private Race race;
 
     public static TrafficBarrier create(Position position, boolean horizontalNotVertical, int... opennessRhythm) {
         TrafficBarrier trafficBarrier = new TrafficBarrier();
@@ -64,6 +62,9 @@ public class TrafficBarrier extends DynamicPiece {
      * The method openAsPerReality() indicates the real state of the traffic light.
      */
     public boolean openAsPerSchedule(long turn) {
+        if (!race.isStarted() || race.isSolved()) {
+            return false;
+        }
         long turnsPassed = turn - referenceTurn;
         int[] remainingPhaseDuration = ArithmeticUtils.remainingPhaseDuration(opennessRhythm, turnsPassed);
         int phaseNumber = remainingPhaseDuration[0];
@@ -71,6 +72,10 @@ public class TrafficBarrier extends DynamicPiece {
     }
 
     public boolean openAsPerReality(long turn) {
+
+        if (!race.isStarted() || race.isSolved()) {
+            return false;
+        }
 
         CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(getPosition().getMapType());
         List<Piece> blockingPieces = map.getMapPieces().piecesAtPosition(e -> !(e instanceof TrafficBarrier), getPosition().getX(), getPosition().getY());
@@ -85,4 +90,15 @@ public class TrafficBarrier extends DynamicPiece {
         return openAsPerSchedule(turn);
     }
 
+    public Race getRace() {
+        return race;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
+    }
+
+    public int raceTurn(int turn) {
+        return (int)(turn - referenceTurn);
+    }
 }

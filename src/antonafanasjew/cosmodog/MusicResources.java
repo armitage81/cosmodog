@@ -12,10 +12,12 @@ public class MusicResources extends HashMap<String, Music> {
 
 	public static final String MUSIC_SOUNDTRACK = "music.soundtrack";
 	public static final String MUSIC_SOUNDTRACK_SPACE = "music.soundtrack_space";
-	public static final String MUSIC_GAME_OVER = "music.gameover";
+	public static final String MUSIC_SOUNDTRACK_RACING = "music.soundtrack_racing";
+	public static final String MUSIC_SOUNDTRACK_TENSION = "music.soundtrack_tension";
+	public static final String MUSIC_LOST = "music.gameover";
 	public static final String MUSIC_LOGO = "music.logo";
 	public static final String MUSIC_CUTSCENE = "music.cutscene";
-	public static final String MUSIC_FOUND_TOOL = "music.foundtool";
+	public static final String MUSIC_WON = "music.foundtool";
 	
 
 }

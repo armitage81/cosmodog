@@ -63,7 +63,7 @@ public class FoundToolAction extends FixedLengthAsyncAction {
 	public void onTrigger() {
 		ApplicationContextUtils.getPlayer().turn(DirectionType.DOWN);
 		ApplicationContextUtils.getCosmodogGame().setCurrentlyFoundTool(tool);
-		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.FOUND_TOOL_JINGLE, new PlayJingleAction(5000, MusicResources.MUSIC_FOUND_TOOL));
+		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.FOUND_TOOL_JINGLE, new PlayJingleAction(5000, MusicResources.MUSIC_WON));
 		
 	}
 

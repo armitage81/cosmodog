@@ -92,7 +92,18 @@ public class Position implements Serializable {
 		
 		return deltaX + deltaY;
 	}
-	
+
+	/*
+	Useful to create a pixel position from a tile position.
+	 */
+	public Position scale(float factor) {
+		return Position.fromCoordinates(this.x * factor, this.y * factor, this.mapType);
+	}
+
+	public Position translate(float x, float y) {
+		return Position.fromCoordinates(this.x + x, this.y + y, this.mapType);
+	}
+
 	public float distance(Position pos) {
 		return distance(pos.getX(), pos.getY());
 	}

@@ -10,7 +10,7 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
-import antonafanasjew.cosmodog.model.dynamicpieces.races.TrafficBarrier;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.*;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.renderingutils.ActorRendererUtils;
 import antonafanasjew.cosmodog.topology.Position;
@@ -18,9 +18,7 @@ import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.ArithmeticUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.*;
 
 import com.google.common.collect.Multimap;
 
@@ -46,7 +44,6 @@ import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
-import org.newdawn.slick.Image;
 import profiling.ProfilerUtils;
 
 public class DynamicPiecesRenderer extends AbstractRenderer {
@@ -133,13 +130,82 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 
 			String animationId = dynamicPiece.animationId(dynamicPieceRenderingParam.bottomNotTop());
 
+			if (dynamicPiece instanceof PolePosition polePosition) {
+				if (!polePosition.getRace().isSolved()) {
+					if (((DynamicPiecesRendererParam) renderingParameter).bottomNotTop) {
+						applicationContext.getAnimations().get(animationId).draw(pieceX, topBottomDependentY);
+					}
+				}
+			}
+
+			if (dynamicPiece instanceof FinishLine finishLine) {
+				if (!finishLine.getRace().isSolved()) {
+					if (((DynamicPiecesRendererParam) renderingParameter).bottomNotTop) {
+						applicationContext.getAnimations().get(animationId).draw(pieceX, topBottomDependentY);
+					}
+				}
+			}
+
+			if (dynamicPiece instanceof RaceExit) {
+				//Don't render anything.
+			}
+
+			if (dynamicPiece instanceof TimeBonus bonus) {
+
+				if (bonus.getRace().isStarted() && !bonus.getRace().isSolved()) {
+					if (bonus.isActiveInCurrentRace()) {
+						if (dynamicPieceRenderingParam.bottomNotTop()) {
+							animationId = bonus.animationId(true);
+							Animation animation = applicationContext.getAnimations().get(animationId);
+
+							int phase = (int) (System.currentTimeMillis() / 500 % 4);
+
+							int yOffset = switch (phase) {
+								case 0 -> -1;
+								case 1 -> 0;
+								case 2 -> 1;
+								case 3 -> 0;
+								default -> 0;
+							};
+
+							animation.draw(pieceX, pieceY + yOffset);
+						}
+					}
+				}
+
+			}
+
+			if (dynamicPiece instanceof Resetter resetter) {
+				if (!player.getPosition().equals(resetter.getPosition())) {
+					if (resetter.getRace().isStarted() && !resetter.getRace().isSolved()) {
+						if (dynamicPieceRenderingParam.bottomNotTop()) {
+							animationId = resetter.animationId(true);
+							Animation animation = applicationContext.getAnimations().get(animationId);
+
+							int phase = (int) (System.currentTimeMillis() / 500 % 4);
+
+							int yOffset = switch (phase) {
+								case 0 -> -1;
+								case 1 -> 0;
+								case 2 -> 1;
+								case 3 -> 0;
+								default -> 0;
+							};
+
+							animation.draw(pieceX, pieceY + yOffset);
+						}
+					}
+				}
+
+			}
+
 			if (dynamicPiece instanceof TrafficBarrier trafficBarrier) {
 
 				float x = pieceX;
 				float y = pieceY;
 
-				float counterX = pieceX;
-				float counterY = pieceY;
+				float counterClosedX = pieceX;
+				float counterClosedY = pieceY;
 
 				float signalX = pieceX;
 				float signalY = pieceY;
@@ -148,8 +214,8 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 					x -= tileLength;
 					y -= (2 * tileLength);
 
-					counterX = counterX - tileLength - 2;
-					counterY = counterY - tileLength - 1;
+					counterClosedX = counterClosedX - tileLength - 2;
+					counterClosedY = counterClosedY - tileLength - 1;
 
 					signalX = signalX - tileLength + 1;
 					signalY = signalY - 2 * tileLength + 7;
@@ -158,13 +224,16 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 					x -= tileLength;
 					y -= tileLength;
 
-					counterX = counterX - tileLength + 3;
-					counterY = counterY - tileLength - 3;
+					counterClosedX = counterClosedX - tileLength + 3;
+					counterClosedY = counterClosedY - tileLength - 3;
 
 					signalX = signalX - tileLength + 6;
 					signalY = signalY - 2 * tileLength + 5;
 
 				}
+
+				float counterOpenX = counterClosedX - 4;
+				float counterOpenY = counterClosedY;
 
 				int turn = player.getGameProgress().getTurn();
 
@@ -179,10 +248,29 @@ public class DynamicPiecesRenderer extends AbstractRenderer {
 				String signalAnimationId = openAsPerSchedule ? "trafficBarrierSignalGreen" : "trafficBarrierSignalRed";
 				applicationContext.getAnimations().get(signalAnimationId).draw(signalX, signalY);
 
-				int[] remainingPhaseDuration = ArithmeticUtils.remainingPhaseDuration(trafficBarrier.getOpennessRhythm(), turn);
-				int remainingDuration = remainingPhaseDuration[1];
-				String remainingDurationAnimationId = "trafficBarrierSignalCounter" + remainingDuration;
-				applicationContext.getAnimations().get(remainingDurationAnimationId).draw(counterX, counterY);
+				if (trafficBarrier.getRace().isStarted() && !trafficBarrier.getRace().isSolved()) {
+
+					int signalNumberOpen = trafficBarrier.getOpennessRhythm().get(0);
+					int signalNumberClosed = trafficBarrier.getOpennessRhythm().get(1);
+
+					int[] remainingPhaseDuration = ArithmeticUtils.remainingPhaseDuration(trafficBarrier.getOpennessRhythm(), trafficBarrier.raceTurn(turn));
+					int phase = remainingPhaseDuration[0];
+					int remainingDuration = remainingPhaseDuration[1];
+
+					if (phase == 0) {
+						signalNumberOpen = remainingDuration;
+					} else {
+						signalNumberClosed = remainingDuration;
+					}
+
+					String signalNumberOpenAnimationId = "trafficBarrierSignalCounter" + signalNumberOpen;
+					String signalNumberClosedAnimationId = "trafficBarrierSignalCounter" + signalNumberClosed;
+
+					applicationContext.getAnimations().get(signalNumberOpenAnimationId).draw(counterOpenX, counterOpenY, phase == 1 ? Color.darkGray : Color.green);
+					applicationContext.getAnimations().get(signalNumberClosedAnimationId).draw(counterClosedX, counterClosedY, phase == 0 ? Color.darkGray : Color.red);
+				}
+
+
 
 			}
 

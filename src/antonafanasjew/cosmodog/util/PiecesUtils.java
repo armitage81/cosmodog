@@ -6,17 +6,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
-import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleAmmo;
-import antonafanasjew.cosmodog.model.CollectibleComposed;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
-import antonafanasjew.cosmodog.model.CollectibleKey;
-import antonafanasjew.cosmodog.model.CollectibleLog;
-import antonafanasjew.cosmodog.model.CollectibleTool;
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
-import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.topology.Position;
@@ -49,12 +40,8 @@ public class PiecesUtils {
 				pieceType = CollectibleKey.class.getSimpleName() + "_" + ((CollectibleKey)piece).getKey().getDoorType().name();
 			} else if (collectibleType == Collectible.CollectibleType.LOG) {
 				pieceType = CollectibleLog.class.getSimpleName();
-			}
-
-			else {
-
+			} else {
 				CollectibleGoodie goodie = (CollectibleGoodie)collectible;
-
 				pieceType = goodie.getGoodieType().name();
 			}
 

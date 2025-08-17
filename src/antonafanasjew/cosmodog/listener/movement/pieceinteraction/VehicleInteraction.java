@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -31,11 +32,14 @@ public class VehicleInteraction extends AbstractPieceInteraction {
 		}
 		
 		//Entering a vehicle must reset thirst and hunger. This makes sense since the metaphor is that the car has infinite supplies.
-		player.setFood(player.getCurrentMaxFood());
-		player.setLifeLentForHunger(0);
-		player.setWater(player.getCurrentMaxWater());
-		player.setLifeLentForThirst(0);
-		
+		//But: the player has the access to the car compartment only if the corresponding flag is set in the game progress. (It is set when the car race is won in the North-West of the map.)
+		if (player.getGameProgress().getProgressProperties().get(GameProgress.GAME_PROGRESS_PROPERTY_ACCESSTOCARCOMPARTMENT) != null) {
+			player.setFood(player.getCurrentMaxFood());
+			player.setLifeLentForHunger(0);
+			player.setWater(player.getCurrentMaxWater());
+			player.setLifeLentForThirst(0);
+		}
+
 		player.getInventory().put(InventoryItemType.VEHICLE, vehicleInventoryItem);
 	}
 

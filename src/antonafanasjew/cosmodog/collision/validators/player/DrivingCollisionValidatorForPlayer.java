@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.topology.Position;
@@ -25,8 +26,17 @@ public class DrivingCollisionValidatorForPlayer extends AbstractCollisionValidat
 		boolean snowTile = TileType.getByLayerAndTileId(Layers.LAYER_META_COLLISIONS, tileId).equals(TileType.COLLISION_SNOW);
 		
 		boolean passable = !collisionTile && !collisionVehicleTile && !waterTile && !snowTile;
-		
-		PassageBlockerType passageBlocker = passable ? PassageBlockerType.PASSABLE : PassageBlockerType.BLOCKED_ON_WHEELS;
+
+		PassageBlockerType passageBlocker;
+		if (passable) {
+			passageBlocker = PassageBlockerType.PASSABLE;
+		} else {
+			if (PlayerMovementCache.getInstance().getActiveRace() == null) {
+				passageBlocker = PassageBlockerType.BLOCKED_ON_WHEELS;
+			} else {
+				passageBlocker = PassageBlockerType.BLOCKED_ON_WHEELS_DURING_RACE;
+			}
+		}
 		return CollisionStatus.instance(actor, map, entrance, passable, passageBlocker);
 		
 	}

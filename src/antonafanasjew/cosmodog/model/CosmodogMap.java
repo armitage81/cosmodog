@@ -12,6 +12,7 @@ import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 import antonafanasjew.cosmodog.model.portals.interfaces.SwitchableHolder;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.structures.SafeSpace;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -50,7 +51,8 @@ public class CosmodogMap extends CosmodogModel {
 	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
 	private List<PortalPuzzle> portalPuzzles = Lists.newArrayList();
 	private List<SafeSpace> safeSpaces = Lists.newArrayList();
-	
+	private List<Race> races = Lists.newArrayList();
+
 	private MapModification mapModification = new MapModificationImpl();
 	
 	public CosmodogMap(CustomTiledMap customTiledMap) {
@@ -361,5 +363,9 @@ public class CosmodogMap extends CosmodogModel {
 
 	public List<SafeSpace> getSafeSpaces() {
 		return safeSpaces;
+	}
+
+	public List<Race> getRaces() {
+		return races;
 	}
 }

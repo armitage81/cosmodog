@@ -236,4 +236,7 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_SENSOR_PRESENCE_LOST = "sound.sensorpresencelost";
 	public static final String SOUND_ALERT = "sound.alert";
 
+	public static final String SOUND_TIMEBONUS = "sound.timebonus";
+	public static final String SOUND_TRAFFICBARRIERRESET = "sound.trafficbarrierreset";
+
 }

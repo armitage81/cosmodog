@@ -15,6 +15,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import org.newdawn.slick.Color;
@@ -88,6 +89,11 @@ public class GameHintRenderer extends AbstractRenderer {
 		if (player.getTurnsWormAlerted() > 0) {
 			int turnsUntilWormAttack = player.getGameProgress().getTurnsTillWormAppears() - player.getTurnsWormAlerted();
 			hints.add(String.format("Snow worm appears in %s turns!", turnsUntilWormAttack));
+		}
+
+		Race activeRace = PlayerMovementCache.getInstance().getActiveRace();
+		if (activeRace != null && activeRace.isStarted() && !activeRace.isSolved()) {
+			hints.add(activeRace.getRemainingTimeToSolve() + " turns left! (R to reset.)");
 		}
 
 		if (!hints.isEmpty()) {

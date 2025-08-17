@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.util.*;
 import com.google.common.base.Predicate;
@@ -82,6 +83,8 @@ public class PlayerMovementCache implements Serializable {
 
 	private SafeSpace activeSafeSpace;
 
+	private Race activeRace;
+
 	private Set<Position> positionsCoveredByPlatforms;
 
 	public Piece getClosestSupply() {
@@ -140,12 +143,20 @@ public class PlayerMovementCache implements Serializable {
 		return activeSafeSpace;
 	}
 
+	public Race getActiveRace() {
+		return activeRace;
+	}
+
 	public void setActivePortalPuzzle(PortalPuzzle activePortalPuzzle) {
 		this.activePortalPuzzle = activePortalPuzzle;
 	}
 
 	public void setActiveSafeSpace(SafeSpace activeSafeSpace) {
 		this.activeSafeSpace = activeSafeSpace;
+	}
+
+	public void setActiveRace(Race activeRace) {
+		this.activeRace = activeRace;
 	}
 
 	public Set<Position> getPositionsCoveredByPlatforms() {
@@ -165,6 +176,7 @@ public class PlayerMovementCache implements Serializable {
 		recalculateActiveMoveableGroup();
 		recalculateActivePortalPuzzle();
 		recalculateActiveSafeSpace();
+		recalculateActiveRace();
 		recalculatePositionsCoveredByPlatforms();
 	}
 
@@ -359,6 +371,20 @@ public class PlayerMovementCache implements Serializable {
 			}
 		}
 		setActiveSafeSpace(safeSpaceAroundPlayer);
+	}
+
+	private void recalculateActiveRace() {
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		Player player = ApplicationContextUtils.getPlayer();
+		Race raceAroundPlayer = null;
+		List<Race> races = map.getRaces();
+		for (Race race : races) {
+			if (RegionUtils.pieceInRegion(player, map.getMapType(), race.getRegion())) {
+				raceAroundPlayer = race;
+				break;
+			}
+		}
+		setActiveRace(raceAroundPlayer);
 	}
 
 	private void recalculatePositionsCoveredByPlatforms() {

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
-import antonafanasjew.cosmodog.model.actors.NpcActor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

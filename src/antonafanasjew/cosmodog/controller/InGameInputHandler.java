@@ -19,6 +19,7 @@ import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.model.portals.Portal;
 import antonafanasjew.cosmodog.model.portals.Ray;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
+import antonafanasjew.cosmodog.structures.Race;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
@@ -145,11 +146,15 @@ public class InGameInputHandler extends AbstractInputHandler {
 			PlatformInventoryItem platformItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
 
 			if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
-				if (vehicleItem != null) {
-					vehicleItem.setExiting(true);
-				}
-				if (platformItem != null) {
-					platformItem.setExiting(true);
+
+				if (PlayerMovementCache.getInstance().getActiveRace() == null) {
+
+					if (vehicleItem != null) {
+						vehicleItem.setExiting(true);
+					}
+					if (platformItem != null) {
+						platformItem.setExiting(true);
+					}
 				}
 			}
 
@@ -448,6 +453,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		if (input.isKeyPressed(Input.KEY_R)) {
 			MoveableGroup.resetMoveableGroup(cosmodogGame);
 			PortalPuzzle.resetPortalPuzzle(cosmodogGame, true);
+			Race.resetRace(cosmodogGame);
 
 		}
 

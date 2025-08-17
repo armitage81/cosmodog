@@ -12,6 +12,8 @@ public enum AsyncActionType {
 	SNOWFALL_CHANGE(false, false, false),
 
 	FOUND_TOOL_JINGLE(false, false, false),
+
+	LOST_JINGLE(false, false, false),
 	
 	/**
 	 * Player is dying
@@ -77,7 +79,7 @@ public enum AsyncActionType {
 
 	PRESENTING_NEW_TOOL(true, false, false),
 
-	RESPAWNING(true, false, false);
+	RESPAWNING(true, false, true);
 	
 	private boolean blocksInput;
 	private boolean stackable;

@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.dynamicpieces.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.AutoBollard;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.OneWayBollard;
+import antonafanasjew.cosmodog.model.dynamicpieces.races.*;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
@@ -29,6 +30,10 @@ public class PiecePredicates {
     public static Predicate<Piece> LETTER_PLATE = e -> e instanceof LetterPlate;
 
     public static Predicate<Piece> MINE = e -> e instanceof Mine;
+
+    public static Predicate<Piece> TIME_BONUS = e -> e instanceof TimeBonus;
+
+    public static Predicate<Piece> RESETTER = e -> e instanceof Resetter;
 
     public static Predicate<Piece> PRESSURE_BUTTON = e -> e instanceof PressureButton;
 
@@ -79,6 +84,14 @@ public class PiecePredicates {
     };
 
     public static Predicate<Piece> MOVEABLE_DYNAMIC_PIECE = e -> e instanceof MoveableDynamicPiece;
+
+    public static Predicate<Piece> TRAFFIC_BARRIER = e -> e instanceof TrafficBarrier;
+
+    public static Predicate<Piece> RACE_EXIT = e -> e instanceof RaceExit;
+
+    public static Predicate<Piece> POLE_POSITION = e -> e instanceof PolePosition;
+
+    public static Predicate<Piece> FINISH_LINE = e -> e instanceof FinishLine;
 
     public static Predicate<Piece> SECRET_DOOR = e -> e instanceof SecretDoor;
 

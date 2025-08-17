@@ -2,6 +2,8 @@ package antonafanasjew.cosmodog.util;
 
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.PlayerMovementCache;
+import antonafanasjew.cosmodog.structures.Race;
 import org.newdawn.slick.Music;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -15,7 +17,13 @@ public class MusicUtils {
 		if (mapType == MapType.SPACE) {
 			musicResource = MusicResources.MUSIC_SOUNDTRACK_SPACE;
 		} else {
-			musicResource = MusicResources.MUSIC_SOUNDTRACK;
+			Race race = PlayerMovementCache.getInstance().getActiveRace();
+			if (race != null && race.isStarted() && !race.isSolved()) {
+				musicResource = MusicResources.MUSIC_SOUNDTRACK_RACING;
+			} else {
+				musicResource = MusicResources.MUSIC_SOUNDTRACK;
+			}
+
 		}
 		return musicResource;
 	}

@@ -17,6 +17,8 @@ public enum PassageBlockerType {
 	BLOCKED(""),
 	
 	BLOCKED_ON_WHEELS("Blocked. [SHIFT] + [Arrow Key] to exit"),
+
+	BLOCKED_ON_WHEELS_DURING_RACE("Stay on track!"),
 	
 	BLOCKED_BY_INACTIVE_PIECE("Blocked"),
 	
@@ -34,6 +36,11 @@ public enum PassageBlockerType {
 	 * The tile is out of the home region of an npc.
 	 */
 	OUT_OF_HOME_REGION("Out of home region"),
+
+	/**
+	 * The tile is in a safa space, moveable group, portal puzzle, race or other puzzle.
+	 */
+	PUZZLE_REGION("Puzzle region"),
 	
 	/**
 	 * The tile contains an energy wall generator and the costs are higher than the number of collected infobits.

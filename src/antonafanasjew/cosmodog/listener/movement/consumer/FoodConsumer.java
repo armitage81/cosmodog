@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.listener.movement.consumer;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -25,7 +26,12 @@ public class FoodConsumer implements ResourceConsumer {
 		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
 		boolean inSafeSpace = safeSpaceAroundPlayer != null;
 
-		if (hasVehicle || hasPlatform || inSocobanArea || inSafeSpace) {
+		if (hasPlatform || inSocobanArea || inSafeSpace) {
+			return 0;
+		}
+
+		//The player has the access to the car compartment only if this flag is set. (It is set when the car race is won in the North-West of the map.)
+		if (hasVehicle && player.getGameProgress().getProgressProperties().get(GameProgress.GAME_PROGRESS_PROPERTY_ACCESSTOCARCOMPARTMENT) != null) {
 			return 0;
 		}
 

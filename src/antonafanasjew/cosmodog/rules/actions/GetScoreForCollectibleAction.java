@@ -1,12 +1,7 @@
 package antonafanasjew.cosmodog.rules.actions;
 
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
-import antonafanasjew.cosmodog.model.Collectible;
-import antonafanasjew.cosmodog.model.CollectibleAmmo;
-import antonafanasjew.cosmodog.model.CollectibleGoodie;
-import antonafanasjew.cosmodog.model.CollectibleTool;
-import antonafanasjew.cosmodog.model.CollectibleWeapon;
-import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleAction;
 import antonafanasjew.cosmodog.rules.events.GameEvent;

@@ -28,7 +28,7 @@ public class PlayerLifeListener implements LifeListener {
 			String dyingHint = dyingHints.get(dyingHintIndex);
 			
 			ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.DYING, new DyingAction(5000, dyingHint, Constants.DEFAULT_RESPAWN_POSITION));
-			MusicUtils.playMusic(MusicResources.MUSIC_GAME_OVER);
+			MusicUtils.playMusic(MusicResources.MUSIC_LOST);
 		}
 	}
 
