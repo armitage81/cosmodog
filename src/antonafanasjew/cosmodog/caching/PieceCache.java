@@ -83,6 +83,10 @@ public class PieceCache implements Serializable {
         return retVal;
     }
 
+    public List<Piece> piecesAtPosition(Predicate<Piece> predicate, Position position) {
+        return piecesAtPosition(predicate, position.getX(), position.getY());
+    }
+
     public List<Piece> piecesAtPosition(Predicate<Piece> predicate, float x, float y) {
         return piecesInArea(predicate, x, y, 1, 1);
     }

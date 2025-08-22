@@ -8,7 +8,7 @@ import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.Path.Step;
 
-import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
+import antonafanasjew.cosmodog.actions.movement.MovementPlan;
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.PassageBlockerType;
@@ -17,8 +17,6 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-
-import com.google.common.collect.Sets;
 
 /**
  * This validator defines collision status in between the game characters. It will mark the tile as not passable
@@ -44,15 +42,15 @@ import com.google.common.collect.Sets;
 public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionValidator {
 
 	private Entrance playersTargetEntrance;
-	private Map<Enemy, MovementActionResult> enemyMovementActionResults;
+	private Map<Enemy, MovementPlan> enemyMovementPlans;
 	
 	/**
 	 * Initialized with movement results of all actors.
-	 * @param enemyMovementActionResults Enemies movement results.
+	 * @param enemyMovementPlans Enemies movement plans.
 	 */
-	public InterCharacterCollisionValidatorForNpc(Entrance playersTargetEntrance, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
+	public InterCharacterCollisionValidatorForNpc(Entrance playersTargetEntrance, Map<Enemy, MovementPlan> enemyMovementPlans) {
 		this.playersTargetEntrance = playersTargetEntrance;
-		this.enemyMovementActionResults = enemyMovementActionResults;
+		this.enemyMovementPlans = enemyMovementPlans;
 	}
 	
 	@Override
@@ -67,16 +65,14 @@ public class InterCharacterCollisionValidatorForNpc extends AbstractCollisionVal
 				continue;
 			}
 
-			MovementActionResult oneActorsMovementActionResult = enemyMovementActionResults.get(enemy);
+			MovementPlan oneActorsMovementPlan = enemyMovementPlans.get(enemy);
 			
 			Position blockedPos;
 
-			if (oneActorsMovementActionResult == null) { //Actor is not moving, so his position tile is blocked.
+			if (oneActorsMovementPlan == null) { //Actor is not moving, so his position tile is blocked.
 				blockedPos = enemy.getPosition();
 			} else { //Actor is moving, so his target tile is blocked.
-				Path oneActorsPath = oneActorsMovementActionResult.getPath();
-				Step oneActorsLastStep = oneActorsPath.getStep(oneActorsPath.getLength() - 1);
-				blockedPos = Position.fromCoordinates(oneActorsLastStep.getX(), oneActorsLastStep.getY(), map.getMapType());
+				blockedPos = oneActorsMovementPlan.positionAfterExecution();
 			}
 
 			if (blockedPos.equals(entrance.getPosition())) {

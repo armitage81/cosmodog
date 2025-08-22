@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
@@ -129,5 +130,21 @@ public class Position implements Serializable {
 	public String toString() {
 		return x + "/" + y;
 	}
-	
+
+	public Position nextPosition(DirectionType directionType) {
+		Position position = this.copy();
+
+		if (directionType == DirectionType.DOWN) {
+			position.shift(0, 1);
+		} else if (directionType == DirectionType.UP) {
+			position.shift(0, -1);
+		} else if (directionType == DirectionType.LEFT) {
+			position.shift(-1, 0);
+		} else if (directionType == DirectionType.RIGHT) {
+			position.shift(1, 0);
+		}
+
+		return position;
+	}
+
 }

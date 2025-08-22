@@ -16,23 +16,23 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public class TileBasedMapAdapter implements TileBasedMap {
 
 	private Actor actor;
-	private ApplicationContext applicationContext;
 	private CollisionValidator collisionValidator;
+
+	private CosmodogGame game;
 	private CosmodogMap map;
 	
 
-	public TileBasedMapAdapter(Actor actor, ApplicationContext applicationContext, CosmodogMap map, CollisionValidator collisionValidator) {
+	public TileBasedMapAdapter(Actor actor, CosmodogGame game, CosmodogMap map, CollisionValidator collisionValidator) {
 		this.actor = actor;
-		this.applicationContext = applicationContext;
+		this.game = game;
 		this.map = map;
 		this.collisionValidator = collisionValidator;
 	}
 
 	@Override
 	public boolean blocked(PathFindingContext cx, int x, int y) {
-		CosmodogGame cosmodogGame = applicationContext.getCosmodog().getCosmodogGame();
 		Entrance entrance = Entrance.instance(Position.fromCoordinates(x, y, map.getMapType()), DirectionType.UP);
-		return !collisionValidator.collisionStatus(cosmodogGame, actor, map, entrance).isPassable();
+		return !collisionValidator.collisionStatus(game, actor, map, entrance).isPassable();
 	}
 
 	@Override

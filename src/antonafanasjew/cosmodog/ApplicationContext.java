@@ -10,7 +10,6 @@ import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.listener.movement.consumer.*;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
 import antonafanasjew.cosmodog.model.*;
-import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -53,10 +52,10 @@ import antonafanasjew.cosmodog.model.menu.MenuAction;
 import antonafanasjew.cosmodog.model.menu.MenuActionFactory;
 import antonafanasjew.cosmodog.model.menu.MenuLabel;
 import antonafanasjew.cosmodog.model.menu.MenuLabelFactory;
-import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionPathFinder;
-import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedPathFinder;
-import antonafanasjew.cosmodog.pathfinding.PathFinder;
-import antonafanasjew.cosmodog.pathfinding.PatrolingPathFinder;
+import antonafanasjew.cosmodog.pathfinding.EnemyAlertBasedDecisionMovementPlaner;
+import antonafanasjew.cosmodog.pathfinding.EnemyTypeSpecificAlertedMovementPlaner;
+import antonafanasjew.cosmodog.pathfinding.MovementPlaner;
+import antonafanasjew.cosmodog.pathfinding.RoamingMovementPlaner;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
 import antonafanasjew.cosmodog.resourcehandling.builder.animations.AnimationBuilder;
@@ -269,10 +268,10 @@ public class ApplicationContext {
 		cosmodog.setCollisionValidatorForMoveable(new FeatureBoundCollisionValidatorForPlayer(collisionValidatorForMoveable));
 
 		
-		PathFinder alertedPathFinder = new EnemyTypeSpecificAlertedPathFinder();
-		PathFinder patrolingPathFinder = new PatrolingPathFinder();
-		PathFinder enemyAlertBasedDecisionPathFinder = new EnemyAlertBasedDecisionPathFinder(patrolingPathFinder, alertedPathFinder);
-		cosmodog.setPathFinder(enemyAlertBasedDecisionPathFinder);
+		MovementPlaner alertedMovementPlaner = new EnemyTypeSpecificAlertedMovementPlaner();
+		MovementPlaner patrolingMovementPlaner = new RoamingMovementPlaner();
+		MovementPlaner enemyAlertBasedDecisionMovementPlaner = new EnemyAlertBasedDecisionMovementPlaner(patrolingMovementPlaner, alertedMovementPlaner);
+		cosmodog.setMovementPlaner(enemyAlertBasedDecisionMovementPlaner);
 		
 		cosmodog.setWaterValidator(new DefaultWaterValidator());
 		

@@ -2,7 +2,6 @@ package antonafanasjew.cosmodog.model;
 
 import java.util.Map;
 
-import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameLifeCycle;
 import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -11,7 +10,7 @@ import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.pathfinding.PathFinder;
+import antonafanasjew.cosmodog.pathfinding.MovementPlaner;
 import antonafanasjew.cosmodog.pathfinding.TileBasedMapFactory;
 import antonafanasjew.cosmodog.player.DefaultPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
@@ -34,7 +33,7 @@ public class Cosmodog extends CosmodogModel {
 	private CollisionValidator collisionValidatorForPlayer;
 	private CollisionValidator collisionValidatorForMoveable;
     private WaterValidator waterValidator;
-    private PathFinder pathFinder;
+    private MovementPlaner movementPlaner;
     
     private ResourceConsumer fuelConsumer;
     private ResourceConsumer foodConsumer;
@@ -113,12 +112,12 @@ public class Cosmodog extends CosmodogModel {
 		this.scorePersistor = scorePersistor;
 	}
 	
-	public PathFinder getPathFinder() {
-		return pathFinder;
+	public MovementPlaner getMovementPlaner() {
+		return movementPlaner;
 	}
 	
-	public void setPathFinder(PathFinder pathFinder) {
-		this.pathFinder = pathFinder;
+	public void setMovementPlaner(MovementPlaner movementPlaner) {
+		this.movementPlaner = movementPlaner;
 	}
 
 	public TileBasedMapFactory getTileBasedMapFactory() {

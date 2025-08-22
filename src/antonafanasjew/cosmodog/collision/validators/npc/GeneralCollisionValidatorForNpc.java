@@ -3,10 +3,9 @@ package antonafanasjew.cosmodog.collision.validators.npc;
 import java.util.Map;
 
 import antonafanasjew.cosmodog.model.portals.Entrance;
-import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Lists;
 
-import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
+import antonafanasjew.cosmodog.actions.movement.MovementPlan;
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
@@ -20,9 +19,9 @@ public class GeneralCollisionValidatorForNpc extends AbstractCollisionValidator 
 
 	private CollisionValidator collisionValidator;
 
-	private GeneralCollisionValidatorForNpc(Entrance targetEntrance, Entrance moveableTargetEntrance, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
+	private GeneralCollisionValidatorForNpc(Entrance targetEntrance, Entrance moveableTargetEntrance, Map<Enemy, MovementPlan> enemyMovementPlans) {
 		CollisionValidator c1 = new ChaussieBasedCollisionValidatorForNpc();
-		CollisionValidator c2 = new InterCharacterCollisionValidatorForNpc(targetEntrance, enemyMovementActionResults);
+		CollisionValidator c2 = new InterCharacterCollisionValidatorForNpc(targetEntrance, enemyMovementPlans);
 		CollisionValidator c3 = new HomeRegionCollisionValidatorForNpc();
 		CollisionValidator c4 = new VehicleAsObstacleCollisionValidatorForNpc();
 		CollisionValidator c5 = new PlatformAsObstacleCollisionValidatorForNpc();
@@ -35,8 +34,8 @@ public class GeneralCollisionValidatorForNpc extends AbstractCollisionValidator 
 		collisionValidator = new OneBlocksAllCollisionValidator(Lists.newArrayList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11));
 	}
 	
-	public static GeneralCollisionValidatorForNpc instance(Entrance targetEntrance, Entrance moveableTargetEntrance, Map<Enemy, MovementActionResult> enemyMovementActionResults) {
-		return new GeneralCollisionValidatorForNpc(targetEntrance, moveableTargetEntrance, enemyMovementActionResults);
+	public static GeneralCollisionValidatorForNpc instance(Entrance targetEntrance, Entrance moveableTargetEntrance, Map<Enemy, MovementPlan> enemyMovementPlans) {
+		return new GeneralCollisionValidatorForNpc(targetEntrance, moveableTargetEntrance, enemyMovementPlans);
 	}
 	
 	

@@ -1,6 +1,5 @@
 package antonafanasjew.cosmodog.collision.validators.npc;
 
-import antonafanasjew.cosmodog.actions.movement.MovementActionResult;
 import antonafanasjew.cosmodog.collision.AbstractCollisionValidator;
 import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.PassageBlockerDescriptor;

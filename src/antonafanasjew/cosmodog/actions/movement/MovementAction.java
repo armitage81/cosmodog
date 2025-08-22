@@ -5,17 +5,13 @@ import java.util.*;
 
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.pathfinding.Path;
-import org.newdawn.slick.util.pathfinding.Path.Step;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -45,12 +41,11 @@ import antonafanasjew.cosmodog.model.MoveableDynamicPiece;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.pathfinding.PathFinder;
+import antonafanasjew.cosmodog.pathfinding.MovementPlaner;
 import antonafanasjew.cosmodog.sight.VisibilityCalculator;
 import antonafanasjew.cosmodog.topology.Position;
 
 public class MovementAction extends FixedLengthAsyncAction {
-	
 
 	@Serial
 	private static final long serialVersionUID = -693412142092974821L;
@@ -61,11 +56,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 	private MoveableDynamicPiece moveableDynamicPiece;
 	private Entrance moveableTargetEntrance;
 
-	private final Map<Enemy, MovementActionResult> enemyMovementActionResults = Maps.newHashMap();
-
-	private Map<Actor, CrossTileMotion> actorMotions = Maps.newHashMap();
-
 	private final boolean skipTurn;
+
+	private final Map<Enemy, MovementPlan> enemyMovementPlans = Maps.newHashMap();
+
+	private final Map<Actor, CrossTileMotion> actorMotions = Maps.newHashMap();
 
 	public MovementAction(int duration, boolean skipTurn) {
 		super(duration);
@@ -74,7 +69,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 	@Override
 	public void onTrigger() {
-		initMovementActionResults();
+		initMovementPlans();
 		onTriggerForMoveable();
 		onTriggerForPlayer();
 		onTriggerForEnemies();
@@ -109,62 +104,66 @@ public class MovementAction extends FixedLengthAsyncAction {
 		cosmodogGame.getActionRegistry().registerAction(AsyncActionType.WAIT, waiterAction);
 	}
 
-	private void initMovementActionResults() {
+	private void initMovementPlans() {
+
 		//Preparing static data.
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap cosmodogMap = game.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
+
 		Position playerPosition = player.getPosition();
 
-        //Position before movement
         startPosition = player.getPosition();
 
-		//Calculating the target entrance.
-		targetEntrance = skipTurn ?
-				Entrance.instanceForWaiting(playerPosition, player.getDirection())
-				:
-				game.targetEntrance(player, player.getDirection());
-		
+		if (skipTurn) {
+			targetEntrance = Entrance.instanceForWaiting(playerPosition, player.getDirection());
+		} else {
+			targetEntrance = game.targetEntrance(player, player.getDirection());
+		}
+
 		//There could be a moveable block in player's path. In this case, it also would be moved (collision has been checked already.)
 		//Take care: Player's movement has to be calculated before this.
 
-		Optional<DynamicPiece> optMoveable = cosmodogMap.dynamicPiecesAtPosition(targetEntrance.getPosition()).stream().filter(e -> e instanceof  MoveableDynamicPiece).findFirst();
+		Optional<MoveableDynamicPiece> optMoveable = cosmodogMap
+				.getMapPieces()
+				.piecesAtPosition(PiecePredicates.MOVEABLE_DYNAMIC_PIECE, targetEntrance.getPosition())
+				.stream()
+				.map(e -> (MoveableDynamicPiece)e)
+				.findFirst();
+
 		if (optMoveable.isPresent()) {
-			this.moveableDynamicPiece = (MoveableDynamicPiece) optMoveable.get();
+			moveableDynamicPiece = optMoveable.get();
 			moveableTargetEntrance = game.targetEntrance(moveableDynamicPiece.asActor(), targetEntrance.getEntranceDirection());
 		}
 
 		//Preparing the future results of the enemy movements.
 		Set<Enemy> movingEnemies = Sets.newHashSet();
-		
 		movingEnemies.addAll(cosmodogMap.nearbyEnemies(player.getPosition(), Constants.ENEMY_ACTIVATION_DISTANCE));
-		
 		EnemiesUtils.removeInactiveUnits(movingEnemies);
 		
 		for (Enemy enemy : movingEnemies) {
-			
 			if (enemy.getChaussieType() != ChaussieType.STATIONARY) {
-				MovementActionResult enemyMovementResult = calculateEnemyMovementResult(enemy);
-				if (enemyMovementResult != null) {
-					enemyMovementActionResults.put(enemy, enemyMovementResult);
+				MovementPlan enemyMovementPlan = calculateEnemyMovementPlan(enemy);
+				if (enemyMovementPlan != null) {
+					enemyMovementPlans.put(enemy, enemyMovementPlan);
 				}
 			}
 		}
 		
 	}
 
-	private MovementActionResult calculateEnemyMovementResult(Enemy enemy) {
+	private MovementPlan calculateEnemyMovementPlan(Enemy enemy) {
 		
 		//Preparing static data.
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		PathFinder pathFinder = cosmodog.getPathFinder();
+		MovementPlaner movementPlaner = cosmodog.getMovementPlaner();
 		
 		//Preparing enemy collision validator
-		CollisionValidator collisionValidator = GeneralCollisionValidatorForNpc.instance(targetEntrance, moveableTargetEntrance, enemyMovementActionResults);
+		CollisionValidator collisionValidator = GeneralCollisionValidatorForNpc.instance(targetEntrance, moveableTargetEntrance, enemyMovementPlans);
 		
 		//Using the pathfinder to calculate the movement result based on the time budget generated from user movement and enemy's time overhead from the previous turns.
 		int costBudget = Constants.MINUTES_PER_TURN * enemy.getSpeedFactor();
-		return pathFinder.calculateMovementResult(enemy, costBudget, collisionValidator, targetEntrance);
+		return movementPlaner.calculateMovementPlan(enemy, costBudget, collisionValidator, targetEntrance);
 
 	}
 
@@ -186,16 +185,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 			Set<Enemy> destroyedEnemies = Sets.newHashSet();
 			
-			for (Enemy enemy : enemyMovementActionResults.keySet()) {
-				MovementActionResult enemyMovementActionResult = enemyMovementActionResults.get(enemy);
-				
-				int pathLength = enemyMovementActionResult.getPath().getLength();
-				int enemyX = enemyMovementActionResult.getPath().getX(pathLength - 1);
-				int enemyY = enemyMovementActionResult.getPath().getY(pathLength - 1);
+			for (Enemy enemy : enemyMovementPlans.keySet()) {
+				MovementPlan enemyMovementPlan = enemyMovementPlans.get(enemy);
+				Position enemyPositionAfterExecution = enemyMovementPlan.positionAfterExecution();
 
-				Position enemyPosition = Position.fromCoordinatesOnPlayerLocationMap(enemyX, enemyY);
-
-				if (CosmodogMapUtils.isTileOnPlatform(enemyPosition, targetEntrance.getPosition())) {
+				if (CosmodogMapUtils.isTileOnPlatform(enemyPositionAfterExecution, targetEntrance.getPosition())) {
 					destroyedEnemies.add(enemy);
 				}
 			}
@@ -358,47 +352,39 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
-		Set<Enemy> enemies = enemyMovementActionResults.keySet();
+		Set<Enemy> enemies = enemyMovementPlans.keySet();
 		for (Enemy enemy : enemies) {
 
-			MovementActionResult enemyMovementActionResult = enemyMovementActionResults.get(enemy);
-			Path path = enemyMovementActionResult.getPath();
+			MovementPlan enemyMovementPlan = enemyMovementPlans.get(enemy);
 
-			//The path can contain only the start point in case the npc does not move.
-			//This is others than in case of the player's "skip turn" where two steps are added to the path
-			// (start and target positions that are equal).
-			if (path.getLength() == 1) {
+			if (!enemyMovementPlan.movementPlanned()) {
 				continue;
 			}
 
-			float movedDistanceInTilesWithOffset = actionTimeRatio * (path.getLength() - 1);
+			float movedDistanceInTilesWithOffset = actionTimeRatio * (enemyMovementPlan.numberOfStepsPlanned());
 			int movedDistanceInTiles = (int)movedDistanceInTilesWithOffset;
 			float ratioForNextStep = movedDistanceInTilesWithOffset - movedDistanceInTiles;
 
-			int lastMidwayPosX = path.getX(movedDistanceInTiles);
-			int lastMidwayPosY = path.getY(movedDistanceInTiles);
+			Position lastMidwayPos;
+			Position nextMidwayPos;
+			if (movedDistanceInTiles == 0) {
+				lastMidwayPos = enemyMovementPlan.getStartPosition();
+			} else {
+				lastMidwayPos = enemyMovementPlan.getMovementSteps().get(movedDistanceInTiles - 1);
+			}
+			nextMidwayPos = enemyMovementPlan.getMovementSteps().get(movedDistanceInTiles);
 
-			//The starting position of the movement is stored in the path at index = 0.
-			//While the actor still moves from its starting position tile, the position at index = 1 of the path is taken as target.
-			//While the actor moves from the first to the second tile, the position at index = 2 of the path is taken as target.
-			//etc.
-			int nextMidwayPosX = path.getX(movedDistanceInTiles + 1);
-			int nextMidwayPosY = path.getY(movedDistanceInTiles + 1);
 
-			Position lastMidwayPosition = Position.fromCoordinatesOnPlayerLocationMap(lastMidwayPosX, lastMidwayPosY);
+			CrossTileMotion crossTileMotion = CrossTileMotion.fromActor(enemy, lastMidwayPos);
+			crossTileMotion.setLastMidwayPosition(lastMidwayPos);
 
-			CrossTileMotion enemyCrossTileMotion = actorMotions.get(enemy);
-
-			CrossTileMotion crossTileMotion = CrossTileMotion.fromActor(enemy, lastMidwayPosition);
-			crossTileMotion.setLastMidwayPosition(lastMidwayPosition);
-
-			if (lastMidwayPosX < nextMidwayPosX) {
+			if (lastMidwayPos.getX() < nextMidwayPos.getX()) {
 				crossTileMotion.setCrossTileOffsetX(ratioForNextStep);
-			} else if (lastMidwayPosX > nextMidwayPosX) {
+			} else if (lastMidwayPos.getX() > nextMidwayPos.getX()) {
 				crossTileMotion.setCrossTileOffsetX(-ratioForNextStep);
-			} else if (lastMidwayPosY < nextMidwayPosY) {
+			} else if (lastMidwayPos.getY() < nextMidwayPos.getY()) {
 				crossTileMotion.setCrossTileOffsetY(ratioForNextStep);
-			} else if (lastMidwayPosY > nextMidwayPosY) {
+			} else if (lastMidwayPos.getY() > nextMidwayPos.getY()) {
 				crossTileMotion.setCrossTileOffsetY(-ratioForNextStep);
 			}
 
@@ -494,13 +480,10 @@ public class MovementAction extends FixedLengthAsyncAction {
 		for (Enemy enemy : enemies) {
 						
 			CrossTileMotion enemyCrossTileMotion = actorMotions.remove(enemy);
-			MovementActionResult movementActionResult = enemyMovementActionResults.get(enemy);
-			if (movementActionResult != null) {
-    			Path path = movementActionResult.getPath();
-    			int lastPathPosX = path.getX(path.getLength() - 1);
-    			int lastPathPosY = path.getY(path.getLength() - 1);
-				Position lastPathPosition = Position.fromCoordinatesOnPlayerLocationMap(lastPathPosX, lastPathPosY);
-    			enemy.setPosition(lastPathPosition);
+			MovementPlan movementPlan = enemyMovementPlans.get(enemy);
+			if (movementPlan != null) {
+				Position positionAfterExecution = movementPlan.positionAfterExecution();
+    			enemy.setPosition(positionAfterExecution);
     			if (enemyCrossTileMotion != null) {
     				enemy.setDirection(enemyCrossTileMotion.getMotionDirection());
     			}

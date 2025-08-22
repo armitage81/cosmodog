@@ -153,10 +153,10 @@ public class PiecesRenderer extends AbstractRenderer {
 		for (Piece piece : mapPieces) {
 						
 			if (renderingPredicate == null || renderingPredicate.pieceShouldBeRendered(piece)) {
-				boolean pieceIsNorthFromPlayer = piece.getPosition().getX() < player.getPosition().getY();
+				boolean pieceIsNorthFromPlayer = piece.getPosition().getY() < player.getPosition().getY();
 				boolean northernPiecesDrawingPhase = northFromPlayer;
 				boolean southernPiecesDrawingPhase = southFromPlayer;
-				
+
 				boolean pieceIsPlatform = piece instanceof Platform;
 				boolean pieceIsNotPlatform = !pieceIsPlatform;
 				
