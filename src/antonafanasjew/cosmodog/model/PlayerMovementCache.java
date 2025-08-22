@@ -85,8 +85,6 @@ public class PlayerMovementCache implements Serializable {
 
 	private Race activeRace;
 
-	private Set<Position> positionsCoveredByPlatforms;
-
 	public Piece getClosestSupply() {
 		return closestSupply;
 	}
@@ -159,10 +157,6 @@ public class PlayerMovementCache implements Serializable {
 		this.activeRace = activeRace;
 	}
 
-	public Set<Position> getPositionsCoveredByPlatforms() {
-		return positionsCoveredByPlatforms;
-	}
-
 	public void update(Actor actor, Position position1, Position position2) {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		recalculateClosestSupplyAndMedkitPosition(actor, position1, position2, applicationContext);
@@ -177,7 +171,6 @@ public class PlayerMovementCache implements Serializable {
 		recalculateActivePortalPuzzle();
 		recalculateActiveSafeSpace();
 		recalculateActiveRace();
-		recalculatePositionsCoveredByPlatforms();
 	}
 
 
@@ -386,12 +379,6 @@ public class PlayerMovementCache implements Serializable {
 		}
 		setActiveRace(raceAroundPlayer);
 	}
-
-	private void recalculatePositionsCoveredByPlatforms() {
-		positionsCoveredByPlatforms = CosmodogMapUtils.positionsCoveredByPlatforms();
-	}
-
-
 
 }
 

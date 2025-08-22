@@ -94,7 +94,7 @@ public class CosmodogMapStatisticsProviderTest {
 		CollectibleGoodie g4 = new CollectibleGoodie(GoodieType.infobit);
 		g4.setPosition(p4);
 
-		PieceCache pieceCache = new PieceCache(400, 400);
+		PieceCache pieceCache = new PieceCache(MapType.MAIN, 400, 400);
 
 		pieceCache.addPiece(g1);
 		pieceCache.addPiece(g2);

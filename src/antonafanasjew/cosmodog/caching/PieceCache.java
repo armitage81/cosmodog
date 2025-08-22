@@ -1,20 +1,27 @@
 package antonafanasjew.cosmodog.caching;
 
 
+import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 import profiling.ProfilerUtils;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class PieceCache implements Serializable {
 
+    private MapType mapType;
     private final int sectorWidth;
     private final int sectorHeight;
 
-    public PieceCache(int sectorWidth, int sectorHeight) {
+    public PieceCache(MapType mapType, int sectorWidth, int sectorHeight) {
+        this.mapType = mapType;
         this.sectorWidth = sectorWidth;
         this.sectorHeight = sectorHeight;
     }
@@ -22,6 +29,8 @@ public class PieceCache implements Serializable {
     private final Map<Position, List<Piece>> pieces = new HashMap<>();
 
     private final Map<Integer, List<Piece>> piecesByPredicates = new HashMap<>();
+
+    private final Map<Platform, Set<Position>> positionsCoveredByPlatforms = new HashMap<>();
 
     public int getSectorWidth() {
         return sectorWidth;
@@ -119,6 +128,13 @@ public class PieceCache implements Serializable {
         Position sectorPosition = Position.fromCoordinates(sectorColumn, sectorRow, null);
         List<Piece> piecesInSector = pieces.computeIfAbsent(sectorPosition, k -> new ArrayList<>());
         piecesInSector.add(piece);
+        if (piece instanceof Platform platform) {
+            Set<Position> positionsCoveredByPlatform = CosmodogMapUtils.positionsCoveredByPlatform(platform);
+            positionsCoveredByPlatforms.put(platform, positionsCoveredByPlatform);
+        }
+
+        piecesByPredicates.clear();
+
     }
 
     public void removePiece(Piece piece) {
@@ -128,16 +144,20 @@ public class PieceCache implements Serializable {
             if (piecesAtPosition != null) {
                 piecesAtPosition.remove(piece);
             }
+            if (piece instanceof Platform platform) {
+                positionsCoveredByPlatforms.remove(platform);
+            }
         }
 
-        for (Integer predicateHashcode : piecesByPredicates.keySet()) {
-            List<Piece> piecesForPredicate = piecesByPredicates.get(predicateHashcode);
-            piecesForPredicate.remove(piece);
-        }
+        piecesByPredicates.clear();
     }
 
     public void clear() {
         this.pieces.clear();
         this.piecesByPredicates.clear();
+    }
+
+    public Set<Position> allPositionsCoveredByPlatforms() {
+        return positionsCoveredByPlatforms.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
     }
 }

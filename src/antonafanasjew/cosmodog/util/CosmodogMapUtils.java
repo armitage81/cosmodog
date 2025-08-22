@@ -189,18 +189,13 @@ public class CosmodogMapUtils {
 		return retVal;
 	}
 
-	public static Set<Position> positionsCoveredByPlatforms() {
-		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		CosmodogMap map = cosmodogGame.getMaps().get(cosmodogGame.mapOfPlayerLocation().getMapType());
+	public static Set<Position> positionsCoveredByPlatform(Platform platform) {
 		Set<Position> retVal = new HashSet<>();
-		Set<Platform> platforms = map.getPlatforms();
-		for (Platform platform : platforms) {
-			for (Position offsetPosition : PLATFORMDATA) {
-				float x = platform.getPosition().getX() + offsetPosition.getX();
-				float y = platform.getPosition().getY() + offsetPosition.getY();
-				Position position = Position.fromCoordinatesOnPlayerLocationMap(x, y);
-				retVal.add(position);
-			}
+		for (Position offsetPosition : PLATFORMDATA) {
+			float x = platform.getPosition().getX() + offsetPosition.getX();
+			float y = platform.getPosition().getY() + offsetPosition.getY();
+			Position position = Position.fromCoordinates(x, y, platform.getPosition().getMapType());
+			retVal.add(position);
 		}
 		return retVal;
 	}

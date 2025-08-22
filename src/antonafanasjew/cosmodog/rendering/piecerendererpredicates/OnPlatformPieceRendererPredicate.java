@@ -1,8 +1,10 @@
 package antonafanasjew.cosmodog.rendering.piecerendererpredicates;
 
+import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.CosmodogMapUtils;
 
 /**
@@ -12,7 +14,8 @@ public class OnPlatformPieceRendererPredicate implements PieceRendererPredicate 
 
 	@Override
 	public boolean pieceShouldBeRendered(Piece piece) {
-        return (!(piece instanceof Platform)) && PlayerMovementCache.getInstance().getPositionsCoveredByPlatforms().contains(piece.getPosition());
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+        return (!(piece instanceof Platform)) && map.getMapPieces().allPositionsCoveredByPlatforms().contains(piece.getPosition());
 	}
 
 }

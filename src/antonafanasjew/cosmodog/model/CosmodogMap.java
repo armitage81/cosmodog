@@ -46,7 +46,7 @@ public class CosmodogMap extends CosmodogModel {
 	private transient CustomTiledMap customTiledMap;
 
 	private MapType mapType;
-	private PieceCache mapPieces = new PieceCache(20, 20);
+	private PieceCache mapPieces = new PieceCache(mapType, 20, 20);
 
 	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
 	private List<PortalPuzzle> portalPuzzles = Lists.newArrayList();
