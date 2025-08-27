@@ -14,7 +14,6 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.menu.Menu;
 import antonafanasjew.cosmodog.model.menu.MenuElement;
@@ -28,7 +27,7 @@ import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.particlepattern.movement.SinusMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.movement.SinusMovementFunction;
 
 public class MainMenuState extends CosmodogAbstractState {
 
@@ -79,16 +78,10 @@ public class MainMenuState extends CosmodogAbstractState {
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
 
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, new Runnable() {
-
-			@Override
-			public void run() {
-				Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU);
-				if (music.playing()) {
-					music.stop();
-				}
-			}
-		});
+		Music music = ApplicationContext.instance().getMusicResources().get(MusicResources.MUSIC_MAIN_MENU);
+		if (music.playing()) {
+			music.stop();
+		}
 
 	}
 

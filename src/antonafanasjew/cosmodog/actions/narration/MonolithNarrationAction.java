@@ -1,14 +1,12 @@
 package antonafanasjew.cosmodog.actions.narration;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
@@ -69,15 +67,7 @@ public class MonolithNarrationAction extends AbstractNarrationAction {
 		long referenceTime = System.currentTimeMillis();
 		
 		ActionPhase prevActionPhase = phase;
-		
-		if (!Features.getInstance().featureOn(Features.FEATURE_CUTSCENES)) {
-			if (phase != ActionPhase.TEXT) {
-				phase = ActionPhase.TEXT;
-				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
-				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
-			}
-		}
-		
+
 		if (phase == ActionPhase.MONOLITH_FADES_IN) {
 			if (phaseCompletion() >= 1.0f) {
 				phase = ActionPhase.MONOLITH;

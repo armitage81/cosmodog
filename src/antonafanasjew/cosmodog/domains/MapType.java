@@ -2,9 +2,9 @@ package antonafanasjew.cosmodog.domains;
 
 public enum MapType {
 
-    MAIN("data/maps/map_main.tmx", 400, 400, true, true, true, true),
-    ALTERNATIVE("data/maps/map_alternative.tmx", 400, 400, true, true, true, true),
-    SPACE("data/maps/map_space.tmx", 400, 400, false, false, false, false);
+    MAIN("assets/maps/map_main.tmx", 400, 400, true, true, true, true),
+    ALTERNATIVE("assets/maps/map_alternative.tmx", 400, 400, true, true, true, true),
+    SPACE("assets/maps/map_space.tmx", 400, 400, false, false, false, false);
 
     private final String mapPath;
     private final int width;

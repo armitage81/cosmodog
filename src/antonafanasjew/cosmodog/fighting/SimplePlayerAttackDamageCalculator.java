@@ -5,7 +5,6 @@ import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
@@ -37,9 +36,7 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		
 		int damage;
 		
-		if (Features.getInstance().featureOn(Features.FEATURE_GODFISTS) && selectedWeaponType == WeaponType.FISTS) {
-			damage = 1000;
-		} else if (planetaryCalendar.isNight() && enemy.isActiveAtDayTimeOnly()) {
+		if (planetaryCalendar.isNight() && enemy.isActiveAtDayTimeOnly()) {
 			damage = 100;
 		} else if (enemy.getUnitType() == UnitType.ARTILLERY) {
 			damage = 100;

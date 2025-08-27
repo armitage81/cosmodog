@@ -11,7 +11,6 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
@@ -32,10 +31,7 @@ public class IntroState extends CosmodogAbstractState {
 	public void everyEnter(GameContainer container, StateBasedGame game) throws SlickException {
 		
 		skipped = false;
-		if (Features.getInstance().featureOn(Features.FEATURE_LOGO) == false) {
-			skipped = true;
-		}
-		
+
 		initialTimestamp = System.currentTimeMillis();
 		container.getInput().clearKeyPressedRecord();
 		GameFlowUtils.loadScoreList();

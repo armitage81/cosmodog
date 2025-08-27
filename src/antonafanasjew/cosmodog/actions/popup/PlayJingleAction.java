@@ -3,9 +3,7 @@ package antonafanasjew.cosmodog.actions.popup;
 import org.newdawn.slick.Music;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.util.MusicUtils;
 
 import java.io.Serial;
@@ -53,18 +51,13 @@ public class PlayJingleAction extends FixedLengthAsyncAction {
 	 * <p>
 	 * Stops the background music and plays the jingle sound. The current position of the background music is stored
 	 * to be resumed at the end of the action.
-	 * <p>
-	 * Take note: The jingle is only played when the music feature is enabled.
 	 */
 	@Override
 	public void onTrigger() {
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, () -> {
-			String currentMapMusicId = MusicUtils.currentMapMusicId();
-			Music music = ApplicationContext.instance().getMusicResources().get(currentMapMusicId);
-			originalMusicPosition = music.getPosition();
-			MusicUtils.playMusic(musicResourceId);
-		});
-		
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		Music music = ApplicationContext.instance().getMusicResources().get(currentMapMusicId);
+		originalMusicPosition = music.getPosition();
+		MusicUtils.playMusic(musicResourceId);
 	}
 
 	/**
@@ -76,11 +69,9 @@ public class PlayJingleAction extends FixedLengthAsyncAction {
 	 */
 	@Override
 	public void onEnd() {
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, () -> {
-			String currentMapMusicId = MusicUtils.currentMapMusicId();
-			Music music = ApplicationContext.instance().getMusicResources().get(currentMapMusicId);
-			music.setPosition(originalMusicPosition);
-			MusicUtils.loopMusic(currentMapMusicId);
-		});
+		String currentMapMusicId = MusicUtils.currentMapMusicId();
+		Music music = ApplicationContext.instance().getMusicResources().get(currentMapMusicId);
+		music.setPosition(originalMusicPosition);
+		MusicUtils.loopMusic(currentMapMusicId);
 	}
 }

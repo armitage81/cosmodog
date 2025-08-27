@@ -3,7 +3,6 @@ package antonafanasjew.cosmodog.fighting;
 
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.*;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -21,28 +20,8 @@ public class SimplePlayerAttackDamageCalculatorTest {
 	private final SimplePlayerAttackDamageCalculator out = new SimplePlayerAttackDamageCalculator(planetaryCalendar);
 	
 	@Test
-	public void testGodFists() {
-
-		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, true);
-		
-		Player player = Player.fromPosition(Position.fromCoordinates(1, 1, MapType.MAIN));
-		player.setDirection(DirectionType.RIGHT);
-		
-		Enemy enemy = new Enemy();
-		enemy.setPosition(Position.fromCoordinates(2, 1, MapType.MAIN));
-		enemy.setDirection(DirectionType.LEFT);
-		
-		int damage = out.damage(player, enemy);
-		
-		assertEquals(1000, damage);
-		
-	}
-
-	@Test
 	public void testSimpleHit() {
 
-		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
-		
 		Player player = Player.fromPosition(Position.fromCoordinates(1, 1, MapType.MAIN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
@@ -207,8 +186,6 @@ public class SimplePlayerAttackDamageCalculatorTest {
 	@Test
 	public void testCriticalHit() {
 		
-		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
-		
 		Player player = Player.fromPosition(Position.fromCoordinates(1, 1, MapType.MAIN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
@@ -260,8 +237,6 @@ public class SimplePlayerAttackDamageCalculatorTest {
 	@Test
 	public void testTripleDamage() {
 		
-		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
-		
 		Player player = Player.fromPosition(Position.fromCoordinates(1, 1, MapType.MAIN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
@@ -300,8 +275,6 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		
 		
 		planetaryCalendar.setHour(0);
-		
-		Features.getInstance().setFeature(Features.FEATURE_GODFISTS, false);
 		
 		Player player = Player.fromPosition(Position.fromCoordinates(1, 1, MapType.MAIN));
 		player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));

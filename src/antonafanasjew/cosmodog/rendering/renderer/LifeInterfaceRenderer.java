@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -35,10 +34,6 @@ public class LifeInterfaceRenderer extends AbstractRenderer {
 		DrawingContext humanLifeDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().humanLifeDrawingContext();
 		DrawingContext robustnessDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().robustnessDrawingContext();
 		DrawingContext fuelDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().fuelDrawingContext();
-		
-		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
-			return;
-		}
 		
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();

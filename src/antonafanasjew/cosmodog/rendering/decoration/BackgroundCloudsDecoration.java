@@ -2,12 +2,12 @@ package antonafanasjew.cosmodog.rendering.decoration;
 
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
-import antonafanasjew.particlepattern.OffsetCalculator;
-import antonafanasjew.particlepattern.model.GridParticlePatternBuilder;
-import antonafanasjew.particlepattern.model.JitteringParticlePatternBuilder;
-import antonafanasjew.particlepattern.model.ParticlePattern;
-import antonafanasjew.particlepattern.model.ParticlePatternBuilder;
-import antonafanasjew.particlepattern.movement.LinearMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.OffsetCalculator;
+import antonafanasjew.cosmodog.particlepattern.model.GridParticlePatternBuilder;
+import antonafanasjew.cosmodog.particlepattern.model.JitteringParticlePatternBuilder;
+import antonafanasjew.cosmodog.particlepattern.model.ParticlePattern;
+import antonafanasjew.cosmodog.particlepattern.model.ParticlePatternBuilder;
+import antonafanasjew.cosmodog.particlepattern.movement.LinearMovementFunction;
 
 
 public class BackgroundCloudsDecoration {

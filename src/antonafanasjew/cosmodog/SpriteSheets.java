@@ -17,11 +17,6 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	public static final int ALPHABETH_SPRITESHEET_TILES_WIDTH = 40;
 	
 	/**
-	 * Sprite sheet ID for: player.
-	 */
-	public static final String SPRITESHEET_PLAYER = "spritesheet.player";
-	
-	/**
 	 * Sprite sheet ID for: infobits.
 	 */
 	public static final String SPRITESHEET_INFOBITS = "spritesheet.infobits";
@@ -48,21 +43,6 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	 */
 	public static final String SPRITESHEET_COLLECTIBLE_ITEM_TOOL = "spritesheet.collectible_tool";
 	
-	/**
-	 * Sprite sheet ID for: alphabeth.
-	 */
-	public static final String SPRITESHEET_ALPHABETH = "spritesheet.alphabeth";
-	
-	/**
-	 * Sprite sheet ID for: system alphabeth
-	 */
-	public static final String SPRITESHEET_ALPHABETH2 = "spritesheet.alphabeth2";
-	
-	/**
-	 * Sprite sheet ID for: interface.
-	 */
-	public static final String SPRITESHEET_INTERFACE = "spritesheet.interface";
-
 	/**
 	 * Sprite sheet ID for: tile set.
 	 */

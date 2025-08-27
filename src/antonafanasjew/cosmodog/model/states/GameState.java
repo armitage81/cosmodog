@@ -21,7 +21,6 @@ import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -143,13 +142,6 @@ public class GameState extends CosmodogAbstractState {
 			// Also the asyncronous actions from the action registry should be updated only
 			// if no modal window action is registered.
 			if (cosmodogGame.getInterfaceActionRegistry().getRegisteredAction(AsyncActionType.MODAL_WINDOW) == null) {
-				if (Features.getInstance().featureOn(Features.FEATURE_DEBUGGER)) {
-
-					if (input.isKeyPressed(Input.KEY_0)) {
-						sbg.enterState(CosmodogStarter.DEBUG_STATE_ID);
-					}
-
-				}
 				cosmodog.getInputHandlers().get(InputHandlerType.INPUT_HANDLER_INGAME).handleInput(gc, sbg, n, applicationContext);
 
 			}

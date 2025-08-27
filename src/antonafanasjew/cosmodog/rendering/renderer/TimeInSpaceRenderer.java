@@ -1,7 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -20,11 +19,7 @@ public class TimeInSpaceRenderer extends AbstractRenderer {
 
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
-		
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
-			return;
-		}
-		
+
 		DrawingContext timeDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().timeDrawingContext();
 		
 		DrawingContext topDc = new TileDrawingContext(timeDrawingContext, 1, 2, 0, 0);

@@ -52,8 +52,6 @@ public class MultiInstancePieceRuleBuilder extends AbstractCsvBasedResourceWrapp
 		AsyncAction asyncAction = new MonolithNarrationAction(gameLog);
 		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		
-		//action = new FeatureBoundAction(Features.FEATURE_STORY, action);
-		
 		RuleAction setPropertyAction = new SetGameProgressPropertyAction(gameProgressProperty, String.valueOf(gameProgressPropertyCount + 1));
 		action = BlockAction.block(action, setPropertyAction);
 				

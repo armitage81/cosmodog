@@ -20,7 +20,6 @@ import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.states.CreditsState;
 import antonafanasjew.cosmodog.model.states.CutsceneState;
-import antonafanasjew.cosmodog.model.states.DebugState;
 import antonafanasjew.cosmodog.model.states.GameIntroState;
 import antonafanasjew.cosmodog.model.states.GameMenuState;
 import antonafanasjew.cosmodog.model.states.GameState;
@@ -129,12 +128,12 @@ public class CosmodogStarter extends StateBasedGame {
 		
 		try {
 		     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/arialichollow.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/frontageoutline.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/karmaticarcade.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/collegehalo.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/unlearn.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/academy.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/arialichollow.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/frontageoutline.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/karmaticarcade.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/collegehalo.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/unlearn.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/academy.ttf")));
 		} catch (IOException|FontFormatException e) {
 		     throw new RuntimeException("Error loading font.", e);
 		}
@@ -142,7 +141,7 @@ public class CosmodogStarter extends StateBasedGame {
 		StateBasedGameHolder.stateBasedGame = instance();
 		AppGameContainer gameContainer = new AppGameContainer(instance());
 		
-		gameContainer.setIcon("data/cosmodog_icon.png");
+		gameContainer.setIcon("assets/graphics/meta/cosmodog_icon.png");
 		
 		boolean fullScreen = Constants.FULLSCREEN;
 		if (System.getProperty("cosmodog.fullscreen") != null) {
@@ -205,7 +204,6 @@ public class CosmodogStarter extends StateBasedGame {
 		this.addState(new CutsceneState());
 		this.addState(new CreditsState());
 		this.addState(new Outro2State());
-		this.addState(new DebugState());
 		this.addState(new GameIntroState());
 		this.addState(new StatisticsState());
 		this.addState(new TheEndState());

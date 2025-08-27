@@ -32,7 +32,6 @@ import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -517,20 +516,8 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
 		ActionRegistry ar = game.getActionRegistry();
-		boolean damageFeatureOn = Features.getInstance().featureOn(Features.FEATURE_DAMAGE);
-		
-		AbstractEnemyAttackDamageCalculator enemyDamageCalculator = damageFeatureOn ? new SimpleEnemyAttackDamageCalculator() : new AbstractEnemyAttackDamageCalculator() {
-			
-			@Override
-			protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
-				return 0;
-			}
 
-			@Override
-			public boolean criticalHit(Actor attacker, Actor defender) {
-				return false;
-			}
-		};
+		AbstractEnemyAttackDamageCalculator enemyDamageCalculator = new SimpleEnemyAttackDamageCalculator();
 		
 		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(game.getPlanetaryCalendar()), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
 		

@@ -77,33 +77,6 @@ public class FullyEquippedPlayerBuilderForTest extends AbstractPlayerBuilder {
 		
 		
 		/*
-		 * if (Features.getInstance().featureOn(Features.FEATURE_DEBUGGER)) {
-		 * player.getInventory().put(InventoryItemType.DEBUGGER, new
-		 * DebuggerInventoryItem()); }
-		 * 
-		 * player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
-		 * player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-		 * player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
-		 * player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
-		 * player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
-		 * 
-		 * 
-		 * player.getInventory().put(InventoryItemType.AXE, new AxeInventoryItem());
-		 * player.getInventory().put(InventoryItemType.BINOCULARS, new
-		 * BinocularsInventoryItem()); //
-		 * player.getInventory().put(InventoryItemType.DEBUGGER, new
-		 * DebuggerInventoryItem()); player.getInventory().put(InventoryItemType.BOAT,
-		 * new BoatInventoryItem()); player.getInventory().put(InventoryItemType.SKI,
-		 * new SkiInventoryItem()); player.getInventory().put(InventoryItemType.PICK,
-		 * new PickInventoryItem());
-		 * player.getInventory().put(InventoryItemType.DYNAMITE, new
-		 * DynamiteInventoryItem());
-		 * player.getInventory().put(InventoryItemType.MACHETE, new
-		 * MacheteInventoryItem());
-		 * player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new
-		 * GeigerZaehlerInventoryItem());
-		 */
-		/*
 		 * SoftwareInventoryItem software = new SoftwareInventoryItem();
 		 * software.setNumber(16); player.getInventory().put(InventoryItemType.SOFTWARE,
 		 * software);

@@ -160,8 +160,7 @@ public class CreateScript {
         writingPaths.add("gamelogs/aliennomads/008");
         writingPaths.add("gamelogs/aliennomads/009");
         writingPaths.add("gamelogs/cutscenes/006.decision");
-        writingPaths.add("outro/outro_a");
-        writingPaths.add("outro/outro_b");
+        writingPaths.add("outro/outro");
 
     }
 
@@ -169,7 +168,7 @@ public class CreateScript {
     public static void main(String[] args) throws IOException {
         List<Path> textFiles = new ArrayList<>();
 
-        writingPaths.forEach(e -> textFiles.add(Path.of("data/writing/" + e)));
+        writingPaths.forEach(e -> textFiles.add(Path.of("assets/texts/" + e)));
 
         List<String> allLines = new ArrayList<>();
 

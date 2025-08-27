@@ -33,7 +33,6 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.globals.FontType;
@@ -80,7 +79,6 @@ import antonafanasjew.cosmodog.rules.RuleAction;
 import antonafanasjew.cosmodog.rules.RuleBook;
 import antonafanasjew.cosmodog.rules.RuleTrigger;
 import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
-import antonafanasjew.cosmodog.rules.actions.FeatureBoundAction;
 import antonafanasjew.cosmodog.rules.actions.GetScoreForCollectibleAction;
 import antonafanasjew.cosmodog.rules.actions.SetGameProgressPropertyAction;
 import antonafanasjew.cosmodog.rules.actions.WinningAction;
@@ -1063,12 +1061,10 @@ public class InitializationUtils {
 
 		for (int i = 0; i < TutorialUtils.INITIAL_TUTORIAL_TEXTS.size(); i++) {
 			RuleAction pauseAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, new PauseAction(500));
-			pauseAction = new FeatureBoundAction(Features.FEATURE_TUTORIAL, pauseAction);
 			tutorialActions.add(pauseAction);
 			String tutorialText = TutorialUtils.INITIAL_TUTORIAL_TEXTS.get(i);
 			AsyncAction tutorialAsyncAction = new PopUpNotificationAction(tutorialText);
 			RuleAction tutorialRegistrationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, tutorialAsyncAction);
-			tutorialRegistrationAction = new FeatureBoundAction(Features.FEATURE_TUTORIAL, tutorialRegistrationAction);
 			tutorialActions.add(tutorialRegistrationAction);
 		}
 		List<RuleAction> atTheBeginningActions = Lists.newArrayList();

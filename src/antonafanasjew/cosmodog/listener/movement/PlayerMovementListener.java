@@ -2,29 +2,22 @@ package antonafanasjew.cosmodog.listener.movement;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
-import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.MineExplosionAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.RadiationDamageAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.death.WormAttackAction;
-import antonafanasjew.cosmodog.actions.mechanism.SwitchingOneWayBollardAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
-import antonafanasjew.cosmodog.actions.race.CancelRaceAction;
-import antonafanasjew.cosmodog.actions.race.InitiateRaceAction;
 import antonafanasjew.cosmodog.actions.race.LoseRaceAction;
 import antonafanasjew.cosmodog.actions.weather.SnowfallChangeAction;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.globals.TileType;
@@ -37,7 +30,6 @@ import antonafanasjew.cosmodog.model.dynamicpieces.LetterPlate;
 import antonafanasjew.cosmodog.model.dynamicpieces.Mine;
 import antonafanasjew.cosmodog.model.dynamicpieces.Poison;
 import antonafanasjew.cosmodog.model.dynamicpieces.PressureButton;
-import antonafanasjew.cosmodog.model.dynamicpieces.portals.Emp;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
@@ -568,37 +560,32 @@ public class PlayerMovementListener implements MovementListener {
 	}
 
 	private void checkTemperature(ApplicationContext applicationContext) {
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_TEMPERATURE, new Runnable() {
-			@Override
-			public void run() {
-				Cosmodog cosmodog = applicationContext.getCosmodog();
-				CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-				
-				Player player = cosmodog.getCosmodogGame().getPlayer();
-				int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_TEMPERATURE);
-				
-				boolean coldTile = TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD;
-				boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
-				boolean inPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
-				boolean hasJacket = player.getInventory().get(InventoryItemType.JACKET) != null;
-				
-				boolean wasFrozen = player.getLifeLentForFrost() > 0;
+		Cosmodog cosmodog = applicationContext.getCosmodog();
+		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
-				if (coldTile && !inCar && !inPlatform && !hasJacket) {
-					if (player.getActualLife() > 1) {
-						player.increaseLifeLentForFrost(1);
-					}
-					if (!wasFrozen) {
-						OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> You freeze");
-					}
-				} else {
-					player.setLifeLentForFrost(0);
-					if (wasFrozen) {
-						OverheadNotificationAction.registerOverheadNotification(player, "You warm up");
-					}
-				}
+		Player player = cosmodog.getCosmodogGame().getPlayer();
+		int tileId = map.getTileId(player.getPosition(), Layers.LAYER_META_TEMPERATURE);
+
+		boolean coldTile = TileType.getByLayerAndTileId(Layers.LAYER_META_TEMPERATURE, tileId) == TileType.META_TEMPERATURE_COLD;
+		boolean inCar = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+		boolean inPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
+		boolean hasJacket = player.getInventory().get(InventoryItemType.JACKET) != null;
+
+		boolean wasFrozen = player.getLifeLentForFrost() > 0;
+
+		if (coldTile && !inCar && !inPlatform && !hasJacket) {
+			if (player.getActualLife() > 1) {
+				player.increaseLifeLentForFrost(1);
 			}
-		});	
+			if (!wasFrozen) {
+				OverheadNotificationAction.registerOverheadNotification(player, "<font:critical> You freeze");
+			}
+		} else {
+			player.setLifeLentForFrost(0);
+			if (wasFrozen) {
+				OverheadNotificationAction.registerOverheadNotification(player, "You warm up");
+			}
+		}
 	}
 	
 	private void checkRadiation(ApplicationContext applicationContext) {
@@ -611,9 +598,7 @@ public class PlayerMovementListener implements MovementListener {
 		
 		if (TileType.RADIATION.getTileId() == radiationTileId) {
 			if (player.getInventory().get(InventoryItemType.RADIOACTIVESUIT) == null) {
-				if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
-					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.RADIATION_DAMAGE, new RadiationDamageAction(500));
-				}
+				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.RADIATION_DAMAGE, new RadiationDamageAction(500));
 			} else {
 				OverheadNotificationAction.registerOverheadNotification(player, "Radiation: Suppressed by suit");
 			}
@@ -629,9 +614,7 @@ public class PlayerMovementListener implements MovementListener {
 		int electricityTileId = map.getTileId(player.getPosition(), Layers.LAYER_META_RADIATION);
 		
 		if (TileType.ELECTRICITY.getTileId() == electricityTileId) {
-			if (Features.getInstance().featureOn(Features.FEATURE_DAMAGE)) {
-				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.SHOCK_DAMAGE, new ShockDamageAction(500));
-			}
+			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.SHOCK_DAMAGE, new ShockDamageAction(500));
 		}
 		
 	}

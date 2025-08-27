@@ -18,8 +18,8 @@ import antonafanasjew.cosmodog.rendering.decoration.CloudsDecoration;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.topology.Vector;
-import antonafanasjew.particlepattern.model.Particle;
-import antonafanasjew.particlepattern.model.ParticlePattern;
+import antonafanasjew.cosmodog.particlepattern.model.Particle;
+import antonafanasjew.cosmodog.particlepattern.model.ParticlePattern;
 
 public class CloudRenderer extends AbstractRenderer {
 

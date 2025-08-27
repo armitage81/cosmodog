@@ -701,16 +701,16 @@ public class Mappings {
 	public static Map<DoorType, String> KEY_TYPE_2_ANIMATION_ID = Maps.newHashMap();
 	
 	static {
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.redKeycardDoor, "dynamicPieceAlienKey0");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.lilaKeycardDoor, "dynamicPieceAlienKey1");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.blueKeycardDoor, "dynamicPieceAlienKey2");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.cyanKeycardDoor, "dynamicPieceAlienKey3");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.greenKeycardDoor, "dynamicPieceAlienKey4");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.yellowKeycardDoor, "dynamicPieceAlienKey5");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.brownKeycardDoor, "dynamicPieceAlienKey6");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.blackKeycardDoor, "dynamicPieceAlienKey7");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.darkblueKeycardDoor, "dynamicPieceAlienKey8");
-		KEY_TYPE_2_ANIMATION_ID.put(DoorType.whiteKeycardDoor, "dynamicPieceAlienKey9");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.redKeycardDoor, "key0");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.lilaKeycardDoor, "key1");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.blueKeycardDoor, "key2");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.cyanKeycardDoor, "key3");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.greenKeycardDoor, "key4");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.yellowKeycardDoor, "key5");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.brownKeycardDoor, "key6");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.blackKeycardDoor, "key7");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.darkblueKeycardDoor, "key8");
+		KEY_TYPE_2_ANIMATION_ID.put(DoorType.whiteKeycardDoor, "key9");
 	}
 	
 }

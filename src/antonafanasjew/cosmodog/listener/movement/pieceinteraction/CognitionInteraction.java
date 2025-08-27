@@ -10,7 +10,6 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -39,7 +38,7 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 			public void onEnd() {
 				player.getGameProgress().setWon(true);
 				
-				int lengthOfFadeOutTransition = Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) ? 5000 : 0;
+				int lengthOfFadeOutTransition = 5000;
 				
 				CosmodogStarter.instance.enterState(CosmodogStarter.OUTRO2_STATE_ID, new FadeOutTransition(Color.white, lengthOfFadeOutTransition), new FadeInTransition());
 			}

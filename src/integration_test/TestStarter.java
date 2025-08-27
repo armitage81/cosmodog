@@ -21,7 +21,6 @@ import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.states.CreditsState;
 import antonafanasjew.cosmodog.model.states.CutsceneState;
-import antonafanasjew.cosmodog.model.states.DebugState;
 import antonafanasjew.cosmodog.model.states.GameIntroState;
 import antonafanasjew.cosmodog.model.states.GameMenuState;
 import antonafanasjew.cosmodog.model.states.GameState;
@@ -127,29 +126,16 @@ public class TestStarter extends StateBasedGame {
 	 */
 	public static void main(String[] args) throws SlickException {
 
-		//Set up features for the test scenario.
-		System.setProperty("cosmodog.fullscreen", "true");
-		System.setProperty("cosmodog.mapFile", "map_main.tmx");
-		System.setProperty("cosmodog.features.music", "true");
-		System.setProperty("cosmodog.features.godfists", "false");
-		System.setProperty("cosmodog.features.logo", "false");
-		System.setProperty("cosmodog.features.tutorial", "false");
-		System.setProperty("cosmodog.features.story", "false");
-		System.setProperty("cosmodog.features.cutscenes", "false");
-		System.setProperty("cosmodog.features.debugger", "true");
-		System.setProperty("cosmodog.features.fastrunning", "false");
-		
-		
 		Log.setVerbose(true);
 		
 		try {
 		     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/arialichollow.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/frontageoutline.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/karmaticarcade.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/collegehalo.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/unlearn.ttf")));
-		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/academy.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/arialichollow.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/frontageoutline.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/karmaticarcade.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/collegehalo.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/unlearn.ttf")));
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/academy.ttf")));
 		} catch (IOException|FontFormatException e) {
 		     throw new RuntimeException("Error loading font.", e);
 		}
@@ -220,7 +206,6 @@ public class TestStarter extends StateBasedGame {
 		this.addState(new CutsceneState());
 		this.addState(new CreditsState());
 		this.addState(new Outro2State());
-		this.addState(new DebugState());
 		this.addState(new GameIntroState());
 		this.addState(new StatisticsState());
 		this.addState(new TheEndState());

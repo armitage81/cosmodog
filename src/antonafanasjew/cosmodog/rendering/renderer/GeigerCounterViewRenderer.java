@@ -6,7 +6,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -24,11 +23,6 @@ public class GeigerCounterViewRenderer extends AbstractRenderer {
 		
 		//This is the small square at the top right of the interface
 		DrawingContext geigerCounterDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().geigerCounterDrawingContext();
-		
-		
-		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
-			return;
-		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();

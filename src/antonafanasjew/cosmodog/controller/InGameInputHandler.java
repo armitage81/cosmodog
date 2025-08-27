@@ -48,7 +48,6 @@ import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
@@ -134,7 +133,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Handle skip turn
 		if (inputSkipTurn) {
 			int timePassed = Constants.MINUTES_PER_TURN;
-			int movementDurationFactor = Features.getInstance().featureBoundFunction(Features.FEATURE_FASTRUNNING, () -> Constants.VISIBLE_MOVEMENT_DURATION_FACTOR_WHEN_FASTRUNNING, Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
+			int movementDurationFactor = Constants.VISIBLE_MOVEMENT_DURATION_FACTOR;
 			AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, true);
 			cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);
 		}
@@ -208,21 +207,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     		} else if (meleeTargetEnemy != null) {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
-
-    			boolean damageFeatureOn = Features.getInstance().featureOn(Features.FEATURE_DAMAGE);
-    			AbstractEnemyAttackDamageCalculator enemyDamageCalculator = damageFeatureOn ? new SimpleEnemyAttackDamageCalculator() : new AbstractEnemyAttackDamageCalculator() {
-
-    				@Override
-    				protected int enemyAttackDamageInternal(Enemy enemy, Player player) {
-    					return 0;
-    				}
-
-					@Override
-					public boolean criticalHit(Actor attacker, Actor defender) {
-						return false;
-					}
-				};
-
+    			AbstractEnemyAttackDamageCalculator enemyDamageCalculator = new SimpleEnemyAttackDamageCalculator();
     			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
     		} else {
 
@@ -259,7 +244,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 
 
 					int timePassed = Constants.MINUTES_PER_TURN;
-					int movementDurationFactor = Features.getInstance().featureBoundFunction(Features.FEATURE_FASTRUNNING, () -> Constants.VISIBLE_MOVEMENT_DURATION_FACTOR_WHEN_FASTRUNNING, Constants.VISIBLE_MOVEMENT_DURATION_FACTOR);
+					int movementDurationFactor = Constants.VISIBLE_MOVEMENT_DURATION_FACTOR;
 					AsyncAction movementAction = new MovementAction(timePassed * movementDurationFactor, false);
 
 					cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MOVEMENT, movementAction);

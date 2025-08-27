@@ -1,12 +1,15 @@
 package antonafanasjew.cosmodog.rendering.decoration;
 
+import antonafanasjew.cosmodog.particlepattern.movement.AbstractMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.movement.ComposedMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.movement.LinearMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.movement.SinusMovementFunction;
 import antonafanasjew.cosmodog.topology.PlacedRectangle;
 import antonafanasjew.cosmodog.topology.Rectangle;
 import antonafanasjew.cosmodog.topology.Vector;
-import antonafanasjew.particlepattern.OffsetCalculator;
-import antonafanasjew.particlepattern.model.GridParticlePatternBuilder;
-import antonafanasjew.particlepattern.model.ParticlePattern;
-import antonafanasjew.particlepattern.movement.*;
+import antonafanasjew.cosmodog.particlepattern.OffsetCalculator;
+import antonafanasjew.cosmodog.particlepattern.model.GridParticlePatternBuilder;
+import antonafanasjew.cosmodog.particlepattern.model.ParticlePattern;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 

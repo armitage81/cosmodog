@@ -3,7 +3,6 @@ package antonafanasjew.cosmodog.rendering.renderer.pieces;
 import org.newdawn.slick.Animation;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -24,15 +23,6 @@ public abstract class AbstractPieceRenderer implements PieceRenderer {
 		if (optDynamicPiece.isEmpty() || !optDynamicPiece.get().wrapsCollectible()) {
 			render(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
 		}
-	}
-
-	protected void renderAsDefaultFeatureBoundGoodie(ApplicationContext applicationContext, int tileWidth, int tileHeight, int tileNoX, int tileNoY, Piece piece, String feature) {
-		Features.getInstance().featureBoundProcedure(feature, new Runnable() {
-			@Override
-			public void run() {
-				renderAsDefaultGoodie(applicationContext, tileWidth, tileHeight, tileNoX, tileNoY, piece);
-			}
-		});
 	}
 
 	protected void renderAsDefaultGoodie(ApplicationContext applicationContext, int tileWidth, int tileHeight, int tileNoX, int tileNoY, Piece piece) {

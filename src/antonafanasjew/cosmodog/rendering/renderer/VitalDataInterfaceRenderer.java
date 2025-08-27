@@ -13,10 +13,7 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
-import antonafanasjew.cosmodog.model.Cosmodog;
-import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.CenteredDrawingContext;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -36,10 +33,6 @@ public class VitalDataInterfaceRenderer extends AbstractRenderer {
 
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
-
-		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
-			return;
-		}
 
 		//Check if water and food consumption should be halted.
 		//This must be in sync with the water and food consumers.

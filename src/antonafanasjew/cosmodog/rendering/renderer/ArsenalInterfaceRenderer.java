@@ -12,7 +12,6 @@ import org.newdawn.slick.Graphics;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.ResolutionHolder;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -56,10 +55,6 @@ public class ArsenalInterfaceRenderer extends AbstractRenderer {
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
 		
-		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
-			return;
-		}
-
 		if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() == MapType.SPACE) {
 			return;
 		}

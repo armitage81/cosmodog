@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -19,10 +18,6 @@ public class SupplyTrackerViewRenderer extends AbstractRenderer {
 
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
-		
-		if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE) == false) {
-			return;
-		}
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		

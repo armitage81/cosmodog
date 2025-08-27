@@ -73,8 +73,6 @@ public class FightAction extends PhaseBasedAction {
 	 * The calculation that the player deals to an enemy is a complex process. It involves the player's selected weapon,
 	 * the enemy's armor, the player's direction, the enemy's direction, the ammunition amount etc.
 	 * <p>
-	 * There are other factors: If God Fists feature is enabled, the player deals 1000 damage to the enemy. If the enemy is inactive
-	 * (for instance solar-driven tanks at night), the damage always consumes its whole life.
 	 * There are also critical hits to consider. There are no critical hits for turrets and artillery units.
 	 * <p>
 	 * All these aspects are considered in the player attack damage calculator.

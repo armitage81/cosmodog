@@ -1,0 +1,42 @@
+HINTS: VEHICLES
+--------------------------------------------------------------------------
+There are many vehicles in the game world.
+You can enter a vehicle simply by running into it. Exit it with SHIFT + arrow buttons.
+
+
+Vehicles have two advantages.
+First of all, they protect you from enemy attacks.
+Secondly, your food and water reserves do not deplete while staying in a vehicle.
+Also, your food and water reserves are refilled when you enter a vehicle.
+
+
+Vehicles are armored.
+You see the armor points of a vehicle (while sitting in one)
+represented by the violet bar on the top left of the screen,
+directly under the hit points bar.
+All damage you take while in a vehicle is redirected
+to the armor points of the vehicle.
+If the armor points drop to zero,
+the vehicle will be destroyed and you are on your own again.
+
+
+You can find armor plates throughout the game world.
+Each of them will permanently increase the armor points of each vehicle you enter.
+
+
+Vehicles cannot move on rough terrain, such as grass, snow or rubble.
+
+
+Vehicles need fuel to move.
+While sitting in a vehicle, you can see the yellow fuel bar on the top left of the screen,
+directly under the armor points bar.
+If fuel depletes completely, the vehicle will not be able to move anymore.
+Look out for gas stations. Enter a gas station while in a vehicle to refuel it.
+You can also enter a gas station on foot.
+In such a case, you will obtain a canister with fuel.
+Enter a vehicle then to refuel it using the canister.
+You can find additional fuel tanks in the game world.
+Each fuel tank will permanently increase the fuel capacity of each vehicle you enter.
+
+
+Fuel depletes slower when moving on roads.

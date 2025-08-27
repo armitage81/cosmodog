@@ -27,7 +27,6 @@ import antonafanasjew.cosmodog.collision.validators.OneBlocksAllCollisionValidat
 import antonafanasjew.cosmodog.collision.validators.moveable.GeneralCollisionValidatorForMoveable;
 import antonafanasjew.cosmodog.collision.validators.player.DynamicPieceCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.collision.validators.player.EnergyWallCollisionValidatorForPlayer;
-import antonafanasjew.cosmodog.collision.validators.player.FeatureBoundCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.collision.validators.player.GeneralCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.collision.validators.player.InterCharacterCollisionValidatorForPlayer;
 import antonafanasjew.cosmodog.controller.DebugConsoleInputHandler;
@@ -40,7 +39,6 @@ import antonafanasjew.cosmodog.controller.NoInputInputHandler;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -263,9 +261,9 @@ public class ApplicationContext {
 		delegateValidators.add(new EnergyWallCollisionValidatorForPlayer());
 		delegateValidators.add(new DynamicPieceCollisionValidatorForPlayer());
 		CollisionValidator collisionValidatorForPlayer = new OneBlocksAllCollisionValidator(delegateValidators); 
-		cosmodog.setCollisionValidatorForPlayer(new FeatureBoundCollisionValidatorForPlayer(collisionValidatorForPlayer));
+		cosmodog.setCollisionValidatorForPlayer(collisionValidatorForPlayer);
 		CollisionValidator collisionValidatorForMoveable = new GeneralCollisionValidatorForMoveable();
-		cosmodog.setCollisionValidatorForMoveable(new FeatureBoundCollisionValidatorForPlayer(collisionValidatorForMoveable));
+		cosmodog.setCollisionValidatorForMoveable(collisionValidatorForMoveable);
 
 		
 		MovementPlaner alertedMovementPlaner = new EnemyTypeSpecificAlertedMovementPlaner();
@@ -275,32 +273,17 @@ public class ApplicationContext {
 		
 		cosmodog.setWaterValidator(new DefaultWaterValidator());
 		
-		ResourceConsumer fuelConsumer = Features.getInstance().featureOn(Features.FEATURE_FUEL) ? new FuelConsumer() : new ResourceConsumer() {
-			@Override
-			public int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
-				return 0;
-			}
-		};
+		ResourceConsumer fuelConsumer = new FuelConsumer();
 		
 		cosmodog.setFuelConsumer(fuelConsumer);
 		
-		ResourceConsumer waterConsumer = Features.getInstance().featureOn(Features.FEATURE_THIRST) ? new WaterConsumer() : new ResourceConsumer() {
-			@Override
-			public int turnCosts(Position position1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
-				return 0;
-			}
-		};
+		ResourceConsumer waterConsumer = new WaterConsumer();
 
 		waterConsumer = ConditionalResourceConsumer.instanceWithResourceConsumptionActiveCondition(waterConsumer);
 
 		cosmodog.setWaterConsumer(waterConsumer);
 		
-		ResourceConsumer foodConsumer = Features.getInstance().featureOn(Features.FEATURE_HUNGER) ? new FoodConsumer() : new ResourceConsumer() {
-			@Override
-			public int turnCosts(Position positioin1, Position position2, Player player, CosmodogMap map, ApplicationContext cx) {
-				return 0;
-			}
-		};
+		ResourceConsumer foodConsumer = new FoodConsumer();
 
 		foodConsumer = ConditionalResourceConsumer.instanceWithResourceConsumptionActiveCondition(foodConsumer);
 		
@@ -386,142 +369,137 @@ public class ApplicationContext {
 		
 		this.setCosmodog(cosmodog);
 		
-		Features.getInstance().featureBoundProcedure(Features.FEATURE_MUSIC, new Runnable() {
+		try {
+			Music musicMainMenu = new Music("assets/audio/music/EG_Map_Select_01_Loop.ogg");
+			Music musicLost = new Music("assets/audio/music/EG_Negative_Stinger.ogg");
+			Music musicLogo = new Music("assets/audio/music/EG_Neutral_Stinger_01.ogg");
+			Music musicCutscene = new Music("assets/audio/music/EG_DangerZone_Loop.ogg");
+			Music musicWon = new Music("assets/audio/music/EG_Positive_Stinger_02.ogg");
+			Music musicSoundtrack = new Music("assets/audio/music/Soundtrack.ogg");
+			Music musicSoundtrackSpace = new Music("assets/audio/music/Soundtrack_space.ogg");
+			Music musicSoundtrackRacing = new Music("assets/audio/music/Soundtrack_racing.ogg");
+			Music musicSoundtrackTension = new Music("assets/audio/music/Soundtrack_tension.ogg");
 
-			@Override
-			public void run() {
-				try {
-					Music musicMainMenu = new Music("data/music/EG_Map_Select_01_Loop.ogg");
-					Music musicLost = new Music("data/music/EG_Negative_Stinger.ogg");
-					Music musicLogo = new Music("data/music/EG_Neutral_Stinger_01.ogg");
-					Music musicCutscene = new Music("data/music/EG_DangerZone_Loop.ogg");
-					Music musicWon = new Music("data/music/EG_Positive_Stinger_02.ogg");
-					Music musicSoundtrack = new Music("data/music/Soundtrack.ogg");
-					Music musicSoundtrackSpace = new Music("data/music/Soundtrack_space.ogg");
-					Music musicSoundtrackRacing = new Music("data/music/Soundtrack_racing.ogg");
-					Music musicSoundtrackTension = new Music("data/music/Soundtrack_tension.ogg");
-					
-					
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
-					
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK, musicSoundtrack);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_SPACE, musicSoundtrackSpace);
 
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_RACING, musicSoundtrackRacing);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_TENSION, musicSoundtrackTension);
+			getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
 
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOST, musicLost);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
-					ApplicationContext.this.getMusicResources().put(MusicResources.MUSIC_WON, musicWon);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-			
-		});
+			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK, musicSoundtrack);
+			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_SPACE, musicSoundtrackSpace);
 
-		Sound spaceliftLatch = new Sound("data/sound/spacelift_latch.wav");
-		Sound spacelift = new Sound("data/sound/spacelift.wav");
-		Sound collected = new Sound("data/sound/collected.wav");
-		Sound eaten = new Sound("data/sound/eaten.wav");
-		Sound drunk = new Sound("data/sound/drunk.wav");
-		Sound carstart = new Sound("data/sound/carstart.wav");
-		Sound noway = new Sound("data/sound/noway.wav");
-		Sound carmotor = new Sound("data/sound/carmotor.wav");
-		Sound motordies = new Sound("data/sound/motordies.wav");
-		Sound hit = new Sound("data/sound/hit.wav");
-		Sound explosion = new Sound("data/sound/explosion.wav");
-		Sound powerup = new Sound("data/sound/powerup.wav");
-		Sound popup = new Sound("data/sound/popup.wav");
-		Sound teleport_start = new Sound("data/sound/teleport_start.wav");
-		Sound teleport_transfer = new Sound("data/sound/teleport_transferring.wav");
-		Sound teleport_end = new Sound("data/sound/teleport_end.wav");
-		Sound reload = new Sound("data/sound/reload.wav");
-		Sound droppedItem = new Sound("data/sound/droppeditem.wav");
-		Sound pressurePlate = new Sound("data/sound/pressureplate.wav");
-		Sound letterPlate = new Sound("data/sound/letterplate.wav");
-		Sound drainPoison = new Sound("data/sound/drainpoison.wav");
-		Sound artilleryShots = new Sound("data/sound/artilleryshots.wav");
-		Sound secretFound = new Sound("data/sound/secretfound.wav");
-		Sound carMoves = new Sound("data/sound/carmoves.wav");
-		Sound carDoor = new Sound("data/sound/cardoor.wav");
-		Sound console = new Sound("data/sound/console.wav");
-		Sound wormGrowl = new Sound("data/sound/wormgrowl.wav");
-		Sound shortWormGrowl = new Sound("data/sound/shortwormgrowl.wav");
-		Sound earthquake = new Sound("data/sound/earthquake.wav");
-		Sound breakcrate1 = new Sound("data/sound/breakcrate1.wav");
-		Sound breakcrate2 = new Sound("data/sound/breakcrate2.wav");
-		Sound breakcrate3 = new Sound("data/sound/breakcrate3.wav");
-		
-		Sound breakstone1 = new Sound("data/sound/breakstone1.wav");
-		Sound breakstone2 = new Sound("data/sound/breakstone2.wav");
-		Sound breakstone3 = new Sound("data/sound/breakstone3.wav");
-		Sound breakhardstone1 = new Sound("data/sound/breakhardstone1.wav");
-		Sound breakhardstone2 = new Sound("data/sound/breakhardstone2.wav");
-		Sound breakhardstone3 = new Sound("data/sound/breakhardstone3.wav");
-		Sound cuttingtree1 = new Sound("data/sound/cuttingtree1.wav");
-		Sound cuttingtree2 = new Sound("data/sound/cuttingtree2.wav");
-		Sound cuttingtree3 = new Sound("data/sound/cuttingtree3.wav");
-		
-		Sound cuttingbamboo1 = new Sound("data/sound/cutbamboo1.wav");
-		Sound cuttingbamboo2 = new Sound("data/sound/cutbamboo2.wav");
-		Sound cuttingbamboo3 = new Sound("data/sound/cutbamboo3.wav");
-		
-		Sound lockedaliendoor = new Sound("data/sound/lockedaliendoor.wav");
-		Sound openingaliendoor = new Sound("data/sound/openingaliendoor.wav");
-		
-		Sound poisoned = new Sound("data/sound/poisoned.wav");
-		
-		Sound guardianDestroyed = new Sound("data/sound/guardiandestroyed.wav");
-		
-		Sound menu_sub = new Sound("data/sound/menu_sub.wav");
-		Sound menu_back = new Sound("data/sound/menu_back.wav");
-		Sound menu_select = new Sound("data/sound/menu_select.wav");
-		Sound menu_move = new Sound("data/sound/menu_move.wav");
-		
-		
-		
-		Sound footsteps = new Sound("data/sound/footsteps.wav");
-		Sound footstepsHighGrass = new Sound("data/sound/footsteps_highgrass.wav");
-		Sound footstepsGrass = new Sound("data/sound/footsteps_grass.wav");
-		Sound footstepsSnow = new Sound("data/sound/footsteps_snow.wav");
-		Sound footstepsSand = new Sound("data/sound/footsteps_sand.wav");
-		Sound footstepsRoad = new Sound("data/sound/footsteps_road.wav");
-		Sound footstepsWater = new Sound("data/sound/footsteps_water.wav");
-		
-		Sound ambientElectricity = new Sound("data/sound/ambient_electricity.wav");
-		Sound ambientEnergyWall = new Sound("data/sound/ambient_energywall.wav");
-		Sound ambientFire = new Sound("data/sound/ambient_fire.wav");
-		
-		Sound introMissileAlert = new Sound("data/intro/missilealert.wav");
-		Sound introSiren = new Sound("data/intro/siren.wav");
-		
-		Sound alisasMessage = new Sound("data/alisasMessage.wav");
-		
-		Sound textTyping = new Sound("data/sound/text.wav");
-		
-		Sound sliding = new Sound("data/sound/slide.wav");
-		
-		Sound secretDoorSpikes = new Sound("data/sound/secretdoor_spikes.wav");
-		Sound secretDoorHydraulics = new Sound("data/sound/secretdoor_hydraulics.wav");
-		Sound secretDoorEnergy = new Sound("data/sound/secretdoor_energy.wav");
-		Sound secretDoorWall = new Sound("data/sound/secretdoor_wall.wav");
+			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_RACING, musicSoundtrackRacing);
+			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_TENSION, musicSoundtrackTension);
 
-		Sound portalsGunshot = new Sound("data/sound/portals_gunshot.wav");
-		Sound portalsJammed = new Sound("data/sound/portals_jammed.wav");
-		Sound portalsCreated = new Sound("data/sound/portals_created.wav");
-		Sound portalsFailed = new Sound("data/sound/portals_failed.wav");
-		Sound portalsCanceled = new Sound("data/sound/portals_canceled.wav");
-		Sound portalsTeleported = new Sound("data/sound/portals_teleported.wav");
-		Sound buttonPushed = new Sound("data/sound/button_pushed.wav");
+			getMusicResources().put(MusicResources.MUSIC_LOST, musicLost);
+			getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
+			getMusicResources().put(MusicResources.MUSIC_CUTSCENE, musicCutscene);
+			getMusicResources().put(MusicResources.MUSIC_WON, musicWon);
 
-		Sound sensorPresenceDetected = new Sound("data/sound/sensor_presence_detected.wav");
-		Sound sensorPresenceLost = new Sound("data/sound/sensor_presence_lost.wav");
-		Sound alert = new Sound("data/sound/alert.wav");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-		Sound timeBonus = new Sound("data/sound/timebonus.wav");
-		Sound trafficbarrierreset = new Sound("data/sound/trafficbarrierreset.wav");
+
+		Sound spaceliftLatch = new Sound("assets/audio/sounds/spacelift_latch.wav");
+		Sound spacelift = new Sound("assets/audio/sounds/spacelift.wav");
+		Sound collected = new Sound("assets/audio/sounds/collected.wav");
+		Sound eaten = new Sound("assets/audio/sounds/eaten.wav");
+		Sound drunk = new Sound("assets/audio/sounds/drunk.wav");
+		Sound carstart = new Sound("assets/audio/sounds/carstart.wav");
+		Sound noway = new Sound("assets/audio/sounds/noway.wav");
+		Sound carmotor = new Sound("assets/audio/sounds/carmotor.wav");
+		Sound motordies = new Sound("assets/audio/sounds/motordies.wav");
+		Sound hit = new Sound("assets/audio/sounds/hit.wav");
+		Sound explosion = new Sound("assets/audio/sounds/explosion.wav");
+		Sound powerup = new Sound("assets/audio/sounds/powerup.wav");
+		Sound popup = new Sound("assets/audio/sounds/popup.wav");
+		Sound teleport_start = new Sound("assets/audio/sounds/teleport_start.wav");
+		Sound teleport_transfer = new Sound("assets/audio/sounds/teleport_transferring.wav");
+		Sound teleport_end = new Sound("assets/audio/sounds/teleport_end.wav");
+		Sound reload = new Sound("assets/audio/sounds/reload.wav");
+		Sound droppedItem = new Sound("assets/audio/sounds/droppeditem.wav");
+		Sound pressurePlate = new Sound("assets/audio/sounds/pressureplate.wav");
+		Sound letterPlate = new Sound("assets/audio/sounds/letterplate.wav");
+		Sound drainPoison = new Sound("assets/audio/sounds/drainpoison.wav");
+		Sound artilleryShots = new Sound("assets/audio/sounds/artilleryshots.wav");
+		Sound secretFound = new Sound("assets/audio/sounds/secretfound.wav");
+		Sound carMoves = new Sound("assets/audio/sounds/carmoves.wav");
+		Sound carDoor = new Sound("assets/audio/sounds/cardoor.wav");
+		Sound console = new Sound("assets/audio/sounds/console.wav");
+		Sound wormGrowl = new Sound("assets/audio/sounds/wormgrowl.wav");
+		Sound shortWormGrowl = new Sound("assets/audio/sounds/shortwormgrowl.wav");
+		Sound earthquake = new Sound("assets/audio/sounds/earthquake.wav");
+		Sound breakcrate1 = new Sound("assets/audio/sounds/breakcrate1.wav");
+		Sound breakcrate2 = new Sound("assets/audio/sounds/breakcrate2.wav");
+		Sound breakcrate3 = new Sound("assets/audio/sounds/breakcrate3.wav");
+		
+		Sound breakstone1 = new Sound("assets/audio/sounds/breakstone1.wav");
+		Sound breakstone2 = new Sound("assets/audio/sounds/breakstone2.wav");
+		Sound breakstone3 = new Sound("assets/audio/sounds/breakstone3.wav");
+		Sound breakhardstone1 = new Sound("assets/audio/sounds/breakhardstone1.wav");
+		Sound breakhardstone2 = new Sound("assets/audio/sounds/breakhardstone2.wav");
+		Sound breakhardstone3 = new Sound("assets/audio/sounds/breakhardstone3.wav");
+		Sound cuttingtree1 = new Sound("assets/audio/sounds/cuttingtree1.wav");
+		Sound cuttingtree2 = new Sound("assets/audio/sounds/cuttingtree2.wav");
+		Sound cuttingtree3 = new Sound("assets/audio/sounds/cuttingtree3.wav");
+		
+		Sound cuttingbamboo1 = new Sound("assets/audio/sounds/cutbamboo1.wav");
+		Sound cuttingbamboo2 = new Sound("assets/audio/sounds/cutbamboo2.wav");
+		Sound cuttingbamboo3 = new Sound("assets/audio/sounds/cutbamboo3.wav");
+		
+		Sound lockedaliendoor = new Sound("assets/audio/sounds/lockedaliendoor.wav");
+		Sound openingaliendoor = new Sound("assets/audio/sounds/openingaliendoor.wav");
+		
+		Sound poisoned = new Sound("assets/audio/sounds/poisoned.wav");
+		
+		Sound guardianDestroyed = new Sound("assets/audio/sounds/guardiandestroyed.wav");
+		
+		Sound menu_sub = new Sound("assets/audio/sounds/menu_sub.wav");
+		Sound menu_back = new Sound("assets/audio/sounds/menu_back.wav");
+		Sound menu_select = new Sound("assets/audio/sounds/menu_select.wav");
+		Sound menu_move = new Sound("assets/audio/sounds/menu_move.wav");
+		
+		
+		
+		Sound footsteps = new Sound("assets/audio/sounds/footsteps.wav");
+		Sound footstepsHighGrass = new Sound("assets/audio/sounds/footsteps_highgrass.wav");
+		Sound footstepsGrass = new Sound("assets/audio/sounds/footsteps_grass.wav");
+		Sound footstepsSnow = new Sound("assets/audio/sounds/footsteps_snow.wav");
+		Sound footstepsSand = new Sound("assets/audio/sounds/footsteps_sand.wav");
+		Sound footstepsRoad = new Sound("assets/audio/sounds/footsteps_road.wav");
+		Sound footstepsWater = new Sound("assets/audio/sounds/footsteps_water.wav");
+		
+		Sound ambientElectricity = new Sound("assets/audio/sounds/ambient_electricity.wav");
+		Sound ambientEnergyWall = new Sound("assets/audio/sounds/ambient_energywall.wav");
+		Sound ambientFire = new Sound("assets/audio/sounds/ambient_fire.wav");
+		
+		Sound introMissileAlert = new Sound("assets/audio/sounds/intro/missilealert.wav");
+		Sound introSiren = new Sound("assets/audio/sounds/intro/siren.wav");
+		
+		Sound alisasMessage = new Sound("assets/audio/sounds/alisasMessage.wav");
+		
+		Sound textTyping = new Sound("assets/audio/sounds/text.wav");
+		
+		Sound sliding = new Sound("assets/audio/sounds/slide.wav");
+		
+		Sound secretDoorSpikes = new Sound("assets/audio/sounds/secretdoor_spikes.wav");
+		Sound secretDoorHydraulics = new Sound("assets/audio/sounds/secretdoor_hydraulics.wav");
+		Sound secretDoorEnergy = new Sound("assets/audio/sounds/secretdoor_energy.wav");
+		Sound secretDoorWall = new Sound("assets/audio/sounds/secretdoor_wall.wav");
+
+		Sound portalsGunshot = new Sound("assets/audio/sounds/portals_gunshot.wav");
+		Sound portalsJammed = new Sound("assets/audio/sounds/portals_jammed.wav");
+		Sound portalsCreated = new Sound("assets/audio/sounds/portals_created.wav");
+		Sound portalsFailed = new Sound("assets/audio/sounds/portals_failed.wav");
+		Sound portalsCanceled = new Sound("assets/audio/sounds/portals_canceled.wav");
+		Sound portalsTeleported = new Sound("assets/audio/sounds/portals_teleported.wav");
+		Sound buttonPushed = new Sound("assets/audio/sounds/button_pushed.wav");
+
+		Sound sensorPresenceDetected = new Sound("assets/audio/sounds/sensor_presence_detected.wav");
+		Sound sensorPresenceLost = new Sound("assets/audio/sounds/sensor_presence_lost.wav");
+		Sound alert = new Sound("assets/audio/sounds/alert.wav");
+
+		Sound timeBonus = new Sound("assets/audio/sounds/timebonus.wav");
+		Sound trafficbarrierreset = new Sound("assets/audio/sounds/trafficbarrierreset.wav");
 
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
@@ -623,30 +601,22 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_TIMEBONUS, timeBonus);
 		this.getSoundResources().put(SoundResources.SOUND_TRAFFICBARRIERRESET, trafficbarrierreset);
 
-		SpriteSheet playerSheet = new SpriteSheet("data/sprites.png", 16, 16);
-		SpriteSheet collectibleItemToolSheet = new SpriteSheet("data/collectible_tool.png", 16, 16);
-		SpriteSheet infobitsSheet = new SpriteSheet("data/infobits.png", 16, 16);
-		SpriteSheet suppliesSheet = new SpriteSheet("data/supplies.png", 16, 16);
-		SpriteSheet insightSheet = new SpriteSheet("data/insight.png", 16, 16);
-		SpriteSheet softwareSheet = new SpriteSheet("data/software.png", 16, 16);
-		SpriteSheet cloudSheet = new SpriteSheet("data/cloud.png", 240, 240);
-		SpriteSheet alphabethSheet = new SpriteSheet("data/alphabeth.png", 16, 24);
-		SpriteSheet alphabeth2Sheet = new SpriteSheet("data/alphabeth2.png", 16, 16);
-		SpriteSheet interfaceSheet = new SpriteSheet("data/interface.png", 16, 16);
-		SpriteSheet tileset1Sheet = new SpriteSheet("data/tileset00000.png", 16, 16);
-		SpriteSheet tileset2Sheet = new SpriteSheet("data/tileset00001.png", 16, 16);
-		SpriteSheet symbolsSheet = new SpriteSheet("data/symbols.png", 16, 16);
+		SpriteSheet collectibleItemToolSheet = new SpriteSheet("assets/graphics/items/collectible_tool.png", 16, 16);
+		SpriteSheet infobitsSheet = new SpriteSheet("assets/graphics/items/infobits.png", 16, 16);
+		SpriteSheet suppliesSheet = new SpriteSheet("assets/graphics/items/supplies.png", 16, 16);
+		SpriteSheet insightSheet = new SpriteSheet("assets/graphics/items/insight.png", 16, 16);
+		SpriteSheet softwareSheet = new SpriteSheet("assets/graphics/items/software.png", 16, 16);
+		SpriteSheet cloudSheet = new SpriteSheet("assets/graphics/decorations/cloud.png", 240, 240);
+		SpriteSheet tileset1Sheet = new SpriteSheet("assets/graphics/tiles/tileset00000.png", 16, 16);
+		SpriteSheet tileset2Sheet = new SpriteSheet("assets/graphics/tiles/tileset00001.png", 16, 16);
+		SpriteSheet symbolsSheet = new SpriteSheet("assets/graphics/ui/symbols.png", 16, 16);
 		
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_PLAYER, playerSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_COLLECTIBLE_ITEM_TOOL, collectibleItemToolSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INFOBITS, infobitsSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INSIGHT, insightSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SOFTWARE, softwareSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SUPPLIES, suppliesSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_CLOUDS, cloudSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH, alphabethSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_ALPHABETH2, alphabeth2Sheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INTERFACE, interfaceSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES1, tileset1Sheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES2, tileset2Sheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SYMBOLS, symbolsSheet);
@@ -658,30 +628,23 @@ public class ApplicationContext {
 			this.getAnimations().put(key, animationResourceWrappers.get(key).getEntity());
 		}
 
-		images.put("space.background", new Image("data/space_background.png", false, Image.FILTER_NEAREST));
+		images.put("space.background", new Image("assets/graphics/decorations/space_background.png", false, Image.FILTER_NEAREST));
 
-		images.put("ui.ingame.background", new Image("data/ui/background.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.lifeframe", new Image("data/ui/lifeframe2.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.barbackground", new Image("data/ui/barbackground.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.barframestart", new Image("data/ui/barframestart.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.barframemiddle", new Image("data/ui/barframemiddle.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.barframeend", new Image("data/ui/barframeend.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.gamelogframe", new Image("data/ui2/gamelogfield.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.popupframe", new Image("data/ui2/textfield.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.frame", new Image("data/ui2/ui2.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.ingamemenuframe", new Image("data/ui/ingamemenuinterface.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.ingameinventory", new Image("data/ui/ingameinventory.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.ingamemap", new Image("data/ui/ingamemap.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.ingamelogs", new Image("data/ui/ingamelogs.png", false, Image.FILTER_NEAREST));
-		
-		images.put("ui.ingame.compasspointer", new Image("data/ui/compasspointer.png", false, Image.FILTER_NEAREST));
-		
-		images.put("ui.ingame.weaponboxsimple", new Image("data/ui/weaponboxsimple.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.weaponboxdouble", new Image("data/ui/weaponboxdouble.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.weaponboxtriple", new Image("data/ui/weaponboxtriple.png", false, Image.FILTER_NEAREST));
-		
-		images.put("ui.ingame.ingameinventoryitembox", new Image("data/ui/ingameinventoryitembox.png", false, Image.FILTER_NEAREST));
-		images.put("ui.ingame.ingameinventoryitemboxselected", new Image("data/ui/ingameinventoryitemboxselected.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.gamelogframe", new Image("assets/graphics/ui/ui.log.frame.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.popupframe", new Image("assets/graphics/ui/ui.popup.frame.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.frame", new Image("assets/graphics/ui/ui.frame.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingamemenuframe", new Image("assets/graphics/ui/ui.menu.frame.png", false, Image.FILTER_NEAREST));
+
+		images.put("ui.ingame.ingameinventory", new Image("assets/graphics/ui/ui.inventory.frame.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingameinventoryitembox", new Image("assets/graphics/ui/ui.inventory.slot.png", false, Image.FILTER_NEAREST));
+		images.put("ui.ingame.ingameinventoryitemboxselected", new Image("assets/graphics/ui/ui.inventory.slot.selected.png", false, Image.FILTER_NEAREST));
+
+
+		images.put("ui.ingame.ingamemap", new Image("assets/graphics/ui/ui.map.frame.png", false, Image.FILTER_NEAREST));
+
+		images.put("ui.ingame.ingamelogs", new Image("assets/graphics/ui/ui.logplayer.frame.png", false, Image.FILTER_NEAREST));
+
+
 
 		//This big image is not loaded eagerly when initializing animations in the application context.
 		//That causes a delay when opening map for the first time. Initializing the map image explicitly to
@@ -689,9 +652,7 @@ public class ApplicationContext {
 //		Image mapImage = getAnimations().get("completechart").getImage(0);
 //		mapImage.draw();
 		
-		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabeth2Sheet);
-		this.characterLetters = letterBuilder.buildLetters();
-		
+
 		menuActions.put("newGameMenuAction1", MenuActionFactory.getStartNewGameMenuAction(1));
 		menuActions.put("newGameMenuAction2", MenuActionFactory.getStartNewGameMenuAction(2));
 		menuActions.put("newGameMenuAction3", MenuActionFactory.getStartNewGameMenuAction(3));
@@ -732,11 +693,11 @@ public class ApplicationContext {
 		
 		GameLogBuilder gameLogBuilder = new GameLogBuilderImpl();
 		try {
-			this.gameLogs = gameLogBuilder.buildGameLogs("data/writing/gamelogs");
-			this.gameTexts.put("intro", gameLogBuilder.buildGameLog("data/writing/intro/intro"));
-			this.gameTexts.put("outro", gameLogBuilder.buildGameLog("data/writing/outro/outro"));
-			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("data/writing/credits/credits"));
-			this.gameTexts.put("references", gameLogBuilder.buildGameLog("data/writing/references/references"));
+			this.gameLogs = gameLogBuilder.buildGameLogs("assets/texts/gamelogs");
+			this.gameTexts.put("intro", gameLogBuilder.buildGameLog("assets/texts/intro/intro"));
+			this.gameTexts.put("outro", gameLogBuilder.buildGameLog("assets/texts/outro/outro"));
+			this.gameTexts.put("credits", gameLogBuilder.buildGameLog("assets/texts/credits/credits"));
+			this.gameTexts.put("references", gameLogBuilder.buildGameLog("assets/texts/references/references"));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not load game logs.", e);
 		}
@@ -744,7 +705,7 @@ public class ApplicationContext {
 		DyingHintsBuilder dyingHintsBuilder = new DyingHintsBuilderImpl();
 		
 		try {
-			this.dyingHints.addAll(dyingHintsBuilder.build("data/writing/dyinghints/dyinghints"));
+			this.dyingHints.addAll(dyingHintsBuilder.build("assets/texts/dyinghints/dyinghints"));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not load dying hints.", e);
 		}

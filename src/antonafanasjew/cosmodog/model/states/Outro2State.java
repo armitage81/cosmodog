@@ -14,7 +14,6 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
@@ -64,7 +63,7 @@ public class Outro2State extends CosmodogAbstractState {
 					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();
 				} else {
 					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).stop();
-					int lengthOfFadeOutTransition = Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) ? 10000 : 0;
+					int lengthOfFadeOutTransition = 10000;
 					sbg.enterState(CosmodogStarter.THE_END_STATE_ID, new FadeOutTransition(Color.white, lengthOfFadeOutTransition), new FadeInTransition());
 				}
 

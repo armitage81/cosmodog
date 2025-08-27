@@ -11,7 +11,6 @@ import org.newdawn.slick.Image;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -71,11 +70,8 @@ public class InterfaceOnSceneRenderer extends AbstractRenderer {
 			g.fillRect(topBarDrawingContext.x(), topBarDrawingContext.y(), topBarDrawingContext.w(), topBarDrawingContext.h());
 			g.fillRect(bottomBarDrawingContext.x(), bottomBarDrawingContext.y(), bottomBarDrawingContext.w(), bottomBarDrawingContext.h());
 
-			//Draw the interface frame
-			if (Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
-				Image topPanelFrame = ApplicationContext.instance().getImages().get("ui.ingame.frame");
-				ImageUtils.renderImage(gc, g, topPanelFrame, gameContainerDrawingContext);
-			}
+			Image topPanelFrame = ApplicationContext.instance().getImages().get("ui.ingame.frame");
+			ImageUtils.renderImage(gc, g, topPanelFrame, gameContainerDrawingContext);
 
 			//Draw the Geiger counter interface display
 			geigerCounterViewRenderer.render(gc, g, null);

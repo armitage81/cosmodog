@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 import com.google.common.base.Strings;
 
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
@@ -22,10 +21,6 @@ public class InfobitsRenderer extends AbstractRenderer {
 	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 		
 		DrawingContext infobitsDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().infobitsDrawingContext();
-		
-		if (!Features.getInstance().featureOn(Features.FEATURE_INTERFACE)) {
-			return;
-		}
 		
 		Player p = ApplicationContextUtils.getPlayer();
 		int infobits = p.getGameProgress().getInfobits();

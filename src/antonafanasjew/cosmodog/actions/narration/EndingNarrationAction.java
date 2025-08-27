@@ -7,7 +7,6 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.InputHandlerType;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
@@ -69,26 +68,24 @@ public class EndingNarrationAction extends AbstractNarrationAction {
 	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
-		boolean skipCutscenes = !Features.getInstance().featureOn(Features.FEATURE_CUTSCENES);
-		
 		long referenceTime = System.currentTimeMillis();
 		
 		ActionPhase prevActionPhase = phase;
 		
 		if (phase == ActionPhase.DARKNESS) {
-			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+			if (phaseCompletion() >= 1.0f) {
 				phase = ActionPhase.PICTURE_FADES_IN;
 			}
 		} else if (phase == ActionPhase.PICTURE_FADES_IN) {
-			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+			if (phaseCompletion() >= 1.0f) {
 				phase = ActionPhase.PICTURE;
 			}
 		} else if (phase == ActionPhase.PICTURE) {
-			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+			if (phaseCompletion() >= 1.0f) {
 				phase = ActionPhase.PICTURE_FADES_OUT;
 			}
 		} else if (phase == ActionPhase.PICTURE_FADES_OUT) {
-			if (phaseCompletion() >= 1.0f || skipCutscenes) {
+			if (phaseCompletion() >= 1.0f) {
 				phase = ActionPhase.TEXT;
 				ApplicationContextUtils.getCosmodogGame().getOpenBook().resetTimeAfterPageOpen();
 				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_TEXT_TYPING).loop();

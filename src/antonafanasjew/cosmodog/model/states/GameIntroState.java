@@ -17,7 +17,6 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.MusicResources;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
-import antonafanasjew.cosmodog.globals.Features;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
 import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
@@ -27,8 +26,8 @@ import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
 import antonafanasjew.cosmodog.topology.Vector;
 import antonafanasjew.cosmodog.util.MusicUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.particlepattern.movement.ShakingMovementFunction;
-import antonafanasjew.particlepattern.movement.SinusMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.movement.ShakingMovementFunction;
+import antonafanasjew.cosmodog.particlepattern.movement.SinusMovementFunction;
 
 public class GameIntroState  extends CosmodogAbstractState {
 	
@@ -62,12 +61,6 @@ public class GameIntroState  extends CosmodogAbstractState {
 		
 		phaseStart = referenceTime;
 		phase = IntroPhase.CALM_FLIGHT;
-		
-		//Skip the intro cutscene if this feature is disabled.
-		cutsceneSkipped = false;
-		if (Features.getInstance().featureOn(Features.FEATURE_CUTSCENES) == false) {
-			cutsceneSkipped = true;
-		}
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_INTRO_MISSILE_ALERT).play();
 		
