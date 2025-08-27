@@ -3,6 +3,6 @@
 /dist/
 /build/
 /.settings/
-/data/music/
+/assets/audio/music/
 /deployment
 /classes
