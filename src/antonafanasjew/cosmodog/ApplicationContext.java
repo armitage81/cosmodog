@@ -628,7 +628,7 @@ public class ApplicationContext {
 			this.getAnimations().put(key, animationResourceWrappers.get(key).getEntity());
 		}
 
-		images.put("space.background", new Image("assets/graphics/decorations/space_background.png", false, Image.FILTER_NEAREST));
+		images.put("space.background", new Image("assets/graphics/decorations/spacebackground.png", false, Image.FILTER_NEAREST));
 
 		images.put("ui.ingame.gamelogframe", new Image("assets/graphics/ui/ui.log.frame.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.popupframe", new Image("assets/graphics/ui/ui.popup.frame.png", false, Image.FILTER_NEAREST));

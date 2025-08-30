@@ -55,7 +55,7 @@ public class EndingRenderer extends AbstractRenderer {
 					dc.w(),
 					dc.h());
 
-			Animation endingBackground = ApplicationContext.instance().getAnimations().get("endingBackground");
+			Animation endingBackground = ApplicationContext.instance().getAnimations().get("cutsceneEnding");
 			
 			endingBackground.draw(
 					dc.x(), 

@@ -143,7 +143,7 @@ public class TestStarter extends StateBasedGame {
 		StateBasedGameHolder.stateBasedGame = instance();
 		AppGameContainer gameContainer = new AppGameContainer(instance());
 		
-		gameContainer.setIcon("data/cosmodog_icon.png");
+		gameContainer.setIcon("assets/graphics/meta/cosmodogicon.png");
 		
 		boolean fullScreen = Constants.FULLSCREEN;
 		if (System.getProperty("cosmodog.fullscreen") != null) {

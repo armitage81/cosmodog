@@ -141,7 +141,7 @@ public class CosmodogStarter extends StateBasedGame {
 		StateBasedGameHolder.stateBasedGame = instance();
 		AppGameContainer gameContainer = new AppGameContainer(instance());
 		
-		gameContainer.setIcon("assets/graphics/meta/cosmodog_icon.png");
+		gameContainer.setIcon("assets/graphics/meta/cosmodogicon.png");
 		
 		boolean fullScreen = Constants.FULLSCREEN;
 		if (System.getProperty("cosmodog.fullscreen") != null) {
