@@ -6,28 +6,34 @@ import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleKey;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleTool.ToolType;
+import antonafanasjew.cosmodog.model.enemyinventory.AmmoInventoryItem;
+import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
+import antonafanasjew.cosmodog.model.enemyinventory.GoodieInventoryItem;
+import antonafanasjew.cosmodog.model.enemyinventory.KeyInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.model.upgrades.Key;
 
 public class InventoryItemFactory {
 
 	public static InventoryItem createInventoryItem(Collectible collectible) {
-		if (collectible instanceof CollectibleGoodie) {
-			return createInventoryItemFromGoodie((CollectibleGoodie)collectible);
-		} else if (collectible instanceof CollectibleTool) {
+		if (collectible instanceof CollectibleTool) {
 			return createInventoryItemFromTool((CollectibleTool)collectible);
-		} else if (collectible instanceof CollectibleAmmo) {
-			return createInventoryItemFromAmmo((CollectibleAmmo)collectible);
-		} else if (collectible instanceof CollectibleKey) {
-			return createInventoryItemFromKey((CollectibleKey)collectible);
 		} else {
 			return null;
 		}
 	}
-		
-	private static InventoryItem createInventoryItemFromGoodie(CollectibleGoodie collectibleGoodie) {
-		GoodieInventoryItem item = new GoodieInventoryItem(collectibleGoodie.getGoodieType());
-		return item;
+
+	public static EnemyInventoryItem createEnemyInventoryItem(Collectible collectible) {
+        return switch (collectible) {
+            case CollectibleGoodie collectibleGoodie -> createInventoryItemFromGoodie(collectibleGoodie);
+            case CollectibleAmmo collectibleAmmo -> createInventoryItemFromAmmo(collectibleAmmo);
+            case CollectibleKey collectibleKey -> createInventoryItemFromKey(collectibleKey);
+            case null, default -> null;
+        };
+	}
+
+	private static EnemyInventoryItem createInventoryItemFromGoodie(CollectibleGoodie collectibleGoodie) {
+        return new GoodieInventoryItem(collectibleGoodie.getGoodieType());
 	}
 
 	private static InventoryItem createInventoryItemFromTool(CollectibleTool tool) {
@@ -65,16 +71,13 @@ public class InventoryItemFactory {
 		}
 	}
 	
-	private static InventoryItem createInventoryItemFromAmmo(CollectibleAmmo collectibleAmmo) {
-		AmmoInventoryItem item = new AmmoInventoryItem(collectibleAmmo.getWeaponType());
-		return item;
+	private static EnemyInventoryItem createInventoryItemFromAmmo(CollectibleAmmo collectibleAmmo) {
+        return new AmmoInventoryItem(collectibleAmmo.getWeaponType());
 	}
 	
-	private static InventoryItem createInventoryItemFromKey(CollectibleKey collectibleKey) {
+	private static EnemyInventoryItem createInventoryItemFromKey(CollectibleKey collectibleKey) {
 		Key key = collectibleKey.getKey();
-		KeyRingInventoryItem keyRing = new KeyRingInventoryItem();
-		keyRing.addKey(key);
-		return keyRing;
+		return new KeyInventoryItem(key.getDoorType());
 	}
 	
 }

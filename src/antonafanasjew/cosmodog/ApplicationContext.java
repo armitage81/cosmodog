@@ -601,21 +601,11 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_TIMEBONUS, timeBonus);
 		this.getSoundResources().put(SoundResources.SOUND_TRAFFICBARRIERRESET, trafficbarrierreset);
 
-		SpriteSheet collectibleItemToolSheet = new SpriteSheet("assets/graphics/items/collectible_tool.png", 16, 16);
-		SpriteSheet infobitsSheet = new SpriteSheet("assets/graphics/items/infobits.png", 16, 16);
-		SpriteSheet suppliesSheet = new SpriteSheet("assets/graphics/items/supplies.png", 16, 16);
-		SpriteSheet insightSheet = new SpriteSheet("assets/graphics/items/insight.png", 16, 16);
-		SpriteSheet softwareSheet = new SpriteSheet("assets/graphics/items/software.png", 16, 16);
 		SpriteSheet cloudSheet = new SpriteSheet("assets/graphics/decorations/cloud.png", 240, 240);
 		SpriteSheet tileset1Sheet = new SpriteSheet("assets/graphics/tiles/tileset00000.png", 16, 16);
 		SpriteSheet tileset2Sheet = new SpriteSheet("assets/graphics/tiles/tileset00001.png", 16, 16);
 		SpriteSheet symbolsSheet = new SpriteSheet("assets/graphics/ui/symbols.png", 16, 16);
 		
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_COLLECTIBLE_ITEM_TOOL, collectibleItemToolSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INFOBITS, infobitsSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_INSIGHT, insightSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SOFTWARE, softwareSheet);
-		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_SUPPLIES, suppliesSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_CLOUDS, cloudSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES1, tileset1Sheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES2, tileset2Sheet);

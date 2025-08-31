@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
+import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -21,7 +22,7 @@ import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.CollectibleWeapon;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
+import antonafanasjew.cosmodog.model.enemyinventory.GoodieInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -55,7 +56,7 @@ public class CosmodogMapStatisticsProvider {
 					}
 				}
 			} else if (e instanceof Enemy enemy) {
-                InventoryItem inventoryItem = enemy.getInventoryItem();
+                EnemyInventoryItem inventoryItem = enemy.getInventoryItem();
 				if (inventoryItem instanceof GoodieInventoryItem goodieInventoryItem) {
                     if (goodieInventoryItem.getGoodieType() == GoodieType.infobit || goodieInventoryItem.getGoodieType() == GoodieType.infobyte || goodieInventoryItem.getGoodieType() == GoodieType.infobank) {
 						goodieTypes.add(goodieInventoryItem.getGoodieType());

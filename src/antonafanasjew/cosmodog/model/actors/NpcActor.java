@@ -18,8 +18,6 @@ public class NpcActor extends Actor {
 	
 	private int timeBudgetOverhead;
 	
-	private InventoryItem inventoryItem;
-	
 	/**
 	 * Returns the speed factor as related to the player.
 	 * As the player is the time trigger, everything else has to use him as reference. 
@@ -71,14 +69,6 @@ public class NpcActor extends Actor {
 
 	public void setTimeBudgetOverhead(int timeBudgetOverhead) {
 		this.timeBudgetOverhead = timeBudgetOverhead;
-	}
-
-	public InventoryItem getInventoryItem() {
-		return inventoryItem;
-	}
-
-	public void setInventoryItem(InventoryItem inventoryItem) {
-		this.inventoryItem = inventoryItem;
 	}
 
 }

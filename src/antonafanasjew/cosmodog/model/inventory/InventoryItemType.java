@@ -22,8 +22,6 @@ public enum InventoryItemType {
 	PICK(true),
 	MACHETE(true),
 	AXE(true),
-	GOODIE(false),
-	AMMO(false),
 	RADIOACTIVESUIT(true),
 	ARCHEOLOGISTS_JOURNAL(true),
 	WEAPON_FIRMWARE_UPGRADE(true),

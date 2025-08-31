@@ -7,17 +7,13 @@ import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.MapType;
-import antonafanasjew.cosmodog.model.actors.Platform;
+import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.util.*;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -25,7 +21,7 @@ import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
+import antonafanasjew.cosmodog.model.enemyinventory.GoodieInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
@@ -303,10 +299,9 @@ public class PlayerMovementCache implements Serializable {
 
 			Set<Enemy> enemies = map.allEnemies();
 			for (Enemy enemy : enemies) {
-				InventoryItem item = enemy.getInventoryItem();
-				if (item instanceof GoodieInventoryItem) {
-					GoodieInventoryItem goodie = (GoodieInventoryItem) item;
-					CollectibleGoodie.GoodieType goodieType = goodie.getGoodieType();
+				EnemyInventoryItem item = enemy.getInventoryItem();
+				if (item instanceof GoodieInventoryItem goodieInventoryItem) {
+					CollectibleGoodie.GoodieType goodieType = goodieInventoryItem.getGoodieType();
 					if (goodieType == CollectibleGoodie.GoodieType.infobit) {
 						inInventories += 1;
 					}

@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
 import antonafanasjew.cosmodog.domains.MapType;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.model.CollectibleComposed;
@@ -13,7 +12,7 @@ import antonafanasjew.cosmodog.model.CollectibleGoodie;
 import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
-import antonafanasjew.cosmodog.model.inventory.GoodieInventoryItem;
+import antonafanasjew.cosmodog.model.enemyinventory.GoodieInventoryItem;
 import antonafanasjew.cosmodog.topology.Position;
 import org.junit.jupiter.api.Test;
 

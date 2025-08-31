@@ -6,6 +6,7 @@ import antonafanasjew.cosmodog.domains.ArmorType;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 
+import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
 import antonafanasjew.cosmodog.sight.Vision;
 import com.google.common.collect.Sets;
 
@@ -23,7 +24,9 @@ public class Enemy extends NpcActor {
 	private ArmorType armorType;
 	
 	private int alertLevel = 0;
-	
+
+	private EnemyInventoryItem inventoryItem;
+
 	/*
 	 * If true, this concrete enemy will not be active at night.
 	 * Normally, this property will be taken from the corresponding home region property.
@@ -102,4 +105,11 @@ public class Enemy extends NpcActor {
 		}
 	}
 
+	public EnemyInventoryItem getInventoryItem() {
+		return inventoryItem;
+	}
+
+	public void setInventoryItem(EnemyInventoryItem inventoryItem) {
+		this.inventoryItem = inventoryItem;
+	}
 }

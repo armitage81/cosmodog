@@ -1,25 +1,21 @@
-package antonafanasjew.cosmodog.model.inventory;
+package antonafanasjew.cosmodog.model.enemyinventory;
 
 import antonafanasjew.cosmodog.model.CollectibleGoodie.GoodieType;
+import antonafanasjew.cosmodog.model.inventory.InventoryItem;
+import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 
 /**
  * This inventory item type is designed for enemies only. Description is irrelevant.
  */
-public class GoodieInventoryItem extends InventoryItem {
+public class GoodieInventoryItem extends EnemyInventoryItem {
 	
-	private static final long serialVersionUID = -4515905925505349086L;
 	private GoodieType goodieType;
 
 	public GoodieInventoryItem(GoodieType goodieType) {
-		super(InventoryItemType.GOODIE);
+		super(EnemyInventoryItemType.GOODIE);
 		this.goodieType = goodieType;
 	}
 	
-	@Override
-	public String description() {
-		return goodieType.toString();
-	}
-
 	public GoodieType getGoodieType() {
 		return goodieType;
 	}

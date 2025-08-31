@@ -155,7 +155,7 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 //		//Always return unblocked passage in such cases.
 //		if (actor instanceof Player) {
 //			Player player = (Player)actor;
-//			PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)player.getInventory().get(InventoryItemType.PLATFORM);
+//			PlatformInventoryItem platformInventoryItem = (PlatformInventoryItem)player.getInventory().get(EnemyInventoryItemType.PLATFORM);
 //			if (platformInventoryItem != null && platformInventoryItem.isExiting()) {
 //				
 //			}

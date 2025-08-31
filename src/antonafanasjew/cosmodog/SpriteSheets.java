@@ -15,33 +15,11 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	 * Alphabeth tile width for monospace alphabeths.
 	 */
 	public static final int ALPHABETH_SPRITESHEET_TILES_WIDTH = 40;
-	
-	/**
-	 * Sprite sheet ID for: infobits.
-	 */
-	public static final String SPRITESHEET_INFOBITS = "spritesheet.infobits";
-	
-	/**
-	 * Sprite sheet ID for: insight collectible.
-	 */
-	public static final String SPRITESHEET_INSIGHT = "spritesheet.insight";
-	
-	public static final String SPRITESHEET_SOFTWARE = "spritesheet.software";
-	
-	/**
-	 * Sprite sheet ID for: supplies.
-	 */
-	public static final String SPRITESHEET_SUPPLIES = "spritesheet.supplies";
-	
+
 	/**
 	 * Sprite sheet ID for: clouds.
 	 */
 	public static final String SPRITESHEET_CLOUDS = "spritesheet.clouds";
-	
-	/**
-	 * Sprite sheet ID for: a box with the tool collectible.
-	 */
-	public static final String SPRITESHEET_COLLECTIBLE_ITEM_TOOL = "spritesheet.collectible_tool";
 	
 	/**
 	 * Sprite sheet ID for: tile set.

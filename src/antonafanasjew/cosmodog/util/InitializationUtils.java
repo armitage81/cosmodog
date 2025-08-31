@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.races.*;
+import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
 import antonafanasjew.cosmodog.model.portals.ReflectionType;
 import antonafanasjew.cosmodog.model.portals.interfaces.*;
 import antonafanasjew.cosmodog.resourcehandling.builder.enemyfactory.JsonBasedEnemyFactoryBuilder;
@@ -503,7 +504,7 @@ public class InitializationUtils {
 					if (piece instanceof Collectible) {
 						Enemy enemy = map.enemyAtTile(position);
 						if (enemy != null) {
-							InventoryItem inventoryItem = InventoryItemFactory.createInventoryItem((Collectible)piece);
+							EnemyInventoryItem inventoryItem = InventoryItemFactory.createEnemyInventoryItem((Collectible)piece);
 							enemy.setInventoryItem(inventoryItem);
 						} else {
 							map.getMapPieces().addPiece(piece);

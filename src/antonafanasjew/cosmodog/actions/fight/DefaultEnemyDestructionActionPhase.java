@@ -11,6 +11,7 @@ import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.DroppedCollectibleFactory;
@@ -49,7 +50,7 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 
 		Enemy enemy = ((Enemy)getProperties().get("enemy"));
 		
-		InventoryItem item = enemy.getInventoryItem();
+		EnemyInventoryItem item = enemy.getInventoryItem();
 		
 		if (item != null) {
 			Collectible dropped = DroppedCollectibleFactory.createCollectibleFromDroppedItem(item);

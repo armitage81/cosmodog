@@ -30,12 +30,16 @@ public class AnimationBuilder extends AbstractCsvBasedResourceWrapperBuilder<Ani
 		String[] frameData = frameDataset.split(",");
 		
 		for (String frameDate : frameData) {
-			String[] frameDateParts = frameDate.split("/");
-			int spriteX = Integer.parseInt(frameDateParts[0]);
-			int spriteY = Integer.parseInt(frameDateParts[1]);
-			int duration = Integer.parseInt(frameDateParts[2]);
-			
-			animation.addFrame(spriteSheet.getSprite(spriteX, spriteY), duration);
+			try {
+				String[] frameDateParts = frameDate.split("/");
+				int spriteX = Integer.parseInt(frameDateParts[0]);
+				int spriteY = Integer.parseInt(frameDateParts[1]);
+				int duration = Integer.parseInt(frameDateParts[2]);
+
+				animation.addFrame(spriteSheet.getSprite(spriteX, spriteY), duration);
+			} catch(Exception e) {
+				throw new RuntimeException("Could not load: " + line, e);
+			}
 			
 		}
 		

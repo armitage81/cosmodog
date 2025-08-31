@@ -78,19 +78,19 @@ public class FullyEquippedPlayerBuilderForTest extends AbstractPlayerBuilder {
 		
 		/*
 		 * SoftwareInventoryItem software = new SoftwareInventoryItem();
-		 * software.setNumber(16); player.getInventory().put(InventoryItemType.SOFTWARE,
+		 * software.setNumber(16); player.getInventory().put(EnemyInventoryItemType.SOFTWARE,
 		 * software);
 		 * 
 		 * ChartInventoryItem chartInventoryItem = new ChartInventoryItem(); for (int i
 		 * = 0; i < 8; i++) { for (int j = 0; j < 8; j++) {
 		 * chartInventoryItem.discoverPiece(i, j); } }
-		 * player.getInventory().put(InventoryItemType.CHART, chartInventoryItem);
+		 * player.getInventory().put(EnemyInventoryItemType.CHART, chartInventoryItem);
 		 * 
 		 * /*
 		 * 
 		 * 
 		 * 
-		 * player.getInventory().put(InventoryItemType.DYNAMITE, new
+		 * player.getInventory().put(EnemyInventoryItemType.DYNAMITE, new
 		 * DynamiteInventoryItem());
 		 * 
 		 * 
@@ -159,13 +159,13 @@ public class FullyEquippedPlayerBuilderForTest extends AbstractPlayerBuilder {
 		// player.setWater(20);
 		// player.setFood(20);
 		//
-		// player.getInventory().put(InventoryItemType.SKI, new
+		// player.getInventory().put(EnemyInventoryItemType.SKI, new
 		// SkiInventoryItem());
-		// player.getInventory().put(InventoryItemType.BOAT, new
+		// player.getInventory().put(EnemyInventoryItemType.BOAT, new
 		// BoatInventoryItem());
-		// player.getInventory().put(InventoryItemType.GEIGERZAEHLER, new
+		// player.getInventory().put(EnemyInventoryItemType.GEIGERZAEHLER, new
 		// GeigerZaehlerInventoryItem());
-		// player.getInventory().put(InventoryItemType.SUPPLYTRACKER, new
+		// player.getInventory().put(EnemyInventoryItemType.SUPPLYTRACKER, new
 		// SupplyTrackerInventoryItem());
 		// player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
 		// player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
@@ -178,7 +178,7 @@ public class FullyEquippedPlayerBuilderForTest extends AbstractPlayerBuilder {
 		//
 		// SoftwareInventoryItem item = new SoftwareInventoryItem();
 		// item.setNumber(10);
-		// player.getInventory().put(InventoryItemType.SOFTWARE, item);
+		// player.getInventory().put(EnemyInventoryItemType.SOFTWARE, item);
 		// player.getGameProgress().setArmors(4);
 		// player.getGameProgress().setSoulEssences(11);
 		//
@@ -190,7 +190,7 @@ public class FullyEquippedPlayerBuilderForTest extends AbstractPlayerBuilder {
 		// }
 		// }
 		//
-		// player.getInventory().put(InventoryItemType.CHART,
+		// player.getInventory().put(EnemyInventoryItemType.CHART,
 		// chartInventoryItem);
 
 //		 InsightInventoryItem insightInventoryItem = new InsightInventoryItem();
