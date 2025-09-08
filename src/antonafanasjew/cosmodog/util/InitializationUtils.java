@@ -883,7 +883,7 @@ public class InitializationUtils {
 					map.getMapPieces().addPiece(alienBaseBlockade);
 				}
 
-				if (TileType.MIN_ALIEN_DOOR.getTileId() <= tileId && tileId <= TileType.MAX_ALIEN_DOOR.getTileId()) {
+				if (TileType.DYNAMIC_PIECE_MIN_ALIEN_DOOR.getTileId() <= tileId && tileId <= TileType.DYNAMIC_PIECE_MAX_ALIEN_DOOR.getTileId()) {
 					DoorType doorType = Mappings.TILE_ID_TO_DOOR_TYPE.get(tileId);
 					DoorAppearanceType doorAppearanceType = Mappings.TILE_ID_TO_DOOR_APPEARANCE_TYPE.get(tileId);
 					DirectionType directionType = Mappings.TILE_ID_TO_DOOR_DIRECTION_TYPE.get(tileId);

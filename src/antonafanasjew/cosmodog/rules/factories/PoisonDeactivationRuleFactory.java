@@ -65,7 +65,7 @@ public class PoisonDeactivationRuleFactory implements RuleFactory {
 				RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.CUTSCENE, new PoisonDeactivationAction(poisonConnection), false);
 				action = BlockAction.block(action, new SetGameProgressPropertyAction(gameProgressProperty, "true"));
 
-				Rule rule = new Rule("poisonDeactivation." + poisonConnection, trigger, action);
+				Rule rule = new Rule("poisonDeactivation." + poisonConnection.getName(), trigger, action);
 
 				retVal.put(rule.getId(), rule);
 			}

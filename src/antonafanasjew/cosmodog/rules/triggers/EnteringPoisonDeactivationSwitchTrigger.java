@@ -58,7 +58,7 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 		
 		Point startPoint = connectionPoints.getFirst();
 		
-		Position switchPosition = Position.fromCoordinates(startPoint.x, startPoint.y, MapType.MAIN);
+		Position switchPosition = Position.fromCoordinates(startPoint.x, startPoint.y, mapType);
 		
 		return RegionUtils.playerOnPosition(player, switchPosition);
 		
