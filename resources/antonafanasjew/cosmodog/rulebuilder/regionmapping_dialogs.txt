@@ -5,5 +5,6 @@ GHOSTTOWN;ghosttown;cutscenes/003.ghosttown;true;ghosttown;MAIN
 SPACELIFT;spacelift;cutscenes/000.spacelift;true;spacelift;MAIN
 SPACESTATION;spacestation;cutscenes/000.spacestation;true;spacestation;SPACE
 PLATFORM;platform;cutscenes/000.platform;true;platform;MAIN
+RACINGTRACK;racingtrack;cutscenes/000.race;true;racingtrack;MAIN
 ENTERINGALIENBASE;enteringalienbase;cutscenes/004.enteringthebase;true;enteringthebase;MAIN
 ENTERING6000iNFOBITSBARRIER;alisaspast;cutscenes/005.entering6000infobitsbarrier;true;alisaspast;MAIN

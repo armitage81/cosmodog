@@ -22,7 +22,7 @@ public class TestRally {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(104, 29, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(102, 25, MapType.MAIN));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getGameProgress().setFuelTanks(6);
