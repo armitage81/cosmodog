@@ -6,6 +6,8 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 
+import antonafanasjew.cosmodog.util.TileUtils;
+import antonafanasjew.cosmodog.util.TutorialUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -197,6 +199,7 @@ public class TestStarter extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
+		TutorialUtils.INITIAL_TUTORIAL_TEXTS.clear(); //To avoid tutorials in tests
 		this.addState(new GameState());
 		this.addState(new SplashState());
 		this.addState(new IntroState());

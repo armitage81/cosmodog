@@ -32,6 +32,8 @@ public class GameProgress extends CosmodogModel {
 
 	public static final String GAME_PROGRESS_PROPERTY_ACCESSTOCARCOMPARTMENT = "accesstocarcompartment";
 
+
+	public static final String GAME_PROGRESS_PROPERTY_ALREADY_STEPPED_ON_MINE = "alreadysteppedonmine";
 	
 	private boolean won = false;
 	private int numberOfDeaths = 0;

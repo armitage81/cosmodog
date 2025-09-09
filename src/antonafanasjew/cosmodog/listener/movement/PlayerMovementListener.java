@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.util.*;
 
 import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
@@ -753,6 +754,13 @@ public class PlayerMovementListener implements MovementListener {
 		}
 		
 		if (mineUnderPlayer != null) {
+
+
+			if (player.getGameProgress().getProgressProperties().get(GameProgress.GAME_PROGRESS_PROPERTY_ALREADY_STEPPED_ON_MINE) == null) {
+				player.getGameProgress().getProgressProperties().put(GameProgress.GAME_PROGRESS_PROPERTY_ALREADY_STEPPED_ON_MINE, "true");
+				ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction("You stepped on a land mine. Mines are treacherous. Watch out for mine warning signs to avoid mine fields or find a metal detector."));
+			}
+
 			short mineState = mineUnderPlayer.getState();
 			if (mineState != Mine.STATE_DEACTIVATED && mineState != Mine.STATE_DESTROYED) {
 				mineUnderPlayer.setState(Mine.STATE_DESTROYED);
