@@ -41,6 +41,9 @@ public class InitiateRaceAction extends PhaseBasedAction {
 
         player.getInventory().put(InventoryItemType.VEHICLE, new VehicleInventoryItem(new Vehicle()));
 
+        player.setWater(player.getCurrentMaxWater());
+        player.setFood(player.getCurrentMaxFood());
+
         getPhaseRegistry().registerPhase("panningtofinish", new CamMovementActionWithConstantSpeed(128, finish, game));
         getPhaseRegistry().registerPhase("waiting", new WaitAction(500));
         getPhaseRegistry().registerPhase("instruction", new PopUpNotificationAction("Master the car and reach the finish line in time to win a reward. Good luck!"));

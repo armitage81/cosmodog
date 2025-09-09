@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.Color;
@@ -37,15 +38,18 @@ public class VitalDataInterfaceRenderer extends AbstractRenderer {
 		//Check if water and food consumption should be halted.
 		//This must be in sync with the water and food consumers.
 		Player player = ApplicationContextUtils.getPlayer();
-		boolean hasVehicleAndAccessToCompartment = player.getInventory().get(InventoryItemType.VEHICLE) != null && player.getGameProgress().getProgressProperties().get(GameProgress.GAME_PROGRESS_PROPERTY_ACCESSTOCARCOMPARTMENT) != null;
+		boolean hasVehicle = player.getInventory().get(InventoryItemType.VEHICLE) != null;
+		boolean hasVehicleAndAccessToCompartment = hasVehicle && player.getGameProgress().getProgressProperties().get(GameProgress.GAME_PROGRESS_PROPERTY_ACCESSTOCARCOMPARTMENT) != null;
 		boolean hasPlatform = player.getInventory().get(InventoryItemType.PLATFORM) != null;
 		MoveableGroup moveableGroupAroundPlayer = PlayerMovementCache.getInstance().getActiveMoveableGroup();
 		boolean inSocobanArea = moveableGroupAroundPlayer != null && moveableGroupAroundPlayer.isResetable();
 
 		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
 		boolean inSafeSpace = safeSpaceAroundPlayer != null;
+		Race race = PlayerMovementCache.getInstance().getActiveRace();
+		boolean doingRace = race != null && hasVehicle;
 
-		boolean resourceConsumptionHalted = hasVehicleAndAccessToCompartment || hasPlatform || inSocobanArea || inSafeSpace;
+		boolean resourceConsumptionHalted = hasVehicleAndAccessToCompartment || hasPlatform || inSocobanArea || inSafeSpace || doingRace;
 
 		DrawingContext vitalDataDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().vitalDataDrawingContext();
 

@@ -7,6 +7,7 @@ import antonafanasjew.cosmodog.model.PlayerMovementCache;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
+import antonafanasjew.cosmodog.structures.Race;
 import antonafanasjew.cosmodog.structures.SafeSpace;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -25,8 +26,10 @@ public class FoodConsumer implements ResourceConsumer {
 
 		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
 		boolean inSafeSpace = safeSpaceAroundPlayer != null;
+		Race race = PlayerMovementCache.getInstance().getActiveRace();
+		boolean doingRace = race != null && hasVehicle;
 
-		if (hasPlatform || inSocobanArea || inSafeSpace) {
+		if (hasPlatform || inSocobanArea || inSafeSpace || doingRace) {
 			return 0;
 		}
 
