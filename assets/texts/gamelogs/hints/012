@@ -1,0 +1,52 @@
+HINTS: Racing
+--------------------------------------------------------------------------
+There is a car race challenge to be found in the world.
+Master it to get a vehicle-related upgrade.
+
+
+Stand on the starting line to begin the race.
+
+
+Your goal is to reach the finish line in time, that is in 30 turns.
+
+
+Collect time bonuses to increase the time you have left.
+
+
+Automatic traffic barriers will impede your way.
+Their opening and closing is timed and always happens in a cycle.
+You can see the cycle durations on the signs attached to the barriers.
+The first number indicates the opening phase duration, the second number the closing phase duration.
+Depending on the phase of the barrier, one of the numbers will be alight and will decrease with every turn, indicating the remaining
+time of the current phase.
+
+
+Example: A traffic barrier with the rhythm 3/2 will be open for three turns, then closed for two turns, then open for three turns again and so on.
+Its numbers will change in the following sequence: (3)/2, (2)/2, (1)/2, 3/(2) (barrier closes), 3/(1), (3)/2 (barrier opens), (2)/2, ...
+
+
+All traffic barriers sequences will be reset when driving through a reset field.
+
+
+Hints:
+
+
+The shortest way is not always the optimal one.
+
+
+Not all time bonuses are worth the detours.
+
+
+Sometimes, it pays off to wait some rounds for a traffic barrier to open instead of taking a detour.
+
+
+Barrier resets should be timed properly.
+
+
+You can do something useful while waiting for a barrier to open.
+
+
+There might be hidden shortcuts.
+
+
+Follow the rhythm while driving. (This won't help you whatsoever, but it's fun.)
