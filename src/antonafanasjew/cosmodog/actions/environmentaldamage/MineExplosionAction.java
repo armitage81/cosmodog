@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.environmentaldamage;
 
+import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.actions.fight.ExplosionAction;
 
 import antonafanasjew.cosmodog.ApplicationContext;
@@ -7,6 +8,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -53,5 +55,6 @@ public class MineExplosionAction extends FixedLengthAsyncAction {
 		} else {
 			player.decreaseLife(Mine.DAMAGE_TO_PLAYER);
 		}
+
 	}
 }

@@ -28,6 +28,9 @@ public class GameProgress extends CosmodogModel {
 	private int turn = 0;
 
 	private long gameScore;
+
+	public static final String GAME_PROGRESS_PROPERTY_ALREADY_STEPPED_ON_MINE = "alreadysteppedonmine";
+	
 	private boolean won = false;
 	private int numberOfDeaths = 0;
 	private int numberOfFoundSecrets = 0;
