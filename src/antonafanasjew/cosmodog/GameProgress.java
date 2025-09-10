@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog;
 
+import java.io.Serial;
 import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.QuadrandType;
@@ -10,48 +11,42 @@ import antonafanasjew.cosmodog.model.LetterPlateSequence;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.google.common.collect.Maps;
 
-/**
- * Defines the complete game progress from the perspective of the player character.
- */
 public class GameProgress extends CosmodogModel {
 
-	public static final int NUMBER_OF_SECRETS_IN_GAME = 120;
-	
+	@Serial
+	private static final long serialVersionUID = 3139674682745482519L;
+
 	public static final int TURNS_TILL_WORM_APPEARS_PHASE1 = 4;
 	public static final int TURNS_TILL_WORM_APPEARS_PHASE2 = 6;
 	public static final int TURNS_TILL_WORM_APPEARS_PHASE3 = 8;
-	
-	private static final long serialVersionUID = 3139674682745482519L;
 
-	/**
-	 * The name of the game property that defines the happening of the 'after landing' event at the beginning of the game.
-	 */
 	public static final String GAME_PROGRESS_PROPERTY_AFTERLANDING = "afterlanding";
 	public static final String GAME_PROGRESS_ALIEN_BASE_GATE_SEQUENCE = "alienbasegatesequence";
 	public static final String GAME_PROGRESS_ALIEN_BASE_TELEPORT_SEQUENCE = "alienbaseteleportsequence";
-
 	public static final String GAME_PROGRESS_PROPERTY_ACCESSTOCARCOMPARTMENT = "accesstocarcompartment";
 
-	
+	private int turn = 0;
+
+	private long gameScore;
 	private boolean won = false;
 	private int numberOfDeaths = 0;
+	private int numberOfFoundSecrets = 0;
+
+
 	private int infobits = 0;
 	private int armors = 0;
 	private int fuelTanks = 0;
 	private int bottles = 0;
 	private int foodCompartments = 0;
 	private int soulEssences = 0;
-	private long gameScore;
-	private int turn = 0;
 
-	private int numberOfFoundSecrets = 0;
-	
+
 	private int turnsTillWormAppears = TURNS_TILL_WORM_APPEARS_PHASE1;
 	private boolean wormActive = true;
 	
 	//This information is redundand, as the mine deactivation will be stored in the
 	//state of each mine. Still, we can use these information for purposes like game statistics.
-	private Map<QuadrandType, Boolean> minesDeactivationInfo = Maps.newHashMap();
+	private final Map<QuadrandType, Boolean> minesDeactivationInfo = Maps.newHashMap();
 	
 	{
 		minesDeactivationInfo.put(QuadrandType.NW, Boolean.FALSE);
@@ -60,45 +55,22 @@ public class GameProgress extends CosmodogModel {
 		minesDeactivationInfo.put(QuadrandType.SE, Boolean.FALSE);
 	}
 	
-	private LetterPlateSequence letterPlateSequence = LetterPlateSequence.getInstance();
+	private final LetterPlateSequence letterPlateSequence = LetterPlateSequence.getInstance();
 	
-	private Map<String, String> progressProperties = Maps.newHashMap();
+	private final Map<String, String> progressProperties = Maps.newHashMap();
 
-	/**
-	 * Returns the current game score.
-	 * @return Game score.
-	 */
 	public long getGameScore() {
 		return gameScore;
 	}
 
-	/**
-	 * Sets the current game score.
-	 * @param gameScore Game score.
-	 */
-	public void setGameScore(int gameScore) {
-		this.gameScore = gameScore;
-	}
-
-	/**
-	 * Adds a number of score points to the current game score.
-	 * @param scorePoints Number of score points to add to the game score.
-	 */
 	public void addToScore(int scorePoints) {
 		this.gameScore += scorePoints;
 	}
 
-	/**
-	 * Contains persistent game variables that can be set to indicate a progress
-	 * (f.i. completed tutorial)
-	 */
 	public Map<String, String> getProgressProperties() {
 		return progressProperties;
 	}
 
-	/**
-	 * Adds 1 to the number of collected infobits.
-	 */
 	public void addInfobit() {
 		infobits++;
 	}
@@ -111,10 +83,6 @@ public class GameProgress extends CosmodogModel {
 		infobits += 25;
 	}
 	
-	/**
-	 * Returns the number of infobits.
-	 * @return Number of infobits.
-	 */
 	public int getInfobits() {
 		return infobits;
 	}
@@ -139,10 +107,6 @@ public class GameProgress extends CosmodogModel {
 		return minesDeactivationInfo;
 	}
 
-	public void setMinesDeactivationInfo(Map<QuadrandType, Boolean> minesDeactivationInfo) {
-		this.minesDeactivationInfo = minesDeactivationInfo;
-	}
-
 	public boolean isWon() {
 		return won;
 	}
@@ -153,10 +117,6 @@ public class GameProgress extends CosmodogModel {
 
 	public int getNumberOfFoundSecrets() {
 		return numberOfFoundSecrets;
-	}
-	
-	public void setNumberOfFoundSecrets(int numberOfFoundSecrets) {
-		this.numberOfFoundSecrets = numberOfFoundSecrets;
 	}
 	
 	public void increaseNumberOfFoundSecrets() {
@@ -235,9 +195,8 @@ public class GameProgress extends CosmodogModel {
 		this.turn = turn;
 	}
 	
-	public int incTurn() {
+	public void incTurn() {
 		this.turn = this.turn + 1;
-		return this.turn;
 	}
 
 	public int getNumberOfDeaths() {

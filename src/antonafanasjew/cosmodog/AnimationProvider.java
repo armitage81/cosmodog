@@ -55,7 +55,8 @@ public class AnimationProvider {
         address = "player/player";
         looping = false;
 
-        retVal.put("playerDying", animation(frames(right(0, 37, 8), durs(500, 500, 500, 500, 500, 500, 1500, 3000))));
+
+        retVal.put("playerDying", animation(frames(right(0, 37, 8), durs("500*6, 1500, 3000"))));
 
 
         looping = true;
@@ -73,6 +74,14 @@ public class AnimationProvider {
             retVal.put("playerInPlatformAnimated" + dirSuffixes.get(i), retVal.get("playerInPlatformInanimated"));
             retVal.put("playerInPlatformHit" + dirSuffixes.get(i), retVal.get("playerInPlatformInanimated"));
             retVal.put("playerInPlatformHoldingItem" + dirSuffixes.get(i), retVal.get("playerInPlatformInanimated"));
+
+            retVal.put("playerInGrassInanimated" + dirSuffixes.get(i), animation(frames(alt(0, 8 + i, 1, 8 + i, 8), altDurs(2000, 300, 8))));
+            retVal.put("playerInGrassAnimated" + dirSuffixes.get(i), animation(frames(osc(right(0, 12 + i, 3)), constDurs(50, 4))));
+            retVal.put("playerInGrassHit" + dirSuffixes.get(i), retVal.get("playerDefaultHit"));
+            retVal.put("playerInGrassHoldingItem" + dirSuffixes.get(i), retVal.get("playerInGrassInanimated"));
+
+            retVal.put("playerTeleportingInanimated" + dirSuffixes.get(i), animation(frames(one(3, 4 + i), oneDur(250))));
+
 
         }
 
@@ -227,6 +236,26 @@ public class AnimationProvider {
     private Supplier<List<Integer>> oneDur(int dur) {
         List<Integer> retVal = new ArrayList<>();
         retVal.add(dur);
+        return () -> retVal;
+    }
+
+    private Supplier<List<Integer>> durs(String dursInstruction) {
+        //Example: "500*5,1500,3000"
+        List<Integer> retVal = new ArrayList<>();
+        String[] parts = dursInstruction.split(",");
+        for (String part : parts) {
+            part = part.trim();
+            if (part.contains("*")) {
+                String[] numberAndCount = part.split("\\*");
+                int number = Integer.parseInt(numberAndCount[0].trim());
+                int count = Integer.parseInt(numberAndCount[1].trim());
+                for (int i = 0; i < count; i++) {
+                    retVal.add(number);
+                }
+            } else {
+                retVal.add(Integer.parseInt(part));
+            }
+        }
         return () -> retVal;
     }
 
