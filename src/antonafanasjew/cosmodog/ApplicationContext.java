@@ -98,9 +98,9 @@ public class ApplicationContext {
 		
 		return instance;
 	}
-	
+
 	private PlayerBuilder playerBuilder;
-	
+
 	/*
 	 * Contains the game model beyond the game session. User, score list etc are also included.
 	 */
@@ -605,6 +605,7 @@ public class ApplicationContext {
 		SpriteSheet tileset1Sheet = new SpriteSheet("assets/graphics/tiles/tileset00000.png", 16, 16);
 		SpriteSheet tileset2Sheet = new SpriteSheet("assets/graphics/tiles/tileset00001.png", 16, 16);
 		SpriteSheet symbolsSheet = new SpriteSheet("assets/graphics/ui/symbols.png", 16, 16);
+		SpriteSheet alphabethSheet = new SpriteSheet("assets/graphics/ui/alphabeth.png", 16, 16);
 		
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_CLOUDS, cloudSheet);
 		this.getSpriteSheets().put(SpriteSheets.SPRITESHEET_TILES1, tileset1Sheet);
@@ -628,20 +629,12 @@ public class ApplicationContext {
 		images.put("ui.ingame.ingameinventory", new Image("assets/graphics/ui/ui.inventory.frame.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.ingameinventoryitembox", new Image("assets/graphics/ui/ui.inventory.slot.png", false, Image.FILTER_NEAREST));
 		images.put("ui.ingame.ingameinventoryitemboxselected", new Image("assets/graphics/ui/ui.inventory.slot.selected.png", false, Image.FILTER_NEAREST));
-
-
 		images.put("ui.ingame.ingamemap", new Image("assets/graphics/ui/ui.map.frame.png", false, Image.FILTER_NEAREST));
-
 		images.put("ui.ingame.ingamelogs", new Image("assets/graphics/ui/ui.logplayer.frame.png", false, Image.FILTER_NEAREST));
 
 
-
-		//This big image is not loaded eagerly when initializing animations in the application context.
-		//That causes a delay when opening map for the first time. Initializing the map image explicitly to
-		//avoid this.
-//		Image mapImage = getAnimations().get("completechart").getImage(0);
-//		mapImage.draw();
-		
+		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabethSheet);
+		this.characterLetters = letterBuilder.buildLetters();
 
 		menuActions.put("newGameMenuAction1", MenuActionFactory.getStartNewGameMenuAction(1));
 		menuActions.put("newGameMenuAction2", MenuActionFactory.getStartNewGameMenuAction(2));

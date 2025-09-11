@@ -12,11 +12,6 @@ public class SpriteSheets extends HashMap<String, SpriteSheet> {
 	private static final long serialVersionUID = 7451716816594141392L;
 	
 	/**
-	 * Alphabeth tile width for monospace alphabeths.
-	 */
-	public static final int ALPHABETH_SPRITESHEET_TILES_WIDTH = 40;
-
-	/**
 	 * Sprite sheet ID for: clouds.
 	 */
 	public static final String SPRITESHEET_CLOUDS = "spritesheet.clouds";

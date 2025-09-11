@@ -106,17 +106,7 @@ public class Constants {
 	public static final int REFERENCE_RESOLUTION_WIDTH = 1280;
 	
 	public static final int REFERENCE_RESOLUTION_HEIGHT = 720;
-	
-//	/**
-//	 * The horizontal resolution of the game window.
-//	 */
-//	public static final int RESOLUTION_WIDTH = 1280;
-//	
-//	/**
-//	 * The vertical resolution of the game window.
-//	 */
-//	public static final int RESOLUTION_HEIGHT = 720;
-	
+
 	/**
 	 * Full screen flag.
 	 */

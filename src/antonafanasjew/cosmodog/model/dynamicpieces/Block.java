@@ -42,11 +42,6 @@ public class Block extends MoveableDynamicPiece {
 	}
 
 	@Override
-	public void interact() {
-		
-	}
-
-	@Override
 	public boolean permeableForPortalRay(DirectionType incomingDirection) {
 		return false;
 	}

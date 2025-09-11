@@ -50,8 +50,6 @@ public class DamageLastBossAction extends AbstractRuleAction {
 				OverheadNotificationAction.registerOverheadNotification(player, "Guardian deactivated.");
 				//Register the fight action for the Guardian.
 				AsyncAction asyncAction = new LastBossFightAction(lastBoss);
-				//asyncAction = new PauseDecoratorAction(500, 500, asyncAction);
-				//asyncAction = new CamCenteringDecoratorAction(1000, 227, 254, asyncAction, ApplicationContextUtils.getCosmodogGame());
 				ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 				actionRegistry.registerAction(AsyncActionType.FIGHT, asyncAction);
 			}

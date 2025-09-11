@@ -36,11 +36,6 @@ public class BinaryIndicator extends DynamicPiece {
 	}
 
 	@Override
-	public void interact() {
-		
-	}
-
-	@Override
 	public boolean wrapsCollectible() {
 		return false;
 	}

@@ -37,8 +37,4 @@ public abstract class AbstractJsonBasedResourceWrapperBuilder<ENTITY_TYPE> exten
 	protected abstract ENTITY_TYPE build(JSONObject object);
 
 	protected abstract String resourcePath();
-	
-	protected void afterBuild() {
-		
-	}
 }

@@ -38,11 +38,6 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 	}
 
 	@Override
-	public void onTrigger() {
-		
-	}
-	
-	@Override
 	public void onUpdate(int before, int after, GameContainer gc, StateBasedGame sbg) {
 		
 		if (after < getDuration() / 2) {
@@ -92,10 +87,4 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 		
 	}
 	
-	@Override
-	public void onEnd() {
-
-		
-	}
-
 }

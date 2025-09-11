@@ -26,10 +26,15 @@ public class TestKeyCards {
 				player.setMaxLife(100);
 				player.setLife(100);
 
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
-				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				for (int i = 0; i < 3; i++ ) {
+					player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.PISTOL));
+					player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.SHOTGUN));
+					player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RIFLE));
+					player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
+					player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
+				}
 
+				player.getInventory().put(InventoryItemType.DYNAMITE, new DynamiteInventoryItem());
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 
 				for (int i = 0; i < 6000; i++) {

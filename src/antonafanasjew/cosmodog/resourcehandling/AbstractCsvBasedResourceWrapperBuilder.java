@@ -19,7 +19,7 @@ public abstract class AbstractCsvBasedResourceWrapperBuilder<ENTITY_TYPE> extend
 
 		Map<String, GenericResourceWrapper<ENTITY_TYPE>> retVal = Maps.newHashMap();
 		
-		String[] lines = text.split(System.getProperty("line.separator"));
+		String[] lines = text.split(System.lineSeparator());
 		//We start with 1 to skip the header;
 		for (int i = 1; i < lines.length; i++) {
 			String line = lines[i].trim();

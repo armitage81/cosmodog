@@ -139,14 +139,5 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 		}
 	}
 
-	/**
-	 * This method does not do anything. This could lead to slightly wrong camera positioning in the end.
-	 * However, this action is used only as a phase in the CamCenterAction, which will correct the camera's position
-	 * at the very end.
-	 */
-	@Override
-	public void onEnd() {
-
-	}
 }
 

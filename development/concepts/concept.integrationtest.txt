@@ -1,0 +1,314 @@
+Functional areas of the software:
+	
+	GRAPHICAL EFFECTS
+	
+		Animated tiles
+			Stones in water
+			Water against cliffs
+			Struts in water
+			Fans on roofs and walls of buildings
+			Alien computers
+			Lava lakes and rivers
+			Water lakes and rivers
+			
+		Effects
+			Fire
+			Smoke
+			Electricity
+			Teleporter
+			
+		Decorations
+			Day-Night-cycle
+				Does not happen in space lab
+			Clouds
+				Do not appear in the space lab
+			Birds
+				Do not appear in the space lab
+			Clouds and landscape seen from the space station
+				Only appear below the space lab
+			Snow
+				Does not appear in the space lab
+				Moving between snow and no-snow areas must trigger proper wheather changes, gradually fading in and out snow fall.
+			
+	TRAVERSAL
+		General movement
+			All 4 directions work
+			Animations are fine
+			Calendar is properly updated
+			Calendar is not updated if the movement is blocked by collision
+			Step sound is audible
+			When turning and the way is blocked, there is no movement attempt
+		High grass traversal
+			Only player's head is visible
+			Walking on the edges of the grass areas looks good
+			All 4 entrance and all 4 exit directions look plausible
+			Equipped weapons are not visible
+		No feet traversal
+			No feet are visible
+			All 4 entrance and all 4 exit directions look plausible
+		Waiting
+			There is an appropriate pause while waiting
+			Calendar is properly updated
+			Not alerted enemies have moved
+			Alerted enemies have moved
+			Adjacent melee units have attacked
+			Alerted artillery units have attacked			
+		Vehicle movement
+		Rails and Platform movement
+		General collision
+		Road traversal and effect on vehicles
+		Desert traversal and effect on water consumption
+		Snow traversal and ski
+		Water traversal and boat
+		Teleportation
+		
+	COMBAT
+		Attacking
+		Melee attacks by enemies
+		Ranged enemy attacks
+		Backstabbing
+		Last boss
+		Weapons and ammunition
+		Enemies dropping items
+		Fighting from the car
+		Fighting from the platform
+
+	ENEMY BEHAVIOUR
+		Enemy collision
+		Pathfinding
+			Enemies do not glitch while chasing the player.
+		Alertness
+			Hercules units are deactivated at night
+			Hercules units can be destroyed at night in one turn
+			Alerted enemies have a "!" over their heads
+
+	COLLECTIBLES AND UPGRADES
+		Infobits/Infobytes/Infobanks
+		Gas Station
+		Software pieces
+		Keys and the keyring
+			The keyring description in the inventory must show which keys have been found
+		Software chips
+		Player upgrades
+		Vehicle upgrades
+			Fuel upgrades must work as intended for cases: no upgrades, one upgrade, two upgrades, all upgrades.
+		Monolith insights
+		Map pieces
+		Log entries
+		
+	SURVIVAL
+		Hunger and Supplies
+			Entering a car must refill food, but only if the car race has been won.
+			Hunger must not increase while driving a car, in case the car race has been won.
+			Entering the platform must refill food.
+			Hunger must not increase while driving the platform.
+			Deactivated in the space lab
+		Thirst and Water
+			Entering a car must refill water, but only if the car race has been won.
+			Thirst must not increase while driving a car, in case the car race has been won.
+			Entering the platform must refill water.
+			Thirst must not increase while driving the platform.
+			Deactivated in the space lab
+		Freezing
+			Player must not freeze while in a car.
+		First aid packs and Medpacks
+		Radiation
+		Mines
+			Stepping on a mine the first time produces a pop up explaining how to avoid mines.
+			Mines are invisible before the metal detector is found.
+			When the metal detector is find, mines are visible is close to the player.
+			None of the four mine deactivation terminals can be used before deactivation codes have been found.
+			All four mine deactivation terminals can be used after deactivation codes have been found.
+			Mines are deactivated only in the quadrand of the deactivation terminal.
+			Exploded mines stay visible after the deactivation terminal is used.
+		Poison
+		Electricity
+		Healing
+
+	WORLD INTERACTION
+		Crumbling walls (rocks and alien blockade)
+		Operating gate in the alien base
+		Activating the teleporter in the alien base (binary indicator)
+		Stones and hardstones
+		Trees
+		Bamboo stems
+		Crates and other containers
+		Secret doors opened by moving a block
+		Opening locked doors with keys
+		Letter plate mechanics
+		Guide terminals
+		Energy fields and infobit costs
+			Enemies should not pass energy fields (neither active nor passive).
+		
+	CUTSCENES
+		Dialogs with Alisa
+		Monolyth memories
+		Space lift
+			Enemy sight fields are removed when lift active.
+		Camera movement
+		Worm attack animation
+		Death cutscene
+		Found tool cutscene
+	
+	IN-GAME INTERFACE AND MENUS
+		Help screen
+			Contains information for portal gun usage
+		Quit screen
+		Map screen
+			No map is shown when in space lab
+		Log Player screen
+		Inventory screen
+			The screen must have enough slots to represent all possible items
+			Geiger counter has proper description
+		Game progress screen
+			Time counter is showing proper game time.
+			Progress screen shows food compartments, bottles and fuel tanks.
+			Weapon upgrades are shown correctly and are persistent even after reload.
+		Pop ups
+		"Secret Found" text
+		Overhead notification
+		Weapon selection
+			Correct number of ammunition is shown over each weapon, also after upgrades.
+			Deactivated in space lab
+		
+	PORTALS
+		General Portal mechanics
+			There is a portal outline indicating the potential position of a portal.
+			Player disappears in and appears out of portals properly in all directions.
+			When using portals, no weapons are visible.
+		Switches
+			Are only activatable from South.
+		Cubes
+			Cubes are never rendered under the bollards when moved over them.
+	
+	CAR RACING
+		General car racing
+
+	MOVEABLES
+		Sokoban
+			Reset
+			Persistent when reloaded
+			Moveable collision works
+			Winning state works
+			Removing a moveable from its position removes the winning state
+			Door collision works
+			Hunger and thirst are halted
+			Enemies cannot enter puzzle rooms
+		One-Way shortcuts opened by moving a block
+		Moveables collision
+		
+	SNOW WORM
+		General snow worm mechanics
+
+	VISION
+		Player's night vision
+		Motion tracking
+		Secret areas
+		Roofs
+		Camera
+			Zoom with binoculars works properly.
+			Camera zoom is retained after reloading the game.
+
+	GAME LIFECYCLE
+		Intro and game start
+		Restoring the game
+		Quitting the game
+		Automatic saving
+		Outro and winning the game
+			Time counter is showing proper game time in the final statistics.
+		Dying and respawning
+			Dying hints are shown properly
+		Star rating
+		Records screen
+		
+	GAME AREAS AND LEVELS
+		Poisonous labyrinth
+		Snow worm area
+			When eaten by worm, the player respawns in front of the snow worm area.
+		Sokoban puzzle series in the snow area
+		Montana James puzzle
+			Failing the puzzle must respawn the player in front of the puzzle room
+			The puzzle must be compatible with quit and reloading process
+			The puzzle mechanics should be deactivated after the puzzle has been solved
+			The "safe place" attribute of the puzzle room should be removed after the puzzle has been solved
+			Before being solved, the puzzle room must not increase hunger nor thirst. The corresponding bars must be rendered inactive.
+		Turret canyon
+		Car race
+		Portal parkour
+		Teleporter field
+		The cold path (to reach the jacket)
+		Menesian desert city
+		Alien base
+		Space lab
+			Portal gun is found here.
+			Weapons are not visible on the player
+			There is a cutscene here explaining the portal lab.
+			All portal puzzles are resettable.
+			Portal puzzle rooms are reset when left.
+			Monolith after completing all puzzles.
+			Secret area.
+		
+	GAME PROGRESS
+		Collecting all insights
+		Collecting all log series and separate logs
+		Collecting all tools
+		Collecting all infobits
+		Destroying all enemies
+		Collecting all upgrades
+		Finding all secrets
+		Completing the map
+		
+	MUSIC AND SOUND
+		Normal music
+		Race music
+		Space station music
+		Tension music
+		Death jingle
+		Found Item jingle
+		Sounds
+			Sound does not stutter when the menu is open.
+		
+		
+	ENEMIES
+		Robot
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Scout
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Tank
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Hercules
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Drone
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Turret
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Pigrat
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Artillery
+			Cannot attack adjacent player
+			Cannot attack player hidden in high grass
+			When multiple artillery units attack the player in almost compeletely damaged car, the first attack must destroy the car, the second damage the player.
+			Must be lillable with one shot regardless of the weapon.
+			Has proper sight, also at night or when the player is hidden.
+		Floater
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Conductor
+			Has proper sight in all directions, also at night or when the player is hidden.
+		Guardian
+			Has proper sight in all directions, also at night or when the player is hidden.
+		
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
