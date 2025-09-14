@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.EnemiesUtils;
 
 import java.util.Set;
 
@@ -32,12 +33,12 @@ public class VisibilityCalculator {
 
 	public boolean visible(Actor observer, PlanetaryCalendar cal, CosmodogMap map, Player player, Piece piece) {
 
-		//Hercules units are deactivated at night and do not see anything.
+		//Deactivated units do not see anything.
+		//Examples are Hercules units at night or all units when the player is in a puzzle room or safe space.
 		if (observer instanceof Enemy enemy) {
-			if (enemy.getUnitType() == UnitType.SOLARTANK) {
-				if (cal.isNight()) {
-					return false;
-				}
+
+			if (!EnemiesUtils.enemyActive(enemy)) {
+				return false;
 			}
 		}
 

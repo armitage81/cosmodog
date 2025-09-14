@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
+import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
 /**
@@ -35,8 +36,8 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
 		
 		int damage;
-		
-		if (planetaryCalendar.isNight() && enemy.isActiveAtDayTimeOnly()) {
+		boolean enemyActive = EnemiesUtils.enemyActive(enemy);
+		if (!enemyActive) {
 			damage = 100;
 		} else if (enemy.getUnitType() == UnitType.ARTILLERY) {
 			damage = 100;
