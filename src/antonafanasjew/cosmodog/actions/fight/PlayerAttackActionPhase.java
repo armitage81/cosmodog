@@ -28,8 +28,12 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 
 	@Override
 	public void onTrigger() {
-		
-		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
+
+		Player player = getFightPhaseResult().getPlayer();
+
+		WeaponType selectedWeaponType = player.getArsenal().getSelectedWeaponType();
+
+		WeaponType.sound(selectedWeaponType).play();
 
 		int damage = getFightPhaseResult().getDamage();
 		boolean criticalHit = getFightPhaseResult().isCriticalHit();

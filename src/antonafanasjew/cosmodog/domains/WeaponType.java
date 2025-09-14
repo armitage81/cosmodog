@@ -2,8 +2,11 @@ package antonafanasjew.cosmodog.domains;
 
 import java.util.Map;
 
+import antonafanasjew.cosmodog.ApplicationContext;
+import antonafanasjew.cosmodog.SoundResources;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import org.newdawn.slick.Sound;
 
 /**
  * Domain for weapon types. Defines the damage of a weapon.
@@ -101,6 +104,35 @@ public enum WeaponType {
 		}
 		
 		return retVal;
+	}
+
+	public static Sound sound(WeaponType weaponType) {
+
+		if (weaponType == WeaponType.FISTS) {
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT);
+		}
+
+		if (weaponType == WeaponType.PISTOL) {
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHOT_HANDGUN);
+		}
+
+		if (weaponType == WeaponType.SHOTGUN) {
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHOT_SHOTGUN);
+		}
+
+		if (weaponType == WeaponType.RIFLE) {
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHOT_RIFLE);
+		}
+
+		if (weaponType == WeaponType.MACHINEGUN) {
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHOT_MACHINEGUN);
+		}
+
+		if (weaponType == WeaponType.RPG) {
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHOT_RPG);
+		}
+
+		throw new RuntimeException("Sound not implemented for the weapon type: " + weaponType);
 	}
 }
 
