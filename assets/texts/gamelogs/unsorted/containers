@@ -19,20 +19,24 @@ I even simulated the sacred chamber by building the puzzle around one of those a
 It works perfectly. The only thing is...
 
 
-I forgot the solution.
+I keep forgetting the solution.
 
 
-I'm trying to solve my own puzzle since days but it just does not work.
+So just for the case, here it is:
 
 
-I clearly remember the beginning of the solution:
+Move the middle block: North, West.
 
+Move the top block: South, South.
 
-Middle Block: North, West.
+Move the middle block again: West, South, South, North.
 
-Top Block: South, South.
+Now place both the top block and the middle block between the hedgehogs so that they all form one vertical line. Top block should be between the top and the middle hedgehogs, the middle block between the middle and the bottom hedgehog.
 
-Middle Block: West, South, South, North
+Move the bottom block twice to the North.
 
+Move the top block to the middle pressure button.
 
-But what then?!
+Place the bottom block between the top and the middle hedgehog.
+
+Finally, move the top block to the bottom pressure button, the middle block to the middle pressure button and the bottom block to the top pressure button.
