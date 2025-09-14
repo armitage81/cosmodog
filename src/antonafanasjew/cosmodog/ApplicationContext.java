@@ -379,6 +379,7 @@ public class ApplicationContext {
 			Music musicSoundtrackSpace = new Music("assets/audio/music/Soundtrack_space.ogg");
 			Music musicSoundtrackRacing = new Music("assets/audio/music/Soundtrack_racing.ogg");
 			Music musicSoundtrackTension = new Music("assets/audio/music/Soundtrack_tension.ogg");
+			Music musicSoundtrackMystery = new Music("assets/audio/music/Soundtrack_mystery.ogg");
 
 
 			getMusicResources().put(MusicResources.MUSIC_MAIN_MENU, musicMainMenu);
@@ -388,6 +389,7 @@ public class ApplicationContext {
 
 			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_RACING, musicSoundtrackRacing);
 			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_TENSION, musicSoundtrackTension);
+			getMusicResources().put(MusicResources.MUSIC_SOUNDTRACK_MYSTERY, musicSoundtrackMystery);
 
 			getMusicResources().put(MusicResources.MUSIC_LOST, musicLost);
 			getMusicResources().put(MusicResources.MUSIC_LOGO, musicLogo);
