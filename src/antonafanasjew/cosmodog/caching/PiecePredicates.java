@@ -13,6 +13,7 @@ import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.PresenceDetector;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 
 public class PiecePredicates {
@@ -45,6 +46,7 @@ public class PiecePredicates {
 
     public static Predicate<Piece> ENEMY = e -> e instanceof Enemy;
 
+    public static Predicate<Piece> COLLECTIBLE = e -> e instanceof Collectible;
 
     public static Predicate<Piece> GOODIE = piece -> {
 

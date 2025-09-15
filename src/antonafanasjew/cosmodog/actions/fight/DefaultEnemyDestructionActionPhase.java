@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.fight;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
+import antonafanasjew.cosmodog.caching.PiecePredicates;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Collectible;
@@ -17,6 +18,7 @@ import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.DroppedCollectibleFactory;
 
 import java.io.Serial;
+import java.util.List;
 
 public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPhase {
 
@@ -60,13 +62,21 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 
 				dropped.setPosition(enemy.getPosition());
 
-				Piece piece = cosmodogMap.pieceAtTile(enemy.getPosition());
-				if (piece instanceof Collectible) {
+				List<Piece> collectibles = cosmodogMap
+						.getMapPieces()
+						.piecesAtPosition(
+								PiecePredicates.COLLECTIBLE,
+								enemy.getPosition().getX(),
+								enemy.getPosition().getY()
+						);
+
+				if (!collectibles.isEmpty()) {
+					Collectible collectible = (Collectible) collectibles.getFirst();
 					CollectibleComposed newCollectible = new CollectibleComposed();
 					newCollectible.setPosition(enemy.getPosition());
-					newCollectible.addElement((Collectible)piece);
+					newCollectible.addElement(collectible);
 					newCollectible.addElement(dropped);
-					cosmodogMap.getMapPieces().removePiece(piece);
+					cosmodogMap.getMapPieces().removePiece(collectible);
 					dropped = newCollectible;
 				}
 				
