@@ -17,9 +17,10 @@ public class GeigerZaehlerInventoryItem extends InventoryItem {
 	
 	@Override
 	public String description() {
-		return "This little device is an indicator of radiation. "
-				+ "Once you have stepped close to a radioactive area, it will start to chirp and warn you about the danger. "
-				+ "Read the hints on your interface and find a safe way to avoid being contaminated.";
+		return "This little device detects radiation. "
+				+ "The \"RAD\" window of the interface shows the eight adjacent tiles around you. "
+				+ "Fields polluted by radiation will are red, safe fields are blue. "
+				+ "Use the detector to find a safe way and avoid radioactive damage.";
 	}
 	
 }

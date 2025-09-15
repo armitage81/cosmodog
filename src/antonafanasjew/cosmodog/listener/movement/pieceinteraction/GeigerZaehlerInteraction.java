@@ -33,7 +33,7 @@ public class GeigerZaehlerInteraction extends ToolInteraction {
 		
 		GeigerZaehlerInventoryItem geigerCounter = (GeigerZaehlerInventoryItem)player.getInventory().get(InventoryItemType.GEIGERZAEHLER);
 		if (geigerCounter == null) {
-			return "You found a Geiger counter. It indicates radiation. The 'RAD' value shows the contaminated adjacent tiles including your own position.";
+			return "You found a Geiger counter. It indicates radiation in the 'RAD' window of the interface. Watch out for the contaminated tiles around you.";
 		} else {
 			return "You found the radiation suit. It will protect you from radioactive rays.";
 		}
