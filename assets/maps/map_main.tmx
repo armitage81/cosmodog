@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="95" nextobjectid="893">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="400" height="400" tilewidth="16" tileheight="16" infinite="0" nextlayerid="95" nextobjectid="894">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="6183" columns="9">
   <image source="tiles.png" width="144" height="11000"/>
  </tileset>
@@ -436,6 +436,9 @@
   <object id="876" name="platform" type="AlisasComments" x="5584" y="6208" width="64" height="16"/>
   <object id="887" name="racingtrack" type="AlisasComments" x="1616" y="416" width="80" height="80"/>
   <object id="889" name="poisonouslabyrinth" type="AlisasComments" x="3968" y="1808" width="16" height="16"/>
+  <object id="893" name="snowworm" x="4912" y="6304">
+   <polygon points="0,0 0,-16 -32,-16 -32,-96 -64,-96 -64,-160 -96,-160 -96,-240 -112,-240 -112,-352 -128,-352 -128,-400 -160,-400 -160,-480 -176,-480 -176,-576 -192,-576 -192,-608 -208,-608 -208,-640 -224,-640 -224,-832 -208,-832 -208,-864 -192,-864 -192,-880 -176,-880 -176,-896 -144,-896 -144,-928 -128,-928 -128,-944 -112,-944 -112,-960 -80,-960 -80,-976 -80,-992 -16,-992 96,-992 96,-1072 128,-1072 576,-1072 576,-16"/>
+  </object>
  </objectgroup>
  <objectgroup id="78" name="NpcHomeRegions">
   <object id="29" name="Desert" type="Enemies" x="1572" y="2720" width="1" height="1">
