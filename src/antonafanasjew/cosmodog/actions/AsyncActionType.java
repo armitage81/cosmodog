@@ -13,7 +13,7 @@ public enum AsyncActionType {
 
 	FOUND_TOOL_JINGLE(false, false, false),
 
-	LOST_JINGLE(false, false, false),
+	LOST_JINGLE(false, false, true),
 	
 	/**
 	 * Player is dying

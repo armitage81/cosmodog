@@ -26,8 +26,8 @@ public class LoseRaceAction extends PhaseBasedAction {
             Player player = ApplicationContextUtils.getPlayer();
             race.cancel();
             player.getInventory().remove(InventoryItemType.VEHICLE);
-            ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry().registerAction(AsyncActionType.LOST_JINGLE, new PlayJingleAction(5000, MusicResources.MUSIC_LOST));
             ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction("Time is up. Try again."));
+            ApplicationContextUtils.getCosmodogGame().getInterfaceActionRegistry().registerAction(AsyncActionType.LOST_JINGLE, new PlayJingleAction(5000, MusicResources.MUSIC_LOST));
             ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, new RespawnAction(race.getRespawnPosition(), true, true));
 
         }
