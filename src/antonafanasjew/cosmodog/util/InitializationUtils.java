@@ -1124,7 +1124,7 @@ public class InitializationUtils {
 		// Worm delay rules
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
 		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
-		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will have harder time to locate you.");
+		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will now have harder time detecting you.");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
 		switchOnVentilationAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnVentilationAction, new SetGameProgressPropertyAction("WormAreaVentilationOn", "true"), notificationAction);
@@ -1133,7 +1133,7 @@ public class InitializationUtils {
 		
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
 		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
-		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will have even harder time to locate you.");
+		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will now have even harder time detecting you.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
 		switchOnSewageAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnSewageAction, new SetGameProgressPropertyAction("WormAreaSewageOn", "true"), notificationAction);
@@ -1142,7 +1142,7 @@ public class InitializationUtils {
 		
 		RuleTrigger switchOnDrillsTrigger = new GameProgressPropertyTrigger("WormAreaDrillOn", "false");
 		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
-		asyncAction = new PopUpNotificationAction("This is the control panel for the underground drill machines. You activate it. The worm cannot locate you anymore.");
+		asyncAction = new PopUpNotificationAction("This is the control panel for the underground drill machines. You activate it. The worm cannot detect you anymore.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnDrillAction = new DeactivateWormAction();
 		switchOnDrillAction = BlockAction.block(PlaySoundRuleAction.fromSoundResource(SoundResources.SOUND_CONSOLE), switchOnDrillAction, new SetGameProgressPropertyAction("WormAreaDrillOn", "true"), notificationAction);

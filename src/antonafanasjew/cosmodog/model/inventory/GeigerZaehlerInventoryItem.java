@@ -19,7 +19,7 @@ public class GeigerZaehlerInventoryItem extends InventoryItem {
 	public String description() {
 		return "This little device detects radiation. "
 				+ "The \"RAD\" window of the interface shows the eight adjacent tiles around you. "
-				+ "Fields polluted by radiation will are red, safe fields are blue. "
+				+ "Fields polluted by radiation are red, safe fields are blue. "
 				+ "Use the detector to find a safe way and avoid radioactive damage.";
 	}
 	
