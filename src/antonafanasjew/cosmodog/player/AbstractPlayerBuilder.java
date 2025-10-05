@@ -8,8 +8,7 @@ public abstract class AbstractPlayerBuilder implements PlayerBuilder {
 
 	@Override
 	public Player buildPlayer() {
-		//Player player = Player.fromPosition(Position.fromCoordinates(5, 3, MapType.MAIN));
-		Player player = Player.fromPosition(Position.fromCoordinates(256, 240, MapType.MAIN));
+		Player player = Player.fromPosition(Position.fromCoordinates(5, 3, MapType.MAIN));
 		updatePlayer(player);
 		return player;
 	}
