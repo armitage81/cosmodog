@@ -53,7 +53,7 @@ public class PortalShotAction extends PhaseBasedAction {
 
         List<Position> positions = ray.getRayPositions();
         for (Position position : positions) {
-            getPhaseRegistry().registerPhase(position.toString(), new CamMovementAction(125, PositionUtils.toPixelPosition(position), game));
+            getPhaseRegistry().registerPhase(position.toString(), new CamMovementAction(125, PositionUtils.toPixelPosition(position)));
         }
         if (portalShouldBeCreated) {
             getPhaseRegistry().registerPhase("CreatingPortal", new CreatePortalAction(500, ray));

@@ -32,7 +32,7 @@ public class GameFlowUtils {
 		ScoreList scoreList = cosmodog.getScoreList();
 		scoreList.addNewScoreEntry(scoreEntry);
 		try {
-			cosmodog.getScorePersistor().saveScoreList(scoreList, PathUtils.scoreSavePath());
+			cosmodog.getScorePersistor().saveScoreList(scoreList);
 		} catch (CosmodogPersistenceException e) {
 			Log.error("Could not save score list", e);
 		}
@@ -47,10 +47,7 @@ public class GameFlowUtils {
 		CosmodogScorePersistor scorePersistor = cosmodog.getScorePersistor();
 		ScoreList scoreList = ScoreList.getInstance();
 		try {
-			File f = new File(PathUtils.scoreSavePath());
-			if (f.exists()) {
-				scoreList = scorePersistor.restoreScoreList(PathUtils.scoreSavePath());
-			}
+			scoreList = scorePersistor.restoreScoreList();
 		} catch (CosmodogPersistenceException e) {
 			Log.error("Could not load score list", e);
 		}

@@ -10,9 +10,7 @@ public class CamMovementUtils {
 
     public static int movementDuration(int pixelPerSecond, Position startPixelPosition, Position targetPixelPosition) {
         float distance = PositionUtils.distance(startPixelPosition, targetPixelPosition);
-
         float pixelPerMillisecond = pixelPerSecond / 1000.0f;
-
         return (int)(distance / pixelPerMillisecond);
     }
 

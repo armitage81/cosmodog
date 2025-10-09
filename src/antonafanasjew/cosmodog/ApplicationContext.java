@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.filesystem.*;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.listener.movement.consumer.*;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
@@ -36,8 +37,6 @@ import antonafanasjew.cosmodog.controller.InGameMenuInputHandler;
 import antonafanasjew.cosmodog.controller.InGameTextFrameInputHandler;
 import antonafanasjew.cosmodog.controller.InputHandler;
 import antonafanasjew.cosmodog.controller.NoInputInputHandler;
-import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
-import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -156,6 +155,8 @@ public class ApplicationContext {
 	
 	private Map<String, Menu> menus = Maps.newHashMap();
 
+	private final PathProvider pathProvider = new CustomDecoratorForPathProvider(new DefaultPathProvider());
+
 	private ApplicationContext() {
 		try {
 			init();
@@ -249,7 +250,7 @@ public class ApplicationContext {
 		
 		Cosmodog cosmodog = new Cosmodog();
 		User user = new User();
-		user.setUserName("Armitage");
+		user.setUserName("player");
 		cosmodog.setUser(user);
 
 		this.playerBuilder = CosmodogModelHolder.retrievePlayerBuilder();
@@ -296,8 +297,8 @@ public class ApplicationContext {
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_INGAME_MENU, inGameMenuInputHandler);
 		cosmodog.getInputHandlers().put(InputHandlerType.INPUT_HANDLER_NO_INPUT, noInputInputHandler);
 		
-		cosmodog.setGamePersistor(CosmodogGamePersistor.instance());
-		cosmodog.setScorePersistor(CosmodogScorePersistor.instance());
+		cosmodog.setGamePersistor(new CosmodogGamePersistor(pathProvider));
+		cosmodog.setScorePersistor(new CosmodogScorePersistor(pathProvider));
 		
 		Map<String, PieceInteraction> pieceInteractionMap = cosmodog.getPieceInteractionMap();
 		

@@ -11,7 +11,6 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.controller.InputHandler;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.util.PathUtils;
 
 public class OptionsInputHandler implements InputHandler {
 	@Override
@@ -19,7 +18,7 @@ public class OptionsInputHandler implements InputHandler {
 		if (gc.getInput().isKeyPressed(Input.KEY_RETURN)) {
 			Cosmodog cosmodog = applicationContext.getCosmodog();
 			CosmodogGame game = cosmodog.getCosmodogGame();
-			cosmodog.getGamePersistor().saveCosmodogGame(game, PathUtils.gameSaveDir() + "/" + game.getGameName() + ".sav");
+			cosmodog.getGamePersistor().saveCosmodogGame(game);
 			CosmodogStarter.instance.enterState(CosmodogStarter.MAIN_MENU_STATE_ID, new FadeOutTransition(), new FadeInTransition());
 		}
 	}

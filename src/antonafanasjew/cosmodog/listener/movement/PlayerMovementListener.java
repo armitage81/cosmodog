@@ -838,7 +838,7 @@ public class PlayerMovementListener implements MovementListener {
 	private void autosave() {
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
-		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame, PathUtils.gameSaveDir() + "/" + cosmodogGame.getGameName() + ".sav");
+		cosmodog.getGamePersistor().saveCosmodogGame(cosmodogGame);
 	}
 
 

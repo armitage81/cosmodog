@@ -21,27 +21,15 @@ import antonafanasjew.cosmodog.model.ScoreList;
  */
 public class CosmodogScorePersistor {
 
-	private CosmodogScorePersistor() {
-	}
-	
-	private static CosmodogScorePersistor instance = new CosmodogScorePersistor();
+	private PathProvider pathProvider;
 
-	/**
-	 * Returns the singleton instance.
-	 */
-	public static CosmodogScorePersistor instance() {
-		return instance;
+	public CosmodogScorePersistor(PathProvider pathProvider) {
+		this.pathProvider = pathProvider;
 	}
-	
-	/**
-	 * Saves the score list 
-	 * @param scoreList The score list.
-	 * @param filePath The save file on disk.
-	 * @throws CosmodogPersistenceException Thrown if I/O errors happen.
-	 */
-	public void saveScoreList(ScoreList scoreList, String filePath) throws CosmodogPersistenceException {
+
+	public void saveScoreList(ScoreList scoreList) throws CosmodogPersistenceException {
 		try {
-			File file = new File(filePath);
+			File file = new File(pathProvider.scoreSavePath());
 			file.getParentFile().mkdirs();
 			if (file.exists()) {
 				file.delete();
@@ -57,15 +45,9 @@ public class CosmodogScorePersistor {
 		}
 	}
 
-	/**
-	 * Restores the score list.
-	 * @param filePath Path of the save file.
-	 * @return Deserialized score list.
-	 * @throws CosmodogPersistenceException Thrown if I/O errors happen.
-	 */
-	public ScoreList restoreScoreList(String filePath) throws CosmodogPersistenceException {
+	public ScoreList restoreScoreList() throws CosmodogPersistenceException {
 		try {
-			File file = new File(filePath);
+			File file = new File(pathProvider.scoreSavePath());
 			file.getParentFile().mkdirs();
 			InputStream fileStream = new FileInputStream(file);
 			InputStream buffer = new BufferedInputStream(fileStream);
@@ -73,11 +55,9 @@ public class CosmodogScorePersistor {
 			ScoreList scoreList = (ScoreList) input.readObject();
 			input.close();
 			return scoreList;
-		} catch (ClassNotFoundException ex) {
-			throw new CosmodogPersistenceException(ex.getMessage(), ex);
-		} catch (IOException ex) {
+		} catch (ClassNotFoundException | IOException ex) {
 			throw new CosmodogPersistenceException(ex.getMessage(), ex);
 		}
-	}
+    }
 	
 }

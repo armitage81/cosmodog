@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.model.menu;
 
 import java.io.File;
 
+import antonafanasjew.cosmodog.model.CosmodogGameHeader;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -11,7 +12,6 @@ import antonafanasjew.cosmodog.CosmodogStarter;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.statetransitions.LoadingTransition;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.PathUtils;
 
 public class MenuActionFactory {
 
@@ -31,12 +31,10 @@ public class MenuActionFactory {
 		return new MenuAction() {
 			@Override
 			public void execute(StateBasedGame sbg) {
-				String filePath = PathUtils.gameSaveDir() + "/" + no + ".sav";
-				File f = new File(filePath);
-
-				if (f.exists()) {
-					ApplicationContext appCx = ApplicationContext.instance();
-					CosmodogGame cosmodogGame = appCx.getCosmodog().getGamePersistor().restoreCosmodogGame(filePath);
+				ApplicationContext appCx = ApplicationContext.instance();
+				boolean headerExists = appCx.getCosmodog().getGamePersistor().cosmodogGameHeaderExists(no);
+				if (headerExists) {
+					CosmodogGame cosmodogGame = appCx.getCosmodog().getGamePersistor().restoreCosmodogGame(no);
 					appCx.getCosmodog().getGameLifeCycle().setStartNewGame(false);
 					appCx.getCosmodog().setCosmodogGame(cosmodogGame);
 					sbg.enterState(CosmodogStarter.GAME_STATE_ID, new LoadingTransition(), new FadeInTransition());

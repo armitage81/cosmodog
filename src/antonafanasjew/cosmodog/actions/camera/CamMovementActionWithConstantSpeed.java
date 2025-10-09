@@ -41,11 +41,9 @@ public class CamMovementActionWithConstantSpeed extends PhaseBasedAction {
 
         Position targetPixelPosition = Position.fromCoordinates(targetCamPosition.getX(), targetCamPosition.getY(), targetCamPosition.getMapType());
 
-        float distance = PositionUtils.distance(startPixelPosition, targetPixelPosition);
-
         int durationInMilliseconds = CamMovementUtils.movementDuration(pixelPerSecond, startPixelPosition, targetPixelPosition);
 
-        CamMovementAction delegate = new CamMovementAction(durationInMilliseconds, targetCamPosition, cosmodogGame);
+        CamMovementAction delegate = new CamMovementAction(durationInMilliseconds, targetCamPosition);
         getPhaseRegistry().registerPhase("delegate", delegate);
     }
 }

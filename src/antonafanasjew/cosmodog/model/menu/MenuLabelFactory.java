@@ -4,12 +4,13 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import antonafanasjew.cosmodog.model.Cosmodog;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogPersistenceException;
 import antonafanasjew.cosmodog.model.CosmodogGameHeader;
-import antonafanasjew.cosmodog.util.PathUtils;
 
 public class MenuLabelFactory {
 
@@ -20,20 +21,20 @@ public class MenuLabelFactory {
 		return new MenuLabel() {
 			@Override
 			public String labelText() {
-				
-				CosmodogGamePersistor gamePersistor = CosmodogGamePersistor.instance();
-				String filePath = PathUtils.gameSaveDir() + "/" + number + ".sav";
-				File f = new File(filePath);
-				if (f.exists()) {
-					try {
-						CosmodogGameHeader header = gamePersistor.loadCosmodogGameHeader(filePath);
+
+				Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+				CosmodogGamePersistor gamePersistor = cosmodog.getGamePersistor();
+				try {
+					boolean headerExists = gamePersistor.cosmodogGameHeaderExists(number);
+					if (headerExists) {
+						CosmodogGameHeader header = gamePersistor.loadCosmodogGameHeader(number);
 						return "Overwrite: " + DATE_FORMAT.format(header.getLastSave());
-					} catch (CosmodogPersistenceException e) {
-						Log.error("Could not load game");
-						return "<ERROR>";
+					} else {
+						return "New Game";
 					}
-				} else {
-					return "New Game";
+				} catch (CosmodogPersistenceException e) {
+					Log.error("Could not load game");
+					return "<ERROR>";
 				}
 			}
 		};
@@ -43,21 +44,21 @@ public class MenuLabelFactory {
 		return new MenuLabel() {
 			@Override
 			public String labelText() {
-				
-				CosmodogGamePersistor gamePersistor = CosmodogGamePersistor.instance();
-				String filePath = PathUtils.gameSaveDir() + "/" + number + ".sav";
-				File f = new File(filePath);
-				if (f.exists()) {
-					try {
-						CosmodogGameHeader header = gamePersistor.loadCosmodogGameHeader(filePath);
+				Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
+				CosmodogGamePersistor gamePersistor = cosmodog.getGamePersistor();
+				try {
+					boolean headerExists = gamePersistor.cosmodogGameHeaderExists(number);
+					if (headerExists) {
+						CosmodogGameHeader header = gamePersistor.loadCosmodogGameHeader(number);
 						return DATE_FORMAT.format(header.getLastSave());
-					} catch (CosmodogPersistenceException e) {
-						Log.error("Could not load game");
-						return "<ERROR>";
+					} else {
+						return "No Data";
 					}
-				} else {
-					return "No Save";
+				} catch (CosmodogPersistenceException e) {
+					Log.error("Could not load game");
+					return "<ERROR>";
 				}
+
 			}
 		};
 	}

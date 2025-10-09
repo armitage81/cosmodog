@@ -26,7 +26,6 @@ public class CreatePortalAction extends FixedLengthAsyncAction {
     @Override
     public void onTrigger() {
         ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_PORTALS_CREATED).play();
-        Player player = ApplicationContextUtils.getPlayer();
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
         Position rayTargetPosition = ray.getTargetPosition();
         DirectionType directionFacingPlayer = DirectionType.reverse(ray.getLastDirection());

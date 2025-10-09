@@ -94,7 +94,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		
 		if (CORRECT_SEQUENCE.equals(currentSequence)) {
 			AsyncAction asyncAction = new SwitchingIndicatorAction(2000, "AlienBaseTeleportIndicator", true);
-			asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(204, 310, MapType.MAIN), asyncAction, ApplicationContextUtils.getCosmodogGame());
+			asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(204, 310, MapType.MAIN), asyncAction);
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		}

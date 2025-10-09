@@ -45,34 +45,25 @@ import antonafanasjew.cosmodog.topology.Rectangle;
  */
 public class CosmodogGamePersistor {
 
-	private CosmodogGamePersistor() {
+	private final PathProvider pathProvider;
 
-	}
-	
-	private static CosmodogGamePersistor instance = new CosmodogGamePersistor();
-
-	/**
-	 * Returns the singleton instance of the game persistor.
-	 */
-	public static CosmodogGamePersistor instance() {
-		return instance;
+	public CosmodogGamePersistor(PathProvider pathProvider) {
+		this.pathProvider = pathProvider;
 	}
 
-	/**
-	 * Saves the game on disk.
-	 * @param game Cosmodog game state.
-	 * @param filePath Path of the save file on disk.
-	 * @throws CosmodogPersistenceException Thrown if I/O errors occur.
-	 */
-	public void saveCosmodogGame(CosmodogGame game, String filePath){
+	public void saveCosmodogGame(CosmodogGame game){
 		try {
-			File file = new File(filePath);
+			File file = new File(pathProvider.gameSaveDir() + "/" + game.getGameName() + ".sav");
 			file.mkdirs();
 			if (file.exists()) {
-				file.delete();
+				if (!file.delete()) {
+					throw new IOException("Could not delete existing save game file: " + file.getAbsolutePath());
+				}
 			}
-			file.createNewFile();
-			file.mkdirs();
+			if (!file.createNewFile()) {
+				throw new IOException("Could not create save game file: " + file.getAbsolutePath());
+			}
+
 			OutputStream fileStream = new FileOutputStream(file);
 			OutputStream buffer = new BufferedOutputStream(fileStream);
 			ObjectOutput output = new ObjectOutputStream(buffer);
@@ -88,46 +79,44 @@ public class CosmodogGamePersistor {
 		}
 	}
 
-	/**
-	 * Restores a cosmodog game from disk.
-	 * @param filePath Save file on disk.
-	 * @return Cosmodog game as deserialized from a save file.
-	 * @throws CosmodogPersistenceException Thrown if I/O errors occur.
-	 */
-	public CosmodogGame restoreCosmodogGame(String filePath) {
+	public CosmodogGame restoreCosmodogGame(int saveSlotNumber) {
 		try {
+			String filePath = pathProvider.gameSaveDir() + "/" + saveSlotNumber + ".sav";
 			File file = new File(filePath);
-			file.mkdirs();
-			InputStream fileStream = new FileInputStream(file);
-			InputStream buffer = new BufferedInputStream(fileStream);
-			ObjectInput input = new ObjectInputStream(buffer);
-			@SuppressWarnings("unused")
-			CosmodogGameHeader header = (CosmodogGameHeader)input.readObject();
-			CosmodogGame game = (CosmodogGame) input.readObject();
-			input.close();
-			game.initTransientFields();
-			
-			/*
-			 * When storing a game, the camera is stored, too.
-			 * Part of the camera persisted state is its size and location.
-			 * If saving a game in one resolution and then loading it in another resolution, the restored camera will be wrong.
-			 * That's why we fix it here after the restoration process.
-			 */
-			try {
-				int tileLength = TileUtils.tileLengthSupplier.get();
-				CosmodogMap map = game.mapOfPlayerLocation();
-				float oldZoomFactor = game.getCam().getZoomFactor();
-				Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
-				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
-				Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapType());
-				cam.focusOnPiece(game, 0, 0, game.getPlayer());
-				cam.zoom(oldZoomFactor);
-				game.setCam(cam);
+			if (file.exists()) {
+				InputStream fileStream = new FileInputStream(file);
+				InputStream buffer = new BufferedInputStream(fileStream);
+				ObjectInput input = new ObjectInputStream(buffer);
+				@SuppressWarnings("unused")
+				CosmodogGameHeader header = (CosmodogGameHeader) input.readObject();
+				CosmodogGame game = (CosmodogGame) input.readObject();
+				input.close();
+				game.initTransientFields();
 
-			} catch (CamPositioningException e) {
-				Log.error("Camera positioning could not be established", e);
+				/*
+				 * When storing a game, the camera is stored, too.
+				 * Part of the camera persisted state is its size and location.
+				 * If saving a game in one resolution and then loading it in another resolution, the restored camera will be wrong.
+				 * That's why we fix it here after the restoration process.
+				 */
+				try {
+					int tileLength = TileUtils.tileLengthSupplier.get();
+					CosmodogMap map = game.mapOfPlayerLocation();
+					float oldZoomFactor = game.getCam().getZoomFactor();
+					Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
+					DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
+					Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapType());
+					cam.focusOnPiece(game, 0, 0, game.getPlayer());
+					cam.zoom(oldZoomFactor);
+					game.setCam(cam);
+
+				} catch (CamPositioningException e) {
+					Log.error("Camera positioning could not be established", e);
+				}
+				return game;
+			} else {
+				throw new IOException("Save game file does not exist: " + filePath);
 			}
-			return game;
 		} catch (ClassNotFoundException | IOException ex) {
 			Log.error("Could not restore game", ex);
 			System.exit(1);
@@ -135,21 +124,31 @@ public class CosmodogGamePersistor {
 		}
 	}
 
-	public CosmodogGameHeader loadCosmodogGameHeader(String filePath) throws CosmodogPersistenceException {
+	public boolean cosmodogGameHeaderExists(int saveSlotNumber) {
+		String filePath = pathProvider.gameSaveDir() + "/" + saveSlotNumber + ".sav";
+		File file = new File(filePath);
+		return file.exists();
+	}
+
+	public CosmodogGameHeader loadCosmodogGameHeader(int saveSlotNumber) throws CosmodogPersistenceException {
 		try {
+
+			String filePath = pathProvider.gameSaveDir() + "/" + saveSlotNumber + ".sav";
+
 			File file = new File(filePath);
-			file.mkdirs();
-			InputStream fileStream = new FileInputStream(file);
-			InputStream buffer = new BufferedInputStream(fileStream);
-			ObjectInput input = new ObjectInputStream(buffer);
-			CosmodogGameHeader header = (CosmodogGameHeader)input.readObject();
-			input.close();
-			return header;
-		} catch (ClassNotFoundException ex) {
-			throw new CosmodogPersistenceException(ex.getMessage(), ex);
-		} catch (IOException ex) {
+			if (file.exists()) {
+				InputStream fileStream = new FileInputStream(file);
+				InputStream buffer = new BufferedInputStream(fileStream);
+				ObjectInput input = new ObjectInputStream(buffer);
+				CosmodogGameHeader header = (CosmodogGameHeader) input.readObject();
+				input.close();
+				return header;
+			} else {
+				throw new IOException("Save game file does not exist: " + filePath);
+			}
+		} catch (ClassNotFoundException | IOException ex) {
 			throw new CosmodogPersistenceException(ex.getMessage(), ex);
 		}
-	}
+    }
 	
 }
