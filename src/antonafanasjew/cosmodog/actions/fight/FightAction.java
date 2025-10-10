@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.fighting.Damage;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -80,14 +81,6 @@ public class FightAction extends PhaseBasedAction {
 	private final AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator;
 
 	/**
-	 * During the fight, the player can run out of ammunition. In such a case, the player is considered to be unarmed.
-	 * Then this calculator is used to calculate the damage dealt by the player to the enemy.
-	 * <p>
-	 * Take note: This calculator is not used if the player has no weapon selected, only if the ammunition is depleted.
-	 */
-	private final AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo;
-
-	/**
 	 * The enemy attack damage calculator calculates the damage dealt by the enemy to the player.
 	 * In most cases, the enemy attack damage calculation is a simple process. It involves the enemy's attack power
 	 * as a single factor for damage calculation.
@@ -96,44 +89,18 @@ public class FightAction extends PhaseBasedAction {
 	 */
 	private final AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator;
 
-	/**
-	 * Creates a fight action where the player is the passive part of the fight, meaning that the player is attacked by an enemy.
-	 * The target enemy is set to null in this case.
-	 *
-	 * @param playerAttackDamageCalculator The calculator that calculates the damage dealt by the player to the enemy.
-	 * (actually, this calculator is irrelevant in such a situation, because the player is passive and not attacking).
-	 * @param playerAttackDamageCalculatorIfNoAmmo The calculator that calculates the damage dealt by the player to the enemy
-	 * if the ammunition of the player's selected weapon has depleted.
-	 * (actually, this calculator is irrelevant in such a situation, because the player is passive and not attacking).
-	 * @param enemyAttackDamageCalculator The calculator that calculates the damage dealt by the enemy to the player.
-	 */
 	public FightAction(
 			AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator,
-			AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo,
 			AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator) {
-		this(null, playerAttackDamageCalculator, playerAttackDamageCalculatorIfNoAmmo, enemyAttackDamageCalculator);
+		this(null, playerAttackDamageCalculator, enemyAttackDamageCalculator);
 	}
 
-	/**
-	 * Creates a fight action where the player can be the active part of the fight, meaning that the player is the attacker.
-	 * In that case, the target enemy is the enemy that is initially targeted by the player. Additionally, there can be multiple
-	 * other enemies involved in the fight. If the target enemy is set to null, the player is the passive part of the fight, meaning
-	 * that the player is attacked by an enemy.
-	 *
-	 * @param targetEnemy The enemy that is attacked by the player if the latter initiates the fight. Null if the player is the passive part of the fight.
-	 * @param playerAttackDamageCalculator The calculator that calculates the damage dealt by the player to the enemy.
-	 * @param playerAttackDamageCalculatorIfNoAmmo The calculator that calculates the damage dealt by the player to the enemy
-	 * if the ammunition of the player's selected weapon has depleted.
-	 * @param enemyAttackDamageCalculator The calculator that calculates the damage dealt by the enemy to the player.
-	 */
 	public FightAction(
 			Enemy targetEnemy,
 			AbstractPlayerAttackDamageCalculator playerAttackDamageCalculator,
-			AbstractPlayerAttackDamageCalculator playerAttackDamageCalculatorIfNoAmmo,
 			AbstractEnemyAttackDamageCalculator enemyAttackDamageCalculator) {
 		this.targetEnemy = targetEnemy;
 		this.playerAttackDamageCalculator = playerAttackDamageCalculator;
-		this.playerAttackDamageCalculatorIfNoAmmo = playerAttackDamageCalculatorIfNoAmmo;
 		this.enemyAttackDamageCalculator = enemyAttackDamageCalculator;
 	}
 
@@ -221,7 +188,7 @@ public class FightAction extends PhaseBasedAction {
 		//Take note: There is keeping track of the ammunition of the player's selected weapon to switch to the unarmed
 		// damage calculator during calculation of the future phase results in case it is forecasted as depleted.
 		if (targetEnemy != null) {
-			updateFightActionResultForOneEnemy(player, targetEnemy, true, remainingAmmo <= 0);
+			updateFightActionResultWithPlayerInitiatedDuel(player, targetEnemy);
 			attackers.remove(targetEnemy);
 			remainingAmmo--;
 		}
@@ -231,7 +198,7 @@ public class FightAction extends PhaseBasedAction {
 		//Take note: Also here, the ammunition of the player's selected weapon is kept track upon.
 		//Take note: If player's death is forecasted, the subsequent enemy attacks are canceled.
 		for (Enemy enemy : attackers) {
-			updateFightActionResultForOneEnemy(player, enemy, false, remainingAmmo <= 0);
+			updateFightActionResultWithEnemyInitiatedDuel(player, enemy);
 			remainingAmmo--;
 			if (fightActionResult.enoughDamageToKillPlayer()) {
 				break;
@@ -239,52 +206,36 @@ public class FightAction extends PhaseBasedAction {
 		}
 	}
 
-	/**
-	 * Forecasts the fight result between the player and one enemy.
-	 * The player can be the attacker or not.
-	 *
-	 * @param player The player instance.
-	 * @param enemy The enemy instance involved in the fight.
-	 * @param playerIsAttacker True if the player is the attacker, false if the enemy is the attacker.
-	 * @param unarmedAttack This name is misleading. The flag means not the selected weapon but whether the ammunition is depleted.
-	 */
-	private void updateFightActionResultForOneEnemy(Player player, Enemy enemy, boolean playerIsAttacker, boolean unarmedAttack) {
+	private void updateFightActionResultWithPlayerInitiatedDuel(Player player, Enemy enemy) {
 
-		//If the player is the attacker, the enemy becomes alerted.
-		//TODO: Why is it done here? This should be done in the player's attack action.
-		if (playerIsAttacker) {
-			enemy.increaseAlertLevelToMax();
-		}
+		enemy.increaseAlertLevelToMax();
 
 		boolean playerHasPlatform = player.getInventory().hasPlatform();
 
-		//Damage calculators are being used to calculate the damage dealt by the player to the enemy and vice versa.
-		//If the player drives the platform, the fight is skipped. The enemies are simply destroyed by the platform instead.
-		//Otherwise, the fight result is calculated.
-		//Take note: The result for enemies retaliation in case the player is the attacker is calculated only if the enemy survives the attack.
-		//Take note: The damage calculator for the player's attack is switched to the unarmed damage calculator if the ammunition is depleted.
-		//TODO: How can an enemy not be alerted at this point? If the player is the attacker, the enemy is alerted anyway. If the enemy is the attacker, it is alerted per definition.
 		if (enemy.getAlertLevel() > 0 && !playerHasPlatform) {
 
-			DamageCalculator playerDamageCalculator = unarmedAttack ? playerAttackDamageCalculatorIfNoAmmo : playerAttackDamageCalculator;
-			int playerAttackDamage = playerDamageCalculator.damage(player, enemy);
-			boolean playerCriticalHit = playerDamageCalculator.criticalHit(player, enemy);
+			Damage playerAttackDamage = playerAttackDamageCalculator.damage(player, enemy);
 
-			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true, playerCriticalHit);
+			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
 
-			int enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
-			boolean enemyCriticalHit = enemyAttackDamageCalculator.criticalHit(enemy, player);
-			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false, enemyCriticalHit);
+			Damage enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
 
-			if (playerIsAttacker) {
-				fightActionResult.add(playerPhaseResult);
-				if (!playerPhaseResult.enoughDamageToKillEnemy() && EnemiesUtils.enemyActive(enemy)) {
-					fightActionResult.add(enemyPhaseResult);
-				}
-			} else {
+			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
+
+			fightActionResult.add(playerPhaseResult);
+			if (!playerPhaseResult.enoughDamageToKillEnemy() && EnemiesUtils.enemyActive(enemy)) {
 				fightActionResult.add(enemyPhaseResult);
 			}
 
+		}
+	}
+
+	private void updateFightActionResultWithEnemyInitiatedDuel(Player player, Enemy enemy) {
+		boolean playerHasPlatform = player.getInventory().hasPlatform();
+		if (enemy.getAlertLevel() > 0 && !playerHasPlatform) {
+			Damage enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
+			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
+			fightActionResult.add(enemyPhaseResult);
 		}
 	}
 

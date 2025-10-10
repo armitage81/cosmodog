@@ -19,9 +19,6 @@ public class Player extends Actor {
 	public static final int INITIAL_MAX_FOOD = 600;
 	public static final int INITIAL_MAX_WATER = 600;
 	
-//	public static final int INITIAL_MAX_FOOD = 20;
-//	public static final int INITIAL_MAX_WATER = 30;
-	
 	public static final int MAX_POSSIBLE_LIFE = 100;
 	public static final int INITIAL_LIFE = 10;
 	public static final int LIFE_UNITS_IN_LIFEPACK = 5;

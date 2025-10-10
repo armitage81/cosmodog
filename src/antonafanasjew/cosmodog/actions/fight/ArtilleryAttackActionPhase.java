@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.fight;
 
+import antonafanasjew.cosmodog.fighting.Damage;
 import com.google.common.collect.Lists;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -102,21 +103,21 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		Player player = getFightPhaseResult().getPlayer();
-		int damage = getFightPhaseResult().getDamage();
+		Damage damage = getFightPhaseResult().getDamage();
 		
-		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage());
+		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage().getAmount());
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getPlayer(), text);
 		
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			Vehicle vehicle = item.getVehicle();
-			vehicle.setLife(vehicle.getLife() - damage);
+			vehicle.setLife(vehicle.getLife() - damage.getAmount());
 			if (vehicle.dead()) {
 				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPosition()));
 				player.getInventory().remove(InventoryItemType.VEHICLE);
 			}
 		} else {
-			player.decreaseLife(damage);
+			player.decreaseLife(damage.getAmount());
 		}
 		
 	}

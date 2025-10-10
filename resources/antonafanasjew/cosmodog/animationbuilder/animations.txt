@@ -1775,8 +1775,8 @@ trafficBarrierSignalRed;assets/graphics/dynamicPieces/trafficbarriers.signals.pn
 
 polePositionHorizontal;assets/graphics/dynamicPieces/track.png;16;16;[0/0/10000];true;true
 polePositionVertical;assets/graphics/dynamicPieces/track.png;16;16;[1/0/10000];true;true
-finishLineHorizontal;assets/graphics/dynamicPieces/track.png;16;16;[0/0/10000];true;true
-finishLineVertical;assets/graphics/dynamicPieces/track.png;16;16;[1/0/10000];true;true
+finishLineHorizontal;assets/graphics/dynamicPieces/track.png;16;16;[0/1/10000];true;true
+finishLineVertical;assets/graphics/dynamicPieces/track.png;16;16;[1/1/10000];true;true
 
 
 timeBonus1;assets/graphics/dynamicPieces/timecontrols.png;16;16;[0/0/10000];true;true

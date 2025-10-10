@@ -30,7 +30,6 @@ import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
-import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -519,7 +518,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 
 		AbstractEnemyAttackDamageCalculator enemyDamageCalculator = new SimpleEnemyAttackDamageCalculator();
 		
-		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(game.getPlanetaryCalendar()), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
+		ar.registerAction(AsyncActionType.FIGHT, new FightAction(new SimplePlayerAttackDamageCalculator(), enemyDamageCalculator));
 		
 	}
 

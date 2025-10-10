@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.actions.fight;
 
+import antonafanasjew.cosmodog.fighting.Damage;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -35,32 +36,27 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 
 		WeaponType.sound(selectedWeaponType).play();
 
-		int damage = getFightPhaseResult().getDamage();
-		boolean criticalHit = getFightPhaseResult().isCriticalHit();
-		if (criticalHit) {
-			damage *= 3;
-		}
+		Damage damage = getFightPhaseResult().getDamage();
 
-		String text = String.valueOf(damage);
-
-		DirectionType playerDirection = getFightPhaseResult().getPlayer().getDirection();
-		DirectionType enemyDirection = getFightPhaseResult().getEnemy().getDirection();
-		DirectionType enemyRelatedToPlayerDirection = PositionUtils.targetDirection(getFightPhaseResult().getPlayer(), getFightPhaseResult().getEnemy());
-		
-		boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
-		boolean enemyLooksAway = enemyDirection.equals(playerDirection);
-		Enemy enemy = getFightPhaseResult().getEnemy();
-		boolean backstabbingAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
+		String text = String.valueOf(damage.getAmount());
 
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), text);
-		if (playerLooksAtEnemy && enemyLooksAway && backstabbingAllowed) {
-			OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(BACKSTABBED)");
-		}
 
-		if (criticalHit) {
-			OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(CRITICAL HIT)");
-		}
+		if (damage.isIncludingOffGuard()) {
+			OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(OFF-GUARD)");
+		} else {
+			if (damage.isIncludingBackstabbing()) {
+				OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(BACK-STABBED)");
+			}
 
+			if (damage.isIncludingCriticalHit()) {
+				OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(CRITICAL HIT)");
+			}
+
+			if (damage.isIncludingUpgradeBonus()) {
+				OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getEnemy(), "(FIRMWARE UPGRADE)");
+			}
+		}
 		getFightPhaseResult().getPlayer().lookAtActor(getFightPhaseResult().getEnemy());
 		getFightPhaseResult().getEnemy().lookAtActor(getFightPhaseResult().getPlayer());
 		
@@ -73,15 +69,9 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		Player player = getFightPhaseResult().getPlayer();
 		Enemy enemy = getFightPhaseResult().getEnemy();
 		
-		int damage = getFightPhaseResult().getDamage();
+		Damage damage = getFightPhaseResult().getDamage();
 
-		boolean critical = getFightPhaseResult().isCriticalHit();
-
-		if (critical) {
-			damage = damage * 3;
-		}
-
-		enemy.setLife(enemy.getLife() - damage);
+		enemy.setLife(enemy.getLife() - damage.getAmount());
 		Arsenal arsenal = player.getArsenal();
 		WeaponType weaponType = arsenal.getSelectedWeaponType();
 		if (weaponType != null) {

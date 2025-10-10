@@ -46,7 +46,6 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimpleEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculator;
-import antonafanasjew.cosmodog.fighting.SimplePlayerAttackDamageCalculatorUnarmed;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenuFrame;
@@ -208,7 +207,7 @@ public class InGameInputHandler extends AbstractInputHandler {
     			CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
     			ActionRegistry ar = game.getActionRegistry();
     			AbstractEnemyAttackDamageCalculator enemyDamageCalculator = new SimpleEnemyAttackDamageCalculator();
-    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(planetaryCalendar), new SimplePlayerAttackDamageCalculatorUnarmed(), enemyDamageCalculator));
+    			ar.registerAction(AsyncActionType.FIGHT, new FightAction(meleeTargetEnemy, new SimplePlayerAttackDamageCalculator(), enemyDamageCalculator));
     		} else {
 
 	    		CollisionStatus collisionStatus = collisionValidator.collisionStatus(cosmodogGame, player, map, targetEntrance);

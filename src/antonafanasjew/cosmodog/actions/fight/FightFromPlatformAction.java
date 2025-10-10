@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.actions.fight;
 import java.io.Serial;
 import java.util.Set;
 
+import antonafanasjew.cosmodog.fighting.Damage;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -111,8 +112,9 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 	 * @param enemy The enemy who is the target.
 	 */
 	private void updateFightActionResultForOneEnemy(Player player, Enemy enemy) {
-		int playerAttackDamage = 1000;
-		FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true, false);
+		Damage damage = new Damage();
+		damage.setAmount(1000); // Huge damage to ensure the enemy is killed.
+		FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, damage, true);
 		fightActionResult.add(playerPhaseResult);
 	}
 

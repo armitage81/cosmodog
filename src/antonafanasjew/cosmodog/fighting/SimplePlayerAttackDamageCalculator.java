@@ -12,37 +12,42 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.util.EnemiesUtils;
 import antonafanasjew.cosmodog.util.PositionUtils;
 
-/**
- * Returns the damage as difference between players constant base damage and the damage absorption from the enemy's armor type.
- * Cannot be less than 1.
- */
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDamageCalculator {
 
-	public static final int SIMPLE_PLAYER_DAMAGE = 1;
-	
-	private final PlanetaryCalendar planetaryCalendar;
-	
-	public SimplePlayerAttackDamageCalculator(PlanetaryCalendar planetaryCalendar) {
-		this.planetaryCalendar = planetaryCalendar;
-	}
-	
+	public static final int CRITICAL_HIT_CHANCE_IN_PERCENT = 10;
+
+	private Supplier<Long> timestampSupplier = System::currentTimeMillis;
+	private Predicate<Enemy> enemyActivityPredicate = EnemiesUtils::enemyActive;
+
 	@Override
-	public int playerAttackDamageInternal(Player player, Enemy enemy) {
-		
+	public Damage playerAttackDamageInternal(Player player, Enemy enemy) {
+
+		Damage damage = new Damage();
+
 		ArmorType enemyArmorType = enemy.getArmorType();
 		
 		Arsenal arsenal = player.getArsenal();
 		
 		WeaponType selectedWeaponType = arsenal.getSelectedWeaponType();
+
+		int ammo = arsenal.getWeaponsCopy().get(selectedWeaponType).getAmmunition();
+		if (ammo <= 0) {
+			selectedWeaponType = WeaponType.FISTS;
+		}
 		
-		int damage;
-		boolean enemyActive = EnemiesUtils.enemyActive(enemy);
+		int amount;
+		boolean enemyActive = enemyActivityPredicate.test(enemy);
 		if (!enemyActive) {
-			damage = 100;
+			amount = 100;
+			damage.setIncludingOffGuard(true);
 		} else if (enemy.getUnitType() == UnitType.ARTILLERY) {
-			damage = 100;
+			amount = 100;
+			damage.setIncludingOffGuard(true);
 		} else {
-			damage = selectedWeaponType == null ? SIMPLE_PLAYER_DAMAGE : selectedWeaponType.getDamage(enemyArmorType);
+			amount = selectedWeaponType.getDamage(enemyArmorType);
 		
 			DirectionType playerDirection = player.getDirection();
 			DirectionType enemyDirection = enemy.getDirection();
@@ -50,24 +55,40 @@ public class SimplePlayerAttackDamageCalculator extends AbstractPlayerAttackDama
 			
 			boolean playerLooksAtEnemy = playerDirection.equals(enemyRelatedToPlayerDirection);
 			boolean enemyLooksAway = enemyDirection.equals(playerDirection);
-			//Disallow critical hits for the ranged and stationary units as they always see the player if he approaches.
-			boolean criticalHitsAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
+			//Disallow backstabbing hits for the ranged and stationary units as they always see the player if he approaches.
+			boolean backstabbingAllowed = !enemy.getUnitType().isRangedUnit() && !(enemy.getSpeedFactor() == 0.0f);
 			
-			if (playerLooksAtEnemy && enemyLooksAway && criticalHitsAllowed) {
-				damage *= 2;
+			if (playerLooksAtEnemy && enemyLooksAway && backstabbingAllowed) {
+				amount *= 2;
+				damage.setIncludingBackstabbing(true);
 			}
 			
 			boolean fists = selectedWeaponType == WeaponType.FISTS;
 			boolean weaponFirmwareUpgrade = player.getInventory().get(InventoryItemType.WEAPON_FIRMWARE_UPGRADE) != null;
 			
 			if (!fists && weaponFirmwareUpgrade) {
-				damage *= 3;
+				amount *= 3;
+				damage.setIncludingUpgradeBonus(true);
+			}
+
+			boolean criticalHit = timestampSupplier.get() % 100 < CRITICAL_HIT_CHANCE_IN_PERCENT;
+
+			if (criticalHit) {
+				amount *= 3;
+				damage.setIncludingCriticalHit(true);
 			}
 
 		}
-		
+		damage.setAmount(amount);
 		return damage;
 		
 	}
 
+	public void setTimestampSupplier(Supplier<Long> timstampSupplier) {
+		this.timestampSupplier = timstampSupplier;
+	}
+
+	public void setEnemyActivityPredicate(Predicate<Enemy> enemyActivityPredicate) {
+		this.enemyActivityPredicate = enemyActivityPredicate;
+	}
 }

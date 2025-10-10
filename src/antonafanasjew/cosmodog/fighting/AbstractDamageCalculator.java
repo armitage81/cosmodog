@@ -8,10 +8,10 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 public abstract class AbstractDamageCalculator implements DamageCalculator {
 
 	@Override
-	public int damage(Actor attacker, Actor defender) {
+	public Damage damage(Actor attacker, Actor defender) {
 		return damageInternal(attacker, defender);
 	}
 
-	protected abstract int damageInternal(Actor attacker, Actor defender);
+	protected abstract Damage damageInternal(Actor attacker, Actor defender);
 
 }

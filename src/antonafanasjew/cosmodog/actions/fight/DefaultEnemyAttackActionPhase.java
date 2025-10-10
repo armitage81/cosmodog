@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
+import antonafanasjew.cosmodog.fighting.Damage;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -28,7 +29,7 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
 		
-		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage());
+		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage().getAmount());
 		
 		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getPlayer(), text);
 		
@@ -43,18 +44,18 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 		
 		Player player = getFightPhaseResult().getPlayer();
 		
-		int damage = getFightPhaseResult().getDamage();
+		Damage damage = getFightPhaseResult().getDamage();
 		
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);
 			Vehicle vehicle = item.getVehicle();
-			vehicle.setLife(vehicle.getLife() - damage);
+			vehicle.setLife(vehicle.getLife() - damage.getAmount());
 			if (vehicle.dead()) {
 				cosmodogGame.getActionRegistry().registerAction(AsyncActionType.MINE_EXPLOSION, new ExplosionAction(500, player.getPosition()));
 				player.getInventory().remove(InventoryItemType.VEHICLE);
 			}
 		} else {
-			player.decreaseLife(damage);
+			player.decreaseLife(damage.getAmount());
 		}
 		
 	}
