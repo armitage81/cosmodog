@@ -41,16 +41,30 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 	}
 
 	private boolean shotHappened = false;
+	private WeaponType originallySelectedWeaponType;
 
+	public static int duration(FightPlan.FightPhasePlan fightPhasePlan) {
+		if (fightPhasePlan.getDamage().isIncludingOffGuard()) {
+			return WEAPON_BASED_ATTACK_DURATIONS.get(WeaponType.FISTS);
+		}
+		return WEAPON_BASED_ATTACK_DURATIONS.get(fightPhasePlan.getPlayer().getArsenal().getSelectedWeaponType());
+	}
 
 	public PlayerAttackActionPhase(FightPlan.FightPhasePlan fightPhasePlan) {
-		super(WEAPON_BASED_ATTACK_DURATIONS.get(fightPhasePlan.getPlayer().getArsenal().getSelectedWeaponType()), fightPhasePlan);
+		super(duration(fightPhasePlan), fightPhasePlan);
 	}
 
 	@Override
 	public void onTrigger() {
 		getFightPhasePlan().getPlayer().lookAtActor(getFightPhasePlan().getEnemy());
 		getFightPhasePlan().getEnemy().lookAtActor(getFightPhasePlan().getPlayer());
+
+		Damage damage = getFightPhasePlan().getDamage();
+		if (damage.isIncludingOffGuard()) {
+			originallySelectedWeaponType = getFightPhasePlan().getPlayer().getArsenal().getSelectedWeaponType();
+			getFightPhasePlan().getPlayer().getArsenal().selectWeaponType(WeaponType.FISTS);
+		}
+
 	}
 
 	@Override
@@ -62,6 +76,7 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 
 		Player player = getFightPhasePlan().getPlayer();
 		WeaponType selectedWeaponType = player.getArsenal().getSelectedWeaponType();
+		Damage damage = getFightPhasePlan().getDamage();
 
 		if (getCompletionRate() < WEAPON_BASED_DAMAGE_TIMES.get(selectedWeaponType)) {
 			return;
@@ -69,7 +84,6 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 
 		shotHappened = true;
 		WeaponType.sound(selectedWeaponType).play();
-		Damage damage = getFightPhasePlan().getDamage();
 		String text = String.valueOf(damage.getAmount());
 		OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), text);
 		if (damage.isIncludingOffGuard()) {
@@ -94,17 +108,20 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		
 		Player player = getFightPhasePlan().getPlayer();
 		Enemy enemy = getFightPhasePlan().getEnemy();
-		
 		Damage damage = getFightPhasePlan().getDamage();
-
 		enemy.setLife(enemy.getLife() - damage.getAmount());
+
 		Arsenal arsenal = player.getArsenal();
 		WeaponType weaponType = arsenal.getSelectedWeaponType();
 		if (weaponType != null) {
 			Weapon weapon = arsenal.getWeaponsCopy().get(weaponType);
 			weapon.reduceAmmunition(1);
 		}
-		
+
+		if (damage.isIncludingOffGuard()) {
+			player.getArsenal().selectWeaponType(originallySelectedWeaponType);
+		}
+
 	}
 
 

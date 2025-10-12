@@ -1,5 +1,7 @@
 package antonafanasjew.cosmodog.fighting;
 
+import antonafanasjew.cosmodog.domains.WeaponType;
+
 public class Damage {
 
     private int amount;
@@ -59,4 +61,5 @@ public class Damage {
     public void setIncludingOffGuard(boolean includingOffGuard) {
         this.includingOffGuard = includingOffGuard;
     }
+
 }

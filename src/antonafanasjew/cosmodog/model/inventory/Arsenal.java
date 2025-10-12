@@ -120,7 +120,15 @@ public class Arsenal implements WeaponAmmunitionListener, Serializable {
 		}
 		
 	}
-	
+
+	public void selectWeaponType(WeaponType weaponType) {
+		WeaponType selectedWeaponType = getSelectedWeaponType();
+		while (selectedWeaponType != weaponType) {
+			selectNextWeaponType();
+			selectedWeaponType = getSelectedWeaponType();
+		}
+	}
+
 	/**
 	 * Selects the previous available weapon type in the arsenal related to the currently
 	 * selected weapon type. The order of listed weapons is defined in this class.
