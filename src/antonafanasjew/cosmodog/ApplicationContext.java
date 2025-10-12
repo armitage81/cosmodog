@@ -513,6 +513,8 @@ public class ApplicationContext {
 		Sound timeBonus = new Sound("assets/audio/sounds/timebonus.wav");
 		Sound trafficbarrierreset = new Sound("assets/audio/sounds/trafficbarrierreset.wav");
 
+		Sound skipTurn = new Sound("assets/audio/sounds/skipturn.wav");
+
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT, spacelift);
@@ -620,6 +622,8 @@ public class ApplicationContext {
 
 		this.getSoundResources().put(SoundResources.SOUND_TIMEBONUS, timeBonus);
 		this.getSoundResources().put(SoundResources.SOUND_TRAFFICBARRIERRESET, trafficbarrierreset);
+
+		this.getSoundResources().put(SoundResources.SOUND_SKIP_TURN, skipTurn);
 
 		SpriteSheet cloudSheet = new SpriteSheet("assets/graphics/decorations/cloud.png", 240, 240);
 		SpriteSheet tileset1Sheet = new SpriteSheet("assets/graphics/tiles/tileset00000.png", 16, 16);

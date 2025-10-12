@@ -246,4 +246,6 @@ public class SoundResources extends HashMap<String, Sound> {
 	public static final String SOUND_TIMEBONUS = "sound.timebonus";
 	public static final String SOUND_TRAFFICBARRIERRESET = "sound.trafficbarrierreset";
 
+	public static final String SOUND_SKIP_TURN = "sound.skipturn";
+
 }

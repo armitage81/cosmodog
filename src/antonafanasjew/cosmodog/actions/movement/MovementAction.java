@@ -168,7 +168,11 @@ public class MovementAction extends FixedLengthAsyncAction {
 	private void onTriggerForPlayer() {
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Player player = ApplicationContextUtils.getPlayer();
-		
+
+		if (skipTurn) {
+			applicationContext.getSoundResources().get(SoundResources.SOUND_SKIP_TURN).play();
+		}
+
 		if (player.getInventory().hasVehicle() && !player.getInventory().exitingVehicle()) {
 			if (!skipTurn) {
 				applicationContext.getSoundResources().get(SoundResources.SOUND_CAR_MOVES).play();
