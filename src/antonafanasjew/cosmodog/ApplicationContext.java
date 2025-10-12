@@ -413,11 +413,12 @@ public class ApplicationContext {
 		Sound motordies = new Sound("assets/audio/sounds/motordies.wav");
 		Sound hit = new Sound("assets/audio/sounds/hit.wav");
 
-		Sound shotHandgun = new Sound("assets/audio/sounds/handgun.wav");
-		Sound shotShotgun = new Sound("assets/audio/sounds/shotgun.wav");
-		Sound shotRifle = new Sound("assets/audio/sounds/rifle.wav");
-		Sound shotMachinegun = new Sound("assets/audio/sounds/machinegun.wav");
-		Sound shotRpg = new Sound("assets/audio/sounds/rpg.wav");
+		Sound shotUnarmed = new Sound("assets/audio/sounds/weapons/unarmed.wav");
+		Sound shotHandgun = new Sound("assets/audio/sounds/weapons/handgun.wav");
+		Sound shotShotgun = new Sound("assets/audio/sounds/weapons/shotgun.wav");
+		Sound shotRifle = new Sound("assets/audio/sounds/weapons/rifle.wav");
+		Sound shotMachinegun = new Sound("assets/audio/sounds/weapons/machinegun.wav");
+		Sound shotRpg = new Sound("assets/audio/sounds/weapons/rpg.wav");
 
 
 		Sound explosion = new Sound("assets/audio/sounds/explosion.wav");
@@ -524,6 +525,7 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_MOTOR_DIES, motordies);
 		this.getSoundResources().put(SoundResources.SOUND_HIT, hit);
 
+		this.getSoundResources().put(SoundResources.SOUND_SHOT_UNARMED, shotUnarmed);
 		this.getSoundResources().put(SoundResources.SOUND_SHOT_HANDGUN, shotHandgun);
 		this.getSoundResources().put(SoundResources.SOUND_SHOT_SHOTGUN, shotShotgun);
 		this.getSoundResources().put(SoundResources.SOUND_SHOT_RIFLE, shotRifle);

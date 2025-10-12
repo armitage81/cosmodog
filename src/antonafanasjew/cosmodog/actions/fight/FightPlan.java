@@ -3,18 +3,18 @@ package antonafanasjew.cosmodog.actions.fight;
 import java.io.Serial;
 import java.util.ArrayList;
 
-import antonafanasjew.cosmodog.actions.fight.FightActionResult.FightPhaseResult;
+import antonafanasjew.cosmodog.actions.fight.FightPlan.FightPhasePlan;
 import antonafanasjew.cosmodog.fighting.Damage;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
-public class FightActionResult extends ArrayList<FightPhaseResult>{
+public class FightPlan extends ArrayList<FightPhasePlan>{
 
 	@Serial
 	private static final long serialVersionUID = -761976411668201727L;
 
-	public static class FightPhaseResult {
+	public static class FightPhasePlan {
 
 		private Player player;
 
@@ -24,13 +24,13 @@ public class FightActionResult extends ArrayList<FightPhaseResult>{
 
 		private boolean playerAttack;
 		
-		public static FightPhaseResult instance(Player player, Enemy enemy, Damage damage, boolean playerAttack) {
-			FightPhaseResult result = new FightPhaseResult();
-			result.player = player;
-			result.enemy = enemy;
-			result.damage = damage;
-			result.playerAttack = playerAttack;
-			return result;
+		public static FightPhasePlan instance(Player player, Enemy enemy, Damage damage, boolean playerAttack) {
+			FightPhasePlan phasePlan = new FightPhasePlan();
+			phasePlan.player = player;
+			phasePlan.enemy = enemy;
+			phasePlan.damage = damage;
+			phasePlan.playerAttack = playerAttack;
+			return phasePlan;
 		}
 		
 		public Player getPlayer() {
@@ -57,9 +57,9 @@ public class FightActionResult extends ArrayList<FightPhaseResult>{
 
 	public int accumulatedDamageForPlayer() {
 		int retVal = 0;
-		for (FightPhaseResult phaseResult : this) {
-			if (!phaseResult.playerAttack) {
-				retVal += phaseResult.damage.getAmount();
+		for (FightPhasePlan phasePlan : this) {
+			if (!phasePlan.playerAttack) {
+				retVal += phasePlan.damage.getAmount();
 			}
 		}
 		return retVal;

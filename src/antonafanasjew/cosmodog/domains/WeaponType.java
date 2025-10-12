@@ -109,7 +109,7 @@ public enum WeaponType {
 	public static Sound sound(WeaponType weaponType) {
 
 		if (weaponType == WeaponType.FISTS) {
-			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT);
+			return ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_SHOT_UNARMED);
 		}
 
 		if (weaponType == WeaponType.PISTOL) {

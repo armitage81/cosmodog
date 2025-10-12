@@ -24,6 +24,8 @@ import antonafanasjew.cosmodog.domains.PlayerActionType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
+import antonafanasjew.cosmodog.math.BrokenFunction;
+import antonafanasjew.cosmodog.math.BrokenFunctionElement;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
@@ -287,14 +289,11 @@ public class PlayerRendererUtils {
         if (playerIsFighting) {
             Optional<AbstractFightActionPhase> optFightPhase = game.getActionRegistry().currentFightPhase();
             float completion = optFightPhase.get().getCompletionRate();
+            float maxOffset = (tileLength * cam.getZoomFactor()) / 10.0f;
 
-            float fightOffset = 0.0f;
+            BrokenFunction<Float> offsetFunction = OffsetFunctionsForAttacks.instance().functionForWeaponType(player.getArsenal().getSelectedWeaponType(), maxOffset);
 
-            if (completion > 0.5f) {
-                completion = 1.0f - completion;
-            }
-
-            fightOffset = (tileLength * cam.getZoomFactor()) / 10.0f * completion;
+            float fightOffset = offsetFunction.apply(completion);
 
             if (player.getDirection() == DirectionType.DOWN) {
                 pieceOffsetY = fightOffset;

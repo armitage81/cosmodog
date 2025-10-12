@@ -20,8 +20,8 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 	@Serial
 	private static final long serialVersionUID = -3853130683025678558L;
 
-	public DefaultEnemyAttackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
-		super(Constants.ENEMY_ATTACK_ACTION_DURATION, fightPhaseResult);
+	public DefaultEnemyAttackActionPhase(FightPlan.FightPhasePlan fightPhasePlan) {
+		super(Constants.ENEMY_ATTACK_ACTION_DURATION, fightPhasePlan);
 	}
 
 	@Override
@@ -29,12 +29,12 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_HIT).play();
 		
-		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage().getAmount());
+		String text = "<font:critical> " + String.valueOf(getFightPhasePlan().getDamage().getAmount());
 		
-		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getPlayer(), text);
-		
-		getFightPhaseResult().getPlayer().lookAtActor(getFightPhaseResult().getEnemy());
-		getFightPhaseResult().getEnemy().lookAtActor(getFightPhaseResult().getPlayer());
+		OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getPlayer(), text);
+
+		getFightPhasePlan().getPlayer().lookAtActor(getFightPhasePlan().getEnemy());
+		getFightPhasePlan().getEnemy().lookAtActor(getFightPhasePlan().getPlayer());
 	}
 
 	@Override
@@ -42,9 +42,9 @@ public class DefaultEnemyAttackActionPhase extends EnemyAttackActionPhase {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 		
-		Player player = getFightPhaseResult().getPlayer();
+		Player player = getFightPhasePlan().getPlayer();
 		
-		Damage damage = getFightPhaseResult().getDamage();
+		Damage damage = getFightPhasePlan().getDamage();
 		
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);

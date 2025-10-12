@@ -1,11 +1,11 @@
 package antonafanasjew.cosmodog.actions.fight;
 
 import java.io.Serial;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import antonafanasjew.cosmodog.camera.Cam;
+import antonafanasjew.cosmodog.actions.popup.WaitAction;
 import antonafanasjew.cosmodog.fighting.Damage;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -13,12 +13,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.fight.FightActionResult.FightPhaseResult;
+import antonafanasjew.cosmodog.actions.fight.FightPlan.FightPhasePlan;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.fighting.AbstractEnemyAttackDamageCalculator;
 import antonafanasjew.cosmodog.fighting.AbstractPlayerAttackDamageCalculator;
-import antonafanasjew.cosmodog.fighting.DamageCalculator;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Enemy;
@@ -68,7 +67,7 @@ public class FightAction extends PhaseBasedAction {
 	 * and there are three other adjacent enemies and an artillery in range, the outcome is already known while player and the enemies
 	 * hit each other, the grenades fly etc. The fight action result is the script of the fight.
 	 */
-	private final FightActionResult fightActionResult = new FightActionResult();
+	private final FightPlan fightPlan = new FightPlan();
 
 	/**
 	 * The calculation that the player deals to an enemy is a complex process. It involves the player's selected weapon,
@@ -114,9 +113,9 @@ public class FightAction extends PhaseBasedAction {
 	 * 2 alerted attackers, only the phase result for the first enemy attack will be added to the list. After all, the player will be dead
 	 * after this attack and there is no need to add the result of the second attack.
 	 * <p>
-	 * The calculated result is set to the property fightActionResult.
+	 * The calculated result is set to the property fightPlan.
 	 * <p>
-	 * The property fightActionResult is then used to initialize the action phase registry. Fight action phases are created based on the
+	 * The property fightPlan is then used to initialize the action phase registry. Fight action phases are created based on the
 	 * fight phase results. The fight action phases are then registered in the action phase registry. Fight actions contain such things as
 	 * player attacking enemies, enemies attacking the player, the destruction of enemies, ranged attacks by artillery units etc.
 	 * <p>
@@ -128,7 +127,7 @@ public class FightAction extends PhaseBasedAction {
 	public void onTriggerInternal() {
 		Player player = ApplicationContextUtils.getPlayer();
 		player.beginFight();
-		initFightActionResult();
+		initFightPlan();
 		initActionPhaseRegistry();
 	}
 
@@ -150,7 +149,7 @@ public class FightAction extends PhaseBasedAction {
 	 * Initializes the fight action result by forecasting the fights between the
 	 * player and all adjacent enemies.
 	 */
-	private void initFightActionResult() {
+	private void initFightPlan() {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 
@@ -188,7 +187,7 @@ public class FightAction extends PhaseBasedAction {
 		//Take note: There is keeping track of the ammunition of the player's selected weapon to switch to the unarmed
 		// damage calculator during calculation of the future phase results in case it is forecasted as depleted.
 		if (targetEnemy != null) {
-			updateFightActionResultWithPlayerInitiatedDuel(player, targetEnemy);
+			updateFightPlanWithPlayerInitiatedDuel(player, targetEnemy);
 			attackers.remove(targetEnemy);
 			remainingAmmo--;
 		}
@@ -198,15 +197,15 @@ public class FightAction extends PhaseBasedAction {
 		//Take note: Also here, the ammunition of the player's selected weapon is kept track upon.
 		//Take note: If player's death is forecasted, the subsequent enemy attacks are canceled.
 		for (Enemy enemy : attackers) {
-			updateFightActionResultWithEnemyInitiatedDuel(player, enemy);
+			updateFightPlanWithEnemyInitiatedDuel(player, enemy);
 			remainingAmmo--;
-			if (fightActionResult.enoughDamageToKillPlayer()) {
+			if (fightPlan.enoughDamageToKillPlayer()) {
 				break;
 			}
 		}
 	}
 
-	private void updateFightActionResultWithPlayerInitiatedDuel(Player player, Enemy enemy) {
+	private void updateFightPlanWithPlayerInitiatedDuel(Player player, Enemy enemy) {
 
 		enemy.increaseAlertLevelToMax();
 
@@ -216,26 +215,26 @@ public class FightAction extends PhaseBasedAction {
 
 			Damage playerAttackDamage = playerAttackDamageCalculator.damage(player, enemy);
 
-			FightActionResult.FightPhaseResult playerPhaseResult = FightPhaseResult.instance(player, enemy, playerAttackDamage, true);
+			FightPhasePlan playerPhasePlan = FightPhasePlan.instance(player, enemy, playerAttackDamage, true);
 
 			Damage enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
 
-			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
+			FightPhasePlan enemyPhasePlan = FightPhasePlan.instance(player, enemy, enemyAttackDamage, false);
 
-			fightActionResult.add(playerPhaseResult);
-			if (!playerPhaseResult.enoughDamageToKillEnemy() && EnemiesUtils.enemyActive(enemy)) {
-				fightActionResult.add(enemyPhaseResult);
+			fightPlan.add(playerPhasePlan);
+			if (!playerPhasePlan.enoughDamageToKillEnemy() && EnemiesUtils.enemyActive(enemy)) {
+				fightPlan.add(enemyPhasePlan);
 			}
 
 		}
 	}
 
-	private void updateFightActionResultWithEnemyInitiatedDuel(Player player, Enemy enemy) {
+	private void updateFightPlanWithEnemyInitiatedDuel(Player player, Enemy enemy) {
 		boolean playerHasPlatform = player.getInventory().hasPlatform();
 		if (enemy.getAlertLevel() > 0 && !playerHasPlatform) {
 			Damage enemyAttackDamage = enemyAttackDamageCalculator.damage(enemy, player);
-			FightActionResult.FightPhaseResult enemyPhaseResult = FightPhaseResult.instance(player, enemy, enemyAttackDamage, false);
-			fightActionResult.add(enemyPhaseResult);
+			FightPhasePlan enemyPhasePlan = FightPhasePlan.instance(player, enemy, enemyAttackDamage, false);
+			fightPlan.add(enemyPhasePlan);
 		}
 	}
 
@@ -255,27 +254,26 @@ public class FightAction extends PhaseBasedAction {
 	 */
 	private void initActionPhaseRegistry() {
 
-		for (FightActionResult.FightPhaseResult phaseResult : fightActionResult) {
+        for (FightPhasePlan fightPhasePlan : fightPlan) {
 
-			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+            CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 
-			//If there is an overhead notification action, it is canceled.
-			//TODO: Why is it needed?
-			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
-			if (overheadNotificationAction != null) {
-				overheadNotificationAction.cancel();
-			}
+            //TODO: Why is it needed?
+            OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
+            if (overheadNotificationAction != null) {
+                overheadNotificationAction.cancel();
+            }
 
-			//The attack action phase is created based on the fight phase result and registered in the local action phase registry. It can be a player attack or an enemy attack.
-			AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(phaseResult);
-			getPhaseRegistry().registerPhase("attack", attackActionPhase);
+            AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(fightPhasePlan);
+            getPhaseRegistry().registerPhase("attack", attackActionPhase);
 
-			//In case the attack action phase is a player attack and the enemy is destroyed, the enemy destruction action phase is created and registered in the local action phase registry.
-			if (phaseResult.isPlayerAttack() && phaseResult.enoughDamageToKillEnemy()) {
-				EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(phaseResult.getPlayer(), phaseResult.getEnemy());
-				getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
-			}
-		}
+            if (fightPhasePlan.isPlayerAttack()) {
+                if (fightPhasePlan.enoughDamageToKillEnemy()) {
+                    EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(fightPhasePlan.getPlayer(), fightPhasePlan.getEnemy());
+                    getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
+                }
+            }
+        }
 	}
 
 	@Override

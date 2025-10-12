@@ -5,34 +5,21 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 
-/**
- * Factory for creating fight action phases.
- * <p>
- * It has static factory methods to provide a simple way to create action phases for
- * attacks and enemy destruction.
- */
 public class FightActionPhaseFactory {
 
-	/**
-	 * Creates an attack action phase based on the fight phase result.
-	 * It can be a player attack, a melee enemy attack or a ranged enemy attack.
-	 *
-	 * @param fightPhaseResult Fight phase result including the attacker, the target and the damage dealt.
-	 * @return The action phase which can be one of: PlayerAttackActionPhase, DefaultEnemyAttackActionPhase or ArtilleryAttackActionPhase.
-	 */
-	public static AttackActionPhase attackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
+	public static AttackActionPhase attackActionPhase(FightPlan.FightPhasePlan fightPhasePlan) {
 		
-		Actor attacker = fightPhaseResult.isPlayerAttack() ? fightPhaseResult.getPlayer() : fightPhaseResult.getEnemy();
+		Actor attacker = fightPhasePlan.isPlayerAttack() ? fightPhasePlan.getPlayer() : fightPhasePlan.getEnemy();
 		
 		if (attacker instanceof Player) {
-			return new PlayerAttackActionPhase(fightPhaseResult);
+			return new PlayerAttackActionPhase(fightPhasePlan);
 		} else {
 			Enemy enemy = (Enemy)attacker;
 			UnitType unitType = enemy.getUnitType();
 			if (unitType == UnitType.ARTILLERY) {
-				return new ArtilleryAttackActionPhase(fightPhaseResult);
+				return new ArtilleryAttackActionPhase(fightPhasePlan);
 			} else {
-				return new DefaultEnemyAttackActionPhase(fightPhaseResult);
+				return new DefaultEnemyAttackActionPhase(fightPhasePlan);
 			}
 		}
 	}

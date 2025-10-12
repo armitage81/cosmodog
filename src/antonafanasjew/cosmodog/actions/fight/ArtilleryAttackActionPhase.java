@@ -56,15 +56,15 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 	 */
 	private boolean milestone4 = false;
 
-	public ArtilleryAttackActionPhase(FightActionResult.FightPhaseResult fightPhaseResult) {
-		super(Constants.RANGED_ENEMY_ATTACK_ACTION_DURATION, fightPhaseResult);
+	public ArtilleryAttackActionPhase(FightPlan.FightPhasePlan fightPhasePlan) {
+		super(Constants.RANGED_ENEMY_ATTACK_ACTION_DURATION, fightPhasePlan);
 	}
 	
 	
 	@Override
 	public void onTrigger() {
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_ARTILLERY_SHOTS).play();
-		getFightPhaseResult().getEnemy().setDirection(DirectionType.DOWN);
+		getFightPhasePlan().getEnemy().setDirection(DirectionType.DOWN);
 	}
 
 	@Override
@@ -102,11 +102,11 @@ public class ArtilleryAttackActionPhase extends EnemyAttackActionPhase {
 	public void onEnd() {
 		
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		Player player = getFightPhaseResult().getPlayer();
-		Damage damage = getFightPhaseResult().getDamage();
+		Player player = getFightPhasePlan().getPlayer();
+		Damage damage = getFightPhasePlan().getDamage();
 		
-		String text = "<font:critical> " + String.valueOf(getFightPhaseResult().getDamage().getAmount());
-		OverheadNotificationAction.registerOverheadNotification(getFightPhaseResult().getPlayer(), text);
+		String text = "<font:critical> " + String.valueOf(getFightPhasePlan().getDamage().getAmount());
+		OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getPlayer(), text);
 		
 		if (player.getInventory().hasVehicle()) {
 			VehicleInventoryItem item = (VehicleInventoryItem)player.getInventory().get(InventoryItemType.VEHICLE);

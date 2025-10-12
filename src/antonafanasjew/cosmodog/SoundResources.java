@@ -82,6 +82,7 @@ public class SoundResources extends HashMap<String, Sound> {
 	 */
 	public static final String SOUND_HIT = "sound.hit";
 
+	public static final String SOUND_SHOT_UNARMED = "sound.unarmed";
 	public static final String SOUND_SHOT_HANDGUN = "sound.handgun";
 	public static final String SOUND_SHOT_SHOTGUN = "sound.shotgun";
 	public static final String SOUND_SHOT_RIFLE = "sound.rifle";

@@ -84,11 +84,6 @@ public class Constants {
 	public static final float DEFAULT_CAM_ZOOM_FACTOR = 5.0f;
 	
 	/**
-	 * The visible duration of the player attack fight action phase transition.
-	 */
-	public static final int PLAYER_ATTACK_ACTION_DURATION = 500;
-	
-	/**
 	 * The visible duration of the enemy attack fight action phase transition.
 	 */
 	public static final int ENEMY_ATTACK_ACTION_DURATION = 500;
