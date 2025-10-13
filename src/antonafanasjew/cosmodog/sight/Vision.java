@@ -97,7 +97,9 @@ public class Vision implements Serializable {
         NIGHT_VISION_FOR_PLAYER_DEFAULT = new Vision();
 
 
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, 0, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, 0, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, 0, null));
 
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -1, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -1, null));
@@ -106,13 +108,18 @@ public class Vision implements Serializable {
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -2, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -2, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, -2, null));
+
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-2, -3, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -3, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -3, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, -3, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(2, -3, null));
 
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-2, -4, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(-1, -4, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(0, -4, null));
         NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(1, -4, null));
+        NIGHT_VISION_FOR_PLAYER_DEFAULT.getElements().add(Position.fromCoordinates(2, -4, null));
     }
 
     public static Vision NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT;
@@ -146,17 +153,29 @@ public class Vision implements Serializable {
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(1, -4, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(2, -4, null));
 
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-3, -5, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-2, -5, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-1, -5, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(0, -5, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(1, -5, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(2, -5, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(3, -5, null));
 
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-3, -6, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-2, -6, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-1, -6, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(0, -6, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(1, -6, null));
         NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(2, -6, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(3, -6, null));
+
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-3, -7, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-2, -7, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(-1, -7, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(0, -7, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(1, -7, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(2, -7, null));
+        NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT.getElements().add(Position.fromCoordinates(3, -7, null));
     }
 
     public static Vision NIGHT_VISION_FOR_PLAYER_IN_VEHICLE;
