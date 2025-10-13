@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.actions.race;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.MusicResources;
+import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.actions.camera.CamMovementActionWithConstantSpeed;
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
@@ -48,8 +49,15 @@ public class InitiateRaceAction extends PhaseBasedAction {
         getPhaseRegistry().registerPhase("waiting", new WaitAction(500));
         getPhaseRegistry().registerPhase("instruction", new PopUpNotificationAction("Master the car and reach the finish line in time to win a reward. Good luck!"));
         getPhaseRegistry().registerPhase("panningtoplayer", new CamMovementActionWithConstantSpeed(128, start, game));
+        getPhaseRegistry().registerPhase("startingrace", new FixedLengthAsyncAction(0) {
+            @Override
+            public void onTrigger() {
+                race.start();
+            }
+        });
 
-        race.start();
+
+
 
     }
 
