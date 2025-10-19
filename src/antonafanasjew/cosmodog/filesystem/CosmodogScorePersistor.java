@@ -47,13 +47,16 @@ public class CosmodogScorePersistor {
 
 	public ScoreList restoreScoreList() throws CosmodogPersistenceException {
 		try {
+			ScoreList scoreList = ScoreList.getInstance();
 			File file = new File(pathProvider.scoreSavePath());
-			file.getParentFile().mkdirs();
-			InputStream fileStream = new FileInputStream(file);
-			InputStream buffer = new BufferedInputStream(fileStream);
-			ObjectInput input = new ObjectInputStream(buffer);
-			ScoreList scoreList = (ScoreList) input.readObject();
-			input.close();
+			if (file.exists()) {
+				file.getParentFile().mkdirs();
+				InputStream fileStream = new FileInputStream(file);
+				InputStream buffer = new BufferedInputStream(fileStream);
+				ObjectInput input = new ObjectInputStream(buffer);
+				scoreList = (ScoreList) input.readObject();
+				input.close();
+			}
 			return scoreList;
 		} catch (ClassNotFoundException | IOException ex) {
 			throw new CosmodogPersistenceException(ex.getMessage(), ex);

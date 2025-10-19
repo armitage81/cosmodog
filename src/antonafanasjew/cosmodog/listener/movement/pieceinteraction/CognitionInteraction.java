@@ -21,16 +21,7 @@ public class CognitionInteraction extends AbstractPieceInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
-		
-		String gameLogSeries = GameLogs.SERIES_CUTSCENES;
-		String gameLogId = "006.decision";
-		
-		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
-		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
-		
-		AsyncAction gameLogAction = new EndingNarrationAction(gameLog);
 
-		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, gameLogAction);
 		cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new FixedLengthAsyncAction(1000) {
 			private static final long serialVersionUID = -6998164781879026113L;
 

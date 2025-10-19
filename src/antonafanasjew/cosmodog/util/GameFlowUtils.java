@@ -45,13 +45,13 @@ public class GameFlowUtils {
 	public static void loadScoreList() {
 		Cosmodog cosmodog = ApplicationContext.instance().getCosmodog();
 		CosmodogScorePersistor scorePersistor = cosmodog.getScorePersistor();
-		ScoreList scoreList = ScoreList.getInstance();
 		try {
-			scoreList = scorePersistor.restoreScoreList();
+			ScoreList scoreList = scorePersistor.restoreScoreList();
+			cosmodog.setScoreList(scoreList);
 		} catch (CosmodogPersistenceException e) {
 			Log.error("Could not load score list", e);
 		}
-		cosmodog.setScoreList(scoreList);
+
 	}
 	
 }

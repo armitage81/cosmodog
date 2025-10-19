@@ -3,6 +3,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.narration.EndingNarrationAction;
 import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
@@ -31,6 +32,7 @@ public class RegionDependentDialogRuleBuilder extends AbstractCsvBasedResourceWr
 		String onlyOnceFlag = values[3];
 		String gameProgressProperty = values[4];
 		MapType mapType = MapType.valueOf(values[5]);
+		boolean endingCutscene = values[6].equalsIgnoreCase("ending");
 		
 		
 		RuleTrigger trigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
@@ -46,8 +48,13 @@ public class RegionDependentDialogRuleBuilder extends AbstractCsvBasedResourceWr
 		
 		GameLogs gameLogs = ApplicationContext.instance().getGameLogs();
 		GameLog gameLog = gameLogs.getGameLogBySeriesAndId(gameLogSeries, gameLogId);
-		
-		AsyncAction asyncAction = new DialogWithAlisaNarrationAction(gameLog);
+
+		AsyncAction asyncAction;
+		if (endingCutscene) {
+			asyncAction = new EndingNarrationAction(gameLog);
+		} else {
+			asyncAction = new DialogWithAlisaNarrationAction(gameLog);
+		}
 		RuleAction action = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		
 		if (onlyOnce) {
