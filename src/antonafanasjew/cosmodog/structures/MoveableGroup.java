@@ -49,6 +49,7 @@ public class MoveableGroup implements Serializable {
 	private List<SecretDoor> secretDoors = Lists.newArrayList();
 	private boolean solvedStatus = false;
 	private boolean resetable = false;
+	private boolean deactivateEnemies = true;
 	
 	
 	public TiledObject getRegion() {
@@ -148,5 +149,13 @@ public class MoveableGroup implements Serializable {
 	
 	public boolean isSolvedStatus() {
 		return solvedStatus;
+	}
+
+	public void setDeactivateEnemies(boolean deactivateEnemies) {
+		this.deactivateEnemies = deactivateEnemies;
+	}
+
+	public boolean isDeactivateEnemies() {
+		return deactivateEnemies;
 	}
 }

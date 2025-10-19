@@ -275,9 +275,15 @@ public class InitializationUtils {
 			int y = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosY"));
 			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapType());
 
-			String resetableValue = (String)moveableGroupRegion.getProperties().get("resetable");
+			String resetableValue = moveableGroupRegion.getProperties().get("resetable");
 			boolean resetable = resetableValue == null || Boolean.parseBoolean(resetableValue);
-			
+
+			boolean deactivateEnemies = true;
+			String deactivateEnemiesPropertyValue = moveableGroupRegion.getProperties().get("deactivateEnemies");
+			if (deactivateEnemiesPropertyValue != null && !Boolean.parseBoolean(deactivateEnemiesPropertyValue)) {
+				deactivateEnemies = false;
+            }
+
 			MoveableGroup moveableGroup = new MoveableGroup();
 			moveableGroup.setRegion(moveableGroupRegion);
 			moveableGroup.getMoveables().addAll(moveablesInRegion);
@@ -286,6 +292,7 @@ public class InitializationUtils {
 			moveableGroup.getSecretDoors().addAll(secretDoorsInRegion);
 			moveableGroup.setPlayerStartPosition(playerStartPosition);
 			moveableGroup.setResetable(resetable);
+			moveableGroup.setDeactivateEnemies(deactivateEnemies);
 			map.getMoveableGroups().add(moveableGroup);
 			
 		}

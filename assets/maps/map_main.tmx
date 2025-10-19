@@ -1992,6 +1992,7 @@
   </object>
   <object id="866" name="Plant" type="MoveableGroups" x="2848" y="944" width="80" height="80">
    <properties>
+    <property name="deactivateEnemies" value="false"/>
     <property name="playerStartPosX" value="180"/>
     <property name="playerStartPosY" value="60"/>
     <property name="resetable" value="false"/>
