@@ -14,7 +14,7 @@ public enum FontType {
 	LoadingOrGameOverOrTheEnd(new TrueTypeFont(new Font("Courier New", Font.BOLD, 36), false), Color.red),
 	StartMenu(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
 	Narration(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.green),
-	NarrationMemory(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.red),
+	NarrationMemory(new TrueTypeFont(new Font("Courier New", Font.PLAIN , 24), false), Color.pink),
 	NarrationImportant(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
 	NarrationSpeech(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.yellow),
 	NarrationSpeechImportant(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
@@ -39,7 +39,7 @@ public enum FontType {
 	LoadingOrGameOverOrTheEnd_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
 	StartMenu_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.red),
 	Narration_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.green),
-	NarrationMemory_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.red),
+	NarrationMemory_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.pink),
 	NarrationImportant_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), false), Color.red),
 	NarrationSpeech_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), false), Color.yellow),
 	NarrationSpeechImportant_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), false), Color.red),
@@ -63,8 +63,8 @@ public enum FontType {
 	
 	private Color color;
 	
-	
-	private FontType(TrueTypeFont font, Color color) {
+
+	FontType(TrueTypeFont font, Color color) {
 		this.font = font;
 		this.color = color;
 	}
@@ -76,5 +76,7 @@ public enum FontType {
 	public Color getColor() {
 		return color;
 	}
+
+
 
 }
