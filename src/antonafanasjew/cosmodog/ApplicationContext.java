@@ -373,7 +373,7 @@ public class ApplicationContext {
 		try {
 			Music musicMainMenu = new Music("assets/audio/music/EG_Map_Select_01_Loop.ogg");
 			Music musicLost = new Music("assets/audio/music/EG_Negative_Stinger.ogg");
-			Music musicLogo = new Music("assets/audio/music/EG_Neutral_Stinger_01.ogg");
+			Music musicLogo = new Music("assets/audio/music/Soundtrack_logo.ogg");
 			Music musicCutscene = new Music("assets/audio/music/EG_DangerZone_Loop.ogg");
 			Music musicWon = new Music("assets/audio/music/EG_Positive_Stinger_02.ogg");
 			Music musicSoundtrack = new Music("assets/audio/music/Soundtrack.ogg");
