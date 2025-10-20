@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.structures.MoveableGroup;
 import antonafanasjew.cosmodog.structures.Race;
+import antonafanasjew.cosmodog.structures.SafeSpace;
 
 public class EnemiesUtils {
 	
@@ -24,7 +25,9 @@ public class EnemiesUtils {
 	}
 
 	public static boolean enemyActive(Enemy enemy) {
-		PlanetaryCalendar calendar = ApplicationContextUtils.getCosmodogGame().getPlanetaryCalendar();	
+
+		Player player = ApplicationContextUtils.getPlayer();
+		PlanetaryCalendar calendar = ApplicationContextUtils.getCosmodogGame().getPlanetaryCalendar();
 		Race race = PlayerMovementCache.getInstance().getActiveRace();
 
 
@@ -33,11 +36,13 @@ public class EnemiesUtils {
 		MoveableGroup moveableGroup = PlayerMovementCache.getInstance().getActiveMoveableGroup();
 
 		boolean playerInMoveableGroupWithEnemyDeactivationFlagSet = moveableGroup != null && moveableGroup.isDeactivateEnemies();
-		boolean playerInSafeSpace = PlayerMovementCache.getInstance().getActiveSafeSpace() != null;
+		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
+
+		boolean playerIsInSafeSpaceAndEnemyIsNot = safeSpaceAroundPlayer != null && !RegionUtils.pieceInRegion(enemy, player.getPosition().getMapType(), safeSpaceAroundPlayer.getRegion());
 		boolean playerInPortalPuzzle = PlayerMovementCache.getInstance().getActivePortalPuzzle() != null;
 		boolean solarByNight = (enemy.isActiveAtDayTimeOnly() && calendar.isNight());
 
-		return !(playerRacing || playerInMoveableGroupWithEnemyDeactivationFlagSet || playerInSafeSpace || playerInPortalPuzzle || solarByNight);
+		return !(playerRacing || playerInMoveableGroupWithEnemyDeactivationFlagSet || playerIsInSafeSpaceAndEnemyIsNot || playerInPortalPuzzle || solarByNight);
 
 	}
 	

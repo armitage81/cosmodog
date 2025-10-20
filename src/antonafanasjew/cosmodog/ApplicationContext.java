@@ -515,6 +515,8 @@ public class ApplicationContext {
 
 		Sound skipTurn = new Sound("assets/audio/sounds/skipturn.wav");
 
+		Sound decontaminated = new Sound("assets/audio/sounds/decontaminated.wav");
+
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT, spacelift);
@@ -624,6 +626,10 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_TRAFFICBARRIERRESET, trafficbarrierreset);
 
 		this.getSoundResources().put(SoundResources.SOUND_SKIP_TURN, skipTurn);
+
+		this.getSoundResources().put(SoundResources.SOUND_DECONTAMINATED, decontaminated);
+
+
 
 		SpriteSheet cloudSheet = new SpriteSheet("assets/graphics/decorations/cloud.png", 240, 240);
 		SpriteSheet tileset1Sheet = new SpriteSheet("assets/graphics/tiles/tileset00000.png", 16, 16);

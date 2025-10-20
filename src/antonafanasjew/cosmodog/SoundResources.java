@@ -248,4 +248,6 @@ public class SoundResources extends HashMap<String, Sound> {
 
 	public static final String SOUND_SKIP_TURN = "sound.skipturn";
 
+	public static final String SOUND_DECONTAMINATED = "sound.decontaminated";
+
 }

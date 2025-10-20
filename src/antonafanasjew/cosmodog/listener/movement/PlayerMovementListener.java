@@ -516,7 +516,7 @@ public class PlayerMovementListener implements MovementListener {
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		boolean onDecontaminationSpot = TileType.DECONTAMINATION_SPOT.getTileId() == map.getTileId(player.getPosition(), Layers.LAYER_GEAR);
 		if (onDecontaminationSpot) {
-			
+			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DECONTAMINATED).play();
 			if (player.isPoisoned()) {
 				String text = "Decontaminated.";
 				OverheadNotificationAction.registerOverheadNotification(player, text);
