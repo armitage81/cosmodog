@@ -12,7 +12,7 @@ public class SplitTilesetImage {
 
     public static void main(String[] args) throws SlickException, IOException {
 
-        File inputFile = new File("data/maps/tiles.png");
+        File inputFile = new File("assets/maps/tiles.png");
         BufferedImage image = ImageIO.read(inputFile);
         int height = image.getHeight();
         int chunkSize = 5760;
@@ -24,8 +24,8 @@ public class SplitTilesetImage {
         BufferedImage image1 = image.getSubimage(0, 0, image.getWidth(), chunkSize);
         BufferedImage image2 = image.getSubimage(0, chunkSize, image.getWidth(), image.getHeight() - chunkSize);
 
-        ImageIO.write(image1, "png", new File("data/tileset00000.png"));
-        ImageIO.write(image2, "png", new File("data/tileset00001.png"));
+        ImageIO.write(image1, "png", new File("assets/graphics/tiles/tileset00000.png"));
+        ImageIO.write(image2, "png", new File("assets/graphics/tiles/tileset00001.png"));
 
     }
 

@@ -30,6 +30,8 @@ public class TestEnteringPlatform {
 
 				List<String> debuggerPositions = new ArrayList<>();
 				debuggerPositions.add(String.format("%s/%s/%s", 355, 389, MapType.MAIN));
+				debuggerPositions.add(String.format("%s/%s/%s", 316, 389, MapType.MAIN));
+				debuggerPositions.add(String.format("%s/%s/%s", 299, 389, MapType.MAIN));
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 			}
 		};

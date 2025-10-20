@@ -1,13 +1,13 @@
 Snow Worm
 -------------------------------------------------------
 
-<font:narration> The snow shines so brightly that it hurts your eyes. You notice large snow drifts. They do not appear natural.
+<font:narration> The snow shines so brightly that it hurts your eyes. The white waste is absolutely featureless -- like a lake on a still day.
 
 
-<font:speech> "It almost looks as if something burrowed through the snow," <font:narration>  you remark.
+<font:speech> "The land is so perfectly flat here," <font:narration>  you remark.
 
 
-<font:speech> "That's because it has," <font:narration>  Alisa replies.
+<font:speech> "Well, it is not," <font:narration>  Alisa replies.
 
 
 <font:speech> "What do you mean?" <font:narration>
@@ -16,7 +16,7 @@ Snow Worm
 She pretends to softly clear her non-existent throat.
 
 
-<font:speech> "You won't like it, dear. The snow is ten meters deep here. And... well... it's the natural habitat of the... Cryotubus Colossalis." <font:narration>
+<font:speech> "You won't like it, dear. The landscape only looks flat because the snow is ten meters deep here. It covers everything. And... well... it's the natural habitat of the... Cryotubus Colossalis." <font:narration>
 
 
 <font:speech> "Cryo... what?!" <font:narration>
@@ -32,7 +32,7 @@ She pretends to softly clear her non-existent throat.
 the worm probably won't have enough time to shoot out of the snow and devour us alive." <font:narration>
 
 
-You inspect the snowdrifts anxiously, then sigh.
+You inspect the endless white expanse anxiously, then sigh.
 
 
 <font:speech> "What could possibly go wrong." <font:narration>
