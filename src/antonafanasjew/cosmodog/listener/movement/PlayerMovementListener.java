@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.environmentaldamage.MineExplosionAction;
+import antonafanasjew.cosmodog.actions.environmentaldamage.PoisonDamageAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.RadiationDamageAction;
 import antonafanasjew.cosmodog.actions.environmentaldamage.ShockDamageAction;
 import antonafanasjew.cosmodog.actions.death.WormAttackAction;
@@ -498,7 +499,7 @@ public class PlayerMovementListener implements MovementListener {
 			OverheadNotificationAction.registerOverheadNotification(player, text);
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_POISONED).play();
 		}
-		
+
 		player.contaminate();
 	
 	}
@@ -725,13 +726,13 @@ public class PlayerMovementListener implements MovementListener {
 		Player player = ApplicationContextUtils.getPlayer();
 		int turnsPoisoned = player.getTurnsPoisoned();
 		if (turnsPoisoned != 0) {
-			
 			int turnsTillDeath = Constants.TURNS_BEFORE_DEATH_BY_POISON - turnsPoisoned;
 			if (turnsTillDeath > 0) {
 				String text = "<font:critical> DEATH BY POISON IN " + turnsTillDeath + " TURNS !!!";
 				OverheadNotificationAction.registerOverheadNotification(player, text);
+				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_POISONED).play();
 			} else {
-				ApplicationContextUtils.getPlayer().setLife(0);
+				ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.POISON_DAMAGE, new PoisonDamageAction(1000));
 			}
 			
 		}

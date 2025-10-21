@@ -20,8 +20,6 @@ public class TestPoisonousLabyrinth {
 			@Override
 			protected void updatePlayer(Player player) {
 				player.setPosition(Position.fromCoordinates(248, 114, MapType.MAIN));
-				player.setMaxLife(100);
-				player.setLife(100);
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());
 				player.getInventory().put(InventoryItemType.VEHICLE, vii);
 				

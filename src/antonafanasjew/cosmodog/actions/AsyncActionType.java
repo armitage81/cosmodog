@@ -47,6 +47,8 @@ public enum AsyncActionType {
 	WORM_ATTACK(true, false, true),
 	
 	MINE_EXPLOSION(true, false, true),
+
+	POISON_DAMAGE(true, false, true),
 	
 	RADIATION_DAMAGE(true, false, true),
 	SHOCK_DAMAGE(true, false, true),

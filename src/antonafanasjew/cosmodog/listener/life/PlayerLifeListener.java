@@ -19,7 +19,7 @@ public class PlayerLifeListener implements LifeListener {
 	
 	@Override
 	public void onLifeChange(Actor actorAfterLifeChange, int lifeBeforeChange, int lifeAfterChange) {
-		if (((Player)actorAfterLifeChange).dead()) {
+		if (actorAfterLifeChange.dead()) {
 			Cosmodog cosmodog = ApplicationContextUtils.getCosmodog();
 			cosmodog.getGameLifeCycle().setStartNewGame(true);
 			
