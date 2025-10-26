@@ -9,7 +9,7 @@ FIRSTAIDKIT_DESCRIPTION;firstaidkit;0;firstaidkitDescription;You found a First A
 MEDIPACK_DESCRIPTION;medipack;0;medipackDescription;You found a medipack and used it. Your health has been restored completely.;40
 ARMOR_DESCRIPTION;armor;ANY;armorDescription;You found an armor plate. It will make found vehicles more durable.;40
 SOFTWARE_DESCRIPTION;software;ANY;softwareDesciption;You found a software chip from the data center.;40
-CHART_DESCRIPTION;chart;ANY;chartDesciption;You found a map of this area. It can be viewed in the menu on the map screen.;40
+CHART_DESCRIPTION;chart;ANY;chartDesciption;You found the map of this area. (Press [m] to view the map.);40
 PISTOL_DESCRIPTION;pistol;0;pistolDescription;You found a handgun. Press [TAB] to switch weapons. Collect ammo to reload.;40
 SHOTGUN_DESCRIPTION;shotgun;0;shotgunDescription;You found a shotgun. It's efficient against unarmored enemies. Press [TAB] to switch weapons. Collect ammo to reload.;40
 RIFLE_DESCRIPTION;rifle;0;rifleDescription;You found an assault rifle. It's efficiency is higher for lower armor. Press [TAB] to switch weapons. Collect ammo to reload.;40
