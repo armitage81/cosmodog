@@ -10,7 +10,6 @@ public class TutorialUtils {
 	
 	static {
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> Welcome to Cosmodog, a game about exploration, adventure and survival.");
-		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> Your goal is to find the thirty three monoliths that represent alien knowledge.");
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> You will find many useful tips in the game menu. (Press ESC to open it.)");
 		INITIAL_TUTORIAL_TEXTS.add("[---TUTORIAL---] <p> Good luck!.");
 	}
