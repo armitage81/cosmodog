@@ -1,0 +1,20 @@
+----------------------------------
+Gameplay features
+----------------------------------
+Perk trees based on experience points or executed actions
+NPCs and quests
+Underwater passages
+Underground tunnels
+Bosses
+An enemy that controls other enemies as mastermind and needs to be destroyed to deactivate its minions
+Interactive intro section
+Interactive outro section
+----------------------------------
+Technical features
+----------------------------------
+In-Game menu selection (Pressing esc provides a dialog where a menu can be selected.)
+Replace images
+----------------------------------
+Level Design
+----------------------------------
+A "pilgrimage" secret. A long passage with a turret at the end. The player fill be killed at the end as long as he is not equipped with food and water upgrades.
