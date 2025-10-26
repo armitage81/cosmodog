@@ -8,14 +8,12 @@ import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
 
-public class InfobitInteraction extends AbstractPieceInteraction {
+public class InfobitInteraction extends AbstractInfoBitByteOrBankInteraction {
 
 	@Override
 	protected void interact(Piece piece, ApplicationContext applicationContext, CosmodogGame cosmodogGame, Player player) {
 		player.getGameProgress().addInfobit();
-		if (player.getGameProgress().getInfobits() == Constants.NUMBER_OF_INFOBITS_IN_GAME) {
-			cosmodogGame.getInterfaceActionRegistry().registerAction(AsyncActionType.MODAL_WINDOW, new PopUpNotificationAction("Strange feeling overcomes you. It is as if you suddenly knew everything about the valley. There must be a reward somewhere for all that knowledge."));
-		}
+		handleLastInfobitInGame();
 	}
 
 }

@@ -30,9 +30,11 @@ public class TestLastInfobit {
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());
 
-				for (int i = 0; i < 5999; i++) {
+				for (int i = 0; i < 5975; i++) {
 					player.getGameProgress().addInfobit();
 				}
+
+				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("68/36;61/70"));
 
 			}
 		};
