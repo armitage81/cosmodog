@@ -1,8 +1,10 @@
 package antonafanasjew.cosmodog.ingamemenu.progress;
 
+import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.model.CollectibleTool;
 import antonafanasjew.cosmodog.model.inventory.*;
+import antonafanasjew.cosmodog.model.portals.Tile;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import antonafanasjew.cosmodog.util.Mappings;
@@ -31,10 +33,11 @@ import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class ProgressRenderer extends AbstractRenderer {
 
-	private static final int ROWS = 7;
+	private static final int ROWS = 8;
 	private static final int ROW_PADDING = 10;
 	
 	@Override
@@ -94,13 +97,18 @@ public class ProgressRenderer extends AbstractRenderer {
 		int maxInsights = Constants.NUMBER_OF_INSIGHTS_IN_GAME;
 		int noSecrets = player.getGameProgress().getNumberOfFoundSecrets();
 		int maxSecrets = Constants.NUMBER_OF_SECRETS_IN_GAME;
-		
+
+		Map<QuadrandType, Boolean> mineDeactivationInfo = player.getGameProgress().getMinesDeactivationInfo();
+
 		graphics.setLineWidth(1);
 		
 		
 		FontRefToFontTypeMap fontTypeSubheader = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.SubHeader);
 		FontRefToFontTypeMap fontTypeInformational = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
 		FontRefToFontTypeMap fontTypeInactive = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Inactive);
+		FontRefToFontTypeMap fontTypeInformationalPositive = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.InformationalPositive);
+		FontRefToFontTypeMap fontTypeInformationalNegative = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.InformationalNegative);
+
 		
 		for (int i = 0; i < ROWS; i++) {
 			
@@ -310,7 +318,32 @@ public class ProgressRenderer extends AbstractRenderer {
 					}
 				}
 			}
+
 			if (i == 6) {
+				Book textBook;
+				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Landmines", fontTypeSubheader);
+				TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+				int j = 0;
+				for (QuadrandType quadrandType : QuadrandType.values()) {
+
+					DrawingContext quadrandInfoDc = new TileDrawingContext(contentDc, QuadrandType.values().length, 1, j, 0);
+					DrawingContext quadrandInfoLabelDc = new TileDrawingContext(quadrandInfoDc, 2, 1, 0, 0);
+					DrawingContext quadrandInfoContentDc = new TileDrawingContext(quadrandInfoDc, 2, 1, 1, 0);
+					boolean mineDeactivationInfoForQuadrand = mineDeactivationInfo.get(quadrandType);
+
+					textBook = TextPageConstraints.fromDc(quadrandInfoLabelDc).textToBook(quadrandType.getRepresentation() + " - ", fontTypeInformational);
+					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+					textBook = TextPageConstraints.fromDc(quadrandInfoContentDc).textToBook(mineDeactivationInfoForQuadrand ? "Inactive" : "Active", mineDeactivationInfoForQuadrand ? fontTypeInformationalPositive : fontTypeInformationalNegative);
+					TextBookRendererUtils.renderVerticallyCenteredLabel(gameContainer, graphics, textBook);
+
+					j++;
+				}
+
+			}
+
+			if (i == 7) {
 				
 				Book textBook;
 				textBook = TextPageConstraints.fromDc(labelDc).textToBook("Play Time", fontTypeSubheader);

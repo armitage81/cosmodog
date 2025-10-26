@@ -21,6 +21,8 @@ public enum FontType {
 	
 	EmphasizedNarration(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.orange),
 	Informational(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.white),
+	InformationalPositive(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.green),
+	InformationalNegative(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.red),
 	Inactive(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 24), false), Color.darkGray),
 	InformationalSmall(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.white),
 	ControlsHint(new TrueTypeFont(new Font("Courier New", Font.BOLD, 24), false), Color.gray),
@@ -46,6 +48,8 @@ public enum FontType {
 	
 	EmphasizedNarration_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 20), false), Color.orange),
 	Informational_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.white),
+	InformationalPositive_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.green),
+	InformationalNegative_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.red),
 	Inactive_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 18), false), Color.darkGray),
 	InformationalSmall_LowRes(new TrueTypeFont(new Font("Courier New", Font.PLAIN, 16), false), Color.white),
 	ControlsHint_LowRes(new TrueTypeFont(new Font("Courier New", Font.BOLD, 20), false), Color.gray),

@@ -19,6 +19,8 @@ public class FontProvider {
 		
 		EmphasizedNarration(FontType.EmphasizedNarration, FontType.EmphasizedNarration_LowRes),
 		Informational(FontType.Informational, FontType.Informational_LowRes),
+		InformationalPositive(FontType.InformationalPositive, FontType.InformationalPositive_LowRes),
+		InformationalNegative(FontType.InformationalNegative, FontType.InformationalNegative_LowRes),
 		Inactive(FontType.Inactive, FontType.Inactive_LowRes),
 		InformationalSmall(FontType.InformationalSmall, FontType.InformationalSmall_LowRes),
 		ControlsHint(FontType.ControlsHint, FontType.ControlsHint_LowRes),
