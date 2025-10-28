@@ -58,7 +58,7 @@ public class SightRadiusRenderer extends AbstractRenderer {
 		Set<Position> sightMarkers = Sets.newHashSet();
 		Set<Position> alertMarkers = Sets.newHashSet();
 
-		Position position = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
+		Position position = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapDescriptor());
 
 		Set<Enemy> enemies = map.visibleEnemies(position, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2);
 		
@@ -131,16 +131,16 @@ public class SightRadiusRenderer extends AbstractRenderer {
 						continue;
 					}
 
-					if (i < 0 || i >= map.getMapType().getWidth() || j < 0 || j >= map.getMapType().getHeight()) {
+					if (i < 0 || i >= map.getMapDescriptor().getWidth() || j < 0 || j >= map.getMapDescriptor().getHeight()) {
 						continue;
 					}
 
-					Position tilePosition = Position.fromCoordinates(i, j, enemy.getPosition().getMapType());
+					Position tilePosition = Position.fromCoordinates(i, j, enemy.getPosition().getMapDescriptor());
 					if (visiblePositions.contains(tilePosition)) {
 						if (playerInSightRange) {
-							alertMarkers.add(Position.fromCoordinates(i, j, enemy.getPosition().getMapType()));
+							alertMarkers.add(Position.fromCoordinates(i, j, enemy.getPosition().getMapDescriptor()));
 						} else {
-							sightMarkers.add(Position.fromCoordinates(i, j, enemy.getPosition().getMapType()));
+							sightMarkers.add(Position.fromCoordinates(i, j, enemy.getPosition().getMapDescriptor()));
 						}
 					}
 				}

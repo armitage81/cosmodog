@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -20,7 +20,7 @@ public class TestSecretInPoisonLabyrinthShouldNotBeCheated {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(268, 111, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(268, 111, ApplicationContextUtils.mapDescriptorMain()));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.ANTIDOTE, new AntidoteInventoryItem());

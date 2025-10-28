@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.*;
@@ -20,7 +20,7 @@ public class TestRoofsOnMap {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(238, 237, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(238, 237, ApplicationContextUtils.mapDescriptorMain()));
 				player.setMaxLife(100);
 				player.setLife(100);
 

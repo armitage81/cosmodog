@@ -1,22 +1,19 @@
 package antonafanasjew.cosmodog.actions.spacelift;
 
-import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.actions.ExponentialAction;
 import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
-import antonafanasjew.cosmodog.actions.LadderAction;
-import antonafanasjew.cosmodog.actions.ParabolicAction;
 import antonafanasjew.cosmodog.actions.camera.CamMovementAction;
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
 import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.camera.CamPositioningException;
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.TileUtils;
+
+import java.util.Map;
 
 public class SpaceLiftAction extends PhaseBasedAction {
 
@@ -33,6 +30,8 @@ public class SpaceLiftAction extends PhaseBasedAction {
     @Override
     protected void onTriggerInternal() {
 
+        Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
         int tileLength = TileUtils.tileLengthSupplier.get();
 
         CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
@@ -43,13 +42,13 @@ public class SpaceLiftAction extends PhaseBasedAction {
         Position camCenterPixelPosition = Position.fromCoordinates(
                 spaceLiftShaftPosition.getX() * tileLength,
                 spaceLiftShaftPosition.getY() * tileLength,
-                playerPosition.getMapType());
+                playerPosition.getMapDescriptor());
 
 
         Position playerPixelPosition = Position.fromCoordinates(
                 playerPosition.getX() * tileLength + tileLength / 2.0f,
                 playerPosition.getY() * tileLength + tileLength / 2.0f,
-                MapType.SPACE);
+                mapDescriptors.get(MapDescriptor.MAP_NAME_SPACE));
 
         if (upNotDown) {
 
@@ -74,7 +73,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     player.setLifeLentForHunger(0);
                     player.setWater(player.getCurrentMaxWater());
                     player.setLifeLentForThirst(0);
-                    player.switchPlane(MapType.SPACE);
+                    player.switchPlane(mapDescriptors.get(MapDescriptor.MAP_NAME_SPACE));
                     player.turn(DirectionType.DOWN);
                     cam.focusOnPiece(game, 0, 0, player);
 
@@ -100,7 +99,7 @@ public class SpaceLiftAction extends PhaseBasedAction {
                     Player player = ApplicationContextUtils.getPlayer();
                     CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
                     Cam cam = game.getCam();
-                    player.switchPlane(MapType.MAIN);
+                    player.switchPlane(mapDescriptors.get(MapDescriptor.MAP_NAME_MAIN));
                     player.turn(DirectionType.DOWN);
                     Piece piece = new Piece() {
                         @Override

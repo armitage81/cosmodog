@@ -10,6 +10,7 @@ import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.MusicUtils;
 
@@ -26,8 +27,10 @@ public class PlayerLifeListener implements LifeListener {
 			List<String> dyingHints = ApplicationContext.instance().getDyingHints();
 			int dyingHintIndex = (int)(System.currentTimeMillis() % dyingHints.size());
 			String dyingHint = dyingHints.get(dyingHintIndex);
-			
-			ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.DYING, new DyingAction(5000, dyingHint, Constants.DEFAULT_RESPAWN_POSITION));
+
+			Position respawnPosition = Position.fromCoordinates(28, 58, ApplicationContextUtils.mapDescriptorMain());
+
+			ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.DYING, new DyingAction(5000, dyingHint, respawnPosition));
 			MusicUtils.playMusic(MusicResources.MUSIC_LOST);
 		}
 	}

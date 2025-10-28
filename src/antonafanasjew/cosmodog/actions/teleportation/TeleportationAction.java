@@ -45,8 +45,8 @@ public class TeleportationAction extends PhaseBasedAction {
 
 		TiledLineObject.Point startPoint = teleportConnection.getPoints().get(0);
 		TiledLineObject.Point endPoint = teleportConnection.getPoints().get(1);
-		Position startPixelPosition = Position.fromCoordinates(startPoint.x, startPoint.y, player.getPosition().getMapType());
-		Position targetPixelPosition = Position.fromCoordinates(endPoint.x, endPoint.y, player.getPosition().getMapType());
+		Position startPixelPosition = Position.fromCoordinates(startPoint.x, startPoint.y, player.getPosition().getMapDescriptor());
+		Position targetPixelPosition = Position.fromCoordinates(endPoint.x, endPoint.y, player.getPosition().getMapDescriptor());
 
 		int durationInMilliseconds = CamMovementUtils.movementDuration(CamMovementUtils.SPEED_FAST, startPixelPosition, targetPixelPosition);
 		getPhaseRegistry().registerPhase("preparingTeleportation", new TeleportStartActionPhase(1000, this.getProperty("state")));

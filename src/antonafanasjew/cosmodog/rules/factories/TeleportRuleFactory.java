@@ -4,7 +4,8 @@ import java.util.Map;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.teleportation.TeleportationAction;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -38,11 +39,13 @@ public class TeleportRuleFactory implements RuleFactory {
 	@Override
 	public Map<String, Rule> buildRules(CosmodogGame cosmodogGame) {
 
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		Map<String, Rule> retVal = Maps.newHashMap();
 
-		for (MapType mapType : MapType.values()) {
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
 
-			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+			CosmodogMap map = cosmodogGame.getMaps().get(mapDescriptor);
 
 			TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 
@@ -52,7 +55,7 @@ public class TeleportRuleFactory implements RuleFactory {
 
 				TiledPolylineObject teleportConnection = (TiledPolylineObject) teleportConnectionObjects.get(teleportConnectionName);
 
-				RuleTrigger trigger = new EnteringTeleportTrigger(mapType, teleportConnectionName);
+				RuleTrigger trigger = new EnteringTeleportTrigger(mapDescriptor, teleportConnectionName);
 
 				//Some teleports can be activated. This is the way to ignore them until the activation property is set.
 				String conditionPropertyName = teleportConnection.getProperties().get("conditionPropertyName");

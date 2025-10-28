@@ -48,7 +48,7 @@ public class BackgroundCloudRenderer extends AbstractRenderer {
 		Cam cam = cosmodogGame.getCam();
 		
 		PlacedRectangle view = cam.viewCopy();
-		view = PlacedRectangle.fromAnchorAndSize(0, 0, view.width(), view.height(), view.getMapType());
+		view = PlacedRectangle.fromAnchorAndSize(0, 0, view.width(), view.height(), view.getMapDescriptor());
 
 		for (BackgroundCloudsDecoration cloudsDecoration : cloudsDecorations) {
 			ParticlePattern currentPattern = cloudsDecoration.particlePatternForPlaceAndTime(view);

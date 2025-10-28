@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.*;
@@ -17,7 +17,7 @@ public class TestSnowworm {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(297, 380, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(297, 380, ApplicationContextUtils.mapDescriptorMain()));
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());

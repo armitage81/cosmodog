@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -27,24 +27,26 @@ public class TestAll {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(59, 41, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(59, 41, ApplicationContextUtils.mapDescriptorMain()));
 				List<String> debuggerPositions = new ArrayList<>();
 
 				for (int i = 0; i < 20; i++) {
 					for (int j = 0; j < 20; j++) {
 						int x = j * 20 + 18;
 						int y = i * 20 + 18;
-						debuggerPositions.add(String.format("%s/%s/%s", x, y, MapType.ALTERNATIVE));
+						debuggerPositions.add(String.format("%s/%s/%s", x, y, ApplicationContextUtils.mapDescriptor("ALTERNATIVE")));
 					}
 				}
 
-				//debuggerPositions.add(String.format("%s/%s/%s", 129, 143, MapType.MAIN));
+				//debuggerPositions.add(String.format("%s/%s/%s", 129, 143, ApplicationContextUtils.mapDescriptorMain()));
 
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 			}
 		};
 
 		CosmodogModelHolder.replacePlayerBuilder(playerBuilder);
+
+		CosmodogModelHolder.replaceMapDescriptorBuilder(new TestMapDescriptorBuilder());
 
 		TestStarter.main(args);
 	}

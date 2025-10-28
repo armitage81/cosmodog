@@ -36,10 +36,10 @@ public class CamMovementActionWithConstantSpeed extends PhaseBasedAction {
         Position startPixelPosition = Position.fromCoordinates(
                 cam.viewCopy().centerX() / cam.getZoomFactor(),
                 cam.viewCopy().centerY() / cam.getZoomFactor(),
-                cam.viewCopy().getMapType()
+                cam.viewCopy().getMapDescriptor()
         );
 
-        Position targetPixelPosition = Position.fromCoordinates(targetCamPosition.getX(), targetCamPosition.getY(), targetCamPosition.getMapType());
+        Position targetPixelPosition = Position.fromCoordinates(targetCamPosition.getX(), targetCamPosition.getY(), targetCamPosition.getMapDescriptor());
 
         int durationInMilliseconds = CamMovementUtils.movementDuration(pixelPerSecond, startPixelPosition, targetPixelPosition);
 

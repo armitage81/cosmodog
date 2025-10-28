@@ -1,41 +1,23 @@
 <project name="Cosmodog" default="dist" basedir=".">
-	<description>
-    Build for Cosmodog
-  </description>
+	<description>Build for Cosmodog</description>
 
 	<property name="src" location="src" />
 	<property name="res" location="resources" />
-	<property name="data" location="data" />
+	<property name="assets" location="assets" />
 	<property name="jre" location="lib/jre" />
 	<property name="build" location="build" />
-	<property name="dist" location="target" />
-	<property name="deployment" location="deployment" />
-
-	<property name="launch4j.dir" location="C:/Program Files (x86)/Launch4j" />
-
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
-
-	<target name="deployToServer" depends="prepareDeployment">
-		<ftp server="cosmodog.eu" port="21" userid="${user}" password="${password}" remotedir="cosmodog.eu/downloads" passive="yes" binary="yes" verbose="yes">
-			<fileset dir="${deployment}" includes="cosmodog.zip"/>
-		</ftp>
-	</target>
-
-	<target name="prepareDeployment" depends="createLauncher">
-		<zip destfile="${deployment}/cosmodog.zip" basedir="${dist}" />
-	</target>
-
-	<target name="createLauncher" depends="dist">
-		<launch4j configFile="./install.xml" />
-	</target>
-
+	<property name="dist" location="dist" />
+	
 	<target name="init" depends="clean">
 		<tstamp />
 		<mkdir dir="${build}" />
 	</target>
 
 	<target name="compile" depends="init" description="compile the source">
-		<javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${basedir}/lib/gdx-1.8.0.jar;${basedir}/lib/jdom2-2.0.6.jar;${basedir}/lib/commons-beanutils-1.9.2.jar;${basedir}/lib/guava-18.0.jar;${basedir}/lib/slick2d/lib/slick.jar;${basedir}/lib/slick2d/lib/lwjgl.jar" />
+		<javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${basedir}/lib/gdx-1.8.0.jar;${basedir}/lib/jdom2-2.0.6.jar;${basedir}/lib/commons-beanutils-1.9.2.jar;${basedir}/lib/guava-18.0.jar;${basedir}/lib/slick2d/lib/slick.jar;${basedir}/lib/slick2d/lib/lwjgl.jar;${basedir}/lib/json-20240303.jar">
+			<exclude name="integration_test/**"/>
+			<exclude name="tooling/**"/>
+		</javac>
 	</target>
 
 	<target name="dist" depends="compile" description="generate the distribution">
@@ -44,11 +26,11 @@
 			<fileset dir="${res}" />
 			<manifest>
 				<attribute name="Main-Class" value="antonafanasjew.cosmodog.CosmodogStarter" />
-				<attribute name="Class-Path" value="lib/commons-beanutils-1.9.2.jar lib/gdx-1.8.0.jar lib/guava-18.0.jar lib/jdom2-2.0.6.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/slick2d/lib/slick.jar lib/slick2d/lib/lwjgl.jar" />
+				<attribute name="Class-Path" value="lib/commons-beanutils-1.9.2.jar lib/gdx-1.8.0.jar lib/guava-18.0.jar lib/jdom2-2.0.6.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/slick2d/lib/slick.jar lib/slick2d/lib/lwjgl.jar lib/json-20240303.jar" />
 			</manifest>
 		</jar>
-		<copy todir="${dist}/data">
-			<fileset dir="${data}" excludes="**/*.xcf sprites.png.bak tiles.png tools_lib/ temp/" />
+		<copy todir="${dist}/assets">
+			<fileset dir="${assets}" excludes="maps/tiles.png maps/map_alternative.tmx graphics/tiles/meta*" />
 		</copy>
 		<copy todir="${dist}/jre">
 			<fileset dir="${jre}" />
@@ -56,11 +38,12 @@
 		<copy todir="${dist}/lib">
 			<fileset dir="${basedir}/lib/">
 				<include name="gdx-1.8.0.jar" />
+				<include name="json-20240303.jar" />
 				<include name="jdom2-2.0.6.jar" />
 				<include name="commons-beanutils-1.9.2.jar" />
 				<include name="guava-18.0.jar" />
-					<include name="jogg-0.0.7.jar" />
-					<include name="jorbis-0.0.15.jar" />				
+				<include name="jogg-0.0.7.jar" />
+				<include name="jorbis-0.0.15.jar" />				
 				<include name="slick2d/lib/slick.jar" />
 				<include name="slick2d/lib/lwjgl.jar" />
 			</fileset>

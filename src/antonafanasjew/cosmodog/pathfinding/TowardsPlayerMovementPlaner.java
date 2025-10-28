@@ -65,7 +65,7 @@ public class TowardsPlayerMovementPlaner extends AbstractMovementPlaner {
 			if (wholePath != null) {
 				int tilesToMove = Math.min(enemy.getSpeedFactor(), wholePath.getLength() - 1);
 				for (int i = 1; i <= tilesToMove; i++) {
-					movementSteps.add(Position.fromCoordinates(wholePath.getX(i), wholePath.getY(i), enemy.getPosition().getMapType()));
+					movementSteps.add(Position.fromCoordinates(wholePath.getX(i), wholePath.getY(i), enemy.getPosition().getMapDescriptor()));
 				}
 			}
 		}

@@ -31,7 +31,7 @@ public class TileBasedMapAdapter implements TileBasedMap {
 
 	@Override
 	public boolean blocked(PathFindingContext cx, int x, int y) {
-		Entrance entrance = Entrance.instance(Position.fromCoordinates(x, y, map.getMapType()), DirectionType.UP);
+		Entrance entrance = Entrance.instance(Position.fromCoordinates(x, y, map.getMapDescriptor()), DirectionType.UP);
 		return !collisionValidator.collisionStatus(game, actor, map, entrance).isPassable();
 	}
 
@@ -42,12 +42,12 @@ public class TileBasedMapAdapter implements TileBasedMap {
 
 	@Override
 	public int getHeightInTiles() {
-		return map.getMapType().getHeight();
+		return map.getMapDescriptor().getHeight();
 	}
 
 	@Override
 	public int getWidthInTiles() {
-		return map.getMapType().getWidth();
+		return map.getMapDescriptor().getWidth();
 	}
 
 	@Override

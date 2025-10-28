@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -20,7 +20,7 @@ public class TestToolCollection {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(38, 18, MapType.ALTERNATIVE));
+				player.setPosition(Position.fromCoordinates(38, 18, ApplicationContextUtils.mapDescriptor("ALTERNATIVE")));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("38/18"));

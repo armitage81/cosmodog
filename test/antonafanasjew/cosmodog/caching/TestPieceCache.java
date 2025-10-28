@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.caching;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.NpcActor;
 import antonafanasjew.cosmodog.topology.Position;
@@ -14,7 +14,7 @@ public class TestPieceCache {
 
     @Test
     public void test() throws Exception {
-        PieceCache pieceCache = new PieceCache(MapType.MAIN, 10, 10);
+        PieceCache pieceCache = new PieceCache(ApplicationContextUtils.mapDescriptorMain(), 10, 10);
 
         NpcActor piece;
 

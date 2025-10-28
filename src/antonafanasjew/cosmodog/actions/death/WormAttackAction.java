@@ -1,7 +1,8 @@
 package antonafanasjew.cosmodog.actions.death;
 
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.GameContainer;
@@ -13,6 +14,7 @@ import antonafanasjew.cosmodog.actions.FixedLengthAsyncAction;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.io.Serial;
+import java.util.Map;
 
 public class WormAttackAction extends FixedLengthAsyncAction {
 
@@ -57,15 +59,18 @@ public class WormAttackAction extends FixedLengthAsyncAction {
 	
 	@Override
 	public void onEnd() {
+
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		ApplicationContextUtils.getPlayer().resetTurnsWormAlerted();
 
 		String respawnPositionInfo = wormRegion.getProperties().get("respawnPosition"); //Has the format "x/y/mapType".
 
 		int x = Integer.parseInt(respawnPositionInfo.split("/")[0]);
 		int y = Integer.parseInt(respawnPositionInfo.split("/")[1]);
-		MapType mapType = MapType.valueOf(respawnPositionInfo.split("/")[2]);
-
-		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, new RespawnAction(Position.fromCoordinates(x, y, mapType), false, true));
+		String mapName = respawnPositionInfo.split("/")[2];
+		MapDescriptor mapDescriptor = mapDescriptors.get(mapName);
+		ApplicationContextUtils.getCosmodogGame().getActionRegistry().registerAction(AsyncActionType.RESPAWNING, new RespawnAction(Position.fromCoordinates(x, y, mapDescriptor), false, true));
 	}
 
 	public float wormHeightPercentage() {

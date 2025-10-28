@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.rules.triggers;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
@@ -14,12 +14,12 @@ public class InteractingWithPieceTrigger extends AbstractRuleTrigger {
 
 	private static final long serialVersionUID = 8881848782255743719L;
 	private String pieceType;
-	private MapType mapType;
+	private MapDescriptor mapDescriptor;
 	
 	//mapType can be null. In this case, the map type is not checked.
-	public InteractingWithPieceTrigger(String pieceType, MapType mapType) {
+	public InteractingWithPieceTrigger(String pieceType, MapDescriptor mapDescriptor) {
 		this.pieceType = pieceType;
-		this.mapType = mapType;
+		this.mapDescriptor = mapDescriptor;
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class InteractingWithPieceTrigger extends AbstractRuleTrigger {
         Piece piece = pieceInteractionGameEvent.getPiece();
 		
 		String eventPieceType = PiecesUtils.pieceType(piece);
-		MapType eventMapType = piece.getPosition().getMapType();
+		MapDescriptor eventMapDescriptor = piece.getPosition().getMapDescriptor();
 
-		return pieceType.equals(eventPieceType) && (mapType == null || mapType.equals(eventMapType));
+		return pieceType.equals(eventPieceType) && (mapDescriptor == null || mapDescriptor.equals(eventMapDescriptor));
 		
 		
 		

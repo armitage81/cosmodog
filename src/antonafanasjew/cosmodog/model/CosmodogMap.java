@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.portals.interfaces.Activatable;
 import antonafanasjew.cosmodog.model.portals.interfaces.ActivatableHolder;
 import antonafanasjew.cosmodog.model.portals.interfaces.Switchable;
@@ -45,8 +44,8 @@ public class CosmodogMap extends CosmodogModel {
 
 	private transient CustomTiledMap customTiledMap;
 
-	private MapType mapType;
-	private PieceCache mapPieces = new PieceCache(mapType, 20, 20);
+	private MapDescriptor mapDescriptor;
+	private PieceCache mapPieces = new PieceCache(mapDescriptor, 20, 20);
 
 	private List<MoveableGroup> moveableGroups = Lists.newArrayList();
 	private List<PortalPuzzle> portalPuzzles = Lists.newArrayList();
@@ -223,12 +222,12 @@ public class CosmodogMap extends CosmodogModel {
 		return getMapPieces().piecesInArea(piece -> piece instanceof DynamicPiece, position.getX(), position.getY(), 1, 1).stream().map(e -> (DynamicPiece)e).collect(Collectors.toSet());
 	}
 
-	public MapType getMapType() {
-		return mapType;
+	public MapDescriptor getMapDescriptor() {
+		return mapDescriptor;
 	}
 
-	public void setMapType(MapType mapType) {
-		this.mapType = mapType;
+	public void setMapDescriptor(MapDescriptor mapDescriptor) {
+		this.mapDescriptor = mapDescriptor;
 	}
 
 	public Set<Enemy> getEnemiesInRange() {

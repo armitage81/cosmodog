@@ -65,7 +65,7 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 		float currentY = initialCamY + verticalDiff * completion * cam.getZoomFactor();
 		
 		try {
-			cam.move(Position.fromCoordinates(currentX, currentY, cam.viewCopy().getMapType()));
+			cam.move(Position.fromCoordinates(currentX, currentY, cam.viewCopy().getMapDescriptor()));
 		} catch (CamPositioningException e) {
 			Log.error("Cam out of bounds: " + currentX + "/" + currentY);
 		}
@@ -88,7 +88,7 @@ public class ActualTeleportationActionPhase extends FixedLengthAsyncAction {
 		int targetPosX = (int)endPoint.x / tileLength;
 		int targetPosY = (int)endPoint.y / tileLength;
 		
-		player.setPosition(Position.fromCoordinates(targetPosX, targetPosY, map.getMapType()));
+		player.setPosition(Position.fromCoordinates(targetPosX, targetPosY, map.getMapDescriptor()));
 
 		cam.focusOnPiece(cosmodogGame, 0, 0, player);
 	}

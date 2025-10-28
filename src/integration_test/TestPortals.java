@@ -1,7 +1,7 @@
 package integration_test;
 
 import antonafanasjew.cosmodog.CustomTiledMap;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
@@ -36,7 +36,7 @@ public class TestPortals {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(228, 135, MapType.SPACE));
+				player.setPosition(Position.fromCoordinates(228, 135, ApplicationContextUtils.mapDescriptorSpace()));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.PORTAL_GUN, new PortalGunInventoryItem());
@@ -48,7 +48,7 @@ public class TestPortals {
 				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
 				player.getArsenal().selectNextWeaponType();
 
-				CustomTiledMap map = ApplicationContextUtils.getCustomTiledMaps().get(MapType.SPACE);
+				CustomTiledMap map = ApplicationContextUtils.getCustomTiledMaps().get(ApplicationContextUtils.mapDescriptorSpace());
 				TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 
 				Map<String, TiledObject> teleportConnectionObjects = teleportConnectionObjectGroup.getObjects();
@@ -69,9 +69,9 @@ public class TestPortals {
 					TiledLineObject.Point endPoint = teleportConnection.getPoints().get(1);
 					int targetPosX = (int)endPoint.x / tileLength;
 					int targetPosY = (int)endPoint.y / tileLength;
-					debuggerPositions.add(String.format("%s/%s/%s", targetPosX, targetPosY, MapType.SPACE));
+					debuggerPositions.add(String.format("%s/%s/%s", targetPosX, targetPosY, ApplicationContextUtils.mapDescriptorSpace()));
 				}
-				debuggerPositions.add(String.format("%s/%s/%s", 127, 46, MapType.MAIN));
+				debuggerPositions.add(String.format("%s/%s/%s", 127, 46, ApplicationContextUtils.mapDescriptorMain()));
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 
 			}

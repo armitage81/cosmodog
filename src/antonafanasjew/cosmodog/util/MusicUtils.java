@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.util;
 
 import antonafanasjew.cosmodog.MusicResources;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.PlayerMovementCache;
@@ -18,9 +18,9 @@ public class MusicUtils {
 	public static String currentMapMusicId() {
 		Player player = ApplicationContextUtils.getPlayer();
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
-		MapType mapType = map.getMapType();
+		MapDescriptor mapDescriptor = map.getMapDescriptor();
 		String musicResource;
-		if (mapType == MapType.SPACE) {
+		if (mapDescriptor.equals(ApplicationContextUtils.mapDescriptorSpace())) {
 			musicResource = MusicResources.MUSIC_SOUNDTRACK_SPACE;
 		} else {
 			Race race = PlayerMovementCache.getInstance().getActiveRace();
@@ -35,7 +35,7 @@ public class MusicUtils {
 						.getObjects()
 						.get("AlienBaseRoofRemovalBlocker");
 
-				boolean inAlienBase = RegionUtils.pieceInRegion(player, mapType, alienBaseRoofRegion) && !RegionUtils.pieceInRegion(player, mapType, alienBaseRoofRemovalBlockerRegion);
+				boolean inAlienBase = RegionUtils.pieceInRegion(player, mapDescriptor, alienBaseRoofRegion) && !RegionUtils.pieceInRegion(player, mapDescriptor, alienBaseRoofRemovalBlockerRegion);
 
 				if (inAlienBase) {
 					musicResource = MusicResources.MUSIC_SOUNDTRACK_MYSTERY;

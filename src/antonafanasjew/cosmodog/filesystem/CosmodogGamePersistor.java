@@ -14,19 +14,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
-import antonafanasjew.cosmodog.actions.AsyncAction;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.popup.PopUpNotificationAction;
-import antonafanasjew.cosmodog.domains.MapType;
-import antonafanasjew.cosmodog.rules.Rule;
-import antonafanasjew.cosmodog.rules.RuleAction;
-import antonafanasjew.cosmodog.rules.RuleTrigger;
-import antonafanasjew.cosmodog.rules.actions.AsyncActionRegistrationRuleAction;
-import antonafanasjew.cosmodog.rules.events.GameEventPieceInteraction;
-import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
-import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
 import antonafanasjew.cosmodog.util.TileUtils;
-import com.google.common.collect.Lists;
 import org.newdawn.slick.util.Log;
 
 import antonafanasjew.cosmodog.camera.Cam;
@@ -103,9 +91,9 @@ public class CosmodogGamePersistor {
 					int tileLength = TileUtils.tileLengthSupplier.get();
 					CosmodogMap map = game.mapOfPlayerLocation();
 					float oldZoomFactor = game.getCam().getZoomFactor();
-					Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
+					Rectangle scene = Rectangle.fromSize((float) (map.getMapDescriptor().getWidth() * tileLength), (float) (map.getMapDescriptor().getHeight() * tileLength));
 					DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
-					Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapType());
+					Cam cam = new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapDescriptor());
 					cam.focusOnPiece(game, 0, 0, game.getPlayer());
 					cam.zoom(oldZoomFactor);
 					game.setCam(cam);

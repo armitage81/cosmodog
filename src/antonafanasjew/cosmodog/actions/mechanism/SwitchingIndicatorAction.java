@@ -102,7 +102,7 @@ public class SwitchingIndicatorAction extends FixedLengthAsyncAction {
 		Collection<DynamicPiece> binaryIndicators = map.getMapPieces().piecesOverall(PiecePredicates.BINARY_INDICATOR).stream().map(e -> (DynamicPiece)e).toList();
         for (DynamicPiece indicator : binaryIndicators) {
             BinaryIndicator binaryIndicator = (BinaryIndicator) indicator;
-            if (RegionUtils.pieceInRegion(binaryIndicator, map.getMapType(), region)) {
+            if (RegionUtils.pieceInRegion(binaryIndicator, map.getMapDescriptor(), region)) {
                 indicatorsInRegion.add(binaryIndicator);
             }
         }

@@ -104,7 +104,7 @@ public class PositionUtils {
 
 	public static Position toPixelPosition(Position tilePosition) {
 		int tileLength = TileUtils.tileLengthSupplier.get();
-        return Position.fromCoordinates(tilePosition.getX() * tileLength + tileLength / 2.0f, tilePosition.getY() * tileLength + tileLength / 2.0f, tilePosition.getMapType());
+        return Position.fromCoordinates(tilePosition.getX() * tileLength + tileLength / 2.0f, tilePosition.getY() * tileLength + tileLength / 2.0f, tilePosition.getMapDescriptor());
 	}
 
 	public static float distance(Position p1, Position p2) {

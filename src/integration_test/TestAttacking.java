@@ -1,6 +1,5 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -10,6 +9,7 @@ import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class TestAttacking {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(1, 2, MapType.ALTERNATIVE));
+				player.setPosition(Position.fromCoordinates(1, 2, ApplicationContextUtils.mapDescriptor("ALTERNATIVE")));
 				player.setMaxLife(100);
 				player.setLife(100);
 
@@ -33,7 +33,7 @@ public class TestAttacking {
 				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.RPG));
 
 				java.util.List<Position> debuggerPositions = new ArrayList<>();
-				debuggerPositions.add(Position.fromCoordinates(119, 20, MapType.MAIN));
+				debuggerPositions.add(Position.fromCoordinates(119, 20, ApplicationContextUtils.mapDescriptorMain()));
 
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(debuggerPositions));
 

@@ -3,16 +3,13 @@ package antonafanasjew.cosmodog.model.actors;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.inventory.Arsenal;
 import antonafanasjew.cosmodog.model.inventory.Inventory;
 import antonafanasjew.cosmodog.model.inventory.LogPlayer;
 import antonafanasjew.cosmodog.model.portals.Entrance;
-import antonafanasjew.cosmodog.model.portals.Ray;
-import antonafanasjew.cosmodog.sight.Vision;
 import antonafanasjew.cosmodog.topology.Position;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 public class Player extends Actor {
 
@@ -250,8 +247,8 @@ public class Player extends Actor {
 		movementListener.afterSwitchingPlane(this, ApplicationContext.instance());
 	}
 
-	public void switchPlane(MapType mapType) {
-		this.getPosition().switchPlane(mapType);
+	public void switchPlane(MapDescriptor mapDescriptor) {
+		this.getPosition().switchPlane(mapDescriptor);
 		endSwitchingPlane();
 	}
 

@@ -1,6 +1,5 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
@@ -10,6 +9,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
@@ -23,15 +23,15 @@ public class TestPlayersNightVision {
 
             @Override
             protected void updatePlayer(Player player) {
-                player.setPosition(Position.fromCoordinates(38, 38, MapType.ALTERNATIVE));
+                player.setPosition(Position.fromCoordinates(38, 38, ApplicationContextUtils.mapDescriptor("ALTERNATIVE")));
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 
 
                 List<Position> positions = new ArrayList<>();
-                positions.add(Position.fromCoordinates(7,3, MapType.MAIN));
-                positions.add(Position.fromCoordinates(38, 38, MapType.ALTERNATIVE));
+                positions.add(Position.fromCoordinates(7,3, ApplicationContextUtils.mapDescriptorMain()));
+                positions.add(Position.fromCoordinates(38, 38, ApplicationContextUtils.mapDescriptor("ALTERNATIVE")));
 
                 player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(positions));
 

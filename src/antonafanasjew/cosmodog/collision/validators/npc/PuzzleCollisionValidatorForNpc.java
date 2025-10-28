@@ -52,10 +52,10 @@ public class PuzzleCollisionValidatorForNpc extends AbstractCollisionValidator {
 		int x = (int)(entrance.getPosition().getX() * tileLength);
 		int y = (int)(entrance.getPosition().getY() * tileLength);
 
-		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, entrance.getPosition().getMapType());
+		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, entrance.getPosition().getMapDescriptor());
 
 		for (TiledObject forbiddenRegion : forbiddenRegions) {
-			boolean intersects = CollisionUtils.intersects(r, map.getMapType(), forbiddenRegion);
+			boolean intersects = CollisionUtils.intersects(r, map.getMapDescriptor(), forbiddenRegion);
 			if (intersects) {
 				return notPassable;
 			}

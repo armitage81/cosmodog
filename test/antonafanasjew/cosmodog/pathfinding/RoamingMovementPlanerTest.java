@@ -5,7 +5,7 @@ import antonafanasjew.cosmodog.collision.CollisionStatus;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.collision.PassageBlockerType;
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
@@ -40,7 +40,7 @@ public class RoamingMovementPlanerTest {
         out.setCosmodogMapSupplier(() -> new CosmodogMap(null));
         out.setCosmodogGameSupplier(CosmodogGame::new);
         Actor enemy = new Enemy();
-        enemy.setPosition(Position.fromCoordinates(5, 10, MapType.MAIN));
+        enemy.setPosition(Position.fromCoordinates(5, 10, ApplicationContextUtils.mapDescriptorMain()));
         MovementPlan movementPlan = out.calculateMovementPlanInternal(enemy, 3, pass, null);
         assertEquals(5, movementPlan.getStartPosition().getX());
         assertEquals(10, movementPlan.getStartPosition().getY());
@@ -55,7 +55,7 @@ public class RoamingMovementPlanerTest {
         out.setCosmodogMapSupplier(() -> new CosmodogMap(null));
         out.setCosmodogGameSupplier(CosmodogGame::new);
         Actor enemy = new Enemy();
-        enemy.setPosition(Position.fromCoordinates(5, 10, MapType.MAIN));
+        enemy.setPosition(Position.fromCoordinates(5, 10, ApplicationContextUtils.mapDescriptorMain()));
         enemy.setDirection(DirectionType.LEFT);
         MovementPlan movementPlan = out.calculateMovementPlanInternal(enemy, 3, pass, null);
 

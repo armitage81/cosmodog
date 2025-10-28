@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -13,7 +13,7 @@ public class MapInputHandler implements InputHandler {
 
 	private static final int DELAY_LIMIT = 3;
 	
-	private MapInputState mapInputState;
+	private final MapInputState mapInputState;
 	private int delay = 0;
 	
 	public MapInputHandler(MapInputState mapInputState) {
@@ -24,8 +24,8 @@ public class MapInputHandler implements InputHandler {
 	public void handleInput(GameContainer gc, StateBasedGame sbg, int delta, ApplicationContext applicationContext) {
 
 		//We do not render the map except on the main map
-		MapType mapType = ApplicationContextUtils.mapOfPlayerLocation().getMapType();
-		if (mapType != MapType.MAIN) {
+		MapDescriptor mapDescriptor = ApplicationContextUtils.mapOfPlayerLocation().getMapDescriptor();
+		if (!mapDescriptor.getName().equals(MapDescriptor.MAP_NAME_MAIN)) {
 			return;
 		}
 

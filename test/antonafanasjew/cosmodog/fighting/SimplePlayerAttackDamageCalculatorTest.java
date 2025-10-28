@@ -8,6 +8,7 @@ import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.WeaponFirmwareUpgradeInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Predicate;
@@ -42,14 +43,14 @@ public class SimplePlayerAttackDamageCalculatorTest {
 		weapon.setAmmunition(3);
 		player.getArsenal().addWeaponToArsenal(weapon);
 
-		player.setPosition(Position.fromCoordinates(0, 0, MapType.MAIN));
+		player.setPosition(Position.fromCoordinates(0, 0, ApplicationContextUtils.mapDescriptorMain()));
 		player.setDirection(DirectionType.RIGHT);
         return player;
     }
 
 	private Enemy defaultEnemy() {
 		Enemy enemy = new Enemy();
-		enemy.setPosition(Position.fromCoordinates(1, 0, MapType.MAIN));
+		enemy.setPosition(Position.fromCoordinates(1, 0, ApplicationContextUtils.mapDescriptorMain()));
 		enemy.setDirection(DirectionType.LEFT);
 		enemy.setUnitType(UnitType.ROBOT);
 		enemy.setArmorType(ArmorType.LIGHT);

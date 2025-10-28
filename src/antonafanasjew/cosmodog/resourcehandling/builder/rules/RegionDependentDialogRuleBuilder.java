@@ -4,8 +4,8 @@ import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.narration.EndingNarrationAction;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
@@ -19,11 +19,17 @@ import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
+import java.util.Map;
 
 public class RegionDependentDialogRuleBuilder extends AbstractCsvBasedResourceWrapperBuilder<Rule> {
 	
 	@Override
 	protected Rule build(String line) {
+
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		String[] values = line.split(";");
 		
 		String ruleName = values[0];
@@ -31,11 +37,12 @@ public class RegionDependentDialogRuleBuilder extends AbstractCsvBasedResourceWr
 		String gameLogsSeriesNameAndId = values[2];
 		String onlyOnceFlag = values[3];
 		String gameProgressProperty = values[4];
-		MapType mapType = MapType.valueOf(values[5]);
+		String mapName = values[5];
+		MapDescriptor mapDescriptor = mapDescriptors.get(mapName);
 		boolean endingCutscene = values[6].equalsIgnoreCase("ending");
 		
 		
-		RuleTrigger trigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
+		RuleTrigger trigger = new EnteringRegionTrigger(mapDescriptor, ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
 		boolean onlyOnce = Boolean.valueOf(onlyOnceFlag);
 		
 		if (onlyOnce) {

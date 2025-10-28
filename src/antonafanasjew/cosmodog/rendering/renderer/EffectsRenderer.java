@@ -64,7 +64,7 @@ public class EffectsRenderer extends AbstractRenderer {
 		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
+		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapDescriptor());
 
 		Set<Piece> effectPieces = map.visibleEffectPieces(tilePosition, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2);
 

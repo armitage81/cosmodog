@@ -38,7 +38,7 @@ public class ConditionalRenderer extends AbstractRenderer {
         return instance(
                 delegate,
                 null,
-                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType().isSkyDecorationsActive()
+                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapDescriptor().isSkyDecorationsActive()
         );
     }
 
@@ -53,7 +53,7 @@ public class ConditionalRenderer extends AbstractRenderer {
         return instance(
                 delegate,
                 alternativeDelegate,
-                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType().isDayNightActive()
+                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapDescriptor().isDayNightActive()
         );
     }
 
@@ -61,7 +61,7 @@ public class ConditionalRenderer extends AbstractRenderer {
         return instance(
                 delegate,
                 alternativeDelegate,
-                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType().isResourceConsumptionActive()
+                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapDescriptor().isResourceConsumptionActive()
         );
     }
 

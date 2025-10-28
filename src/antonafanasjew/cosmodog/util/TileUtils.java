@@ -36,7 +36,7 @@ public class TileUtils {
 				processElementAndNeighboursRecursively(e.westNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
-			if (x < map.getMapType().getWidth() - 1 && !checkedElements.contains(e.eastNeighbour())) {
+			if (x < map.getMapDescriptor().getWidth() - 1 && !checkedElements.contains(e.eastNeighbour())) {
 				processElementAndNeighboursRecursively(e.eastNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
@@ -44,7 +44,7 @@ public class TileUtils {
 				processElementAndNeighboursRecursively(e.northNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 			
-			if (y < map.getMapType().getHeight() - 1 && !checkedElements.contains(e.southNeighbour())) {
+			if (y < map.getMapDescriptor().getHeight() - 1 && !checkedElements.contains(e.southNeighbour())) {
 				processElementAndNeighboursRecursively(e.southNeighbour(), map, predicate, markedElements, checkedElements);
 			}
 		}

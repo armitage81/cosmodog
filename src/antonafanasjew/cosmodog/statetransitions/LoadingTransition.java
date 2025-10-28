@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.statetransitions;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class LoadingTransition implements Transition {
 
-	private Map<MapType, CustomTiledMap> tiledMaps = null;
+	private Map<MapDescriptor, CustomTiledMap> tiledMaps = null;
 	
 	private DrawingContext mainDrawingContext;
 	

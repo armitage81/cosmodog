@@ -41,7 +41,7 @@ public class BlockingAction extends FixedLengthAsyncAction {
 
         player.getMovementListener().beforeBlock(player, player.getPosition(), targetEntrance.getPosition());
 
-        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(targetEntrance.getPosition().getMapType());
+        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(targetEntrance.getPosition().getMapDescriptor());
         Optional<DynamicPiece> optDynamicPiece = map
                 .getMapPieces()
                 .piecesAtPosition(e -> e instanceof DynamicPiece, targetEntrance.getPosition().getX(), targetEntrance.getPosition().getY())

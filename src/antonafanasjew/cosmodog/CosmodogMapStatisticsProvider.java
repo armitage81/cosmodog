@@ -95,7 +95,7 @@ public class CosmodogMapStatisticsProvider {
 			Integer pieceValue = pieceValues.get(piece);
 			int chartPiecePositionX = (int) piece.getPosition().getX() / chartPieceWidthInTiles;
 			int chartPiecePositionY = (int) piece.getPosition().getY() / chartPieceHeightInTiles;
-			Position chartPiecePosition = Position.fromCoordinates(chartPiecePositionX, chartPiecePositionY, piece.getPosition().getMapType());
+			Position chartPiecePosition = Position.fromCoordinates(chartPiecePositionX, chartPiecePositionY, piece.getPosition().getMapDescriptor());
             mapPieceValuePerChartPiece.putIfAbsent(chartPiecePosition, 0);
             mapPieceValuePerChartPiece.compute(chartPiecePosition, (k, currentCount) -> currentCount + pieceValue);
 		}

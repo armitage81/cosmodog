@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.ingamemenu.map;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.geometry.Oscillations;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.rendering.renderer.AbstractRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -34,6 +34,8 @@ import antonafanasjew.cosmodog.util.DrawingContextUtils;
 import antonafanasjew.cosmodog.util.ImageUtils;
 import antonafanasjew.cosmodog.util.TextBookRendererUtils;
 
+import java.util.Map;
+
 public class MapRenderer extends AbstractRenderer {
 
 	private final DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
@@ -49,10 +51,12 @@ public class MapRenderer extends AbstractRenderer {
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		DrawingContext inGameMenuContentDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().inGameMenuContentDrawingContext();
 
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
-		if (map.getMapType() != MapType.MAIN) {
+		if (!map.getMapDescriptor().getName().equals(MapDescriptor.MAP_NAME_MAIN)) {
 			FontRefToFontTypeMap fontType = FontRefToFontTypeMap.forOneFontTypeName(FontTypeName.Informational);
 			Book textBook;
 			textBook = TextPageConstraints.fromDc(inGameMenuContentDrawingContext).textToBook("Map not available.", fontType);
@@ -80,8 +84,8 @@ public class MapRenderer extends AbstractRenderer {
 		DrawingContext mapAreaQuadraticDrawingContext = new CenteredDrawingContext(mapAreaDrawingContext, mapAreaContextLength, mapAreaContextLength);
 		miniMapRenderer.render(gameContainer, graphics, mapInputState);
 		
-		int mapWidth = map.getMapType().getWidth();
-		int mapHeight = map.getMapType().getHeight();
+		int mapWidth = map.getMapDescriptor().getWidth();
+		int mapHeight = map.getMapDescriptor().getHeight();
 		int posX = (int)player.getPosition().getX();
 		int posY = (int)player.getPosition().getY();
 		int chartPieceWidth = mapWidth / ChartInventoryItem.VISIBLE_CHART_PIECE_NUMBER_X;
@@ -134,7 +138,7 @@ public class MapRenderer extends AbstractRenderer {
 				graphics.fillRect(x, y, gridW, gridH);
 				if (discovered && archeologistsJournal != null) {
 					DrawingContext cellDc = new SimpleDrawingContext(null, x, y, gridW, gridH);
-					Integer valueOfInfobitsForChartPiece = mapInputState.getInfobitNumbersByChartPiece().get(Position.fromCoordinates(i, j, MapType.MAIN));
+					Integer valueOfInfobitsForChartPiece = mapInputState.getInfobitNumbersByChartPiece().get(Position.fromCoordinates(i, j, mapDescriptors.get(MapDescriptor.MAP_NAME_MAIN)));
 					valueOfInfobitsForChartPiece = valueOfInfobitsForChartPiece == null ? 0 : valueOfInfobitsForChartPiece;
 					if (valueOfInfobitsForChartPiece > 0) {
 						String infobitValueText = "" + valueOfInfobitsForChartPiece;

@@ -104,15 +104,13 @@ public class MoveableGroup implements Serializable {
 	
 	public static void resetMoveableGroup(CosmodogGame game) {
 
-		int tileLength = TileUtils.tileLengthSupplier.get();
-
 		Player player = game.getPlayer();
 		CosmodogMap map = game.mapOfPlayerLocation();
 		Cam cam = game.getCam();
 		MoveableGroup moveableGroupAroundPlayer = null;
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
 		for (MoveableGroup moveableGroup : moveableGroups) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), moveableGroup.getRegion())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), moveableGroup.getRegion())) {
 				moveableGroupAroundPlayer = moveableGroup;
 				break;
 			}

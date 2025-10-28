@@ -115,7 +115,7 @@ public class PortalPuzzle implements Serializable {
         PortalPuzzle portalPuzzleAroundPlayer = null;
         List<PortalPuzzle> portalPuzzles = map.getPortalPuzzles();
         for (PortalPuzzle portalPuzzle : portalPuzzles) {
-            if (RegionUtils.pieceInRegion(player, map.getMapType(), portalPuzzle.getRegion())) {
+            if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), portalPuzzle.getRegion())) {
                 portalPuzzleAroundPlayer = portalPuzzle;
                 break;
             }

@@ -1,12 +1,12 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.SlickException;
 
 public class TestSnowfall {
@@ -17,7 +17,7 @@ public class TestSnowfall {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(111, 349, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(111, 349, ApplicationContextUtils.mapDescriptorMain()));
 				player.setLife(1);
 				for (int i = 0; i < 64; i++) {
 					player.getGameProgress().addInfobank();

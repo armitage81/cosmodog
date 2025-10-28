@@ -38,7 +38,7 @@ public class MovementAttemptAction extends FixedLengthAsyncAction {
             //case if they are blocking passage (e.g. not destroyed stones)
             //But what if we want to interact with passable dynamic pieces (e.g. add a poisoned sound to the poison spots)
 
-            CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(targetPosition.getMapType());
+            CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(targetPosition.getMapDescriptor());
             Optional<DynamicPiece> optDynamicPiece = map
                     .getMapPieces()
                     .piecesAtPosition(e -> e instanceof DynamicPiece, targetPosition.getX(), targetPosition.getY())

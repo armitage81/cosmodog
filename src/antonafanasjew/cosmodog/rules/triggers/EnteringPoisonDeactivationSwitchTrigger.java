@@ -3,7 +3,8 @@ package antonafanasjew.cosmodog.rules.triggers;
 import java.util.List;
 import java.util.Map;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -28,11 +29,11 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 
 	private static final long serialVersionUID = 9096030493555091756L;
 
-	private MapType mapType;
+	private MapDescriptor mapDescriptor;
 	private String connectorName;
 
-	public EnteringPoisonDeactivationSwitchTrigger(MapType mapType, String connectorName) {
-		this.mapType = mapType;
+	public EnteringPoisonDeactivationSwitchTrigger(MapDescriptor mapDescriptor, String connectorName) {
+		this.mapDescriptor = mapDescriptor;
 		this.connectorName = connectorName;
 	}
 	
@@ -45,7 +46,7 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 		}
 
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapDescriptor);
 		
 		TiledObjectGroup poisonSwitchConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_SWITCH_CONNECTORS);
 		
@@ -58,7 +59,7 @@ public class EnteringPoisonDeactivationSwitchTrigger extends AbstractRuleTrigger
 		
 		Point startPoint = connectionPoints.getFirst();
 		
-		Position switchPosition = Position.fromCoordinates(startPoint.x, startPoint.y, mapType);
+		Position switchPosition = Position.fromCoordinates(startPoint.x, startPoint.y, mapDescriptor);
 		
 		return RegionUtils.playerOnPosition(player, switchPosition);
 		

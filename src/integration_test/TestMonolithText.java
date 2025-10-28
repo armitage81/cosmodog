@@ -1,15 +1,13 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
-import antonafanasjew.cosmodog.model.actors.Vehicle;
 import antonafanasjew.cosmodog.model.inventory.InsightInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.SlickException;
 
 import java.util.Optional;
@@ -34,7 +32,7 @@ public class TestMonolithText {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(53, 30, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(53, 30, ApplicationContextUtils.mapDescriptorMain()));
 				player.setMaxLife(100);
 				player.setLife(100);
 

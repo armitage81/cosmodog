@@ -1,10 +1,9 @@
 package antonafanasjew.cosmodog.util;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.Piece;
-import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.dynamicpieces.Block;
 import antonafanasjew.cosmodog.tiledmap.TiledObject;
@@ -22,25 +21,25 @@ public class RegionUtils {
 	 * Take note: the region coordinates are real pixel coordinates on map and are not bound to tiles.
 	 * To calculate players real position, tile width and height from the tiled map are needed.
 	 */
-	public static boolean pieceInRegion(Piece piece, MapType regionMapType, TiledObject region) {
+	public static boolean pieceInRegion(Piece piece, MapDescriptor regionMapDescriptor, TiledObject region) {
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 
-		if (regionMapType != piece.getPosition().getMapType()) {
+		if (!regionMapDescriptor.equals(piece.getPosition().getMapDescriptor())) {
 			return false;
 		}
 
 		PlacedRectangle playerTileRectangle = pieceRectangle(piece);
 		
-		return CollisionUtils.intersects(playerTileRectangle, regionMapType, region);
+		return CollisionUtils.intersects(playerTileRectangle, regionMapDescriptor, region);
 		
 	}
 	
-	public static boolean tileInRegion(Position position, MapType regionMapType, TiledObject region) {
+	public static boolean tileInRegion(Position position, MapDescriptor mapDescriptor, TiledObject region) {
 		//The actual piece implementation does not matter. We just need a type of a piece to satisfy the method signature.
 		Piece piece = Block.create(position);
 		PlacedRectangle playerTileRectangle = pieceRectangle(piece);
-		return CollisionUtils.intersects(playerTileRectangle, regionMapType, region);
+		return CollisionUtils.intersects(playerTileRectangle, mapDescriptor, region);
 		
 	}
 
@@ -52,7 +51,7 @@ public class RegionUtils {
 	 */
 	public static boolean playerOnPosition(Player player, Position position) {
 
-		if (player.getPosition().getMapType() != position.getMapType()) {
+		if (!player.getPosition().getMapDescriptor().equals(position.getMapDescriptor())) {
 			return false;
 		}
 
@@ -73,7 +72,7 @@ public class RegionUtils {
 		int x = posX * tileLength;
 		int y = posY * tileLength;
 
-        return PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, piece.getPosition().getMapType());
+        return PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, piece.getPosition().getMapDescriptor());
 	}
 
 	public static Set<TiledObject> roofsOverPiece(Piece piece, CosmodogMap map) {
@@ -84,7 +83,7 @@ public class RegionUtils {
 
 		for (TiledObject roofRegion : roofRegions.values()) {
 
-			if (RegionUtils.pieceInRegion(piece, map.getMapType(), roofRegion)) {
+			if (RegionUtils.pieceInRegion(piece, map.getMapDescriptor(), roofRegion)) {
 				roofs.add(roofRegion);
 			}
 		}
@@ -100,7 +99,7 @@ public class RegionUtils {
 
 		for (TiledObject region : regions.values()) {
 
-			if (RegionUtils.pieceInRegion(piece, map.getMapType(), region)) {
+			if (RegionUtils.pieceInRegion(piece, map.getMapDescriptor(), region)) {
 				roofRemovalBlockers.add(region);
 			}
 		}

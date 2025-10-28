@@ -419,7 +419,7 @@ public class MovementAction extends FixedLengthAsyncAction {
 			Position playerPixelPosition = Position.fromCoordinates(
 					player.getPosition().getX() * tileLength + tileLength / 2.0f,
 					player.getPosition().getY() * tileLength + tileLength / 2.0f,
-					player.getPosition().getMapType());
+					player.getPosition().getMapDescriptor());
 
 			CamMovementAction camMovementAction = new CamMovementAction(250, playerPixelPosition);
 			ActionRegistry ar = cosmodogGame.getActionRegistry();

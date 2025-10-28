@@ -53,14 +53,14 @@ public class RadiationRenderer extends AbstractRenderer {
 					continue;
 				}
 
-				if (tilePositionOnMapX >= map.getMapType().getWidth()) {
+				if (tilePositionOnMapX >= map.getMapDescriptor().getWidth()) {
 					continue;
 				}
 
-				if (tilePositionOnMapY >= map.getMapType().getHeight()) {
+				if (tilePositionOnMapY >= map.getMapDescriptor().getHeight()) {
 					continue;
 				}
-				Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY, map.getMapType());
+				Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY, map.getMapDescriptor());
 				Vector pieceVectorRelatedToCam = Cam.positionVectorRelatedToCamTilePosition(tilePosition, camTilePosition);
 
 				render(map, (int)pieceVectorRelatedToCam.getX(), (int)pieceVectorRelatedToCam.getY(), tilePosition);

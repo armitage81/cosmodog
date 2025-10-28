@@ -1,6 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.model.portals.Ray;
 import antonafanasjew.cosmodog.rendering.renderer.dynamicpieces.DynamicPiecesRenderer;
 import antonafanasjew.cosmodog.rendering.renderer.player.PlayerRenderer;
@@ -33,13 +33,13 @@ public class SceneRenderer extends AbstractRenderer {
 	private AbstractRenderer backgroundRenderer = ConditionalRenderer.instance(
 			new BackgroundRenderer(),
 			null,
-			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType() == MapType.SPACE
+			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapDescriptor().equals(ApplicationContextUtils.mapDescriptorSpace())
 	);
 
 	private AbstractRenderer backgroundCloudRenderer = ConditionalRenderer.instance(
 			new BackgroundCloudRenderer(ApplicationContext.instance().getSpriteSheets().get(SpriteSheets.SPRITESHEET_CLOUDS)),
 			null,
-			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType() == MapType.SPACE
+			() -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapDescriptor().equals(ApplicationContextUtils.mapDescriptorSpace())
 	);
 
 	private MapLayerRenderer mapRenderer = new MapLayerRenderer();

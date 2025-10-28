@@ -84,8 +84,8 @@ public class MiniMapRenderer extends AbstractRenderer {
 
 		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 
-		int mapWidthInTiles = map.getMapType().getWidth();
-		int mapHeightInTiles = map.getMapType().getHeight();
+		int mapWidthInTiles = map.getMapDescriptor().getWidth();
+		int mapHeightInTiles = map.getMapDescriptor().getHeight();
 
 		//The map is 400 tiles long and 400 tiles wide. The minimap is 8x8 pieces of the chart.
 		//This means that each piece of the chart is 50x50 tiles.
@@ -118,13 +118,13 @@ public class MiniMapRenderer extends AbstractRenderer {
 
 					//Ignore tiles that are outside the visible excerpt.
 					//This happens when the visible excerpt is at the edge of the map.
-					if (tx >= 0 && ty >= 0 && tx < map.getMapType().getWidth() && ty < map.getMapType().getHeight()) {
+					if (tx >= 0 && ty >= 0 && tx < map.getMapDescriptor().getWidth() && ty < map.getMapDescriptor().getHeight()) {
 
 						//On the map, all roofs that are over the player should not be rendered.
 						if (topLayer && roofRemovalBlockersOverPlayer.isEmpty()) {
 
 							Piece piece = new Piece();
-							piece.setPosition(Position.fromCoordinates(tx, ty, map.getMapType()));
+							piece.setPosition(Position.fromCoordinates(tx, ty, map.getMapDescriptor()));
 							Set<TiledObject> roofsOverTile = RegionUtils.roofsOverPiece(piece, map);
 							roofsOverTile.retainAll(roofsOverPlayer);
 							if (!roofsOverTile.isEmpty()) {
@@ -137,7 +137,7 @@ public class MiniMapRenderer extends AbstractRenderer {
 						int chartPiecePositionY = ty / minimapPieceHeightInTiles;
 
 						//The tile image for the given tile id is taken from the tileset sprite sheet.
-						int tileId = map.getTileId(Position.fromCoordinates(tx, ty, map.getMapType()), i);
+						int tileId = map.getTileId(Position.fromCoordinates(tx, ty, map.getMapDescriptor()), i);
 
 						int imageIndex = tileId - 1;
 

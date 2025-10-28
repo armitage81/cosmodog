@@ -1,10 +1,7 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.CustomTiledMap;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
-import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -13,18 +10,12 @@ import antonafanasjew.cosmodog.model.inventory.PortalGunInventoryItem;
 import antonafanasjew.cosmodog.model.upgrades.Weapon;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
-import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
-import antonafanasjew.cosmodog.tiledmap.TiledObject;
-import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
-import antonafanasjew.cosmodog.tiledmap.TiledPolylineObject;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.TileUtils;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TestCollectiblesInSpaceLab {
 
@@ -34,7 +25,7 @@ public class TestCollectiblesInSpaceLab {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(228, 135, MapType.SPACE));
+				player.setPosition(Position.fromCoordinates(228, 135, ApplicationContextUtils.mapDescriptorSpace()));
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.PORTAL_GUN, new PortalGunInventoryItem());
@@ -47,9 +38,9 @@ public class TestCollectiblesInSpaceLab {
 				player.getArsenal().selectNextWeaponType();
 
 				List<String> debuggerPositions = new ArrayList<>();
-				debuggerPositions.add(String.format("%s/%s/%s", 176, 53, MapType.SPACE));
-				debuggerPositions.add(String.format("%s/%s/%s", 193, 167, MapType.SPACE));
-				debuggerPositions.add(String.format("%s/%s/%s", 3, 5, MapType.MAIN));
+				debuggerPositions.add(String.format("%s/%s/%s", 176, 53, ApplicationContextUtils.mapDescriptorSpace()));
+				debuggerPositions.add(String.format("%s/%s/%s", 193, 167, ApplicationContextUtils.mapDescriptorSpace()));
+				debuggerPositions.add(String.format("%s/%s/%s", 3, 5, ApplicationContextUtils.mapDescriptorMain()));
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem(String.join(";", debuggerPositions)));
 
 			}

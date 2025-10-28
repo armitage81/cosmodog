@@ -69,7 +69,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 		TiledMapLayer layer = map.getMapLayers().get(layerIndex);
 		String layerName = layer.getName();
 		
-		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h, map.getMapType());
+		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h, map.getMapDescriptor());
 		
 		boolean intersects = false;
 		
@@ -90,7 +90,7 @@ public class TopLayersRenderingPredicate implements MapLayerRendererPredicate {
 				}
 			}
 			
-			if (CollisionUtils.intersects(r, map.getMapType(), regionOverPlayer)) {
+			if (CollisionUtils.intersects(r, map.getMapDescriptor(), regionOverPlayer)) {
 				intersects = true;
 				break;
 			}

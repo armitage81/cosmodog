@@ -26,7 +26,7 @@ public class VisibilityCalculatorForPlayer {
 
     public boolean visible(Player player, CosmodogMap map, PlanetaryCalendar planetaryCalendar, Position position) {
 
-        if (!map.getMapType().isDayNightActive()) {
+        if (!map.getMapDescriptor().isDayNightActive()) {
             return true;
         }
 
@@ -50,7 +50,7 @@ public class VisibilityCalculatorForPlayer {
             vision = Vision.NIGHT_VISION_FOR_PLAYER_DEFAULT;
         }
 
-        Set<Position> visiblePositions = vision.visiblePositions(player, map.getMapType().getWidth(), map.getMapType().getHeight(), true);
+        Set<Position> visiblePositions = vision.visiblePositions(player, map.getMapDescriptor().getWidth(), map.getMapDescriptor().getHeight(), true);
         return visiblePositions.contains(position);
 
 

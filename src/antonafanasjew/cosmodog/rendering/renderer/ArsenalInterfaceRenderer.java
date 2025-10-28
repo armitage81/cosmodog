@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.Map;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -54,8 +54,10 @@ public class ArsenalInterfaceRenderer extends AbstractRenderer {
 	
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics g, Object renderingParameter) {
-		
-		if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() == MapType.SPACE) {
+
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
+		if (ApplicationContextUtils.mapOfPlayerLocation().getMapDescriptor().equals(mapDescriptors.get(MapDescriptor.MAP_NAME_SPACE))) {
 			return;
 		}
 

@@ -127,7 +127,7 @@ public class OneWayBollard extends DynamicPiece implements Switchable, Activatab
 
     public boolean canDeactivate(CosmodogGame game) {
         Player player = game.getPlayer();
-        CosmodogMap map = game.getMaps().get(getPosition().getMapType());
+        CosmodogMap map = game.getMaps().get(getPosition().getMapDescriptor());
 
         boolean moveableOnPosition = map.dynamicPieceAtPosition(MoveableDynamicPiece.class, getPosition()).isPresent();
         boolean playerOnPosition = player.getPosition().equals(getPosition());

@@ -1,11 +1,10 @@
 package antonafanasjew.cosmodog.util;
 
-import java.sql.Time;
 import java.util.*;
 
 import antonafanasjew.cosmodog.actions.spacelift.SpaceLiftAction;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.globals.*;
 import antonafanasjew.cosmodog.model.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.portals.*;
 import antonafanasjew.cosmodog.model.dynamicpieces.races.*;
@@ -34,12 +33,7 @@ import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.domains.DirectionType;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.domains.UnitType;
-import antonafanasjew.cosmodog.globals.FontProvider;
 import antonafanasjew.cosmodog.globals.FontProvider.FontTypeName;
-import antonafanasjew.cosmodog.globals.FontType;
-import antonafanasjew.cosmodog.globals.Layers;
-import antonafanasjew.cosmodog.globals.ObjectGroups;
-import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.listener.life.PlayerLifeListener;
 import antonafanasjew.cosmodog.listener.movement.PlayerMovementListener;
 import antonafanasjew.cosmodog.model.actors.Enemy;
@@ -64,7 +58,6 @@ import antonafanasjew.cosmodog.model.dynamicpieces.SecretDoor;
 import antonafanasjew.cosmodog.model.dynamicpieces.Stone;
 import antonafanasjew.cosmodog.model.dynamicpieces.Terminal;
 import antonafanasjew.cosmodog.model.dynamicpieces.Tree;
-import antonafanasjew.cosmodog.model.inventory.InventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.resourcehandling.GenericResourceWrapper;
@@ -123,11 +116,9 @@ import antonafanasjew.cosmodog.topology.Position;
 
 public class InitializationUtils {
 
-	public static String LAYER_NAME_COLLECTIBLES = "Meta_collectibles";
+	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, Map<MapDescriptor, CustomTiledMap> customTiledMaps, String userName) throws SlickException, TiledMapIoException {
 
-	public static void initializeCosmodogGameNonTransient(CosmodogGame cosmodogGame, StateBasedGame game, Map<MapType, CustomTiledMap> customTiledMaps, String userName) throws SlickException, TiledMapIoException {
-		
-		Map<MapType, CosmodogMap> cosmodogMaps = initializeCosmodogMaps(customTiledMaps);
+		Map<MapDescriptor, CosmodogMap> cosmodogMaps = initializeCosmodogMaps(customTiledMaps);
 		cosmodogGame.getMaps().clear();
 		cosmodogGame.getMaps().putAll(cosmodogMaps);
 		
@@ -156,8 +147,10 @@ public class InitializationUtils {
 
 	public static void initializeCosmodogGameTransient(CosmodogGame cosmodogGame) {
 
-		for (MapType mapType : MapType.values()) {
-			cosmodogGame.getMaps().get(mapType).setCustomTiledMap(ApplicationContextUtils.getCustomTiledMaps().get(mapType));
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
+			cosmodogGame.getMaps().get(mapDescriptor).setCustomTiledMap(ApplicationContextUtils.getCustomTiledMaps().get(mapDescriptor));
 		}
 
 		cosmodogGame.setActionRegistry(new ActionRegistry());
@@ -179,7 +172,7 @@ public class InitializationUtils {
 
 	}
 
-	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, Map<MapType, CustomTiledMap> customTiledMaps, String userName) throws SlickException, TiledMapIoException {
+	public static CosmodogGame initializeCosmodogGame(StateBasedGame game, Map<MapDescriptor, CustomTiledMap> customTiledMaps, String userName) throws SlickException, TiledMapIoException {
 
 		//We just have to initialize this heavy-weight enum to avoid lazy loading with delays in game.
 		@SuppressWarnings("unused")
@@ -192,16 +185,17 @@ public class InitializationUtils {
 		return cosmodogGame;
 	}
 
-	public static Map<MapType, CosmodogMap> initializeCosmodogMaps(Map<MapType, CustomTiledMap> customTiledMaps) throws SlickException, TiledMapIoException {
+	public static Map<MapDescriptor, CosmodogMap> initializeCosmodogMaps(Map<MapDescriptor, CustomTiledMap> customTiledMaps) throws SlickException, TiledMapIoException {
 
-		Map<MapType, CosmodogMap> retVal = Maps.newHashMap();
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+		Map<MapDescriptor, CosmodogMap> retVal = Maps.newHashMap();
 
-		for (MapType mapType : MapType.values()) {
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
 
-			CustomTiledMap customTiledMap = customTiledMaps.get(mapType);
+			CustomTiledMap customTiledMap = customTiledMaps.get(mapDescriptor);
 			CosmodogMap map = new CosmodogMap(customTiledMap);
 
-			map.setMapType(mapType);
+			map.setMapDescriptor(mapDescriptor);
 			initializeEffects(customTiledMap, map);
 			initializeTiledMapObjects(customTiledMap, map);
 			initializeEnemies(customTiledMap, map);
@@ -216,7 +210,7 @@ public class InitializationUtils {
 			//On the other hand, races rely on collectible initialization, so this method must be called before races are initialized.
 			initializeCollectibles(customTiledMap, map);
 			initializeRaces(customTiledMap, map);
-			retVal.put(mapType, map);
+			retVal.put(mapDescriptor, map);
 		}
 
 		return retVal;
@@ -236,7 +230,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.MOVEABLE_DYNAMIC_PIECE)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), moveableGroupRegion))
 					.map(e -> (MoveableDynamicPiece)e)
 					.toList();
 
@@ -257,7 +251,7 @@ public class InitializationUtils {
 				for (int i = 0; i < positionsX.size(); i++) {
 					int posX = positionsX.get(i);
 					int posY = positionsY.get(i);
-					sokobanGoalsPositions.add(Position.fromCoordinates(posX, posY, map.getMapType()));
+					sokobanGoalsPositions.add(Position.fromCoordinates(posX, posY, map.getMapDescriptor()));
 				}
 
 			}
@@ -266,14 +260,14 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.SECRET_DOOR)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), moveableGroupRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), moveableGroupRegion))
 					.map(e -> (SecretDoor)e)
 					.toList();
 
 			
 			int x = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosX"));
 			int y = Integer.parseInt(moveableGroupRegion.getProperties().get("playerStartPosY"));
-			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapType());
+			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapDescriptor());
 
 			String resetableValue = moveableGroupRegion.getProperties().get("resetable");
 			boolean resetable = resetableValue == null || Boolean.parseBoolean(resetableValue);
@@ -311,7 +305,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.MOVEABLE_DYNAMIC_PIECE)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), portalPuzzleRegion))
 					.map(e -> (MoveableDynamicPiece)e)
 					.toList();
 
@@ -324,7 +318,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.SWITCHABLE)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), portalPuzzleRegion))
 					.map(e -> (Switchable)e)
 					.toList();
 
@@ -332,7 +326,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.ACTIVATABLE)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), portalPuzzleRegion))
 					.map(e -> (Activatable)e)
 					.toList();
 
@@ -340,7 +334,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.PRESENCE_DETECTOR)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), portalPuzzleRegion))
 					.map(e -> (PresenceDetector)e)
 					.toList();
 
@@ -348,7 +342,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.AUTOBOLLARD)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), portalPuzzleRegion))
 					.map(e -> (AutoBollard)e)
 					.toList();
 
@@ -356,13 +350,13 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.ONE_WAY_BOLLARD)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), portalPuzzleRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), portalPuzzleRegion))
 					.map(e -> (OneWayBollard)e)
 					.toList();
 
 			int x = Integer.parseInt(portalPuzzleRegion.getProperties().get("playerStartPosX"));
 			int y = Integer.parseInt(portalPuzzleRegion.getProperties().get("playerStartPosY"));
-			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapType());
+			Position playerStartPosition = Position.fromCoordinates(x, y, map.getMapDescriptor());
 
 			PortalPuzzle portalPuzzle = new PortalPuzzle();
 			portalPuzzle.setRegion(portalPuzzleRegion);
@@ -409,7 +403,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.TIME_BONUS)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), raceRegion))
 					.map(e -> (TimeBonus)e)
 					.toList();
 
@@ -417,7 +411,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.RESETTER)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), raceRegion))
 					.map(e -> (Resetter)e)
 					.toList();
 
@@ -425,7 +419,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.TRAFFIC_BARRIER)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), raceRegion))
 					.map(e -> (TrafficBarrier)e)
 					.toList();
 
@@ -433,7 +427,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.RACE_EXIT)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), raceRegion))
 					.map(e -> (RaceExit)e)
 					.toList();
 
@@ -441,7 +435,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.POLE_POSITION)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), raceRegion))
 					.map(e -> (PolePosition)e)
 					.findFirst().orElseThrow(() -> new RuntimeException("No pole position defined for the race " + raceRegion.getName()));
 
@@ -449,7 +443,7 @@ public class InitializationUtils {
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.FINISH_LINE)
 					.stream()
-					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapType(), raceRegion))
+					.filter(e -> RegionUtils.pieceInRegion(e, map.getMapDescriptor(), raceRegion))
 					.map(e -> (FinishLine)e)
 					.findFirst().orElseThrow(RuntimeException::new);
 
@@ -481,7 +475,7 @@ public class InitializationUtils {
 			race.setTimeToSolve(timeToSolve);
 			race.setRewardPropertyName(rewardPropertyName);
 
-			race.setRespawnPosition(Position.fromCoordinates(respawnPositionX, respawnPositionY, map.getMapType()));
+			race.setRespawnPosition(Position.fromCoordinates(respawnPositionX, respawnPositionY, map.getMapDescriptor()));
 
 			map.getRaces().add(race);
 		}
@@ -490,13 +484,13 @@ public class InitializationUtils {
 	private static void initializeCollectibles(CustomTiledMap customTiledMap, CosmodogMap map) {
 
 		int collectiblesLayerIndex = Layers.LAYER_META_COLLECTIBLES;
-		int mapWidth = map.getMapType().getWidth();
-		int mapHeight = map.getMapType().getHeight();
+		int mapWidth = map.getMapDescriptor().getWidth();
+		int mapHeight = map.getMapDescriptor().getHeight();
 
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l, map.getMapType());
+				Position position = Position.fromCoordinates(k, l, map.getMapDescriptor());
 
 				int tileId = map.getTileId(position, collectiblesLayerIndex);
 
@@ -526,13 +520,13 @@ public class InitializationUtils {
 	}
 
 	private static void initializeEffects(CustomTiledMap customTiledMap, CosmodogMap map) {
-		int mapWidth = map.getMapType().getWidth();
-		int mapHeight = map.getMapType().getHeight();
+		int mapWidth = map.getMapDescriptor().getWidth();
+		int mapHeight = map.getMapDescriptor().getHeight();
 
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l, map.getMapType());
+				Position position = Position.fromCoordinates(k, l, map.getMapDescriptor());
 
 				int tileId = customTiledMap.getTileId(position, Layers.LAYER_META_EFFECTS);
 
@@ -579,7 +573,7 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l, map.getMapType());
+				Position position = Position.fromCoordinates(k, l, map.getMapDescriptor());
 
 				int tileId = tiledMap.getTileId(position, dynamicTilesLayerIndex);
 
@@ -886,7 +880,7 @@ public class InitializationUtils {
 				}
 				
 				if (tileId == TileType.DYNAMIC_PIECE_ALIEN_BASE_BLOCKADE.getTileId()) {
-					AlienBaseBlockade alienBaseBlockade = AlienBaseBlockade.create(Position.fromCoordinates(k, l, map.getMapType()));
+					AlienBaseBlockade alienBaseBlockade = AlienBaseBlockade.create(Position.fromCoordinates(k, l, map.getMapDescriptor()));
 					map.getMapPieces().addPiece(alienBaseBlockade);
 				}
 
@@ -965,8 +959,8 @@ public class InitializationUtils {
 			int priority = (priorityPropertyValue == null) ? 0 : Integer.parseInt(priorityPropertyValue);
 			TiledLineObject.Point start = connector.getPoints().get(0);
 			TiledLineObject.Point end = connector.getPoints().get(1);
-			Position startPosition = Position.fromCoordinates((float)((int)start.x / tileLength), (float)((int)start.y / tileLength), map.getMapType());
-			Position endPosition = Position.fromCoordinates((float)((int)end.x / tileLength), (float)((int)end.y / tileLength), map.getMapType());
+			Position startPosition = Position.fromCoordinates((float)((int)start.x / tileLength), (float)((int)start.y / tileLength), map.getMapDescriptor());
+			Position endPosition = Position.fromCoordinates((float)((int)end.x / tileLength), (float)((int)end.y / tileLength), map.getMapDescriptor());
 			Optional<SwitchableHolder> optSwitchableHolder = map.switchableHolderAtPosition(startPosition);
 			if (optSwitchableHolder.isPresent()) {
 				Optional<Switchable> optSwitchable = map.switchableAtPosition(endPosition);
@@ -1009,15 +1003,18 @@ public class InitializationUtils {
 
 	@SuppressWarnings("unchecked")
 	private static void initializeRuleBook(CosmodogGame cosmodogGame) {
+
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		RuleBook ruleBook = new RuleBook();
 
 		ResourceWrapperBuilder<Rule> ruleBuilder;
 		Map<String, GenericResourceWrapper<Rule>> ruleResourceWrappers;
 
 		//Space lift rules
-		for (MapType mapType : MapType.values()) {
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
 
-			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+			CosmodogMap map = cosmodogGame.getMaps().get(mapDescriptor);
 
 			TiledObjectGroup liftObjectGroup = map.getCustomTiledMap().getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_LIFTS);
 
@@ -1028,11 +1025,11 @@ public class InitializationUtils {
 			List<TiledObject> liftRegions = liftObjectGroup.getObjects().values().stream().toList();
 
 			for (TiledObject liftRegion : liftRegions) {
-				RuleTrigger enterLiftTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_LIFTS, liftRegion.getName());
-				SpaceLiftAction spaceLiftAction = new SpaceLiftAction(mapType == MapType.MAIN);
+				RuleTrigger enterLiftTrigger = new EnteringRegionTrigger(mapDescriptor, ObjectGroups.OBJECT_GROUP_ID_LIFTS, liftRegion.getName());
+				SpaceLiftAction spaceLiftAction = new SpaceLiftAction(mapDescriptor.equals(mapDescriptors.get(MapDescriptor.MAP_NAME_MAIN)));
 				RuleAction changePositionAction = new AsyncActionRegistrationRuleAction(AsyncActionType.SPACE_LIFT, spaceLiftAction, false);
 				RuleAction composedAction = new BlockAction(changePositionAction);
-				Rule spaceliftAtCosmodromRule = new Rule("SpaceLiftRule_" + mapType + "." + liftRegion.getName(), Lists.newArrayList(GameEventChangedPosition.class), enterLiftTrigger, composedAction, Rule.RULE_PRIORITY_LATEST);
+				Rule spaceliftAtCosmodromRule = new Rule("SpaceLiftRule_" + mapDescriptor + "." + liftRegion.getName(), Lists.newArrayList(GameEventChangedPosition.class), enterLiftTrigger, composedAction, Rule.RULE_PRIORITY_LATEST);
 				ruleBook.put(spaceliftAtCosmodromRule.getId(), spaceliftAtCosmodromRule);
 			}
 		}
@@ -1097,12 +1094,14 @@ public class InitializationUtils {
 		Map<String, Rule> poisonDeactivationRules = PoisonDeactivationRuleFactory.getInstance().buildRules(cosmodogGame);
 		ruleBook.putAll(poisonDeactivationRules);
 
+		MapDescriptor main = mapDescriptors.get(MapDescriptor.MAP_NAME_MAIN);
+
 		// Mine deactivation rules
 		for (QuadrandType quadrandType : QuadrandType.values()) {
 			
 			//Trigger: Not yet deactivated AND entered region AND having deactivation codes.
 			RuleTrigger deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
-			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1), deactivateMinesForQuadrandTrigger);
 			//Action: Deactivate mines AND set deactivated property to true AND print notification.
 			AsyncAction asyncAction = new PopUpNotificationAction("The console controls the land mines in the quadrand " + quadrandType.getRepresentation() + ". You deactivate the mines.");
@@ -1115,7 +1114,7 @@ public class InitializationUtils {
 			
 			//Trigger: Not yet deactivated AND entered region AND NOT having deactivation codes.
 			deactivateMinesForQuadrandTrigger = new GameProgressPropertyTrigger("MinesDeactivatedForQuadrand" + quadrandType, "false");
-			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
+			deactivateMinesForQuadrandTrigger = AndTrigger.and(new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "DeactivateMines" + quadrandType), deactivateMinesForQuadrandTrigger);
 			RuleTrigger notHavingDeactivationCodesTrigger = new InventoryBasedTrigger(InventoryItemType.MINEDEACTIVATIONCODES, 1);
 			notHavingDeactivationCodesTrigger = InvertedTrigger.not(notHavingDeactivationCodesTrigger);
 			deactivateMinesForQuadrandTrigger = AndTrigger.and(notHavingDeactivationCodesTrigger, deactivateMinesForQuadrandTrigger);
@@ -1130,7 +1129,7 @@ public class InitializationUtils {
 
 		// Worm delay rules
 		RuleTrigger switchOnVentilationTrigger = new GameProgressPropertyTrigger("WormAreaVentilationOn", "false");
-		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
+		switchOnVentilationTrigger = AndTrigger.and(new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnVentilation"), switchOnVentilationTrigger);
 		AsyncAction asyncAction = new PopUpNotificationAction("This is the control panel for the ventilation. You activate it. The worm will now have harder time detecting you.");
 		RuleAction notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnVentilationAction = new SwitchOnVentilationToDelayWormAction();
@@ -1139,7 +1138,7 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 		
 		RuleTrigger switchOnSewageTrigger = new GameProgressPropertyTrigger("WormAreaSewageOn", "false");
-		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
+		switchOnSewageTrigger = AndTrigger.and(new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnSewage"), switchOnSewageTrigger);
 		asyncAction = new PopUpNotificationAction("This is the control panel for the sewage. You activate it. The worm will now have even harder time detecting you.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnSewageAction = new SwitchOnSewageToDelayWormAction();
@@ -1148,7 +1147,7 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 		
 		RuleTrigger switchOnDrillsTrigger = new GameProgressPropertyTrigger("WormAreaDrillOn", "false");
-		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
+		switchOnDrillsTrigger = AndTrigger.and(new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "SwitchOnDrills"), switchOnDrillsTrigger);
 		asyncAction = new PopUpNotificationAction("This is the control panel for the underground drill machines. You activate it. The worm cannot detect you anymore.");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction switchOnDrillAction = new DeactivateWormAction();
@@ -1158,7 +1157,7 @@ public class InitializationUtils {
 
 		//Pickup blue keycard rule.
 		RuleTrigger approachBlueKeyCardTrigger = new GameProgressPropertyTrigger("CollectedBlueKeyCard", "false");
-		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
+		approachBlueKeyCardTrigger = AndTrigger.and(new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "RegionWithBlueKeyCard"), approachBlueKeyCardTrigger);
 		asyncAction = new PopUpNotificationAction("There is something shiny on the shelf. You grab the item. It is a key card for the mass hall (blue).");
 		notificationAction = new AsyncActionRegistrationRuleAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		RuleAction pickUpBlueKeyCardAction = new PickupKeyAction(DoorType.blueKeycardDoor);
@@ -1168,11 +1167,11 @@ public class InitializationUtils {
 		
 		//Open gate rule.
 		RuleTrigger openGateTrigger = OrTrigger.or(
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch1"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch2"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch3"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch4"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch5")
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch1"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch2"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch3"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch4"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "AlienBaseGateSwitch5")
 				);
 		
 		RuleAction updateAlienBaseGateSequenceAction = new UpdateAlienBaseGateSequenceAction();
@@ -1180,10 +1179,10 @@ public class InitializationUtils {
 		ruleBook.put(rule.getId(), rule);
 
 		RuleTrigger activateTeleportTrigger = OrTrigger.or(
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole1"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole2"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole3"),
-				new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole4")
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole1"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole2"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole3"),
+				new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "TeleportConsole4")
 				);
 		
 		RuleAction updateTeleportSequenceAction = new UpdateAlienBaseTeleportSequenceAction();
@@ -1208,18 +1207,18 @@ public class InitializationUtils {
 
 
 		// Last boss damage.
-		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(MapType.MAIN, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
+		RuleTrigger damageLastBossTrigger = new EnteringRegionTrigger(main, ObjectGroups.OBJECT_GROUP_ID_REGIONS, "LastBossConsole");
 		RuleAction damageLastBossAction = new DamageLastBossAction();
 		rule = new Rule(Rule.RULE_DAMAGE_LAST_BOSS, Lists.newArrayList(GameEventChangedPosition.class), damageLastBossTrigger, damageLastBossAction, Rule.RULE_PRIORITY_LATEST);
 		ruleBook.put(rule.getId(), rule);
 
 		// Secret found
-		for (MapType mapType : MapType.values()) {
-			CosmodogMap map = cosmodogGame.getMaps().get(mapType);
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
+			CosmodogMap map = cosmodogGame.getMaps().get(mapDescriptor);
 			TiledObjectGroup secretsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_SECRETS);
 			Map<String, TiledObject> secretObjects = secretsObjectGroup.getObjects();
 			for (String secretObjectKey : secretObjects.keySet()) {
-				RuleTrigger secretEntranceTrigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_SECRETS, secretObjectKey);
+				RuleTrigger secretEntranceTrigger = new EnteringRegionTrigger(mapDescriptor, ObjectGroups.OBJECT_GROUP_SECRETS, secretObjectKey);
 				secretEntranceTrigger = AndTrigger.and(secretEntranceTrigger, new GameProgressPropertyTrigger("SecretCollected." + secretObjectKey, "false"));
 
 				RuleAction action = new SetGameProgressPropertyAction("SecretCollected." + secretObjectKey, "true");
@@ -1259,7 +1258,7 @@ public class InitializationUtils {
 		for (int k = 0; k < mapWidth; k++) {
 			for (int l = 0; l < mapHeight; l++) {
 
-				Position position = Position.fromCoordinates(k, l, map.getMapType());
+				Position position = Position.fromCoordinates(k, l, map.getMapDescriptor());
 
 				int tileId = customTiledMap.getTileId(position, enemyLayerIndex);
 
@@ -1283,9 +1282,9 @@ public class InitializationUtils {
 						int w = customTiledMap.getTileWidth();
 						int h = customTiledMap.getTileHeight();
 
-						PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h, enemy.getPosition().getMapType());
+						PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, w, h, enemy.getPosition().getMapDescriptor());
 
-						boolean intersects = CollisionUtils.intersects(r, enemy.getPosition().getMapType(), homeRegion);
+						boolean intersects = CollisionUtils.intersects(r, enemy.getPosition().getMapDescriptor(), homeRegion);
 
 						if (intersects) {
 							enemy.setHomeRegionName(homeRegion.getName());

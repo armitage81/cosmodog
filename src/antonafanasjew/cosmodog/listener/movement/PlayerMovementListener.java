@@ -641,7 +641,7 @@ public class PlayerMovementListener implements MovementListener {
 		wormRegions.addAll(wormsObjectGroup.getObjects().values());
 
 		for (TiledObject wormRegion : wormRegions) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), wormRegion)) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), wormRegion)) {
 				retVal = Optional.of(wormRegion);
 				break;
 			}
@@ -789,8 +789,8 @@ public class PlayerMovementListener implements MovementListener {
 		TiledObjectGroup weatherObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_WEATHER);
 		TiledObject snowfallRegion = weatherObjectGroup.getObjects().get("Snowfall");
 		TiledObject snowfallBorderRegion = weatherObjectGroup.getObjects().get("Snowfall_border");
-		boolean inSnowfall = RegionUtils.tileInRegion(player.getPosition(), map.getMapType(), snowfallRegion);
-		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPosition(), map.getMapType(), snowfallBorderRegion);
+		boolean inSnowfall = RegionUtils.tileInRegion(player.getPosition(), map.getMapDescriptor(), snowfallRegion);
+		boolean inSnowfallBorder = RegionUtils.tileInRegion(player.getPosition(), map.getMapDescriptor(), snowfallBorderRegion);
 		boolean underRoof = !RegionUtils.roofsOverPiece(player, map).isEmpty() && RegionUtils.roofRemovalBlockersOverPiece(player, map).isEmpty();
 		SnowfallChangeAction snowfallChangeAction =  (SnowfallChangeAction) game.getActionRegistry().getRegisteredAction(AsyncActionType.SNOWFALL_CHANGE);
 

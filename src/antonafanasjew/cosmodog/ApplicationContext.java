@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.filesystem.*;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
+import antonafanasjew.cosmodog.globals.DefaultMapDescriptorBuilder;
+import antonafanasjew.cosmodog.globals.MapDescriptorBuilder;
 import antonafanasjew.cosmodog.listener.movement.consumer.*;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.*;
 import antonafanasjew.cosmodog.model.*;
-import antonafanasjew.cosmodog.topology.Position;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
@@ -100,16 +100,18 @@ public class ApplicationContext {
 
 	private PlayerBuilder playerBuilder;
 
+	private MapDescriptorBuilder mapDescriptorBuilder = new DefaultMapDescriptorBuilder();
+
 	/*
 	 * Contains the game model beyond the game session. User, score list etc are also included.
 	 */
 	private Cosmodog cosmodog;
-	
+
 	/*
 	 * Data of maps as loaded from the Tiled format.
 	 * The prefix "Custom" indicates that it is custom class and not the one from the framework.
 	 */
-	private Map<MapType, CustomTiledMap> customTiledMaps;
+	private Map<MapDescriptor, CustomTiledMap> customTiledMaps;
 	
 	/*
 	 * All log data (cutscenes, monolith interactions, found logs) as texts. 
@@ -190,13 +192,14 @@ public class ApplicationContext {
 	 * and use only the CosmodogTiledMap class.
 	 * @return Custom Tiled Map as the initial state of the map.
 	 */
-	public Map<MapType, CustomTiledMap> getCustomTiledMaps() {
+	public Map<MapDescriptor, CustomTiledMap> getCustomTiledMaps() {
 		if (this.customTiledMaps == null) {
 			try {
+				Map<String, MapDescriptor> mapDescriptors = mapDescriptors();
 				this.customTiledMaps = Maps.newHashMap();
-				for (MapType mapType : MapType.values()) {
-					CustomTiledMap map = getTiledMapReader().readTiledMap(Constants.mapPathsSupplier.get().get(mapType));
-					customTiledMaps.put(mapType, map);
+				for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
+					CustomTiledMap map = getTiledMapReader().readTiledMap(mapDescriptor.getMapPath());
+					customTiledMaps.put(mapDescriptor, map);
 				}
 			} catch (TiledMapIoException e) {
 				Log.error("Lazy loading of the custom tiled map has failed: " + e.getLocalizedMessage(), e);
@@ -204,7 +207,11 @@ public class ApplicationContext {
 		}
 		return this.customTiledMaps;
 	}
-	
+
+	public Map<String, MapDescriptor> mapDescriptors() {
+        return this.mapDescriptorBuilder.mapDescriptors();
+	}
+
 	/**
 	 * Returns the map of the sound resources.
 	 * @return Sound resources by their IDs.
@@ -255,7 +262,9 @@ public class ApplicationContext {
 
 		this.playerBuilder = CosmodogModelHolder.retrievePlayerBuilder();
 		cosmodog.setPlayerBuilder(playerBuilder);
-		
+
+		this.mapDescriptorBuilder = CosmodogModelHolder.retrieveMapDescriptorBuilder();
+
 		List<CollisionValidator> delegateValidators = Lists.newArrayList();
 		delegateValidators.add(new GeneralCollisionValidatorForPlayer());
 		delegateValidators.add(new InterCharacterCollisionValidatorForPlayer());

@@ -8,7 +8,6 @@ import antonafanasjew.cosmodog.model.DynamicPiece;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import com.apple.eawt.Application;
 
 public class Jammer extends DynamicPiece {
 

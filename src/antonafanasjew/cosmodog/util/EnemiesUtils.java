@@ -38,7 +38,7 @@ public class EnemiesUtils {
 		boolean playerInMoveableGroupWithEnemyDeactivationFlagSet = moveableGroup != null && moveableGroup.isDeactivateEnemies();
 		SafeSpace safeSpaceAroundPlayer = PlayerMovementCache.getInstance().getActiveSafeSpace();
 
-		boolean playerIsInSafeSpaceAndEnemyIsNot = safeSpaceAroundPlayer != null && !RegionUtils.pieceInRegion(enemy, player.getPosition().getMapType(), safeSpaceAroundPlayer.getRegion());
+		boolean playerIsInSafeSpaceAndEnemyIsNot = safeSpaceAroundPlayer != null && !RegionUtils.pieceInRegion(enemy, player.getPosition().getMapDescriptor(), safeSpaceAroundPlayer.getRegion());
 		boolean playerInPortalPuzzle = PlayerMovementCache.getInstance().getActivePortalPuzzle() != null;
 		boolean solarByNight = (enemy.isActiveAtDayTimeOnly() && calendar.isNight());
 

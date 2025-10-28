@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.caching.PiecePredicates;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.model.enemyinventory.EnemyInventoryItem;
 import antonafanasjew.cosmodog.structures.PortalPuzzle;
 import antonafanasjew.cosmodog.structures.Race;
@@ -285,11 +285,13 @@ public class PlayerMovementCache implements Serializable {
 
 	private void recalculateInfobitsInGame() {
 
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		numberInfobitsInGame = 0;
 
-		for (MapType mapType : MapType.values()) {
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
 
-			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapDescriptor);
 
 			int noInfobits = map.getInfobits().size();
 			int noInfoBytes = map.getInfobytes().size();
@@ -325,7 +327,7 @@ public class PlayerMovementCache implements Serializable {
 		MoveableGroup moveableGroupAroundPlayer = null;
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
 		for (MoveableGroup moveableGroup : moveableGroups) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), moveableGroup.getRegion())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), moveableGroup.getRegion())) {
 				moveableGroupAroundPlayer = moveableGroup;
 				break;
 			}
@@ -339,7 +341,7 @@ public class PlayerMovementCache implements Serializable {
 		PortalPuzzle portalPuzzleAroundPlayer = null;
 		List<PortalPuzzle> portalPuzzles = map.getPortalPuzzles();
 		for (PortalPuzzle portalPuzzle : portalPuzzles) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), portalPuzzle.getRegion())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), portalPuzzle.getRegion())) {
 				portalPuzzleAroundPlayer = portalPuzzle;
 				break;
 			}
@@ -353,7 +355,7 @@ public class PlayerMovementCache implements Serializable {
 		SafeSpace safeSpaceAroundPlayer = null;
 		List<SafeSpace> safeSpaces = map.getSafeSpaces();
 		for (SafeSpace safeSpace : safeSpaces) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), safeSpace.getRegion())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), safeSpace.getRegion())) {
 				safeSpaceAroundPlayer = safeSpace;
 				break;
 			}
@@ -367,7 +369,7 @@ public class PlayerMovementCache implements Serializable {
 		Race raceAroundPlayer = null;
 		List<Race> races = map.getRaces();
 		for (Race race : races) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), race.getRegion())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), race.getRegion())) {
 				raceAroundPlayer = race;
 				break;
 			}

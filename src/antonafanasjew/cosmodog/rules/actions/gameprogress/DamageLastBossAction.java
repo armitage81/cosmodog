@@ -5,9 +5,9 @@ import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.fight.LastBossFightAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
@@ -18,6 +18,7 @@ import antonafanasjew.cosmodog.topology.Position;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.io.Serial;
+import java.util.Map;
 
 public class DamageLastBossAction extends AbstractRuleAction {
 
@@ -26,13 +27,13 @@ public class DamageLastBossAction extends AbstractRuleAction {
 
 	@Override
 	public void execute(GameEvent event) {
-
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
 		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 		Player player = ApplicationContextUtils.getPlayer();
 
 		//Check if the boss has been destroyed already.
 		boolean bossDestroyed = false;
-		Enemy lastBoss = map.enemyAtTile(Position.fromCoordinates(227, 254, MapType.MAIN));
+		Enemy lastBoss = map.enemyAtTile(Position.fromCoordinates(227, 254, mapDescriptors.get(MapDescriptor.MAP_NAME_MAIN)));
 		if (lastBoss == null) {
 			bossDestroyed = true;
 		}

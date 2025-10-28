@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -20,7 +20,7 @@ public class TestTeleportSokobanEndToWormArea {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(335, 303, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(335, 303, ApplicationContextUtils.mapDescriptorMain()));
 				player.setLife(1);
 				player.getInventory().put(InventoryItemType.SKI, new SkiInventoryItem());
 				player.getInventory().put(InventoryItemType.JACKET, new JacketInventoryItem());

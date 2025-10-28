@@ -35,7 +35,7 @@ public class OperateSecretDoorsInSokobanAction extends AbstractRuleAction {
 		List<MoveableGroup> moveableGroups = map.getMoveableGroups();
 		MoveableGroup groupAroundPlayer = null;
 		for (MoveableGroup group : moveableGroups) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), group.getRegion())) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), group.getRegion())) {
 				groupAroundPlayer = group;
 				break;
 			}

@@ -3,7 +3,8 @@ package antonafanasjew.cosmodog.rules.triggers;
 import java.util.List;
 import java.util.Map;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -28,15 +29,15 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 
 	private static final long serialVersionUID = 9096030493555091756L;
 
-	private MapType mapType;
+	private MapDescriptor mapDescriptor;
 	private String teleportName;
 
 	/**
 	 * Initialized with the teleport name.
 	 * @param teleportName The name of the teleport connection as defined on the teleport connection group in the tiled map.
 	 */
-	public EnteringTeleportTrigger(MapType mapType, String teleportName) {
-		this.mapType = mapType;
+	public EnteringTeleportTrigger(MapDescriptor mapDescriptor, String teleportName) {
+		this.mapDescriptor = mapDescriptor;
 		this.teleportName = teleportName;
 	}
 	
@@ -49,7 +50,7 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		}
 
 		Player player = ApplicationContextUtils.getPlayer();
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapDescriptor);
 		
 		TiledObjectGroup teleportConnectionObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_TELEPORT_CONNECTIONS);
 		
@@ -62,7 +63,7 @@ public class EnteringTeleportTrigger extends AbstractRuleTrigger {
 		
 		Point teleportStartPoint = teleportConnectionPoints.getFirst();
 		
-		Position teleportStartPosition = Position.fromCoordinates(teleportStartPoint.x, teleportStartPoint.y, mapType);
+		Position teleportStartPosition = Position.fromCoordinates(teleportStartPoint.x, teleportStartPoint.y, mapDescriptor);
 
         return RegionUtils.playerOnPosition(player, teleportStartPosition);
 		

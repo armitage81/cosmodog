@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -19,7 +19,7 @@ public class TestTreeShadows {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(7, 49, MapType.MAIN));
+				player.setPosition(Position.fromCoordinates(7, 49, ApplicationContextUtils.mapDescriptorMain()));
 				player.setMaxLife(100);
 				player.setLife(100);
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());

@@ -1,8 +1,7 @@
 package antonafanasjew.cosmodog.caching;
 
 
-import antonafanasjew.cosmodog.domains.MapType;
-import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.Piece;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.topology.Position;
@@ -16,12 +15,12 @@ import java.util.stream.Collectors;
 
 public class PieceCache implements Serializable {
 
-    private MapType mapType;
+    private MapDescriptor mapDescriptor;
     private final int sectorWidth;
     private final int sectorHeight;
 
-    public PieceCache(MapType mapType, int sectorWidth, int sectorHeight) {
-        this.mapType = mapType;
+    public PieceCache(MapDescriptor mapDescriptor, int sectorWidth, int sectorHeight) {
+        this.mapDescriptor = mapDescriptor;
         this.sectorWidth = sectorWidth;
         this.sectorHeight = sectorHeight;
     }

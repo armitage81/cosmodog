@@ -77,7 +77,7 @@ public class TrafficBarrier extends DynamicPiece {
             return false;
         }
 
-        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(getPosition().getMapType());
+        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(getPosition().getMapDescriptor());
         List<Piece> blockingPieces = map.getMapPieces().piecesAtPosition(e -> !(e instanceof TrafficBarrier), getPosition().getX(), getPosition().getY());
         if (!blockingPieces.isEmpty()) {
             return true;

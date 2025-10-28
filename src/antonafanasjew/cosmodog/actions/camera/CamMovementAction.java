@@ -34,7 +34,7 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 		startPositionInPixels = Position.fromCoordinates(
 				cam.viewCopy().centerX() / cam.getZoomFactor(),
 				cam.viewCopy().centerY() / cam.getZoomFactor(),
-				cam.viewCopy().getMapType()
+				cam.viewCopy().getMapDescriptor()
 		);
 	}
 
@@ -58,7 +58,7 @@ public class CamMovementAction extends FixedLengthAsyncAction {
 		currentY = currentY - cam.viewCopy().height() / 2;
 
 		try {
-			cam.move(Position.fromCoordinates(currentX, currentY, cam.viewCopy().getMapType()));
+			cam.move(Position.fromCoordinates(currentX, currentY, cam.viewCopy().getMapDescriptor()));
 		} catch (CamPositioningException e) {
 			Log.error("Cam out of bounds: " + currentX + "/" + currentY);
 		}

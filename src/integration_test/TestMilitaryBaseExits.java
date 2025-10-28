@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
@@ -18,7 +18,7 @@ public class TestMilitaryBaseExits {
 
             @Override
             protected void updatePlayer(Player player) {
-                player.setPosition(Position.fromCoordinates(168, 343, MapType.MAIN));
+                player.setPosition(Position.fromCoordinates(168, 343, ApplicationContextUtils.mapDescriptorMain()));
                 player.setMaxLife(100);
                 player.setLife(100);
                 player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem("168/348;135/311;132/309;168/343;"));

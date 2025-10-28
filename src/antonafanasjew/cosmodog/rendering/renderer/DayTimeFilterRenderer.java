@@ -108,7 +108,7 @@ public class DayTimeFilterRenderer extends AbstractRenderer {
 		for (int tilePositionOnMapX = camPositionOnMapInTilesX - grace; tilePositionOnMapX < camPositionOnMapInTilesX + camViewWidthInTiles + 2 * grace; tilePositionOnMapX++) {
 			for (int tilePositionOnMapY = camPositionOnMapInTilesY - grace; tilePositionOnMapY < camPositionOnMapInTilesY + camViewHeightInTiles + 2 * grace; tilePositionOnMapY++) {
 
-				Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY, map.getMapType());
+				Position tilePosition = Position.fromCoordinates(tilePositionOnMapX, tilePositionOnMapY, map.getMapDescriptor());
 
 				Color colorToUse = filterColor;
 

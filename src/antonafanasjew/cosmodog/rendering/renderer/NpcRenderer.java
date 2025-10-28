@@ -65,7 +65,7 @@ public class NpcRenderer extends AbstractRenderer {
 
 		Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 		
-		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
+		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapDescriptor());
 
 		Set<Enemy> enemies = map.visibleEnemies(tilePosition, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 2);
 

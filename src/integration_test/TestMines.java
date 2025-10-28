@@ -1,6 +1,6 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import org.newdawn.slick.SlickException;
 
 public class TestMines {
@@ -19,7 +20,7 @@ public class TestMines {
 			
 			@Override
 			protected void updatePlayer(Player player) {
-				player.setPosition(Position.fromCoordinates(209, 35, MapType.ALTERNATIVE));
+				player.setPosition(Position.fromCoordinates(209, 35, ApplicationContextUtils.mapDescriptor("ALTERNATIVE")));
 				player.setLife(1);
 				VehicleInventoryItem vii = new VehicleInventoryItem(new Vehicle());
 				player.getInventory().put(InventoryItemType.VEHICLE, vii);

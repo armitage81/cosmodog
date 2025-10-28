@@ -3,7 +3,7 @@ package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.gamelog.GameLog;
 import antonafanasjew.cosmodog.model.gamelog.GameLogs;
 import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
@@ -17,6 +17,9 @@ import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.InteractingWithPieceTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
+import java.util.Map;
 
 /**
  * Builds rules for dialogs, which are based on the number of previous collection of the piece type.
@@ -26,11 +29,15 @@ public class MultiInstancePieceRuleBuilder extends AbstractCsvBasedResourceWrapp
 
 	@Override
 	protected Rule build(String line) {
+
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		String[] values = line.split(";");
 		
 		String ruleName = values[0];
 		String pieceName = values[1];
-		MapType mapType = MapType.valueOf(values[2]);
+		String mapName = values[2];
+		MapDescriptor mapDescriptor = mapDescriptors.get(mapName);
 		String gameLogsSeriesNameAndId = values[3];
 		String gameProgressProperty = values[4];
 		String gameProgressPropertyValue = values[5];
@@ -38,7 +45,7 @@ public class MultiInstancePieceRuleBuilder extends AbstractCsvBasedResourceWrapp
 		short priority = Short.valueOf(values[6]);
 		
 		
-		RuleTrigger pieceInteractionTrigger = new InteractingWithPieceTrigger(pieceName, mapType);
+		RuleTrigger pieceInteractionTrigger = new InteractingWithPieceTrigger(pieceName, mapDescriptor);
 		RuleTrigger gameProgressPropertyValueTrigger = new GameProgressPropertyTrigger(gameProgressProperty, gameProgressPropertyValue, "0");
 		
 		RuleTrigger trigger = AndTrigger.and(pieceInteractionTrigger, gameProgressPropertyValueTrigger);

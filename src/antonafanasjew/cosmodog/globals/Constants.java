@@ -1,6 +1,7 @@
 package antonafanasjew.cosmodog.globals;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.topology.Position;
 import com.google.common.collect.Maps;
 
@@ -31,23 +32,6 @@ public class Constants {
 	
 	public static final int FLICKING_RATE_IN_MILLIS = 500;
 	public static final float FLICKING_THRESHOLD = 0.2f;
-	
-	public static Supplier<Map<MapType, String>> mapPathsSupplier = () -> {
-
-		Map<MapType, String> retVal = Maps.newHashMap();
-		for (MapType mapType : MapType.values()) {
-			String mapFile = System.getProperty("cosmodog.mapFile." + mapType.name());
-			String mapPath;
-			if (mapFile != null) {
-				mapPath = "data/maps/" + mapFile;
-			} else {
-				mapPath = mapType.getMapPath();
-			}
-			retVal.put(mapType, mapPath);
-		}
-
-		return retVal;
-	};
 	
 	/**
 	 * Milliseconds to wait between turns.
@@ -145,6 +129,5 @@ public class Constants {
 
 	public static final int TURNS_BEFORE_DEATH_BY_POISON = 3;
 
-	public static final Position DEFAULT_RESPAWN_POSITION = Position.fromCoordinates(28, 58, MapType.MAIN);
 
 }

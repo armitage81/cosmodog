@@ -55,7 +55,7 @@ public class Terminal extends DynamicPiece {
 		TiledObject retVal = null;
 		
 		for (TiledObject region : regionsObjectGroup.getObjects().values()) {
-			if (RegionUtils.pieceInRegion(player, map.getMapType(), region)) {
+			if (RegionUtils.pieceInRegion(player, map.getMapDescriptor(), region)) {
 				retVal = region;
 				break;
 			}

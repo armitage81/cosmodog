@@ -84,7 +84,7 @@ public class LowerGateAction extends FixedLengthAsyncAction {
 		Collection<DynamicPiece> gates = map.getMapPieces().piecesOverall(PiecePredicates.GATE).stream().map(e -> (DynamicPiece)e).toList();
         for (DynamicPiece dynamicPiece : gates) {
             Gate gate = (Gate) dynamicPiece;
-            if (RegionUtils.pieceInRegion(gate, map.getMapType(), region)) {
+            if (RegionUtils.pieceInRegion(gate, map.getMapDescriptor(), region)) {
                 gatesInRegion.add(gate);
             }
         }

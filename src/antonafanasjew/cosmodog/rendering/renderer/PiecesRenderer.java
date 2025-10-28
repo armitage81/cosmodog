@@ -142,7 +142,7 @@ public class PiecesRenderer extends AbstractRenderer {
 		graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
 		graphics.scale(cam.getZoomFactor(), cam.getZoomFactor());
 
-		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapType());
+		Position tilePosition = Position.fromCoordinates(camTilePosition.tileX(), camTilePosition.tileY(), map.getMapDescriptor());
 
 		Collection<Piece> mapPieces = map.visibleMapPieces(tilePosition, camTilePosition.widthInTiles(), camTilePosition.heightInTiles(), 5);
 		

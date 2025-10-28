@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.model.states;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.rendering.renderer.*;
 import antonafanasjew.cosmodog.util.*;
 import org.newdawn.slick.GameContainer;
@@ -79,7 +79,7 @@ public class GameState extends CosmodogAbstractState {
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		if (cosmodog.getGameLifeCycle().isStartNewGame()) {
 
-			Map<MapType, CustomTiledMap> customTiledMaps = applicationContext.getCustomTiledMaps();
+			Map<MapDescriptor, CustomTiledMap> customTiledMaps = applicationContext.getCustomTiledMaps();
 
 			CosmodogGame cosmodogGame;
 
@@ -90,12 +90,12 @@ public class GameState extends CosmodogAbstractState {
 				applicationContext.getCosmodog().setCosmodogGame(cosmodogGame);
 				cosmodogGame.setGameName(cosmodog.getGameLifeCycle().getGameName());
 				CosmodogMap map = cosmodogGame.mapOfPlayerLocation();
-				Rectangle scene = Rectangle.fromSize((float) (map.getMapType().getWidth() * tileLength), (float) (map.getMapType().getHeight() * tileLength));
+				Rectangle scene = Rectangle.fromSize((float) (map.getMapDescriptor().getWidth() * tileLength), (float) (map.getMapDescriptor().getHeight() * tileLength));
 
 				DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 
 				try {
-					cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapType()));
+					cosmodogGame.setCam(new Cam(Cam.CAM_MODE_CENTER_IN_SCENE, scene, sceneDrawingContext.x(), sceneDrawingContext.y(), sceneDrawingContext.w(), sceneDrawingContext.h(), map.getMapDescriptor()));
 				} catch (CamPositioningException e) {
 					Log.error("Camera positioning could not be established", e);
 				}

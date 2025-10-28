@@ -7,6 +7,8 @@ import antonafanasjew.cosmodog.InputHandlers;
 import antonafanasjew.cosmodog.collision.CollisionValidator;
 import antonafanasjew.cosmodog.filesystem.CosmodogGamePersistor;
 import antonafanasjew.cosmodog.filesystem.CosmodogScorePersistor;
+import antonafanasjew.cosmodog.globals.DefaultMapDescriptorBuilder;
+import antonafanasjew.cosmodog.globals.MapDescriptorBuilder;
 import antonafanasjew.cosmodog.listener.movement.consumer.ResourceConsumer;
 import antonafanasjew.cosmodog.listener.movement.pieceinteraction.PieceInteraction;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -137,7 +139,7 @@ public class Cosmodog extends CosmodogModel {
 	public PlayerBuilder getPlayerBuilder() {
 		return playerBuilder;
 	}
-	
+
 	public void setPlayerBuilder(PlayerBuilder playerBuilder) {
 		this.playerBuilder = playerBuilder;
 	}

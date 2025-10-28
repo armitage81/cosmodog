@@ -2,13 +2,15 @@ package antonafanasjew.cosmodog.rules.actions.gameprogress;
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.GameProgress;
 import antonafanasjew.cosmodog.SoundResources;
 import antonafanasjew.cosmodog.caching.PiecePredicates;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.domains.QuadrandType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.DynamicPiece;
@@ -45,10 +47,12 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 		GameProgress gameProgress = ApplicationContextUtils.getGameProgress();
 		gameProgress.getMinesDeactivationInfo().put(quadrandType, Boolean.TRUE);
 
-		for (MapType mapType : MapType.values()) {
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
+		for (MapDescriptor mapDescriptor : mapDescriptors.values()) {
 
 
-			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapDescriptor);
 			Collection<DynamicPiece> mines = map
 					.getMapPieces()
 					.piecesOverall(PiecePredicates.MINE)
@@ -79,8 +83,8 @@ public class DeactivateMinesAction extends AbstractRuleAction {
 
 		if (!initialized) {
 
-			int mapWidht = MapType.MAIN.getWidth();
-			int mapHeight = MapType.MAIN.getHeight();
+			int mapWidht = ApplicationContextUtils.mapDescriptorMain().getWidth();
+			int mapHeight = ApplicationContextUtils.mapDescriptorMain().getHeight();
 
 			minX = 0;
 			minY = 0;

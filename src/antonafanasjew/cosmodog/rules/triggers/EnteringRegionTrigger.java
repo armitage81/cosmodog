@@ -1,7 +1,7 @@
 package antonafanasjew.cosmodog.rules.triggers;
 
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.rules.AbstractRuleTrigger;
 import antonafanasjew.cosmodog.rules.events.GameEvent;
@@ -10,7 +10,6 @@ import antonafanasjew.cosmodog.tiledmap.TiledObject;
 import antonafanasjew.cosmodog.tiledmap.TiledObjectGroup;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.util.RegionUtils;
-import antonafanasjew.cosmodog.util.TileUtils;
 
 /**
  * Indicates whether the player has entered a region as defined on the tiled map under given layer and name
@@ -19,12 +18,12 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 
 	private static final long serialVersionUID = 1280404774181149596L;
 
-	private MapType mapType;
+	private MapDescriptor mapDescriptor;
 	private String layerName;
 	private String regionName;
 	
-	public EnteringRegionTrigger(MapType mapType, String layerName, String regionName) {
-		this.mapType = mapType;
+	public EnteringRegionTrigger(MapDescriptor mapDescriptor, String layerName, String regionName) {
+		this.mapDescriptor = mapDescriptor;
 		this.layerName = layerName;
 		this.regionName = regionName;
 	}
@@ -36,7 +35,7 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 			return false;
 		}
 
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapType);
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(mapDescriptor);
 		
 		Player player = ApplicationContextUtils.getPlayer();
 		
@@ -45,7 +44,7 @@ public class EnteringRegionTrigger extends AbstractRuleTrigger {
 		TiledObject regionObject = regionsObjectGroup.getObjects().get(regionName);
 		
 		if (regionObject != null) {
-			return RegionUtils.pieceInRegion(player, mapType, regionObject);
+			return RegionUtils.pieceInRegion(player, mapDescriptor, regionObject);
 		}
 		
 		return false;

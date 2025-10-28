@@ -9,7 +9,7 @@ import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.camera.CamCenteringDecoratorAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.actions.mechanism.SwitchingIndicatorAction;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -49,7 +49,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		
 		ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_CONSOLE).play();
 		
-		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(MapType.MAIN);
+		CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(ApplicationContextUtils.mapDescriptorMain());
 		Player player = ApplicationContextUtils.getPlayer();
 		TiledObjectGroup regionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_REGIONS);
 		
@@ -58,10 +58,10 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		TiledObject region3 = regionsObjectGroup.getObjects().get("TeleportConsole3");
 		TiledObject region4 = regionsObjectGroup.getObjects().get("TeleportConsole4");
 		
-		boolean inRegion1 = RegionUtils.pieceInRegion(player, MapType.MAIN, region1);
-		boolean inRegion2 = RegionUtils.pieceInRegion(player, MapType.MAIN, region2);
-		boolean inRegion3 = RegionUtils.pieceInRegion(player, MapType.MAIN, region3);
-		boolean inRegion4 = RegionUtils.pieceInRegion(player, MapType.MAIN, region4);
+		boolean inRegion1 = RegionUtils.pieceInRegion(player, ApplicationContextUtils.mapDescriptorMain(), region1);
+		boolean inRegion2 = RegionUtils.pieceInRegion(player, ApplicationContextUtils.mapDescriptorMain(), region2);
+		boolean inRegion3 = RegionUtils.pieceInRegion(player, ApplicationContextUtils.mapDescriptorMain(), region3);
+		boolean inRegion4 = RegionUtils.pieceInRegion(player, ApplicationContextUtils.mapDescriptorMain(), region4);
 		
 		String reactionText = "";
 		
@@ -94,7 +94,7 @@ public class UpdateAlienBaseTeleportSequenceAction extends AbstractRuleAction {
 		
 		if (CORRECT_SEQUENCE.equals(currentSequence)) {
 			AsyncAction asyncAction = new SwitchingIndicatorAction(2000, "AlienBaseTeleportIndicator", true);
-			asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(204, 310, MapType.MAIN), asyncAction);
+			asyncAction = new CamCenteringDecoratorAction(1000, Position.fromCoordinates(204, 310, ApplicationContextUtils.mapDescriptorMain()), asyncAction);
 			ActionRegistry actionRegistry = ApplicationContextUtils.getCosmodogGame().getActionRegistry();
 			actionRegistry.registerAction(AsyncActionType.MODAL_WINDOW, asyncAction);
 		}

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import antonafanasjew.cosmodog.caching.PieceCache;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import com.google.common.collect.Sets;
 
 import antonafanasjew.cosmodog.model.CollectibleComposed;
@@ -76,10 +76,10 @@ public class CosmodogMapStatisticsProviderTest {
 	public void testInfobitValuePerChartPiece() {
 		int chartPieceWidthInTiles = 2;
 		int chartPieceHeightInTiles = 2;
-		Position p1 = Position.fromCoordinates(0, 0, MapType.MAIN);
-		Position p2 = Position.fromCoordinates(1, 1, MapType.MAIN);
-		Position p3 = Position.fromCoordinates(2, 0, MapType.MAIN);
-		Position p4 = Position.fromCoordinates(0, 2, MapType.MAIN);
+		Position p1 = Position.fromCoordinates(0, 0, ApplicationContextUtils.mapDescriptorMain());
+		Position p2 = Position.fromCoordinates(1, 1, ApplicationContextUtils.mapDescriptorMain());
+		Position p3 = Position.fromCoordinates(2, 0, ApplicationContextUtils.mapDescriptorMain());
+		Position p4 = Position.fromCoordinates(0, 2, ApplicationContextUtils.mapDescriptorMain());
 
 		CollectibleGoodie g1 = new CollectibleGoodie(GoodieType.infobit);
 		g1.setPosition(p1);
@@ -93,7 +93,7 @@ public class CosmodogMapStatisticsProviderTest {
 		CollectibleGoodie g4 = new CollectibleGoodie(GoodieType.infobit);
 		g4.setPosition(p4);
 
-		PieceCache pieceCache = new PieceCache(MapType.MAIN, 400, 400);
+		PieceCache pieceCache = new PieceCache(ApplicationContextUtils.mapDescriptorMain(), 400, 400);
 
 		pieceCache.addPiece(g1);
 		pieceCache.addPiece(g2);
@@ -101,10 +101,10 @@ public class CosmodogMapStatisticsProviderTest {
 		pieceCache.addPiece(g4);
 		Map<Position, Integer> result = CosmodogMapStatisticsProvider.getInstance().infobitValuePerChartPiece(pieceCache, Sets.newHashSet(), chartPieceWidthInTiles, chartPieceHeightInTiles);
 		
-		Position m1 = Position.fromCoordinates(0f, 0f, MapType.MAIN);
-		Position m2 = Position.fromCoordinates(0f, 1f, MapType.MAIN);
-		Position m3 = Position.fromCoordinates(1f, 0f, MapType.MAIN);
-		Position m4 = Position.fromCoordinates(1f, 1f, MapType.MAIN);
+		Position m1 = Position.fromCoordinates(0f, 0f, ApplicationContextUtils.mapDescriptorMain());
+		Position m2 = Position.fromCoordinates(0f, 1f, ApplicationContextUtils.mapDescriptorMain());
+		Position m3 = Position.fromCoordinates(1f, 0f, ApplicationContextUtils.mapDescriptorMain());
+		Position m4 = Position.fromCoordinates(1f, 1f, ApplicationContextUtils.mapDescriptorMain());
 		
 		assertEquals(2, (int)result.get(m1));
 		assertEquals(1, (int)result.get(m2));

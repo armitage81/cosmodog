@@ -49,9 +49,9 @@ public class HomeRegionCollisionValidatorForNpc extends AbstractCollisionValidat
 		int x = (int)(entrance.getPosition().getX() * tileLength);
 		int y = (int)(entrance.getPosition().getY() * tileLength);
 
-		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, entrance.getPosition().getMapType());
+		PlacedRectangle r = PlacedRectangle.fromAnchorAndSize(x, y, tileLength, tileLength, entrance.getPosition().getMapDescriptor());
 		
-		boolean intersects = CollisionUtils.intersects(r, map.getMapType(), homeRegion);
+		boolean intersects = CollisionUtils.intersects(r, map.getMapDescriptor(), homeRegion);
 		
 		return intersects ? passable : notPassable;
 		

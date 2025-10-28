@@ -1,0 +1,1 @@
+.\jre\bin\java -Djava.library.path=dll -jar cosmodog.jar

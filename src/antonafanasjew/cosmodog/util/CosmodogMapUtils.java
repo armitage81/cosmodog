@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.domains.UnitType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
 import antonafanasjew.cosmodog.model.CosmodogMap;
@@ -111,55 +111,55 @@ public class CosmodogMapUtils {
 	private static final Set<Position> PLATFORMDATA = Sets.newHashSet();
 	
 	static {
-		PLATFORMDATA.add(Position.fromCoordinates(-1, -3, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, -3, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, -3, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, -3, ApplicationContextUtils.mapDescriptorMain()));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, -2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, -2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 0, -2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, -2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, -2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, -2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, -2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, -2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, -2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 0, -2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, -2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, -2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, -2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, -2, ApplicationContextUtils.mapDescriptorMain()));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-3, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-2, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, -1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 5, -1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-3, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, -1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 5, -1, ApplicationContextUtils.mapDescriptorMain()));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, 0, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 0, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, 0, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 0, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 0, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 0, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, 0, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, 0, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 0, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, 0, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 0, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 0, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 0, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, 0, ApplicationContextUtils.mapDescriptorMain()));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, 1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, 1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 1, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, 1, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, 1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, 1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 1, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, 1, ApplicationContextUtils.mapDescriptorMain()));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-2, 2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates(-0, 2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 2, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 4, 2, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-2, 2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates(-0, 2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 2, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 4, 2, ApplicationContextUtils.mapDescriptorMain()));
 		
-		PLATFORMDATA.add(Position.fromCoordinates(-1, 3, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 1, 3, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 2, 3, MapType.MAIN));
-		PLATFORMDATA.add(Position.fromCoordinates( 3, 3, MapType.MAIN));
+		PLATFORMDATA.add(Position.fromCoordinates(-1, 3, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 1, 3, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 2, 3, ApplicationContextUtils.mapDescriptorMain()));
+		PLATFORMDATA.add(Position.fromCoordinates( 3, 3, ApplicationContextUtils.mapDescriptorMain()));
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class CosmodogMapUtils {
 	public static boolean isTileOnPlatform(Position tilePosition) {
 		boolean retVal = false;
 		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-		Set<Platform> platforms = cosmodogGame.getMaps().get(tilePosition.getMapType()).getPlatforms();
+		Set<Platform> platforms = cosmodogGame.getMaps().get(tilePosition.getMapDescriptor()).getPlatforms();
 		for (Platform platform : platforms) {
 			if (isTileOnPlatform(tilePosition, platform.getPosition())) {
 				retVal = true;
@@ -180,10 +180,10 @@ public class CosmodogMapUtils {
 	
 	public static boolean isTileOnPlatform(Position tilePosition, Position platformPosition) {
 		boolean retVal = false;
-		if (tilePosition.getMapType() == platformPosition.getMapType()) {
+		if (tilePosition.getMapDescriptor().equals(platformPosition.getMapDescriptor())) {
 			int actorOffsetX = (int) (tilePosition.getX() - platformPosition.getX());
 			int actorOffsetY = (int) (tilePosition.getY() - platformPosition.getY());
-			Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, MapType.MAIN);
+			Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, ApplicationContextUtils.mapDescriptorMain());
 			retVal = PLATFORMDATA.contains(offsetPosition);
 		}
 		return retVal;
@@ -194,7 +194,7 @@ public class CosmodogMapUtils {
 		for (Position offsetPosition : PLATFORMDATA) {
 			float x = platform.getPosition().getX() + offsetPosition.getX();
 			float y = platform.getPosition().getY() + offsetPosition.getY();
-			Position position = Position.fromCoordinates(x, y, platform.getPosition().getMapType());
+			Position position = Position.fromCoordinates(x, y, platform.getPosition().getMapDescriptor());
 			retVal.add(position);
 		}
 		return retVal;

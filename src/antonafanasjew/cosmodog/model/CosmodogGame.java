@@ -4,7 +4,6 @@ import antonafanasjew.cosmodog.actions.ActionRegistry;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -63,7 +62,7 @@ public class CosmodogGame extends CosmodogModel {
 
 	private Player player;
 
-	private final Map<MapType, CosmodogMap> maps = Maps.newHashMap();
+	private final Map<MapDescriptor, CosmodogMap> maps = Maps.newHashMap();
 
 	private FixedSizeQueue<Portal> portals = new FixedSizeQueue<Portal>(2);
 
@@ -93,12 +92,12 @@ public class CosmodogGame extends CosmodogModel {
 		this.player = player;
 	}
 
-	public Map<MapType, CosmodogMap> getMaps() {
+	public Map<MapDescriptor, CosmodogMap> getMaps() {
 		return maps;
 	}
 
 	public CosmodogMap mapOfPlayerLocation() {
-		return maps.get(player.getPosition().getMapType());
+		return maps.get(player.getPosition().getMapDescriptor());
 	}
 
 	public Cam getCam() {
@@ -241,7 +240,7 @@ public class CosmodogGame extends CosmodogModel {
 		Portal entrancePortal = null;
 		Portal exitPortal = null;
 
-		Position actorsPosition = Position.fromCoordinates(actor.getPosition().getX(), actor.getPosition().getY(), actor.getPosition().getMapType());
+		Position actorsPosition = Position.fromCoordinates(actor.getPosition().getX(), actor.getPosition().getY(), actor.getPosition().getMapDescriptor());
 
 		Position facedAdjacentPosition = DirectionType.facedAdjacentPosition(actorsPosition, directionType);
 

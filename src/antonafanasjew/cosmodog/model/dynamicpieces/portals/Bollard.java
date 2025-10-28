@@ -100,7 +100,7 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
 
         CosmodogGame game = ApplicationContextUtils.getCosmodogGame();
         Player player = game.getPlayer();
-        CosmodogMap map = game.getMaps().get(getPosition().getMapType());
+        CosmodogMap map = game.getMaps().get(getPosition().getMapDescriptor());
 
         boolean moveableOnPosition = map.moveableAtPosition(getPosition()).isPresent();
         boolean playerOnPosition = player.getPosition().equals(getPosition());
@@ -132,7 +132,7 @@ public class Bollard extends DynamicPiece  implements Switchable, Activatable {
     @Override
     public boolean canDeactivate(CosmodogGame game) {
         Player player = game.getPlayer();
-        CosmodogMap map = game.getMaps().get(getPosition().getMapType());
+        CosmodogMap map = game.getMaps().get(getPosition().getMapDescriptor());
 
         boolean moveableOnPosition = map.moveableAtPosition(getPosition()).isPresent();
         boolean playerOnPosition = player.getPosition().equals(getPosition());

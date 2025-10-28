@@ -9,7 +9,7 @@ import java.util.Set;
 import antonafanasjew.cosmodog.actions.movement.BlockingAction;
 import antonafanasjew.cosmodog.actions.movement.MovementAttemptAction;
 import antonafanasjew.cosmodog.actions.portals.PortalShotAction;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.*;
@@ -279,7 +279,7 @@ public class InGameInputHandler extends AbstractInputHandler {
 		//Handle weapon scrolling
 		if (input.isKeyPressed(Input.KEY_TAB)) {
 
-			if (ApplicationContextUtils.mapOfPlayerLocation().getMapType() != MapType.SPACE) {
+			if (!ApplicationContextUtils.mapOfPlayerLocation().getMapDescriptor().equals(ApplicationContextUtils.mapDescriptorSpace())) {
 
 				Arsenal arsenal = player.getArsenal();
 

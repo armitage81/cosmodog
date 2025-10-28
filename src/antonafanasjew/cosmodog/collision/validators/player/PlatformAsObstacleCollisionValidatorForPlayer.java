@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.model.portals.Entrance;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -51,88 +52,88 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 	
 	}
 	
-	private static Multimap<Position, BlockInfo> collisiondata(MapType mapType) {
+	private static Multimap<Position, BlockInfo> collisiondata(MapDescriptor mapDescriptor) {
 
 		Multimap<Position, BlockInfo> retVal = HashMultimap.create();
 
-		retVal.put(Position.fromCoordinates(-1, -4, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 3, -4, mapType), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates(-1, -4, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 3, -4, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
 
-		retVal.put(Position.fromCoordinates(-2, -3, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates(-2, -3, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 0, -3, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 0, -3, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 1, -3, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 2, -3, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 2, -3, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 4, -3, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 4, -3, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-2, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates(-2, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 0, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 0, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 1, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 2, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 2, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 4, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 4, -3, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-3, -2, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates(-3, -2, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates(-1, -2, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates(-1, -2, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 0, -2, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 1, -2, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 2, -2, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 3, -2, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 3, -2, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 5, -2, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 5, -2, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-3, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates(-3, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates(-1, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-1, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 0, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 1, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 2, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 3, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 3, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 5, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 5, -2, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-4, -1, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates(-2, -1, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates(-2, -1, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates(-2, -1, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 0, -1, mapType), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 4, -1, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 4, -1, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 4, -1, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 6, -1, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-4, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates(-2, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates(-2, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates(-2, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 0, -1, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 4, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 4, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 4, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 6, -1, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-3,  0, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates(-3,  0, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates(-1,  0, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates(-1,  0, mapType), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates(1,  0, mapType), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 3,  0, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 5,  0, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 5,  0, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-3,  0, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates(-3,  0, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates(-1,  0, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-1,  0, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates(1,  0, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 3,  0, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 5,  0, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 5,  0, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-3,  1, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates(-1,  1, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates(-1,  1, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 0,  1, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 0,  1, mapType), BlockInfo.fromDirCarOnly(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 1,  1, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 1,  1, mapType), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 2,  1, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 2,  1, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 3,  1, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 3,  1, mapType), BlockInfo.fromDir(DirectionType.DOWN));
-		retVal.put(Position.fromCoordinates( 3,  1, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 5,  1, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-3,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates(-1,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates(-1,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 0,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 0,  1, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 1,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 1,  1, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 2,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 2,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 3,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 3,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.DOWN));
+		retVal.put(Position.fromCoordinates( 3,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 5,  1, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-3,  2, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 1,  2, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 1,  2, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 2,  2, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 2,  2, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 5,  2, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-3,  2, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 1,  2, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 1,  2, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 2,  2, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 2,  2, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 5,  2, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-2,  3, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates(-2,  3, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 0,  3, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 0,  3, mapType), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 0,  3, mapType), BlockInfo.fromDir(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 2,  3, mapType), BlockInfo.fromDir(DirectionType.RIGHT));
-		retVal.put(Position.fromCoordinates( 2,  3, mapType), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
-		retVal.put(Position.fromCoordinates( 4,  3, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 4,  3, mapType), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates(-2,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates(-2,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 0,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 0,  3, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 0,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 2,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.RIGHT));
+		retVal.put(Position.fromCoordinates( 2,  3, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.LEFT));
+		retVal.put(Position.fromCoordinates( 4,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 4,  3, mapDescriptor), BlockInfo.fromDir(DirectionType.LEFT));
 
-		retVal.put(Position.fromCoordinates(-1,  4, mapType), BlockInfo.fromDir(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 1,  4, mapType), BlockInfo.fromDirCarOnly(DirectionType.UP));
-		retVal.put(Position.fromCoordinates( 3,  4, mapType), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates(-1,  4, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 1,  4, mapDescriptor), BlockInfo.fromDirCarOnly(DirectionType.UP));
+		retVal.put(Position.fromCoordinates( 3,  4, mapDescriptor), BlockInfo.fromDir(DirectionType.UP));
 
 		return retVal;
 	}
@@ -166,9 +167,9 @@ public class PlatformAsObstacleCollisionValidatorForPlayer extends AbstractColli
 			if (PiecesUtils.distanceBetweenPieces(actor, platform) <= 10) {
 				float actorOffsetX = actor.getPosition().getX() - platform.getPosition().getX();
 				float actorOffsetY = actor.getPosition().getY() - platform.getPosition().getY();
-				Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, platform.getPosition().getMapType());
+				Position offsetPosition = Position.fromCoordinates(actorOffsetX, actorOffsetY, platform.getPosition().getMapDescriptor());
 				
-				Collection<BlockInfo> blockInfosForActorsPosition = collisiondata(map.getMapType()).get(offsetPosition);
+				Collection<BlockInfo> blockInfosForActorsPosition = collisiondata(map.getMapDescriptor()).get(offsetPosition);
 				
 				if (blockInfosForActorsPosition != null) { //It will be null, if no collisions are defined, so it would be fine to pass.
 					DirectionType movementAttemptDirection = PositionUtils.targetDirection(actor, entrance.getPosition());

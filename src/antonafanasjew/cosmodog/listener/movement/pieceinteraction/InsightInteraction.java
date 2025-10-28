@@ -1,18 +1,9 @@
 package antonafanasjew.cosmodog.listener.movement.pieceinteraction;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import antonafanasjew.cosmodog.ApplicationContext;
-import antonafanasjew.cosmodog.actions.ActionRegistry;
-import antonafanasjew.cosmodog.actions.AsyncAction;
-import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.actions.camera.CamCenteringDecoratorAction;
-import antonafanasjew.cosmodog.actions.popup.PauseDecoratorAction;
-import antonafanasjew.cosmodog.domains.MapType;
-import antonafanasjew.cosmodog.globals.Constants;
 import antonafanasjew.cosmodog.globals.Layers;
 import antonafanasjew.cosmodog.globals.TileType;
 import antonafanasjew.cosmodog.model.CosmodogGame;
@@ -47,7 +38,7 @@ public class InsightInteraction extends AbstractPieceInteraction {
 
 		// Now remove the electricity effect from the monolyth.
 		Position insightPosition = piece.getPosition();
-		Position effectPosition = Position.fromCoordinates(insightPosition.getX(), insightPosition.getY() - 1, insightPosition.getMapType());
+		Position effectPosition = Position.fromCoordinates(insightPosition.getX(), insightPosition.getY() - 1, insightPosition.getMapDescriptor());
 
 		Predicate<Piece> beingElectricityEffect = e -> {
 			return e instanceof Effect && ((Effect)e).getEffectType().equals(Effect.EFFECT_TYPE_ELECTRICITY);

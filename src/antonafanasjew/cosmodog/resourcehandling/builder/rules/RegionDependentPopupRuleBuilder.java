@@ -2,8 +2,9 @@ package antonafanasjew.cosmodog.resourcehandling.builder.rules;
 
 import antonafanasjew.cosmodog.actions.AsyncAction;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.ObjectGroups;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.resourcehandling.AbstractCsvBasedResourceWrapperBuilder;
 import antonafanasjew.cosmodog.rules.Rule;
 import antonafanasjew.cosmodog.rules.RuleAction;
@@ -15,11 +16,17 @@ import antonafanasjew.cosmodog.rules.actions.composed.BlockAction;
 import antonafanasjew.cosmodog.rules.triggers.EnteringRegionTrigger;
 import antonafanasjew.cosmodog.rules.triggers.GameProgressPropertyTrigger;
 import antonafanasjew.cosmodog.rules.triggers.logical.AndTrigger;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
+
+import java.util.Map;
 
 public class RegionDependentPopupRuleBuilder extends AbstractCsvBasedResourceWrapperBuilder<Rule> {
 	
 	@Override
 	protected Rule build(String line) {
+
+		Map<String, MapDescriptor> mapDescriptors = ApplicationContextUtils.mapDescriptors();
+
 		String[] values = line.split(";");
 		
 		String ruleName = values[0];
@@ -27,10 +34,11 @@ public class RegionDependentPopupRuleBuilder extends AbstractCsvBasedResourceWra
 		String text = values[2];
 		String onlyOnceFlag = values[3];
 		String gameProgressProperty = values[4];
-		MapType mapType = MapType.valueOf(values[5]);
+		String mapName = values[5];
+		MapDescriptor mapDescriptor = mapDescriptors.get(mapName);
 		
 		
-		RuleTrigger trigger = new EnteringRegionTrigger(mapType, ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
+		RuleTrigger trigger = new EnteringRegionTrigger(mapDescriptor, ObjectGroups.OBJECT_GROUP_ID_REGIONS, regionName);
 		boolean onlyOnce = Boolean.valueOf(onlyOnceFlag);
 		
 		if (onlyOnce) {

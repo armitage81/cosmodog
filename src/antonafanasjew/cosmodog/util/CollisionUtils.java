@@ -2,7 +2,7 @@ package antonafanasjew.cosmodog.util;
 
 import java.util.List;
 
-import antonafanasjew.cosmodog.domains.MapType;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.tiledmap.TiledEllipseObject;
 import antonafanasjew.cosmodog.tiledmap.TiledFigureObject;
 import antonafanasjew.cosmodog.tiledmap.TiledLineObject;
@@ -17,11 +17,11 @@ import antonafanasjew.cosmodog.topology.Position;
 
 public class CollisionUtils {
 
-	public static boolean intersects(PlacedRectangle r, MapType regionMapType, TiledObject region) {
+	public static boolean intersects(PlacedRectangle r, MapDescriptor mapDescriptor, TiledObject region) {
 		if (region instanceof TiledFigureObject) {
-			return intersects(r, regionMapType, (TiledFigureObject) region);
+			return intersects(r, mapDescriptor, (TiledFigureObject) region);
 		} else if (region instanceof TiledLineObject) {
-			return intersects(r, regionMapType, (TiledLineObject) region);
+			return intersects(r, mapDescriptor, (TiledLineObject) region);
 		} else if (region instanceof TiledTileObject) {
 			return intersects(r, (TiledTileObject) region);
 		} else {
@@ -29,19 +29,19 @@ public class CollisionUtils {
 		}
 	}
 
-	private static boolean intersects(PlacedRectangle r, MapType regionMapType, TiledFigureObject region) {
+	private static boolean intersects(PlacedRectangle r, MapDescriptor mapDescriptor, TiledFigureObject region) {
 		if (region instanceof TiledRectObject) {
-			return intersects(r, regionMapType, (TiledRectObject) region);
+			return intersects(r, mapDescriptor, (TiledRectObject) region);
 		} else if (region instanceof TiledEllipseObject) {
-			return intersects(r, regionMapType, (TiledEllipseObject) region);
+			return intersects(r, mapDescriptor, (TiledEllipseObject) region);
 		} else {
 			return false;
 		}
 	}
 
-	private static boolean intersects(PlacedRectangle r, MapType regionMapType, TiledLineObject region) {
+	private static boolean intersects(PlacedRectangle r, MapDescriptor mapDescriptor, TiledLineObject region) {
 		if (region instanceof TiledPolylineObject) {
-			return intersects(r, regionMapType, (TiledPolylineObject) region);
+			return intersects(r, mapDescriptor, (TiledPolylineObject) region);
 		} else if (region instanceof TiledPolygonObject) {
 			return intersects(r, (TiledPolygonObject) region);
 		} else {
@@ -49,16 +49,16 @@ public class CollisionUtils {
 		}
 	}
 
-	private static boolean intersects(PlacedRectangle r, MapType regionMapType, TiledRectObject region) {
-		PlacedRectangle regionRectangle = PlacedRectangle.fromAnchorAndSize(region.getX(), region.getY(), region.getWidth(), region.getHeight(), regionMapType);
+	private static boolean intersects(PlacedRectangle r, MapDescriptor mapDescriptor, TiledRectObject region) {
+		PlacedRectangle regionRectangle = PlacedRectangle.fromAnchorAndSize(region.getX(), region.getY(), region.getWidth(), region.getHeight(), mapDescriptor);
 		return r.intersection(regionRectangle) != null;
 	}
 
-	private static boolean intersects(PlacedRectangle r, MapType regionMapType, TiledEllipseObject region) {
+	private static boolean intersects(PlacedRectangle r, MapDescriptor mapDescriptor, TiledEllipseObject region) {
 		throw new RuntimeException("Not implemented");
 	}
 
-	private static boolean intersects(PlacedRectangle r, MapType regionMapType, TiledPolylineObject region) {
+	private static boolean intersects(PlacedRectangle r, MapDescriptor mapDescriptor, TiledPolylineObject region) {
 		throw new RuntimeException("Not implemented");
 	}
 	

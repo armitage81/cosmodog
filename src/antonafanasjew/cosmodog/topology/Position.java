@@ -5,9 +5,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import antonafanasjew.cosmodog.domains.DirectionType;
-import antonafanasjew.cosmodog.domains.MapType;
 import antonafanasjew.cosmodog.model.CosmodogMap;
-import antonafanasjew.cosmodog.model.Piece;
+import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 /**
@@ -21,18 +20,18 @@ public class Position implements Serializable {
 
 	private float x;
 	private float y;
-	private MapType mapType;
+	private MapDescriptor mapDescriptor;
 
 	public static Position fromCoordinatesOnPlayerLocationMap(float x, float y) {
-		MapType mapType = ApplicationContextUtils.getPlayer().getPosition().mapType;
-		return fromCoordinates(x, y, mapType);
+		MapDescriptor playersMapDescriptor = ApplicationContextUtils.getPlayer().getPosition().mapDescriptor;
+		return fromCoordinates(x, y, playersMapDescriptor);
 	}
 
-	public static Position fromCoordinates(float x, float y, MapType mapType) {
+	public static Position fromCoordinates(float x, float y, MapDescriptor mapDescriptor) {
 		Position position = new Position();
 		position.x = x;
 		position.y = y;
-		position.mapType = mapType;
+		position.mapDescriptor = mapDescriptor;
 		return position;
 	}
 
@@ -48,9 +47,6 @@ public class Position implements Serializable {
 		return y;
 	}
 
-	public MapType getMapType() {
-		return mapType;
-	}
 	
 	/**
 	 * Moves the position at given offsets.
@@ -62,16 +58,16 @@ public class Position implements Serializable {
 		this.y += offsetY;
 	}
 
-	public void switchPlane(MapType mapType) {
-		this.mapType = mapType;
+	public void switchPlane(MapDescriptor mapType) {
+		this.mapDescriptor = mapType;
 	}
 
 	public Position copy() {
-        return Position.fromCoordinates(this.x, this.y, this.mapType);
+        return Position.fromCoordinates(this.x, this.y, this.mapDescriptor);
 	}
 
 	public Position shifted(float offsetX, float offsetY) {
-		Position shiftedPosition = Position.fromCoordinates(this.x, this.y, this.mapType);
+		Position shiftedPosition = Position.fromCoordinates(this.x, this.y, this.mapDescriptor);
 		shiftedPosition.shift(offsetX, offsetY);
 		return shiftedPosition;
 	}
@@ -98,11 +94,11 @@ public class Position implements Serializable {
 	Useful to create a pixel position from a tile position.
 	 */
 	public Position scale(float factor) {
-		return Position.fromCoordinates(this.x * factor, this.y * factor, this.mapType);
+		return Position.fromCoordinates(this.x * factor, this.y * factor, this.mapDescriptor);
 	}
 
 	public Position translate(float x, float y) {
-		return Position.fromCoordinates(this.x + x, this.y + y, this.mapType);
+		return Position.fromCoordinates(this.x + x, this.y + y, this.mapDescriptor);
 	}
 
 	public float distance(Position pos) {
@@ -110,7 +106,7 @@ public class Position implements Serializable {
 	}
 
 	public boolean inMapBounds(CosmodogMap map) {
-		return x >= 0 && y >= 0 && x < map.getMapType().getWidth() && y < map.getMapType().getHeight();
+		return x >= 0 && y >= 0 && x < map.getMapDescriptor().getWidth() && y < map.getMapDescriptor().getHeight();
 	}
 
 	@Override
@@ -118,12 +114,15 @@ public class Position implements Serializable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Position position = (Position) o;
-		return Float.compare(x, position.x) == 0 && Float.compare(y, position.y) == 0 && mapType == position.mapType;
+		boolean xEqual = Float.compare(x, position.x) == 0;
+		boolean yEqual = Float.compare(y, position.y) == 0;
+		boolean mapDescriptorEqual = Objects.equals(mapDescriptor, position.mapDescriptor);
+		return xEqual && yEqual && mapDescriptorEqual;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y, mapType);
+		return Objects.hash(x, y, mapDescriptor);
 	}
 
 	@Override
@@ -147,4 +146,7 @@ public class Position implements Serializable {
 		return position;
 	}
 
+	public MapDescriptor getMapDescriptor() {
+		return mapDescriptor;
+	}
 }

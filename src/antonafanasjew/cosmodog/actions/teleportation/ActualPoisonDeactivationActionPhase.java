@@ -53,7 +53,7 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 			CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
 			
 			Point endPoint = poisonSwitchConnection.getPoints().get(1);
-			PlacedRectangle rectangleAroundEndPoint = PlacedRectangle.fromAnchorAndSize(endPoint.x, endPoint.y, 1, 1, map.getMapType());
+			PlacedRectangle rectangleAroundEndPoint = PlacedRectangle.fromAnchorAndSize(endPoint.x, endPoint.y, 1, 1, map.getMapDescriptor());
 			
 	
 			TiledObjectGroup poisonsRegionsObjectGroup = map.getObjectGroups().get(ObjectGroups.OBJECT_GROUP_ID_POISON_REGIONS);
@@ -64,7 +64,7 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 			
 			for (String poisonRegionName : poisonRegionObjects.keySet()) {
 				TiledObject poisonRegion = poisonRegionObjects.get(poisonRegionName);
-				if (CollisionUtils.intersects(rectangleAroundEndPoint, map.getMapType(), poisonRegion)) {
+				if (CollisionUtils.intersects(rectangleAroundEndPoint, map.getMapDescriptor(), poisonRegion)) {
 					relevantPoisonRegion = poisonRegion;
 					break;
 				}
@@ -77,7 +77,7 @@ public class ActualPoisonDeactivationActionPhase extends FixedLengthAsyncAction 
 				
 				for (DynamicPiece piece : poisons) {
 					Poison poison = (Poison)piece;
-					if (RegionUtils.pieceInRegion(poison, map.getMapType(), relevantPoisonRegion)) {
+					if (RegionUtils.pieceInRegion(poison, map.getMapDescriptor(), relevantPoisonRegion)) {
 						poison.setState(Poison.STATE_DEACTIVATED);
 					}
 				}

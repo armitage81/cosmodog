@@ -54,12 +54,12 @@ public class Ray implements Serializable {
     }
 
     private static Optional<Reflector> reflector(Position position) {
-        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapType());
+        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapDescriptor());
         return map.dynamicPieceAtPosition(Reflector.class, position).map(dynamicPiece -> (Reflector) dynamicPiece);
     }
 
     private static boolean positionPenetrable(Position position) {
-        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapType());
+        CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(position.getMapDescriptor());
         int tileId = map.getTileId(position, Layers.LAYER_META_PORTALS);
         TileType tileType = TileType.getByLayerAndTileId(Layers.LAYER_META_PORTALS, tileId);
         boolean blocking = tileType.equals(TileType.PORTAL_RAY_BLOCKING);

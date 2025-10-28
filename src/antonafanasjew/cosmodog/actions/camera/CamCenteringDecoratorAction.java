@@ -1,9 +1,6 @@
 package antonafanasjew.cosmodog.actions.camera;
 
 import antonafanasjew.cosmodog.actions.fight.PhaseBasedAction;
-import antonafanasjew.cosmodog.camera.Cam;
-import antonafanasjew.cosmodog.domains.MapType;
-import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.topology.Position;
 
@@ -57,7 +54,7 @@ public class CamCenteringDecoratorAction  extends PhaseBasedAction {
 		float tileLength = TileUtils.tileLengthSupplier.get();
 		float initialCamX = cosmodogGame.getCam().viewCopy().centerX() / cosmodogGame.getCam().getZoomFactor();
 		float initialCamY = cosmodogGame.getCam().viewCopy().centerY() / cosmodogGame.getCam().getZoomFactor();
-		Position startPositionInPixels = Position.fromCoordinates(initialCamX, initialCamY, cosmodogGame.getCam().viewCopy().getMapType());
+		Position startPositionInPixels = Position.fromCoordinates(initialCamX, initialCamY, cosmodogGame.getCam().viewCopy().getMapDescriptor());
 		Position targetPositionInPixels = targetPosition.scale(tileLength).translate(tileLength / 2.0f, tileLength / 2.0f);
 
 		getPhaseRegistry().registerPhase("moveCamToTarget", new CamMovementAction(camMovementDuration, targetPositionInPixels));

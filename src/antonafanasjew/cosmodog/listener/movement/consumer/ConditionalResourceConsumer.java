@@ -38,7 +38,7 @@ public class ConditionalResourceConsumer implements ResourceConsumer {
                         return 0;
                     }
                 },
-                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapType().isResourceConsumptionActive()
+                () -> ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation().getMapDescriptor().isResourceConsumptionActive()
         );
     }
 }
