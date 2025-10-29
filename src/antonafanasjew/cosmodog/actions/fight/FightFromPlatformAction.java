@@ -51,7 +51,8 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 
 	private void updateFightPlanForOneEnemy(Player player, Enemy enemy) {
 		Damage damage = new Damage();
-		damage.setAmount(1000); // Huge damage to ensure the enemy is killed.
+		damage.setAmount(1000);// Huge damage to ensure the enemy is killed.
+		damage.setIncludingSquashed(true);
 		FightPhasePlan playerPhasePlan = FightPhasePlan.instance(player, enemy, damage, true);
 		fightPlan.add(playerPhasePlan);
 	}

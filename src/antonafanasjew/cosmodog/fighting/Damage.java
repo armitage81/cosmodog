@@ -14,12 +14,19 @@ public class Damage {
 
     private boolean includingOffGuard;
 
+    private boolean includingSquashed;
+
     public Damage() {
         this.amount = 0;
         this.setIncludingBackstabbing(false);
         this.setIncludingCriticalHit(false);
         this.setIncludingUpgradeBonus(false);
         this.setIncludingOffGuard(false);
+        this.setIncludingSquashed(false);
+    }
+
+    public boolean weaponUsed() {
+        return !includingSquashed && !includingOffGuard;
     }
 
     public int getAmount() {
@@ -62,4 +69,11 @@ public class Damage {
         this.includingOffGuard = includingOffGuard;
     }
 
+    public boolean isIncludingSquashed() {
+        return includingSquashed;
+    }
+
+    public void setIncludingSquashed(boolean includingSquashed) {
+        this.includingSquashed = includingSquashed;
+    }
 }

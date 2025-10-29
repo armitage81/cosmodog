@@ -60,7 +60,7 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		getFightPhasePlan().getEnemy().lookAtActor(getFightPhasePlan().getPlayer());
 
 		Damage damage = getFightPhasePlan().getDamage();
-		if (damage.isIncludingOffGuard()) {
+		if (!damage.weaponUsed()) {
 			originallySelectedWeaponType = getFightPhasePlan().getPlayer().getArsenal().getSelectedWeaponType();
 			getFightPhasePlan().getPlayer().getArsenal().selectWeaponType(WeaponType.FISTS);
 		}
@@ -88,6 +88,8 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), text);
 		if (damage.isIncludingOffGuard()) {
 			OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), "(OFF-GUARD)");
+		} else if (damage.isIncludingSquashed()) {
+			OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), "(SQUASHED)");
 		} else {
 			if (damage.isIncludingBackstabbing()) {
 				OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), "(BACK-STABBED)");
@@ -118,7 +120,7 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 			weapon.reduceAmmunition(1);
 		}
 
-		if (damage.isIncludingOffGuard()) {
+		if (!damage.weaponUsed()) {
 			player.getArsenal().selectWeaponType(originallySelectedWeaponType);
 		}
 
