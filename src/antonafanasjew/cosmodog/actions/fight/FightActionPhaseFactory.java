@@ -5,6 +5,9 @@ import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.model.actors.Enemy;
 import antonafanasjew.cosmodog.model.actors.Player;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class FightActionPhaseFactory {
 
 	public static AttackActionPhase attackActionPhase(FightPlan.FightPhasePlan fightPhasePlan) {
@@ -35,6 +38,8 @@ public class FightActionPhaseFactory {
 	 * @return The enemy destruction action phase.
 	 */
 	public static EnemyDestructionActionPhase enemyDestructionActionPhase(Player player, Enemy enemy) {
-		return new DefaultEnemyDestructionActionPhase(player, enemy);
+		Set<Enemy> enemies = new HashSet<>();
+		enemies.add(enemy);
+		return new DefaultEnemyDestructionActionPhase(player, enemies);
 	}
 }

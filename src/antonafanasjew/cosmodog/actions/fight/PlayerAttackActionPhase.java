@@ -56,7 +56,12 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 
 	@Override
 	public void onTrigger() {
-		getFightPhasePlan().getPlayer().lookAtActor(getFightPhasePlan().getEnemy());
+		Player player = getFightPhasePlan().getPlayer();
+		//This is a bit of a hack. When sitting in a platform, player can attack multiple enemies at once, but this phase class allows only one enemy.
+		//That's why we take the random first enemy as argument and do not look at the enemy when on platform.
+		if (!player.getInventory().hasPlatform()) {
+			getFightPhasePlan().getPlayer().lookAtActor(getFightPhasePlan().getEnemy());
+		}
 		getFightPhasePlan().getEnemy().lookAtActor(getFightPhasePlan().getPlayer());
 
 		Damage damage = getFightPhasePlan().getDamage();
@@ -85,11 +90,13 @@ public class PlayerAttackActionPhase extends AttackActionPhase {
 		shotHappened = true;
 		WeaponType.sound(selectedWeaponType).play();
 		String text = String.valueOf(damage.getAmount());
-		OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), text);
+		if (!damage.isIncludingSquashed() && !damage.isIncludingOffGuard()) {
+			OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), text);
+		}
 		if (damage.isIncludingOffGuard()) {
 			OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), "(OFF-GUARD)");
 		} else if (damage.isIncludingSquashed()) {
-			OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), "(SQUASHED)");
+			//Do nothing.
 		} else {
 			if (damage.isIncludingBackstabbing()) {
 				OverheadNotificationAction.registerOverheadNotification(getFightPhasePlan().getEnemy(), "(BACK-STABBED)");

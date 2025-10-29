@@ -94,8 +94,8 @@ public class SightRadiusRenderer extends AbstractRenderer {
 
 			if (optFightPhase.isPresent()) {
 
-				Enemy fightPhaseEnemy = (Enemy)optFightPhase.get().getProperties().get("enemy");
-				if (fightPhaseEnemy.equals(enemy)) {
+				Set<Enemy> fightPhaseEnemies = (Set<Enemy>)optFightPhase.get().getProperties().get("enemies");
+				if (fightPhaseEnemies.contains(enemy)) {
 
 					float completion = optFightPhase.get().getCompletionRate();
 

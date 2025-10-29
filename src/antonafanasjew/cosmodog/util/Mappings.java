@@ -79,7 +79,7 @@ public class Mappings {
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_7, "dronespecs");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_8, "fathersfarewell");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_9, "writersblock");
-		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_10, "montanajames");
+		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_10, "codex");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_11, "Series012");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_12, "Series013");
 		MAP_TILE_TO_LOG_SERIES.put(TileType.LOG_CARD_SERIES_13, "Series014");

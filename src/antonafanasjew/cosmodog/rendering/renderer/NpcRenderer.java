@@ -94,7 +94,7 @@ public class NpcRenderer extends AbstractRenderer {
 			boolean enemyIsInSoftGroundType = RenderingUtils.isActorOnSoftGroundType(map, enemy, enemyMotion);
 			
 			boolean enemyIsMoving = enemyMotion != null;
-			boolean enemyIsFighting = optFightPhase.isPresent() && ((Enemy)optFightPhase.get().getProperties().get("enemy")).equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
+			boolean enemyIsFighting = optFightPhase.isPresent() && ((Set<Enemy>)optFightPhase.get().getProperties().get("enemies")).contains(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
 			boolean enemyIsShooting = enemyIsFighting && optFightPhase.get() instanceof EnemyAttackActionPhase;
 			boolean enemyIsExploding = enemyIsFighting && optFightPhase.get() instanceof EnemyDestructionActionPhase;
 
@@ -250,7 +250,7 @@ public class NpcRenderer extends AbstractRenderer {
 			}
 
 			boolean enemyIsMoving = enemyMotion != null;
-			boolean enemyIsFighting = optFightPhase.isPresent() && ((Enemy)optFightPhase.get().getProperties().get("enemy")).equals(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
+			boolean enemyIsFighting = optFightPhase.isPresent() && ((Set<Enemy>)optFightPhase.get().getProperties().get("enemies")).contains(enemy); //This just checks that the enemy in the loop is the one that fights and not an idle one.
 			boolean enemyIsShooting = enemyIsFighting && optFightPhase.get() instanceof EnemyAttackActionPhase;
 			boolean enemyIsExploding = enemyIsFighting && optFightPhase.get() instanceof EnemyDestructionActionPhase;
 

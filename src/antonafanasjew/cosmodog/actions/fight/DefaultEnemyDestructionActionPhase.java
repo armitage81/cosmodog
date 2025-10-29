@@ -19,27 +19,28 @@ import antonafanasjew.cosmodog.util.DroppedCollectibleFactory;
 
 import java.io.Serial;
 import java.util.List;
+import java.util.Set;
 
 public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPhase {
 
 	@Serial
 	private static final long serialVersionUID = -3853130683025678558L;
 
-	private static int enemyDestructionActionDuration(Enemy enemy) {
-		if (enemy.getUnitType().equals(UnitType.GUARDIAN)) {
+	private static int enemyDestructionActionDuration(Set<Enemy> enemies) {
+		if (enemies.size() == 1 && enemies.iterator().next().getUnitType().equals(UnitType.GUARDIAN)) {
 			return 8000;
 		}
 		return Constants.ENEMY_DESTRUCTION_ACTION_DURATION;
 	}
 
-	public DefaultEnemyDestructionActionPhase(Player player, Enemy enemy) {
-		super(enemyDestructionActionDuration(enemy), player, enemy);
+	public DefaultEnemyDestructionActionPhase(Player player, Set<Enemy> enemies) {
+		super(enemyDestructionActionDuration(enemies), player, enemies);
 	}
 
 	@Override
 	public void onTrigger() {
-		Enemy enemy = ((Enemy)getProperties().get("enemy"));
-		if (enemy.getUnitType().equals(UnitType.GUARDIAN)) {
+		Set<Enemy> enemies = ((Set<Enemy>)getProperties().get("enemies"));
+		if (enemies.size() == 1 && enemies.iterator().next().getUnitType().equals(UnitType.GUARDIAN)) {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_GUARDIAN_DESTROYED).play();
 		} else {
 			ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_EXPLOSION).play();
@@ -50,39 +51,42 @@ public class DefaultEnemyDestructionActionPhase extends EnemyDestructionActionPh
 	public void onEnd() {
 		CosmodogMap cosmodogMap = ApplicationContextUtils.getCosmodogGame().mapOfPlayerLocation();
 
-		Enemy enemy = ((Enemy)getProperties().get("enemy"));
-		
-		EnemyInventoryItem item = enemy.getInventoryItem();
-		
-		if (item != null) {
-			Collectible dropped = DroppedCollectibleFactory.createCollectibleFromDroppedItem(item);
-			if (dropped != null) {
-				
-				ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DROPPED_ITEM).play();
+		Set<Enemy> enemies = ((Set<Enemy>)getProperties().get("enemies"));
 
-				dropped.setPosition(enemy.getPosition());
+		for (Enemy enemy : enemies) {
 
-				List<Piece> collectibles = cosmodogMap
-						.getMapPieces()
-						.piecesAtPosition(
-								PiecePredicates.COLLECTIBLE,
-								enemy.getPosition().getX(),
-								enemy.getPosition().getY()
-						);
+			EnemyInventoryItem item = enemy.getInventoryItem();
 
-				if (!collectibles.isEmpty()) {
-					Collectible collectible = (Collectible) collectibles.getFirst();
-					CollectibleComposed newCollectible = new CollectibleComposed();
-					newCollectible.setPosition(enemy.getPosition());
-					newCollectible.addElement(collectible);
-					newCollectible.addElement(dropped);
-					cosmodogMap.getMapPieces().removePiece(collectible);
-					dropped = newCollectible;
+			if (item != null) {
+				Collectible dropped = DroppedCollectibleFactory.createCollectibleFromDroppedItem(item);
+				if (dropped != null) {
+
+					ApplicationContext.instance().getSoundResources().get(SoundResources.SOUND_DROPPED_ITEM).play();
+
+					dropped.setPosition(enemy.getPosition());
+
+					List<Piece> collectibles = cosmodogMap
+							.getMapPieces()
+							.piecesAtPosition(
+									PiecePredicates.COLLECTIBLE,
+									enemy.getPosition().getX(),
+									enemy.getPosition().getY()
+							);
+
+					if (!collectibles.isEmpty()) {
+						Collectible collectible = (Collectible) collectibles.getFirst();
+						CollectibleComposed newCollectible = new CollectibleComposed();
+						newCollectible.setPosition(enemy.getPosition());
+						newCollectible.addElement(collectible);
+						newCollectible.addElement(dropped);
+						cosmodogMap.getMapPieces().removePiece(collectible);
+						dropped = newCollectible;
+					}
+
+					cosmodogMap.getMapPieces().addPiece(dropped);
 				}
-				
-				cosmodogMap.getMapPieces().addPiece(dropped);
 			}
+			cosmodogMap.getMapPieces().removePiece(enemy);
 		}
-		cosmodogMap.getMapPieces().removePiece(enemy);
 	}
 }

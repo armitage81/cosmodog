@@ -20,19 +20,14 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 
 	private final Set<Enemy> targetEnemies;
 
-	private FightPlan fightPlan = new FightPlan();
-
 	public FightFromPlatformAction(Set<Enemy> targetEnemies) {
 		this.targetEnemies = targetEnemies;
 	}
 
 	@Override
 	public void onTriggerInternal() {
-		
 		Player player = ApplicationContextUtils.getPlayer();
 		player.beginFight();
-		
-		initFightPlan();
 		initActionPhaseRegistry();
 	}
 
@@ -42,36 +37,24 @@ public class FightFromPlatformAction extends PhaseBasedAction {
 		player.endFight();
 	}
 
-	private void initFightPlan() {
-		Player player = ApplicationContextUtils.getPlayer();
-		for (Enemy targetEnemy : targetEnemies) {
-			updateFightPlanForOneEnemy(player, targetEnemy);
-		}
-	}
-
-	private void updateFightPlanForOneEnemy(Player player, Enemy enemy) {
-		Damage damage = new Damage();
-		damage.setAmount(1000);// Huge damage to ensure the enemy is killed.
-		damage.setIncludingSquashed(true);
-		FightPhasePlan playerPhasePlan = FightPhasePlan.instance(player, enemy, damage, true);
-		fightPlan.add(playerPhasePlan);
-	}
-
 	private void initActionPhaseRegistry() {
 
-		for (FightPhasePlan phasePlan : fightPlan) {
+		Player player = ApplicationContextUtils.getPlayer();
+		CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
+		OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 
-			CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
-			OverheadNotificationAction overheadNotificationAction = (OverheadNotificationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
-
-			if (overheadNotificationAction != null) {
-				overheadNotificationAction.cancel();
-			}
-			
-			AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(phasePlan);
-			getPhaseRegistry().registerPhase("attacking", attackActionPhase);
-			EnemyDestructionActionPhase enemyDestructionActionPhase = FightActionPhaseFactory.enemyDestructionActionPhase(phasePlan.getPlayer(), phasePlan.getEnemy());
-			getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
+		if (overheadNotificationAction != null) {
+			overheadNotificationAction.cancel();
 		}
+
+		Damage damage = new Damage();
+		damage.setIncludingSquashed(true);
+		damage.setAmount(1000);
+		FightPhasePlan playerPhasePlan = FightPhasePlan.instance(player, targetEnemies.iterator().next(), damage, true);
+
+		AttackActionPhase attackActionPhase = FightActionPhaseFactory.attackActionPhase(playerPhasePlan);
+		getPhaseRegistry().registerPhase("attacking", attackActionPhase);
+		DefaultEnemyDestructionActionPhase enemyDestructionActionPhase = new DefaultEnemyDestructionActionPhase(player, targetEnemies);
+		getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
 	}
 }

@@ -2,6 +2,7 @@ package antonafanasjew.cosmodog.rendering.renderer;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import antonafanasjew.cosmodog.actions.fight.AbstractFightActionPhase;
 import antonafanasjew.cosmodog.actions.fight.ArtilleryAttackActionPhase;
@@ -53,7 +54,7 @@ public class ArtilleryGrenadeRenderer extends AbstractRenderer {
 
 			Optional<AbstractFightActionPhase> optFightPhase = cosmodogGame.getActionRegistry().currentFightPhase();
 
-			boolean enemyIsFighting = optFightPhase.isPresent() && optFightPhase.get().getProperties().get("enemy").equals(enemy);
+			boolean enemyIsFighting = optFightPhase.isPresent() && ((Set<Enemy>)optFightPhase.get().getProperties().get("enemies")).contains(enemy);
 			boolean enemyIsShooting = enemyIsFighting && (optFightPhase.get() instanceof ArtilleryAttackActionPhase);
 
 			if (!enemyIsShooting) {

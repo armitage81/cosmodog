@@ -1,24 +1,24 @@
 A page from the technical specification of deployed drones
 ---------------------------------------------------------------------------------------
-Scout
+SCOUT
 
 
-Scouts are wheeled units that have a long (but narrowly angled) detection distance. 
+Often refered to as "Glass Cannons", scouts are wheeled units that have a long (but narrowly angled) detection distance. 
 They are fast and deadly but only lightly armored.
-Scouts cannot be attacked from behind as their detectors spot enemies in the rear.
+Scouts cannot be backstabbed as their detectors spot enemies in the rear.
 
 
 Armor type: Light
 
 Weapon type: Railgun
 
-Damage: 9
+Damage dealt: 9
 
 Chassis type: Wheels (Cannot cross rough terrain. Cannot swim.)
 
-Max Life: 10
+HP: 10
 
-Speed factor: 2
+Speed: 2
 
 
 Weaknesses: 

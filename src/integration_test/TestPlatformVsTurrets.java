@@ -4,6 +4,7 @@ import antonafanasjew.cosmodog.domains.WeaponType;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Platform;
 import antonafanasjew.cosmodog.model.actors.Player;
+import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.model.inventory.PlatformInventoryItem;
@@ -30,6 +31,7 @@ public class TestPlatformVsTurrets {
 				player.setLife(100);
 				PlatformInventoryItem platform = new PlatformInventoryItem(new Platform());
 				player.getInventory().put(InventoryItemType.PLATFORM, platform);
+				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
 				player.getArsenal().addWeaponToArsenal(new Weapon(WeaponType.MACHINEGUN));
 				List<String> debuggerPositions = new ArrayList<>();
 				debuggerPositions.add(String.format("%s/%s/%s", 355, 389, ApplicationContextUtils.mapDescriptorMain()));

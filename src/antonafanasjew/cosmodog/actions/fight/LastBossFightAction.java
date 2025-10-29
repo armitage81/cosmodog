@@ -9,6 +9,7 @@ import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.io.Serial;
+import java.util.Set;
 
 /**
  * Represents the action that shows the destruction of the last boss.
@@ -74,7 +75,8 @@ public class LastBossFightAction extends PhaseBasedAction {
 	@Override
 	public void onTriggerInternal() {
 		Player player = ApplicationContextUtils.getPlayer();
-		EnemyDestructionActionPhase enemyDestructionActionPhase = new DefaultEnemyDestructionActionPhase(player, guardian);
+		Set<Enemy> enemies = Set.of(guardian);
+		EnemyDestructionActionPhase enemyDestructionActionPhase = new DefaultEnemyDestructionActionPhase(player, enemies);
 		getPhaseRegistry().registerPhase("enemyDestruction", enemyDestructionActionPhase);
 	}
 

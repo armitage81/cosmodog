@@ -1,32 +1,31 @@
 A page from the technical specification of deployed drones
 ---------------------------------------------------------------------------------------
-Artillery
+ARTILLERY
 
 
 The artillery unit is the most dangerous drone in our arsenal. 
 Other than other units, the artillery can fire over a far distance,
-hitting the intruders without exposing itself to their counterattacks.
+hitting intruders without exposing itself to their counterattacks.
 
 
 Armor type: None
 
 Weapon type: Grenades
 
-Damage: 4
+Damage dealt: 4
 
 Chassis type: Wheels (Cannot cross rough terrain. Cannot swim.)
 
-Max Life: 25
+HP: n/a (Can be deactivated when approached directly)
 
-Speed factor: 1
+Speed: 1
 
 
 Weaknesses: 
 
 
 Artillery units are moving on wheels and hence cannot drive over grass, sand or snow.
-
-Artillery units cannot attack adjacent targets. Enemies can use this blind spot for ambushes.
+Artillery units cannot attack adjacent targets. Enemies can use this blind spot for ambushes (for instance by hiding in tall grass).
 
 
 

@@ -1,15 +1,14 @@
 A page from the technical specification of deployed drones
 ---------------------------------------------------------------------------------------
-Hercules
+HERCULES
 
 
-The solar powered battle drone Hercules is a mighty weapon.
-Its innovative power generator uses the energy of Phaeton's sun to let it hover 50 centimeters over the ground.
+The solar-powered battle drone Hercules is a mighty weapon.
+Its innovative generator uses the energy of Phaeton's sun to let it hover over the ground.
 This results in very fast movement even in the rough terrain and leaves enough energy to power two
 deadly laser cannons. Hercules is equipped with highly advanced AI that can spot enemies from afar.
 
 
-Being solar powered, Hercules cannot be deployed at night.
 Operators must make sure that the drone is returned to a secure base before nightfall.
 
 
@@ -17,16 +16,16 @@ Armor type: Heavy
 
 Weapon type: Two laser cannons
 
-Damage: 15
+Damage dealt: 15
 
 Chassis type: Hovercraft (Can cross plain and rough terrain. Cannot swim.)
 
-Max Life: 40
+HP: 40
 
-Speed factor: 2
+Speed: 2
 
 
 Weaknesses: 
 
 
-Hercules units cannot be operated at night.
+Being solar-powered, Hercules cannot be deployed at night. Intruders can easily deactivate Hercules units while those are hibernating.
