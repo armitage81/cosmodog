@@ -89,7 +89,7 @@ public class Constants {
 	/**
 	 * Full screen flag.
 	 */
-	public static final boolean FULLSCREEN = false;
+	public static final boolean FULLSCREEN = true;
 	
 	/**
 	 * Dynamic dialogs use this as basis for the text speed.

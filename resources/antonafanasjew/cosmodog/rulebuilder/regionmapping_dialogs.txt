@@ -1,6 +1,5 @@
 ruleName;regionName;narrativeSequenceId;onlyOnceFlag;gameProgressProperty;mapType;cutsceneType
 ALISAENTERS;alisaenters;cutscenes/001.meetingalisa;true;alisaenters;MAIN;cutscene
-NOBODYTHERE;nobodythere;cutscenes/002.silence;true;nobodythere;MAIN;cutscene
 GHOSTTOWN;ghosttown;cutscenes/003.ghosttown;true;ghosttown;MAIN;cutscene
 SPACELIFT;spacelift;cutscenes/000.spacelift;true;spacelift;MAIN;cutscene
 SPACESTATION;spacestation;cutscenes/000.spacestation;true;spacestation;SPACE;cutscene
