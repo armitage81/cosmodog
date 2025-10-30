@@ -1,7 +1,7 @@
 Don't rush! The game will stand still unless you execute an action.
 
 
-Press ENTER to skip a turn without moving. It can be useful when you want to hide or wait for an enemy to come closer.
+Press ENTER to skip a turn without moving. It can be useful when you want to hide or to wait for an enemy to come closer.
 
 
 Each enemy type has its own strengths and weaknesses. Study them to improve your chances.
@@ -16,10 +16,10 @@ Medkits fill up your hit points completely. Use them wisely. There is a limited 
 Your progress is retained when you die. Killed enemies stay dead. Found tools remain in your inventory.
 
 
-Lack of food or water will deplete your constitution. Try to avoid being hungry or thirsty.
+Lack of food or water will make you vulnerable to enemies' attacks. Try to avoid being hungry or thirsty.
 
 
-Hunger and thirst will reduce your life points with every turn until only one point remains.
+Hunger and thirst will reduce your life points every turn until only one point remains.
 
 
 Find rations to still hunger. Approach water to drink.
@@ -31,7 +31,7 @@ If you are hungry AND thirsty, you will lose TWO hit points with every move.
 You can increase your food and water capacity. Keep your eyes open for bottles and food compartments.
 
 
-Vehicles contain infinite amounts of supplies. Food and water reserves do not deplete while you are inside a vehicle.
+Vehicles can be upgraded to contain infinite amounts of supplies. Food and water reserves will not deplete while you are inside an upgraded vehicle.
 
 
 Vehicles are armored and protect you from enemy attacks. Their armor can be improved by finding armor plates.
@@ -40,7 +40,7 @@ Vehicles are armored and protect you from enemy attacks. Their armor can be impr
 You can refuel a vehicle using a gas canister. Walk on foot into a gas station to get one.
 
 
-Fuel depletes slower when you drive on roads.
+Fuel depletes slower when you drive on roads. You can also find fuel tank upgrades, increasing vehicles' fuel capacity.
 
 
 Sometimes stealth is a viable option. Hide in high grass, move at night, or stay behind enemy's backs.
@@ -52,7 +52,7 @@ Stay out of enemies' sight fields.
 An alerted enemy will give up the chase if you manage to stay out of its sight long enough.
 
 
-The sight field of most enemies is reduced at night.
+The sight field of most enemies is reduced at night. But beware: Your vision will be limited, too!
 
 
 You can hide in high grass. By doing so, only adjacent enemies will detect you.
@@ -64,7 +64,7 @@ Hiding in high grass is the best way to ambush an artillery unit.
 Backstabbing an enemy doubles the damage.
 
 
-Many enemies are assigned patrol zones. Try to guess them. An enemy is not able to leave its patrol zone.
+Many enemies are assigned invisible patrol zones. Try to guess them. An enemy is not able to leave its patrol zone.
 
 
 Avoid being surrounded by enemies.
@@ -94,13 +94,13 @@ The game contains 120 secrets. Look out for subtle signs to find hidden entrance
 Stepped on a land mine? Watch out for warning signs. Find a way to detect or deactivate mines.
 
 
-Radiation is deadly. Find a way to detect it or protect yourself from it.
+Radiation is deadly. Find a way to detect it -- or protect yourself from it.
 
 
-Don't step into poison unless you possess an antidote or a decontamination pool is nearby.
+Don't step into poison puddles unless you possess an antidote -- or a decontamination pool is nearby.
 
 
-Low temperature damages your constitution. Find some warm clothes or stay in a vehicle.
+Low temperature damages your constitution. Find some warm clothes -- or stay in a vehicle.
 
 
 Never mess with a snow worm. Stay on solid terrain to avoid it. Don't walk on snow for too long.
@@ -116,3 +116,60 @@ Find map pieces and inspect your map to plan your journey.
 
 
 Note down locations of items you might need later.
+
+
+Master your driving skills und permanently upgrade all vehicles by completing a race challenge.
+
+
+Scouts cannot drive over rough terrain. Ambush them from the road side.
+
+
+Hercules units are formidable enemies -- but absolutely helpless at night. Time your attacks accordingly.
+
+
+Secrets are everywhere. Keep your eyes open for telltale signs to find helpful goodies.
+
+
+Missing one last secret? Could it be hidden... in Space?
+
+
+Not sure where to go next? Check for question marks on your map ("?") to find locations of important items.
+
+
+Enemies cannot turn around when you are adjacent to them. Use this fact to position yourself for backstabbing.
+
+
+Don't waste more than one handgun bullet in a duel with a bot.
+
+
+Don't try to sneak up on a pigrat. The biests have very good perception. A shotgun will do the trick.
+
+
+Don't waste your rockets on easy enemies. Better save them for turrets.
+
+
+The movie set puzzle is optional -- but its reward is essential for completionists.
+
+
+Stuck or encountered a bug? Ask for help via feedback@cosmodog.eu.
+
+
+Most puzzles are resettable. Press "r" to start anew.
+
+
+There are no dead-ends or missables in the game. You will be able to complete it at any given point of time.
+
+
+Read the found log entries carefully. They often provide survival hints or solutions to puzzles. (Press "l" to open the log player.)
+
+
+Memorize stats of every enemy type. You can find them out by combatting enemies -- or by finding their manuals.
+
+
+Sometimes it is better to simply pass a turret, taking some damage, rather than fighting it.
+
+
+Need to pass some turrets without being damaged? Use a vehicle.
+
+
+Pigrats are terrifying -- but slow. There is a good chance to escape.
