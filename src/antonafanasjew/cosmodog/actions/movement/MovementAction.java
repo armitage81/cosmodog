@@ -461,13 +461,17 @@ public class MovementAction extends FixedLengthAsyncAction {
 		
 		if (moveableTargetEntrance != null) {
 
+			CosmodogMap map = ApplicationContextUtils.getCosmodogGame().getMaps().get(moveableDynamicPiece.getPosition().getMapDescriptor());
+
 			if (!moveableTargetEntrance.getPosition().equals(moveableDynamicPiece.getPosition())) { //The start and the target positions can be equal in case the moveable does not move.
 				
 				CosmodogGame cosmodogGame = ApplicationContextUtils.getCosmodogGame();
 				
 				actorMotions.remove(moveableDynamicPiece.asActor());
-				
+
+				map.getMapPieces().removePiece(moveableDynamicPiece);
 				moveableDynamicPiece.setPosition(moveableTargetEntrance.getPosition());
+				map.getMapPieces().addPiece(moveableDynamicPiece);
 
 			}
 		}
