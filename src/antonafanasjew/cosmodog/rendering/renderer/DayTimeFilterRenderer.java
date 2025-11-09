@@ -1,5 +1,6 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.Layers;
@@ -112,7 +113,8 @@ public class DayTimeFilterRenderer extends AbstractRenderer {
 
 				Color colorToUse = filterColor;
 
-				if (VisibilityCalculatorForPlayer.instance().visible(player, map, calendar, tilePosition)) {
+				boolean spaceLiftActionOngoing = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SPACE_LIFT) != null;
+				if (!spaceLiftActionOngoing && VisibilityCalculatorForPlayer.instance().visible(player, map, calendar, tilePosition)) {
 					colorToUse = filterColorNearby;
 				}
 				graphics.setColor(colorToUse);

@@ -1,5 +1,6 @@
 package integration_test;
 
+import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
@@ -23,8 +24,8 @@ public class TestSpacelift {
 				player.setPosition(Position.fromCoordinates(128, 50, ApplicationContextUtils.mapDescriptorMain()));
 				player.setMaxLife(100);
 				player.setLife(100);
-				player.setWater(1);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem());
 			}
 		};
 
