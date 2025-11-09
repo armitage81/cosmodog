@@ -1,10 +1,12 @@
 package antonafanasjew.cosmodog.sight;
 
+import antonafanasjew.cosmodog.actions.AsyncActionType;
 import antonafanasjew.cosmodog.calendar.PlanetaryCalendar;
 import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
 import antonafanasjew.cosmodog.topology.Position;
+import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 
 import java.util.Set;
 
@@ -39,13 +41,15 @@ public class VisibilityCalculatorForPlayer {
         }
 
         Vision vision;
-
+        boolean spaceLiftActionOngoing = ApplicationContextUtils.getCosmodogGame().getActionRegistry().getRegisteredAction(AsyncActionType.SPACE_LIFT) != null;
         if (player.getInventory().hasVehicle()) {
             vision = Vision.NIGHT_VISION_FOR_PLAYER_IN_VEHICLE;
         } else if (player.getInventory().hasPlatform()) {
             vision = Vision.NIGHT_VISION_FOR_PLAYER_IN_PLATFORM;
         } else if (player.getInventory().hasItem(InventoryItemType.FLASHLIGHT)) {
             vision = Vision.NIGHT_VISION_FOR_PLAYER_WITH_FLASHLIGHT;
+        } else if (spaceLiftActionOngoing) {
+            vision = new Vision();
         } else {
             vision = Vision.NIGHT_VISION_FOR_PLAYER_DEFAULT;
         }

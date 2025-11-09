@@ -1,13 +1,10 @@
 package integration_test;
 
-import antonafanasjew.cosmodog.model.inventory.DebuggerInventoryItem;
+import antonafanasjew.cosmodog.model.inventory.*;
 import antonafanasjew.cosmodog.util.ApplicationContextUtils;
 import antonafanasjew.cosmodog.globals.CosmodogModelHolder;
 import antonafanasjew.cosmodog.model.actors.Player;
 import antonafanasjew.cosmodog.model.actors.Vehicle;
-import antonafanasjew.cosmodog.model.inventory.BinocularsInventoryItem;
-import antonafanasjew.cosmodog.model.inventory.InventoryItemType;
-import antonafanasjew.cosmodog.model.inventory.VehicleInventoryItem;
 import antonafanasjew.cosmodog.player.AbstractPlayerBuilder;
 import antonafanasjew.cosmodog.player.PlayerBuilder;
 import antonafanasjew.cosmodog.topology.Position;
@@ -25,6 +22,7 @@ public class TestSpacelift {
 				player.setMaxLife(100);
 				player.setLife(100);
 				player.getInventory().put(InventoryItemType.BINOCULARS, new BinocularsInventoryItem());
+				//player.getInventory().put(InventoryItemType.NIGHT_VISION_GOGGLES, new NightVisionGogglesInventoryItem());
 				player.getInventory().put(InventoryItemType.DEBUGGER, new DebuggerInventoryItem());
 			}
 		};

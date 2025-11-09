@@ -113,8 +113,7 @@ public class DayTimeFilterRenderer extends AbstractRenderer {
 
 				Color colorToUse = filterColor;
 
-				boolean spaceLiftActionOngoing = cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.SPACE_LIFT) != null;
-				if (!spaceLiftActionOngoing && VisibilityCalculatorForPlayer.instance().visible(player, map, calendar, tilePosition)) {
+				if (VisibilityCalculatorForPlayer.instance().visible(player, map, calendar, tilePosition)) {
 					colorToUse = filterColorNearby;
 				}
 				graphics.setColor(colorToUse);
