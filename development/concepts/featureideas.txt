@@ -3,12 +3,19 @@ Gameplay features
 ----------------------------------
 Perk trees based on experience points or executed actions
 NPCs and quests
-Underwater passages
+Underwater passages/Diving
 Underground tunnels
+Digging in the underground
 Bosses
 An enemy that controls other enemies as mastermind and needs to be destroyed to deactivate its minions
 Interactive intro section
 Interactive outro section
+Additional features for weapons:
+- Pistol: Higher critical chance
+- Shotgun: Shoots all in an angle
+- Rifle: Shoots two enemies in a row
+- Machinegun: Makes enemies dizzy, unable to move
+- RPG: Chain reaction
 ----------------------------------
 Technical features
 ----------------------------------
