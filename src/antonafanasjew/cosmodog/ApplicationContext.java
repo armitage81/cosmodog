@@ -411,16 +411,21 @@ public class ApplicationContext {
 		}
 
 
-		Sound spaceliftLatch = new Sound("assets/audio/sounds/spacelift_latch.wav");
-		Sound spacelift = new Sound("assets/audio/sounds/spacelift.wav");
-		Sound collected = new Sound("assets/audio/sounds/collected.wav");
-		Sound eaten = new Sound("assets/audio/sounds/eaten.wav");
-		Sound drunk = new Sound("assets/audio/sounds/drunk.wav");
-		Sound carstart = new Sound("assets/audio/sounds/carstart.wav");
-		Sound noway = new Sound("assets/audio/sounds/noway.wav");
-		Sound carmotor = new Sound("assets/audio/sounds/carmotor.wav");
-		Sound motordies = new Sound("assets/audio/sounds/motordies.wav");
-		Sound hit = new Sound("assets/audio/sounds/hit.wav");
+		Sound spaceliftLatch = new Sound("assets/audio/sounds/spacelift/spaceliftlatch.wav");
+		Sound spacelift = new Sound("assets/audio/sounds/spacelift/spacelift.wav");
+		Sound collected = new Sound("assets/audio/sounds/rewards/collected.wav");
+		Sound eaten = new Sound("assets/audio/sounds/worm/eaten.wav");
+		Sound drunk = new Sound("assets/audio/sounds/environment/drunk.wav");
+		Sound noway = new Sound("assets/audio/sounds/obstacles/noway.wav");
+
+		Sound hit = new Sound("assets/audio/sounds/fight/hit.wav");
+
+
+		Sound carMoves = new Sound("assets/audio/sounds/vehicle/carmoves.wav");
+		Sound carDoor = new Sound("assets/audio/sounds/vehicle/cardoor.wav");
+		Sound carstart = new Sound("assets/audio/sounds/vehicle/carstart.wav");
+		Sound carmotor = new Sound("assets/audio/sounds/vehicle/carmotor.wav");
+		Sound motordies = new Sound("assets/audio/sounds/vehicle/motordies.wav");
 
 		Sound shotUnarmed = new Sound("assets/audio/sounds/weapons/unarmed.wav");
 		Sound shotHandgun = new Sound("assets/audio/sounds/weapons/handgun.wav");
@@ -430,101 +435,98 @@ public class ApplicationContext {
 		Sound shotRpg = new Sound("assets/audio/sounds/weapons/rpg.wav");
 
 
-		Sound explosion = new Sound("assets/audio/sounds/explosion.wav");
-		Sound powerup = new Sound("assets/audio/sounds/powerup.wav");
-		Sound popup = new Sound("assets/audio/sounds/popup.wav");
-		Sound teleport_start = new Sound("assets/audio/sounds/teleport_start.wav");
-		Sound teleport_transfer = new Sound("assets/audio/sounds/teleport_transferring.wav");
-		Sound teleport_end = new Sound("assets/audio/sounds/teleport_end.wav");
-		Sound reload = new Sound("assets/audio/sounds/reload.wav");
-		Sound droppedItem = new Sound("assets/audio/sounds/droppeditem.wav");
-		Sound pressurePlate = new Sound("assets/audio/sounds/pressureplate.wav");
-		Sound letterPlate = new Sound("assets/audio/sounds/letterplate.wav");
-		Sound drainPoison = new Sound("assets/audio/sounds/drainpoison.wav");
-		Sound artilleryShots = new Sound("assets/audio/sounds/artilleryshots.wav");
-		Sound secretFound = new Sound("assets/audio/sounds/secretfound.wav");
-		Sound carMoves = new Sound("assets/audio/sounds/carmoves.wav");
-		Sound carDoor = new Sound("assets/audio/sounds/cardoor.wav");
-		Sound console = new Sound("assets/audio/sounds/console.wav");
-		Sound wormGrowl = new Sound("assets/audio/sounds/wormgrowl.wav");
-		Sound shortWormGrowl = new Sound("assets/audio/sounds/shortwormgrowl.wav");
-		Sound earthquake = new Sound("assets/audio/sounds/earthquake.wav");
-		Sound breakcrate1 = new Sound("assets/audio/sounds/breakcrate1.wav");
-		Sound breakcrate2 = new Sound("assets/audio/sounds/breakcrate2.wav");
-		Sound breakcrate3 = new Sound("assets/audio/sounds/breakcrate3.wav");
+		Sound explosion = new Sound("assets/audio/sounds/fight/explosion.wav");
+		Sound powerup = new Sound("assets/audio/sounds/rewards/powerup.wav");
+		Sound popup = new Sound("assets/audio/sounds/ui/popup.wav");
+		Sound teleport_start = new Sound("assets/audio/sounds/teleportation/start.wav");
+		Sound teleport_transfer = new Sound("assets/audio/sounds/teleportation/transferring.wav");
+		Sound teleport_end = new Sound("assets/audio/sounds/teleportation/end.wav");
+		Sound reload = new Sound("assets/audio/sounds/weapons/reload.wav");
+		Sound droppedItem = new Sound("assets/audio/sounds/fight/droppeditem.wav");
+		Sound pressurePlate = new Sound("assets/audio/sounds/contraptions/pressureplate.wav");
+		Sound letterPlate = new Sound("assets/audio/sounds/contraptions/letterplate.wav");
+		Sound drainPoison = new Sound("assets/audio/sounds/contraptions/drain.wav");
+		Sound artilleryShots = new Sound("assets/audio/sounds/fight/artilleryshots.wav");
+		Sound secretFound = new Sound("assets/audio/sounds/rewards/secretfound.wav");
+
+		Sound console = new Sound("assets/audio/sounds/contraptions/console.wav");
+		Sound wormGrowl = new Sound("assets/audio/sounds/worm/wormgrowl.wav");
+		Sound shortWormGrowl = new Sound("assets/audio/sounds/worm/shortwormgrowl.wav");
+		Sound earthquake = new Sound("assets/audio/sounds/worm/earthquake.wav");
+		Sound breakcrate1 = new Sound("assets/audio/sounds/obstacles/breakcrate1.wav");
+		Sound breakcrate2 = new Sound("assets/audio/sounds/obstacles/breakcrate2.wav");
+		Sound breakcrate3 = new Sound("assets/audio/sounds/obstacles/breakcrate3.wav");
 		
-		Sound breakstone1 = new Sound("assets/audio/sounds/breakstone1.wav");
-		Sound breakstone2 = new Sound("assets/audio/sounds/breakstone2.wav");
-		Sound breakstone3 = new Sound("assets/audio/sounds/breakstone3.wav");
-		Sound breakhardstone1 = new Sound("assets/audio/sounds/breakhardstone1.wav");
-		Sound breakhardstone2 = new Sound("assets/audio/sounds/breakhardstone2.wav");
-		Sound breakhardstone3 = new Sound("assets/audio/sounds/breakhardstone3.wav");
-		Sound cuttingtree1 = new Sound("assets/audio/sounds/cuttingtree1.wav");
-		Sound cuttingtree2 = new Sound("assets/audio/sounds/cuttingtree2.wav");
-		Sound cuttingtree3 = new Sound("assets/audio/sounds/cuttingtree3.wav");
+		Sound breakstone1 = new Sound("assets/audio/sounds/obstacles/breakstone1.wav");
+		Sound breakstone2 = new Sound("assets/audio/sounds/obstacles/breakstone2.wav");
+		Sound breakstone3 = new Sound("assets/audio/sounds/obstacles/breakstone3.wav");
+		Sound breakhardstone1 = new Sound("assets/audio/sounds/obstacles/breakhardstone1.wav");
+		Sound breakhardstone2 = new Sound("assets/audio/sounds/obstacles/breakhardstone2.wav");
+		Sound breakhardstone3 = new Sound("assets/audio/sounds/obstacles/breakhardstone3.wav");
+		Sound cuttingtree1 = new Sound("assets/audio/sounds/obstacles/cuttree1.wav");
+		Sound cuttingtree2 = new Sound("assets/audio/sounds/obstacles/cuttree2.wav");
+		Sound cuttingtree3 = new Sound("assets/audio/sounds/obstacles/cuttree3.wav");
+		Sound cuttingbamboo1 = new Sound("assets/audio/sounds/obstacles/cutbamboo1.wav");
+		Sound cuttingbamboo2 = new Sound("assets/audio/sounds/obstacles/cutbamboo2.wav");
+		Sound cuttingbamboo3 = new Sound("assets/audio/sounds/obstacles/cutbamboo3.wav");
 		
-		Sound cuttingbamboo1 = new Sound("assets/audio/sounds/cutbamboo1.wav");
-		Sound cuttingbamboo2 = new Sound("assets/audio/sounds/cutbamboo2.wav");
-		Sound cuttingbamboo3 = new Sound("assets/audio/sounds/cutbamboo3.wav");
+		Sound lockedaliendoor = new Sound("assets/audio/sounds/contraptions/lockedaliendoor.wav");
+		Sound openingaliendoor = new Sound("assets/audio/sounds/contraptions/openingaliendoor.wav");
 		
-		Sound lockedaliendoor = new Sound("assets/audio/sounds/lockedaliendoor.wav");
-		Sound openingaliendoor = new Sound("assets/audio/sounds/openingaliendoor.wav");
+		Sound poisoned = new Sound("assets/audio/sounds/environment/poisoned.wav");
 		
-		Sound poisoned = new Sound("assets/audio/sounds/poisoned.wav");
+		Sound guardianDestroyed = new Sound("assets/audio/sounds/fight/guardiandestroyed.wav");
 		
-		Sound guardianDestroyed = new Sound("assets/audio/sounds/guardiandestroyed.wav");
-		
-		Sound menu_sub = new Sound("assets/audio/sounds/menu_sub.wav");
-		Sound menu_back = new Sound("assets/audio/sounds/menu_back.wav");
-		Sound menu_select = new Sound("assets/audio/sounds/menu_select.wav");
-		Sound menu_move = new Sound("assets/audio/sounds/menu_move.wav");
+		Sound menu_sub = new Sound("assets/audio/sounds/ui/menusub.wav");
+		Sound menu_back = new Sound("assets/audio/sounds/ui/menuback.wav");
+		Sound menu_select = new Sound("assets/audio/sounds/ui/menuselect.wav");
+		Sound menu_move = new Sound("assets/audio/sounds/ui/menumove.wav");
 		
 		
 		
-		Sound footsteps = new Sound("assets/audio/sounds/footsteps.wav");
-		Sound footstepsHighGrass = new Sound("assets/audio/sounds/footsteps_highgrass.wav");
-		Sound footstepsGrass = new Sound("assets/audio/sounds/footsteps_grass.wav");
-		Sound footstepsSnow = new Sound("assets/audio/sounds/footsteps_snow.wav");
-		Sound footstepsSand = new Sound("assets/audio/sounds/footsteps_sand.wav");
-		Sound footstepsRoad = new Sound("assets/audio/sounds/footsteps_road.wav");
-		Sound footstepsWater = new Sound("assets/audio/sounds/footsteps_water.wav");
+		Sound footsteps = new Sound("assets/audio/sounds/footsteps/default.wav");
+		Sound footstepsHighGrass = new Sound("assets/audio/sounds/footsteps/highgrass.wav");
+		Sound footstepsGrass = new Sound("assets/audio/sounds/footsteps/grass.wav");
+		Sound footstepsSnow = new Sound("assets/audio/sounds/footsteps/snow.wav");
+		Sound footstepsSand = new Sound("assets/audio/sounds/footsteps/sand.wav");
+		Sound footstepsRoad = new Sound("assets/audio/sounds/footsteps/road.wav");
+		Sound footstepsWater = new Sound("assets/audio/sounds/footsteps/water.wav");
 		
-		Sound ambientElectricity = new Sound("assets/audio/sounds/ambient_electricity.wav");
-		Sound ambientEnergyWall = new Sound("assets/audio/sounds/ambient_energywall.wav");
-		Sound ambientFire = new Sound("assets/audio/sounds/ambient_fire.wav");
+		Sound ambientElectricity = new Sound("assets/audio/sounds/ambient/electricity.wav");
+		Sound ambientEnergyWall = new Sound("assets/audio/sounds/ambient/energywall.wav");
+		Sound ambientFire = new Sound("assets/audio/sounds/ambient/fire.wav");
 		
 		Sound introMissileAlert = new Sound("assets/audio/sounds/intro/missilealert.wav");
 		Sound introSiren = new Sound("assets/audio/sounds/intro/siren.wav");
 		
-		Sound alisasMessage = new Sound("assets/audio/sounds/alisasMessage.wav");
+		Sound alisasMessage = new Sound("assets/audio/sounds/ui/alisasmessage.wav");
 		
-		Sound textTyping = new Sound("assets/audio/sounds/text.wav");
-		
-		Sound sliding = new Sound("assets/audio/sounds/slide.wav");
-		
-		Sound secretDoorSpikes = new Sound("assets/audio/sounds/secretdoor_spikes.wav");
-		Sound secretDoorHydraulics = new Sound("assets/audio/sounds/secretdoor_hydraulics.wav");
-		Sound secretDoorEnergy = new Sound("assets/audio/sounds/secretdoor_energy.wav");
-		Sound secretDoorWall = new Sound("assets/audio/sounds/secretdoor_wall.wav");
+		Sound textTyping = new Sound("assets/audio/sounds/ui/text.wav");
 
-		Sound portalsGunshot = new Sound("assets/audio/sounds/portals_gunshot.wav");
-		Sound portalsJammed = new Sound("assets/audio/sounds/portals_jammed.wav");
-		Sound portalsCreated = new Sound("assets/audio/sounds/portals_created.wav");
-		Sound portalsFailed = new Sound("assets/audio/sounds/portals_failed.wav");
-		Sound portalsCanceled = new Sound("assets/audio/sounds/portals_canceled.wav");
-		Sound portalsTeleported = new Sound("assets/audio/sounds/portals_teleported.wav");
-		Sound buttonPushed = new Sound("assets/audio/sounds/button_pushed.wav");
+		Sound secretDoorSpikes = new Sound("assets/audio/sounds/contraptions/secretdoorspikes.wav");
+		Sound secretDoorHydraulics = new Sound("assets/audio/sounds/contraptions/secretdoorhydraulics.wav");
+		Sound secretDoorEnergy = new Sound("assets/audio/sounds/contraptions/secretdoorenergy.wav");
+		Sound secretDoorWall = new Sound("assets/audio/sounds/contraptions/secretdoorwall.wav");
 
-		Sound sensorPresenceDetected = new Sound("assets/audio/sounds/sensor_presence_detected.wav");
-		Sound sensorPresenceLost = new Sound("assets/audio/sounds/sensor_presence_lost.wav");
-		Sound alert = new Sound("assets/audio/sounds/alert.wav");
+		Sound portalsGunshot = new Sound("assets/audio/sounds/portals/gunshot.wav");
+		Sound portalsJammed = new Sound("assets/audio/sounds/portals/jammed.wav");
+		Sound portalsCreated = new Sound("assets/audio/sounds/portals/created.wav");
+		Sound portalsFailed = new Sound("assets/audio/sounds/portals/failed.wav");
+		Sound portalsCanceled = new Sound("assets/audio/sounds/portals/canceled.wav");
+		Sound portalsTeleported = new Sound("assets/audio/sounds/portals/teleported.wav");
 
-		Sound timeBonus = new Sound("assets/audio/sounds/timebonus.wav");
-		Sound trafficbarrierreset = new Sound("assets/audio/sounds/trafficbarrierreset.wav");
+		Sound buttonPushed = new Sound("assets/audio/sounds/contraptions/button.wav");
 
-		Sound skipTurn = new Sound("assets/audio/sounds/skipturn.wav");
+		Sound sensorPresenceDetected = new Sound("assets/audio/sounds/contraptions/presencedetected.wav");
+		Sound sensorPresenceLost = new Sound("assets/audio/sounds/contraptions/presencelost.wav");
+		Sound alert = new Sound("assets/audio/sounds/fight/alert.wav");
 
-		Sound decontaminated = new Sound("assets/audio/sounds/decontaminated.wav");
+		Sound timeBonus = new Sound("assets/audio/sounds/vehicle/timebonus.wav");
+		Sound trafficbarrierreset = new Sound("assets/audio/sounds/vehicle/trafficbarrierreset.wav");
+
+		Sound skipTurn = new Sound("assets/audio/sounds/ui/skipturn.wav");
+
+		Sound decontaminated = new Sound("assets/audio/sounds/environment/decontaminated.wav");
 
 
 		this.getSoundResources().put(SoundResources.SOUND_SPACE_LIFT_LATCH, spaceliftLatch);
@@ -614,7 +616,6 @@ public class ApplicationContext {
 		this.getSoundResources().put(SoundResources.SOUND_CUTSCENE_ALISASMESSAGE, alisasMessage);
 		
 		this.getSoundResources().put(SoundResources.SOUND_TEXT_TYPING, textTyping);
-		this.getSoundResources().put(SoundResources.SOUND_SLIDING, sliding);
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_SPIKES, secretDoorSpikes);
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_HYDRAULICS, secretDoorHydraulics);
 		this.getSoundResources().put(SoundResources.SOUND_SECRET_DOOR_ENERGY, secretDoorEnergy);
