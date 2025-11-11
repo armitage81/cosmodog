@@ -8,7 +8,7 @@
 </div> 
 
 <p>
-<i>Cosmodog</i> is a retro style game with 8/16-bit visuals and unforgiving but fair difficulty. Our goal was to create a complex and challenging adventure with fast-paced and easy-to-learn gameplay. Remember all those procedurally generated worlds of countless other games? Cosmodog is not like them. Every corner of its world is designed by hand. And it's all there for you - no loading screens, no cuts, no stages. Just you and a contaminated valley on an abandoned planet.
+<i>Cosmodog</i> is a retro style game with 8/16-bit visuals and unforgiving but fair difficulty. Our goal was to create a complex and challenging adventure with fast-paced and easy-to-learn gameplay. Remember all those procedurally generated worlds of countless other games? Cosmodog is not like them. Every corner of its world is designed by hand. And it's all there for you - no loading screens, no cuts, no stages. Just you and a forbidden valley on an abandoned planet.
 </p>
 
 <br/>

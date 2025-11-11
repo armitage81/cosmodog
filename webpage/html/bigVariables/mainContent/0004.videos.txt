@@ -2,14 +2,14 @@
 <div class="w3-panel w3-leftbar w3-light-grey">
 	<p class="w3-xlarge w3-serif">
 		<i>
-		"The only way to keep the definition of reality coherent is admitting its dependency on a concrete perception and hence its plurality."
+		"The only way to keep the definition of reality coherent is by overcoming its dependency on a concrete perception and hence its plurality."
 		</i>
 	</p>
 	<p>Mary Harper, Xenoarchaeologist</p>
 </div> 
 
 <p>
-The following videos are a mix of Let's Play and development commentary. In it I will complete the game and collect as many items, logs and secrets as possible. You can watch the videos as a reference and a walkthrough to the game but beware of spoilers. You will have the most fun playing the game without any hints and learning through errors. On the other hand, you can watch the videos after beating the game to get some insights into the development process and design decisions that have been made while making the game.
+The following videos are a mix of Let's Play and development commentary. In it I will complete the game and collect as many items, logs and secrets as possible. You can watch the videos as a reference and a walkthrough to the game -- but beware of spoilers. You will have the most fun playing the game without any hints and learning by mistakes. On the other hand, you can watch the videos after beating the game to get some insights into the development process and design decisions that have been made while making the game.
 </p>
 
 

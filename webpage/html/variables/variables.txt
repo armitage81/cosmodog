@@ -1,5 +1,5 @@
 id;pageTitle
-cosmodog.html;Cosmodog - The game
+cosmodog.html;Cosmodog 2.0
 features.html;Game Features
 screenshots.html;Screenshots
 videos.html;Let's play

@@ -3,7 +3,7 @@
 <b>Bot</b>
 
 <p>
-This bots have been dispatched by the Star Union Fleet to enforce the quarantine on Phaeton after the colony was struck by mass suicides and dementia epidemics. They are slow, not very robust and have a limited sight but can be dangerous nevertheless if they attack in groups. Try to catch them off-guard and attack from behind with hand weapons.
+These bots have been dispatched by the Star Union Fleet to enforce the quarantine on Phaeton after the colony had been struck by an epidemic. They are slow, not very robust and have limited sight, but can be dangerous nevertheless if they attack in groups. Try to catch them off-guard and attack from behind with.
 </p>
 
 <img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_tank.png" alt="" height="64" width="64">
@@ -28,9 +28,9 @@ Copters are flying drones and the only unit that can cross water. They are extre
 
 <p>
 The stationary turrets are gruesome enemies. 
-Star Union Fleet installed them at important locations to keep out intruders and establish quarantine zones. 
+Star Union Fleet installed them at important locations to keep out intruders. 
 Turrets have a very limited sight and can attack only adjacent targets. 
-A rocket launcher is the only weapon that is strong enough to destroy a turret.
+A rocket launcher is the only weapon that is strong enough to effectively battle a turret.
 Sometimes, it is better to pass by a turret than to fight it. 
 </p>
 
@@ -42,8 +42,8 @@ Sometimes, it is better to pass by a turret than to fight it.
 Artillery is the only ranged unit in the game. Its sight is good and has no blind spots. 
 Others than melee units, the artillery won't try to reach the player character immediately after noticing him.
 Instead, the unit will stand its ground and shoot grenades at the player from the distance.
-The best way to deal with artillery units is avoiding them. 
-If an artillery has spotted you, try to escape or run to it to destroy it before it can kill you.
+The best way to deal with artillery units is ambushing them. 
+If an artillery has spotted you, try to escape or run toward it to destroy it before it can kill you.
 </p>
 
 <img class="w3-white w3-bottombar w3-leftbar w3-rightbar w3-topbar w3-border-red" src="pics/enemy_pigrat.png" alt="" height="64" width="64">

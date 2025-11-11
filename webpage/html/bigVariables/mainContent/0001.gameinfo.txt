@@ -11,7 +11,7 @@
 
 		<p>
 			<i>Cosmodog</i> is a game about exploring an abandoned valley on <i>Phaeton</i>, an ancient planet with traces of alien civilization. A thriving colony of the past,
-			<i>Phaeton</i> was recently hit by multiple strikes of mysterious epidemies that caused dementia and mass suicides among the population.
+			<i>Phaeton</i> was recently hit by multiple strikes of a mysterious epidemic that caused dementia and mass suicides among the population.
 		</p>
 		<p>
 			You are a <i>cargo pilot</i> whose ship crashed on <i>Phaeton's</i> surface. Your task is to explore the forbidden valley and uncover the truth behind the mystery. The epic scale of the recent events has a personal meaning for you as a person you love is affected by them.

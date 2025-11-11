@@ -1,7 +1,7 @@
 <div class="w3-panel w3-leftbar w3-light-grey">
 	<p class="w3-xlarge w3-serif">
 		<i>
-		"Free will is an illusion of a mind trying to convince itself of having control while it can't even handle its own impulses."
+		"Free will is an illusion. Our minds are incapable of handling our own impulses."
 		</i>
 	</p>
 	<p>Mary Harper, Xenoarchaeologist</p>
@@ -20,7 +20,7 @@ You can play the full game for free and distribute it in any non-commercial way.
 </p>
 
 <p>
-Please leave your comments, found bugs and extensions suggestions <a href="mailto:feedback@cosmodog.eu">feedback@cosmodog.eu</a>. If you are interested in the source code, you can find it in <a href="https://github.com/armitage81/cosmodog" download="filename">GitHub</a>
+Please send your comments, found bugs and extensions suggestions to <a href="mailto:feedback@cosmodog.eu">feedback@cosmodog.eu</a>. If you are interested in the source code, you can find it in <a href="https://github.com/armitage81/cosmodog" download="filename">GitHub</a>
 </p>
 
 
