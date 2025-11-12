@@ -1,7 +1,7 @@
 <div class="w3-panel w3-leftbar w3-light-grey">
 	<p class="w3-xlarge w3-serif">
 		<i>
-		"Physics has outlived itself as the language of reality. If we really want to understand the Universe, then we need a new, more powerful language."
+		"Physics has outlived itself as the language of reality. If we really want to understand the universe, then we need a new, more powerful language."
 		</i>
 	</p>
 	<p>Mary Harper, Xenoarchaeologist</p>

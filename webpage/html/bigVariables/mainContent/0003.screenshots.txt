@@ -1,7 +1,7 @@
 <div class="w3-panel w3-leftbar w3-light-grey">
 	<p class="w3-xlarge w3-serif">
 		<i>
-		"We tend to underestimate the mysterious complexity of the Universe. There are laws and powers holding together the fabric of Space and Time that overwhelm our limited imagination."
+		"We tend to underestimate the mysterious complexity of the universe. There are laws and powers holding together the fabric of Space and Time that overwhelm our limited imagination."
 		</i>
 	</p>
 	<p>Mary Harper, Xenoarchaeologist</p>
