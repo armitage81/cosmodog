@@ -3,9 +3,9 @@ A page from the technical specification of deployed drones
 COPTER
 
 
-Copters are the Fleet's most flexible units. They are fast and can fly over water.
-That makes them a perfect choice for guarding naval areas. 
-A copter's detection radius is extremely high and its altitude allows big 'sight' angle.
+Copters are the Fleet's most flexible units. They are fast and can hover over water.
+That makes them the perfect choice for guarding naval areas.
+Copter's detection range is extremely high and its altitude allows big 'sight' angle.
 
 
 Armor type: Light
@@ -14,7 +14,7 @@ Weapon type: Machine gun
 
 Damage dealt: 3
 
-Chassis type: Flying (Can cross almost every terrain)
+Chassis type: Flying (Can cross almost every terrain.)
 
 HP: 20
 

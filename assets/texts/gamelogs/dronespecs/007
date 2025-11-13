@@ -5,7 +5,7 @@ HERCULES
 
 The solar-powered battle drone Hercules is a mighty weapon.
 Its innovative generator uses the energy of Phaeton's sun to let it hover over the ground.
-This results in very fast movement even in the rough terrain and leaves enough energy to power two
+This results in very fast movement -- even in rough terrain -- and leaves enough energy to power two
 deadly laser cannons. Hercules is equipped with highly advanced AI that can spot enemies from afar.
 
 
@@ -28,4 +28,5 @@ Speed: 2
 Weaknesses: 
 
 
-Being solar-powered, Hercules cannot be deployed at night. Intruders can easily deactivate Hercules units while those are hibernating.
+Being solar-powered, Hercules units cannot be deployed at night.
+Intruders can easily deactivate a unit of this type while it is hibernating.

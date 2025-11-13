@@ -3,9 +3,10 @@ A page from the technical specification of deployed drones
 SCOUT
 
 
-Often refered to as "Glass Cannons", scouts are wheeled units that have a long (but narrowly angled) detection distance. 
-They are fast and deadly but only lightly armored.
-Scouts cannot be backstabbed as their detectors spot enemies in the rear.
+Often referred to as "Glass Cannons", scouts are wheeled units that have a long (but narrowly angled)
+detection range.
+They are fast and deadly, but only lightly armored.
+Scouts cannot be caught off-guard from behind as their detectors spot enemies in the rear.
 
 
 Armor type: Light
@@ -24,8 +25,9 @@ Speed: 2
 Weaknesses: 
 
 
-Scouts have big fuel tanks on both sides of the main unit, making the enemy detection in these directions impossible.
-Mostly moving on the roads, scouts can be taken by surprise and destroyed in one shot if attacked from the side.
+Scouts have big fuel tanks on both sides of the main unit,
+making the enemy detection in these directions impossible.
+Mostly moving on roads, scouts can be taken by surprise and destroyed in one shot if attacked from the side.
 
 
 
