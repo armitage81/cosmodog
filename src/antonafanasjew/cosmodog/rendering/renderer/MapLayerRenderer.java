@@ -113,9 +113,7 @@ public class MapLayerRenderer extends AbstractRenderer {
 		}
 		
 		if (animation != null) {
-			final Animation finalAnimation = animation;
-			ProfilerUtils.runWithProfiling("MapLayerRenderer.drawingASingleTileAnimation", () -> {
-				finalAnimation.draw(offsetX, offsetY, finalAnimation.getWidth(), finalAnimation.getHeight());});
+            animation.draw(offsetX, offsetY, animation.getWidth(), animation.getHeight());
 		} else {
 			int imageIndex = tileId - 1;
 			
@@ -125,10 +123,8 @@ public class MapLayerRenderer extends AbstractRenderer {
 				int imagePosY = imageIndex / 9;
 				
 				Image tileImage = TilesetUtils.tileByIndex(imagePosX, imagePosY);
-				ProfilerUtils.runWithProfiling("MapLayerRenderer.drawingASingleTileImage", () -> {
-					tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
-				});
-			}	
+				tileImage.draw(offsetX, offsetY, tileImage.getWidth(), tileImage.getHeight());
+			}
 		}
 		
 	}
