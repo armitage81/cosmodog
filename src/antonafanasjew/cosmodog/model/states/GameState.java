@@ -1,5 +1,9 @@
 package antonafanasjew.cosmodog.model.states;
 
+import antonafanasjew.cosmodog.caching.Scope;
+import antonafanasjew.cosmodog.caching.ScopeResetListener;
+import antonafanasjew.cosmodog.caching.ScopeResetter;
+import antonafanasjew.cosmodog.caching.ScopedCache;
 import antonafanasjew.cosmodog.ingamemenu.InGameMenu;
 import antonafanasjew.cosmodog.model.MapDescriptor;
 import antonafanasjew.cosmodog.rendering.renderer.*;
@@ -44,7 +48,7 @@ import java.util.Map;
  * Don't mix it with the base class GameState from the slick2d framework.
  *
  */
-public class GameState extends CosmodogAbstractState {
+public class GameState extends CosmodogAbstractState implements ScopeResetter {
 
 	private boolean firstUpdate;
 
@@ -57,6 +61,8 @@ public class GameState extends CosmodogAbstractState {
 	private Renderer wrongSequenceRenderer;
 
 	private InGameMenuRenderer inGameMenuRenderer;
+
+	ScopeResetListener scopeResetListener = ScopedCache.CACHE_FOR_LOOP;
 
 	@Override
 	public void firstEnter(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -121,6 +127,8 @@ public class GameState extends CosmodogAbstractState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, final int delta) throws SlickException {
 
+		resetScope(Scope.LOOP);
+
 		ProfilerUtils.runWithProfiling("GameState.update", () -> {
 			int n = delta;
 			if (firstUpdate) {
@@ -183,5 +191,10 @@ public class GameState extends CosmodogAbstractState {
 		// Stop ambient sounds
 
 		ApplicationContextUtils.getCosmodogGame().getAmbientSoundRegistry().clear();
+	}
+
+	@Override
+	public void resetScope(Scope scope) {
+		scopeResetListener.onScopeReset(scope);
 	}
 }
