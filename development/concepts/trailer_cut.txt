@@ -1,0 +1,50 @@
+CALM PHASE
+---------------------------------------------------------
+Walking through the forest
+Walking through destroyed gazolinera
+Walking on the wooden path in the swamps
+Driving on a road in a vehicle
+Sailing on boat
+Skiing
+Finding a secret
+Following rivers in the turret canyon
+Sneaking through high grass among artillery units
+Walking through the space station
+Stepping on letters in the movie studio
+Entering a building (snow lab, with snowfall)
+---------------------------------------------------------
+TENSE PHASE
+---------------------------------------------------------
+Teleporting
+Moving a crate in a sokoban puzzle
+opening a door in the space station
+Shooting a portal
+Going through the portal
+Racing the car
+Entering the space lift (till the laser appears)
+Collecting a map piece
+Switching weapons
+Encountering nightfall when Hercules units are deactivated
+Deactivating poison via a pressure button
+Entering the platform and driving it
+Turning reflectors
+Walking nearby a monolith
+
+---------------------------------------------------------
+ACTION PHASE
+---------------------------------------------------------
+Hitting a robot from behind, destroying it
+Being attacked by three drones in parallel
+Being chased by pigrats
+Being eaten by the snow worm
+Going through a visible mine field and stepping on a mine
+Artillery shoots
+Artillery grenades hit the player
+Stepping into a radioactive field
+Hitting a turret which drops a medkit
+Destroying a crate, finding an infobank
+Platform hits multiple turrets
+Cutting through bamboo
+Destroying a crumbling wall
+Collecting a rocket
+Finding item from the chest
