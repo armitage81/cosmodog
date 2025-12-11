@@ -1735,65 +1735,65 @@ portalPlasmaBall;assets/graphics/cutscenes/portalray.png;16;16;[3/0/125,3/1/125]
 
 
 
-trafficBarrierHorizontalClosedTop;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[0/0/10000];true;true
-trafficBarrierHorizontalClosedBottom;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[0/2/10000];true;true
-trafficBarrierHorizontalOpenTop;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[2/0/10000];true;true
-trafficBarrierHorizontalOpenBottom;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[2/2/10000];true;true
-trafficBarrierVerticalClosedTop;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[4/0/10000];true;true
-trafficBarrierVerticalClosedBottom;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[4/2/10000];true;true
-trafficBarrierVerticalOpenTop;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[6/0/10000];true;true
-trafficBarrierVerticalOpenBottom;assets/graphics/dynamicPieces/trafficbarriers.png;48;48;[6/2/10000];true;true
+trafficBarrierHorizontalClosedTop;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[0/0/10000];true;true
+trafficBarrierHorizontalClosedBottom;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[0/2/10000];true;true
+trafficBarrierHorizontalOpenTop;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[2/0/10000];true;true
+trafficBarrierHorizontalOpenBottom;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[2/2/10000];true;true
+trafficBarrierVerticalClosedTop;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[4/0/10000];true;true
+trafficBarrierVerticalClosedBottom;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[4/2/10000];true;true
+trafficBarrierVerticalOpenTop;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[6/0/10000];true;true
+trafficBarrierVerticalOpenBottom;assets/graphics/dynamicpieces/trafficbarriers.png;48;48;[6/2/10000];true;true
 
 
-trafficBarrierSignalCounter1;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[0/0/10000];true;true
-trafficBarrierSignalCounter2;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[1/0/10000];true;true
-trafficBarrierSignalCounter3;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[2/0/10000];true;true
-trafficBarrierSignalCounter4;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[3/0/10000];true;true
-trafficBarrierSignalCounter5;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[4/0/10000];true;true
-trafficBarrierSignalCounter6;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[5/0/10000];true;true
-trafficBarrierSignalCounter7;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[6/0/10000];true;true
-trafficBarrierSignalCounter8;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[7/0/10000];true;true
-trafficBarrierSignalCounter9;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[0/1/10000];true;true
-trafficBarrierSignalCounter10;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[1/1/10000];true;true
-trafficBarrierSignalCounter11;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[2/1/10000];true;true
-trafficBarrierSignalCounter12;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[3/1/10000];true;true
-trafficBarrierSignalCounter13;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[4/1/10000];true;true
-trafficBarrierSignalCounter14;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[5/1/10000];true;true
-trafficBarrierSignalCounter15;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[6/1/10000];true;true
-trafficBarrierSignalCounter16;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[7/1/10000];true;true
-trafficBarrierSignalCounter17;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[0/2/10000];true;true
-trafficBarrierSignalCounter18;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[1/2/10000];true;true
-trafficBarrierSignalCounter19;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[2/2/10000];true;true
-trafficBarrierSignalCounter20;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[3/2/10000];true;true
-trafficBarrierSignalCounter21;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[4/2/10000];true;true
-trafficBarrierSignalCounter22;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[5/2/10000];true;true
-trafficBarrierSignalCounter23;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[6/2/10000];true;true
-trafficBarrierSignalCounter24;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[7/2/10000];true;true
+trafficBarrierSignalCounter1;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[0/0/10000];true;true
+trafficBarrierSignalCounter2;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[1/0/10000];true;true
+trafficBarrierSignalCounter3;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[2/0/10000];true;true
+trafficBarrierSignalCounter4;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[3/0/10000];true;true
+trafficBarrierSignalCounter5;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[4/0/10000];true;true
+trafficBarrierSignalCounter6;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[5/0/10000];true;true
+trafficBarrierSignalCounter7;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[6/0/10000];true;true
+trafficBarrierSignalCounter8;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[7/0/10000];true;true
+trafficBarrierSignalCounter9;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[0/1/10000];true;true
+trafficBarrierSignalCounter10;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[1/1/10000];true;true
+trafficBarrierSignalCounter11;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[2/1/10000];true;true
+trafficBarrierSignalCounter12;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[3/1/10000];true;true
+trafficBarrierSignalCounter13;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[4/1/10000];true;true
+trafficBarrierSignalCounter14;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[5/1/10000];true;true
+trafficBarrierSignalCounter15;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[6/1/10000];true;true
+trafficBarrierSignalCounter16;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[7/1/10000];true;true
+trafficBarrierSignalCounter17;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[0/2/10000];true;true
+trafficBarrierSignalCounter18;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[1/2/10000];true;true
+trafficBarrierSignalCounter19;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[2/2/10000];true;true
+trafficBarrierSignalCounter20;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[3/2/10000];true;true
+trafficBarrierSignalCounter21;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[4/2/10000];true;true
+trafficBarrierSignalCounter22;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[5/2/10000];true;true
+trafficBarrierSignalCounter23;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[6/2/10000];true;true
+trafficBarrierSignalCounter24;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[7/2/10000];true;true
 
-trafficBarrierSignalGreen;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[0/3/10000];true;true
-trafficBarrierSignalRed;assets/graphics/dynamicPieces/trafficbarriers.signals.png;16;16;[1/3/10000];true;true
+trafficBarrierSignalGreen;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[0/3/10000];true;true
+trafficBarrierSignalRed;assets/graphics/dynamicpieces/trafficbarriers.signals.png;16;16;[1/3/10000];true;true
 
-polePositionHorizontal;assets/graphics/dynamicPieces/track.png;16;16;[0/0/10000];true;true
-polePositionVertical;assets/graphics/dynamicPieces/track.png;16;16;[1/0/10000];true;true
-finishLineHorizontal;assets/graphics/dynamicPieces/track.png;16;16;[0/1/10000];true;true
-finishLineVertical;assets/graphics/dynamicPieces/track.png;16;16;[1/1/10000];true;true
+polePositionHorizontal;assets/graphics/dynamicpieces/track.png;16;16;[0/0/10000];true;true
+polePositionVertical;assets/graphics/dynamicpieces/track.png;16;16;[1/0/10000];true;true
+finishLineHorizontal;assets/graphics/dynamicpieces/track.png;16;16;[0/1/10000];true;true
+finishLineVertical;assets/graphics/dynamicpieces/track.png;16;16;[1/1/10000];true;true
 
 
-timeBonus1;assets/graphics/dynamicPieces/timecontrols.png;16;16;[0/0/10000];true;true
-timeBonus2;assets/graphics/dynamicPieces/timecontrols.png;16;16;[1/0/10000];true;true
-timeBonus3;assets/graphics/dynamicPieces/timecontrols.png;16;16;[2/0/10000];true;true
-timeBonus4;assets/graphics/dynamicPieces/timecontrols.png;16;16;[3/0/10000];true;true
-timeBonus5;assets/graphics/dynamicPieces/timecontrols.png;16;16;[4/0/10000];true;true
-timeBonus6;assets/graphics/dynamicPieces/timecontrols.png;16;16;[5/0/10000];true;true
-timeBonus7;assets/graphics/dynamicPieces/timecontrols.png;16;16;[6/0/10000];true;true
-timeBonus8;assets/graphics/dynamicPieces/timecontrols.png;16;16;[7/0/10000];true;true
-timeBonus9;assets/graphics/dynamicPieces/timecontrols.png;16;16;[8/0/10000];true;true
-timeBonus10;assets/graphics/dynamicPieces/timecontrols.png;16;16;[9/0/10000];true;true
-timeBonus20;assets/graphics/dynamicPieces/timecontrols.png;16;16;[0/1/10000];true;true
-timeBonus30;assets/graphics/dynamicPieces/timecontrols.png;16;16;[1/1/10000];true;true
-timeBonus40;assets/graphics/dynamicPieces/timecontrols.png;16;16;[2/1/10000];true;true
-timeBonus50;assets/graphics/dynamicPieces/timecontrols.png;16;16;[3/1/10000];true;true
-resetter;assets/graphics/dynamicPieces/timecontrols.png;16;16;[0/2/10000];true;true
+timeBonus1;assets/graphics/dynamicpieces/timecontrols.png;16;16;[0/0/10000];true;true
+timeBonus2;assets/graphics/dynamicpieces/timecontrols.png;16;16;[1/0/10000];true;true
+timeBonus3;assets/graphics/dynamicpieces/timecontrols.png;16;16;[2/0/10000];true;true
+timeBonus4;assets/graphics/dynamicpieces/timecontrols.png;16;16;[3/0/10000];true;true
+timeBonus5;assets/graphics/dynamicpieces/timecontrols.png;16;16;[4/0/10000];true;true
+timeBonus6;assets/graphics/dynamicpieces/timecontrols.png;16;16;[5/0/10000];true;true
+timeBonus7;assets/graphics/dynamicpieces/timecontrols.png;16;16;[6/0/10000];true;true
+timeBonus8;assets/graphics/dynamicpieces/timecontrols.png;16;16;[7/0/10000];true;true
+timeBonus9;assets/graphics/dynamicpieces/timecontrols.png;16;16;[8/0/10000];true;true
+timeBonus10;assets/graphics/dynamicpieces/timecontrols.png;16;16;[9/0/10000];true;true
+timeBonus20;assets/graphics/dynamicpieces/timecontrols.png;16;16;[0/1/10000];true;true
+timeBonus30;assets/graphics/dynamicpieces/timecontrols.png;16;16;[1/1/10000];true;true
+timeBonus40;assets/graphics/dynamicpieces/timecontrols.png;16;16;[2/1/10000];true;true
+timeBonus50;assets/graphics/dynamicpieces/timecontrols.png;16;16;[3/1/10000];true;true
+resetter;assets/graphics/dynamicpieces/timecontrols.png;16;16;[0/2/10000];true;true
 
 
 
