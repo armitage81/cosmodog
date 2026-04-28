@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Cosmodog",
+            "request": "launch",
+            "mainClass": "antonafanasjew.cosmodog.CosmodogStarter",
+            "classPaths": [
+                "${workspaceFolder}/build",
+                "${workspaceFolder}/resources",
+                "${workspaceFolder}/lib/gdx-1.8.0.jar",
+                "${workspaceFolder}/lib/jdom2-2.0.6.jar",
+                "${workspaceFolder}/lib/commons-beanutils-1.9.2.jar",
+                "${workspaceFolder}/lib/commons-collections-3.2.2.jar",
+                "${workspaceFolder}/lib/commons-logging-1.2.jar",
+                "${workspaceFolder}/lib/guava-18.0.jar",
+                "${workspaceFolder}/lib/json-20240303.jar",
+                "${workspaceFolder}/lib/jogg-0.0.7.jar",
+                "${workspaceFolder}/lib/jorbis-0.0.15.jar",
+                "${workspaceFolder}/lib/slick2d/lib/slick.jar",
+                "${workspaceFolder}/lib/slick2d/lib/lwjgl.jar",
+                "${workspaceFolder}/lib/slick2d/lib/lwjgl_util.jar",
+                "${workspaceFolder}/lib/slick2d/lib/jinput.jar"
+            ],
+            "vmArgs": "-Djava.library.path=${workspaceFolder}/lib/lwjgl/native/windows",
+            "workingDirectory": "${workspaceFolder}",
+            "preLaunchTask": "Java Compile"
+        }
+    ]
+}

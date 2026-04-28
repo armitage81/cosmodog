@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Java Compile",
+            "type": "shell",
+            "command": "if not exist build mkdir build && dir /s /b src\\*.java > .sources.txt && javac -d build -cp \"lib\\gdx-1.8.0.jar;lib\\jdom2-2.0.6.jar;lib\\commons-beanutils-1.9.2.jar;lib\\guava-18.0.jar;lib\\slick2d\\lib\\slick.jar;lib\\slick2d\\lib\\lwjgl.jar;lib\\json-20240303.jar\" @.sources.txt && del .sources.txt",
+            "options": {
+                "shell": {
+                    "executable": "cmd",
+                    "args": ["/c"]
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$javac"
+        }
+    ]
+}
