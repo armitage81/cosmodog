@@ -151,6 +151,7 @@ public class ApplicationContext {
 	private TiledMapReader tiledMapReader = new XmlTiledMapReader();
 	
 	private Map<Character, Letter> characterLetters = Maps.newHashMap();
+	private Map<Character, Letter> overheadCharacterLetters = Maps.newHashMap();
 	
 	private Map<String, MenuAction> menuActions = Maps.newHashMap();
 	private Map<String, MenuLabel> menuLabels = Maps.newHashMap();
@@ -676,6 +677,10 @@ public class ApplicationContext {
 		LetterBuilder letterBuilder = new DefaultLetterBuilder(alphabethSheet);
 		this.characterLetters = letterBuilder.buildLetters();
 
+		SpriteSheet alphabethWhiteSheet = new SpriteSheet("assets/graphics/ui/alphabeth_white.png", 16, 16);
+		LetterBuilder overheadLetterBuilder = new DefaultLetterBuilder(alphabethWhiteSheet);
+		this.overheadCharacterLetters = overheadLetterBuilder.buildLetters();
+
 		menuActions.put("newGameMenuAction1", MenuActionFactory.getStartNewGameMenuAction(1));
 		menuActions.put("newGameMenuAction2", MenuActionFactory.getStartNewGameMenuAction(2));
 		menuActions.put("newGameMenuAction3", MenuActionFactory.getStartNewGameMenuAction(3));
@@ -749,6 +754,10 @@ public class ApplicationContext {
 	 */
 	public Map<Character, Letter> getCharacterLetters() {
 		return characterLetters;
+	}
+
+	public Map<Character, Letter> getOverheadCharacterLetters() {
+		return overheadCharacterLetters;
 	}
 
 	public Map<String, Menu> getMenus() {

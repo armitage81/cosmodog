@@ -1,77 +1,74 @@
 package antonafanasjew.cosmodog.rendering.renderer;
 
-import antonafanasjew.cosmodog.actions.movement.MovementAction;
-import antonafanasjew.cosmodog.util.TileUtils;
+import java.util.List;
+import java.util.Map;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import antonafanasjew.cosmodog.ApplicationContext;
 import antonafanasjew.cosmodog.actions.AsyncActionType;
+import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
+import antonafanasjew.cosmodog.actions.movement.MovementAction;
 import antonafanasjew.cosmodog.actions.notification.OverheadNotificationAction;
 import antonafanasjew.cosmodog.camera.Cam;
 import antonafanasjew.cosmodog.globals.DrawingContextProviderHolder;
+import antonafanasjew.cosmodog.globals.FontType;
 import antonafanasjew.cosmodog.model.Cosmodog;
 import antonafanasjew.cosmodog.model.CosmodogGame;
-import antonafanasjew.cosmodog.model.CosmodogMap;
 import antonafanasjew.cosmodog.model.actors.Actor;
 import antonafanasjew.cosmodog.rendering.context.DrawingContext;
-import antonafanasjew.cosmodog.rendering.context.SimpleDrawingContext;
-import antonafanasjew.cosmodog.rendering.renderer.textbook.FontRefToFontTypeMap;
-import antonafanasjew.cosmodog.rendering.renderer.textbook.TextPageConstraints;
-import antonafanasjew.cosmodog.rendering.renderer.textbook.placement.Book;
-import antonafanasjew.cosmodog.util.ApplicationContextUtils;
-import antonafanasjew.cosmodog.util.TextBookRendererUtils;
-import antonafanasjew.cosmodog.actions.movement.CrossTileMotion;
+import antonafanasjew.cosmodog.rendering.renderer.OverheadPixelTextRenderer.OverheadPixelTextParam;
+import antonafanasjew.cosmodog.text.Letter;
+import antonafanasjew.cosmodog.text.LetterUtils;
+import antonafanasjew.cosmodog.topology.Rectangle;
+import antonafanasjew.cosmodog.util.TileUtils;
 
 public class OverheadNotificationRenderer extends AbstractRenderer {
+
+	private static final float SCALE_FACTOR = 2.0f;
+	private static final float MAX_WIDTH = 500f;
 
 	@Override
 	public void renderInternally(GameContainer gameContainer, Graphics graphics, Object renderingParameter) {
 
 		int tileLength = TileUtils.tileLengthSupplier.get();
 
-		//The whole screen
 		DrawingContext sceneDrawingContext = DrawingContextProviderHolder.get().getDrawingContextProvider().sceneDrawingContext();
 		graphics.translate(sceneDrawingContext.x(), sceneDrawingContext.y());
-		
+
 		ApplicationContext applicationContext = ApplicationContext.instance();
 		Cosmodog cosmodog = applicationContext.getCosmodog();
 		CosmodogGame cosmodogGame = cosmodog.getCosmodogGame();
-		CosmodogMap map = ApplicationContextUtils.mapOfPlayerLocation();
+		OverheadNotificationAction action = (OverheadNotificationAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
 
-		
-		OverheadNotificationAction action = (OverheadNotificationAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.OVERHEAD_NOTIFICATION);
-		
 		if (action == null) {
 			return;
 		}
-		
-		//Holds the information of renderable texts, their location and over which heads they should appear.
+
 		OverheadNotificationAction.OverheadNotificationsState state = action.getProperty("state");
-		
+
 		if (state == null) {
 			return;
 		}
-		
-		
+
+		Map<Character, Letter> letters = applicationContext.getOverheadCharacterLetters();
+		Letter defaultLetter = letters.get('?');
+
 		for (int i = 0; i < state.texts.size(); i++) {
 
-			String text = state.texts.get(i);
-			
+			String rawText = state.texts.get(i);
 			float completion = state.completions.get(i);
 			Actor actor = state.actors.get(i);
-			
-			Cam cam = cosmodogGame.getCam();
 
+			Cam cam = cosmodogGame.getCam();
 			Cam.CamTilePosition camTilePosition = cam.camTilePosition();
 
-	
-			//Actors move smoothly between tiles. This offset represents this.
 			float movementOffsetX = 0;
 			float movementOffsetY = 0;
 
-			//The information about the actor's movement is taken from its registered transition, if any.
-			MovementAction movementAction = (MovementAction)cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
+			MovementAction movementAction = (MovementAction) cosmodogGame.getActionRegistry().getRegisteredAction(AsyncActionType.MOVEMENT, MovementAction.class);
 			CrossTileMotion actorMotion = null;
 			if (movementAction != null) {
 				actorMotion = movementAction.getActorMotions().get(actor);
@@ -81,56 +78,46 @@ public class OverheadNotificationRenderer extends AbstractRenderer {
 				movementOffsetX = tileLength * actorMotion.getCrossTileOffsetX();
 				movementOffsetY = tileLength * actorMotion.getCrossTileOffsetY();
 			}
-			
-			//Going to the beginning of the tile where camera top left corner is located.
-			//The coordinates could be negative.
+
 			graphics.translate(camTilePosition.offsetX(), camTilePosition.offsetY());
-			
-			//Actor's X position in tiles related to the camera's left corner.
-			int actorTileNoXOnVisibleMap = (int)(actor.getPosition().getX() - camTilePosition.tileX());
-			
-			//Actor's X position in pixels corresponding to the tile position calculated above.
+
+			int actorTileNoXOnVisibleMap = (int) (actor.getPosition().getX() - camTilePosition.tileX());
 			int actorPosXOnVisibleMap = actorTileNoXOnVisibleMap * tileLength;
-			
-			//X Position in pixels considering the movement of the actor.
 			float actorPosXOnVisibleMapInclMovement = actorPosXOnVisibleMap + movementOffsetX;
-			
-			//X Position in pixels considering the scale factor.
 			float actorPosXOnVisibleMapInclMovementInclScale = actorPosXOnVisibleMapInclMovement * cam.getZoomFactor();
-			
-			//The same for Y position.
-			int actorTileNoYOnVisibleMap = (int)(actor.getPosition().getY() - camTilePosition.tileY());
+
+			int actorTileNoYOnVisibleMap = (int) (actor.getPosition().getY() - camTilePosition.tileY());
 			int actorPosYOnVisibleMap = actorTileNoYOnVisibleMap * tileLength;
 			float actorPosYOnVisibleMapInclMovement = actorPosYOnVisibleMap + movementOffsetY;
 			float actorPosYOnVisibleMapInclMovementInclScale = actorPosYOnVisibleMapInclMovement * cam.getZoomFactor();
-			
-			float textWidth = 500;
-			
-			//If the scaled tile is 32 pixels wide and the text line is 50 pixels wide, then the x offset is (32 - 50) / 2 = -9
-			float textOffsetX = (cam.getZoomFactor() * tileLength - textWidth) / 2;
-			
-			//Actor's movement offset is added to keep the text centered over their head.
-			float textPosX = actorPosXOnVisibleMapInclMovementInclScale + textOffsetX;
-			
-			//The starting Y point of an overhead message is just constant number of pixels over the actor.
+
+			boolean critical = rawText.contains("<font:critical>");
+			String text = rawText.replace("<font:critical>", "").replace("<font:default>", "");
+			Color color = critical ? FontType.OVERHEAD_PIXEL_CRITICAL_COLOR : FontType.OVERHEAD_PIXEL_DEFAULT_COLOR;
+
+			List<Letter> textLetters = LetterUtils.lettersForText(text, letters, defaultLetter);
+			Rectangle textBounds = LetterUtils.letterListBounds(textLetters, 0);
+			float textPixelWidth = textBounds.getWidth() * SCALE_FACTOR;
+
+			float textPosX = actorPosXOnVisibleMapInclMovementInclScale + (cam.getZoomFactor() * tileLength - textPixelWidth) / 2;
+
 			float overheadMessageStartingY = actorPosYOnVisibleMapInclMovementInclScale - 50;
-			
-			//The current Y point is in the interval [-50;-150] pixels over the player, depending on completion.
 			float overheadMessageCurrentY = overheadMessageStartingY - 100 * completion;
-			
-			//Drawing context for the text.
-			DrawingContext dc = new SimpleDrawingContext(sceneDrawingContext, textPosX, overheadMessageCurrentY, textWidth, 50);
-			
-			//Drawing the text line.
-			FontRefToFontTypeMap fontRefToFontTypeMap = FontRefToFontTypeMap.forOverhead();
-			Book textBook = TextPageConstraints.fromDc(dc).textToBook(text, fontRefToFontTypeMap);
-			TextBookRendererUtils.renderCenteredLabel(gameContainer, graphics, textBook, true);
-			
-			//Returning back to the camera's left top corner.
+
+			OverheadPixelTextParam param = new OverheadPixelTextParam();
+			param.text = text;
+			param.color = color;
+			param.outlineColor = FontType.OVERHEAD_PIXEL_OUTLINE_COLOR;
+			param.scaleFactor = SCALE_FACTOR;
+			param.x = textPosX;
+			param.y = overheadMessageCurrentY;
+			param.maxWidth = MAX_WIDTH;
+
+			OverheadPixelTextRenderer.instance().render(gameContainer, graphics, param);
+
 			graphics.translate(-camTilePosition.offsetX(), -camTilePosition.offsetY());
 		}
-		
-		//Returning back to the left top corner of the screen.
+
 		graphics.translate(-sceneDrawingContext.x(), -sceneDrawingContext.y());
 	}
 

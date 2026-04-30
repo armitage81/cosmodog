@@ -6,6 +6,33 @@
 - **Apache Ant** (`build.xml`). Source root: `src/`. Output: `dist/cosmodog.jar`.
 - Dependencies: `slick.jar`, `lwjgl.jar`, `guava-18.0.jar`, `jdom2-2.0.6.jar`, `json-20240303.jar`.
 
+## Building and Launching from the Terminal
+
+`javac` is not on the system PATH. Locate it with:
+```bash
+JAVAC=$(find ~/.jdks -name "javac.exe" | head -1)
+JAVA=$(find ~/.jdks -name "java.exe" | head -1)
+```
+The classpath separator is `;` (Windows JDK, even when invoked from bash).
+
+**Compile:**
+```bash
+find src -name "*.java" > .sources.txt && \
+$JAVAC -d build \
+  -cp "lib/slick2d/lib/slick.jar;lib/slick2d/lib/lwjgl.jar;lib/guava-18.0.jar;lib/jdom2-2.0.6.jar;lib/json-20240303.jar;lib/gdx-1.8.0.jar;lib/commons-beanutils-1.9.2.jar;lib/commons-logging-1.2.jar;lib/commons-collections-3.2.2.jar" \
+  @.sources.txt 2>&1 && rm -f .sources.txt
+```
+Only deprecation/unchecked warnings are expected — any `Fehler` (error) line means a real compile failure.
+
+**Launch:**
+```bash
+$JAVA \
+  -Djava.library.path=lib/lwjgl/native/windows \
+  -cp "build;resources;lib/slick2d/lib/slick.jar;lib/slick2d/lib/lwjgl.jar;lib/slick2d/lib/lwjgl_util.jar;lib/slick2d/lib/jinput.jar;lib/guava-18.0.jar;lib/jdom2-2.0.6.jar;lib/json-20240303.jar;lib/gdx-1.8.0.jar;lib/commons-beanutils-1.9.2.jar;lib/commons-logging-1.2.jar;lib/commons-collections-3.2.2.jar;lib/jogg-0.0.7.jar;lib/jorbis-0.0.15.jar" \
+  antonafanasjew.cosmodog.CosmodogStarter &
+```
+Working directory must be the project root so asset paths resolve correctly.
+
 ## Package Layout
 
 ```
@@ -40,6 +67,12 @@ resources/         config files embedded in JAR (animations.txt, menus.txt, etc.
 - Utilities: `[Domain]Utils` — e.g. `ApplicationContextUtils`, `CosmodogMapUtils`
 - Constants: `UPPER_SNAKE_CASE`
 - All fields are `private`. Expose via `get`/`set` pairs.
+
+## Programming Rules
+
+- **No `get` prefix on non-getter methods.** `get` is reserved for simple field accessors. Methods that do anything beyond returning a field value are named without it. Examples:
+  - Singleton accessor: `instance()` not `getInstance()` — the backing field is static, so nothing is being "gotten" in the JavaBean sense.
+  - Factory/lookup methods follow the same rule: name them by what they return or compute, not by prefixing `get`.
 
 ## Renderer Pattern
 

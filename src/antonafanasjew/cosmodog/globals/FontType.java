@@ -64,9 +64,9 @@ public enum FontType {
 	GameHint_LowRes(new TrueTypeFont(new Font("Courier", Font.BOLD, 16), false), Color.red);
 
 	private TrueTypeFont font;
-	
+
 	private Color color;
-	
+
 
 	FontType(TrueTypeFont font, Color color) {
 		this.font = font;
@@ -76,11 +76,13 @@ public enum FontType {
 	public TrueTypeFont getFont() {
 		return font;
 	}
-	
+
 	public Color getColor() {
 		return color;
 	}
 
-
+	public static final Color OVERHEAD_PIXEL_DEFAULT_COLOR = new Color(0.0f, 0.7f, 0.0f);
+	public static final Color OVERHEAD_PIXEL_CRITICAL_COLOR = Color.red;
+	public static final Color OVERHEAD_PIXEL_OUTLINE_COLOR = Color.black;
 
 }
