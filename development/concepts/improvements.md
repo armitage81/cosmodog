@@ -1,0 +1,15 @@
+- The story should be transported in dialogs, including portraits and backgrounds.
+- There must be an interactive intro sequence in Cosmodog.
+- All game help should appear context-sensitively when relevant as floating, non-blokcing hints.
+- The car race puzzle is too difficult.
+- Intro looks like AI-slop.
+- There must be fire effects when using weapons.
+- Found log entries are not clearly assignable to complete stories.
+- The sight restriction at night makes the game feeling worse.
+- The puzzle series in the space station should be skippable.
+- Puzzles should include a "revert turn" action, additionally to the complete restart of the puzzle.
+- All story cutscenes should be interactive, even if only for fluff.
+- Walk through all game elements and decide which ones are underdeveloped or not fun. Example: Poison fields.
+- Killing enemies is currently pointless.
+- Go through the graphics and decide which ones are underdeveloped or do not fit game style.
+- Redesign the tutorial area.
